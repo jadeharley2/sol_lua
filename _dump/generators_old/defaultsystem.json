@@ -1,7 +1,0 @@
-{
-	"class" : "generator",
-	"name" : "defaultsystem",
-	"targettype" : "SolMain.sStarSystem",
-	"script" : "data/lua/env.global/generators/defaultsystem.lua",
-	"setdefault" : 1
-}
