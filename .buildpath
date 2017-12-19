@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="env.global"/>
+	<buildpathentry kind="src" path="env.base"/>
+	<buildpathentry kind="src" path="_doclua"/>
+	<buildpathentry kind="con" path="org.eclipse.ldt.ExecutionEnvironmentContainer/lua/5.2"/>
+</buildpath>

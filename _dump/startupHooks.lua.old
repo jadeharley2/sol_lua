@@ -1,0 +1,322 @@
+
+--local space = 0
+--if true then
+--	U = ents.Create()
+--	U:SetSizepower(math.pow(2,88))
+--	U:Spawn()
+--
+--	space = ents.Create("spaceCluster") 
+--	space:SetParent(U) 
+--	space:SetSizepower(math.pow(2,86))
+--	--space:SetSizepower(math.pow(2,10))
+--	space:SetGlobalName("u1.mc")
+--	space:Spawn()
+--else
+--	ents.SpawnPreset("data/presets/universe_human.json")
+--	space = ents.GetByName("star.sol")
+--end
+
+
+
+if CLIENT then
+	local cam = ents.CreateCamera()
+	--cam:SetParent(universe)
+	cam:Spawn()
+
+	SetOrigin(cam)
+	SetCamera(cam) 
+end
+
+--ps:AddParticle(Vector(0,0,0),Vector(1,1,1),0.01,0)
+
+-- targetpos = Vector(0.003537618,0.01925059,0.2446546)
+ 
+-- MsgN(env_cmd)
+ --[[
+--cam:SetUpdateSpace(false)   
+if SERVER then
+	local prt = cam:GetParent()
+	--local actor = ents.Create("base_actor")
+	--actor:SetSizepower(1000)
+	--actor:SetParent(prt)
+	--actor:SetSeed(233330)
+	--actor:Spawn()
+	----actor:SetPos(cam:GetPos()) 
+	--actor:SetPos(targetpos)
+    --
+	--local actor2 = ents.Create("base_actor")
+	--actor2:SetSizepower(1000)
+	--actor2:SetParent(prt)
+	--actor2:SetSeed(133331)
+	--actor2:Spawn()
+	--actor2:SetPos(targetpos+Vector(0.001,0,0)) 
+	players = {}
+	local onClientConnected = function(client) 
+		local actor = ents.Create("base_actor")
+		local id = #players+1
+		players[id] = actor
+		actor:SetSizepower(1000)
+		actor:SetParent(prt)
+		actor:SetSeed(120000+id)
+		actor:SetPos(targetpos)
+		actor:Spawn() 
+		actor:SetPos(targetpos)
+		network.AddNodeImmediate(actor)
+		
+		client:SendLua("TACTOR = ents.GetById("..tostring(120000+id)..") TACTOR:SetGlobalName('player') SetController('actorcontroller') TACTOR:SetPos(targetpos)")
+	end
+	
+	hook.Add("server.client.connected", "playerspawn",onClientConnected)
+end
+]]
+if CLIENT then
+	--if string.match(env_cmd, "alpha")  then
+	--	TACTOR = actor 
+	--else
+	--	TACTOR = actor2 
+	--end
+	--TACTOR:SetGlobalName("player")
+	----TACTOR:SetPos(targetpos)--Vector(0.004475257 ,0.02119615+0.5,0.4454512)*0.5) 
+    --
+	--SetController("actorcontroller") 
+    --
+	--network.Connect("192.168.1.2:3939")
+end
+if true then return true end
+
+local ps = space:AddComponent(CTYPE_PARTICLESYSTEM)
+space:AddComponent(CTYPE_PHYSSPACE)
+local testent = ents.Create("testenttype") 
+testent:SetName("dafaq")
+testent:SetParent(space)
+testent:SetPos(Vector(0,0,0.5))
+testent:SetSizepower(10)
+testent:Spawn()
+testent.phys:SetMass(10000)
+testent.phys:ApplyImpulse(Vector(0,0,-100000000))
+
+for m=1,10 do
+	for k=1,10 do
+		for f=1,3 do
+			local testent2 = CreateSENT("testenttype") 
+			testent2:SetName("dafaq2")
+			testent2:SetPos(Vector(-0.05*f,-0.05*m,-0.05*k))
+			testent2:SetParent(space)
+			testent2:SetSizepower(10)
+			testent2:Spawn()
+		end
+	end
+end
+GG = testent
+
+VEC_ONE = Vector(1,1,1)
+VEC_ZERO = Vector(0,0,0)
+
+
+local saturate = function(num)
+	return math.min(1,math.max(0,num))
+end
+
+local getcolornormal =  function(U4)
+	local starcolor = Vector(1, 1, 1)
+	local realcolor = Vector(1, 1, 1);
+	local starclass2 = 0;
+	if (U4 < 0.00003) then--O 
+		starclass2 = 1
+		starcolor = Vector(157 / 255, 180 / 255, 1)
+		realcolor = Vector(155 / 255, 176 / 255, 1)
+	elseif (U4 < 0.0013003) then--B 
+		starclass2 = 2
+		starcolor = Vector(187 / 255, 204 / 255, 1)
+		realcolor = Vector(170 / 255, 191 / 255, 1)
+	elseif (U4 < 0.0073003)then--A 
+		starclass2 = 3
+		starcolor = Vector(251 / 255, 248 / 255, 1)
+		realcolor = Vector(202 / 255, 216 / 255, 1)
+	elseif (U4 < 0.0373003)then--F 
+		starclass2 = 4
+		starcolor = Vector(1, 1, 237 / 255)
+		realcolor = Vector(251 / 255, 248 / 255, 1) 
+	elseif (U4 < 0.1133003)then--G 
+		starclass2 = 5
+		starcolor = Vector(1, 1, 0)
+		realcolor = Vector(1, 244 / 255, 232 / 255)
+	elseif (U4 < 0.2343003)then--K 
+		starclass2 = 6
+		starcolor = Vector(1, 152 / 255, 51 / 255)
+		realcolor = Vector(1, 221 / 255, 180 / 255)
+	else--M 
+		starclass2 = 7
+		starcolor = Vector(1, 0, 0)
+		realcolor = Vector(1, 189 / 255, 111 / 255)
+		--starcolor = Vector(0, 0, 1)
+		--realcolor = Vector( 111 / 255, 189 / 255,1)
+	end
+	local redcolor = realcolor+(starcolor-realcolor)/2  
+	return redcolor
+end
+local getcolor =  function(U4,pos)
+	local starcolor = Vector(1, 1, 1)
+	local realcolor = Vector(1, 1, 1);
+	local starclass2 = 0;
+	if (U4 < 0.00003) then--O 
+		starclass2 = 1
+		starcolor = Vector(157 / 255, 180 / 255, 1)
+		realcolor = Vector(155 / 255, 176 / 255, 1)
+	elseif (U4 < 0.0013003) then--B 
+		starclass2 = 2
+		starcolor = Vector(187 / 255, 204 / 255, 1)
+		realcolor = Vector(170 / 255, 191 / 255, 1)
+	elseif (U4 < 0.0073003)then--A 
+		starclass2 = 3
+		starcolor = Vector(251 / 255, 248 / 255, 1)
+		realcolor = Vector(202 / 255, 216 / 255, 1)
+	elseif (U4 < 0.0373003)then--F 
+		starclass2 = 4
+		starcolor = Vector(1, 1, 237 / 255)
+		realcolor = Vector(251 / 255, 248 / 255, 1) 
+	elseif (U4 < 0.1133003)then--G 
+		starclass2 = 5
+		starcolor = Vector(1, 1, 0)
+		realcolor = Vector(1, 244 / 255, 232 / 255)
+	elseif (U4 < 0.2343003)then--K 
+		starclass2 = 6
+		starcolor = Vector(1, 152 / 255, 51 / 255)
+		realcolor = Vector(1, 221 / 255, 180 / 255)
+	else--M 
+		starclass2 = 7
+		starcolor = Vector(1, 0, 0)
+		realcolor = Vector(1, 189 / 255, 111 / 255)
+		--starcolor = Vector(0, 0, 1)
+		--realcolor = Vector( 111 / 255, 189 / 255,1)
+	end
+	local redcolor = realcolor+(starcolor-realcolor)/2 
+	local bluecolor = Vector(redcolor.z,redcolor.y,redcolor.x)  
+	local greencolor = Vector(redcolor.z,redcolor.x,redcolor.y)  
+	pos = pos*0.1
+	local noiseMixA = saturate(PerlinNoise(pos.x,pos.y,pos.z)*5)
+	local noiseMixB = saturate(PerlinNoise(pos.x+2378,pos.y+2378,pos.z)*5)
+	return LerpVector(LerpVector(bluecolor,redcolor,noiseMixA),greencolor,noiseMixB)
+end
+
+ps:AddParticle(Vector(0,0,100000),VEC_ONE,10000,0)
+ps:AddParticle(Vector(0,100000000,0),Vector(0.2,0.6,1.2),10000000,0)
+local ppos = Vector(0,0,0)
+local pc = 0
+local cc = 0
+
+local lel = {}
+
+local onPrtCrtTest = function(node, eid, pos, level, seed, width)
+	local rrr = {}
+	for k =1 ,math.random(0,10) do 
+		local rVec = pos + Vector(math.random(-10000,10000)/10000, math.random(-10000,10000)/10000, math.random(-10000,10000)/10000) * width
+		node:GetComponent(CTYPE_PARTICLESYSTEM):AddParticle(rVec,getcolornormal(math.random(0,100000000000)/100000000000),0.01/(level*level),0)
+		local star = ents.Create()
+		star:SetParent(node)
+		star:SetPos(rVec)
+		star:SetSizepower(node:GetSizepower()*0.0001)
+		star:Spawn()  
+		rrr[k] = star
+	end
+	lel[tostring(level).."_"..tostring(seed)] = rrr
+	--MsgN(node," : ", eid, " : ",pos," : ",level," : ",seed)
+end
+local onPrtColTest = function(node, eid, pos, level, seed, width)
+	local rdt = tostring(level).."_"..tostring(seed)
+	local tb = lel[rdt]
+	if tb then
+		for k,v in pairs(tb) do
+		v:Despawn()
+		end
+		lel[rdt] = nil
+	end
+end
+
+local onEnterTest = function(node, eid)
+	--local prt = node:AddComponent(CTYPE_PARTITION3D)
+	--prt:SetPowerLimit(7)
+	--
+	--if node:GetComponent(CTYPE_PARTICLESYSTEM) == nil then
+	--	node:AddComponent(CTYPE_PARTICLESYSTEM)
+	--end
+	--node:AddEventListener(EVENT_PARTITION_CREATE,"test", onPrtCrtTest)
+	--node:AddEventListener(EVENT_PARTITION_COLLAPSE,"test", onPrtColTest)
+	MsgN("entering...")
+	
+	local ppp = node:AddComponent(CTYPE_PARTICLESYSTEM)
+	ppp:SetNodeMode(true)
+	
+	for k=1,20 do
+		local planet = ents.Create()
+		planet:SetParent(node)
+		planet:SetPos(Vector(0.5,0,0))
+		planet:SetSizepower(1)
+		local orbit = planet:AddComponent(CTYPE_ORBIT)
+		orbit:SetOrbit(0.3,
+			0.1*math.random(1,100)/40,
+			math.random(-180,180)/90,
+			math.random(-180,180)/90,
+			math.random(-180,180)/90,
+			math.random(-180,180)/90,
+			0.00001)
+		local par = planet:AddComponent(CTYPE_PARTICLE)
+		local rnd = math.random(0,100)
+		if rnd<30 then
+			par:SetColor(Vector(0.2,1.2,0.6)*0.008) 
+			par:SetSize(0.8)
+		elseif rnd<80 then
+			par:SetColor(Vector(0.2,1.2,0.6)*0.03) 
+			par:SetSize(0.2)
+		else
+			par:SetColor(Vector(0.2,1.2,0.6)*0.2) 
+			par:SetSize(0.007)
+		end
+		
+		--pssys:AddParticle(Vector(0,0,0),Vector(1.2,0.6,0.2),1,0) 
+		planet:Spawn()
+	end
+end
+local onLeaveTest = function(node, eid) 
+	--node:RemoveComponents(CTYPE_PARTITION3D)
+	node:RemoveComponents(CTYPE_PARTICLESYSTEM)
+	--node:RemoveEventListener(EVENT_PARTITION_CREATE,"test")
+	--node:RemoveEventListener(EVENT_PARTITION_COLLAPSE,"test")
+end
+
+hook.Add("main.predraw", "testhook", function(  )
+	if cc < 5000 then
+		for k=1,100 do
+			ppos= ppos+ Vector(math.random(-1000,1000),math.random(-1000,1000),math.random(-1000,1000))/10000
+			--ppos = Vector( ppos.x%1,ppos.y%1,ppos.z%1) 
+			pc = pc + 1
+			cc = cc + 1
+			if pc > 1 then
+				pc = 0
+				local lum = math.pow(2, 1/math.random(1,1000)/1000)*0.01
+				local col = getcolor(math.random(0,100000000000)/100000000000,ppos)
+				
+				if cc%100==0 then
+					lum=lum*1000
+					col=col*0.004
+				elseif cc%10==0 then
+					lum=lum*100
+					col=col*0.01
+				else 
+					local star = ents.Create()
+					star:SetParent(space)
+					star:SetPos(ppos)
+					star:SetSizepower(100)
+					star:Spawn()
+					star:AddEventListener(EVENT_ENTER,"test", onEnterTest)
+					star:AddEventListener(EVENT_LEAVE,"test", onLeaveTest)
+					star:SetUnloadOnExit(true)
+				end
+				ps:AddParticle(ppos,col,lum,0)
+			end
+		end
+	end
+end)
+
+ 
+--dofile("data/lua/env.global/render/stages/RenderStage.lua") 

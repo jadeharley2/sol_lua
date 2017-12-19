@@ -1,0 +1,696 @@
+-----------------
+-- @type Component
+
+-----------------
+-- enable/disable component
+-- @function[parent = #Component] Enable
+-- @param #boolean enabled
+
+-----------------
+-- is component enabled
+-- @function[parent = #Component] IsEnabled
+-- @return #boolean
+
+-----------------
+-- @type Partition
+-- @extends #Component
+
+-----------------
+-- enable/disable updating
+-- @function[parent = #Partition] SetUpdating
+-- @param #boolean enabled
+
+-----------------
+-- @type Partition3d
+-- @extends #Partition
+
+-----------------
+-- maximum division count
+-- @function[parent = #Partition3d] SetPowerLimit
+-- @param #number count
+
+-----------------
+-- division detection bbox size multiplier
+-- @function[parent = #Partition3d] SetBBoxPower
+-- @param #number multiplier
+
+-----------------
+-- @type Partition2d
+-- @extends #Partition
+
+-----------------
+-- @type Procedural
+-- @extends #Component
+
+-----------------
+-- set node generator
+-- @function[parent = #Procedural] SetGenerator
+-- @param #string genid
+
+-----------------
+-- enable event listener
+-- @function[parent = #Procedural] AddEvent
+-- @param #number eventid
+
+-----------------
+-- disable event listener
+-- @function[parent = #Procedural] RemoveEvent
+-- @param #number eventid
+
+-----------------
+-- @type Drawable
+-- @extends #Component
+
+-----------------
+-- 
+-- @function[parent = #Drawable] SetBlendMode
+-- @param #number id
+
+-----------------
+-- 
+-- @function[parent = #Drawable] SetRasterizerMode
+-- @param #number id
+
+-----------------
+-- 
+-- @function[parent = #Drawable] SetDepthStencillMode
+-- @param #number id
+
+-----------------
+-- 
+-- @function[parent = #Drawable] SetBrightness
+-- @param #number amount
+
+-----------------
+-- 
+-- @function[parent = #Drawable] SetMatrix
+-- @param #Matrix world
+
+-----------------
+-- gets 
+-- @function[parent = #Drawable] GetRenderGroup
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #Drawable] SetRenderGroup
+-- @param #number value
+
+-----------------
+-- @type Skybox
+-- @extends #Drawable
+
+-----------------
+-- copy texture from other skybox
+-- @function[parent = #Skybox] CopyTexture
+-- @param #Skybox source
+
+-----------------
+-- set texture
+-- @function[parent = #Skybox] SetTexture
+-- @param #Texture2D tex
+
+-----------------
+-- @type SpriteText
+-- @extends #Drawable
+
+-----------------
+-- 
+-- @function[parent = #SpriteText] SetText
+-- @param #string text
+
+-----------------
+-- @type Surface
+-- @extends #Drawable
+
+-----------------
+-- 
+-- @function[parent = #Surface] SetArchetype
+-- @param #string archetypeid
+
+-----------------
+-- 
+-- @function[parent = #Surface] LinkToPartition
+-- @param #Partition target
+
+-----------------
+-- @type Model
+-- @extends #Drawable
+
+-----------------
+-- gets 
+-- @function[parent = #Model] GetModel
+-- @return #string
+
+-----------------
+-- sets 
+-- @function[parent = #Model] SetModel
+-- @param #string value
+
+-----------------
+-- gets 
+-- @function[parent = #Model] GetFullbright
+-- @return #boolean
+
+-----------------
+-- sets 
+-- @function[parent = #Model] SetFullbright
+-- @param #boolean value
+
+-----------------
+-- 
+-- @function[parent = #Model] SetFadeBounds
+-- @param #number start
+-- @param #number end
+-- @param #number width
+
+-----------------
+-- apply material override
+-- @function[parent = #Model] SetMaterial
+-- @param #string material
+
+-----------------
+-- 
+-- @function[parent = #Model] SetCustom
+
+-----------------
+-- creates bone update task
+-- @function[parent = #Model] SetDynamic
+
+-----------------
+-- 
+-- @function[parent = #Model] SetAnimation
+-- @param #string animation
+
+-----------------
+-- 
+-- @function[parent = #Model] ResetAnimation
+-- @param #string animation
+
+-----------------
+-- 
+-- @function[parent = #Model] PlayLayeredSequence
+-- @param #string animation
+
+-----------------
+-- 
+-- @function[parent = #Model] StopLayeredSequence
+-- @param #string animation
+
+-----------------
+-- detach node from model
+-- @function[parent = #Model] SetUpdateEnabled
+-- @param #Entity node
+
+-----------------
+-- detach node from model
+-- @function[parent = #Model] SetUpdateRate
+-- @param #Entity node
+
+-----------------
+-- enable boneworld auto copy
+-- @function[parent = #Model] SetCopyTransforms
+-- @param #Model target
+
+-----------------
+-- 
+-- @function[parent = #Model] GetPoseParameter
+-- @param #string id
+-- @return #number
+
+-----------------
+-- 
+-- @function[parent = #Model] SetPoseParameter
+-- @param #string id
+-- @param #number value
+
+-----------------
+-- 
+-- @function[parent = #Model] GetBonePos
+-- @param #number boneid
+-- @return #Vector
+
+-----------------
+-- get bone id
+-- @function[parent = #Model] LookupBone
+-- @param #string name
+-- @return #number
+
+-----------------
+-- get bone world matrix
+-- @function[parent = #Model] GetBoneWorld
+-- @param #number boneid
+-- @param #Matrix transformation
+
+-----------------
+-- set bone world matrix
+-- @function[parent = #Model] SetBoneWorld
+-- @param #number boneid
+-- @param #Matrix transformation
+
+-----------------
+-- multiply bone world matrix
+-- @function[parent = #Model] MulBoneWorld
+-- @param #number boneid
+-- @param #Matrix transformation
+
+-----------------
+-- gets bone world matrix
+-- @function[parent = #Model] GetBoneWorld
+-- @return #Matrix
+
+-----------------
+-- sets bone world matrix
+-- @function[parent = #Model] SetBoneWorld
+-- @param #Matrix value
+
+-----------------
+-- attach node to attachment
+-- @function[parent = #Model] Attach
+-- @param #Entity node
+-- @param #string attachment
+
+-----------------
+-- detach node from model
+-- @function[parent = #Model] Detach
+-- @param #Entity node
+
+-----------------
+-- has collision model
+-- @function[parent = #Model] HasCollision
+-- @return #boolean
+
+-----------------
+-- 
+-- @function[parent = #Model] GetAttachmentPos
+-- @param #string attachmentname
+-- @return #Vector
+
+-----------------
+-- 
+-- @function[parent = #Model] AddInstance
+
+-----------------
+-- 
+-- @function[parent = #Model] ClearInstances
+
+-----------------
+-- 
+-- @function[parent = #Model] SetTestModel
+
+-----------------
+-- 
+-- @function[parent = #Model] SetColor
+
+-----------------
+-- @type ParticleSystem
+-- @extends #Drawable
+
+-----------------
+-- add node to system
+-- @function[parent = #ParticleSystem] AddNode
+-- @param #number id
+
+-----------------
+-- blendstate,rasterizer
+-- @function[parent = #ParticleSystem] SetNodeStates
+-- @param #number id
+-- @param #number blendid
+-- @param #number rasterizerid
+-- @param #number depthstencilid
+
+-----------------
+-- add particle
+-- @function[parent = #ParticleSystem] AddParticle
+-- @param #number id
+-- @param #Vector pos
+-- @param #Vector color
+-- @param #number luminosity
+-- @param #number rotation
+
+-----------------
+-- set system mode
+-- @function[parent = #ParticleSystem] SetNodeMode
+-- @param #boolean mode
+
+-----------------
+-- particle texture
+-- @function[parent = #ParticleSystem] SetTexture
+-- @param #Texture2D tex
+
+-----------------
+-- 
+-- @function[parent = #ParticleSystem] SetColor
+-- @param #Vector color
+
+-----------------
+-- 
+-- @function[parent = #ParticleSystem] SetSize
+-- @param #number size
+
+-----------------
+-- 
+-- @function[parent = #ParticleSystem] SetRotation
+-- @param #number angle
+
+-----------------
+-- @type Particle
+-- @extends #Component
+
+-----------------
+-- @type Light
+-- @extends #Component
+
+-----------------
+-- gets 
+-- @function[parent = #Light] GetBrightness
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #Light] SetBrightness
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #Light] GetOffset
+-- @return #Vector
+
+-----------------
+-- sets 
+-- @function[parent = #Light] SetOffset
+-- @param #Vector value
+
+-----------------
+-- gets 
+-- @function[parent = #Light] GetColor
+-- @return #Vector
+
+-----------------
+-- sets 
+-- @function[parent = #Light] SetColor
+-- @param #Vector value
+
+-----------------
+-- @type Renderer
+-- @extends #Component
+
+-----------------
+-- set render output texture
+-- @function[parent = #Renderer] SetRenderTarget
+-- @param #Texture2D target
+
+-----------------
+-- request 1 draw call
+-- @function[parent = #Renderer] RequestDraw
+
+-----------------
+-- @type RCamera
+-- @extends #Renderer
+
+-----------------
+-- gets 
+-- @function[parent = #RCamera] GetCamera
+-- @return #Camera
+
+-----------------
+-- sets 
+-- @function[parent = #RCamera] SetCamera
+-- @param #Camera value
+
+-----------------
+-- 
+-- @function[parent = #RCamera] SetTargetTech
+
+-----------------
+-- 
+-- @function[parent = #RCamera] UnsetShadowMap
+
+-----------------
+-- @type Cubemap
+-- @extends #Renderer
+
+-----------------
+-- set render output texture
+-- @function[parent = #Cubemap] SetTarget
+-- @param #TextureCube target
+
+-----------------
+-- @type Interface
+-- @extends #Renderer
+
+-----------------
+-- gets gui root
+-- @function[parent = #Interface] GetRoot
+-- @return #GuiNode
+
+-----------------
+-- sets gui root
+-- @function[parent = #Interface] SetRoot
+-- @param #GuiNode value
+
+-----------------
+-- 
+-- @function[parent = #Interface] SetUrl
+
+-----------------
+-- @type PhysObj
+-- @extends #Component
+
+-----------------
+-- enable 
+-- @function[parent = #PhysObj] Enable
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] Disable
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] SetShape
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] GetMassCenter
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] UpdateSpace
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] ApplyImpulse
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] ApplyRotation
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] ApplyAngularImpulse
+
+-----------------
+-- gets 
+-- @function[parent = #PhysObj] GetMass
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysObj] SetMass
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysObj] GetVelocity
+-- @return #Vector
+
+-----------------
+-- sets 
+-- @function[parent = #PhysObj] SetVelocity
+-- @param #Vector value
+
+-----------------
+-- gets gravity override pass zero vector to disable
+-- @function[parent = #PhysObj] GetGravity
+-- @return #number
+
+-----------------
+-- sets gravity override pass zero vector to disable
+-- @function[parent = #PhysObj] SetGravity
+-- @param #number value
+
+-----------------
+-- 
+-- @function[parent = #PhysObj] SetShapeFromModel
+
+-----------------
+-- @type PhysActor
+-- @extends #PhysObj
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetViewDirection
+-- @return #Vector
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetViewDirection
+-- @param #Vector value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetMovementDirection
+-- @return #Vector
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetMovementDirection
+-- @param #Vector value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetStance
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetStance
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetStandingSpeed
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetStandingSpeed
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetAirSpeed
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetAirSpeed
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetCrouchingSpeed
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetCrouchingSpeed
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetProneSpeed
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetProneSpeed
+-- @param #number value
+
+-----------------
+-- gets 
+-- @function[parent = #PhysActor] GetSlidingSpeed
+-- @return #number
+
+-----------------
+-- sets 
+-- @function[parent = #PhysActor] SetSlidingSpeed
+-- @param #number value
+
+-----------------
+-- 
+-- @function[parent = #PhysActor] OnGround
+-- @return #boolean
+
+-----------------
+-- 
+-- @function[parent = #PhysActor] GetFootOffset
+-- @return #Vector
+
+-----------------
+-- 
+-- @function[parent = #PhysActor] Jump
+
+-----------------
+-- @type PhysMesh
+-- @extends #PhysObj
+
+-----------------
+-- 
+-- @function[parent = #PhysMesh] SetShapeFromModel
+
+-----------------
+-- @type PhysCompound
+-- @extends #PhysObj
+
+-----------------
+-- 
+-- @function[parent = #PhysCompound] SetShapeFromModel
+
+-----------------
+-- @type PhysSpace
+-- @extends #Component
+
+-----------------
+-- 
+-- @function[parent = #PhysSpace] SetGravity
+
+-----------------
+-- raycast in physics space
+-- @function[parent = #PhysSpace] RayCast
+-- @param #Vector pos
+-- @param #Vector dir
+-- @return #boolean
+-- @return #Vector
+-- @return #Vector
+-- @return #number
+
+-----------------
+-- @type Collision
+-- @extends #Component
+
+-----------------
+-- 
+-- @function[parent = #Collision] SetShapeFromModel
+
+-----------------
+-- 
+-- @function[parent = #Collision] SetShape
+
+-----------------
+-- @type Orbit
+-- @extends #Component
+
+-----------------
+-- set orbital parameters
+-- @function[parent = #Orbit] SetOrbit
+
+-----------------
+-- 
+-- @function[parent = #Orbit] SetParent
+
+-----------------
+-- 
+-- @function[parent = #Orbit] GetPosition
+
+-----------------
+-- 
+-- @function[parent = #Orbit] GetPositionFromTime
+
+-----------------
+-- 
+-- @function[parent = #Orbit] GetParam
+
+
+return nil
+

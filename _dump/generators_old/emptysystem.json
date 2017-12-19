@@ -1,0 +1,6 @@
+{
+	"class" : "generator",
+	"name" : "emptysystem",
+	"targettype" : "SolMain.sStarSystem",
+	"script" : "data/lua/env.global/generators/emptygen.lua"
+}

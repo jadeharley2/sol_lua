@@ -1,0 +1,903 @@
+-----------------
+-- @field[parent = #global] #number EVENT_ANY 1
+
+-----------------
+-- @field[parent = #global] #number EVENT_UPDATE 10
+
+-----------------
+-- @field[parent = #global] #number EVENT_SPAWN 11
+
+-----------------
+-- @field[parent = #global] #number EVENT_DESPAWN 12
+
+-----------------
+-- @field[parent = #global] #number EVENT_ENTER 13
+
+-----------------
+-- @field[parent = #global] #number EVENT_LEAVE 14
+
+-----------------
+-- @field[parent = #global] #number EVENT_TOUCH 15
+
+-----------------
+-- @field[parent = #global] #number EVENT_USE 16
+
+-----------------
+-- @field[parent = #global] #number EVENT_LOAD 17
+
+-----------------
+-- @field[parent = #global] #number EVENT_PARENT_CHANGED 101
+
+-----------------
+-- @field[parent = #global] #number EVENT_CHILD_NEW 110
+
+-----------------
+-- @field[parent = #global] #number EVENT_PARTITION_CREATE 121
+
+-----------------
+-- @field[parent = #global] #number EVENT_PARTITION_COLLAPSE 122
+
+-----------------
+-- @field[parent = #global] #number EVENT_GENERATOR_SETUP 131
+
+-----------------
+-- @field[parent = #global] #number EVENT_MOVE_START 210
+
+-----------------
+-- @field[parent = #global] #number EVENT_MOVE_END 211
+
+-----------------
+-- @field[parent = #global] #number EVENT_RENDERER_PREDRAW 310
+
+-----------------
+-- @field[parent = #global] #number EVENT_RENDERER_POSTDRAW 311
+
+-----------------
+-- @field[parent = #global] #number EVENT_RENDERER_PREDRAW_TARGET 312
+
+-----------------
+-- @field[parent = #global] #number EVENT_RENDERER_FINISH 320
+
+-----------------
+-- @field[parent = #global] #number NTYPE_NONE 0
+
+-----------------
+-- @field[parent = #global] #number NTYPE_GALAXY 1100
+
+-----------------
+-- @field[parent = #global] #number NTYPE_STARSYSTEM 1101
+
+-----------------
+-- @field[parent = #global] #number NTYPE_STAR 1110
+
+-----------------
+-- @field[parent = #global] #number NTYPE_NEUTRONSTAR 1111
+
+-----------------
+-- @field[parent = #global] #number NTYPE_BLACKHOLE 1112
+
+-----------------
+-- @field[parent = #global] #number NTYPE_PLANET 1120
+
+-----------------
+-- @field[parent = #global] #number NTYPE_MOON 1130
+
+-----------------
+-- @field[parent = #global] #number NTYPE_ASTEROID 1140
+
+-----------------
+-- @field[parent = #global] #number CTYPE_NONE 0
+
+-----------------
+-- @field[parent = #global] #number CTYPE_DRAWABLE 100
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PARTICLESYSTEM 101
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PARTICLE 102
+
+-----------------
+-- @field[parent = #global] #number CTYPE_MODEL 103
+
+-----------------
+-- @field[parent = #global] #number CTYPE_SKYBOX 104
+
+-----------------
+-- @field[parent = #global] #number CTYPE_SURFACE 105
+
+-----------------
+-- @field[parent = #global] #number CTYPE_VOLUME 106
+
+-----------------
+-- @field[parent = #global] #number CTYPE_SPRITETEXT 107
+
+-----------------
+-- @field[parent = #global] #number CTYPE_CAMERA 121
+
+-----------------
+-- @field[parent = #global] #number CTYPE_CUBEMAP 122
+
+-----------------
+-- @field[parent = #global] #number CTYPE_INTERFACE 123
+
+-----------------
+-- @field[parent = #global] #number CTYPE_LIGHT 130
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PARTITION2D 201
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PARTITION3D 202
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PROCEDURAL 211
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PHYSSPACE 220
+
+-----------------
+-- @field[parent = #global] #number CTYPE_ORBIT 221
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PHYSOBJ 222
+
+-----------------
+-- @field[parent = #global] #number CTYPE_STATICCOLLISION 223
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PHYSMESH 224
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PHYSACTOR 230
+
+-----------------
+-- @field[parent = #global] #number CTYPE_PHYSCOMPOUND 231
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_TYPE 81
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_TYPENAME 82
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_SEED 83
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ABSSIZE 91
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_NAME 92
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_GENERATOR 93
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ARCHETYPE 94
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_POSITION 101
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ROTATION 102
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_SCALE 103
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_COLOR 104
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_MASS 105
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ALBEDO 106
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_RADIUS 107
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_TEMPERATURE 108
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_MODEL 111
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_MODELWORLD 112
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_MODELSCALE 113
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_STATE 121
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_DIVPOWER 201
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_GRAVITY 401
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_VELOCITY 402
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ANGVELOCITY 403
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ORBIT 501
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ORBIT_DATA 502
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ATMOSPHERE 503
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_ATMOSPHERE_DATA 504
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_HYDROSPHERE 505
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_LUAENTTYPE 800
+
+-----------------
+-- @field[parent = #global] #number VARTYPE_CHARACTER 811
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_NONE 0
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_DEEPSPACE 100
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_STARSYSTEM 101
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_PLANET 102
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_CURRENTPLANET 103
+
+-----------------
+-- @field[parent = #global] #number RENDERGROUP_LOCAL 104
+
+-----------------
+-- @field[parent = #global] #number FLAG_ENTITY 10
+
+-----------------
+-- @field[parent = #global] #number FLAG_GALAXY 110
+
+-----------------
+-- @field[parent = #global] #number FLAG_SPIRAL_GALAXY 111
+
+-----------------
+-- @field[parent = #global] #number FLAG_IRREGULAR_GALAXY 112
+
+-----------------
+-- @field[parent = #global] #number FLAG_ROUND_GALAXY 113
+
+-----------------
+-- @field[parent = #global] #number FLAG_CELESTIAL_BODY 120
+
+-----------------
+-- @field[parent = #global] #number FLAG_STAR 121
+
+-----------------
+-- @field[parent = #global] #number FLAG_PLANET 122
+
+-----------------
+-- @field[parent = #global] #number FLAG_MOON 123
+
+-----------------
+-- @field[parent = #global] #number FLAG_ASTEROID 124
+
+-----------------
+-- @field[parent = #global] #number FLAG_PROP 200
+
+-----------------
+-- @field[parent = #global] #number FLAG_ACTOR 210
+
+-----------------
+-- @field[parent = #global] #number FLAG_MOUNT 211
+
+-----------------
+-- @field[parent = #global] #number FLAG_PLAYER 1001
+
+-----------------
+-- @field[parent = #global] #number FLAG_NPC 1002
+
+-----------------
+-- @field[parent = #global] #number FLAG_WEAPON 1003
+
+-----------------
+-- @field[parent = #global] #number FLAG_VEHICLE 1004
+
+-----------------
+-- @field[parent = #global] #number FLAG_USEABLE 2001
+
+-----------------
+-- @field[parent = #global] #number KEYS_NONE 0
+
+-----------------
+-- @field[parent = #global] #number KEYS_LBUTTON 1
+
+-----------------
+-- @field[parent = #global] #number KEYS_RBUTTON 2
+
+-----------------
+-- @field[parent = #global] #number KEYS_CANCEL 3
+
+-----------------
+-- @field[parent = #global] #number KEYS_MBUTTON 4
+
+-----------------
+-- @field[parent = #global] #number KEYS_XBUTTON1 5
+
+-----------------
+-- @field[parent = #global] #number KEYS_XBUTTON2 6
+
+-----------------
+-- @field[parent = #global] #number KEYS_BACK 8
+
+-----------------
+-- @field[parent = #global] #number KEYS_TAB 9
+
+-----------------
+-- @field[parent = #global] #number KEYS_LINEFEED 10
+
+-----------------
+-- @field[parent = #global] #number KEYS_CLEAR 12
+
+-----------------
+-- @field[parent = #global] #number KEYS_ENTER 13
+
+-----------------
+-- @field[parent = #global] #number KEYS_RETURN 13
+
+-----------------
+-- @field[parent = #global] #number KEYS_SHIFTKEY 16
+
+-----------------
+-- @field[parent = #global] #number KEYS_CONTROLKEY 17
+
+-----------------
+-- @field[parent = #global] #number KEYS_MENU 18
+
+-----------------
+-- @field[parent = #global] #number KEYS_PAUSE 19
+
+-----------------
+-- @field[parent = #global] #number KEYS_CAPSLOCK 20
+
+-----------------
+-- @field[parent = #global] #number KEYS_CAPITAL 20
+
+-----------------
+-- @field[parent = #global] #number KEYS_HANGULMODE 21
+
+-----------------
+-- @field[parent = #global] #number KEYS_HANGUELMODE 21
+
+-----------------
+-- @field[parent = #global] #number KEYS_KANAMODE 21
+
+-----------------
+-- @field[parent = #global] #number KEYS_JUNJAMODE 23
+
+-----------------
+-- @field[parent = #global] #number KEYS_FINALMODE 24
+
+-----------------
+-- @field[parent = #global] #number KEYS_KANJIMODE 25
+
+-----------------
+-- @field[parent = #global] #number KEYS_HANJAMODE 25
+
+-----------------
+-- @field[parent = #global] #number KEYS_ESCAPE 27
+
+-----------------
+-- @field[parent = #global] #number KEYS_IMECONVERT 28
+
+-----------------
+-- @field[parent = #global] #number KEYS_IMENONCONVERT 29
+
+-----------------
+-- @field[parent = #global] #number KEYS_IMEACCEPT 30
+
+-----------------
+-- @field[parent = #global] #number KEYS_IMEACEEPT 30
+
+-----------------
+-- @field[parent = #global] #number KEYS_IMEMODECHANGE 31
+
+-----------------
+-- @field[parent = #global] #number KEYS_SPACE 32
+
+-----------------
+-- @field[parent = #global] #number KEYS_PRIOR 33
+
+-----------------
+-- @field[parent = #global] #number KEYS_PAGEUP 33
+
+-----------------
+-- @field[parent = #global] #number KEYS_PAGEDOWN 34
+
+-----------------
+-- @field[parent = #global] #number KEYS_NEXT 34
+
+-----------------
+-- @field[parent = #global] #number KEYS_END 35
+
+-----------------
+-- @field[parent = #global] #number KEYS_HOME 36
+
+-----------------
+-- @field[parent = #global] #number KEYS_LEFT 37
+
+-----------------
+-- @field[parent = #global] #number KEYS_UP 38
+
+-----------------
+-- @field[parent = #global] #number KEYS_RIGHT 39
+
+-----------------
+-- @field[parent = #global] #number KEYS_DOWN 40
+
+-----------------
+-- @field[parent = #global] #number KEYS_SELECT 41
+
+-----------------
+-- @field[parent = #global] #number KEYS_PRINT 42
+
+-----------------
+-- @field[parent = #global] #number KEYS_EXECUTE 43
+
+-----------------
+-- @field[parent = #global] #number KEYS_SNAPSHOT 44
+
+-----------------
+-- @field[parent = #global] #number KEYS_PRINTSCREEN 44
+
+-----------------
+-- @field[parent = #global] #number KEYS_INSERT 45
+
+-----------------
+-- @field[parent = #global] #number KEYS_DELETE 46
+
+-----------------
+-- @field[parent = #global] #number KEYS_HELP 47
+
+-----------------
+-- @field[parent = #global] #number KEYS_D0 48
+
+-----------------
+-- @field[parent = #global] #number KEYS_D1 49
+
+-----------------
+-- @field[parent = #global] #number KEYS_D2 50
+
+-----------------
+-- @field[parent = #global] #number KEYS_D3 51
+
+-----------------
+-- @field[parent = #global] #number KEYS_D4 52
+
+-----------------
+-- @field[parent = #global] #number KEYS_D5 53
+
+-----------------
+-- @field[parent = #global] #number KEYS_D6 54
+
+-----------------
+-- @field[parent = #global] #number KEYS_D7 55
+
+-----------------
+-- @field[parent = #global] #number KEYS_D8 56
+
+-----------------
+-- @field[parent = #global] #number KEYS_D9 57
+
+-----------------
+-- @field[parent = #global] #number KEYS_A 65
+
+-----------------
+-- @field[parent = #global] #number KEYS_B 66
+
+-----------------
+-- @field[parent = #global] #number KEYS_C 67
+
+-----------------
+-- @field[parent = #global] #number KEYS_D 68
+
+-----------------
+-- @field[parent = #global] #number KEYS_E 69
+
+-----------------
+-- @field[parent = #global] #number KEYS_F 70
+
+-----------------
+-- @field[parent = #global] #number KEYS_G 71
+
+-----------------
+-- @field[parent = #global] #number KEYS_H 72
+
+-----------------
+-- @field[parent = #global] #number KEYS_I 73
+
+-----------------
+-- @field[parent = #global] #number KEYS_J 74
+
+-----------------
+-- @field[parent = #global] #number KEYS_K 75
+
+-----------------
+-- @field[parent = #global] #number KEYS_L 76
+
+-----------------
+-- @field[parent = #global] #number KEYS_M 77
+
+-----------------
+-- @field[parent = #global] #number KEYS_N 78
+
+-----------------
+-- @field[parent = #global] #number KEYS_O 79
+
+-----------------
+-- @field[parent = #global] #number KEYS_P 80
+
+-----------------
+-- @field[parent = #global] #number KEYS_Q 81
+
+-----------------
+-- @field[parent = #global] #number KEYS_R 82
+
+-----------------
+-- @field[parent = #global] #number KEYS_S 83
+
+-----------------
+-- @field[parent = #global] #number KEYS_T 84
+
+-----------------
+-- @field[parent = #global] #number KEYS_U 85
+
+-----------------
+-- @field[parent = #global] #number KEYS_V 86
+
+-----------------
+-- @field[parent = #global] #number KEYS_W 87
+
+-----------------
+-- @field[parent = #global] #number KEYS_X 88
+
+-----------------
+-- @field[parent = #global] #number KEYS_Y 89
+
+-----------------
+-- @field[parent = #global] #number KEYS_Z 90
+
+-----------------
+-- @field[parent = #global] #number KEYS_LWIN 91
+
+-----------------
+-- @field[parent = #global] #number KEYS_RWIN 92
+
+-----------------
+-- @field[parent = #global] #number KEYS_APPS 93
+
+-----------------
+-- @field[parent = #global] #number KEYS_SLEEP 95
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD0 96
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD1 97
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD2 98
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD3 99
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD4 100
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD5 101
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD6 102
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD7 103
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD8 104
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMPAD9 105
+
+-----------------
+-- @field[parent = #global] #number KEYS_MULTIPLY 106
+
+-----------------
+-- @field[parent = #global] #number KEYS_ADD 107
+
+-----------------
+-- @field[parent = #global] #number KEYS_SEPARATOR 108
+
+-----------------
+-- @field[parent = #global] #number KEYS_SUBTRACT 109
+
+-----------------
+-- @field[parent = #global] #number KEYS_DECIMAL 110
+
+-----------------
+-- @field[parent = #global] #number KEYS_DIVIDE 111
+
+-----------------
+-- @field[parent = #global] #number KEYS_F1 112
+
+-----------------
+-- @field[parent = #global] #number KEYS_F2 113
+
+-----------------
+-- @field[parent = #global] #number KEYS_F3 114
+
+-----------------
+-- @field[parent = #global] #number KEYS_F4 115
+
+-----------------
+-- @field[parent = #global] #number KEYS_F5 116
+
+-----------------
+-- @field[parent = #global] #number KEYS_F6 117
+
+-----------------
+-- @field[parent = #global] #number KEYS_F7 118
+
+-----------------
+-- @field[parent = #global] #number KEYS_F8 119
+
+-----------------
+-- @field[parent = #global] #number KEYS_F9 120
+
+-----------------
+-- @field[parent = #global] #number KEYS_F10 121
+
+-----------------
+-- @field[parent = #global] #number KEYS_F11 122
+
+-----------------
+-- @field[parent = #global] #number KEYS_F12 123
+
+-----------------
+-- @field[parent = #global] #number KEYS_F13 124
+
+-----------------
+-- @field[parent = #global] #number KEYS_F14 125
+
+-----------------
+-- @field[parent = #global] #number KEYS_F15 126
+
+-----------------
+-- @field[parent = #global] #number KEYS_F16 127
+
+-----------------
+-- @field[parent = #global] #number KEYS_F17 128
+
+-----------------
+-- @field[parent = #global] #number KEYS_F18 129
+
+-----------------
+-- @field[parent = #global] #number KEYS_F19 130
+
+-----------------
+-- @field[parent = #global] #number KEYS_F20 131
+
+-----------------
+-- @field[parent = #global] #number KEYS_F21 132
+
+-----------------
+-- @field[parent = #global] #number KEYS_F22 133
+
+-----------------
+-- @field[parent = #global] #number KEYS_F23 134
+
+-----------------
+-- @field[parent = #global] #number KEYS_F24 135
+
+-----------------
+-- @field[parent = #global] #number KEYS_NUMLOCK 144
+
+-----------------
+-- @field[parent = #global] #number KEYS_SCROLL 145
+
+-----------------
+-- @field[parent = #global] #number KEYS_LSHIFTKEY 160
+
+-----------------
+-- @field[parent = #global] #number KEYS_RSHIFTKEY 161
+
+-----------------
+-- @field[parent = #global] #number KEYS_LCONTROLKEY 162
+
+-----------------
+-- @field[parent = #global] #number KEYS_RCONTROLKEY 163
+
+-----------------
+-- @field[parent = #global] #number KEYS_LMENU 164
+
+-----------------
+-- @field[parent = #global] #number KEYS_RMENU 165
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERBACK 166
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERFORWARD 167
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERREFRESH 168
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERSTOP 169
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERSEARCH 170
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERFAVORITES 171
+
+-----------------
+-- @field[parent = #global] #number KEYS_BROWSERHOME 172
+
+-----------------
+-- @field[parent = #global] #number KEYS_VOLUMEMUTE 173
+
+-----------------
+-- @field[parent = #global] #number KEYS_VOLUMEDOWN 174
+
+-----------------
+-- @field[parent = #global] #number KEYS_VOLUMEUP 175
+
+-----------------
+-- @field[parent = #global] #number KEYS_MEDIANEXTTRACK 176
+
+-----------------
+-- @field[parent = #global] #number KEYS_MEDIAPREVIOUSTRACK 177
+
+-----------------
+-- @field[parent = #global] #number KEYS_MEDIASTOP 178
+
+-----------------
+-- @field[parent = #global] #number KEYS_MEDIAPLAYPAUSE 179
+
+-----------------
+-- @field[parent = #global] #number KEYS_LAUNCHMAIL 180
+
+-----------------
+-- @field[parent = #global] #number KEYS_SELECTMEDIA 181
+
+-----------------
+-- @field[parent = #global] #number KEYS_LAUNCHAPPLICATION1 182
+
+-----------------
+-- @field[parent = #global] #number KEYS_LAUNCHAPPLICATION2 183
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMSEMICOLON 186
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM1 186
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMPLUS 187
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMCOMMA 188
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMMINUS 189
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMPERIOD 190
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM2 191
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMQUESTION 191
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM3 192
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMTILDE 192
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM4 219
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMOPENBRACKETS 219
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMPIPE 220
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM5 220
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMCLOSEBRACKETS 221
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM6 221
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMQUOTES 222
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM7 222
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM8 223
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEM102 226
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMBACKSLASH 226
+
+-----------------
+-- @field[parent = #global] #number KEYS_PROCESSKEY 229
+
+-----------------
+-- @field[parent = #global] #number KEYS_PACKET 231
+
+-----------------
+-- @field[parent = #global] #number KEYS_ATTN 246
+
+-----------------
+-- @field[parent = #global] #number KEYS_CRSEL 247
+
+-----------------
+-- @field[parent = #global] #number KEYS_EXSEL 248
+
+-----------------
+-- @field[parent = #global] #number KEYS_ERASEEOF 249
+
+-----------------
+-- @field[parent = #global] #number KEYS_PLAY 250
+
+-----------------
+-- @field[parent = #global] #number KEYS_ZOOM 251
+
+-----------------
+-- @field[parent = #global] #number KEYS_NONAME 252
+
+-----------------
+-- @field[parent = #global] #number KEYS_PA1 253
+
+-----------------
+-- @field[parent = #global] #number KEYS_OEMCLEAR 254
+
+-----------------
+-- @field[parent = #global] #number KEYS_KEYCODE 65535
+
+-----------------
+-- @field[parent = #global] #number KEYS_SHIFT 65536
+
+-----------------
+-- @field[parent = #global] #number KEYS_CONTROL 131072
+
+-----------------
+-- @field[parent = #global] #number KEYS_ALT 262144
+
+-----------------
+-- @field[parent = #global] #number KEYS_MODIFIERS -65536
+
+
+return nil
+

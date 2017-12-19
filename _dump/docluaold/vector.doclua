@@ -1,0 +1,62 @@
+-------------------------------------------------------------------------------
+-- @module vector
+
+
+-------------------------------------------------------------------------------
+-- @function [parent=#global] Vector
+-- @param #number x 
+-- @param #number y
+-- @param #number z 
+-- @return #Vector 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Length 
+-- @return #number 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] LengthSquared 
+-- @return #number 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Normalized 
+-- @return #Vector 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Distance 
+-- @param #Vector b 
+-- @return #number 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] DistanceSquared 
+-- @param #Vector b 
+-- @return #number 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Dot 
+-- @param #Vector b 
+-- @return #number 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Cross 
+-- @param #Vector b 
+-- @return #Vector 
+
+-------------------------------------------------------------------------------
+-- @function [parent=#Vector] Rotate 
+-- @param #Vector pyr_degrees
+-- @return #Vector 
+
+-------------------------------------------------------------------------------
+--Transform Coordinate
+-- @function [parent=#Vector] TransformC 
+-- @param #Matrix m
+-- @return #Vector 
+
+
+-------------------------------------------------------------------------------
+--Transform Normal
+-- @function [parent=#Vector] TransformN 
+-- @param #Matrix m
+-- @return #Vector 
+
+return nil

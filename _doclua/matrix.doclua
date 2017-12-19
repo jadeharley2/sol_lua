@@ -1,0 +1,91 @@
+-----------------
+-- @field[parent = #global] matrix#matrix matrix
+
+-----------------
+-- identity matrix
+-- @function[parent = #matrix] Identity
+-- @return #Matrix
+
+-----------------
+-- scaling matrix
+-- @function[parent = #matrix] Scaling
+-- @param #number amount
+-- @return #Matrix
+
+-----------------
+-- scaling matrix
+-- @function[parent = #matrix] Translation
+-- @param #Vector amount
+-- @return #Matrix
+
+-----------------
+-- scaling matrix
+-- @function[parent = #matrix] Rotation
+-- @param #number p
+-- @param #number y
+-- @param #number r
+-- @return #Matrix
+
+-----------------
+-- rotate around axis matrix
+-- @function[parent = #matrix] AxisRotation
+-- @param #Vector axis
+-- @param #number degrees
+-- @return #Matrix
+
+-----------------
+-- @type Matrix
+
+-----------------
+-- transpose matrix
+-- @function[parent = #Matrix] Transposed
+-- @return #Matrix
+
+-----------------
+-- invert matrix
+-- @function[parent = #Matrix] Inversed
+-- @return #Matrix
+
+-----------------
+-- forward direction
+-- @function[parent = #Matrix] Forward
+-- @return #Vector
+
+-----------------
+-- backward direction
+-- @function[parent = #Matrix] Backward
+-- @return #Vector
+
+-----------------
+-- right direction
+-- @function[parent = #Matrix] Right
+-- @return #Vector
+
+-----------------
+-- left direction
+-- @function[parent = #Matrix] Left
+-- @return #Vector
+
+-----------------
+-- up direction
+-- @function[parent = #Matrix] Up
+-- @return #Vector
+
+-----------------
+-- down direction
+-- @function[parent = #Matrix] Down
+-- @return #Vector
+
+-----------------
+-- translation
+-- @function[parent = #Matrix] Position
+-- @return #Vector
+
+-----------------
+-- rotation radians
+-- @function[parent = #Matrix] Rotation
+-- @return #Vector
+
+
+return nil
+

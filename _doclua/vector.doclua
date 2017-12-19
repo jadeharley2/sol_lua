@@ -1,0 +1,79 @@
+-----------------
+-- @type Vector
+
+-----------------
+-- vector length
+-- @function[parent = #Vector] Length
+-- @return #number
+
+-----------------
+-- squared vector length
+-- @function[parent = #Vector] LengthSquared
+-- @return #number
+
+-----------------
+-- normalized vector
+-- @function[parent = #Vector] Normalized
+-- @return #Vector
+
+-----------------
+-- distance between two vectors
+-- @function[parent = #Vector] Distance
+-- @param #Vector other
+-- @return #number
+
+-----------------
+-- squared distance between two vectors
+-- @function[parent = #Vector] DistanceSquared
+-- @param #Vector other
+-- @return #number
+
+-----------------
+-- dot product
+-- @function[parent = #Vector] Dot
+-- @param #Vector other
+-- @return #number
+
+-----------------
+-- cross product
+-- @function[parent = #Vector] Cross
+-- @param #Vector other
+-- @return #Vector
+
+-----------------
+-- rotate vector by pyr
+-- @function[parent = #Vector] Rotate
+-- @param #Vector pyr_degrees
+-- @return #Vector
+
+-----------------
+-- transform coordinate Vector by Matrix
+-- @function[parent = #Vector] TransformC
+-- @param #Matrix transformation
+-- @return #Vector
+
+-----------------
+-- transform normal Vector by Matrix
+-- @function[parent = #Vector] TransformN
+-- @param #Matrix transformation
+-- @return #Vector
+
+-----------------
+-- lerp between vectors
+-- @function[parent = #global] LerpVector
+-- @param #Vector a
+-- @param #Vector b
+-- @param #number amount
+-- @return #Vector
+
+-----------------
+-- clamp vector values
+-- @function[parent = #global] ClampVector
+-- @param #Vector n
+-- @param #Vector min
+-- @param #Vector max
+-- @return #Vector
+
+
+return nil
+

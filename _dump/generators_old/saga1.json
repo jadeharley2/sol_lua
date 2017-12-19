@@ -1,0 +1,6 @@
+{
+	"class" : "generator",
+	"name" : "saga1",
+	"targettype" : "SolMain.sStarSystem",
+	"script" : "data/lua/env.global/generators/saga1.lua", 
+}

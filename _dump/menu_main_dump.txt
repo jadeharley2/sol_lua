@@ -1,0 +1,134 @@
+
+	
+	local function AddSettingInput(pn,name,variablename,default)
+		local savelist = pn.savelist or {}
+		local index = pn.propid or 0
+		
+		local panelColor = Vector(50,150,50)/256
+		
+		local sp = panel.Create()
+		sp:SetSize(450,26)
+		sp:SetPos(0,100-index*26*2)
+		
+		local label = panel.Create()
+		label:SetText(name)
+		label:SetTextAlignment(ALIGN_CENTER)
+		label:SetSize(170,20)
+		label:SetPos((-450+170),0)
+		label:SetColor(panelColor/2)
+		label:SetTextColor( Vector(1,1,1))
+		sp:Add(label)
+	
+		local inp = panel.Create("input_text")
+		inp.downcolor = Vector(50,50,50)/256
+		inp.upcolor = Vector(0,0,0)/256
+		inp.hovercolor = Vector(80,80,80)/256
+		inp:SetColor(inp.upcolor)
+		inp:SetTextColor( Vector(1,1,1))
+		inp:SetSize(280,20)
+		inp:SetPos((450-280),0)
+		inp:SetText(settings.GetString(variablename,default))
+		--inp:SetPos(
+		sp:Add(inp)
+		sp:SetColor(panelColor)
+		
+		pn:Add(sp)
+		
+		inp.type = "string"
+		savelist[variablename] = inp
+		
+		pn.savelist = savelist
+		pn.propid = index + 1
+	end
+	
+	local function AddSettingNumberInput(pn,name,variablename,default,evalfunction)
+		local savelist = pn.savelist or {}
+		local index = pn.propid or 0
+		
+		local panelColor = Vector(50,150,50)/256
+		
+		local sp = panel.Create()
+		sp:SetSize(450,26)
+		sp:SetPos(0,100-index*26*2)
+		
+		local label = panel.Create()
+		label:SetText(name)
+		label:SetTextAlignment(ALIGN_CENTER)
+		label:SetSize(170,20)
+		label:SetPos((-450+170),0)
+		label:SetColor(panelColor/2)
+		label:SetTextColor( Vector(1,1,1))
+		sp:Add(label)
+	
+		local inp = panel.Create("input_text")
+		inp.downcolor = Vector(50,50,50)/256
+		inp.upcolor = Vector(0,0,0)/256
+		inp.hovercolor = Vector(80,80,80)/256
+		inp:SetColor(inp.upcolor)
+		inp:SetTextColor( Vector(1,1,1))
+		inp:SetSize(280,20)
+		inp:SetPos((450-280),0)
+		inp.rest_numbers = true
+		inp:SetText(tostring(settings.GetNumber(variablename,default)))
+		--inp:SetPos(
+		inp.evalfunction = evalfunction
+		
+		sp:Add(inp)
+		sp:SetColor(panelColor)
+		
+		pn:Add(sp)
+		
+		inp.type = "number"
+		savelist[variablename] = inp
+		
+		pn.savelist = savelist
+		pn.propid = index + 1
+	end
+	
+	local function AddSettingBool(pn,name,variablename,default)
+		local savelist = pn.savelist or {}
+		local index = pn.propid or 0
+		
+		local panelColor = Vector(50,150,50)/256
+		
+		local sp = panel.Create()
+		sp:SetSize(450,26)
+		sp:SetPos(0,100-index*26*2)
+		
+		local label = panel.Create()
+		label:SetText(name)
+		label:SetTextAlignment(ALIGN_CENTER)
+		label:SetSize(170,20)
+		label:SetPos((-450+170),0)
+		label:SetColor(panelColor/2)
+		label:SetTextColor( Vector(1,1,1))
+		sp:Add(label)
+	
+		local inp = panel.Create("checkbox") 
+		inp:AlignTo(label,ALIGN_LEFT,ALIGN_RIGHT)  
+		inp:SetValue(settings.GetBool(variablename,default))
+		
+		sp:Add(inp)
+		 
+		sp:SetColor(panelColor)
+		
+		pn:Add(sp)
+		
+		inp.type = "bool"
+		savelist[variablename] = inp
+		
+		pn.savelist = savelist
+		pn.propid = index + 1
+	end
+	
+	
+	--AddSettingInput(settings_panel,"Name:","player.name","New Player")
+	--AddSettingInput(settings_panel,"Model:","player.model","kindred")
+	--AddSettingBool(settings_panel,"Enable shadows:","engine.shadowsenabled",true)
+	--AddSettingBool(settings_panel,"Enable mirrors:","engine.mirrorsenabled",true)
+	--AddSettingNumberInput(settings_panel,"Shadows size:","engine.shadowssize",2048,function(n)
+	--	return math.Clamp(n,128,8192)
+	--end)
+	
+	
+	

@@ -1,0 +1,6 @@
+{
+	"class" : "generator",
+	"name" : "masseffectsystem",
+	"targettype" : "SolMain.sStarSystem",
+	"script" : "data/lua/env.global/generators/masseffectsystem.lua"
+}
