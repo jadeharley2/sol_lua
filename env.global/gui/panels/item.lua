@@ -3,6 +3,7 @@ CURRENT_DRAG = false
 CURRENT_AB_ITEMS = {}
 
 local unknowntex = LoadTexture("textures/gui/icons/unknown.png")
+local equippedtex = LoadTexture("textures/gui/equipped.png")
 
 local function dragupdate() 
 	local c = CURRENT_DRAG
@@ -85,6 +86,10 @@ function PANEL:Init()
 	amount:SetTextColor(Vector(1,1,1))
 	amount:SetText("1")
 	
+	local selector = panel.Create() 
+	selector:SetSize(15,15) 
+	selector:SetTexture(equippedtex)
+	selector:SetAlpha(0)
 	
 	local cooldown = panel.Create()
 	--cooldown:Dock(DOCK_BOTTOM)
@@ -92,13 +97,15 @@ function PANEL:Init()
 	cooldown:SetCanRaiseMouseEvents(false) 
 	cooldown:SetColor(Vector(0,0,0))
 	cooldown:SetAlpha(0.5)
-	
+	 
 	self:Add(cooldown)
 	self:Add(title)
 	self.title = title
 	self:Add(amount)
 	self.amount = amount
 	self.cooldownpanel = cooldown
+	self:Add(selector)
+	self.selector = selector
 	--self.OnClick = function(s) 
 	--end
 end
@@ -120,9 +127,11 @@ end
 function PANEL:MouseClick(fid)
 	if not CURRENT_DRAG then
 		if fid==2 then 
-			ContextMenu(self,{
+			local itemi = self.item
+			local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
+			local context = {
 				{text = ""..self.title:GetText()},
-				{text = "use"},
+				{text = "use",action = ACT_USE},
 				{text = "drop",action = function(item) hook.Call("event.item.droprequest",item) return false end},
 				--{text = "B",action = function(item,context) MsgN("ho!") end},
 				--{text = "CCC",sub={
@@ -131,7 +140,16 @@ function PANEL:MouseClick(fid)
 				--	{text = "2"},
 				--	{text = "3",action = function(item,context) MsgN("JA!") end},
 				--}},
-			})
+			}
+			if itemi.IsEquipped then
+				if itemi:IsEquipped() then
+					context[2] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
+				else
+					context[2] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
+				end
+			end
+			
+			ContextMenu(self,context)
 		end
 	end
 end
@@ -196,6 +214,16 @@ function PANEL:Set(item)
 	
 	if isability(item) then
 		CURRENT_AB_ITEMS[#CURRENT_AB_ITEMS+1] = self
+	end
+	
+	if item.IsEquipped then 
+		local sel = self.selector
+		sel:SetSize(self:GetSize())
+		if item:IsEquipped() then  
+			sel:SetAlpha(1)
+		else 
+			sel:SetAlpha(0)
+		end
 	end
 	self.item = item
 	

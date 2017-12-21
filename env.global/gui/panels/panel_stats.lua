@@ -7,9 +7,12 @@ end
 
 function PANEL:Set(actor)
 	self:Clear()
-	self:AddGroup("General")
-	self:AddRecord("Species:", actor.species or "unknown")
-	self:AddRecord("Race:", actor.race or "none")
+	local asp = actor.species
+	if asp then
+		self:AddGroup("General")
+		self:AddRecord("Species:", asp.name or "unknown")
+		self:AddRecord("Race:", asp.racename or "none")
+	end
 	self:AddGroup("Attributes")
 	self:AddRecord("Strength:", 0) 
 	self:AddRecord("Mass:", actor.phys:GetMass()) 

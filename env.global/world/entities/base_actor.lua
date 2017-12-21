@@ -232,7 +232,11 @@ function ENT:LoadGraph()
 	
 	
 	graph:NewState("dead",function(s,e)
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
+		local phys = e.phys
+		phys:SetMovementDirection(Vector(0,0,0)) 
+		phys:SetGravity() 
+		phys:SetAirSpeed(0)
+		e.isflying = false
 		e.model:SetAnimation("death")   
 		return 5
 	end)
@@ -442,35 +446,12 @@ function ENT:SetCharacter(id)
 			local phys = self.phys
 			
 			if data.name and self:GetName() == "" then self:SetName(data.name) end
-			if data.model then self:SetModel(data.model) end
-			if data.mass then phys:SetMass(data.mass) end
-			if data.variables then
-				for k, v in pairs(data.variables) do 
-					self[k] = v
-				end
+			
+			if data.species then
+				self:SetSpecies(data.species)
 			end
-			if data.movement then
-				if data.movement.walk then self.walkspeed = data.movement.walk.speed or self.walkspeed end
-				if data.movement.run then self.runspeed = data.movement.run.speed or self.runspeed end 
-				if data.movement.fly then self.flyspeed = data.movement.fly.speed or self.flyspeed end 
-			end
-			if data.attributes then
-				self.attributes = data.attributes
-				for k,v in pairs(data.attributes) do
-					if v == "mount" then 
-						self:AddEventListener(EVENT_USE,"use_event",function(user) 
-							user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
-						end)
-						self:AddFlag(FLAG_USEABLE) 
-					end
-				end
-			end
-			if data.abilities then
-				self.abilities = {}
-				for k,v in pairs(data.abilities) do
-					self.abilities[k] = Ability(v)
-				end
-			end
+			
+			self:Config(data)
 			
 			model:SetModel(self:GetParameter(VARTYPE_MODEL))
 			model:SetRenderGroup(RENDERGROUP_LOCAL) 
@@ -485,12 +466,162 @@ function ENT:SetCharacter(id)
 			
 			self.graph = self:LoadGraph() or self.graph
 			
+			
+			
+			if data.parts then
+				local bpath = self.species.model.basedir
+				local bpr = {}
+				for k,v in pairs(data.parts) do
+					bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
+				end
+				self.spparts = bpr
+				
+				--TEST!
+				local mat = NewMaterial("models/mlppony/tex/", json.ToJson({
+					shader = "shader.model", 
+					g_MeshTexture = "models/mlppony/tex/body_luna.jpg",
+					g_MeshTexture_n = "models/mlppony/tex/base_normal.dds",
+				}))
+				local root = panel.Create()
+				root:SetSize(512,512)
+				root:SetTexture(LoadTexture("textures/ponygen/body.dds"))
+				root:SetColor(Vector(56,73,125)/255) 
+				local tex = RenderTexture(512,512,root) 
+				SetMaterialProperty(mat,"g_MeshTexture",tex)
+				self.spparts.body.model:SetMaterial(mat)
+			--END
+			end
+			
+			
 			self:SetUpdating(true,100)
 			--MsgN("faf ",self:GetPos())
-			--self:SetPos(self:GetPos())
+			--self:SetPos(self:GetPos()) 
 		end
 	end
 end
+function ENT:SetSpecies(spstr) 
+	if spstr then 
+		local spd = spstr:split(':')
+		local species = spd[1]
+		local variation = spd[2]
+		
+		local data = json.Read("forms/species/"..species..".json")
+		if data then 
+			self:Config(data,species,variation)
+			
+			self.species = data
+			self.variation = data.model.variations[variation]
+			
+		end
+	end
+end
+
+function ENT:GetEquipment(slot)
+	local e = self.equipment
+	if e then
+		return e[slot] 
+	end
+	return nil
+end
+function ENT:Equip(item) 
+	MsgN(self, " equip ",item)
+	local slot = item.slot
+	MsgN(item, " slot ",slot)
+	if slot then
+		local s = self:GetEquipment(slot) 
+		MsgN("s slot ",s)
+		if s and item.GetSkelModel then
+			local itemmodel = item:GetSkelModel(self,slot) 
+			MsgN("itemmodel ",itemmodel)
+			if itemmodel then
+				if s.ent then
+					s.ent:Despawn()
+					s.ent = nil
+					if s.item.OnUnequipped then s.item:OnUnequipped(self) end
+				end
+				local olditem = s.item
+				
+				local newE = SpawnBP(itemmodel,self,0.03)
+				s.ent = newE
+				s.item = item 
+				if item.OnEquipped then item:OnEquipped(self) end
+				return olditem
+			end
+		end
+	end
+	return nil
+end
+function ENT:Unequip(slot)
+	local s = self:GetEquipment(slot)
+	if s then
+		if s.ent then
+			s.ent:Despawn()
+			s.ent = nil
+			local item = s.item
+			s.item = nil
+			if item.OnUnequipped then item:OnUnequipped(self) end
+			return item
+		end
+	end
+	return nil
+end
+
+function ENT:Config(data,species,variation)
+
+	local phys = self.phys
+	if species then
+		if data.bodyparts then
+		
+		
+		end 
+		if data.equipment then
+			local equipment = {}
+			for k,v in pairs(data.equipment.slots) do
+				equipment[v] = {}
+			end
+			self.equipment = equipment
+		
+		end
+	end
+	if data.model then
+		if isstring(data.model) then
+			self:SetModel(data.model) 
+		else
+			local varbase = data.model.variations[variation]
+			local skel = varbase.skeleton
+			self:SetModel(data.model.basedir..skel..".json") 
+		end
+	end 
+	if data.mass then phys:SetMass(data.mass) end
+	if data.variables then
+		for k, v in pairs(data.variables) do 
+			self[k] = v
+		end
+	end
+	if data.movement then
+		if data.movement.walk then self.walkspeed = data.movement.walk.speed or self.walkspeed end
+		if data.movement.run then self.runspeed = data.movement.run.speed or self.runspeed end 
+		if data.movement.fly then self.flyspeed = data.movement.fly.speed or self.flyspeed end 
+	end
+	if data.attributes then
+		self.attributes = data.attributes
+		for k,v in pairs(data.attributes) do
+			if v == "mount" then 
+				self:AddEventListener(EVENT_USE,"use_event",function(user) 
+					user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
+				end)
+				self:AddFlag(FLAG_USEABLE) 
+			end
+		end
+	end
+	if data.abilities then
+		self.abilities = {}
+		for k,v in pairs(data.abilities) do
+			self.abilities[k] = Ability(v)
+		end
+	end
+end
+
 function ENT:SetAi(id)
 	if id then
 		local ai = Ai(id,self)
@@ -783,7 +914,7 @@ end
 function ENT:Land()
 	self.graph:SetState("flight_end")
 	local phys = self.phys
-	phys:SetGravity(Vector(0,-4,0)) 
+	phys:SetGravity() 
 	phys:SetAirSpeed(0)
 	self.isflying = false
 end

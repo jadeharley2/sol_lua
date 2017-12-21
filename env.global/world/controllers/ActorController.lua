@@ -283,7 +283,9 @@ function OBJ:CreateCharacterPanels(actor)
 end
 function OBJ:DestroyCharacterPanels(actor)
 	local cpanels = self.cpanels or {}
-	cpanels:Close()
+	if cpanels.Close then
+		cpanels:Close()
+	end
 	self.cpanels = nil
 end
 
@@ -804,6 +806,7 @@ function OBJ:HandleDrop(actor,c)
 			local item = c.item
 			if item then 
 				c:OnDrop() 
+				if item.OnDrop then item:OnDrop(actor) end
 				c.inv:RemoveItem(actor,item)  
 		 	end
 		--end
@@ -945,7 +948,17 @@ function OBJ:HandleCameraMovement(actor)
 		end
 	else
 		--cam:SetPos((Up*1.1   +Vector(-0.4,0,0) - Forward * self.camZoom) / parent_sz)
-		cam:SetPos( (Up*0.5  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
+		local tripleA = ascale * ascale * ascale
+		local cd_start = (Up*0.5 ) * tripleA
+		local cd_dir = Right:Normalized()
+		local cd_maxdist = 0.5 * tripleA /1000
+		
+		local cp_start =GetTracedLocalPos(actor, cd_start, cd_dir, cd_maxdist,0.3,actor.phys)--(Up*0.5+ Right* 0.5 ) * tripleA
+		local cp_dir = -Forward:Normalized()
+		local cp_maxdist = self.camZoom * tripleA /1000
+		local rt = GetTracedLocalPos(actor, cp_start, cp_dir, cp_maxdist,0.8,actor.phys)
+		cam:SetPos(rt)
+		--cam:SetPos( (Up*0.5  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
 	end
 	
 	--for i=0,50 do
@@ -1017,7 +1030,6 @@ function OBJ:HandleCameraMovement(actor)
 			self.rmode = true
 	end
 end
-
 function OBJ:HandleWaterTest(actor)
 	local planet = actor:GetParentWithFlag(FLAG_PLANET) 
 	if planet then

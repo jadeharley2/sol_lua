@@ -50,6 +50,13 @@ function ENT:Spawn()
 	local pp5 = SpawnWeapon("bow_kindred",space,Vector(-0.006,0.003,0),939006)--0.006
 	self.space = space
 	
+	SpawnIA("mlp_shoes_luna",space,Vector(0,0.01,0)) 
+	SpawnIA("mlp_crown_luna",space,Vector(0,0.01,0)) 
+	SpawnIA("mlp_shoes_tempest",space,Vector(0.002,0.01,0)) 
+	SpawnIA("mlp_armor_tempest",space,Vector(0.004,0.01,0)) 
+	SpawnIA("mlp_armor_tempest2",space,Vector(0.006,0.01,0)) 
+	SpawnIA("mlp_necklace_luna",space,Vector(0.008,0.01,0)) 
+	
 	local ambient = ents.Create("ambient_sound")
 	ambient:SetParent(space)
 	ambient:Spawn()

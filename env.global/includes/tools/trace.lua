@@ -10,6 +10,32 @@ function GetCameraPhysTrace(cam,actorphys)
 	end
 	return nil
 end
+
+--pos, dir = relative to node(inside space)
+--dir = normalized
+--maxlen = in node space lengths
+function GetTracedLocalPos(node,pos,dir,maxlen,dirmul,actorphys)
+	dirmul = dirmul or 1
+	local parentphysnode = node:GetParentWithComponent(CTYPE_PHYSSPACE)
+	if parentphysnode then
+		local space = parentphysnode:GetComponent(CTYPE_PHYSSPACE)
+		local lw = parentphysnode:GetLocalSpace(node)
+		local lwdiff = parentphysnode:GetSizepower()/node:GetSizepower()
+		 
+		local wpos = pos:TransformC(lw)
+		local wdir = dir:TransformN(lw)
+		
+		local hit, hpos, hnorm, dist, ent = space:RayCast(wpos,wdir,actorphys)
+		--MsgN(ent)
+		dist = dist*lwdiff* dirmul
+		if dist < maxlen then 
+			return pos + dir * dist 
+		end 
+	end
+	return pos + dir*maxlen
+end
+
+
 function GetNodesInRadius(space,pos,r,flagfilter,nodefilter)
 	--flagfilter ent flag (number)
 	--nodefilter node ignore table

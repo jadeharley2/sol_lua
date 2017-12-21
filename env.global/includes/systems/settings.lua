@@ -5,7 +5,7 @@ SETTINGS_VALUES = {
 			name = "Player",
 			variables = {
 				{ type = "string", name = "Name", var = "player.name", default = "New Player"},
-				{ type = "string", name = "Model", var = "player.model", default = "kindred"},
+				{ type = "string", name = "Character", var = "player.model", default = "kindred"},
 				{ type = "string", name = "Skin IDs", var = "player.skinid", default = ""},
 				{ type = "bool", name = "Hide in FP", var = "player.fpmode2", default = true},
 			}

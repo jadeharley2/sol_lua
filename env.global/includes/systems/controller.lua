@@ -5,7 +5,7 @@ global_controller = global_controller or false
 function AddController(name,obj)
 	controllers[name] = obj 
 end
-
+ 
 function ScanControllers() 
 	local tempobj = OBJ   
 	for k,v in pairs(file.GetFiles("lua/env.global/world/controllers/","lua")) do
@@ -15,10 +15,10 @@ function ScanControllers()
 		AddController(OBJ.name,OBJ) 
 	end
 	OBJ = tempobj   
-end              
-              
+end                   
+                      
 function SetController(name)   
-	if name then             
+	if name then              
 		local ts = controllers[name]
 		if ts then  
 			local prev = global_controller   
