@@ -51,10 +51,11 @@ function PANEL:Init()
 	self:SetPos(0,-vsize.y+csize.y+20)
 end
  
-function PANEL:UpdateHealth(val) 
+function PANEL:UpdateHealth(val,maxval) 
 	if val then  
+		maxval = maxval or 100
 		local insize = self:GetSize()
-		self.bar:SetSize(val/100 * insize.x,insize.y)
+		self.bar:SetSize(val/maxval * insize.x,insize.y)
 		self:UpdateLayout() 
 		self:SetVisible(true)
 		local lastval = self.lastval or 0 

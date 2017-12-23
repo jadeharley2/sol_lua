@@ -41,7 +41,7 @@ function OBJ:Init()
 	 
 	
 	if healthbar and actor:HasFlag(FLAG_ACTOR) then
-		healthbar:UpdateHealth(actor:GetHealth())
+		healthbar:UpdateHealth(actor:GetHealth(),actor:GetMaxHealth())
 	end
 	if self.camZoom==0 then 
 		self:SwitchToFirstperson(actor)
@@ -833,11 +833,41 @@ end
 function OBJ:SwitchToFirstperson(actor)
 	if HIDE_CHAR_IN_FIRST_PERSON() then
 		actor.model:Enable(false)
+		if actor.spparts then
+			for k,v in pairs(actor.spparts) do
+				v.model:Enable(false)
+			end
+		end
+		if actor.equipment then
+			for k,v in pairs(actor.equipment) do
+				if v.ent then
+					v.ent.model:Enable(false)
+				end
+			end
+		end
+	else
+		if actor.spparts then
+			if actor.spparts.hair then
+				actor.spparts.hair.model:Enable(false)
+			end
+		end
 	end
 end
 function OBJ:SwitchToThirdperson(actor)
 	--if HIDE_CHAR_IN_FIRST_PERSON() then
 		actor.model:Enable(true)
+		if actor.spparts then
+			for k,v in pairs(actor.spparts) do
+				v.model:Enable(true)
+			end
+		end
+		if actor.equipment then
+			for k,v in pairs(actor.equipment) do
+				if v.ent then
+					v.ent.model:Enable(true)
+				end
+			end
+		end
 	--end
 end
 function OBJ:HandleCameraMovement(actor)
@@ -948,6 +978,7 @@ function OBJ:HandleCameraMovement(actor)
 		end
 	else
 		--cam:SetPos((Up*1.1   +Vector(-0.4,0,0) - Forward * self.camZoom) / parent_sz)
+		--[[ -- TODO: FIX SIZEPOWER
 		local tripleA = ascale * ascale * ascale
 		local cd_start = (Up*0.5 ) * tripleA
 		local cd_dir = Right:Normalized()
@@ -958,7 +989,9 @@ function OBJ:HandleCameraMovement(actor)
 		local cp_maxdist = self.camZoom * tripleA /1000
 		local rt = GetTracedLocalPos(actor, cp_start, cp_dir, cp_maxdist,0.8,actor.phys)
 		cam:SetPos(rt)
-		--cam:SetPos( (Up*0.5  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
+		]] 
+		
+		cam:SetPos( (Up*0.5  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
 	end
 	
 	--for i=0,50 do

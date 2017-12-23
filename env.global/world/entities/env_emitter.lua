@@ -56,11 +56,15 @@ end
 
 function ENT:Init()  
 end
+function ENT:SetCustom(effect)
+	self.customtype = effect
+end
+
 
 function ENT:Spawn(c)  
 	self:SetSpaceEnabled(false) 
 	
-	local type = self:GetParameter(VARTYPE_CHARACTER,"magic_explosion")
+	local customtype = self.customtype
 	
 	local particlesys2 = self:AddComponent(CTYPE_PARTICLESYSTEM2) 
 	particlesys2:SetSpeed(self.speed or 1)
@@ -72,7 +76,12 @@ function ENT:Spawn(c)
 	else
 		particlesys2:SetDepthStencillMode(DEPTH_READ)  
 	end
-	particlesys2:Set("data/particles/"..type..".json")
+	if customtype then
+		particlesys2:Set(customtype)
+	else
+		local type = self:GetParameter(VARTYPE_CHARACTER,"magic_explosion")
+		particlesys2:Set("particles/"..type..".json")
+	end
 	self.particlesys2 = particlesys2 
 	 
 end 

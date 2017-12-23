@@ -53,25 +53,36 @@ function ENT:Init()
 		hp = hp - amount 
 		self:SetParameter(VARTYPE_HEALTH,hp)
 		if hp <= 0 then 	self:SendEvent(EVENT_DEATH) end
-		if CLIENT and LocalPlayer() == self then healthbar:UpdateHealth(hp) end
+		if CLIENT and LocalPlayer() == self then
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(hp,mhp) 
+		end
 	end)
 	
 	self:AddEventListener(EVENT_HEALTH_CHANGED,"event",function(val) 
 		self:SetParameter(VARTYPE_HEALTH,val)  
-		if CLIENT and LocalPlayer() == self then healthbar:UpdateHealth(val) end
+		if CLIENT and LocalPlayer() == self then 
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(val,mhp) 
+		end
 		self:SetVehicle(nil) 
 	end)
 	self:AddEventListener(EVENT_MAXHEALTH_CHANGED,"event",function(val) self:SetParameter(VARTYPE_MAXHEALTH,val) end)
 	
 	self:AddEventListener(EVENT_DEATH,"event",function() 
 		self:SetParameter(VARTYPE_HEALTH,0)  
-		if CLIENT and LocalPlayer() == self then healthbar:UpdateHealth(0) end
+		if CLIENT and LocalPlayer() == self then 
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(0,mhp) 
+		end
 		self.graph:SetState("dead") 
 	end)
 	self:AddEventListener(EVENT_SPAWN,"event",function() 
 		local hp = self:GetParameter(VARTYPE_MAXHEALTH)
 		self:SetParameter(VARTYPE_HEALTH,hp)  
-		if CLIENT and LocalPlayer() == self then healthbar:UpdateHealth(hp) end
+		if CLIENT and LocalPlayer() == self then 
+			healthbar:UpdateHealth(hp,hp) 
+		end
 		self.graph:SetState("spawn") 
 	end)
 	self:AddEventListener(EVENT_CHANGE_CHARACTER,"event",function(char) 
@@ -470,25 +481,60 @@ function ENT:SetCharacter(id)
 			
 			if data.parts then
 				local bpath = self.species.model.basedir
-				local bpr = {}
-				for k,v in pairs(data.parts) do
+				local bpr = self.spparts or {}
+				for k,v in pairs(bpr) do
+					v:Despawn()
+				end 
+				for k,v in pairs(data.parts) do 
 					bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
 				end
 				self.spparts = bpr
 				
+				if data.materials then
+					local bmatdir = data.basematdir
+					for k,v in pairs(data.materials) do
+						local keys = k:split(':') 
+						local bpart = keys[1]
+						local id = keys[2]
+						
+						--procedural check
+						local proc = {}
+						for kk,vv in pairs(v) do
+							if istable(vv) then
+								local root = gui.FromTable(vv) 
+								proc[kk] = root
+								v[kk] = "textures/ponygen/body.dds"
+							end
+						end 
+						local mat = NewMaterial(bmatdir, json.ToJson(v))
+						local part = self.spparts[bpart]
+						if part then 
+							for k,v in pairs(proc) do
+								local tex = RenderTexture(512,512,v,function(rtex)
+									SetMaterialProperty(mat,k,rtex) 
+								end)  
+							end
+							part.model:SetMaterial(mat,id)
+						end
+					end 
+				end
 				--TEST!
+				--[[
 				local mat = NewMaterial("models/mlppony/tex/", json.ToJson({
 					shader = "shader.model", 
 					g_MeshTexture = "models/mlppony/tex/body_luna.jpg",
 					g_MeshTexture_n = "models/mlppony/tex/base_normal.dds",
 				}))
 				local root = panel.Create()
-				root:SetSize(512,512)
-				root:SetTexture(LoadTexture("textures/ponygen/body.dds"))
-				root:SetColor(Vector(56,73,125)/255) 
-				local tex = RenderTexture(512,512,root) 
+				local btex = panel.Create() root:Add(btex)
+				btex:SetSize(1024,1024)
+				btex:SetTexture(LoadTexture("textures/ponygen/body.dds"))
+				btex:SetColor(Vector(56,73,125)/255) 
+				
+				local tex = RenderTexture(1024,1024,root) 
 				SetMaterialProperty(mat,"g_MeshTexture",tex)
-				self.spparts.body.model:SetMaterial(mat)
+				self.spparts.body.model:SetMaterial(mat,0)
+				]]
 			--END
 			end
 			
@@ -598,6 +644,13 @@ function ENT:Config(data,species,variation)
 			self[k] = v
 		end
 	end
+	if species then
+		self.walkspeed =nil
+		self.runspeed =nil
+		self.flyspeed =nil
+		self:SetParameter(VARTYPE_MAXHEALTH,100)
+		self:SetParameter(VARTYPE_HEALTH,100)
+	end
 	if data.movement then
 		if data.movement.walk then self.walkspeed = data.movement.walk.speed or self.walkspeed end
 		if data.movement.run then self.runspeed = data.movement.run.speed or self.runspeed end 
@@ -619,6 +672,10 @@ function ENT:Config(data,species,variation)
 		for k,v in pairs(data.abilities) do
 			self.abilities[k] = Ability(v)
 		end
+	end
+	if data.health then
+		self:SetParameter(VARTYPE_MAXHEALTH,data.health)
+		self:SetParameter(VARTYPE_HEALTH,data.health)
 	end
 end
 
@@ -805,9 +862,9 @@ function ENT:Move(dir,run,updatespeed)
 	if dir then
 		if self:IsFlying() then 
 			if run then
-				phys:SetAirSpeed(self.flyspeed*1000*spscale) 
-			else
 				phys:SetAirSpeed(self.flyspeed*10*spscale) 
+			else
+				phys:SetAirSpeed(self.flyspeed*spscale) 
 			end 
 			graph:TrySetState("flight_move")   
 		else 

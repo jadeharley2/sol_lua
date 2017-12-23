@@ -46,6 +46,8 @@ function ENT:Enter()
 		local hrender = self:AddComponent(CTYPE_HEIGHTMAP) 
 		self.hrender = hrender
 		
+		self:SpawnSurface() 
+		--[[
 		if CLIENT then 
 			hrender:RequestDraw(nil,function()
 				self:SpawnSurface() 
@@ -54,7 +56,7 @@ function ENT:Enter()
 			self:AddEventListener(EVENT_HEIGHTMAP_DATA_RECEIVED,"event",function()  
 				self:SpawnSurface() 
 			end)
-		end
+		end]]
 	end
 	--self.model:Enable(false)
 	

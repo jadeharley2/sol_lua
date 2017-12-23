@@ -15,8 +15,8 @@ function ScanControllers()
 		AddController(OBJ.name,OBJ) 
 	end
 	OBJ = tempobj   
-end                   
-                      
+end                    
+                         
 function SetController(name)   
 	if name then              
 		local ts = controllers[name]

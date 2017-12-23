@@ -1,14 +1,14 @@
 if SERVER then return nil end
 
-local RTENT = false
-function RenderTexture(width,height,task)
+ RTENT =    false 
+function RenderTexture(width,height,task,callback)
 	local rt = CreateRenderTarget(width,height,"")
 	local rte = RTENT
-	if not rte then
+	if not rte then 
 		rte = ents.Create("util_textureRenderer")
 		rte:Spawn()
 		RTENT = rte
-	end
-	rte:Draw(rt,task)
+	end 
+	rte:Draw(rt,task,callback)
 	return rt
-end
+end          

@@ -135,7 +135,23 @@ function ENT:UpdatePos()
 	---rp:SetClipPlane(true,n,d)
 	
 	local player = LocalPlayer()
-	if player and player.model then rc:AddForceEnabled(player.model) end
+	if player and player.model then 
+		rc:AddForceEnabled(player.model) 
+		local spparts = player.spparts
+		local equipment = player.equipment
+		if spparts then
+			for k,v in pairs(spparts) do
+				rc:AddForceEnabled(v.model)
+			end
+		end
+		if equipment then
+			for k,v in pairs(equipment) do
+				if v.ent then 
+					rc:AddForceEnabled(v.ent.model)
+				end
+			end
+		end
+	end
 	
 	rc:RequestDraw()
 	
