@@ -1,3 +1,5 @@
+if SERVER then return nil end
+
 gui = gui or {}
 --gui.style = gui.style 
 gui.stylemeta = gui.stylemeta or {}

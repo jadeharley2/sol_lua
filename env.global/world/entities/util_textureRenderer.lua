@@ -11,17 +11,22 @@ end
 function ENT:Spawn()   
 	local interface = self:AddComponent(CTYPE_INTERFACE)
 	self.interface = interface   
+	local rparam = render.RenderParameters()
+	interface:SetParameters(rparam)
+	self.rt = CreateRenderTarget(512,512,"")
+	interface:SetRenderTarget(0,self.rt )
 	
 	self:AddNativeEventListener(EVENT_RENDERER_FINISH,"event",function(s,e,c)
 		 
 		--if c == s then
 			MsgN("render end") 
 			self.busy = false 
-			self.cooldowntime = CurTime() + 0.1
-			if self.callback then self.callback(self.target) end
+			self.cooldowntime = CurTime() + 0.01
+			local nt = self.rt:Copy()
+			if self.callback then self.callback(nt) end
 		--end
 	end)
-	self.cooldowntime = CurTime() + 1
+	self.cooldowntime = CurTime() + 2
 	
 	hook.Add("main.postcontroller","textureRenderer", function() self:Update() end)
 end 
@@ -40,7 +45,7 @@ function ENT:Update()
 		local target,root,callback = ln[1],ln[2],ln[3]
 		self.target = target
 		self.callback = callback
-		interface:SetRenderTarget(0,target)
+		--interface:SetRenderTarget(0,target)
 		interface:SetRoot(root) 
 		interface:RequestDraw() 
 		--rqu[#rqu] = nil

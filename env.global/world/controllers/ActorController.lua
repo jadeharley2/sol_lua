@@ -891,6 +891,9 @@ function OBJ:HandleCameraMovement(actor)
 	
 	local controlled =  actor:GetUpdating() and actor.controller == self 
 	
+	local tps_height = actor.tpsheight or 0.5
+	local fps_height = actor.fpsheight or 1
+	
 	local is_first_person = self.camZoom ==0
 	local is_VR = vr.IsEnabled()
 	
@@ -963,7 +966,7 @@ function OBJ:HandleCameraMovement(actor)
 	
 	if is_first_person then
 		if HIDE_CHAR_IN_FIRST_PERSON() then
-			cam:SetPos( Up * ascale  )
+			cam:SetPos( Up *fps_height* ascale  )
 		else
 			local pos = Vector(0,0,0)
 			local m = actor.model
@@ -991,7 +994,7 @@ function OBJ:HandleCameraMovement(actor)
 		cam:SetPos(rt)
 		]] 
 		
-		cam:SetPos( (Up*0.5  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
+		cam:SetPos( (Up*tps_height  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
 	end
 	
 	--for i=0,50 do

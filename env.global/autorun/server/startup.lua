@@ -95,7 +95,7 @@ local function OnPlayerSpawn(ply)
 		e:SendEvent(EVENT_RESPAWN_AT,SPAWNPOS)
 	end
 	
-	ply:Give("tool_propspawner")
+	--ply:Give("tool_propspawner")
 	debug.Delayed(1,function()  ply:Recall() end)
 	--for k=1,20 do
 	--	ply.player:SendLua('TACTOR:SetPos(Vector('..tostring(SPAWNPOS.x)..','..tostring(SPAWNPOS.y)..','..tostring(SPAWNPOS.z)..'))  TACTOR.phys:SetGravity(Vector(0,-4,0))')

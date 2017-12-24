@@ -479,7 +479,7 @@ function ENT:SetCharacter(id)
 			
 			
 			
-			if data.parts then
+			if CLIENT and data.parts then
 				local bpath = self.species.model.basedir
 				local bpr = self.spparts or {}
 				for k,v in pairs(bpr) do
@@ -510,7 +510,7 @@ function ENT:SetCharacter(id)
 						local part = self.spparts[bpart]
 						if part then 
 							for k,v in pairs(proc) do
-								local tex = RenderTexture(512,512,v,function(rtex)
+								RenderTexture(512,512,v,function(rtex)
 									SetMaterialProperty(mat,k,rtex) 
 								end)  
 							end
@@ -555,9 +555,13 @@ function ENT:SetSpecies(spstr)
 		if data then 
 			self:Config(data,species,variation)
 			
-			self.species = data
-			self.variation = data.model.variations[variation]
+			local nvariation =  data.model.variations[variation] 
 			
+			self.species = data
+			self.variation = nvariation
+			
+			self.tpsheight = nvariation.tpscamheight or 0.5
+			self.fpsheight = nvariation.fpscamheight or 1
 		end
 	end
 end
@@ -1146,6 +1150,15 @@ function ENT:SetEyeAngles(pitch,yaw)
 	
 	local sForward = self:Right():Normalized()
 	self.phys:SetViewDirection(sForward)
+	
+	--local spp = self.spparts
+	--if spp then
+	--	if spp.eyes then
+	--		spp.eyes.model:SetEyeAngles(pitch,yaw)
+	--	
+	--	end
+	--end
+	--m:SetEyeAngles(pitch,yaw)
 end
 function ENT:EyeAngles()
 	local eyea = self.eyeangles or {0,0}
@@ -1422,8 +1435,10 @@ function ENT:GetEyeTrace()
 	end
 end
 
-
-
+function ENT:GiveAbility(ab)
+	self.abilities[#self.abilities+1] = Ability(ab)
+end
+ 
 
 
 
