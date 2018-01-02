@@ -20,15 +20,15 @@ end
 function SetController(name)   
 	if name then              
 		local ts = controllers[name]
-		if ts then  
+		if ts then   
 			local prev = global_controller   
-			if prev and prev ~=0 then
+			if prev and prev ~=0 then 
 				prev:UnInit()       
 				if prev.Update then hook.Remove("main.predraw", "controller") end
 				if prev.MouseWheel then hook.Remove("input.mousewheel", "controller" ) end 
 				if prev.MouseDown then hook.Remove("input.mousedown", "controller") end
 				if prev.KeyDown then hook.Remove("input.keydown", "controller" ) end
-			end
+			end 
 			    
 			local result = ts:Init()
 			if result ~= false then

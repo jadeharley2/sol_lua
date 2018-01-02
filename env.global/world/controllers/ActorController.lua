@@ -450,6 +450,8 @@ function OBJ:HandleThirdPersonMovement(actor)
 				if D then targetval = 90 end
 			end
 			if actor.directmove then
+				actor.directmove = false
+				
 				local pp = actor.model:GetPoseParameter("move_yaw") 
 				pp = pp + (targetval - pp)/10 
 				actor:Move(-result,IsRunning)
@@ -1087,7 +1089,7 @@ end
 
 function OBJ:HandleGetInfo(actor)
 	if infobar then
-		local tr = GetCameraPhysTrace()
+		local tr = GetCameraPhysTrace(nil,actor.phys)
 		if tr and tr.Hit then 
 			local nn = tr.Entity--GetNearestNode(actor:GetParent(),tr.Position) 
 			if nn ~= actor then

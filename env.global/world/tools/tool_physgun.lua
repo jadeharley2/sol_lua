@@ -47,16 +47,16 @@ function TOOL:PGPick(ent)
 			
 			self.flight = flight
 		end
-		if not self.glight then
-			local glight = ents.Create("env_emitter")  
-			glight:SetParent(self)
-			glight:SetParameter(VARTYPE_CHARACTER,"fire")
-			glight:SetSizepower(0.1) 
-			glight:SetSpaceEnabled(false)
-			glight:Spawn()  
-			
-			self.glight = glight
-		end
+		--if not self.glight then
+		--	local glight = ents.Create("env_emitter")  
+		--	glight:SetParent(self)
+		--	glight:SetParameter(VARTYPE_CHARACTER,"fire")
+		--	glight:SetSizepower(0.1) 
+		--	glight:SetSpaceEnabled(false)
+		--	glight:Spawn()  
+		--	
+		--	self.glight = glight
+		--end
 		
 		self.mlight:SetPos(self.model:GetAttachmentPos("muzzle")) 
 		self.mlight:TurnOn() 
@@ -75,7 +75,7 @@ function TOOL:PGPick(ent)
 				self:CreateLaser(p1,p1+forw*2,p2+(p1-p2)*0.5,p2,20,0.1)
 				
 				self.flight:SetPos(p2) 
-				self.glight:SetPos(p2) 
+				--self.glight:SetPos(p2) 
 				
 				local trp = ent:GetParent()
 				local user = self:GetParent()
@@ -112,8 +112,8 @@ function TOOL:PGDrop()
 		self.state = "idle"
 		self.mlight:TurnOff()
 		self.flight:TurnOff()
-		self.glight:Despawn()
-		self.glight = nil
+		--self.glight:Despawn()
+		--self.glight = nil
 	end
 	local snd = self.snd
 	if snd then

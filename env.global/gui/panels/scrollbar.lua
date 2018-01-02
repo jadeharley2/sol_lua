@@ -153,7 +153,7 @@ function PANEL:Refresh()
 	local bdrag = self.bdrag
 	local type = self.stype
 	
-	local scrollH = math.max(5, container:GetSize().y / floater:GetSize().y * (ss.y - w*2))
+	local scrollH =math.min(ss.y - w*2, math.max(5, container:GetSize().y / floater:GetSize().y * (ss.y - w*2)))
 	local scrollS = floater:GetPos() / (floater:GetSize() - container:GetSize())
 	if type == 1 then
 		bdrag:SetSize(w,scrollH)

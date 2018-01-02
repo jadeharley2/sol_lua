@@ -18,7 +18,7 @@ function AI_META:React()
 						istrue = false
 					end 
 				end     
-			else     
+			else       
 				if not condition(self,self.ent,tag) then istrue = false end
 			end       
 			if istrue then

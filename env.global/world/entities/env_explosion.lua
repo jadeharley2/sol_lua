@@ -32,7 +32,7 @@ function ENT:Spawn(c)
 	particlesys2:SetBlendMode(BLEND_ADD) 
 	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
 	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	particlesys2:Set("data/particles/explosion.json")
+	particlesys2:Set("particles/explosion.json")--lines_test.json")--explosion.json")
 	self.particlesys2 = particlesys2 
 	
 	
@@ -65,7 +65,7 @@ function ENT:Spawn(c)
 	end 
 	self:EmitSound(table.Random({"explosion/sharp_01.ogg","explosion/sharp_02.ogg","explosion/sharp_03.ogg"}),1*magn,math.min(1,1000/magn))
 end
-local ccountdown = 100
+local ccountdown = 1000
 function ENT:Think()
 	local counter = self.counter
 	local magn = self.magnitude

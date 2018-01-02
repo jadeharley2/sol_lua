@@ -1,7 +1,7 @@
 
-function SpawnButton(parent,model,pos,ang,action,seed)
+function SpawnButton(parent,model,pos,ang,action,seed,scale)
 	local e = ents.Create("use_button")  
-	e:SetModel(model,1)
+	e:SetModel(model,scale or 1)
 	e:SetSizepower(1)
 	e:SetParent(parent)
 	e:SetPos(pos) 
@@ -16,7 +16,9 @@ ENT.usetype = "button"
 
 function ENT:Init()   
 	local model = self:AddComponent(CTYPE_MODEL)  
+	local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
 	self.model = model 
+	self.coll = coll 
 	self:SetSpaceEnabled(false)  
 	
 end
@@ -63,7 +65,9 @@ function ENT:SetModel(mdl,scale)
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world)
-	  
+	 
+	self.coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) ) 
+	
 	self.modelcom = true
 end 
 

@@ -1,7 +1,7 @@
 
 
 
-function SpawnIA(type,ent,pos)
+function SpawnIA(type,ent,pos,seed)
 	local data = json.Read("forms/apparel/"..type..".json")
 	if data then
 		local e = ents.Create("item_apparel") 
@@ -14,8 +14,29 @@ function SpawnIA(type,ent,pos)
 		e:SetModelScale(data.worldmodelscale or 0.75)
 		e:SetSizepower(1)
 		e:SetParent(ent)
+		e:SetSeed(seed or 0)
 		e:SetPos(pos) 
 		e:Spawn()
+		return e
+	end
+end
+function CreateIA(type,ent,pos,seed)
+	if not seed or seed == 0 then error("seed is nil") end
+	local data = json.Read("forms/apparel/"..type..".json")
+	if data then
+		local e = ents.Create("item_apparel") 
+		e.slot = data.slot
+		e.info = data.name or type
+		e.icon = data.icon
+		e.skinmodel = data.model
+		e:SetName(data.name or type)
+		e:SetModel(data.worldmodel)
+		e:SetModelScale(data.worldmodelscale or 0.75)
+		e:SetSizepower(1)
+		e:SetParent(ent)
+		e:SetSeed(seed) -- error on 0
+		e:SetPos(pos) 
+		e:Create()
 		return e
 	end
 end
@@ -41,8 +62,20 @@ function ENT:Init()
 	self:AddFlag(FLAG_USEABLE) 
 	self:AddFlag(FLAG_STOREABLE)
 end
-function ENT:GetSkelModel()
-	return self.skinmodel
+function ENT:GetSkelModel(target)
+	local sm = self.skinmodel
+	if istable(sm) then
+		PrintTable(sm)
+		local vid = target.variation_id
+		if vid then
+			return sm[vid]
+		else
+			return nil
+		end 
+	else
+		return sm
+	end
+	
 end
 function ENT:LoadModel() 
 	local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 1
@@ -79,9 +112,9 @@ function ENT:Load()
 	self:SetPos(self:GetPos())
 end
 function ENT:Spawn() 
+	self.phys:SetMaterial("cloth") 
 	self:LoadModel() 
 	self.phys:SoundCallbacks()
-	self.phys:SetMaterial("wood")
 	
 	
 	

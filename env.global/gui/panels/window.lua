@@ -133,7 +133,13 @@ function PANEL:Init()
 	
 	mv.OnClick = sMove 
 	--dockbtn.OnClick = sDock 
-	bc.OnClick = function() self:Close() end
+	bc.OnClick = function() 
+		self:Close() 
+		local OnClose = self.OnClose
+		if OnClose then
+			OnClose(self)
+		end
+	end
 	
 	self.rs_b  = rs_b
 	self.rs_t  = rs_t

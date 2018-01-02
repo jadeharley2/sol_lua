@@ -5,11 +5,11 @@ local AB = {}
  
 --props:
 --type (self,target)
---dispellDelay 
+--dispelDelay 
 --thinkDelay  
 --cooldownDelay
 --
---funcs:
+--functions:
 --self:Begin(ent, trace) - returns if effect is can be applied
 --self:Think(ent)
 --self:End(ent)
@@ -42,11 +42,11 @@ function AB:Cast(ent)
 					end
 				end)
 			end
-			if (  self.dispellDelay and self.dispellDelay>0) then
-				--self.did = "dispell".. tostring(math.random( 1, 99999 ))
+			if (  self.dispelDelay and self.dispelDelay>0) then
+				--self.did = "dispel".. tostring(math.random( 1, 99999 ))
 				
-				self.task_dispell = debug.Delayed(self.dispellDelay*1000,function()
-					self:Dispell()
+				self.task_dispel = debug.Delayed(self.dispelDelay*1000,function()
+					self:Dispel()
 					MsgN("disp del")
 				end)
 			end
@@ -56,11 +56,11 @@ function AB:Cast(ent)
 	end
 	return false
 end  
-function AB:Dispell()
+function AB:Dispel()
 	local ent = self.target
 	--timer.Destroy(self.tid)
 	--timer.Destroy(self.did)
-	if self.task_dispell then self.task_dispell:Stop() end
+	if self.task_dispel then self.task_dispel:Stop() end
 	if self.task_think then self.task_think:Stop() end
 	if self.End then self:End(ent) end
 	ent.meffects[self.id] = nil

@@ -90,6 +90,7 @@ function PANEL:Init()
 	selector:SetSize(15,15) 
 	selector:SetTexture(equippedtex)
 	selector:SetAlpha(0)
+	selector:SetCanRaiseMouseEvents(false) 
 	
 	local cooldown = panel.Create()
 	--cooldown:Dock(DOCK_BOTTOM)

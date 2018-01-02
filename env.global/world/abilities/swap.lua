@@ -1,7 +1,7 @@
 ability.icon = "hex"
 ability.type = "target" 
 ability.cooldownDelay = 2  
-ability.dispellDelay = 10
+ability.dispelDelay = 10
 ability.name = "Swap"  
 
 function ability:Begin(caster)  

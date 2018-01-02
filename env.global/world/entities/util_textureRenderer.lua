@@ -19,26 +19,26 @@ function ENT:Spawn()
 	self:AddNativeEventListener(EVENT_RENDERER_FINISH,"event",function(s,e,c)
 		 
 		--if c == s then
-			MsgN("render end") 
+			--MsgN("render end") 
 			self.busy = false 
-			self.cooldowntime = CurTime() + 0.01
+			self.cooldowntime = CurTime() + 0.001
 			local nt = self.rt:Copy()
 			if self.callback then self.callback(nt) end
 		--end
 	end)
-	self.cooldowntime = CurTime() + 2
+	self.cooldowntime = CurTime() 
 	
 	hook.Add("main.postcontroller","textureRenderer", function() self:Update() end)
 end 
 function ENT:Draw(target,root,callback) 
 	self.rqu:Push({target,root,callback})
-	MsgN("render request")
+	--MsgN("render request")
 end
 function ENT:Update() 
 	self.cooldowntime = self.cooldowntime or CurTime()
 	local cdt = self.cooldowntime -CurTime() 
 	if not self.busy and cdt<0 and self.rqu:Peek() then
-		MsgN("render start")
+		--MsgN("render start")
 		self.busy = true
 		local ln = self.rqu:Pop()
 		local interface = self.interface

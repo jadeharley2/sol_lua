@@ -18,6 +18,7 @@ EVENT_TOOL_DROP = 81011
 EVENT_RESPAWN_AT = 82033
 EVENT_STATE_CHANGED = 82034
 EVENT_GIVE_ITEM = 82066
+EVENT_PICKUP_ITEM = 82067
 
 function ENT:Init()  
 	self:AddFlag(FLAG_ACTOR)
@@ -115,6 +116,15 @@ function ENT:Init()
 		self:Give(type)
 	end)
 	
+	self:AddEventListener(EVENT_PICKUP_ITEM,"event",function(item) 
+		self:Give(type)
+		local inv = self.inventory
+		if inv then
+			inv:AddItem(self, item)
+			item:SendEvent(EVENT_PICKUP,self)
+		end
+	end)
+	
 	self:SetNetworkedEvent(EVENT_HEALTH_CHANGED)
 	self:SetNetworkedEvent(EVENT_MAXHEALTH_CHANGED)
 	self:SetNetworkedEvent(EVENT_ACTOR_HURT)
@@ -127,6 +137,7 @@ function ENT:Init()
 	self:SetNetworkedEvent(EVENT_RESPAWN_AT)
 	self:SetNetworkedEvent(EVENT_STATE_CHANGED)
 	self:SetNetworkedEvent(EVENT_GIVE_ITEM)
+	self:SetNetworkedEvent(EVENT_PICKUP_ITEM)
 	
 	self:AddFlag(FLAG_PHYSSIMULATED)
 	
@@ -235,8 +246,34 @@ function ENT:LoadGraph()
 	graph:NewState("recall",function(s,e) return e.model:SetAnimation("recall") end)
 	graph:NewState("recall_end",function(s,e) if e.Recall then return e:Recall(s) end return 0 end)
 	
-	graph:NewState("flight_start",function(s,e) end)
-	graph:NewState("flight_end",function(s,e) end)
+	graph:NewState("flight_start",function(s,e) 
+		if e.model:HasAnimation("fly_wings") then
+			if CLIENT then
+				local sp = self.spparts
+				if sp and sp.wings and sp.wings_folded then
+					sp.wings.model:Enable(true)
+					sp.wings.model:SetMaxRenderDistance(100)
+					sp.wings_folded.model:Enable(false)
+					sp.wings_folded.model:SetMaxRenderDistance(0)
+				end
+			end
+			e.model:PlayLayeredSequence(38,"fly_wings") 
+		end
+	end)
+	graph:NewState("flight_end",function(s,e) 
+		if e.model:HasAnimation("fly_wings") then 
+			if CLIENT then
+				local sp = self.spparts
+				if sp and sp.wings and sp.wings_folded then
+					sp.wings.model:Enable(false)
+					sp.wings.model:SetMaxRenderDistance(0)
+					sp.wings_folded.model:Enable(true)
+					sp.wings_folded.model:SetMaxRenderDistance(100)
+				end
+			end
+			e.model:StopLayeredSequence(38) 
+		end
+	end)
 	
 	graph:NewState("flight_idle",function(s,e) e.model:SetAnimation("fly_idle")   end)
 	graph:NewState("flight_move",function(s,e) e.model:SetAnimation("fly_move")   end)
@@ -317,11 +354,11 @@ function ENT:LoadGraph()
 	graph:NewTransition("recall_end","idle",CND_ONEND)
 	
 	
-	if self.model:HasAnimation("idle1") then 
+	--if self.model:HasAnimation("idle1") then 
 		graph:NewTransition("idle","idle_loop",CND_ONEND)
 		graph:NewTransition("idle_loop","idle",CND_ONEND) 
 	
-	end
+	--end
 	
 	graph:NewTransition("idle","cidle",function(s,e) return self.duckmode end)
 	graph:NewTransition("cidle","idle",function(s,e) return not self.duckmode end) 
@@ -478,13 +515,18 @@ function ENT:SetCharacter(id)
 			self.graph = self:LoadGraph() or self.graph
 			
 			
-			
+			if CLIENT then
+				local bpr = self.spparts
+				if bpr then
+					for k,v in pairs(bpr) do
+						v:Despawn()
+					end 
+					self.spparts = nil
+				end
+			end
 			if CLIENT and data.parts then
 				local bpath = self.species.model.basedir
 				local bpr = self.spparts or {}
-				for k,v in pairs(bpr) do
-					v:Despawn()
-				end 
 				for k,v in pairs(data.parts) do 
 					bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
 				end
@@ -495,19 +537,20 @@ function ENT:SetCharacter(id)
 					for k,v in pairs(data.materials) do
 						local keys = k:split(':') 
 						local bpart = keys[1]
-						local id = keys[2]
+						local id = tonumber( keys[2])
 						
 						--procedural check
 						local proc = {}
 						for kk,vv in pairs(v) do
-							if istable(vv) then
+							if istable(vv) and vv.subs then 
 								local root = gui.FromTable(vv) 
 								proc[kk] = root
 								v[kk] = "textures/ponygen/body.dds"
 							end
-						end 
+						end  
 						local mat = NewMaterial(bmatdir, json.ToJson(v))
 						local part = self.spparts[bpart]
+						if bpart == "root" then part = self end 
 						if part then 
 							for k,v in pairs(proc) do
 								RenderTexture(512,512,v,function(rtex)
@@ -536,8 +579,15 @@ function ENT:SetCharacter(id)
 				self.spparts.body.model:SetMaterial(mat,0)
 				]]
 			--END
-			end
 			
+				if bpr and bpr.wings and bpr.wings_folded then 
+					bpr.wings.model:Enable(false)
+					bpr.wings.model:SetMaxRenderDistance(0)
+					bpr.wings_folded.model:Enable(true)
+					bpr.wings_folded.model:SetMaxRenderDistance(100)
+				end
+			
+			end 
 			
 			self:SetUpdating(true,100)
 			--MsgN("faf ",self:GetPos())
@@ -558,6 +608,7 @@ function ENT:SetSpecies(spstr)
 			local nvariation =  data.model.variations[variation] 
 			
 			self.species = data
+			self.variation_id = variation
 			self.variation = nvariation
 			
 			self.tpsheight = nvariation.tpscamheight or 0.5
@@ -1369,8 +1420,8 @@ end
 function ENT:VelocityCheck(teleport)
 	local lastvel = self.lastvel
 	local vel = self.phys:GetVelocity()
-	if lastvel and not teleport then 
-		local veldelta = vel-lastvel
+	if lastvel and not teleport and not self:IsFlying() then 
+		local veldelta = vel-lastvel 
 		self:VelocityHit(nil,veldelta)
 	end
 	self.lastvel = vel
@@ -1394,8 +1445,23 @@ function ENT:VelocityHit(hitby,velonhit)
 end
 
 function ENT:Give(type)
-	local tool = SpawnWeapon(type,self,Vector(0,0,0),1311314)
-	self:PickupWeapon(tool)
+	if file.Exists("lua/env.global/world/tools/"..type..".lua") then 
+		local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
+		self:PickupWeapon(tool)
+	else 
+		if SERVER then
+			local app = CreateIA(type,self:GetParent(),self:GetPos(),GetFreeUID()) 
+			if app then 
+				network.AddNodeImmediate(app)
+				local inv = self.inventory
+				if not inv then
+					self.inventory = Inventory(4*8,self:GetSeed()+3000) 
+				end
+				self:SendEvent(EVENT_PICKUP_ITEM,app)
+				--inv:AddItem(self, app)
+			end
+		end
+	end
 	if SERVER then
 		self:SendEvent(EVENT_GIVE_ITEM,type)
 	end
@@ -1442,7 +1508,16 @@ end
 
 
 
-
+function ENT:GetAllParts()
+	local parts = {self}
+	local spp = self.spparts
+	if spp then 
+		for k,v in pairs(spp) do
+			parts[#parts+1] = v
+		end
+	end
+	return parts
+end
 
 
 

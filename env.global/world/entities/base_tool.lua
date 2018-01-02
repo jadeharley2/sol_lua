@@ -10,6 +10,16 @@ function SpawnWeapon(type,parent,pos,seed)
 	e:Spawn()
 	return e
 end
+function CreateWeapon(type,parent,pos,seed)
+
+	local e = ents.Create("base_tool")
+	e:SetType(type)
+	e:SetParent(parent)
+	e:SetPos(pos) 
+	e:SetSeed(seed or 234923)
+	e:Create()
+	return e
+end
 
 ENT.holdtype = "th_low"
 

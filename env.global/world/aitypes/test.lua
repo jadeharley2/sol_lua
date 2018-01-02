@@ -73,8 +73,8 @@ function ai:OnInit()
 	self:AddReaction("j",CND_ONCHAT,ACT_JUMP,{msg={"jump","прыг"} })
 	self:AddReaction("j2",CND_ONRND,{ACT_SETSENDERASTARGET,ACT_LOOKAT},
 		{msg={"fiv","фыв"}, max = 1000 })
-	--self:AddReaction("j3",CND_ONRND,{ACT_SETSENDERASTARGET,ACT_MOVETO},
-	--	{msg={"aaa","ddd"}, max = 1000 })
+	self:AddReaction("j3",CND_ONRND,{ACT_SETSENDERASTARGET,ACT_MOVETO},
+		{msg={"aaa","ddd"}, max = 1000 })
 	self:AddReaction("cc1",CND_ONCHAT,ACT_ABILITY,{msg={"d1"}, aid = 1 })
 	self:AddReaction("cc2",CND_ONCHAT,ACT_ABILITY,{msg={"d2"}, aid = 2 })
 	self:AddReaction("cc3",CND_ONCHAT,ACT_ABILITY,{msg={"d3"}, aid = 3 }) 

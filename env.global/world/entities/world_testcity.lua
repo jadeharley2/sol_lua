@@ -82,7 +82,7 @@ function ENT:Spawn()
 	]]
 	 
 	
-	engine.LoadMap("city",space)
+	engine.LoadMap("city","models/map/citytest/tex/",space)
 	
 	local pp1 = SpawnWeapon("tool_propspawner",space,Vector(-0.002,0.003,0),939002)--0.006
 	local pp2 = SpawnWeapon("tool_weld",space,Vector(-0.003,0.003,0),939003)--0.006

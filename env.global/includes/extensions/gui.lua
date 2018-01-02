@@ -58,8 +58,8 @@ function gui.FromTable(t)
 	end
 	if t.text then node:SetText(t.text) end
 	if t.subs then
-		for k,v in pairs(t.subs) do
-			node:Add(gui.FromTable(v))
+		for k,v in ipairs(t.subs) do
+			node:Add(gui.FromTable(v)) 
 		end
 	end
 	return node

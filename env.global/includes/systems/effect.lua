@@ -5,7 +5,7 @@ local EF = {}
 
 --props:
 --type (self,target)
---dispellDelay
+--dispelDelay
 --thinkDelay  
 --cooldownDelay
 --
