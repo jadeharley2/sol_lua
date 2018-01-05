@@ -182,6 +182,7 @@ function ENT:LoadGraph()
 	local graph = BehaviorGraph(self) 
 	
 	graph:NewState("idle",function(s,e) 
+		e:UpdateLean()
 		if e.model:HasAnimation("idle1") then
 			local rm =math.random(1,100)
 			if rm<90 then
@@ -478,6 +479,7 @@ function ENT:Think()
 --	--else
 --	--	self.phys:SetMovementDirection(Vector(0,0,0))
 --	--end
+	self:UpdateLean()
 end
 
 function ENT:SetCharacter(id)
@@ -886,6 +888,8 @@ function ENT:Turn(ang)
 		return false
 	end
 end
+
+
 function ENT:Jump()
 	local phys = self.phys
 	local ong = phys:OnGround()
@@ -893,7 +897,8 @@ function ENT:Jump()
 		if ong then
 			phys:Jump()
 		else
-			phys:ApplyImpulse(self:Up())
+			--phys:ApplyImpulse(self:Up())
+			self:ApplyFlightImpulse(self:Up()) 
 		end
 	else
 		if ong then 
@@ -917,9 +922,9 @@ function ENT:Move(dir,run,updatespeed)
 	if dir then
 		if self:IsFlying() then 
 			if run then
-				phys:SetAirSpeed(self.flyspeed*10*spscale) 
-			else
 				phys:SetAirSpeed(self.flyspeed*spscale) 
+			else
+				phys:SetAirSpeed(self.flyspeed*0.1*spscale) 
 			end 
 			graph:TrySetState("flight_move")   
 		else 
@@ -939,7 +944,18 @@ function ENT:Move(dir,run,updatespeed)
 				end
 			end
 		end 
-		if self:IsMoving() then 
+		if self:IsFlying() then
+			local sForward = self:Right():Normalized()
+			phys:SetViewDirection(sForward)
+			--phys:SetMovementDirection(dir) 
+			if run then
+				self:ApplyFlightImpulse(self:Right():Normalized()*10) 
+			else
+				self:ApplyFlightImpulse(self:Right():Normalized()) 
+			end
+			phys:SetLinearDamping(0.3) 
+		--	phys:SetGravity(self.flightUp or Vector(0,-0.0001,0))
+		elseif self:IsMoving() then 
 			local sForward = self:Right():Normalized()
 			phys:SetViewDirection(sForward)
 			phys:SetMovementDirection(dir) 
@@ -955,6 +971,42 @@ function ENT:Move(dir,run,updatespeed)
 	else 
 		self:Stop()
 	end
+	self:UpdateLean()
+end
+function ENT:ApplyFlightImpulse(pow)
+	local scale = self.scale or 1
+	local spmul = self.speedmul or 1
+	local spscale = scale*spmul
+	local phys = self.phys
+	local vel = math.max(1,phys:GetVelocity():Length())*10
+	phys:ApplyImpulse(pow*self.flyspeed*spscale/vel) 
+end
+
+function ENT:UpdateLean()
+	local phys = self.phys
+	local model = self.model
+	 
+	if phys and model then
+		if phys:OnGround() then
+			local sRight = self:Forward():Normalized()
+			local sForward = self:Right():Normalized()
+		
+			local sd_depth,sd_pos,sd_normal = phys:GetSupportData()
+			local sd_rddir = sForward:Cross(sd_normal):Normalized()
+			local sd_fddir = sRight:Cross(sd_normal):Normalized() 
+			local rang = sRight:Angle(sd_rddir)/3.1415926*180
+			local fang = sForward:Angle(-sd_fddir)/3.1415926*180
+			if (sRight.y>sd_rddir.y) then rang = -rang end
+			if (sForward.y<sd_fddir.y) then fang = -fang end
+			model:SetPoseParameter("lean_x",rang)
+			model:SetPoseParameter("lean_y",fang) 
+		else
+			if self:IsFlying() then
+				model:SetPoseParameter("lean_x",0)
+				model:SetPoseParameter("lean_y",0) 
+			end
+		end
+	end
 end
 function ENT:UpdateSpeed(run)
 	 
@@ -965,9 +1017,9 @@ function ENT:UpdateSpeed(run)
 	
 	if self:IsFlying() then 
 		if run then
-			phys:SetAirSpeed(self.flyspeed*1000*spscale) 
-		else
 			phys:SetAirSpeed(self.flyspeed*10*spscale) 
+		else
+			phys:SetAirSpeed(self.flyspeed*spscale) 
 		end    
 	else 
 		if self:Crouching() then 
@@ -989,11 +1041,13 @@ function ENT:IsMoving()
 	--return cs =="walk" or cs == "cwalk" or cs == "run" or cs == "flight_move"
 end
 function ENT:Stop()
+	local phys = self.phys
 	self.lastdir = Vector(0,0,0)
-	self.phys:SetMovementDirection(Vector(0,0,0)) 
+	phys:SetMovementDirection(Vector(0,0,0)) 
 	if self:IsFlying() then
 		self.graph:TrySetState("flight_idle")
-		self.phys:SetAirSpeed(0)
+		phys:SetAirSpeed(0)
+		phys:SetLinearDamping(0.5)
 	else
 		if self:Crouching() then
 			if self.graph:TrySetState("cidle") then end
@@ -1004,6 +1058,8 @@ function ENT:Stop()
 	local model = self.model 
 	model:SetPoseParameter("move_x",0)
 	model:SetPoseParameter("move_y",0)
+	
+	self:UpdateLean()
 end
 function ENT:Attack() 
 	if self.graph:TrySetState("attack") then 
@@ -1021,6 +1077,12 @@ function ENT:StartFlight()
 		phys:SetGravity(Vector(0,-0.0001,0))
 		phys:SetAirSpeed(100)
 		self.isflying = true
+		
+		local model = self.model
+		if model then
+			model:SetPoseParameter("lean_x",0)
+			model:SetPoseParameter("lean_y",0) 
+		end
 	end
 end
 function ENT:Land()
@@ -1028,7 +1090,10 @@ function ENT:Land()
 	local phys = self.phys
 	phys:SetGravity() 
 	phys:SetAirSpeed(0)
+	phys:SetLinearDamping(0)
 	self.isflying = false
+	
+	self:UpdateLean()
 end
 function ENT:CanFly()
 	local fs = self.flyspeed
@@ -1065,7 +1130,8 @@ function ENT:SetCrouching(value)
 end
 function ENT:Duck()
 	if self:IsFlying() then
-		self.phys:ApplyImpulse(-self:Up()) 
+		--self.phys:ApplyImpulse(-self:Up()) 
+		self:ApplyFlightImpulse(-self:Up()) 
 	end
 end
 function ENT:SetSpeedMul(mul)
@@ -1200,7 +1266,7 @@ function ENT:SetEyeAngles(pitch,yaw)
 	m:SetPoseParameter("head_pitch",pitch) 
 	
 	local sForward = self:Right():Normalized()
-	self.phys:SetViewDirection(sForward)
+	--self.phys:SetViewDirection(sForward)
 	
 	--local spp = self.spparts
 	--if spp then

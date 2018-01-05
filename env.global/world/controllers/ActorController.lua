@@ -17,6 +17,8 @@ OBJ.mouseWheelValue = 0
 OBJ.mouseWheelDelta = 0
 OBJ.mouseactive = true
 
+OBJ.flightmode = true
+
 
 function OBJ:Init()
 	
@@ -141,6 +143,9 @@ function OBJ:KeyDown(key)
 			if input.KeyPressed(KEYS_F) then
 				self:HandlePickup(actor)
 			end
+			if input.KeyPressed(KEYS_TAB) then
+				self.flightmode = not self.flightmode
+			end
 			
 			
 			if input.KeyPressed(KEYS_J) then
@@ -151,6 +156,7 @@ function OBJ:KeyDown(key)
 					--actor:SendEvent(EVENT_TOOL_DROP)
 				--end
 			end
+			if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end
 		end 
 		
 		if quickmenu then
@@ -412,12 +418,47 @@ function OBJ:HandleThirdPersonMovement(actor)
 	if S then result = result + Vector(0,0,1) end
 	if D then result = result - Vector(1,0,0) end
 	if A then result = result + Vector(1,0,0) end
-	if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end--result = result - Up end
+	if actor:IsFlying() then 
+		if input.KeyPressed(KEYS_SPACE) then result = result + Vector(0,1,0) actor:Jump() end
+		if input.KeyPressed(KEYS_CONTROLKEY) then result = result - Vector(0,1,0) end
+		--if input.KeyPressed(KEYS_ALTKEY) then result = result - Vector(0,1,0) end
+		--actor.viewForward = Forward
+		--actor.viewRight = Right
+		--actor.viewUp =  cam:Up():Normalized()
+		local sp = actor:GetParent():GetLocalSpace(actor)
+		
+		local sRight = actor:Forward():Normalized()
+		self.rmode=true
+		--if W then actor:TRotateAroundAxis(sRight, 0.1) end
+		--if S then actor:TRotateAroundAxis(sRight, -0.1) end
+		--if A then actor:TRotateAroundAxis(Up, 0.1) end
+		--if D then actor:TRotateAroundAxis(Up, -0.1) end
+		--actor.flightUp = cam:Up():Normalized()*Vector(-1,-1,1)*0.00001--:TransformN(sp):Normalized()
+		--actor.moveDir = Forward:TransformN(sp):Normalized() --+ Right*result.x + actor.viewUp*result.y
+	end
+	--if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end--result = result - Up end
 	--if input.KeyPressed(KEYS_CONTROLKEY) then result = result + Up end
 	
 	if result ~= Vector(0,0,0) then 
 		result = result:Normalized()
 	end
+	
+	
+	--test lean
+	--if phys:OnGround() then
+	--	local sd_depth,sd_pos,sd_normal = phys:GetSupportData()
+	--	local sRight = actor:Forward():Normalized()
+	--	local sd_rddir = sForward:Cross(sd_normal):Normalized()
+	--	local sd_fddir = sRight:Cross(sd_normal):Normalized() 
+	--	local rang = sRight:Angle(sd_rddir)/3.1415926*180
+	--	local fang = sForward:Angle(-sd_fddir)/3.1415926*180
+	--	if (sRight.y>sd_rddir.y) then rang = -rang end
+	--	if (sForward.y<sd_fddir.y) then fang = -fang end
+	--	model:SetPoseParameter("lean_x",rang)
+	--	model:SetPoseParameter("lean_y",fang) 
+	--end
+	---
+	
 	
 	if not aibusy then
 		if input.KeyPressed(KEYS_CONTROLKEY) then
@@ -530,24 +571,65 @@ function OBJ:HandleThirdPersonMovement(actor)
 				--self.totalCamRotationY = nil
 			end
 			if self.rmode then
-				local tcr2 = self.totalCamRotationY/10--2
-				cam:TRotateAroundAxis(inUp, -tcr2)
-				actor:TRotateAroundAxis(Up, tcr2) 
-				self.totalCamRotationY = self.totalCamRotationY - tcr2
-				if  math.abs(tcr2)<0.001 then
-					self.rmode = false 
-					self.totalCamRotationY = 0
-					local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
-					cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+				local tcr2 = self.totalCamRotationY/10--2 
+				if actor:IsFlying() then
+					local sRight = actor:Forward():Normalized()
+					local cctcr2 =(self.totalCamRotationX or 0)/10--2 
+					actor:TRotateAroundAxis(sRight, -cctcr2) 
+					cam:TRotateAroundAxis(Right, -cctcr2)
+					actor:TRotateAroundAxis(Up, tcr2) 
+					cam:TRotateAroundAxis(inUp, -tcr2)
+					self.totalCamRotationY = self.totalCamRotationY - tcr2
+					self.totalCamRotationX = (self.totalCamRotationX or 0) - cctcr2
+					if  math.abs(tcr2)<0.001 and math.abs(cctcr2)<0.001 then
+						self.rmode = false 
+						self.totalCamRotationY = 0
+						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
+						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+					end
+					
+				else
+					cam:TRotateAroundAxis(inUp, -tcr2)
+					actor:TRotateAroundAxis(Up, tcr2) 
+					self.totalCamRotationY = self.totalCamRotationY - tcr2
+					if  math.abs(tcr2)<0.001 then
+						self.rmode = false 
+						self.totalCamRotationY = 0
+						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
+						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+					end
 				end
+				
+				 
 			end
-			
-			
+			 
 			self.totalCamRotationX = (self.totalCamRotationX or 0) + (offy / -1000)
 			
 		end 
 	end
 	
+	--stabilizer
+	if not actor:IsFlying() or self.flightmode then
+		local vel = math.max(1,actor.phys:GetVelocity():Length()) 
+		if not actor:IsFlying() then
+			vel = 0.5
+		end
+		local sp = actor:GetParent():GetLocalSpace(actor)
+
+		local downInLocal = Vector(0,0,1):TransformN(sp)
+		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
+		
+		actor:TRotateAroundAxis(sForward , dd_e/50) 
+		
+		local sRight = actor:Forward():Normalized()
+		--local sr2 = Vector(sForward.x,0,sForward.z):Normalized()
+		local downInLocal = Vector(1,0,0):TransformN(sp)
+		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
+		
+		actor:TRotateAroundAxis(sRight, dd_e/50/vel) 
+	end
+	--
+			
 	actor.model:SetPoseParameter("move_yaw",0)
 	actor.model:SetPoseParameter("move_x",0)
 	actor.model:SetPoseParameter("move_y",100)
@@ -582,7 +664,7 @@ function OBJ:HandleFirstPersonMovement(actor)
 	if S then result = result + Vector(0,0,1) end
 	if D then result = result - Vector(1,0,0) end
 	if A then result = result + Vector(1,0,0) end
-	if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end--result = result - Up end
+	--if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end--result = result - Up end
 	--if input.KeyPressed(KEYS_CONTROLKEY) then result = result + Up end
 	
 	if result ~= Vector(0,0,0) then 

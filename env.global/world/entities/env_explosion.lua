@@ -65,7 +65,7 @@ function ENT:Spawn(c)
 	end 
 	self:EmitSound(table.Random({"explosion/sharp_01.ogg","explosion/sharp_02.ogg","explosion/sharp_03.ogg"}),1*magn,math.min(1,1000/magn))
 end
-local ccountdown = 1000
+local ccountdown = 100
 function ENT:Think()
 	local counter = self.counter
 	local magn = self.magnitude

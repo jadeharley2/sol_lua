@@ -59,12 +59,15 @@ function ENT:Spawn()
 				current_itemv = panel.Create("window_itemviewer") 
 				local givefunc = function(LP,itemname)
 					--LP:Give(itemname) 
-					LP:SendEvent(EVENT_GIVE_ITEM,itemname)
-					--local app = SpawnIA(itemname,LP:GetParent(),LP:GetPos()) 
-					--if app then 
-					--	app:SendEvent(EVENT_PICKUP,LP)
-					--	LP.inventory:AddItem(LP, app)
-					--end
+					if CLIENT and not network.IsConnected() then
+						local app = SpawnIA(itemname,LP:GetParent(),LP:GetPos()) 
+						if app then 
+							app:SendEvent(EVENT_PICKUP,LP)
+							LP.inventory:AddItem(LP, app)
+						end
+					else
+						LP:SendEvent(EVENT_GIVE_ITEM,itemname)
+					end
 				end
 				current_itemv:Setup("forms/apparel/","json",givefunc)
 				current_itemv.OnClose = function()
@@ -137,6 +140,36 @@ function ENT:Spawn()
 	end
 	local char_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,23521234,0.8)
 	char_b.usetype = "character morpher"
+	------
+	-- ability dispenser
+	local dpos = Vector(0.007491949, 0.000883143, -0.000687628)
+	local current_abv = false
+	local dfunc = function(button,user) 
+		if CLIENT and user == LocalPlayer() then
+			if current_abv then
+				current_abv:Close()
+				current_abv=false
+				SHOWINV = false
+			else
+				current_abv = panel.Create("window_itemviewer") 
+				local givefunc = function(LP,itemname)
+					local ab = Ability(itemname)
+					LP.abilities[#LP.abilities+1] = ab
+					MsgN("add ab: ",ab)
+					PrintTable(LP.abilities)
+				end
+				current_abv:Setup("forms/abilities/","json",givefunc)
+				current_abv.OnClose = function()
+					current_abv=false
+					SHOWINV = false
+				end
+				current_abv:Show()
+				SHOWINV = true
+			end
+		end
+	end
+	local wep_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,4352342623,0.8)
+	wep_b.usetype = "ability teacher"
 	------
 	
 	local ambient = ents.Create("ambient_sound")
