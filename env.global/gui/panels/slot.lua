@@ -73,6 +73,7 @@ function PANEL:Select(actor)
 		item:Select(actor)
 	else
 		actor:SetActiveWeapon(nil)
+		actor:SetActiveAbility(nil)
 	end
 end
 function PANEL:Refresh()

@@ -300,19 +300,21 @@ end
 function PANEL:Select(actor)
 	local ent = self.item 
 	if ent then
-		if ent.HasFlag then
-			if ent:HasFlag(FLAG_USEABLE) then
-				USE_ITEM(actor,ent)
-			end
-		else
+		--if ent.HasFlag then
+		--	if ent:HasFlag(FLAG_USEABLE) then
+		--		USE_ITEM(actor,ent)
+		--	end
+		--else
 			if ent.Activate then
 				ent:Activate(actor)
 			elseif ent.Cast then
-				ent:Cast(actor)
+			--	ent:Cast(actor)
+				actor:SetActiveAbility(ent.id)
 			end
-		end
+		--end
 	else
 		actor:SetActiveWeapon()
+		actor:SetActiveAbility()
 	end
 end
 function PANEL:Refresh()

@@ -12,8 +12,8 @@ local AB = {}
 --functions:
 --self:Begin(ent, trace) - returns if effect is can be applied
 --self:Think(ent)
---self:End(ent)
-            
+--self:End(ent)   
+                     
 function AB:Cast(ent) 
 	self.nextcast = self.nextcast or 0
 	if self.Begin and self.nextcast<CurTime() then
@@ -22,13 +22,13 @@ function AB:Cast(ent)
 		--trace = 
 		  
 		--end   
-               
+                 
 		if self:Begin(ent,trace) then
 			MsgN("cast")
 			MsgN(self.Think)
-			ent.meffects = ent.meffects or {}
-			self.id = #ent.meffects
-			ent.meffects[self.id ] = self 
+			ent.activeAbilities = ent.activeAbilities or {}
+			--self.id = #ent.meffects
+			ent.activeAbilities[self.id ] = self 
 			         
 			self.target = ent
 			if self.cooldownDelay then
@@ -63,7 +63,7 @@ function AB:Dispel()
 	if self.task_dispel then self.task_dispel:Stop() end
 	if self.task_think then self.task_think:Stop() end
 	if self.End then self:End(ent) end
-	ent.meffects[self.id] = nil
+	ent.activeAbilities[self.id] = nil 
 	--MsgN("dispelled") 
 end
 function AB:Ready()
@@ -82,6 +82,7 @@ function Ability(type)
 	if file.Exists(path) then
 		local data = json.Read(path)
 		if data and data.archetype then
+			data.id = type
 			local archetype = ab_class:Create(data.archetype)
 			if archetype then
 				for k,v in pairs(data) do

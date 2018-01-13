@@ -47,11 +47,6 @@ function ENT:Spawn(c)
 	self:SetUpdating(true)
 	self:SetSpaceEnabled(false) 
 	
-	self:AddEventListener(EVENT_USE,"use_event",function(user)
-		MsgN(self," is used by aaa: ",user)
-		user:SendEvent(EVENT_SET_VEHICLE,self,1,self.ship)--SetVehicle(self,1,self.ship) 
-	end)
-	self:SetNetworkedEvent(EVENT_USE)
 	self:AddFlag(FLAG_USEABLE)
 	
 end
@@ -112,3 +107,10 @@ end
 
 function ENT:Think() 
 end
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user)
+		MsgN(self," is used by aaa: ",user)
+		user:SendEvent(EVENT_SET_VEHICLE,self,1,self.ship)--SetVehicle(self,1,self.ship) 
+	end},
+} 

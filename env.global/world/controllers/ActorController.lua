@@ -357,9 +357,12 @@ function OBJ:HandleActions(actor)
 	local weap = actor:GetActiveWeapon()
 	if weap then
 		self:HandleWeapon(actor,weap)
+	else  
+		local abil = actor:GetActiveAbility()
+		if abil then
+			self:HandleAbility(actor,abil)
+		end
 	end
-	
-	
 	--self:HandleDrop(actor)
 end
 function OBJ:HandleWeapon(actor,weap)
@@ -391,6 +394,23 @@ function OBJ:HandleWeapon(actor,weap)
 	--if R then
 	--	actor:SendEvent(EVENT_TOOL_DROP)
 	--end
+end
+function OBJ:HandleAbility(actor,abname)
+	local LF = input.leftMouseButton()
+	local RF = input.rightMouseButton()
+	local R = input.KeyPressed(KEYS_R)
+	local F = input.KeyPressed(KEYS_F)
+	 
+	if self:MouseLocked() then
+		if LF then  
+			--actor:CastActiveAbility()
+			actor:SendEvent(EVENT_ABILITY_CAST,abname)  
+		end 
+		if RF then 
+			
+		end  
+		
+	end 
 end
 function OBJ:HandleThirdPersonMovement(actor)
 	local model = actor.model
@@ -1046,6 +1066,13 @@ function OBJ:HandleCameraMovement(actor)
 				(-(self.totalCamRotationY or 0 ) / 3.1415926 * 180 + (self.ctargetval or 0))) 
 				 
 		end
+		
+		local tr = GetCameraPhysTrace(nil,actor.phys)
+		if tr and tr.Hit then 
+			actor:SetEyeTarget(tr.Position)
+		end
+		
+		
 	end
 	
 	if is_first_person then

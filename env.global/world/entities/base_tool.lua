@@ -44,22 +44,7 @@ function ENT:Spawn()
 	self:SpawnWorldModel(0.03)
 	--self.model:SetMaterial("textures/debug/white.json") 
 	--self:SpawnWorldModel(self.dmodel,self.phymodel,self.mscale)
-	self:AddEventListener(EVENT_USE,"use_event",function(user) 
-		user:PickupWeapon(self)
-	end)
-	self:SetNetworkedEvent(EVENT_USE)
 	
-	
-	self:AddEventListener(EVENT_TOOL_FIRE,"event",function(id,dir) 
-		if id == 0 then
-			self:Fire(dir)
-		elseif id == 1 then
-			if self.AltFire then
-				self:AltFire(dir)
-			end
-		end 
-	end)
-	self:SetNetworkedEvent(EVENT_TOOL_FIRE)
 	 
 	
 	self:AddFlag(FLAG_USEABLE) 
@@ -280,3 +265,18 @@ function ENT:Unequip(actor)
 		actor_model:StopLayeredSequence(2)
 	end 
 end
+
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user) user:PickupWeapon(self) end},
+	[EVENT_TOOL_FIRE] = {networked = true, f = function(self,id,dir) 
+		if id == 0 then
+			self:Fire(dir)
+		elseif id == 1 then
+			if self.AltFire then
+				self:AltFire(dir)
+			end
+		end 
+	end},
+}
+ 

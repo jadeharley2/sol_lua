@@ -101,22 +101,6 @@ function ENT:Init()
 	--hull_coll:SetShape("shiptest/ship_surface.SMD", matrix.Scaling(1000) * world ) 
 	--self.hull_coll = hull_coll
 	
-	self:AddEventListener(EVENT_WARPJUMP,"event",function(target) 
-		self:WarpSequence(Coordinate(target)) 
-	end)
-	self:AddEventListener(EVENT_HYPERJUMP,"event",function(target) 
-		self:HyperjumpSequence(Coordinate(target)) 
-	end)
-	self:AddEventListener(EVENT_DOCK,"event",function(target) 
-		self:DockSequence(target) 
-	end)
-	self:AddEventListener(EVENT_DOCK_FINISH,"event",function(station) 
-		self:DockLinkAirlocks(station)
-	end)
-	self:SetNetworkedEvent(EVENT_WARPJUMP)
-	self:SetNetworkedEvent(EVENT_HYPERJUMP)
-	self:SetNetworkedEvent(EVENT_DOCK)
-	self:SetNetworkedEvent(EVENT_DOCK_FINISH)
 end
 function ENT:Spawn()
 	
@@ -1143,3 +1127,13 @@ else -- CLIENT
 	end) 
 end
 ]]
+
+ENT._typeevents = {
+	[EVENT_WARPJUMP] = {networked = true, f = function(self,target) 
+		self:WarpSequence(Coordinate(target)) end},
+	[EVENT_HYPERJUMP] = {networked = true, f = function(self,target)  
+		self:HyperjumpSequence(Coordinate(target)) end},
+	[EVENT_DOCK] = {networked = true, f = ENT.DockSequence},
+	[EVENT_DOCK_FINISH] = {networked = true, f = ENT.DockLinkAirlocks},
+}
+ 

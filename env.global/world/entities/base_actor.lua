@@ -20,6 +20,12 @@ EVENT_STATE_CHANGED = 82034
 EVENT_GIVE_ITEM = 82066
 EVENT_PICKUP_ITEM = 82067
 
+EVENT_ABILITY_CAST = 83001
+EVENT_EFFECT_APPLY = 83002
+EVENT_GIVE_ABILITY = 83003
+EVENT_TAKE_ABILITY = 83004
+
+
 function ENT:Init()  
 	self:AddFlag(FLAG_ACTOR)
 	local phys = self:AddComponent(CTYPE_PHYSACTOR)  
@@ -39,105 +45,7 @@ function ENT:Init()
 	
 	self:SetParameter(VARTYPE_MAXHEALTH,100)
 	self:SetParameter(VARTYPE_HEALTH,100)
-
-	self:AddEventListener(EVENT_DAMAGE,"event",function(amount)
-		
-		if SERVER then 
-			local hp = self:GetParameter(VARTYPE_HEALTH) 
-			hp = hp - amount 
-			self:SetParameter(VARTYPE_HEALTH,hp)
-			self:SetHealth(hp)  
-			return
-		end
-		
-		local hp = self:GetParameter(VARTYPE_HEALTH) 
-		hp = hp - amount 
-		self:SetParameter(VARTYPE_HEALTH,hp)
-		if hp <= 0 then 	self:SendEvent(EVENT_DEATH) end
-		if CLIENT and LocalPlayer() == self then
-			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
-			healthbar:UpdateHealth(hp,mhp) 
-		end
-	end)
-	
-	self:AddEventListener(EVENT_HEALTH_CHANGED,"event",function(val) 
-		self:SetParameter(VARTYPE_HEALTH,val)  
-		if CLIENT and LocalPlayer() == self then 
-			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
-			healthbar:UpdateHealth(val,mhp) 
-		end
-		self:SetVehicle(nil) 
-	end)
-	self:AddEventListener(EVENT_MAXHEALTH_CHANGED,"event",function(val) self:SetParameter(VARTYPE_MAXHEALTH,val) end)
-	
-	self:AddEventListener(EVENT_DEATH,"event",function() 
-		self:SetParameter(VARTYPE_HEALTH,0)  
-		if CLIENT and LocalPlayer() == self then 
-			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
-			healthbar:UpdateHealth(0,mhp) 
-		end
-		self.graph:SetState("dead") 
-	end)
-	self:AddEventListener(EVENT_SPAWN,"event",function() 
-		local hp = self:GetParameter(VARTYPE_MAXHEALTH)
-		self:SetParameter(VARTYPE_HEALTH,hp)  
-		if CLIENT and LocalPlayer() == self then 
-			healthbar:UpdateHealth(hp,hp) 
-		end
-		self.graph:SetState("spawn") 
-	end)
-	self:AddEventListener(EVENT_CHANGE_CHARACTER,"event",function(char) 
-		self:SetCharacter(char) 
-	end)
-	
-	self:AddEventListener(EVENT_TOOL_DROP,"event",function() self:DropActiveWeapon()  end)
-	
-	self:AddEventListener(EVENT_ACTOR_JUMP,"event",function() self:Jump()  end)
-	
-	self:AddEventListener(EVENT_SET_VEHICLE,"event",function(veh,mountpointid,assignnode)  
-		self:SetVehicle(veh,mountpointid,assignnode) 
-	end)
-	
-	self:AddEventListener(EVENT_RESPAWN_AT,"event",function(pos) 
-		self:SetPos(pos)
-		self.phys:SetVelocity(Vector(0,0,0))
-	end)
-	
-	self:AddEventListener(EVENT_STATE_CHANGED,"event",function(newstate) 
-		if SERVER or self ~= LocalPlayer() then self.graph:SetState(newstate) end end)
-	
-	
-	self:AddEventListener(EVENT_RESPAWN_AT,"event",function(pos) 
-		self:SetPos(pos)
-		self.phys:SetVelocity(Vector(0,0,0))
-	end)
-	
-	self:AddEventListener(EVENT_GIVE_ITEM,"event",function(type) 
-		self:Give(type)
-	end)
-	
-	self:AddEventListener(EVENT_PICKUP_ITEM,"event",function(item) 
-		self:Give(type)
-		local inv = self.inventory
-		if inv then
-			inv:AddItem(self, item)
-			item:SendEvent(EVENT_PICKUP,self)
-		end
-	end)
-	
-	self:SetNetworkedEvent(EVENT_HEALTH_CHANGED)
-	self:SetNetworkedEvent(EVENT_MAXHEALTH_CHANGED)
-	self:SetNetworkedEvent(EVENT_ACTOR_HURT)
-	self:SetNetworkedEvent(EVENT_DEATH)
-	self:SetNetworkedEvent(EVENT_SPAWN)
-	self:SetNetworkedEvent(EVENT_TOOL_DROP)
-	self:SetNetworkedEvent(EVENT_ACTOR_JUMP)
-	self:SetNetworkedEvent(EVENT_CHANGE_CHARACTER)
-	self:SetNetworkedEvent(EVENT_SET_VEHICLE)
-	self:SetNetworkedEvent(EVENT_RESPAWN_AT)
-	self:SetNetworkedEvent(EVENT_STATE_CHANGED)
-	self:SetNetworkedEvent(EVENT_GIVE_ITEM)
-	self:SetNetworkedEvent(EVENT_PICKUP_ITEM)
+ 
 	
 	self:AddFlag(FLAG_PHYSSIMULATED)
 	
@@ -487,7 +395,8 @@ function ENT:SetCharacter(id)
 	
 	if id then 
 		local data = json.Read("forms/characters/"..id..".json")
-		if data then
+		if data then 
+			if self.isflying then self:Land() end
 			self:SetParameter(VARTYPE_CHARACTER,id)
 			 
 			local model_scale = self.model_scale or 1
@@ -500,6 +409,8 @@ function ENT:SetCharacter(id)
 			if data.species then
 				self:SetSpecies(data.species)
 			end
+			
+			self.abilities = {}
 			
 			self:Config(data)
 			
@@ -541,26 +452,34 @@ function ENT:SetCharacter(id)
 						local bpart = keys[1]
 						local id = tonumber( keys[2])
 						
-						--procedural check
-						local proc = {}
-						for kk,vv in pairs(v) do
-							if istable(vv) and vv.subs then 
-								local root = gui.FromTable(vv) 
-								proc[kk] = root
-								v[kk] = "textures/ponygen/body.dds"
-							end
-						end  
-						local mat = NewMaterial(bmatdir, json.ToJson(v))
 						local part = self.spparts[bpart]
 						if bpart == "root" then part = self end 
-						if part then 
-							for k,v in pairs(proc) do
-								RenderTexture(512,512,v,function(rtex)
-									SetMaterialProperty(mat,k,rtex) 
-								end)  
-							end
+						if part then  
+							local mat = dynmateial.LoadDynMaterial(v,bmatdir)
 							part.model:SetMaterial(mat,id)
 						end
+						
+						--
+						----procedural check
+						--local proc = {}
+						--for kk,vv in pairs(v) do
+						--	if istable(vv) and vv.subs then 
+						--		local root = gui.FromTable(vv) 
+						--		proc[kk] = root
+						--		v[kk] = "textures/ponygen/body.dds"
+						--	end
+						--end  
+						--local mat = NewMaterial(bmatdir, json.ToJson(v))
+						--local part = self.spparts[bpart]
+						--if bpart == "root" then part = self end 
+						--if part then 
+						--	for k,v in pairs(proc) do
+						--		RenderTexture(512,512,v,function(rtex)
+						--			SetMaterialProperty(mat,k,rtex) 
+						--		end)  
+						--	end
+						--	part.model:SetMaterial(mat,id)
+						--end
 					end 
 				end
 				--TEST!
@@ -618,57 +537,6 @@ function ENT:SetSpecies(spstr)
 		end
 	end
 end
-
-function ENT:GetEquipment(slot)
-	local e = self.equipment
-	if e then
-		return e[slot] 
-	end
-	return nil
-end
-function ENT:Equip(item) 
-	MsgN(self, " equip ",item)
-	local slot = item.slot
-	MsgN(item, " slot ",slot)
-	if slot then
-		local s = self:GetEquipment(slot) 
-		MsgN("s slot ",s)
-		if s and item.GetSkelModel then
-			local itemmodel = item:GetSkelModel(self,slot) 
-			MsgN("itemmodel ",itemmodel)
-			if itemmodel then
-				if s.ent then
-					s.ent:Despawn()
-					s.ent = nil
-					if s.item.OnUnequipped then s.item:OnUnequipped(self) end
-				end
-				local olditem = s.item
-				
-				local newE = SpawnBP(itemmodel,self,0.03)
-				s.ent = newE
-				s.item = item 
-				if item.OnEquipped then item:OnEquipped(self) end
-				return olditem
-			end
-		end
-	end
-	return nil
-end
-function ENT:Unequip(slot)
-	local s = self:GetEquipment(slot)
-	if s then
-		if s.ent then
-			s.ent:Despawn()
-			s.ent = nil
-			local item = s.item
-			s.item = nil
-			if item.OnUnequipped then item:OnUnequipped(self) end
-			return item
-		end
-	end
-	return nil
-end
-
 function ENT:Config(data,species,variation)
 
 	local phys = self.phys
@@ -725,9 +593,8 @@ function ENT:Config(data,species,variation)
 		end
 	end
 	if data.abilities then
-		self.abilities = {}
 		for k,v in pairs(data.abilities) do
-			self.abilities[k] = Ability(v)
+			self:GiveAbility(v) 
 		end
 	end
 	if data.health then
@@ -759,92 +626,6 @@ function ENT:SetModel(mdl)
 	--	network.BroadcastLua("ents.GetById("..tostring(self:GetSeed())..").modelfile = '"..mdl.."'")
 	--end
 end
-function ENT:SetVehicle(veh,mountpointid,assignnode,servercall) 
-	if veh then
-		mountpointid = mountpointid or 1
-		assignnode = assignnode or veh
-		servercall = servercall or false
-		
-		local mountpoint = veh.mountpoints[mountpointid]
-		if not mountpoint then return false end
-		if mountpoint.ent then return false end
-		
-		local phys = self.phys
-		self.IsInVehicle = true
-		self.vehicle = veh
-		self.graph:SetState(mountpoint.state or "sit")
-		self:SetParent(veh)
-		phys:SetVelocity(Vector(0,0,0))
-		--self.phys:SetMass(-1)
-		self:SetPos(mountpoint.pos or Vector(0,0,0))--pos)
-		self:SetAng(mountpoint.ang or Vector(0,0,0))
-		if mountpoint.attachment then
-			veh.model:Attach(self,mountpoint.attachment)
-		end
-		self.currentmountpoint = mountpoint
-		local weld = self.weld
-		if weld then
-			weld:Break()
-		end
-		self.weld = constraint.Weld(phys,nil,Vector(0,0,0)) 
-		self:SetUpdateSpace(false)
-		
-		mountpoint.ent = self
-		--local ply = self.player
-		--if assignnode and ply then 
-		--	self.assignednode = assignnode
-		--	ply:AssignNode(assignnode)
-		--end
-		if CLIENT and LocalPlayer()==self then
-			network.RequestAssignNode(assignnode)
-			self.assignednode = assignnode
-		end
-	else
-		local v = self.vehicle
-		if v then
-			local weld = self.weld
-			if weld then
-				weld:Break()
-				self.weld = nil
-			end
-			
-			local cmp = self.currentmountpoint
-			if cmp and cmp.attachment then
-				v.model:Detach(self)
-			end
-			self.IsInVehicle = false
-			local vparent = self.vehicle:GetParent()
-			if SERVER or not network.IsConnected() then
-				self:SetPos(Vector(0,0,0))
-				self:Eject()
-				self:SetParent(vparent)
-				self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos())
-			end 
-			self.vehicle = nil
-			self.graph:SetState("idle")
-			--self:SetParent(v:GetParent())
-			--self:SetPos(v:GetPos())
-			--self.phys:SetMass(10)
-			self:SetUpdateSpace(true)
-			
-			--local ply = self.player
-			--if self.assignednode and ply then 
-			--	self.assignednode = nil
-			--	ply:UnassignNode(self.assignednode)
-			--end
-			if self.assignednode and  LocalPlayer()==self then 
-				self.assignednode = nil
-				network.RequestUnassignNode(v)
-			end
-			cmp.ent = nil
-		end
-	end
-	
-	self:VelocityCheck(true)
-	--if not servercall and CLIENT then
-	--	network.CallServer("actor_set_vehicle",self,veh,mountpointid,assignnode) 
-	--end
-end 
 function ENT:SetSize(val)
 	local model = self.model
 	local phys = self.phys
@@ -868,11 +649,9 @@ else -- CLIENT
 	-end)  
 end
 ]]
-function ENT:GetVehicle() 
-	return self.vehicle
-end
 
---MOVEMENT
+--[[ ######## MOVEMENT ######## ]]--
+
 function ENT:Turn(ang)
 	if self.model:HasAnimation("turn_l") then 
 		local Up = self:Up():Normalized()
@@ -1102,12 +881,7 @@ end
 function ENT:IsFlying()  
 	return self.isflying or false
 end
-function ENT:HandleDriving(driver)
-	local cc = GetCurrentController()
-	if cc then
-		cc:HandleMovement(self)
-	end
-end
+
 function ENT:RunTaskStep()
 	local task = self.task
 	if task then 
@@ -1290,6 +1064,140 @@ function ENT:EyeLookAtTask(dir)
 	end)
 end
 
+function ENT:SetEyeTarget(pos)
+	self:SetParameter(VARTYPE_VIEWTARGET,pos)
+end
+function ENT:GetEyeTarget(pos)
+	return self:GetParameter(VARTYPE_VIEWTARGET)
+end
+
+--[[ ######## VEHICLES ######## ]]--
+
+function ENT:SetVehicle(veh,mountpointid,assignnode,servercall) 
+	if veh then
+		mountpointid = mountpointid or 1
+		assignnode = assignnode or veh
+		servercall = servercall or false
+		
+		local mountpoint = veh.mountpoints[mountpointid]
+		if not mountpoint then return false end
+		if mountpoint.ent then return false end
+		
+		local phys = self.phys
+		self.IsInVehicle = true
+		self.vehicle = veh
+		self.graph:SetState(mountpoint.state or "sit")
+		self:SetParent(veh)
+		phys:SetVelocity(Vector(0,0,0))
+		--self.phys:SetMass(-1)
+		self:SetPos(mountpoint.pos or Vector(0,0,0))--pos)
+		self:SetAng(mountpoint.ang or Vector(0,0,0))
+		if mountpoint.attachment then
+			veh.model:Attach(self,mountpoint.attachment)
+		end
+		self.currentmountpoint = mountpoint
+		local weld = self.weld
+		if weld then
+			weld:Break()
+		end
+		self.weld = constraint.Weld(phys,nil,Vector(0,0,0)) 
+		self:SetUpdateSpace(false)
+		
+		mountpoint.ent = self
+		--local ply = self.player
+		--if assignnode and ply then 
+		--	self.assignednode = assignnode
+		--	ply:AssignNode(assignnode)
+		--end
+		if CLIENT and LocalPlayer()==self then
+			network.RequestAssignNode(assignnode)
+			self.assignednode = assignnode
+		end
+	else
+		local v = self.vehicle
+		if v then
+			local weld = self.weld
+			if weld then
+				weld:Break()
+				self.weld = nil
+			end
+			
+			local cmp = self.currentmountpoint
+			if cmp and cmp.attachment then
+				v.model:Detach(self)
+			end
+			self.IsInVehicle = false
+			local vparent = self.vehicle:GetParent()
+			if SERVER or not network.IsConnected() then
+				self:SetPos(Vector(0,0,0))
+				self:Eject()
+				self:SetParent(vparent)
+				self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos())
+			end 
+			self.vehicle = nil
+			self.graph:SetState("idle")
+			--self:SetParent(v:GetParent())
+			--self:SetPos(v:GetPos())
+			--self.phys:SetMass(10)
+			self:SetUpdateSpace(true)
+			
+			--local ply = self.player
+			--if self.assignednode and ply then 
+			--	self.assignednode = nil
+			--	ply:UnassignNode(self.assignednode)
+			--end
+			if self.assignednode and  LocalPlayer()==self then 
+				self.assignednode = nil
+				network.RequestUnassignNode(v)
+			end
+			cmp.ent = nil
+		end
+	end
+	
+	self:VelocityCheck(true)
+	--if not servercall and CLIENT then
+	--	network.CallServer("actor_set_vehicle",self,veh,mountpointid,assignnode) 
+	--end
+end 
+function ENT:GetVehicle() 
+	return self.vehicle
+end
+function ENT:HandleDriving(driver)
+	local cc = GetCurrentController()
+	if cc then
+		cc:HandleMovement(self)
+	end
+end
+
+
+--[[ ######## ITEMS ######## ]]--
+
+function ENT:Give(type)
+	if file.Exists("lua/env.global/world/tools/"..type..".lua") then 
+		local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
+		self:PickupWeapon(tool)
+	else 
+		if SERVER then
+			local app = CreateIA(type,self:GetParent(),self:GetPos(),GetFreeUID()) 
+			if app then 
+				network.AddNodeImmediate(app)
+				local inv = self.inventory
+				if not inv then
+					self.inventory = Inventory(4*8,self:GetSeed()+3000) 
+				end
+				self:SendEvent(EVENT_PICKUP_ITEM,app)
+				--inv:AddItem(self, app)
+			end
+		end
+	end
+	if SERVER then
+		self:SendEvent(EVENT_GIVE_ITEM,type)
+	end
+end
+
+
+--[[ ######## WEAPON|TOOLS ######## ]]--
+
 function ENT:PickupWeapon(weap)
 	----local wr = self.weapons or {}
 	----self.weapons = wr
@@ -1325,11 +1233,9 @@ function ENT:DropActiveWeapon()
 	local aw = self.activeweapon
 	if aw then self:DropWeapon(aw) end
 end
-
 function ENT:GetActiveWeapon()
 	return self.activeweapon
 end
-
 function ENT:SetActiveWeapon(weap)  
 	if weap then
 		if weap:GetParent()==self then
@@ -1422,18 +1328,110 @@ function ENT:GetWeapons()
 end
 ]]
 
+
+--[[ ######## EQUIPMENT|APPAREL ######## ]]--
+
+function ENT:GetEquipment(slot)
+	local e = self.equipment
+	if e then
+		return e[slot] 
+	end
+	return nil
+end
+function ENT:Equip(item) 
+	MsgN(self, " equip ",item)
+	local slot = item.slot
+	MsgN(item, " slot ",slot)
+	if slot then
+		local s = self:GetEquipment(slot) 
+		MsgN("s slot ",s)
+		if s and item.GetSkelModel then
+			local itemmodel = item:GetSkelModel(self,slot) 
+			MsgN("itemmodel ",itemmodel)
+			if itemmodel then
+				if s.ent then
+					s.ent:Despawn()
+					s.ent = nil
+					if s.item.OnUnequipped then s.item:OnUnequipped(self) end
+				end
+				local olditem = s.item
+				
+				local newE = SpawnBP(itemmodel,self,0.03)
+				local data =  item.data
+				if data.materials then
+					local bmatdir = data.basematdir
+					for k,v in pairs(data.materials) do
+						local id = tonumber(k)
+						local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+						newE.model:SetMaterial(mat,id)
+					end
+				end
+				
+				s.ent = newE
+				s.item = item 
+				if item.OnEquipped then item:OnEquipped(self) end
+				return olditem
+			end
+		end
+	end
+	return nil
+end
+function ENT:Unequip(slot)
+	local s = self:GetEquipment(slot)
+	if s then
+		if s.ent then
+			s.ent:Despawn()
+			s.ent = nil
+			local item = s.item
+			s.item = nil
+			if item.OnUnequipped then item:OnUnequipped(self) end
+			return item
+		end
+	end
+	return nil
+end
+
+
+--[[ ######## ABILITIES ######## ]]--
+
+function ENT:SetActiveAbility(abname)
+	self.activeAbility = abname
+	MsgN("set ab to: ",abname)
+end
+function ENT:GetActiveAbility()
+	return self.activeAbility 
+end
+function ENT:GetAbility(abname)
+	return self.abilities[abname]  
+end
 function ENT:Cast(abname)
-	local ab = self.abilities[abname]
-	if ab then
-		local tr = GetCameraPhysTrace()
-		if tr and tr.Hit then
-			--ab:Cast(self,
+	local aa = self.abilities[abname]  
+	if aa then
+		aa:Cast(self)
+	end
+end
+function ENT:CastActiveAbility()
+	local aname = self.activeAbility 
+	if aname then
+		local ab = self.abilities[aname] 
+		if ab then
+			ab:Cast(self)
 		end
 	end
 end
---BO_MoveTo(GetCamera():GetParent(),GetCamera():GetParent():GetPos()+Vector(0,0,0.01))
+function ENT:GiveAbility(aname)
+	local ab = Ability(aname)
+	if ab then
+		self.abilities[aname] = ab
+	end
+end
+function ENT:TakeAbility(aname)
+	self.abilities[aname] = nil
+end
+ 
 
 
+--[[ ######## HEALTH|ALIVENESS ######## ]]--
 
 function ENT:GetHealth()
 	return self:GetParameter(VARTYPE_HEALTH)
@@ -1479,6 +1477,10 @@ function ENT:Dead()
 end
 
 
+
+
+--[[ ######## OTHER ######## ]]--
+
 function ENT:Alert()
 	self.graph:TrySetState("unc_transition")
 end
@@ -1510,28 +1512,6 @@ function ENT:VelocityHit(hitby,velonhit)
 	--end
 end
 
-function ENT:Give(type)
-	if file.Exists("lua/env.global/world/tools/"..type..".lua") then 
-		local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
-		self:PickupWeapon(tool)
-	else 
-		if SERVER then
-			local app = CreateIA(type,self:GetParent(),self:GetPos(),GetFreeUID()) 
-			if app then 
-				network.AddNodeImmediate(app)
-				local inv = self.inventory
-				if not inv then
-					self.inventory = Inventory(4*8,self:GetSeed()+3000) 
-				end
-				self:SendEvent(EVENT_PICKUP_ITEM,app)
-				--inv:AddItem(self, app)
-			end
-		end
-	end
-	if SERVER then
-		self:SendEvent(EVENT_GIVE_ITEM,type)
-	end
-end
 
 function ENT:SetSkin(str)
 	if str then
@@ -1567,11 +1547,6 @@ function ENT:GetEyeTrace()
 	end
 end
 
-function ENT:GiveAbility(ab)
-	self.abilities[#self.abilities+1] = Ability(ab)
-end
- 
-
 
 
 function ENT:GetAllParts()
@@ -1589,4 +1564,87 @@ end
 
 
 
-
+ENT._typeevents = {
+	[EVENT_DAMAGE] = {networked = true, f = function(self,amount) 
+		if SERVER then 
+			local hp = self:GetParameter(VARTYPE_HEALTH) 
+			hp = hp - amount 
+			self:SetParameter(VARTYPE_HEALTH,hp)
+			self:SetHealth(hp)  
+			return
+		end
+		
+		local hp = self:GetParameter(VARTYPE_HEALTH) 
+		hp = hp - amount 
+		self:SetParameter(VARTYPE_HEALTH,hp)
+		if hp <= 0 then 	self:SendEvent(EVENT_DEATH) end
+		if CLIENT and LocalPlayer() == self then
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(hp,mhp) 
+		end
+	end},
+	[EVENT_HEALTH_CHANGED] = {networked = true, f = function(self,val) 
+		self:SetParameter(VARTYPE_HEALTH,val)  
+		if CLIENT and LocalPlayer() == self then 
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(val,mhp) 
+		end
+		self:SetVehicle(nil) 
+	end},
+	[EVENT_MAXHEALTH_CHANGED] = {networked = true, f = function(self,val) self:SetParameter(VARTYPE_MAXHEALTH,val) end},
+	[EVENT_DEATH] = {networked = true, f = function(self) 
+		self:SetParameter(VARTYPE_HEALTH,0)  
+		if CLIENT and LocalPlayer() == self then 
+			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
+			healthbar:UpdateHealth(0,mhp) 
+		end
+		self.graph:SetState("dead") 
+	end},
+	[EVENT_SPAWN] = {networked = true, f = function(self) 
+		local hp = self:GetParameter(VARTYPE_MAXHEALTH)
+		self:SetParameter(VARTYPE_HEALTH,hp)  
+		if CLIENT and LocalPlayer() == self then 
+			healthbar:UpdateHealth(hp,hp) 
+		end
+		self.graph:SetState("spawn") 
+	end},
+	[EVENT_CHANGE_CHARACTER] = {networked = true, f = ENT.SetCharacter},
+	[EVENT_TOOL_DROP] = {networked = true, f = ENT.DropActiveWeapon},
+	[EVENT_ACTOR_JUMP] = {networked = true, f = ENT.Jump},
+	[EVENT_SET_VEHICLE] = {networked = true, f = ENT.SetVehicle},
+	
+	[EVENT_RESPAWN_AT] = {networked = true, f = function(self,pos) 
+		self:SetPos(pos)
+		self.phys:SetVelocity(Vector(0,0,0))
+	end},
+	[EVENT_STATE_CHANGED] = {networked = true, f = function(self,newstate) 
+		if SERVER or self ~= LocalPlayer() then self.graph:SetState(newstate) end 
+	end},
+	
+	[EVENT_GIVE_ITEM] = {networked = true, f = ENT.Give}, 
+	[EVENT_PICKUP_ITEM] = {networked = true, f = function(self,item) 
+		self:Give(type)
+		local inv = self.inventory
+		if inv then
+			inv:AddItem(self, item)
+			item:SendEvent(EVENT_PICKUP,self)
+		end
+	end},
+	
+	[EVENT_ABILITY_CAST] = {networked = true, f = ENT.Cast},  
+	[EVENT_EFFECT_APPLY] = {networked = true, f = function(self,abname,source,pos) 
+		local ab = source:GetAbility(abname)
+		if ab then
+			if ab:ApplyEffects(source,self,pos) then
+				MsgN("Magic applied!")
+			else
+				MsgN("Magic failed!")
+			end
+		else
+			MsgN("Ability not found: ", abname, " in ", self)
+		end
+	end},
+	[EVENT_GIVE_ABILITY] = {networked = true, f = ENT.GiveAbility},
+	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility},
+}
+ 

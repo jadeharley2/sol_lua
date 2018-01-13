@@ -78,12 +78,7 @@ function ENT:Spawn(c)
 	
 	self:SetUpdating(true)
 	self:SetSpaceEnabled(false) 
-	
-	self:AddEventListener(EVENT_USE,"use_event",function(user)
-		MsgN(self," is used by aaa: ",user)
-		user:SendEvent(EVENT_SET_VEHICLE,self,1,self)--SetVehicle(self,1,self)
-		 
-	end)
+	 
 	self:AddFlag(FLAG_USEABLE)
 	
 	constraint.RevoluteAngular(phys,nil,Vector(0,1,0)) 
@@ -102,3 +97,11 @@ end
 
 function ENT:Think() 
 end
+
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user)
+		MsgN(self," is used by aaa: ",user)
+		user:SendEvent(EVENT_SET_VEHICLE,self,1,self)--SetVehicle(self,1,self) 
+	end},
+}

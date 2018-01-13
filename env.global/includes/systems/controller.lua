@@ -44,7 +44,7 @@ function SetController(name)
 				MsgN("Controller changed to ",  ts.name)
 			else                         
 				MsgN("Controller change to ",  ts.name, " is failed, revert initiated.") 
-				                                
+				
 				local result = prev:Init() 
 				if result ~= false then
 					if prev.Update then hook.Add("main.predraw", "controller", function() 

@@ -41,9 +41,7 @@ function ENT:Spawn()
 		else
 			error("no model specified for button model at spawn time")
 		end
-	end
-	self:AddEventListener(EVENT_USE,"use_event",function(user) self:Press(user) end)
-	self:SetNetworkedEvent(EVENT_USE)
+	end 
 	self:AddFlag(FLAG_USEABLE) 
 	
 end
@@ -76,3 +74,7 @@ function ENT:Press(user)
 	local act = self.OnPress 
 	if act then act(self,user) end
 end
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = ENT.Press},
+}

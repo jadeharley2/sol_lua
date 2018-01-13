@@ -32,11 +32,7 @@ function ENT:Spawn(c)
 	local world = matrix.Scaling(0.03*0.1) * matrix.Rotation(Vector(-90,90,0))
 	   
 	self:SetSpaceEnabled(false) 
-	
-	self:AddEventListener(EVENT_USE,"use_event",function(user)
-		user:SendEvent(EVENT_SET_VEHICLE,self,1)--SetVehicle(self,1) 
-	end)
-	self:AddFlag(FLAG_USEABLE)
+	 
 	
 end
 
@@ -76,3 +72,9 @@ function ENT:Turn2(dir)
 end
 function ENT:HandleDriving(actor)   
 end 
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user)
+		user:SendEvent(EVENT_SET_VEHICLE,self,1)
+	end},
+} 

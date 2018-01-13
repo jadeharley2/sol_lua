@@ -532,3 +532,12 @@ function ENT:Lock()
 end
 function ENT:Unlock() 
 end
+
+ENT._typeevents = {
+	[EVENT_LIFT_CALL] = {networked = true, f = ENT.MoveTo},
+	[EVENT_USE] = {networked = true, f = function(self,user)  
+		if self.graph:CurrentState()=="idle" then
+			self:OpenMenu(user)
+		end
+	end},
+}  

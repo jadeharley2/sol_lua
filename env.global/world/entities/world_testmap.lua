@@ -152,11 +152,10 @@ function ENT:Spawn()
 				SHOWINV = false
 			else
 				current_abv = panel.Create("window_itemviewer") 
-				local givefunc = function(LP,itemname)
-					local ab = Ability(itemname)
-					LP.abilities[#LP.abilities+1] = ab
-					MsgN("add ab: ",ab)
-					PrintTable(LP.abilities)
+				local givefunc = function(LP,itemname) 
+					LP:SendEvent(EVENT_GIVE_ABILITY,itemname)
+					--MsgN("add ab: ",ab)
+					--PrintTable(LP.abilities)
 				end
 				current_abv:Setup("forms/abilities/","json",givefunc)
 				current_abv.OnClose = function()

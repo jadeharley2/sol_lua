@@ -69,17 +69,7 @@ function ENT:SetModel(mdl,scale)
 	--phys:SetMass(0)--static  
 	
 	self:LoadGraph()
-	
-	self:AddEventListener(EVENT_USE,"use_event",function(user) 
-		
-		local onuse = self.OnUse
-		if onuse then
-			onuse(self,user)
-		else
-			self:Toggle()
-		end
-	end)
-	self:SetNetworkedEvent(EVENT_USE)
+	 
 	self:AddFlag(FLAG_USEABLE)
 	 
 	self:CopyAng(self)
@@ -137,3 +127,14 @@ end
 function ENT:Unlock()
 	self.locked = false
 end
+
+ENT._typeevents = { 
+	[EVENT_USE] = {networked = true, f = function(self,user)  
+		local onuse = self.OnUse
+		if onuse then
+			onuse(self,user)
+		else
+			self:Toggle()
+		end
+	end},
+}  

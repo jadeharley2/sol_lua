@@ -54,4 +54,17 @@ function TOOL:SpawnProp(ent, pos, model, scale)
 	prop:SetPos(pos) 
 	prop:Create()  
 	prop.phys:SetMass(100)
+	
+	
+	local particlesys2 = prop:AddComponent(CTYPE_PARTICLESYSTEM2) 
+	particlesys2:SetSpeed(1)
+	particlesys2:SetRenderGroup(RENDERGROUP_LOCAL)
+	particlesys2:SetBlendMode(BLEND_ADD) 
+	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
+	particlesys2:SetDepthStencillMode(DEPTH_READ)  
+	 
+	particlesys2:Set("particles/magic_model_aura_test.json")
+	prop.particlesys2 = particlesys2 
+	
+	
 end

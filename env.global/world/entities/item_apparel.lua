@@ -8,6 +8,7 @@ function SpawnIA(type,ent,pos,seed)
 		e.slot = data.slot
 		e.info = data.name or type
 		e.icon = data.icon
+		e.data = data
 		e.skinmodel = data.model
 		e:SetName(data.name or type)
 		e:SetModel(data.worldmodel)
@@ -16,6 +17,14 @@ function SpawnIA(type,ent,pos,seed)
 		e:SetParent(ent)
 		e:SetSeed(seed or 0)
 		e:SetPos(pos) 
+		if data.worldmaterials then
+			local bmatdir = data.worldbasematdir
+			for k,v in pairs(data.materials) do
+				local id = tonumber(k)
+				local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+				e.model:SetMaterial(mat,id)
+			end
+		end
 		e:Spawn()
 		return e
 	end
@@ -36,6 +45,14 @@ function CreateIA(type,ent,pos,seed)
 		e:SetParent(ent)
 		e:SetSeed(seed) -- error on 0
 		e:SetPos(pos) 
+		if data.worldmaterials then
+			local bmatdir = data.worldbasematdir
+			for k,v in pairs(data.materials) do
+				local id = tonumber(k)
+				local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+				e.model:SetMaterial(mat,id)
+			end
+		end
 		e:Create()
 		return e
 	end
@@ -101,6 +118,7 @@ function ENT:LoadModel()
 	else
 		phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
 	end
+	
 	
 	phys:SetMass(10) 
 	

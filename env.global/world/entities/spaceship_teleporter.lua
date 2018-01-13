@@ -23,19 +23,7 @@ function ENT:Spawn()
 	light:SetColor(Vector(0.1,0.2,0.9))
 	light:SetBrightness(10) 
 	self.light = light
-	
-	self:AddEventListener(EVENT_USE,"use_event",function(user)
-		MsgN(self," is used by aaa: ",user)
-		local h, p = self:SearchTeleportLocation()
-		if h then
-			user:SetParent(p)
-			user:SetPos(h)
-			user.Recall = function(ent)
-				ent:SetParent(self:GetParent())
-				ent:SetPos(self:GetPos())
-			end
-		end
-	end)
+	 
 	self:AddFlag(FLAG_USEABLE)
 	
 	
@@ -57,3 +45,19 @@ function ENT:SearchTeleportLocation()
 		MsgN("NO RCR!")
 	end
 end
+
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user) 
+		MsgN(self," is used by aaa: ",user)
+		local h, p = self:SearchTeleportLocation()
+		if h then
+			user:SetParent(p)
+			user:SetPos(h)
+			user.Recall = function(ent)
+				ent:SetParent(self:GetParent())
+				ent:SetPos(self:GetPos())
+			end
+		end
+	end},
+} 
