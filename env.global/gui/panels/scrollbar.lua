@@ -157,10 +157,10 @@ function PANEL:Refresh()
 	local scrollS = floater:GetPos() / (floater:GetSize() - container:GetSize())
 	if type == 1 then
 		bdrag:SetSize(w,scrollH)
-		bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2))
+		bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2 - scrollH ))--
 	else
 		bdrag:SetSize(scrollH,w)
-		bdrag:SetPos(-scrollS.x * (ss.x - w*2),0)
+		bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH),0)
 	end
 	--fcon:UpdateLayout()
 end

@@ -2,6 +2,7 @@ PANEL.basetype = "window"
 
 function PANEL:Init()
 	--PrintTable(self)
+	self.fixedsize = true
 	self.base.Init(self)
 	self:SetSize(500,200)
 	self:SetColor(Vector(0.6,0.6,0.6))
@@ -30,19 +31,19 @@ function PANEL:Init()
 	tabs:AddTab("INV",grid)
 	tabs:AddTab("ABL",ab_grid)
 	
-	local ff_grid_floater = panel.Create("graph_grid")  
-	ff_grid_floater:SetSize(4000,4000)
-	ff_grid_floater:SetTextureScale(Point(4000/256,4000/256)) 
-	
-	local ff_grid = panel.Create("floatcontainer") 
-	ff_grid:SetSize(200,200)  
-	ff_grid:SetScrollbars(3)
-	ff_grid:SetFloater(ff_grid_floater)
-	tabs:AddTab("TEST",ff_grid)
+	--local ff_grid_floater = panel.Create("graph_grid")  
+	--ff_grid_floater:SetSize(4000,4000)
+	--ff_grid_floater:SetTextureScale(Point(4000/256,4000/256)) 
+	--
+	--local ff_grid = panel.Create("floatcontainer") 
+	--ff_grid:SetSize(200,200)  
+	--ff_grid:SetScrollbars(3)
+	--ff_grid:SetFloater(ff_grid_floater)
+	--tabs:AddTab("TEST",ff_grid)
+	tabs:AddTab("TEST",panel.Create("tree"))
 	
 	self.grid = grid
 	self.ab_grid = ab_grid
-	self.fixedsize = true
 	
 	--grid:Refresh()
 	--ab_grid:Refresh()

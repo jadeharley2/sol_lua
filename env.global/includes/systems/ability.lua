@@ -13,7 +13,7 @@ local AB = {}
 --self:Begin(ent, trace) - returns if effect is can be applied
 --self:Think(ent)
 --self:End(ent)   
-                     
+
 function AB:Cast(ent) 
 	self.nextcast = self.nextcast or 0
 	if self.Begin and self.nextcast<CurTime() then
@@ -21,8 +21,7 @@ function AB:Cast(ent)
 		--if self.type == "target" or  self.type == "projectile" then 
 		--trace = 
 		  
-		--end   
-                 
+		--end     
 		if self:Begin(ent,trace) then
 			MsgN("cast")
 			MsgN(self.Think)

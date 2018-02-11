@@ -34,6 +34,7 @@ function OBJ:Init()
 	end
 	cam:SetUpdateSpace(false)
 	cam:SetParent(actor)
+	cam:SetPos(Vector(0,0,0))
 	self.mouseWheelValue = input.MouseWheel()  
 	self.ctargetval = 0
 	self.fponly = settings.GetBool("server.firstperson")

@@ -17,34 +17,50 @@ function Transformation(actor,target_character)
 	local newparts = {}
 	
 	
-	
-	local spd = data.species:split(':')
-	local species = spd[1]
-	local variation = spd[2]
-	local speciesdata = json.Read("forms/species/"..species..".json")
-		
-	local bpath = speciesdata.model.basedir
-	for k,v in pairs(data.parts) do 
-		local part =  SpawnBP(bpath..v..".json",actor,0.03)
-		part.mat = {}
-		newparts[k] = part
-		
-	end
-	if data.materials then
-		local bmatdir = data.basematdir
-		for k,v in pairs(data.materials) do
-			local keys = k:split(':') 
-			local bpart = keys[1]
-			local id = tonumber( keys[2])
+	if data.species then
+		local spd = data.species:split(':')
+		local species = spd[1]
+		local variation = spd[2]
+		local speciesdata = json.Read("forms/species/"..species..".json")
 			
-			local part = newparts[bpart]
-			if bpart == "root" then part = self end 
-			if part then  
-				local mat = dynmateial.LoadDynMaterial(v,bmatdir)
-				part.model:SetMaterial(mat,id)
-				part.mat[#part.mat+1] = mat
+		local bpath = speciesdata.model.basedir
+		for k,v in pairs(data.parts) do 
+			local part =  SpawnBP(bpath..v..".json",actor,0.03)
+			part.mat = {}
+			newparts[k] = part
+			
+		end
+		if data.materials then
+			local bmatdir = data.basematdir
+			for k,v in pairs(data.materials) do
+				local keys = k:split(':') 
+				local bpart = keys[1]
+				local id = tonumber( keys[2])
+				
+				local part = newparts[bpart]
+				if bpart == "root" then part = self end 
+				if part then  
+					local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+					part.model:SetMaterial(mat,id)
+					part.mat[#part.mat+1] = mat
+				end
 			end
 		end
+	else 
+		local part = SpawnBP(data.model,actor,0.03)
+		local mpa = part.model
+		local matc = mpa:GetMaterialCount()
+		local mat = {}
+		for k=1,matc do 
+			local pmt =CopyMaterial( mpa:GetMaterial(k-1))  
+			mpa:SetMaterial(pmt,k-1)  
+			mat[k] =pmt 
+		end 
+		part.mat = mat
+		newparts.body = part 
+		mpa:SetCopyTransforms(nil)
+		mpa:SetDynamic()
+		mpa:SetAnimation("idle")  
 	end
 	for k,v in pairs(parts) do
 		oldparts[k] = v

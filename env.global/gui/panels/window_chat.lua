@@ -28,10 +28,18 @@ function PANEL:Init()
 			local text = n:GetText()
 			local player = LocalPlayer()
 			network.ChatSay(player,text)
+			
+			while self.input_history_down:Peek() do
+				local txt = self.input_history_down:Pop()
+				if not string.empty(txt) then 
+					self.input_history_up:Push(txt)
+				end
+			end
+			
 			if player and not network.IsConnected() then
 				player:Say(text)
 			end
-			if text ~= self.input_history_up:Peek() then
+			if text ~= self.input_history_up:Peek() and not string.empty(text) then
 				self.input_history_up:Push(text)
 			end
 			self:Deselect() 

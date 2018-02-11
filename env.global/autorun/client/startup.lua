@@ -48,6 +48,9 @@ function LoadMenu()
 	quickmenu:SetPos(0,-200) --+csize.x +csize.y 
 	quickmenu:Show()
 	
+	debugmenu = panel.Create("debug_panel_menu")   
+	debugmenu:Show()
+	
 	local wn = panel.Create("menu_main") 
 	wn:SetPos(0,0)  
 	wn:Show()

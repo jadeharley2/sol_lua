@@ -10,7 +10,20 @@ function GetCameraPhysTrace(cam,actorphys)
 	end
 	return nil
 end
-
+function GetMousePhysTrace(cam,actorphys)
+	cam = cam or GetCamera()
+	local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
+	local wdir = cam:Unproject(mpos):Normalized()
+	local parentphysnode = cam:GetParentWithComponent(CTYPE_PHYSSPACE)
+	if parentphysnode then
+		local space = parentphysnode:GetComponent(CTYPE_PHYSSPACE)
+		local lw = parentphysnode:GetLocalSpace(cam)
+		
+		local hit, hpos, hnorm, dist, ent = space:RayCast(lw:Position(),wdir,actorphys)
+		return {Hit = hit,Position=hpos,Normal=hnorm,Distance = dist, Node = parentphysnode, Space = space,Entity = ent}
+	end
+	return nil
+end
 --pos, dir = relative to node(inside space)
 --dir = normalized
 --maxlen = in node space lengths

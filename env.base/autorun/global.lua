@@ -15,11 +15,11 @@ table.HasValue = table.contains
 function SortedPairs (t, f)
 	local a = {}
 	for n in pairs(t) do tinsert(a, n) end
-		tsort(a, f)
-		local i = 0      -- iterator variable
-		local iter = function ()   -- iterator function
-		i = i + 1
-		if a[i] == nil then return nil
+	tsort(a, f)
+	local i = 0      -- iterator variable
+	local iter = function ()   -- iterator function
+	i = i + 1
+	if a[i] == nil then return nil
 		else return a[i], t[a[i]]
 		end
 	end

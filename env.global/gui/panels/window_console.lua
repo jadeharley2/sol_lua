@@ -25,8 +25,15 @@ function PANEL:Init()
 	input_text.OnKeyDown = function(n,key) 
 		if key== KEYS_ENTER then
 			local text = n:GetText()
-			console.Call(text)
-			if text ~= self.input_history_up:Peek() then
+			console.Call(text) 
+			
+			while self.input_history_down:Peek() do
+				local txt = self.input_history_down:Pop()
+				if not string.empty(txt) then 
+					self.input_history_up:Push(txt)
+				end
+			end
+			if text ~= self.input_history_up:Peek() and not string.empty(text) then
 				self.input_history_up:Push(text)
 			end
 			if text == "debug" then 
@@ -35,9 +42,17 @@ function PANEL:Init()
 				debugp:UpdateLayout() 
 				debugp:SetPos(-800,0)
 				self:GetParent():Add(debugp) 
+			elseif text == "testgui" then 
+				
+				local debugp = panel.Create("tree")
+				debugp:SetPos(-800,0)
+				debugp:SetSize(400,800)
+				self:GetParent():Add(debugp)    
+				debugp:UpdateLayout() 
 			end
 			n.text = ""
 			n:SetText("") 
+			self:Resize()
 		end
 		if key == KEYS_UP then
 			local text = n:GetText()

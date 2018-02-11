@@ -142,6 +142,7 @@ function PANEL:MouseClick(fid)
 				--	{text = "3",action = function(item,context) MsgN("JA!") end},
 				--}},
 			}
+			
 			if itemi.IsEquipped then
 				if itemi:IsEquipped() then
 					context[2] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}

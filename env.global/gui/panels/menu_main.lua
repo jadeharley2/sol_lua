@@ -39,7 +39,7 @@ function PANEL:Init()
 	
 	local buttons = {sp,mp,opt,exi,mmn}
 	for k,v in pairs(buttons) do 
-		v:SetSize(150,20) 
+		v:SetSize(250,20) 
 		v:SetTextAlignment(ALIGN_CENTER)
 		SetupStyle(v)
 		menu:Add(v)

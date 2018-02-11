@@ -65,7 +65,7 @@ function PANEL:Init()
 		for k2,v2 in pairs(v.variables) do
 			
 			local sp = panel.Create()
-			sp:SetSize(450,26)  
+			sp:SetSize(450,20)  
 			sp:Dock(DOCK_TOP)
 			sp:SetColor(panelColor)
 			local label = panel.Create()

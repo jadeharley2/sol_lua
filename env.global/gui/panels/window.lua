@@ -141,20 +141,9 @@ function PANEL:Init()
 		end
 	end
 	
-	self.rs_b  = rs_b
-	self.rs_t  = rs_t
-	self.rs_l  = rs_l
-	self.rs_r  = rs_r
-	self.rs_tl = rs_tl
-	self.rs_tr = rs_tr
-	self.rs_bl = rs_bl
-	self.rs_br = rs_br
-	self.mv    = mv
-	self.bc    = bc
-	self.inner = inner
-	self.borders = {rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}
-	--self.dockbtn  = dockbtn
-	 
+	local fixedsize = self.fixedsize
+	
+	
 	local sizeframe_width = 5
 	local movepanel_height = 20
 	
@@ -167,11 +156,40 @@ function PANEL:Init()
 	inner:SetColor(backcol)
 	inner:SetAlpha(backcola)
 	inner:SetSize(10,10)
-	for k,v in pairs({rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}) do
-		v:SetSize(sizeframe_width,sizeframe_width)
-		v:SetColorAuto(bordcol)
-		v:SetAlpha(bordcola)
+	
+	
+	
+	if not fixedsize then 
+		self.rs_b  = rs_b
+		self.rs_t  = rs_t
+		self.rs_l  = rs_l
+		self.rs_r  = rs_r
+		self.rs_tl = rs_tl
+		self.rs_tr = rs_tr
+		self.rs_bl = rs_bl
+		self.rs_br = rs_br
+		self.borders = {rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}
+		for k,v in pairs(self.borders) do
+			v:SetSize(sizeframe_width,sizeframe_width)
+			v:SetColorAuto(bordcol)
+			v:SetAlpha(bordcola)
+		end
+		self:Add(rs_b) rs_b:Dock(DOCK_BOTTOM)
+		self:Add(rs_t) rs_t:Dock(DOCK_TOP)
+		self:Add(rs_l) rs_l:Dock(DOCK_LEFT)
+		self:Add(rs_r) rs_r:Dock(DOCK_RIGHT)
+		
+		rs_t:Add(rs_tl) rs_tl:Dock(DOCK_LEFT)
+		rs_t:Add(rs_tr) rs_tr:Dock(DOCK_RIGHT)
+		rs_b:Add(rs_bl) rs_bl:Dock(DOCK_LEFT)
+		rs_b:Add(rs_br) rs_br:Dock(DOCK_RIGHT)
+	
 	end
+	self.mv    = mv
+	self.bc    = bc
+	self.inner = inner
+		--self.dockbtn  = dockbtn
+	
 	mv:SetSize(movepanel_height,movepanel_height)
 	----rs_tl:SetSize(sizeframe_width,sizeframe_width)
 	----rs_tr:SetSize(sizeframe_width,sizeframe_width)
@@ -180,16 +198,6 @@ function PANEL:Init()
 	--dockbtn:SetSize(movepanel_height,movepanel_height)
 	
 	bc:SetSize(movepanel_height,movepanel_height)
-	
-	self:Add(rs_b) rs_b:Dock(DOCK_BOTTOM)
-	self:Add(rs_t) rs_t:Dock(DOCK_TOP)
-	self:Add(rs_l) rs_l:Dock(DOCK_LEFT)
-	self:Add(rs_r) rs_r:Dock(DOCK_RIGHT)
-	
-	rs_t:Add(rs_tl) rs_tl:Dock(DOCK_LEFT)
-	rs_t:Add(rs_tr) rs_tr:Dock(DOCK_RIGHT)
-	rs_b:Add(rs_bl) rs_bl:Dock(DOCK_LEFT)
-	rs_b:Add(rs_br) rs_br:Dock(DOCK_RIGHT)
 	
 	self:Add(mv) mv:Dock(DOCK_TOP)
 	self:Add(inner) inner:Dock(DOCK_FILL)

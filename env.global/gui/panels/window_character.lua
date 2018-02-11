@@ -2,6 +2,7 @@ PANEL.basetype = "window"
 
 function PANEL:Init()
 	--PrintTable(self)
+	self.fixedsize = true
 	self.base.Init(self)
 	self:SetSize(300,500)
 	self:SetColor(Vector(0.6,0.6,0.6))
@@ -10,8 +11,7 @@ function PANEL:Init()
 	
 	self.tabs = tabs
 	tabs:Dock(DOCK_FILL)
-	self:Add(tabs) 
-	self.fixedsize = true
+	self:Add(tabs)  
 	self.stats = panel.Create("panel_stats")
 	self.equip = panel.Create("tabmenu")
 	tabs:AddTab("Stats",self.stats)

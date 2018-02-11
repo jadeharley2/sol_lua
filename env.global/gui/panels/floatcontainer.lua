@@ -44,8 +44,10 @@ function PANEL:GetFloater()
 	return self.floater
 end
 function PANEL:SetScroll(pos)
-	self.floater:SetPos(pos)
+	local f = self.floater
+	f:SetPos(pos)
 end
+
 
 function PANEL:MouseEnter() 
 	local bar = self.vbar
