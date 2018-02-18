@@ -261,7 +261,7 @@ function SpawnPlayerChar(posoverride)
 		
 		--if UNIid == 0 then
 			ship = playeractor:GetParent()
-			SHADOW = CreateTestShadowMapRenderer(ship,Vector(0.002456535,0.02487438,0.3199512))
+			--SHADOW = CreateTestShadowMapRenderer(ship,Vector(0.002456535,0.02487438,0.3199512))
 		--end
 	else
 		MsgN("ERROR: PLAYER ACTOR NOT FOUND!")

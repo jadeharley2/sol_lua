@@ -42,9 +42,9 @@ function ENT:Spawn()
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(140,161,178)/255,190000000)
 	local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
 	 
+	light.light:SetShadow(true)
 	self.space = space
-	
-	
+	 
 	
 	-- apparel dispenser
 	local dpos = Vector(0.007491949, 0.000883143, -0.006987628)
@@ -177,6 +177,15 @@ function ENT:Spawn()
 	self.ambient = ambient
 	
 	SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
+
+		
+	if CLIENT then
+		local eshadow = ents.Create("test_shadowmap2")  
+		eshadow.light = light
+		eshadow:SetParent(ent) 
+		eshadow:Spawn() 
+		self.shadow = eshadow
+	end
 end
 
 function ENT:GetSpawn() 

@@ -37,7 +37,8 @@ function ENT:Spawn()
 	space.space = sspace
 
 	--def:1900000000
-	local light = self:CreateStaticLight(Vector(-1.6,106.2,124.6)/10/2*10,Vector(140,161,178)/255,50500000000)
+	local light = self:CreateStaticLight(Vector(-1.6,106.2,124.6)/10/2*10,Vector(140,161,178)/255,50500000000*2)
+	light.light:SetShadow(true)
 	--local light = CreateStaticLight(space,Vector(-1.6,106.2,124.6)/10/2*10,Vector(140,161,178)/255,20000000000)
 	SpawnSO("map/citytest/sky.json",space,Vector(0,0,0),5,NO_COLLISION) 
 	--SpawnSO("map/citytest/fountain.json",space,Vector(0,0,0),1) 
@@ -91,6 +92,14 @@ function ENT:Spawn()
 	
 	self.space = space
 	
+		
+	if CLIENT then
+		local eshadow = ents.Create("test_shadowmap2")  
+		eshadow.light = light
+		eshadow:SetParent(ent) 
+		eshadow:Spawn() 
+		self.shadow = eshadow
+	end
 	--SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
 end
 
