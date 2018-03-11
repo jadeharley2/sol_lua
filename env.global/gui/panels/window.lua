@@ -257,3 +257,6 @@ end
 function PANEL:MouseLeave() 
 end
  
+function PANEL:SetTitle(str)
+	self.mv:SetText(str)
+end

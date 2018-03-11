@@ -1648,3 +1648,18 @@ ENT._typeevents = {
 	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility},
 }
  
+ENT.editor = {
+	name = "Actor",
+	properties = {
+		character = {text = "character",type="parameter",valtype="string",key=VARTYPE_CHARACTER,reload=true}, 
+		hp_amount = {text = "health",type="parameter",valtype="number",key=VARTYPE_HEALTH},
+		hp_max_amount = {text = "maximum health",type="parameter",valtype="number",key=VARTYPE_MAXHEALTH}, 
+		enabled = {text = "enabled",type="parameter",valtype="number",key=VARTYPE_MAXHEALTH},  
+		posess = {text = "posess",type="action",action = function(ent)  
+			editor.Stop()
+			SetLocalPlayer(ent)
+			SetController('actorcontroller') 
+		end},
+	}, 
+	
+}

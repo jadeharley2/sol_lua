@@ -20,6 +20,7 @@ function ENT:Init()
 	
 	self.scale = 1
 	self.isenabled = true
+	self:SetDonotsave(true)
 	
 	--local model = self:AddComponent(CTYPE_MODEL)
 	--self.model = model 
@@ -110,9 +111,13 @@ function ENT:OnClick()
 end
 function ENT:Highlight(en)
 	if en then
-		self.model:SetBrightness(0.3)
-		self.modelb:SetBrightness(0.8)
+		self.model:SetBlendMode(BLEND_OPAQUE) 
+		self.modelb:SetBlendMode(BLEND_OPAQUE) 
+		self.model:SetBrightness(0.5)
+		self.modelb:SetBrightness(1)
 	else
+		self.model:SetBlendMode(BLEND_ADD) 
+		self.modelb:SetBlendMode(BLEND_ADD) 
 		self.model:SetBrightness(0.1)
 		self.modelb:SetBrightness(0.3)
 	end

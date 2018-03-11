@@ -56,6 +56,7 @@ function ENT:SetModel(mdl,scale)
 	self:SetParameter(VARTYPE_MODELSCALE,scale)
 	
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
+	model:SetRenderOrder(1)
 	model:SetModel(mdl)   
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 

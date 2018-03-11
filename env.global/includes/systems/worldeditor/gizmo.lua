@@ -16,8 +16,10 @@ end
 function gizmometa:StartDrag(part)
 	if not self.GIZMO_DRAG then 
 
-		if input.KeyPressed(KEYS_SHIFTKEY) and self.mnode then
-			editor.Copy(self.mnode)
+		if input.KeyPressed(KEYS_SHIFTKEY) then
+			for k,v in pairs(editor.selected) do
+				editor.Copy(k)
+			end
 			--part = editor.Copy(part)
 			--editor.Select(part)
 		end 
@@ -40,6 +42,21 @@ function gizmometa:StartDrag(part)
 		hook.Add("main.predraw","GIZMO_DRAG",function() self:DragUpdate() end)
 	end
 end
+
+function gizmometa:Shift(oldpos,newpos)
+	local shift = newpos - oldpos
+	for k,v in pairs(editor.selected) do
+		k:SetPos(k:GetPos()+shift)
+	end
+	--if lsn then lsn:SetPos(newPos) end
+end
+function gizmometa:Rotate(axis,shift) 
+	for k,v in pairs(editor.selected) do
+		k:TRotateAroundAxis(axis,shift)  
+	end
+	--if lsn then lsn:SetPos(newPos) end
+end
+
 function gizmometa:DragUpdate()
 	local G = self.GIZMO_DRAG
 	if G then  
@@ -68,7 +85,12 @@ function gizmometa:DragUpdate()
 		local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
 		local dir = camera:Unproject(mpos):Normalized()
 		--local dir = (editor.curtrace.Position - campos):Normalized()
-		local lsn = self.mnode
+		local lsn = editor.selected:First()
+		if not lsn then return nil end
+		
+		local first = self.first or false
+		local spos = self._startpos or Vector(0,0,0)
+		local dpos = self._startlen or 0
 		if constr then
 		
 			local W =lsn:GetParent():GetLocalSpace(lsn)
@@ -80,14 +102,21 @@ function gizmometa:DragUpdate()
 				
 				local hit, pos = pp:Intersect(campos, dir)
 				if hit then  
-					local newPos = startnodepos - startpos + pos
+					if first then
+						self._startpos = pos
+						spos = pos
+					end
+					
+					local newPos = startnodepos+ pos - spos
 					if snap then
 						newPos = Vector(math.round(newPos.x,3),math.round(newPos.y,3),math.round(newPos.z,3))
 					end
+					
+					local oldPos = self.parts[1]:GetPos()
 					for k,v in pairs(self.parts) do
 						v:SetPos(newPos)
-					end
-					if lsn then lsn:SetPos(newPos) end
+					end 
+					self:Shift(oldPos, newPos)
 				end
 			else  
 				--local pp = Plane(startpos, startpos + constr, startpos + up*100)
@@ -113,18 +142,24 @@ function gizmometa:DragUpdate()
 				local pp = Plane(startpos, startpos + constr, startpos + up*100) 
 				local pp2 = Plane(startpos, constr)
 				local hit, pos = pp:Intersect(campos, dir)
-				if hit then
+				if hit then 
 					local rps = pp2:DotCoordinate(pos) 
+					if first then
+						self._startlen = rps
+						dpos = rps 
+					end
 					--local newPos =   rps---campos
 			--MsgN(pos)
-					local newPos = startnodepos + constr * rps *1000000 / (startscale*startscale)
+					local newPos = startnodepos + constr * (rps - dpos) *1000000 / (startscale*startscale)
 					if snap then
 						newPos = Vector(math.round(newPos.x,3),math.round(newPos.y,3),math.round(newPos.z,3))
 					end
+
+					local oldPos = self.parts[1]:GetPos()
 					for k,v in pairs(self.parts) do
 						v:SetPos(newPos)
-					end
-					if lsn then lsn:SetPos(newPos) end
+					end 
+					self:Shift(oldPos, newPos)
 				end
 			end
 		elseif axis then 
@@ -144,8 +179,7 @@ function gizmometa:DragUpdate()
 				for k,v in pairs(self.parts) do
 					v:TRotateAroundAxis(Waxis,mouseDiff2.x/100)
 				end
-				lsn:TRotateAroundAxis(Waxis,mouseDiff2.x/100) 
-				MsgN(mouseDiff2.x)
+				self:Rotate(Waxis,mouseDiff2.x/100) 
 			end
 		else
 			local pp = Plane(startpos, startpos + right*100, startpos + up*100)
@@ -153,7 +187,7 @@ function gizmometa:DragUpdate()
 			if hit then
 				local dist = (pos-startpos)*100
 				local ddist = dist.x+dist.y+dist.z
-				MsgN("sada",ddist)
+				--MsgN("sada",ddist)
 				local newScale = startscale
 				if sconstraint then 
 					newScale = startscale * (sconstraint*ddist+Vector(1,1,1))
@@ -196,11 +230,15 @@ function gizmometa:DragUpdate()
 		]]
 		
 		
+		if first then
+			self.first = false
+		end
 		 
 		if not input.leftMouseButton() then
 			self.GIZMO_DRAG = false
 			UnlockMouse()
 			editor.mode = false
+			self.first = true
 			hook.Remove("main.predraw", "GIZMO_DRAG")
 		end
 	end

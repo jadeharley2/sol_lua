@@ -37,7 +37,7 @@ function ENT:Spawn()
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
-	SpawnSO("map/01/01.json",space,Vector(0,0,0),0.75) 
+	local map = SpawnSO("map/01/01.json",space,Vector(0,0,0),0.75) 
 	--def:190000000
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(140,161,178)/255,190000000)
 	local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
@@ -178,14 +178,56 @@ function ENT:Spawn()
 	
 	SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
 
-		
+	--local terrain = map:AddComponent(CTYPE_CHUNKTERRAIN)  
+	--	
+	--terrain:SetRenderGroup(RENDERGROUP_LOCAL) 
+	--terrain:SetBlendMode(BLEND_OPAQUE) 
+	--terrain:SetRasterizerMode(RASTER_DETPHSOLID) 
+	--terrain:SetDepthStencillMode(DEPTH_ENABLED)  
+	--terrain:SetBrightness(1) 
+	--self.terrain = terrain
+	
+	
+	local body = ents.Create("planet")  
+	body:RemoveComponents(CTYPE_ORBIT)
+	body.radius = 1000000
+	body:SetName( "omgplanet") 
+	body:SetSeed(seed or 0)
+	body.mass = 0.33E24  
+	body.radius = 10000  
+	body:SetParameter( VARTYPE_RADIUS,body.radius) 
+	body:SetParameter(NTYPE_TYPENAME,"planet")
+	body:SetParent(space)
+	body:SetSizepower(body.radius*1.1)
+	body:SetScale(Vector(1,1,1)*(1/body.radius/10))
+	body:Spawn() 
+	body:SetPos(Vector(0.006709641, 0.001117634, 0.005824335)) 
+	body:Enter() 
+	body.surface.surface:SetRenderGroup(RENDERGROUP_LOCAL)
+	 
+	
+	
+	
+	
+	
+	
+	
 	if CLIENT then
 		local eshadow = ents.Create("test_shadowmap2")  
 		eshadow.light = light
 		eshadow:SetParent(ent) 
 		eshadow:Spawn() 
 		self.shadow = eshadow
+		 
+		self.cubemap = SpawnCubemap(space,Vector(0,0.0013627,0),512)
+		self.cubemap:RequestDraw()
 	end
+	
+	SpawnDC(space,Vector(0.1,0.1,0))
+	local d1 = SpawnDT("door/door2.json",space,Vector(0.1,0.03,0),Vector(90,0,0),0.1)
+	local d2 = SpawnDT("door/door2.json",space,Vector(-0.1,0.03,0),Vector(90,0,0),0.1)
+	d1.target = d2
+	d2.target = d1
 end
 
 function ENT:GetSpawn() 
@@ -213,12 +255,19 @@ function ENT:GetSpawn()
 		if user:GetParent()==space2 then
 			user:SetParent(space2:GetParent())
 			user:SetPos(space2:GetPos())
+			if user.model then user.model:SetUpdateRate(60) end
+			ModNodeMaterials(user,{FullbrightMode=false},true,true)
 		else
 			user:SetParent(space2)
 			user:SetPos(Vector(0,0,0))
+			if user.model then user.model:SetUpdateRate(10) end
+			ModNodeMaterials(user,{FullbrightMode=true},false,true)
 		end
 	end)
 	space2:AddFlag(FLAG_USEABLE) 
 
-	return self.space, Vector(0,0.01,0)
+	SpawnCONT("useables/container.json",space,Vector(0,0.1,0)) 
+	
+	 
+	return self.space, Vector(0,0.0003627,0)
 end

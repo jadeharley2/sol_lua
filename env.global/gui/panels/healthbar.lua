@@ -60,6 +60,8 @@ function PANEL:UpdateHealth(val,maxval)
 		self:SetVisible(true)
 		local lastval = self.lastval or 0 
 		local lastdelta = val - lastval
+		if lastdelta > 100 then lastdelta = 100 end
+		if lastdelta < -100 then lastdelta = -100 end
 		self.lastdelta = lastdelta
 		self.lastval = val
 		MsgN(lastdelta)

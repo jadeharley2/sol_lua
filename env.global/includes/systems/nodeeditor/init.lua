@@ -11,6 +11,7 @@ function nodeeditor.Disable()
 	nodeeditor._lv:Close()
 end
 
+console.AddCmd("nodeeditor", nodeeditor.Enable)
 ---test
 
 --render.SetRenderBounds(100,100,1000,1000)

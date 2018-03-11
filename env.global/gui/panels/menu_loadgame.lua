@@ -1,22 +1,6 @@
 PANEL.basetype = "menu_dialog"
 
-PANEL.LoadSingleplayer = function(id,game)
-	engine.PausePhysics() 
-	hook.Call("menu","loadscreen")
-	debug.Delayed(1,function() 
-		LoadWorld(id)   
-		
-		SpawnPlayerChar()  
-		--SetController('freecameracontroller')   
-		debug.Delayed(1,function() 
-			MAIN_MENU:SetWorldLoaded(true) 
-			hook.Call("menu") 
-			debug.Delayed(1,function() 
-				engine.ResumePhysics()
-			end)
-		end)
-	end)
-end
+ 
 
 function PANEL:Init()  
 	
@@ -54,10 +38,7 @@ function PANEL:Init()
 	sp_load:SetPos(150,-450)
 	sp_load:SetSize(50,20)
 	sp_load.OnClick = function()   
-		SAVEDGAME = sp_text:GetText()
-		--if LoadSave() then
-			self.LoadSingleplayer("testmap")
-		--end
+		LoadSingleplayer("testmap",sp_text:GetText())
 	end
 	self:SetupStyle(sp_load)
 	self:Add(sp_load)

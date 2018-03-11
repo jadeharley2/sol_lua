@@ -15,7 +15,7 @@ function SpawnParticles(parent,type,pos,time,size,speed)
 		end)
 	end
 	return e
-end  
+end   
 function SpawnParticlesCustom(parent,type,pos,time,size,speed)
 	time = time or 1 
 	local e = ents.Create("env_emitter")

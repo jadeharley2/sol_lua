@@ -79,5 +79,43 @@ function PANEL:Init()
 	
 	dirtree:FromTable(rtb)
 	
+	local mpanel = panel.Create()
+	mpanel:SetSize(40,40)
+	mpanel:SetColor(Vector(0.1,0.1,0.1))
+	mpanel:Dock(DOCK_TOP)
+	self:Add(mpanel)
+	
+	
+	local bsave = panel.Create("button")
+	bsave:SetSize(100,40)
+	bsave:SetText("Save")
+	bsave:Dock(DOCK_LEFT)
+	bsave.OnClick = function()
+		local cparent = GetCamera():GetParent()
+		if cparent then
+			local s = panel.Create("window_save")
+			s:SetTitle("Save node") 
+			s:SetButtons("Save","Back") 
+			s.OnAccept = function(s,name) engine.SaveNode(cparent, name) end
+			s:Show() 
+		end
+	end 
+	mpanel:Add(bsave)
+	 
+	local bload = panel.Create("button")
+	bload:SetSize(100,40)
+	bload:SetText("Load")
+	bload.OnClick = function() 
+		local cparent = GetCamera():GetParent() 
+		if cparent then
+			local s = panel.Create("window_save")
+			s:SetTitle("Load node") 
+			s:SetButtons("Load","Back") 
+			s.OnAccept = function(s,name) engine.LoadNode(cparent, name) end
+			s:Show() 
+		end 
+	end
+	bload:Dock(DOCK_LEFT)
+	mpanel:Add(bload)
 end 
 

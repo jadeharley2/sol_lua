@@ -48,13 +48,13 @@ function LoadMenu()
 	quickmenu:SetPos(0,-200) --+csize.x +csize.y 
 	quickmenu:Show()
 	
-	debugmenu = panel.Create("debug_panel_menu")   
-	debugmenu:Show()
 	
 	local wn = panel.Create("menu_main") 
 	wn:SetPos(0,0)  
 	wn:Show()
 	
+	debugmenu = panel.Create("debug_panel_menu")   
+	debugmenu:Show()
 	
 end
 
@@ -64,7 +64,7 @@ function ConnectTo(ip)
 	return network.Connect(ip)
 end
 function LoadWorld(id)
-	if not id and not SAVEDGAME then return error("world id unspecified") end
+	if not id and not SAVEDGAME then hook.Call("menu") return error("world id unspecified") end
 	
 	cam:SetUpdateSpace(true)
 	UNIid = id
@@ -142,6 +142,8 @@ function LoadWorld(id)
 	--cam:SetPos(targetpos)
 	cam:SetGlobalName("player_cam")
 	hook.Call("engine.location.loaded", cam,"local")
+	
+	return U
 end 
 function UnloadWorld()
 	if network.IsConnected() then
@@ -351,5 +353,31 @@ function OnLocationLoad(origin,gametype)
 		end 
 	end
 end
+
+function LoadSingleplayer(world_id,savegame_id) 
+
+	SAVEDGAME = savegame_id or false
+	
+	engine.PausePhysics() 
+	hook.Call("menu","loadscreen")
+	debug.Delayed(1,function() 
+		local U = LoadWorld(world_id)   
+		if U then
+			if U.OnPlayerSpawn then
+				U:OnPlayerSpawn()
+			else
+				SpawnPlayerChar()   
+			end
+			debug.Delayed(1,function() 
+				MAIN_MENU:SetWorldLoaded(true) 
+				hook.Call("menu") 
+				debug.Delayed(1,function() 
+					engine.ResumePhysics()
+				end)
+			end)
+		end
+	end)
+end
+
 hook.Add("main.startup","main",OnStartup)
 hook.Add("engine.location.loaded","main",OnLocationLoad)

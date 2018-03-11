@@ -3,6 +3,7 @@
 
 function ENT:Init()  
 	self:SetSpaceEnabled(false) 
+	self:SetDonotsave(true) 
 	self:SetSizepower(1000)
 end
 
@@ -68,6 +69,10 @@ function ENT:UpdatePos()
 			p = cp
 			MsgN("cp ",self, " to ",cp)
 		end
+		
+		
+		
+		
 		local light = self.light
 		if light then
 			local dir = p:GetLocalCoordinates(light):Normalized()
@@ -75,9 +80,32 @@ function ENT:UpdatePos()
 			self:SetPos(cpos +dir/p:GetSizepower()*1000)--*10
 			self:LookAt(-dir)
 			local sc = self.camera
+			
+			
 			if sc then
+				
+				local player = LocalPlayer()
+				if player and player.model then 
+					sc:AddForceEnabled(player.model) 
+					local spparts = player.spparts
+					local equipment = player.equipment
+					if spparts then
+						for k,v in pairs(spparts) do
+							sc:AddForceEnabled(v.model)
+						end
+					end
+					if equipment then
+						for k,v in pairs(equipment) do
+							if v.ent then 
+								sc:AddForceEnabled(v.ent.model)
+							end
+						end
+					end
+				end
+				
 				sc:RequestDraw()
 			end
 		end
+		
 	end
 end

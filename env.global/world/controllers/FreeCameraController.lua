@@ -57,9 +57,9 @@ function OBJ:Update()
 		if input.KeyPressed(KEYS_S) then result = result + Forward end
 		if input.KeyPressed(KEYS_D) then result = result - Right end
 		if input.KeyPressed(KEYS_A) then result = result + Right end
-		if input.KeyPressed(KEYS_SPACE) then result = result - Up end
-		if input.KeyPressed(KEYS_CONTROLKEY) then result = result + Up end
-
+		if input.KeyPressed(KEYS_R) then result = result - Up end
+		if input.KeyPressed(KEYS_F) then result = result + Up end
+ 
 		if result ~= Vector(0,0,0) then 
 			result = result:Normalized()
 		end

@@ -3,6 +3,7 @@
 
 function ENT:Init()  
 	self:SetSpaceEnabled(false) 
+	self:SetDonotsave(true) 
 	self:SetSizepower(1000)
 end
 
