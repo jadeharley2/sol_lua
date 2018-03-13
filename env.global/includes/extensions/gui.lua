@@ -64,3 +64,10 @@ function gui.FromTable(t)
 	end
 	return node
 end
+
+hook.Add("script.reload","panel", function(filename)
+	if string.starts(filename,"env.global/gui/panels/") then 
+		panel.LoadType(filename)
+		return true
+	end
+end)

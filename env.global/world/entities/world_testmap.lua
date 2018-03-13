@@ -188,22 +188,22 @@ function ENT:Spawn()
 	--self.terrain = terrain
 	
 	
-	local body = ents.Create("planet")  
-	body:RemoveComponents(CTYPE_ORBIT)
-	body.radius = 1000000
-	body:SetName( "omgplanet") 
-	body:SetSeed(seed or 0)
-	body.mass = 0.33E24  
-	body.radius = 10000  
-	body:SetParameter( VARTYPE_RADIUS,body.radius) 
-	body:SetParameter(NTYPE_TYPENAME,"planet")
-	body:SetParent(space)
-	body:SetSizepower(body.radius*1.1)
-	body:SetScale(Vector(1,1,1)*(1/body.radius/10))
-	body:Spawn() 
-	body:SetPos(Vector(0.006709641, 0.001117634, 0.005824335)) 
-	body:Enter() 
-	body.surface.surface:SetRenderGroup(RENDERGROUP_LOCAL)
+	--local body = ents.Create("planet")  
+	--body:RemoveComponents(CTYPE_ORBIT)
+	--body.radius = 1000000
+	--body:SetName( "omgplanet") 
+	--body:SetSeed(seed or 0)
+	--body.mass = 0.33E24  
+	--body.radius = 10000  
+	--body:SetParameter( VARTYPE_RADIUS,body.radius) 
+	--body:SetParameter(NTYPE_TYPENAME,"planet")
+	--body:SetParent(space)
+	--body:SetSizepower(body.radius*1.1)
+	--body:SetScale(Vector(1,1,1)*(1/body.radius/10))
+	--body:Spawn() 
+	--body:SetPos(Vector(0.006709641, 0.001117634, 0.005824335)) 
+	--body:Enter() 
+	--body.surface.surface:SetRenderGroup(RENDERGROUP_LOCAL)
 	 
 	
 	

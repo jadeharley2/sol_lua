@@ -38,7 +38,7 @@ function ENT:Spawn()
 		----[[
 		--- cloud layer 1
 		modelA:SetRenderGroup(RENDERGROUP_PLANET)
-		modelA:SetModel("engine/csphere_36_cylproj.SMD") 
+		modelA:SetModel("engine/csphere_36_cylproj.json") 
 		modelA:SetMaterial("textures/atmosphere/clouds.json") 
 		modelA:SetBlendMode(BLEND_ADD) 
 		modelA:SetRasterizerMode(RASTER_NODETPHSOLID) 
@@ -51,7 +51,7 @@ function ENT:Spawn()
 		
 		--- cloud layer 2
 		model:SetRenderGroup(RENDERGROUP_PLANET)
-		model:SetModel("engine/csphere_36_cylproj.SMD") 
+		model:SetModel("engine/csphere_36_cylproj.json") 
 		model:SetMaterial("textures/atmosphere/clouds.json") 
 		model:SetBlendMode(BLEND_ALPHA) 
 		model:SetRasterizerMode(RASTER_NODETPHSOLID) 
@@ -66,7 +66,7 @@ function ENT:Spawn()
 		---inverted cloud layer
 		
 		modelB:SetRenderGroup(RENDERGROUP_PLANET)
-		modelB:SetModel("engine/csphere_36_cylproj.SMD") 
+		modelB:SetModel("engine/csphere_36_cylproj.json") 
 		modelB:SetMaterial("textures/atmosphere/clouds.json") 
 		modelB:SetBlendMode(BLEND_ALPHA) 
 		modelB:SetRasterizerMode(RASTER_DETPHSOLID) 

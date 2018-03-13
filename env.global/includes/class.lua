@@ -1,5 +1,8 @@
-_CLASS = _CLASS or {}
-_CLASS_META = _CLASS_META or {}
+local reg = debug.getregistry()
+local _USERCLASS = reg._USERCLASS
+if not _USERCLASS then _USERCLASS = {} reg._USERCLASS = _USERCLASS end
+local _CLASS_META = reg.Userclass
+if not _CLASS_META then _CLASS_META = {} reg.Userclass = _CLASS_META end 
 
 function _CLASS_META:ReloadType(type)
 	local cname = string.lower(file.GetFileNameWE(type))
@@ -83,18 +86,27 @@ end
 _CLASS_META.__index = _CLASS_META
 
 function DefineClass(Name,Varname,Directory,Metatable)
-	local nc = _CLASS[Name] or {} 
+	local nc = _USERCLASS[Name] or {} 
 	nc.name = Name 
 	nc.varn = Varname
 	nc.dir = Directory
 	nc.meta = Metatable
 	nc.types = nc.types or {} 
 	setmetatable(nc,_CLASS_META)
-	_CLASS[Name] = nc
+	_USERCLASS[Name] = nc
 	if Metatable then
 		Metatable.__index = _CLASS_META_INDEX
 	end
 	nc:ScanDirectory()
 	
+	local luabasedDir = string.sub(Directory,5)
+	hook.Add("script.reload","class."..Name, function(filename)
+		--MsgN("check ",filename,luabasedDir,string.starts(filename,luabasedDir))
+		if string.starts(filename,luabasedDir) then 
+			local type = string.lower( file.GetFileNameWE(filename))
+			nc:AddType(type)
+			return true
+		end
+	end)
 	return nc
 end 

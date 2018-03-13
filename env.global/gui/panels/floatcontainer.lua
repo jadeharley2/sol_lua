@@ -47,6 +47,11 @@ function PANEL:SetScroll(pos)
 	local f = self.floater
 	f:SetPos(pos)
 end
+function PANEL:SetColor(col)
+	local f = self.inner
+	if f then f:SetColor(col) end
+	--self:SetColor(col)
+end
 
 
 function PANEL:MouseEnter() 

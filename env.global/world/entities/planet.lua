@@ -14,7 +14,7 @@ function ENT:Spawn()
 	
 	local model = self:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	model:SetModel("engine/csphere_36_cylproj.SMD") 
+	model:SetModel("engine/csphere_36_cylproj.json") 
 	model:SetMaterial("textures/space/distanceplanet.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 

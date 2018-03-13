@@ -11,7 +11,7 @@ function chareditor.Disable()
 	nodeeditor._lv:Close() 
 end
 
-console.AddCmd("chareditor", chareditor.Enable)
+console.AddCmd("ed_char", chareditor.Enable)
 ---test
 
 --render.SetRenderBounds(100,100,1000,1000)

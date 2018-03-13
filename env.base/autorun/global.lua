@@ -109,4 +109,31 @@ function isstring(arg) return type(arg) == "string" end
 function isnumber(arg) return type(arg) == "number" end
 function isboolean(arg) return type(arg) == "boolean" end
 function isfunction(arg) return type(arg) == "function" end
+function isuserdata(arg) return type(arg) == "userdata" end
+
+function UniversalSort(a,b)
+	local a_type = type(a)
+	local b_type = type(b)
+	if(a_type=="string") then 
+		if(b_type=="string") then
+			return string.lower(a)<string.lower(b)
+		else
+			return false
+		end
+	else
+		if(b_type=="string") then
+			return true
+		else
+			return b>a
+		end
+	end
+end
+
+
+function DeclareEnumValue(type,name,id)
+	type = string.upper(type)
+	local key = string.upper(type.."_"..name)
+	_G[key] = id
+	debug.AddAPIInfo("/"..type.."_/"..key,id)
+end
 

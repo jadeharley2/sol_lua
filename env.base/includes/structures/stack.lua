@@ -31,6 +31,9 @@ end
 function stack_meta:Peek()
 	return self.s[1]
 end
+function stack_meta:Clear()
+	self.s = {}
+end
 
 stack_meta.__index = stack_meta
 stack_meta.__newindex = stack_meta

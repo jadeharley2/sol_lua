@@ -73,3 +73,16 @@ end
 local AI_TASK_META = AI_TASK_META or {}
 
 
+            
+debug.AddAPIInfo("/userclass/Ai",{
+	AddReaction={_type="function",_arguments={
+		{_name="id",_valuetype="number|string"},
+		{_name="condition",_valuetype="function"},
+		{_name="action",_valuetype="function"},
+		{_name="tag",_valuetype="any"},
+	}},
+	React={_type="function",_returns={{_valuetype="boolean"}}},
+	Init={_type="function"},
+	Update={_type="function"},
+	RunTaskStep={_type="function"},
+})

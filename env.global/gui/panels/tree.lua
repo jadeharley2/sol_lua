@@ -29,6 +29,7 @@ function PANEL:Init()
 	self:Add(ff_grid)
 	ff_grid_floater.level = 0
 	self.root = ff_grid_floater
+	self.grid = ff_grid
 	--local tbl = file.GetFileTree("forms/characters/")
 	--PrintTable(tbl)
 	--self:FromTable(tbl,self.root)
@@ -37,22 +38,24 @@ function PANEL:SetTableType(type)
 	self.tabletype = type
 end
 --PANEL:Clear() - clear all elements
-function PANEL:FromTable(tbl,parent) 
+function PANEL:FromTable(tbl,parent,clickfn) 
 	parent = parent or self.root
 	local clevel = parent.level + 1
 	local tabletype = self.tabletype or 1
 	--if parent then self:Clear() end
+	local clickfn = clickfn or function(btn) self:ItemClick(btn) end
+	
 	local subs = {}
 	if tabletype==1 then
 		for k,v in pairs(tbl) do
-			local nod = self:AddItem(k,parent,v)
+			local nod = self:AddItem(k,parent,v,clickfn)
 			nod.level = clevel
 			subs[#subs+1] = nod 
 		end
 	else--if tabletype == 2 then
 		for k,v in ipairs(tbl) do 
 			if k > 1 then
-				local nod = self:AddItem(v[1],parent,v)
+				local nod = self:AddItem(v[1],parent,v,clickfn)
 				nod.level = clevel
 				subs[#subs+1] = nod 
 			end
@@ -77,7 +80,8 @@ function PANEL:Collapse(node)
 		self:UpdateLayout() 
 	end
 end 
-function PANEL:AddItem(text,parent,value) 
+function PANEL:AddItem(text,parent,value,clickfn) 
+	local vistbl = istable(value)
 	local tabletype = self.tabletype or 1
 	--MsgN("add item: ",text," to ",parent)
 	local new_item = panel.Create()
@@ -85,7 +89,7 @@ function PANEL:AddItem(text,parent,value)
 	--new_item:SetText("-"..tostring(text))
 	new_item:SetColor(Vector(0.5,0.5,0.5))
 	new_item:Dock(DOCK_TOP)
-	new_item.tag = tag
+	if vistbl then new_item.tag = value.tag end
 	
 	new_text = panel.Create("button")
 	---new_text:SetFont(testDFont)
@@ -103,16 +107,19 @@ function PANEL:AddItem(text,parent,value)
 	parent = parent or self.root
 	parent:Add(new_item)
 	
-	if istable(value) and value.OnClick then
+	if vistbl and value.OnClick then
 		new_text.OnClick = value.OnClick
+	else
+		new_text.OnClick = clickfn
 	end
 	
-	if istable(value) and (tabletype==1 or #value>1) then 
+	if vistbl and (tabletype==1 or #value>1) then 
 		expand = panel.Create("button")
 		--
 		
 		expand:SetSize(20,20) 
 		expand:SetText("+")
+		expand:SetTextAlignment(ALIGN_CENTER)
 		expand:SetColorAuto(Vector(0.1,0.5,0.3))
 		expand:Dock(DOCK_LEFT)
 		expand.cont = false
@@ -125,7 +132,7 @@ function PANEL:AddItem(text,parent,value)
 				b:SetColorAuto(Vector(0.1,0.5,0.3))
 				b.cont = false
 			else
-				self:FromTable(b.value,b.item) 
+				self:FromTable(b.value,b.item,clickfn) 
 				b:SetColorAuto(Vector(0.5,0.3,0.1))
 				b:SetText("-")
 				b.cont = true
@@ -165,4 +172,9 @@ end
 function PANEL:MouseEnter() 
 end
 function PANEL:MouseLeave() 
+end
+function PANEL:ItemClick(item)
+	if self.OnItemClick then
+		self:OnItemClick(item:GetParent())
+	end
 end

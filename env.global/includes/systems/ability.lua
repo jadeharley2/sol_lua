@@ -99,3 +99,9 @@ function isability(obj)
 	return ab_class:IsBelongs(obj)
 end
             
+debug.AddAPIInfo("/userclass/Ability",{
+	Cast={_type="function",_arguments={{_name="caster",_valuetype="Entity"}},_returns={{_name="successful",_valuetype="boolean"}}},
+	Dispel={_type="function"},
+	Ready={_type="function"},
+	CastAnimation={_type="function",_arguments={{_name="caster",_valuetype="Entity"}}},
+})

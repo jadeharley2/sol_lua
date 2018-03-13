@@ -31,7 +31,7 @@ function ability:End(caster)
 		self.spelltarget = nil
 	end
 end
-
+   
 function ability:Swap(caster,target)   
 	if not caster or not target then return false end 
 	local cai = caster.controller

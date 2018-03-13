@@ -1,29 +1,50 @@
 MOVETYPE_IDLE = 0
-MOVETYPE_WALK = 1
+MOVETYPE_WALK = 1 
 MOVETYPE_RUN = 2
 MOVETYPE_SWIM = 3
 MOVETYPE_FLY = 4
+ 
+DeclareEnumValue("event","DAMAGE",					80001) 
+DeclareEnumValue("event","SET_VEHICLE",				80002) 
 
-EVENT_DAMAGE = 80001
-EVENT_SET_VEHICLE = 80002
+DeclareEnumValue("event","HEALTH_CHANGED",			81003) 
+DeclareEnumValue("event","MAXHEALTH_CHANGED",		81004) 
+DeclareEnumValue("event","DEATH",					81005) 
+DeclareEnumValue("event","SPAWN",					81006) 
+DeclareEnumValue("event","ACTOR_JUMP",				81007) 
+DeclareEnumValue("event","CHANGE_CHARACTER",		81008) 
+DeclareEnumValue("event","TOOL_DROP",				81011) 
 
-EVENT_HEALTH_CHANGED = 81003
-EVENT_MAXHEALTH_CHANGED = 81004
-EVENT_DEATH = 81005
-EVENT_SPAWN = 81006
-EVENT_ACTOR_JUMP = 81007
-EVENT_CHANGE_CHARACTER = 81008
-EVENT_TOOL_DROP = 81011
+DeclareEnumValue("event","RESPAWN_AT",				82033) 
+DeclareEnumValue("event","STATE_CHANGED",			82034) 
+DeclareEnumValue("event","GIVE_ITEM",				82066) 
+DeclareEnumValue("event","PICKUP_ITEM",				82067) 
 
-EVENT_RESPAWN_AT = 82033
-EVENT_STATE_CHANGED = 82034
-EVENT_GIVE_ITEM = 82066
-EVENT_PICKUP_ITEM = 82067
+DeclareEnumValue("event","ABILITY_CAST",			83001) 
+DeclareEnumValue("event","EFFECT_APPLY",			83002) 
+DeclareEnumValue("event","GIVE_ABILITY",			83003) 
+DeclareEnumValue("event","TAKE_ABILITY",			83004) 
 
-EVENT_ABILITY_CAST = 83001
-EVENT_EFFECT_APPLY = 83002
-EVENT_GIVE_ABILITY = 83003
-EVENT_TAKE_ABILITY = 83004
+--EVENT_DAMAGE = 80001
+--EVENT_SET_VEHICLE = 80002
+--
+--EVENT_HEALTH_CHANGED = 81003
+--EVENT_MAXHEALTH_CHANGED = 81004
+--EVENT_DEATH = 81005
+--EVENT_SPAWN = 81006
+--EVENT_ACTOR_JUMP = 81007
+--EVENT_CHANGE_CHARACTER = 81008
+--EVENT_TOOL_DROP = 81011
+--
+--EVENT_RESPAWN_AT = 82033
+--EVENT_STATE_CHANGED = 82034
+--EVENT_GIVE_ITEM = 82066
+--EVENT_PICKUP_ITEM = 82067
+--
+--EVENT_ABILITY_CAST = 83001
+--EVENT_EFFECT_APPLY = 83002
+--EVENT_GIVE_ABILITY = 83003
+--EVENT_TAKE_ABILITY = 83004
 
 
 function ENT:Init()  
@@ -1660,6 +1681,12 @@ ENT.editor = {
 			SetLocalPlayer(ent)
 			SetController('actorcontroller') 
 		end},
-	}, 
+	},  
 	
 }
+
+debug.AddAPIInfo("/userclass/Entity/base_actor",{
+	SetMaxHealth={_type="function",_arguments={{_name="value",_valuetype="number"}}},
+	SetSkin={_type="function",_arguments={{_name="str",_valuetype="string"}}},
+	
+})

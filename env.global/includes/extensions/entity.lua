@@ -15,7 +15,12 @@ function tableq(t)
 		end, t, 0
 	end
 end
-
-
+ 
+hook.Add("script.reload","entity", function(filename)
+	if string.starts(filename,"env.global/world/entities/") then 
+		ents.LoadType(filename)
+		return true
+	end
+end)
 
 Entity = ents.GetById

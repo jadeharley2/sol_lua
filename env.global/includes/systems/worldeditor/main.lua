@@ -1,6 +1,12 @@
 
 editor = editor or {} 
 editor.selected = editor.selected or Set()
+editor.undo = editor.undo or UndoManager(50)
+editor.action_select = function(node) editor.selected:Add(node) editor.AddSelectionModel(node) end
+editor.action_deselect = function(node) editor.selected:Remove(node) editor.RemoveSelectionModel(node) end
+editor.action_move = function(from,to) node:SetPos(to) end 
+editor.action_moveundo = function(from,to) node:SetPos(from) end 
+
 function editor.Run()
 	editor.Stop()
 	--engine.PausePhysics()
@@ -50,6 +56,13 @@ end
 function editor.Toggle()
 	if editor.node then editor.Stop() 
 	else editor.Run() end
+end
+
+function editor.Undo()
+	MsgN("undo:",editor.undo:Undo())
+end
+function editor.Redo()
+	MsgN("redo:",editor.undo:Redo()) 
 end
 
 function editor.MouseDown() 
@@ -136,6 +149,14 @@ function editor.KeyDown()
 		end
 		editor.selected:Clear()
 		editor.ClearSelectionModels() 
+	elseif (input.KeyPressed(KEYS_Z)) then  
+		--if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+			editor.Undo()
+		--end
+	elseif (input.KeyPressed(KEYS_Y)) then  
+		--if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+			editor.Redo()
+		--end
 	end
 end
 
@@ -209,7 +230,7 @@ function editor.Update()
 		gizmo:SetPos(gizmo.mnode:GetPos())
 		local s = false
 		for k,v in pairs(editor.selected) do s = k break end 
-		if s then
+		if s and IsValidEnt(s) then
 			local dist = s:GetPos():Distance(GetCamera():GetPos())*100
 			gizmo:Rescale(dist)
 		end
@@ -236,15 +257,22 @@ function editor.Select(node,multiselect)
 		if editor.selected:Contains(node) then
 			editor.selected:Remove(node)
 			editor.RemoveSelectionModel(node) 
+			editor.undo:Add(editor.action_deselect, editor.action_select, node)
 		else
 			editor.selected:Add(node)
 			editor.AddSelectionModel(node) 
+			editor.undo:Add(editor.action_select, editor.action_deselect, node)
 		end
 	else
 		editor.selected:Clear()
 		editor.selected:Add(node)
 		editor.ClearSelectionModels() 
 		editor.AddSelectionModel(node) 
+		
+		local tbl = {} for k,v in pairs(editor.selected) do tbl[#tbl+1] = k end
+		editor.undo:Add(
+			function(a,b) editor.action_deselect(a) for k,v in pairs(b) do MsgN(k,v) editor.action_select(v) end end, 
+			function(a) editor.ClearSelectionModels() editor.action_select(a) end, node,tbl)
 	end
 	
 	MsgN("sadsa")

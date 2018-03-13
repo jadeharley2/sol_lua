@@ -35,7 +35,7 @@ function hook.Call(eventid,...)
 		for k,v in pairs(case.functions) do
 			local result = v(...)
 			if result then
-				break
+				return result
 			end
 		end
 	end

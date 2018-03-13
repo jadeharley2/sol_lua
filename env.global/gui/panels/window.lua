@@ -1,46 +1,47 @@
-GUI_PANEL_GLOBALS = GUI_PANEL_GLOBALS or {}
-local CURRENT_WINDOW_RESIZE = false
-local CURRENT_WINDOW_RESIZE_POINTPOS = false
-local CURRENT_WINDOW_RESIZE_SIZE = false
-local CURRENT_WINDOW_RESIZE_POS = false
-local CURRENT_WINDOW_RESIZE_DIR = false
-local function cwresize()
-	local window = CURRENT_WINDOW_RESIZE
+
+PANEL.STATIC = PANEL.STATIC or {}
+local static = PANEL.STATIC 
+static.CURRENT_WINDOW_RESIZE = false
+static.CURRENT_WINDOW_RESIZE_POINTPOS = false
+static.CURRENT_WINDOW_RESIZE_SIZE = false
+static.CURRENT_WINDOW_RESIZE_POS = false
+static.CURRENT_WINDOW_RESIZE_DIR = false
+function static.cwresize()
+	local window = static.CURRENT_WINDOW_RESIZE
 	if window then 
-		local dir = CURRENT_WINDOW_RESIZE_DIR
+		local dir = static.CURRENT_WINDOW_RESIZE_DIR
 		local posdir = Point(dir.x,-dir.y)
 		local mousePos = input.getMousePosition() 
-		local mouseDiff = mousePos - CURRENT_WINDOW_RESIZE_POINTPOS 
-		local newSize = CURRENT_WINDOW_RESIZE_SIZE + mouseDiff * dir
+		local mouseDiff = mousePos - static.CURRENT_WINDOW_RESIZE_POINTPOS 
+		local newSize = static.CURRENT_WINDOW_RESIZE_SIZE + mouseDiff * dir
 		window:SetSize(newSize)
 		
-		local rrs = window:GetSize() - CURRENT_WINDOW_RESIZE_SIZE
-		local newPos = CURRENT_WINDOW_RESIZE_POS + rrs * posdir
+		local rrs = window:GetSize() - static.CURRENT_WINDOW_RESIZE_SIZE
+		local newPos = static.CURRENT_WINDOW_RESIZE_POS + rrs * posdir
 		window:SetPos(newPos)
 		if not input.leftMouseButton() then
-			CURRENT_WINDOW_RESIZE = false
+			static.CURRENT_WINDOW_RESIZE = false
 			UnlockMouse()
 			hook.Remove("main.predraw", "gui.window.resize")
 		end
 	end
 end
-local function cwmove()
-	local window = CURRENT_WINDOW_MOVE
+function static.cwmove()
+	local window = static.CURRENT_WINDOW_MOVE
 	if window then  
 		local mousePos = input.getMousePosition() 
-		local mouseDiff = mousePos - CURRENT_WINDOW_MOVE_POINTPOS   
+		local mouseDiff = mousePos - static.CURRENT_WINDOW_MOVE_POINTPOS   
 		local mouseDiffF = Point(mouseDiff.x*2,mouseDiff.y*-2)
-		local newPos = CURRENT_WINDOW_MOVE_POS + mouseDiffF
+		local newPos = static.CURRENT_WINDOW_MOVE_POS + mouseDiffF
 		window:SetPos(newPos)
 		if not input.leftMouseButton() then
-			CURRENT_WINDOW_MOVE = false
+			static.CURRENT_WINDOW_MOVE = false
 			UnlockMouse()
 			hook.Remove("main.predraw", "gui.window.move")
 		end
 	end
 end
-GUI_PANEL_GLOBALS.cwmove = cwmove
-GUI_PANEL_GLOBALS.cwresize = cwresize
+
 
 function PANEL:Init() 
 	
@@ -68,24 +69,24 @@ function PANEL:Init()
 		gui.style:GetColor("HeaderHovered"))
 	
 	local sResize = function(s)
-		if not CURRENT_WINDOW_RESIZE then
+		if not static.CURRENT_WINDOW_RESIZE then
 			if not self.fixedsize then
-				CURRENT_WINDOW_RESIZE_SIZE = self:GetSize()
-				CURRENT_WINDOW_RESIZE_POS = self:GetPos()
-				CURRENT_WINDOW_RESIZE_POINTPOS =  input.getMousePosition()
-				CURRENT_WINDOW_RESIZE_DIR = s.dir
-				CURRENT_WINDOW_RESIZE = self
-				hook.Add("main.predraw", "gui.window.resize", cwresize)
+				static.CURRENT_WINDOW_RESIZE_SIZE = self:GetSize()
+				static.CURRENT_WINDOW_RESIZE_POS = self:GetPos()
+				static.CURRENT_WINDOW_RESIZE_POINTPOS =  input.getMousePosition()
+				static.CURRENT_WINDOW_RESIZE_DIR = s.dir
+				static.CURRENT_WINDOW_RESIZE = self
+				hook.Add("main.predraw", "gui.window.resize", static.cwresize)
 			end
 		end
 	end
 	local sMove = function(s) 
-		if not CURRENT_WINDOW_MOVE then
+		if not static.CURRENT_WINDOW_MOVE then
 			if not self.fixedpos then
-				CURRENT_WINDOW_MOVE_POS = self:GetPos()
-				CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
-				CURRENT_WINDOW_MOVE = self
-				hook.Add("main.predraw", "gui.window.move", cwmove)
+				static.CURRENT_WINDOW_MOVE_POS = self:GetPos()
+				static.CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
+				static.CURRENT_WINDOW_MOVE = self
+				hook.Add("main.predraw", "gui.window.move", static.cwmove)
 			end
 		end
 	end
