@@ -4,17 +4,41 @@ function PANEL:Init()
 	self.lines = {}
 	self.reverse = false
 	self:SetColor(Vector(0,0,0))
+	local floater = panel.Create() 
+	floater:SetColor(Vector(0,0.1,0))
+	floater:SetTextOnly(true)
+	self.floater = floater
+	
+	
+	
+	local ff_grid = panel.Create("floatcontainer") 
+	ff_grid:Dock(DOCK_FILL)
+	ff_grid:SetScrollbars(1) 
+	ff_grid:SetFloater(floater) 
+	ff_grid:SetColor(Vector(0.1,0,0))
+	ff_grid:SetTextOnly(true)
+	ff_grid.inner:SetTextOnly(true)
+	self.ff_grid = ff_grid
+	self:Add(ff_grid)
+	
 	self:Refresh() 
+	
 end
 
 function PANEL:Refresh() 
 	local lns = self.lns or {}
 	local ss = self:GetSize()
-	local lineheight = self.lineheight or 50
-	local linecount = math.floor(ss.y/(lineheight/2))
 	local lines = self.lines
+	local lineheight = self.lineheight or 50
+	local linecount = math.min(#lines,self.maxlinecount or 100) --math.floor(ss.y/(lineheight/2))
 	local alpha = self.alpha or 1
 	local textonly = not (self.hasback or false)
+	local floater = self.floater
+	
+	floater:SetSize(ss.x,lineheight/2*linecount)
+	
+	
+	
 	for k,v in pairs(self.lns or {}) do
 		v:SetText("")
 		v:SetSize(0,0)
@@ -41,7 +65,7 @@ function PANEL:Refresh()
 			
 			v:SetPos(0, location)
 			v:SetAlpha(alpha)
-			self:Add(v)
+			floater:Add(v)
 			
 		else
 		
@@ -82,13 +106,18 @@ function PANEL:Refresh()
 					self:OnSelect(lpanel)
 				end
 			end
-			self:Add(lpanel)
+			floater:Add(lpanel)
 			lns[k] = lpanel
 		end
 	end
 	self.lns = lns
 end 
-function PANEL:SetAlpha2(a) 
+
+function PANEL:SetAlpha(a)
+	--Msg("asd!")
+	self.base.SetAlpha(self,a)
+	self.ff_grid:SetAlpha(a)
+	self.floater:SetAlpha(a)
 	self.alpha = a
 	if self.lns then
 		for k,v in pairs(self.lns) do
@@ -103,4 +132,10 @@ end
 function PANEL:MouseEnter() 
 end
 function PANEL:MouseLeave() 
+end
+function PANEL:ScrollToBottom()
+	self.ff_grid:Scroll(9999999)
+end
+function PANEL:ScrollToTop()
+	self.ff_grid:Scroll(-9999999)
 end

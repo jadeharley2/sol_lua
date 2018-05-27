@@ -3,6 +3,8 @@
 LOBBY = ents.Create()
 LOBBY:SetSizepower(1000)
 LOBBY:SetSeed(1000003)
+LOBBY:SetName("lobby")
+LOBBY:SetGlobalName("lobby")
 LOBBY:Spawn()
 --network.AddNode(LOBBY)
 
@@ -18,6 +20,12 @@ if SERVER then
  
 
 	local onClientConnected = function(client, id)  
+		hook.Call("player.load", client)
+	end
+		
+	local onClientFinishedLoad = function(client, id) 
+		client:SendLua("console.Call('lua_reloadents')") 
+		client:SendStartupNodes()
 		local actor = ents.Create("base_actor")
 	
 		actor:AddFlag(FLAG_PLAYER)
@@ -26,9 +34,9 @@ if SERVER then
 		actor:SetSeed(120000+id)
 		actor:SetPos(GLOBAL_SPAWN_pos)
 		actor.player = client
-		hook.Call("player.prespawn", actor)
 		actor:Create()  
 		network.AddNodeImmediate(actor)
+		hook.Call("player.prespawn", actor)
 		
 		player_list[id] = { 
 			["client"] = client,
@@ -48,6 +56,7 @@ if SERVER then
 	end
 
 	hook.Add("server.client.connected", "playerspawn",onClientConnected)
+	hook.Add("server.client.loadfinish", "playerspawn",onClientFinishedLoad)
 	hook.Add("server.client.disconnected", "playerspawn",onClientDisconnected)
 
 	function player.GetAll()

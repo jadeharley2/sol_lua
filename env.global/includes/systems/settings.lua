@@ -19,6 +19,13 @@ SETTINGS_VALUES = {
 					return math.Clamp(n,128,8192) end},
 				{type = "number", name = "FOV", var = "engine.fov", default = 90, proc = function(n)
 					return math.Clamp(n,45,110) end},
+				--{type = "separator", name = "PostProcessing"},
+				{type = "bool", name = "PostProcess enabled", var = "engine.pp_enabled", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessEnabled(v) end},
+				{type = "bool", name = "SSAO", var = "engine.pp_ssao", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAO(v) end},
+				{type = "number", name = "SSAO samples", var = "engine.pp_ssao_samples", default = 128, proc = function(n)
+					return math.Clamp(n,16,256) end, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAOSamples(v) end},
+				{type = "bool", name = "SSLR", var = "engine.pp_sslr", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSLR(v) end},
+				{type = "bool", name = "Bloom enabled", var = "engine.pp_bloom", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessBloom(v) end},
 			}
 		},
 		{
@@ -78,4 +85,18 @@ function settings.SetString(name,value)
 end
 function settings.Save() 
 	profile.Save()
+end
+
+function settings.Apply() 
+	for k2,v2 in pairs(SETTINGS_VALUES.List) do
+		if v2.apply then
+			local val = nil 
+			if v2.type == "bool" then
+				val = settings.GetBool(v2.var,v2.default) 
+			elseif v2.type =="number" then
+				val = settings.GetNumber(v2.var,v2.default) 
+			end
+			if val ~= nil then v2.apply(val) Msg("s_apply ",v2.name," to ",val) end 
+		end
+	end 
 end

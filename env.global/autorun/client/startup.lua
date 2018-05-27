@@ -1,9 +1,10 @@
 if SERVER then return nil end
 
-SAVEDGAME = false
+SAVEDGAME = false 
 
 	-- lua_run  TACTOR:GetParentWith(NTYPE_STARSYSTEM):ReloadSkybox()
 function LoadMenu() 
+	local t_start = CurTime()
 	gui.SetStyle("default")
 	
 	--
@@ -35,18 +36,6 @@ function LoadMenu()
 	--rdb:SetTitle("Render")
 	--rdb:Show()
 	
-	healthbar = panel.Create("healthbar")  
-	--healthbar:SetPos(-1610,-980) --+csize.x +csize.y 
-	healthbar:Show()
-	healthbar:UpdateHealth()
-	
-	infobar = panel.Create("infobar")  
-	infobar:SetPos(0,-80) --+csize.x +csize.y 
-	infobar:Show()
-	
-	quickmenu = panel.Create("quickmenu")  
-	quickmenu:SetPos(0,-200) --+csize.x +csize.y 
-	quickmenu:Show()
 	
 	
 	local wn = panel.Create("menu_main") 
@@ -56,6 +45,7 @@ function LoadMenu()
 	debugmenu = panel.Create("debug_panel_menu")   
 	debugmenu:Show()
 	
+	MsgN("Menu Load finished in:",CurTime()-t_start,"seconds. Total load time:",CurTime())
 end
 
 -- main menu shortcuts
@@ -65,7 +55,7 @@ function ConnectTo(ip)
 end
 function LoadWorld(id)
 	if not id and not SAVEDGAME then hook.Call("menu") return error("world id unspecified") end
-	
+	local cam = GetCamera()
 	cam:SetUpdateSpace(true)
 	UNIid = id
 	
@@ -150,6 +140,7 @@ function UnloadWorld()
 		network.Disconnect()
 	end
 	SetController()  
+	local cam = GetCamera()
 	cam:SetParent(LOBBY)
 	
 	if U then
@@ -171,6 +162,7 @@ function CreateTestShadowMapRenderer(ent, pos)
 	return e
 end
 function SpawnPlayerChar(posoverride)  
+	local cam = GetCamera()
 	local ship = SPAWNORIGIN or cam:GetParent()
 	local targetpos = posoverride or SPAWNPOS -- Vector(0.003537618,0.01925059,0.2446546)
 	local targetpos2 = Vector(0.003008218, -0.07939442, -0.02011958)
@@ -319,30 +311,29 @@ end
 
 -- startup function 
 function OnStartup()
+ 
+	local cam = GetCamera() or ents.CreateCamera()
+	cam:SetParent(LOBBY)
+	cam:Spawn()
 
-	if not cam then
-		cam = ents.CreateCamera()
-		cam:SetParent(LOBBY)
-		cam:Spawn()
-
-		AddOrigin(cam)
-		SetCamera(cam) 
-		
-		
-		render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_BACKGROUND) 
-		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)  
-		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
-		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
-		render.SetGroupMode(RENDERGROUP_LOCAL,RENDERMODE_ENABLED) 
-		
+	AddOrigin(cam)
+	SetCamera(cam) 
+	
+	
+	render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_BACKGROUND) 
+	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)  
+	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupMode(RENDERGROUP_LOCAL,RENDERMODE_ENABLED) 
+	
+	cam:SetFOV(settings.GetNumber("engine.fov"))
+	settings.Apply() 
+	
+	hook.Add("settings.changed","camera.fov_update",function() 
 		cam:SetFOV(settings.GetNumber("engine.fov"))
-		
-		hook.Add("settings.changed","camera.fov_update",function() 
-			cam:SetFOV(settings.GetNumber("engine.fov"))
-		end) 
-		
-		LoadMenu()
-	end
+	end) 
+	
+	LoadMenu()  
 end
 function OnLocationLoad(origin,gametype) 
 	MsgN("Location loaded")
@@ -357,7 +348,7 @@ end
 function LoadSingleplayer(world_id,savegame_id) 
 
 	SAVEDGAME = savegame_id or false
-	
+	local load_timer = debug.Timer(true)
 	engine.PausePhysics() 
 	hook.Call("menu","loadscreen")
 	debug.Delayed(1,function() 
@@ -368,11 +359,16 @@ function LoadSingleplayer(world_id,savegame_id)
 			else
 				SpawnPlayerChar()   
 			end
+			
+			load_timer:Stop()
+			MsgN("World loaded in: "..tostring(load_timer:ElapsedMs()).."ms")
+			MsgN("")
+			
 			debug.Delayed(1,function() 
 				MAIN_MENU:SetWorldLoaded(true) 
 				hook.Call("menu") 
 				debug.Delayed(1,function() 
-					engine.ResumePhysics()
+					engine.ResumePhysics() 
 				end)
 			end)
 		end

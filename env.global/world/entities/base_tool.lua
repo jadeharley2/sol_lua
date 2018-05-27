@@ -1,4 +1,6 @@
-EVENT_TOOL_FIRE = 90901 
+ 
+DeclareEnumValue("event","TOOL_FIRE",					90901) 
+
 local linear_ray = LoadTexture("textures/tile/linear/ray.png")
 function SpawnWeapon(type,parent,pos,seed)
 
@@ -34,7 +36,7 @@ function ENT:Init()
 	self.firedelay = 0.5
 	self.attachworld = matrix.Rotation(Vector(-40,0,-90)) 
 		* matrix.Translation(Vector(-10, -2, 0))
-	self.type = "testweap"
+	self.type = "none"
 	self:SetParameter(VARTYPE_MODEL,"test/phtgun/phtgun.json")
 	self:SetSpaceEnabled(false)
 	self:SetSizepower(1)
@@ -70,32 +72,28 @@ function ENT:Load()
 	end
 end 
 
-function ENT:CreateLaser(p1,p2,p3,p4,s,w)
-	local dmesh = self.dmesh
-	if not dmesh then
-		dmesh = self:AddComponent(CTYPE_DYNAMICMESH)  
-		dmesh:SetRenderGroup(RENDERGROUP_LOCAL) 
-		dmesh:SetBlendMode(BLEND_ADD) 
-		dmesh:SetRasterizerMode(RASTER_NODETPHSOLID) 
-		dmesh:SetDepthStencillMode(DEPTH_READ) 
-		dmesh:SetTexture(linear_ray)		
-		self.dmesh = dmesh
-	end
-	dmesh:SetParam("timeShift",Point(10,0))
-	
-	dmesh:SetData(p1 or Vector(0,0,0),p2 or Vector(1,0,0),p3 or Vector(2,0,0),p4 or Vector(3,0,0),s or 5,w or 0.1)
-end
 
 function ENT:SetType(type)
-	self.type = type
-	self:SetName(type)
-	self:SetParameter(VARTYPE_CHARACTER,type)
-	local bt = TOOL
-	TOOL = self
-	
-	include("lua/env.global/world/tools/"..type..".lua")
-	TOOL = bt
-	if self.OnSet then self:OnSet() end
+	if type then
+		self.type = type
+		self:SetParameter(VARTYPE_CHARACTER,type)
+		
+		local data = json.Read("forms/items/tools/"..type..".json")
+		if data then 
+			self:SetName(data.name)
+			
+			if data.appearance then
+				self:SetParameter(VARTYPE_MODEL,data.appearance.model)
+				self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+			end
+			self.basetype = data.type
+			local bt = TOOL
+			TOOL = self
+			include("lua/env.global/world/tools/"..data.type..".lua") 
+			TOOL = bt
+			if self.OnSet then self:OnSet(data) end
+		end
+	end
 end
 
 function ENT:OnPickup(ent)
@@ -140,6 +138,21 @@ function ENT:OnDrop(ent)
 	end
 end
 
+function ENT:CreateLaser(p1,p2,p3,p4,s,w)
+	local dmesh = self.dmesh
+	if not dmesh then
+		dmesh = self:AddComponent(CTYPE_DYNAMICMESH)  
+		dmesh:SetRenderGroup(RENDERGROUP_LOCAL) 
+		dmesh:SetBlendMode(BLEND_ADD) 
+		dmesh:SetRasterizerMode(RASTER_NODETPHSOLID) 
+		dmesh:SetDepthStencillMode(DEPTH_READ) 
+		dmesh:SetTexture(linear_ray)		
+		self.dmesh = dmesh
+	end
+	dmesh:SetParam("timeShift",Point(10,0))
+	
+	dmesh:SetData(p1 or Vector(0,0,0),p2 or Vector(1,0,0),p3 or Vector(2,0,0),p4 or Vector(3,0,0),s or 5,w or 0.1)
+end
 function ENT:CreateLight(ship, pos, color, vel)
 
 	local lighttest = ents.Create("omnilight") 
@@ -241,7 +254,32 @@ function ENT:SpawnWorldModel(scale)
 	if model:HasCollision() then
 		phys:SetShapeFromModel(world)
 		phys:SetMass(10) 
-	end
+	end 
+	
+	--lua_run SpawnWeapon("kindred/bow.json",LocalPlayer(),Vector(0,0,0))
+	model:SetMatrix( matrix.Rotation(90,0,0)*(self.mworld or matrix.Identity())* world)--*matrix.Translation(-phys:GetMassCenter()*100)) 
+	
+	self:SetUpdating(true,100)
+end 
+
+function ENT:SpawnWorldModel2(scale)
+	local model = self.model 
+	 
+	local world = matrix.Scaling(scale) 
+	
+	local modelfile =self:GetParameter(VARTYPE_MODEL)
+	
+	model:SetRenderGroup(RENDERGROUP_LOCAL)
+	model:SetModel(modelfile) 
+	model:SetBlendMode(BLEND_OPAQUE) 
+	model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	model:SetDepthStencillMode(DEPTH_ENABLED)  
+	model:SetBrightness(1)
+	model:SetFadeBounds(0,99999,0)  
+	
+	model:SetDynamic()
+	model:SetAnimation("idle")
+	 
 	
 	--lua_run SpawnWeapon("kindred/bow.json",LocalPlayer(),Vector(0,0,0))
 	model:SetMatrix( matrix.Rotation(90,0,0)*(self.mworld or matrix.Identity())* world)--*matrix.Translation(-phys:GetMassCenter()*100)) 

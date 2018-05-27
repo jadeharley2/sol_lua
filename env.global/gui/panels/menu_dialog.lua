@@ -5,9 +5,10 @@ local tCorner = LoadTexture("gui/menu/corner.png")
 local button_color = Vector(38,12,8)/255
 local panel_color = button_color*1.2
 	
-function PANEL:Init(name,height,width)  
-	height = height or 200
+function PANEL:Init(name,height,width) 
+	height = height or 200 
 	width = width or 500
+	name = name or "none"
 	 
 	self:SetSize(width,height) 
 	--self:SetVisible(false)
@@ -66,6 +67,7 @@ function PANEL:Init(name,height,width)
 	self:Add(label)
 	
 	self.sub = sub
+	self.label = label
 	
 	
 	local bcol = Vector(83,164,255)/255
@@ -77,5 +79,5 @@ function PANEL:Init(name,height,width)
 		--v:SetTextOnly(true)
 		p:SetTextAlignment(ALIGN_CENTER) 
 	end
-end
+end 
 

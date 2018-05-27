@@ -1,6 +1,6 @@
 TOOL.firedelay = 0.1
 TOOL.title = "Spawner"
-TOOL.selector = {"primitives/box.json","primitives/chbox.json","primitives/sphere.json","primitives/cylinder.json","primitives/cone.json"}
+TOOL.selector = {"primitives/box.stmd","primitives/chbox.stmd","primitives/sphere.stmd","primitives/cylinder.stmd","primitives/cone.stmd"}
 function TOOL:Fire(dir)
 	local curmodel  = self.curmodel 
 	
@@ -9,6 +9,7 @@ function TOOL:Fire(dir)
 	local fd = self.firedelay
 	if ct > nft then 
 		self.nextfiretime = ct + fd
+		local cam = GetCamera()
 		
 		local parentphysnode = cam:GetParentWithComponent(CTYPE_PHYSSPACE)
 		if parentphysnode then 
@@ -56,15 +57,15 @@ function TOOL:SpawnProp(ent, pos, model, scale)
 	prop.phys:SetMass(100)
 	
 	
-	local particlesys2 = prop:AddComponent(CTYPE_PARTICLESYSTEM2) 
-	particlesys2:SetSpeed(1)
-	particlesys2:SetRenderGroup(RENDERGROUP_LOCAL)
-	particlesys2:SetBlendMode(BLEND_ADD) 
-	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
-	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	 
-	particlesys2:Set("particles/magic_model_aura_test.json")
-	prop.particlesys2 = particlesys2 
+	--local particlesys2 = prop:AddComponent(CTYPE_PARTICLESYSTEM2) 
+	--particlesys2:SetSpeed(1)
+	--particlesys2:SetRenderGroup(RENDERGROUP_LOCAL)
+	--particlesys2:SetBlendMode(BLEND_ADD) 
+	--particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
+	--particlesys2:SetDepthStencillMode(DEPTH_READ)  
+	-- 
+	--particlesys2:Set("particles/magic_model_aura_test.json")
+	--prop.particlesys2 = particlesys2 
 	
 	
 end

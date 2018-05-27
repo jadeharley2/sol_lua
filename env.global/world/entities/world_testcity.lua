@@ -92,7 +92,13 @@ function ENT:Spawn()
 	
 	self.space = space
 	
-		
+	local nav = space:AddComponent(CTYPE_NAVIGATION)   
+	self.nav = nav
+	for k,v in pairs(space:GetChildren()) do 
+		if v:GetParameter(VARTYPE_LUAENTTYPE)=="prop_static" then
+			nav:AddStaticMesh(v)
+		end
+	end	
 	if CLIENT then
 		local eshadow = ents.Create("test_shadowmap2")  
 		eshadow.light = light

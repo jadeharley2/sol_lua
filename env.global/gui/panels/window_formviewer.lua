@@ -8,16 +8,15 @@ function PANEL:Init()
 	self:OnResize() 
 end
 
-function PANEL:Setup(search_directory,search_type,spawn_function)
+function PANEL:Setup(form_type,spawn_function)
 
 
 	local ff_grid_floater = panel.Create()  
 	ff_grid_floater:SetSize(400,1000)
 	
-	local bcol = Vector(83,164,255)/255
-	 
-	--local flist = file.GetFiles("forms/apparel/","json") 
-	local flist = file.GetFiles(search_directory,search_type) 
+	local bcol = Vector(60,60,60)/255
+	  
+	local flist = forms.GetList(form_type)
 	local totals = 0
 	local givefunc = function(s)  
 		local LP = LocalPlayer()
@@ -25,22 +24,23 @@ function PANEL:Setup(search_directory,search_type,spawn_function)
 			spawn_function(LP,s.item)
 		end
 	end
-	for k,v in pairs(flist) do 
-		local cname = string.lower( file.GetFileNameWE(v))   
+	for k,v in pairs(flist) do   
+		local data =  json.Read(v)
+		
 		local sp_new = panel.Create("button")
-		sp_new:SetText(cname) 
+		sp_new:SetText(data.name or k) 
 		sp_new:Dock(DOCK_TOP)
 		sp_new:SetTextColorAuto(bcol) 
 		sp_new:SetTextAlignment(ALIGN_LEFT)
 		sp_new:SetSize(150,20)
-		sp_new.item = cname
+		sp_new.item = k
 		sp_new.OnClick = givefunc
 		ff_grid_floater:Add(sp_new)
 		
 		totals = totals + 20
 			
 	end
-	ff_grid_floater:SetSize(400,totals)
+	ff_grid_floater:SetSize(400,math.max(totals,100))
 	ff_grid_floater:SetColor(bcol) 
 	
 	local ff_grid = panel.Create("floatcontainer") 

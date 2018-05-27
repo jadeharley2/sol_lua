@@ -33,7 +33,7 @@ end
 local rdtlist = {
 "Jump","Move","Stop","Attack","TRotateAroundAxis",
 "SetEyeAngles","SetCrouching",
-"Throttle","Turn","Turn2"}
+"Throttle","Turn","Turn2","SendEvent","WeaponFire"}
  
 meta_recorder = meta_recorder or {}
 

@@ -1,4 +1,6 @@
 --TEST
+if true then return end
+
 local embmat =  LoadMaterial("tile/mat/ebony.json")
 
 function Transformation(actor,target_character)

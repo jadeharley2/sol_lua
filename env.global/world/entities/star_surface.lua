@@ -9,29 +9,29 @@ function ENT:Spawn()
 	
 	local model = self:AddComponent(CTYPE_MODEL)  
 	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	model:SetModel("engine/csphere_36.SMD") 
+	model:SetModel("engine/csphere_36.stmd") 
 	model:SetMaterial("textures/space/star/teststar.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED) 
 	model:SetMatrix(matrix.Scaling(2))
 	model:SetFullbright(true)
-	model:SetBrightness(1)
+	model:SetBrightness(100)
 	model:SetFadeBounds(0,99999,0)  
 	model:SetColor(scolor)
 	model:SetMaxRenderDistance(100000)
 	
 
-	local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
-	particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	particlesys:SetNodeMode(false)
-	particlesys:AddNode(1)
-	particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
-	particlesys:SetTexture(1,rdtex)
-	particlesys:AddParticle(1,Vector(0,0,0),scolor,10,0) 
-	particlesys:SetMaxRenderDistance(100000)
-	
-	self.particlesys = particlesys
+	--local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
+	--particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	--particlesys:SetNodeMode(false)
+	--particlesys:AddNode(1)
+	--particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
+	--particlesys:SetTexture(1,rdtex)
+	--particlesys:AddParticle(1,Vector(0,0,0),scolor,10,0) 
+	--particlesys:SetMaxRenderDistance(100000)
+	--
+	--self.particlesys = particlesys
 	self.model = model
 	
 end

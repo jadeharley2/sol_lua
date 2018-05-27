@@ -34,13 +34,19 @@ end
 function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
+function stdcomp(a,b)
+	if isuserdata(a) or isuserdata(b) then return true 
+	else
+		return a<b
+	end
+end
 
 function TableToString (tbl, indent, maxlevel)
 	if not indent then indent = 0 end
 	if not maxlevel then maxlevel = 2 end
 	if indent > maxlevel then return end
 	local st = ""
-	for k, v in SortedPairs(tbl) do
+	for k, v in SortedPairs(tbl,stdcomp) do
 		formatting = srep("  ", indent) ..  tostring(k) .. ": "
 		if type(v) == "table" then
 			if v ~= tbl then
@@ -137,3 +143,22 @@ function DeclareEnumValue(type,name,id)
 	debug.AddAPIInfo("/"..type.."_/"..key,id)
 end
 
+function ConcatFunc(functable)
+	return function(...) for k,v in pairs(functable) do v(...) end end
+end
+function AndFunc(functable)
+	return function(...) 
+		for k,v in pairs(functable) do 
+			if not v(...) then return false end
+		end  
+		return true
+	end
+end
+function OrFunc(functable)
+	return function(...) 
+		for k,v in pairs(functable) do 
+			if v(...) then return true end 
+		end  
+		return false
+	end
+end

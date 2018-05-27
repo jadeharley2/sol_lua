@@ -50,5 +50,19 @@ function ENT:GetSpawn()
 	if not self.loaded then 
 		self:LoadSpawnpoint()
 	end
+	if CLIENT then
+		--CreateTestShadowMapRenderer(self.spawnnode,self.spawnpos)
+	end
 	return self.spawnnode, self.spawnpos
+end
+function ENT:OnPlayerSpawn()
+	SetController("freecameracontroller") 
+	if CLIENT then
+		render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
+		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
+		
+		render.SetGroupBounds(RENDERGROUP_PLANET,1e2,1e10)
+		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
+		
+	end
 end

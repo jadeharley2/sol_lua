@@ -1,34 +1,48 @@
 
 PANEL.assettypes = {
-	prop = {directory = "forms/props/", spawn = function(type,node) 
-		local j = json.Read("forms/props/"..type..".json")
-		local p = SpawnSO(j.model,node,Vector(0,0,0),j.scale,false,false)
+	prop = {directory = "forms/props/", recursive=true, spawn = function(type,node,fulltype) 
+		--local j = json.Read(fulltype)--"forms/props/"..type..".json")
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+		 
+		local p = SpawnPV(fulltype,node,wtr.Position)--,j.scale,false,false)
 		if p then
-			local random_ry = false
-			if j.tags then
-				for k,v in pairs(j.tags) do
-					if v=="random_ry" then random_ry = true end
-				end
-			end
-			local r = Vector(0,0,0)
-			if j.rotation then r = r + Vector(j.rotation[1],j.rotation[2],j.rotation[3]) end
-			if random_ry then r = r + Vector(0,math.random(-1800,1800)/10,0) end
-			p:SetAng(r)
+			p:SetSeed(GetFreeUID())
 		end
+		--if p then
+		--	local random_ry = false
+		--	if j.tags then
+		--		for k,v in pairs(j.tags) do
+		--			if v=="random_ry" then random_ry = true end
+		--		end
+		--	end
+		--	local r = Vector(0,0,0)
+		--	if j.rotation then r = r + Vector(j.rotation[1],j.rotation[2],j.rotation[3]) end
+		--	if random_ry then r = r + Vector(0,math.random(-1800,1800)/10,0) end
+		--	p:SetAng(r)
+		--end
 		return p
 	end},
 	particle = {directory = "particles/"},
 	font = {directory = "fonts/"},
 	
 	species = {directory = "forms/species/"},
-	character = {directory = "forms/characters/", spawn = function(type,node) 
+	character = {directory = "forms/characters/", spawn = function(type,node)  
+	
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+		  
+		
 		local actorD = ents.Create("base_actor")
 		actorD:SetSizepower(1000)
 		actorD:SetParent(node)
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
-		actorD:Spawn()   
-		return actorD
+		actorD:Spawn()
+		actorD:SetPos(wtr.Position)
+		return actorD 
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
 		return SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
@@ -38,52 +52,38 @@ PANEL.assettypes = {
 	
 
 }
-
-function PANEL:Init() 
-	self:SetColor(Vector(0,0,0))
+function PANEL:Scandir(name,dir,onclick,recursive,keytable)
+	local files = file.GetFiles(dir,".json",false)  
 	
-	local dirtree = panel.Create("tree")
-	dirtree:SetSize(400,400)
-	dirtree:Dock(DOCK_LEFT)
-	self:Add(dirtree)
-	
-	
-	self.dirtree = dirtree
-	
-	local rtb = {"types"}
-	
-	
-	for k,v in pairs(self.assettypes) do
-		local spt = v
-		local onclick = function(b)
-			local type = b:GetText()
-			MsgN(type)
-			if(spt.spawn) then
-				local e = spt.spawn(type,GetCamera():GetParent())
-				editor.Select(e)
-			end
-		end 
-		local tbl = file.GetFiles(v.directory,".json",true)  
-		local tb = {} 
-		local tb2 = {k} 
-		for kk,vv in pairs(tbl) do 
-			tb[#tb+1] = file.GetFileNameWE( vv)
-		end 
-		table.sort(tb)
-		for kk,vv in pairs(tb) do 
-			tb2[#tb2+1] = {vv,OnClick=onclick}
+	local tb = {} 
+	for k,v in pairs(files) do
+		local ltp = file.GetFileNameWE(v)
+		keytable[ltp] = v
+		tb[#tb+1] = ltp
+	end 
+	local tb2 = {name}
+	if recursive then
+		local subdirs = file.GetDirectories(dir)  
+		for k,v in pairs(subdirs) do
+			tb2[#tb2+1] = self:Scandir(file.GetFileNameWE(v),v,onclick,recursive,keytable) 
 		end
-		rtb[#rtb+1] = tb2
 	end
-	dirtree:SetTableType(2)
+	table.sort(tb)
+	for kk,vv in pairs(tb) do 
+		tb2[#tb2+1] = {vv,OnClick=onclick} 
+	end
+	return tb2
+end
+function PANEL:InitTabAssets()
+	local P = panel.Create()
+	P:SetColor(Vector(0,0,0))
 	
-	dirtree:FromTable(rtb)
 	
 	local mpanel = panel.Create()
-	mpanel:SetSize(40,40)
+	mpanel:SetSize(20,20)
 	mpanel:SetColor(Vector(0.1,0.1,0.1))
 	mpanel:Dock(DOCK_TOP)
-	self:Add(mpanel)
+	P:Add(mpanel)
 	
 	
 	local bsave = panel.Create("button")
@@ -117,5 +117,101 @@ function PANEL:Init()
 	end
 	bload:Dock(DOCK_LEFT)
 	mpanel:Add(bload)
+	
+	----------
+	
+	local dirtree = panel.Create("tree")
+	dirtree:SetSize(200,400)
+	dirtree:Dock(DOCK_TOP)
+	P:Add(dirtree)
+	
+	
+	self.dirtree = dirtree
+	
+	
+	local rtb = {"types"}
+	 
+	local linkt = {}
+	for k,v in pairs(self.assettypes) do
+		linkt[k] = {}
+		local spt = v
+		local onclick = function(b)
+			local type = b:GetText()
+			local fulltype = linkt[k][type]
+			MsgN(type)
+			if(spt.spawn) then
+				local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
+				worldeditor:Select(e)
+			end
+		end  
+		---local tbl = file.GetFiles(v.directory,".json",true)  
+		---local tb = {} 
+		---local tb2 = {k} 
+		---for kk,vv in pairs(tbl) do
+		---	local ltp = file.GetFileNameWE( vv)
+		---	linkt[k][ltp] = vv
+		---	tb[#tb+1] = ltp
+		---end 
+		---table.sort(tb)
+		---for kk,vv in pairs(tb) do 
+		---	tb2[#tb2+1] = {vv,OnClick=onclick}
+		---end
+		rtb[#rtb+1] = self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
+	end
+	dirtree:SetTableType(2)
+	
+	dirtree:FromTable(rtb)
+	dirtree:SetSize(200,400)
+	
+	return P
+end
+function PANEL:InitTabNodes()
+	local P = panel.Create()
+	P:SetColor(Vector(0,0,0))
+	
+	local nodetree = panel.Create("tree")
+	nodetree:SetSize(200,400)
+	nodetree:Dock(DOCK_TOP)
+	P:Add(nodetree)
+	
+	
+	self.nodetree = nodetree
+	
+	local rtb = {"types"}
+	local cam = GetCamera()
+	local camp = cam:GetParent()
+	local chp = camp:GetChildren()
+	  
+	for k,v in pairs(chp) do 
+		local onclick = function(b)  
+			worldeditor:Select(v)
+		end 
+		local tb2 = {tostring(v),OnClick=onclick}  
+		rtb[#rtb+1] = tb2
+	end
+	nodetree:SetTableType(2)
+	
+	nodetree:FromTable(rtb)
+	nodetree:SetSize(200,400)
+	return P
+end
+
+function PANEL:Init() 
+	self:SetColor(Vector(0,0,0))
+	
+	
+	local testtabmenu = panel.Create("tabmenu")
+	testtabmenu:AddTab("Assets",self:InitTabAssets())
+	local pnode = panel.Create("editor_panel_node")   
+	self.pnode = pnode
+	testtabmenu:AddTab("Nodes",pnode)
+	
+	testtabmenu:AddTab("Hierarchy",self:InitTabNodes())
+	
+	testtabmenu:SetSize(100,100)
+	testtabmenu:Dock(DOCK_FILL)
+	testtabmenu:ShowTab(1)
+	self:Add(testtabmenu)
+	self:UpdateLayout()
 end 
 

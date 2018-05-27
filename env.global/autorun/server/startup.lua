@@ -50,12 +50,13 @@ SPAWNPOS = targetpos
 ]]
 
 
-U = ents.Create("world_testmap") 
+U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
 network.AddNodeImmediate(U)
 U:Create() 
 SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
 AddOrigin(SPAWNORIGIN)
 MsgN("loaded world at: ",SPAWNORIGIN)
+
 
 
 -- player spawn
@@ -65,6 +66,25 @@ local function OnPlayerSetModel(ply)
 	if tagmodel then
 		ply:SetCharacter(tagmodel) 
 	end
+end
+
+lfiles = {}
+function AddCSLuaFile(filename)
+	lfiles[#lfiles+1] = filename
+	MsgN("AddCSLuaFile: ",filename)
+end
+function AddFile(filename)
+	lfiles[#lfiles+1] = filename
+	MsgN("AddFile: ",filename)
+end
+function AddDir(dir,recu)
+	for k,v in pairs(file.GetFiles(dir,"",recu or false)) do
+		AddFile(v)
+	end
+end
+
+local function OnPlayerLoad(player)
+	player:SendFiles(lfiles,true)  
 end
 
 local function OnPlayerSpawn(ply)
@@ -101,8 +121,8 @@ local function OnPlayerSpawn(ply)
 	--	ply.player:SendLua('TACTOR:SetPos(Vector('..tostring(SPAWNPOS.x)..','..tostring(SPAWNPOS.y)..','..tostring(SPAWNPOS.z)..'))  TACTOR.phys:SetGravity(Vector(0,-4,0))')
 	--end
 	--AddOrigin(ply)
-	
 	--ply.player:SendLua(" local system = TACTOR:GetParentWith(NTYPE_STARSYSTEM) if system then  system:ReloadSkybox() end ")
+
 end
 local function OnClientConnect(ply)
 	local name = ply:GetName()
@@ -116,5 +136,16 @@ end
 hook.Add("player.prespawn","startup", OnPlayerSetModel)
 hook.Add("player.firstspawn","startup", OnPlayerSpawn)
 
-hook.Add("server.client.connected", OnClientConnect)
-hook.Add("server.client.disconnected", OnClientDisconnect)
+hook.Add("server.client.connected","startup", OnClientConnect)
+hook.Add("server.client.disconnected","startup", OnClientDisconnect)
+
+hook.Add("player.load","startup", OnPlayerLoad)
+
+
+--AddCSLuaFile("lua/env.global/world/entities/world_flatcity.lua")  
+--AddFile("models/map/flatcity.stmd")  
+--AddDir("models/map/fc01/tex")   
+
+for k,v in pairs(file.GetFiles("forms/characters")) do 
+	AddCSLuaFile(v)  
+end

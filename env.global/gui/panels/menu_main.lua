@@ -12,70 +12,53 @@ function PANEL:Init()
 	menu:SetSize(800,800)
 	menu:SetColor(Vector(1,1,1)/1000)
 	menu:SetTexture(LoadTexture("gui/menu/sn_1024.dds"))
-	local sp = panel.Create("button")
-	local mp = panel.Create("button")
-	local opt = panel.Create("button")
-	local exi = panel.Create("button")
-	local mmn = panel.Create("button") mmn:SetVisible(false)
-	
-	 sp:SetPos(0,200)
-	 mp:SetPos(0,100)
-	opt:SetPos(0,-100)
-	exi:SetPos(0,-200)
-	mmn:SetPos(0,-200)
 	
 	local bcol = Vector(83,164,255)/255
-	
-	sp:SetText("Singleplayer")
-	mp:SetText("Multiplayer")
-	opt:SetText("Options")
-	exi:SetText("Exit")
-	mmn:SetText("Main menu")
-	
-	local function SetupStyle(p)
-		p:SetTextColor(Vector(1,1,1)/2)
-		p:SetColors(Vector(1,1,1),button_color,button_color*2)
+	local CrtMenuLabel = function(text,pos,action)
+		local label = panel.Create("button")
+		label:SetText(text)
+		label:SetPos(pos)
+		
+		label:SetSize(250,20) 
+		label:SetTextAlignment(ALIGN_CENTER)
+		label:SetTextColor(Vector(1,1,1)/2)
+		--label:SetColors(Vector(1,1,1),button_color,button_color*2) 
+		label:SetTextColorAuto(bcol)
+		label:SetTextOnly(true)
+		label.OnClick  = action
+		menu:Add(label) 
+		return label
 	end
 	
-	local buttons = {sp,mp,opt,exi,mmn}
-	for k,v in pairs(buttons) do 
-		v:SetSize(250,20) 
-		v:SetTextAlignment(ALIGN_CENTER)
-		SetupStyle(v)
-		menu:Add(v)
-		--v:SetTextColor(bcol)
-		v:SetTextColorAuto(bcol)
-		v:SetTextOnly(true)
-	end 
-	 
-	menu.sp = sp
-	menu.mp = mp
-	menu.opt = opt
-	menu.exi = exi
-	menu.mmn = mmn
 	
-	self:Add(menu) 
-	sp .OnClick = function() 
+	 
+	menu.sp = CrtMenuLabel("Singleplayer",Point(0,200),function() 
 		if self.worldIsLoaded then
 			hook.Call("menu")
 		else 
 			hook.Call("menu","sp") 
 		end
-	end
-	mp .OnClick = function() 
+	end) 
+	menu.mp = CrtMenuLabel("Multiplayer",Point(0,100),function() 
 		if self.worldIsLoaded then
 			hook.Call("menu","save")
 		else 
 			hook.Call("menu","mp") 
 		end
-	end
-	opt.OnClick = function() hook.Call("menu","settings") end
-	exi.OnClick = function() engine.Exit() end
-	mmn.OnClick = function()
+	end) 
+	menu.opt = CrtMenuLabel("Options",Point(0,-100),function() hook.Call("menu","settings") end) 
+	menu.exi = CrtMenuLabel("Exit",Point(0,-200),function() engine.Exit() end) 
+	menu.mmn = CrtMenuLabel("Main menu",Point(0,-200),function()
 		UnloadWorld()
-		self:SetWorldLoaded(false)
-		healthbar:UpdateHealth()
-	end
+		self:SetWorldLoaded(false) 
+	end) 
+	menu.mmn:SetVisible(false)
+	
+	
+	menu.edi = CrtMenuLabel("Editor",Point(00,300),function() hook.Call("menu","editor") end) 
+	
+	
+	self:Add(menu) 
 	self.menu = menu
 	 
 	
@@ -94,6 +77,7 @@ function PANEL:Init()
 	self:AddPanel("addons","menu_addons") 
 	self:AddPanel("save","menu_savegame") 
 	self:AddPanel("load","menu_loadgame") 
+	self:AddPanel("editor","menu_editors") 
 	   
 	--self:Add(chat)
 	--self.chat = chat

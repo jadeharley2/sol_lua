@@ -22,5 +22,4 @@ hook.Add("script.reload","entity", function(filename)
 		return true
 	end
 end)
-
 Entity = ents.GetById

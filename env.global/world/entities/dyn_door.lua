@@ -1,11 +1,12 @@
 
 
 function SpawnDoor(model,ent,pos,ang,scale,seedd)
-	model = model or "door/door.json"
+	model = model or "door/door.stmd"
 	local e = ents.Create("dyn_door")
 	e:SetSeed(seedd)
 	e:SetSizepower(1)
 	e:SetParameter(VARTYPE_MODEL,model)
+	e:SetParameter(VARTYPE_MODELSCALE,scale)
 	e:SetParent(ent)
 	e:SetPos(pos) 
 	e:SetAng(ang)
@@ -29,30 +30,83 @@ function ENT:Init()
 end 
 function ENT:Spawn()
 	local m = self:GetParameter(VARTYPE_MODEL)
-	self:SetModel(m,self.scale or 0.75)
+	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+	self:SetModel(m,modelscale)
 	
+end
+function ENT:Despawn() 
+	if self.sloop then self.sloop:Dispose() self.slopp = nil end
+end
+function ENT:PlayLoopSound(snd,vol)
+	if self.sloop then self.sloop:Dispose() self.slopp = nil end
+	self.sloop = self:EmitSoundLoop(snd,vol)
 end
 function ENT:LoadGraph()
 	local graph = BehaviorGraph(self) 
 	
+	local w = Component("wireio",self)
+	w:AddInput("toggle",self.Toggle)
+	w:AddInput("open",self.Open)
+	w:AddInput("close",self.Close)
+	w:AddInput("lock",self.Lock)
+	w:AddInput("unlock",self.Unlock)
+	
+	w:AddOutput("open")
+	w:AddOutput("close")
+	
+	w:AddOutput("opened")
+	w:AddOutput("closed")
+	
 	--graph.debug = true
-	graph:NewState("idle_open",function(s,e) e.model:SetAnimation("idle_open") e:SetUpdating(false) end)
-	graph:NewState("idle_closed",function(s,e) e.model:SetAnimation("idle_closed") e:SetUpdating(false) end)
-	graph:NewState("open",function(s,e) e.model:SetAnimation("open") end)
-	graph:NewState("close",function(s,e) e.model:SetAnimation("close") end)
-	graph:NewTransition("open","idle_open",CND_ONEND)
-	graph:NewTransition("close","idle_closed",CND_ONEND)
+	graph:NewState("idle_open",function(s,e)  
+		e:SetUpdating(false)  
+		return 99 end)
+	graph:NewState("idle_closed",function(s,e)  
+		e:SetUpdating(false) 
+		return 99 end)
+	graph:NewState("open",function(s,e) 
+		e:EmitSound(table.Random({"door/door_electric_start-01.ogg","door/door_electric_start-02.ogg"}),1)
+		e:PlayLoopSound("door/door_electric_move.ogg",1)
+		w:SetOutput("open")
+		return e.model:SetAnimation("open") 
+		end)
+	graph:NewState("close",function(s,e) 
+		e:EmitSound(table.Random({"door/door_electric_start-01.ogg","door/door_electric_start-02.ogg"}),1)
+		e:PlayLoopSound("door/door_electric_move.ogg",1)
+		w:SetOutput("close")
+		return e.model:SetAnimation("close")
+		end)
+	graph:NewState("preidle_open",function(s,e)  
+		e:EmitSound("door/door_electric_stop.ogg",1)
+		if e.sloop then e.sloop:Stop() e.slopp = nil end
+		w:SetOutput("opened")
+		return e.model:SetAnimation("idle_open") 
+		end)
+	graph:NewState("preidle_closed",function(s,e)  
+		e:EmitSound("door/door_electric_stop.ogg",1)
+		if e.sloop then e.sloop:Stop() e.slopp = nil end 
+		w:SetOutput("closed")
+		return e.model:SetAnimation("idle_closed") 
+		end)
+	graph:NewTransition("open","preidle_open",CND_ONEND)
+	graph:NewTransition("close","preidle_closed",CND_ONEND)
+	graph:NewTransition("preidle_open","idle_open",CND_ONEND)
+	graph:NewTransition("preidle_closed","idle_closed",CND_ONEND)
 	graph:NewTransition("idle_open","close",CND_ONREQ)
 	graph:NewTransition("idle_closed","open",CND_ONREQ)
 	
 	self.graph = graph 
-	graph:LoadState("idle_closed")
+	graph:LoadState("preidle_closed")
 	--graph:SetState("idle_closed",false)
+	
 end
 function ENT:SetModel(mdl,scale) 
 	local model = self.model
 	local world = matrix.Scaling(scale)
 	 
+	self:SetParameter(VARTYPE_MODEL,mdl)
+	self:SetParameter(VARTYPE_MODELSCALE,scale)
+	
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
 	model:SetModel(mdl)  
 	model:SetBlendMode(BLEND_OPAQUE) 
@@ -109,7 +163,7 @@ end
 
 function ENT:Open() 
 	if(not self.locked and self.graph:TrySetState("open"))then
-		self:SetUpdating(true)
+		self:SetUpdating(true) 
 		return true
 	end
 	return false

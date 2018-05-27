@@ -9,10 +9,14 @@ end
 
 function ENT:Spawn()   
 	local seed = self:GetSeed()
-	hook.Add("settings.changed","shadowmap.update."..tostring(seed),function()
+	hook.Add("settings.changed","shadowmapupdate",function()
 		self:UpdateShadowMap()
 	end)
 	self:UpdateShadowMap()
+end
+function ENT:Despawn() 
+	hook.Remove("main.predraw", "shadowmapupdate")
+	hook.Remove("settings.changed","shadowmapupdate")
 end
 function ENT:UpdateShadowMap()
 
@@ -39,7 +43,7 @@ function ENT:UpdateShadowMap()
 		
 		
 		--self:SetUpdating(true)
-		hook.Add("main.predraw", "shadowmapupdate"..tostring(seed), function() self:UpdatePos() end)
+		hook.Add("main.predraw", "shadowmapupdate", function() self:UpdatePos() end)
 	else
 		local cc = self.cc 
 		local target = self.target
@@ -50,14 +54,18 @@ function ENT:UpdateShadowMap()
 		if camera then camera:UnsetShadowMap() self:RemoveComponent(camera) self.camera = nil end
 		
 		--self:SetUpdating(false)
-		hook.Remove("main.predraw", "shadowmapupdate"..tostring(seed))
+		hook.Remove("main.predraw", "shadowmapupdate")
 	end 
 end
 function ENT:UpdatePos() 
 	local c = GetCamera()
+	if not self or not IsValidEnt(self) then
+		hook.Remove("main.predraw", "shadowmapupdate")
+		return
+	end
 	local p = self:GetParent()
 	local cp = c:GetParent()
-	if cp~=nil then
+	if cp and IsValidEnt(cp) then
 		while cp:HasFlag(FLAG_ACTOR) do
 			cp = cp:GetParent()
 		end
@@ -77,5 +85,7 @@ function ENT:UpdatePos()
 				sc:RequestDraw()
 			end
 		end
+	else 
+		hook.Remove("main.predraw", "shadowmapupdate")
 	end
 end

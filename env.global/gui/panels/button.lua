@@ -39,6 +39,10 @@ end
 function PANEL:SetPulse(period)
 	self.cooldown = period
 end
+function PANEL:SetToggleable(tgl)
+	self.active = false
+	self.toggleable = tgl
+end
 
 function PANEL:MouseDown(pulse) 
 
@@ -66,12 +70,21 @@ function PANEL:MouseDown(pulse)
 			end
 		end
 		
-		
-		self:SetColor( self.downcolor) 
+		if(self.toggleable) then
+			if self.active then
+				self.active = false
+				--self:SetColor( self.upcolor) 
+			else
+				self.active = true
+				--self:SetColor( self.downcolor) 
+			end
+		else 
+			self:SetColor( self.downcolor) 
+		end
 		if self.flashtext then self:SetTextColor( self.textdowncolor) end
 		local OnClick = self.OnClick
 		if OnClick then
-			OnClick(self)
+			OnClick(self,self.active)
 		end
 		LAST_BUTTON_PRESSED = self
 		if pulse ~= true then
@@ -93,7 +106,15 @@ function PANEL:MouseEnter()
 	if self.flashtext then self:SetTextColor( self.texthovercolor) end
 end
 function PANEL:MouseLeave() 
-	self:SetColor( self.upcolor) 
+	if(self.toggleable) then
+		if self.active then 
+			--self:SetColor( self.upcolor) 
+		else 
+			--self:SetColor( self.downcolor) 
+		end
+	else 
+		self:SetColor( self.upcolor) 
+	end
 	if self.flashtext then self:SetTextColor( self.textupcolor) end
 end
 

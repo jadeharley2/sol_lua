@@ -37,7 +37,7 @@ function ENT:Spawn()
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
-	local map = SpawnSO("map/01/01.json",space,Vector(0,0,0),0.75) 
+	local map = SpawnSO("map/map_01.stmd",space,Vector(0,0,0),0.75) 
 	--def:190000000
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(140,161,178)/255,190000000)
 	local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
@@ -56,7 +56,7 @@ function ENT:Spawn()
 				current_itemv=false
 				SHOWINV = false
 			else
-				current_itemv = panel.Create("window_itemviewer") 
+				current_itemv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					--LP:Give(itemname) 
 					if CLIENT and not network.IsConnected() then
@@ -69,7 +69,7 @@ function ENT:Spawn()
 						LP:SendEvent(EVENT_GIVE_ITEM,itemname)
 					end
 				end
-				current_itemv:Setup("forms/apparel/","json",givefunc)
+				current_itemv:Setup("apparel",givefunc)
 				current_itemv.OnClose = function()
 					current_itemv=false
 					SHOWINV = false
@@ -79,7 +79,7 @@ function ENT:Spawn()
 			end
 		end
 	end
-	local app_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,32542389,0.8)
+	local app_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,32542389,0.8)
 	app_b.usetype = "apparel spawner"
 	------
 	 
@@ -93,11 +93,12 @@ function ENT:Spawn()
 				current_wepv=false
 				SHOWINV = false
 			else
-				current_wepv = panel.Create("window_itemviewer") 
+				current_wepv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					LP:Give(itemname) 
+					MsgN("Give ",LP," <= ",itemname)
 				end
-				current_wepv:Setup("lua/env.global/world/tools/","lua",givefunc)
+				current_wepv:Setup("tool",givefunc)
 				current_wepv.OnClose = function()
 					current_wepv=false
 					SHOWINV = false
@@ -107,7 +108,7 @@ function ENT:Spawn()
 			end
 		end
 	end
-	local wep_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,231632412,0.8)
+	local wep_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,231632412,0.8)
 	wep_b.usetype = "weapon spawner"
 	------
 	
@@ -121,14 +122,14 @@ function ENT:Spawn()
 				current_charv=false
 				SHOWINV = false
 			else
-				current_charv = panel.Create("window_itemviewer") 
+				current_charv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					LP:SendEvent(EVENT_CHANGE_CHARACTER,itemname) 
 					current_charv:Close()
 					current_charv=false
 					SHOWINV = false
 				end
-				current_charv:Setup("forms/characters/","json",givefunc)
+				current_charv:Setup("character",givefunc)
 				current_charv.OnClose = function()
 					current_charv=false
 					SHOWINV = false
@@ -138,7 +139,7 @@ function ENT:Spawn()
 			end
 		end
 	end
-	local char_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,23521234,0.8)
+	local char_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,23521234,0.8)
 	char_b.usetype = "character morpher"
 	------
 	-- ability dispenser
@@ -151,13 +152,13 @@ function ENT:Spawn()
 				current_abv=false
 				SHOWINV = false
 			else
-				current_abv = panel.Create("window_itemviewer") 
+				current_abv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname) 
 					LP:SendEvent(EVENT_GIVE_ABILITY,itemname)
 					--MsgN("add ab: ",ab)
 					--PrintTable(LP.abilities)
 				end
-				current_abv:Setup("forms/abilities/","json",givefunc)
+				current_abv:Setup("ability",givefunc)
 				current_abv.OnClose = function()
 					current_abv=false
 					SHOWINV = false
@@ -167,7 +168,7 @@ function ENT:Spawn()
 			end
 		end
 	end
-	local wep_b = SpawnButton(space,"primitives/sphere.json",dpos,nil,dfunc,4352342623,0.8)
+	local wep_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,4352342623,0.8)
 	wep_b.usetype = "ability teacher"
 	------
 	
@@ -211,11 +212,10 @@ function ENT:Spawn()
 	
 	
 	
-	
 	if CLIENT then
 		local eshadow = ents.Create("test_shadowmap2")  
 		eshadow.light = light
-		eshadow:SetParent(ent) 
+		eshadow:SetParent(space) 
 		eshadow:Spawn() 
 		self.shadow = eshadow
 		 
@@ -223,9 +223,16 @@ function ENT:Spawn()
 		self.cubemap:RequestDraw()
 	end
 	
+	--local aatest = ents.Create() 
+	--aatest:SetSpaceEnabled(false) 
+	--aatest:SetSizepower(1000) 
+	local nav = space:AddComponent(CTYPE_NAVIGATION)   
+	nav:AddStaticMesh(map)
+	self.nav = nav
+		
 	SpawnDC(space,Vector(0.1,0.1,0))
-	local d1 = SpawnDT("door/door2.json",space,Vector(0.1,0.03,0),Vector(90,0,0),0.1)
-	local d2 = SpawnDT("door/door2.json",space,Vector(-0.1,0.03,0),Vector(90,0,0),0.1)
+	local d1 = SpawnDT("door/door2.stmd",space,Vector(0.1,0.03,0),Vector(90,0,0),0.1)
+	local d2 = SpawnDT("door/door2.stmd",space,Vector(-0.1,0.03,0),Vector(90,0,0),0.1)
 	d1.target = d2
 	d2.target = d1
 end
@@ -248,26 +255,32 @@ function ENT:GetSpawn()
 	space2.space = sspace
 	self.space2 = space2
 	
-	SpawnSO("test/r_room.json",space2,Vector(0,0,0),0.75) 
+	SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75) 
 	
 
-	space2:AddEventListener(EVENT_USE,"use_event",function(user)
+	space2:AddEventListener(EVENT_USE,"use_event",function(self,user)
 		if user:GetParent()==space2 then
 			user:SetParent(space2:GetParent())
 			user:SetPos(space2:GetPos())
-			if user.model then user.model:SetUpdateRate(60) end
-			ModNodeMaterials(user,{FullbrightMode=false},true,true)
+			--if user.model then user.model:SetUpdateRate(60) end
+			ModNodeMaterials(user,{FullbrightMode=false,ssao_mul=1},true,true)
 		else
 			user:SetParent(space2)
 			user:SetPos(Vector(0,0,0))
-			if user.model then user.model:SetUpdateRate(10) end
-			ModNodeMaterials(user,{FullbrightMode=true},false,true)
+			--if user.model then user.model:SetUpdateRate(10) end
+			--ModNodeMaterials(user,{FullbrightMode=true},false,true)
+			ModNodeMaterials(user,{ssao_mul=0,g_LightwarpTexture="models/renamon/tex/lw.dds",LightwarpEnabled=1},false,true)
+			 
+			
 		end
 	end)
 	space2:AddFlag(FLAG_USEABLE) 
 
-	SpawnCONT("useables/container.json",space,Vector(0,0.1,0)) 
+	SpawnCONT("active/container.stmd",space,Vector(0,0.1,0)) 
 	
+	--local chair = SpawnSPCH("shiptest/chair1.json",space,Vector(0,0,0.0002),0.75)  
+	--chair:SetSeed(space:GetSeed()+38012)
+	--chair.usetype = "sit"
 	 
-	return self.space, Vector(0,0.0003627,0)
+	return self.space, Vector(0,0.0013627,0)
 end

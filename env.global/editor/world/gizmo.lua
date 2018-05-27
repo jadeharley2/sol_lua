@@ -11,25 +11,25 @@ local function CreatePart(parent,model,color,rotation,type)
 	R.defang = rotation
 	R:SetAng(rotation) 
 	return R
-end
-
+end 
+ 
 function gizmometa:StartDrag(part)
 	if not self.GIZMO_DRAG then 
 
 		if input.KeyPressed(KEYS_SHIFTKEY) then
-			for k,v in pairs(editor.selected) do
-				editor.Copy(k)
+			for k,v in pairs(worldeditor.selected) do
+				worldeditor:Copy(k)
 			end
-			--part = editor.Copy(part)
-			--editor.Select(part)
+			--part = worldeditor.Copy(part)
+			--worldeditor.Select(part)
 		end 
 		
-		editor.mode = "drag"
+		worldeditor.mode = "drag"
 		self.lastmp = nil
 		self.GIZMO_DRAG = part
 		self.GIZMO_DRAG_POS = part:GetPos()
 		self.GIZMO_DRAG_POINTPOS = input.getMousePosition() 
-		self.startnodepos = editor.curtrace.Position
+		self.startnodepos = worldeditor.curtrace.Position
 		
 		
 		if self.mnode and self.mnode.GetScale then
@@ -45,13 +45,13 @@ end
 
 function gizmometa:Shift(oldpos,newpos)
 	local shift = newpos - oldpos
-	for k,v in pairs(editor.selected) do
+	for k,v in pairs(worldeditor.selected) do
 		k:SetPos(k:GetPos()+shift)
 	end
 	--if lsn then lsn:SetPos(newPos) end
 end
 function gizmometa:Rotate(axis,shift) 
-	for k,v in pairs(editor.selected) do
+	for k,v in pairs(worldeditor.selected) do
 		k:TRotateAroundAxis(axis,shift)  
 	end
 	--if lsn then lsn:SetPos(newPos) end
@@ -84,8 +84,8 @@ function gizmometa:DragUpdate()
 		
 		local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
 		local dir = camera:Unproject(mpos):Normalized()
-		--local dir = (editor.curtrace.Position - campos):Normalized()
-		local lsn = editor.selected:First()
+		--local dir = (worldeditor.curtrace.Position - campos):Normalized()
+		local lsn = worldeditor.selected:First()
 		if not lsn then return nil end
 		
 		local first = self.first or false
@@ -97,7 +97,7 @@ function gizmometa:DragUpdate()
 			constr = constr:TransformN(W)
 			if(constr2) then
 				constr2 = constr2:TransformN(W)
-				--editor.curtrace
+				--worldeditor.curtrace
 				local pp = Plane(startpos, startpos + constr, startpos + constr2);
 				
 				local hit, pos = pp:Intersect(campos, dir)
@@ -237,7 +237,7 @@ function gizmometa:DragUpdate()
 		if not input.leftMouseButton() then
 			self.GIZMO_DRAG = false
 			UnlockMouse()
-			editor.mode = false
+			worldeditor.mode = false
 			self.first = true
 			hook.Remove("main.predraw", "GIZMO_DRAG")
 		end
@@ -257,7 +257,9 @@ function gizmometa:Rescale(n)
 	local scale = self.scale
 	if scale~=n then 
 		for k,v in pairs(self.parts) do 
-			v:Rescale(n)
+			if IsValidEnt(v) then
+				v:Rescale(n) 
+			end
 		end
 		self.scale = n
 	end
@@ -320,7 +322,9 @@ end
 function gizmometa:Despawn()
 	if self.parts then
 		for k,v in pairs(self.parts) do
-			v:Despawn() 
+			if v and IsValidEnt(v) then
+				v:Despawn() 
+			end
 		end
 		self.parts = nil
 	end

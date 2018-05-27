@@ -36,32 +36,6 @@ function PANEL:Init()
 	end
 	ff_grid_floater:SetSize(400,totals)
 	ff_grid_floater:SetColor(bcol)
-	--[[
-	local sp_new = panel.Create("button")
-	sp_new:SetText("New solverse") 
-	sp_new:Dock(DOCK_TOP)
-	sp_new.OnClick = function() ISSAVEDGAME = false self.LoadSingleplayer("solverse") end
-	self:SetupStyle(sp_new)
-	
-	local sp_new2 = panel.Create("button")
-	sp_new2:SetText("New testmap") 
-	sp_new2:Dock(DOCK_TOP)
-	sp_new2.OnClick = function() ISSAVEDGAME = false self.LoadSingleplayer("testmap") end
-	self:SetupStyle(sp_new2)
-	
-	local sp_new3 = panel.Create("button")
-	sp_new3:SetText("New testcity") 
-	sp_new3:Dock(DOCK_TOP)
-	sp_new3.OnClick = function() ISSAVEDGAME = false self.LoadSingleplayer("testcity") end
-	self:SetupStyle(sp_new3)
-	
-	local sp_new4 = panel.Create("button")
-	sp_new4:SetText("New gm_construct") 
-	sp_new4:Dock(DOCK_TOP)
-	sp_new4.OnClick = function() ISSAVEDGAME = false self.LoadSingleplayer("testmap2") end
-	self:SetupStyle(sp_new4)
-	]]--
-	
 	
 	
 	
@@ -75,6 +49,7 @@ function PANEL:Init()
 	ff_grid:SetFloater(ff_grid_floater) 
 	ff_grid:SetColor(bcol)
 	
+	--MsgN("asdflistlen" ,#flist)
 	
 	
 	
@@ -97,7 +72,6 @@ function PANEL:Init()
 	sp_editor:SetPos(300,-150)
 	sp_editor:SetSize(100,20)
 	sp_editor.OnClick = function()  
-		 
 		LoadSingleplayer("editor_template") 
 	end
 	self:SetupStyle(sp_editor)
@@ -110,9 +84,4 @@ function PANEL:Init()
 		self:Add(v) 
 	end
 	
-	
-	--ff_grid_floater:Add(sp_new)
-	--ff_grid_floater:Add(sp_new2)
-	--ff_grid_floater:Add(sp_new3)
-	--ff_grid_floater:Add(sp_new4) 
 end

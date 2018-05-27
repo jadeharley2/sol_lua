@@ -1,3 +1,4 @@
+BLOCK_MOUSE = false
 
 local HIDE_CHAR_IN_FIRST_PERSON = function() return settings.GetBool("player.fpmode2",true) end
 
@@ -24,6 +25,22 @@ function OBJ:Init()
 	
 	local cam = GetCamera()
 	local actor = LocalPlayer()
+	if not actor then  SetController("freecameracontroller") return end
+	healthbar = panel.Create("healthbar")  
+	--healthbar:SetPos(-1610,-980) --+csize.x +csize.y 
+	healthbar:Show()
+	healthbar:UpdatePos()  
+	healthbar:UpdateHealth(actor:GetParameter(VARTYPE_HEALTH),actor:GetParameter(VARTYPE_MAXHEALTH))
+	
+	infobar = panel.Create("infobar")  
+	infobar:SetPos(0,-80) --+csize.x +csize.y 
+	infobar:Show()
+	
+	quickmenu = panel.Create("quickmenu")   
+	quickmenu:Show() 
+	quickmenu:UpdatePos()
+	healthbar:SetPos(quickmenu:GetPos()+Point(0,50))
+	
 	
 	cam:SetAng(Vector(0,-90,0))
 	--actor:SetAng(Vector(0,0,0))
@@ -64,6 +81,11 @@ function OBJ:Init()
 		actor.inventory = Inventory(4*8,actor:GetSeed()+3000) 
 	end
 	
+	
+	self.healthbar = healthbar
+	self.infobar = infobar
+	self.quickmenu = quickmenu
+	
 	self:CreateCharacterPanels(actor)
 	 
 	quickmenu:SetData(actor.qdata,actor.inventory)
@@ -74,9 +96,10 @@ function OBJ:UnInit()
 
 	local cam = GetCamera()
 	local actor = LocalPlayer()
+	if not actor then return end
 	
 	local cp = cam:GetPos()
-	if actor then 
+	if actor and IsValidEnt(actor) then 
 		actor:SetUpdateSpace(false) 
 		if actor.controller == self then
 			actor.controller = nil
@@ -85,7 +108,7 @@ function OBJ:UnInit()
 	cam:SetUpdateSpace(true)
 	cam:Eject()
 	--cam:SetParent(actor:GetParent())
-	if actor then  
+	if actor and IsValidEnt(actor) then  
 		RemoveOrigin(actor)
 		--local acp = actor:GetParent()
 		--local szd = actor:GetSizepower() / acp:GetSizepower()
@@ -102,13 +125,20 @@ function OBJ:UnInit()
 	hook.Remove("settings.changed","actorcontroller")
 	hook.Remove("event.item.droprequest","process")
 	
-	if actor then 
+	if actor and IsValidEnt(actor)  then 
 		self:SwitchToThirdperson(actor)
 		
 		actor.qdata = quickmenu:GetData()
 	end
 	
 	self:DestroyCharacterPanels(actor)
+	
+	local healthbar = self.healthbar
+	local infobar = self.infobar
+	local quickmenu = self.quickmenu
+	if healthbar then healthbar:Close() self.healthbar=nil end
+	if infobar then infobar:Close() self.infobar=nil end
+	if quickmenu then quickmenu:Close() self.quickmenu=nil end 
 end
 
 function OBJ:MouseWheel()
@@ -134,13 +164,26 @@ function OBJ:KeyDown(key)
 	if not aibusy and actor:Alive() then
 		if actor.IsInVehicle then 
 			if (input.KeyPressed(KEYS_V)) then 
-				actor:SendEvent(EVENT_SET_VEHICLE) --SetVehicle(nil)
+				actor:SendEvent(EVENT_EXIT_VEHICLE) --SetVehicle(nil)
 			end
 		else
 			if (input.KeyPressed(KEYS_E)) then 
 				self:HandleUse(actor)
 			end
 			 
+			if (input.KeyPressed(KEYS_Q)) then  
+				local cpanels = self.cpanels or {}
+				if cpanels.inv then
+					if not SHOWINV then
+						cpanels:Open()
+						SHOWINV = true 
+					else
+						cpanels:Close()
+						SHOWINV = false
+					end
+					MsgN(SHOWINV)
+				end
+			end
 			if input.KeyPressed(KEYS_F) then
 				self:HandlePickup(actor)
 			end
@@ -178,19 +221,6 @@ function OBJ:KeyDown(key)
 			if (input.KeyPressed(KEYS_D0)) then quickmenu:Select(actor,10) end 
 		end
 	end
-	if (input.KeyPressed(KEYS_Q)) then  
-		local cpanels = self.cpanels or {}
-		if cpanels.inv then
-			if not SHOWINV then
-				cpanels:Open()
-				SHOWINV = true 
-			else
-				cpanels:Close()
-				SHOWINV = false
-			end
-			MsgN(SHOWINV)
-		end
-	end
 	if (input.KeyPressed(KEYS_F5)) then 
 		local fc = settings.GetBool("server.nofreecam")
 		if not fc then
@@ -224,7 +254,7 @@ function OBJ:ToggleMouse()
 	
 end
 function OBJ:MouseLocked()
-	if input.WindowActive() then
+	if input.WindowActive() and not BLOCK_MOUSE then
 		if SHOWINV then return false end
 		 
 		if self.mouseactive then
@@ -299,14 +329,14 @@ end
 
 function OBJ:ActorIsBusy()
 	local actor = LocalPlayer()  
-	
+	if actor.controller.pai then return false end
 	return actor.controller ~= self or (not actor:GetUpdating()) or ( actor.Dead and actor:Dead())
 end
 
 function OBJ:Update() 
 
 	local actor = LocalPlayer() 
-	
+	if not actor or not IsValidEnt(actor) then SetController("freecameracontroller") return end
 	local dt = 1
 	
 	if actor:HasFlag(FLAG_ACTOR) then
@@ -329,8 +359,7 @@ function OBJ:Update()
 	self:HandleCameraMovement(actor)
 	self:HandleGetInfo(actor)
 	--
-end
-
+end 
 
 function OBJ:HandleMovement(actor) 
 	--if actor:IsFlying() then
@@ -345,10 +374,10 @@ function OBJ:HandleMovement(actor)
 end
 
 function OBJ:HandleActions(actor) 
-	local E = input.KeyPressed(KEYS_E)
-	if E then
-		actor:Attack()
-	end
+	--local E = input.KeyPressed(KEYS_E)
+	--if E then
+	--	actor:Attack()
+	--end
 	
 	local B = input.KeyPressed(KEYS_B)
 	if B then
@@ -373,22 +402,21 @@ function OBJ:HandleWeapon(actor,weap)
 	local F = input.KeyPressed(KEYS_F)
 	
 	
-	
 	if self:MouseLocked() then
-		if LF and weap.Fire and weap:IsReady() then  
+		local dir = Vector(1,0,0)
+		if LF or RF then
 			local parentphysnode = actor:GetParentWithComponent(CTYPE_PHYSSPACE)
-			local lw = parentphysnode:GetLocalSpace(cam) 
-			weap:SendEvent(EVENT_TOOL_FIRE,0,lw:Forward()) 
-		end 
-		if RF and weap.AltFire and weap:IsReady() then
-			local parentphysnode = actor:GetParentWithComponent(CTYPE_PHYSSPACE)
-			local lw = parentphysnode:GetLocalSpace(cam) 
-			weap:SendEvent(EVENT_TOOL_FIRE,1,lw:Forward())  
-		end  
+			if parentphysnode then
+				local cam = GetCamera()
+				local lw = parentphysnode:GetLocalSpace(cam) 
+				dir = lw:Forward()
+			end
+		end
+		if LF then actor:WeaponFire(dir) end 
+		if RF then actor:WeaponFire(dir,true) end  
 		if F and weap.OnF then
 			weap:OnF() 
-		end
-		
+		end 
 		self.rmode = true
 	end
 	--if RF and weap.AltFire and weap:IsReady() then weap:SendEvent(EVENT_TOOL_FIRE,1) end  
@@ -511,8 +539,9 @@ function OBJ:HandleThirdPersonMovement(actor)
 				if A then targetval = -90 end
 				if D then targetval = 90 end
 			end
+				--actor.directmove = true
 			if actor.directmove then
-				actor.directmove = false
+				--actor.directmove = false
 				
 				local pp = actor.model:GetPoseParameter("move_yaw") 
 				pp = pp + (targetval - pp)/10 
@@ -521,7 +550,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 				local smt = (self.sm_targetval or 0) 
 				local ISR = 0
 				if IsRunning then ISR = 1 end
-				smt = smt + math.AngleDelta(-targetval,smt)/(20 + (20*ISR))  --4
+				smt = smt + math.AngleDelta(-targetval,smt)/((20 + (20*ISR))*(actor.rotspeed or 1))  --4
 				self.sm_targetval = smt
 				local angd = math.AngleDelta(smt , self.ctargetval or 0)
 				local dval = angd/180*3.1415926
@@ -650,10 +679,11 @@ function OBJ:HandleThirdPersonMovement(actor)
 		actor:TRotateAroundAxis(sRight, dd_e/50/vel) 
 	end
 	--
-			
+	if not actor.directmove then	
 	actor.model:SetPoseParameter("move_yaw",0)
 	actor.model:SetPoseParameter("move_x",0)
 	actor.model:SetPoseParameter("move_y",100)
+	end
 	--phys:SetViewDirection(sForward)
 end
 
@@ -913,6 +943,12 @@ function OBJ:HandleDrop(actor,c)
 				c:OnDrop() 
 				if item.OnDrop then item:OnDrop(actor) end
 				c.inv:RemoveItem(actor,item)  
+				
+				local ccc = GetCameraPhysTrace(GetCamera(),actor.phys)
+				if ccc and ccc.Hit then
+					item:SetPos(ccc.Position)
+					item:SetParent(ccc.Node)
+				end
 		 	end
 		--end
 	--end
@@ -957,10 +993,13 @@ function OBJ:SwitchToFirstperson(actor)
 			end
 		end
 	end
+	actor.model:SetHideHead(true)
 end
 function OBJ:SwitchToThirdperson(actor)
 	--if HIDE_CHAR_IN_FIRST_PERSON() then
 		actor.model:Enable(true)
+		actor.model:SetHideHead(false)
+		
 		if actor.spparts then
 			for k,v in pairs(actor.spparts) do
 				v.model:Enable(true)
@@ -994,7 +1033,8 @@ function OBJ:HandleCameraMovement(actor)
 	local lmb = input.leftMouseButton()
 	local rmb = mlock -- input.rightMouseButton()
 	
-	local controlled =  actor:GetUpdating() and actor.controller == self 
+	local controlled =-- not self:ActorIsBusy()--
+	actor:GetUpdating() and actor.controller == self--self:IsControlling( actor) 
 	
 	local tps_height = actor.tpsheight or 0.5
 	local fps_height = actor.fpsheight or 1
@@ -1106,7 +1146,7 @@ function OBJ:HandleCameraMovement(actor)
 		cam:SetPos(rt)
 		]] 
 		
-		cam:SetPos( (Up*tps_height  - Forward * self.camZoom  + Right* 0.5 )* ascale * ascale * ascale  )
+		cam:SetPos( (Up*tps_height  - Forward * self.camZoom  + Right* 0.5 )* ascale    )
 	end
 	
 	--for i=0,50 do
@@ -1119,6 +1159,7 @@ function OBJ:HandleCameraMovement(actor)
 		actor:SetEyeAngles( ang.x/ 3.1415926 * 180 ,-ang.y/ 3.1415926 * 180) 
 		 
 		cam:SetAng(mang*matrix.Rotation(0,-90,0))
+		Right = cam:Right():Normalized() / parent_sz
 		--local ep,ey = actor:EyeAngles()
 		--local sx =  ep * 3.1415926 / 180
 		--local sy = -ey * 3.1415926 / 180
@@ -1135,22 +1176,22 @@ function OBJ:HandleCameraMovement(actor)
 				elseif m:HasAttachment("head") then pos = m:GetAttachmentPos("head")   
 				elseif m:HasAttachment("muzzle") then pos = m:GetAttachmentPos("muzzle") end -- * parent_sz
 			end
-			
+			--local Right = -mang:Forward():Normalized() / parent_sz
 			local ep = vr.GetCurrentEye()
 		--	local m = actor.model
-			local pos2 = pos
+			local pos2 = pos 
 			if ep == 1 then
-				if m:HasAttachment("eyel") then 
-					pos2 = m:GetAttachmentPos("eyel") 
-				else
-					pos2 = pos -Right*0.03 --  m:GetAttachmentPos("eyel") 
-				end
+				--if m:HasAttachment("eyel") then 
+				--	pos2 = m:GetAttachmentPos("eyel") 
+				--else
+					pos2 = pos -Right*0.03*1.1* ascale   --  m:GetAttachmentPos("eyel") 
+				--end
 			else
-				if m:HasAttachment("eyer") then 
-					pos2 = m:GetAttachmentPos("eyer") 
-				else
-					pos2 = pos +Right*0.03  -- m:GetAttachmentPos("eyer")  
-				end
+				--if m:HasAttachment("eyer") then 
+				--	pos2 = m:GetAttachmentPos("eyer") 
+				--else
+					pos2 = pos +Right*0.03*1.1* ascale   -- m:GetAttachmentPos("eyer")  
+				--end
 			end		
 			cam:SetPos( pos2 )
 		else
@@ -1199,16 +1240,21 @@ end
 
 function OBJ:HandleGetInfo(actor)
 	if infobar then
-		local tr = GetCameraPhysTrace(nil,actor.phys)
-		if tr and tr.Hit then 
-			local nn = tr.Entity--GetNearestNode(actor:GetParent(),tr.Position) 
-			if nn ~= actor then
-				infobar:UpdateBar(nn)
+		local is_VR = vr.IsEnabled()
+		if is_VR then
+			infobar:UpdateBar()
+		else
+			local tr = GetCameraPhysTrace(nil,actor.phys)
+			if tr and tr.Hit then 
+				local nn = tr.Entity--GetNearestNode(actor:GetParent(),tr.Position) 
+				if nn ~= actor then
+					infobar:UpdateBar(nn)
+				else
+					infobar:UpdateBar()
+				end
 			else
 				infobar:UpdateBar()
 			end
-		else
-			infobar:UpdateBar()
 		end
 	end
 end

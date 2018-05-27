@@ -1,6 +1,5 @@
 --UndoManager
-local META = debug.getregistry().UndoManager or {}
-META.__index = nil
+local META = DEFINE_METATABLE("UndoManager")
 --[[
 undo actrion record:
 {

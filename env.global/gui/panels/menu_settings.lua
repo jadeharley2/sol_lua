@@ -17,17 +17,26 @@ function PANEL:Init()
 	settings_save.OnClick = function()
 		for k,v in pairs(self.savelist) do
 			if v.type == "string" then
-				settings.SetString(k,v:GetText())
+				local val = v:GetText()
+				settings.SetString(k,val)
 			elseif v.type == "number" then
+				local val = tonumber(v:GetText())
 				if v.evalfunction then
-					local n = v.evalfunction(tonumber(v:GetText()))
+					local n = v.evalfunction(val)
 					v:SetText(tostring(n))
 					settings.SetNumber(k,n)
 				else
-					settings.SetNumber(k,tonumber(v:GetText()))
+					settings.SetNumber(k,val)
+				end
+				if v.applyfunction then
+					v.applyfunction(val)
 				end
 			elseif v.type == "bool" then
-				settings.SetBool(k,v.value)
+				local val = v.value or false
+				settings.SetBool(k,val)
+				if v.applyfunction then
+					v.applyfunction(val)
+				end
 			end
 		end
 		hook.Call("settings.changed")
@@ -93,6 +102,7 @@ function PANEL:Init()
 				inp:SetText(settings.GetString(v2.var,v2.default)) 
 				inp.evalfunction = v2.proc 
 			end
+			inp.applyfunction = v2.apply
 			
 			inp:Dock(DOCK_LEFT)
 			inp.type = v2.type

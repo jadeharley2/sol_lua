@@ -29,14 +29,30 @@ function _CLASS_META:ScanDirectory()
 		MsgN(self.name ..": "..cname) 
 		self:AddType(cname) 
 	end
+	
+	local dlist = file.GetDirectories(self.dir)
+	for k,v in pairs(dlist) do
+		local cname = string.lower( file.GetFileNameWE(v))
+		MsgN(self.name ..": "..cname) 
+		self:AddType(cname) 
+	end
 end
 function _CLASS_META:AddType(type)  
 	local oldc = _G[self.varn]
 	local newtype = self:GetType(type) or {}
 	--newtype.__index = nil
 	_G[self.varn] = newtype
+	
 	local sfile = self.dir .. type .. ".lua"
-	include(sfile,self.ReloadType) 
+	if file.Exists(sfile) then
+		include(sfile,self.ReloadType) 
+	else
+		local sfile2 = self.dir .. type .. "/init.lua"
+		if file.Exists(sfile2) then
+			include(sfile2,self.ReloadType) 
+		end 
+	end
+	
 	local result = _G[self.varn]
 	if result.base then
 		local base = self.GetType(result.base) or {}

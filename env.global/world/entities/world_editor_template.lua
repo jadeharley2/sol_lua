@@ -35,7 +35,8 @@ function ENT:Spawn()
 	space:SetGlobalName("editor_world.space")
 	space:Spawn()  
 	local sspace = space:AddComponent(CTYPE_PHYSSPACE)  
-	sspace:SetGravity(Vector(0,-0.0000001,0))
+	--sspace:SetGravity(Vector(0,-0.0000001,0))
+	sspace:SetGravity(Vector(0,-0.1,0))
 	space.space = sspace
 	self.space = space
  
@@ -46,9 +47,11 @@ function ENT:Spawn()
 	  
 		
 	if CLIENT then
+	
+		--self.skybox = SpawnSkybox(space,"textures/cubemap/sample.dds")
 		--self.skybox = SpawnSkybox(space,"data/textures/skybox/spacedefault/space.png")
-		self.skybox = SpawnSkybox(space,"data/textures/skybox/test_horison/daylight.png")
-		self.skybox:SetDonotsave(true)
+		--self.skybox = SpawnSkybox(space,"data/textures/skybox/test_horison/daylight.png")
+		--self.skybox:SetDonotsave(true)
 		
 		local eshadow = ents.Create("test_shadowmap2")  
 		eshadow.light = light
@@ -77,5 +80,5 @@ function ENT:GetSpawn()
 end
 function ENT:OnPlayerSpawn()
 	SetController("freecameracontroller")
-	editor.Run()
+	WorldeditorOpen()
 end

@@ -27,7 +27,7 @@ function ENT:Init()
 	--local coll = self:AddComponent(CTYPE_STATICCOLLISION)
 	--self.coll = coll
 	
-	--self:AddEventListener(EVENT_RESCALE,"event",function() 
+	--self:AddEventListener(EVENT_RESCALE,"event",function(self) 
 	--	self:Rescale()
 	--end)
 end

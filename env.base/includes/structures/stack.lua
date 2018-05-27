@@ -1,5 +1,5 @@
 
-local stack_meta = {}
+local stack_meta = DEFINE_METATABLE("Stack")
 
 function stack_meta:Push(val)
 	local s = self.s 

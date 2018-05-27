@@ -45,6 +45,7 @@ function PANEL:Init()
 			self:Deselect() 
 			n.text = ""
 			n:SetText("") 
+			self.list:ScrollToBottom()
 		end
 		if key == KEYS_UP then
 			local text = n:GetText()
@@ -112,7 +113,7 @@ function PANEL:Init()
 	for k,v in pairs(self.clist) do
 		v:SetAlpha(calpha)
 	end 
-	self.list:SetAlpha2(calpha*4) 
+	self.list:SetAlpha(calpha*4) 
 	self.input_text:SetAlpha(calpha*3)
 	--self:OnResize() 
 end
@@ -139,7 +140,7 @@ function PANEL:SetVisibility(onoff)
 	for k,v in pairs(self.borders) do
 		v:SetAlpha(calpha)
 	end 
-	self.list:SetAlpha2(calpha+0.4) 
+	self.list:SetAlpha(calpha+0.4) 
 	self.input_text:SetAlpha(calpha+0.3)
 end
 function PANEL:MouseDown() 
@@ -160,4 +161,20 @@ end
 function PANEL:Deselect()
 	self.input_text:Deselect()
 	self:SetVisibility(false)
+end
+
+function PANEL:Msg(text)
+	local list = self.list
+	if list then
+		list.lines[#list.lines+1] = text 
+		list:ScrollToBottom()
+	end
+end
+function PANEL:ClearAll() 
+	local list = self.list
+	if list then
+		list.lines = {}
+		list:ScrollToBottom()
+	end
+	self:Resize()
 end

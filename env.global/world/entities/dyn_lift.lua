@@ -128,6 +128,16 @@ function SpawnLift(ent,seed,network,model)
 	e:SetPathNetwork(network)
 	
 	e:Spawn() 
+	local sz = ent:GetSizepower()
+	for k,v in pairs(network) do
+		if isnumber(k) and v.s then
+			local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
+			local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
+			door1:RemoveFlag(FLAG_USEABLE)
+			door2:RemoveFlag(FLAG_USEABLE)
+			v.d = {door1,door2}
+		end
+	end
 	return e
 end
 
@@ -153,12 +163,12 @@ function ENT:Init()
 	
 	self:SetUpdating(true)
 	
-	self:AddEventListener(EVENT_LIFT_CALL,"event",function(id,user) 
+	self:AddEventListener(EVENT_LIFT_CALL,"event",function(self,id,user) 
 		self:MoveTo(id,user)
 	end)
 	self:SetNetworkedEvent(EVENT_LIFT_CALL)
 	
-	self:AddEventListener(EVENT_USE,"use_event",function(user) 
+	self:AddEventListener(EVENT_USE,"use_event",function(self,user) 
 		if self.graph:CurrentState()=="idle" then
 			self:OpenMenu(user)
 		end
@@ -166,21 +176,24 @@ function ENT:Init()
 	self:AddFlag(FLAG_USEABLE) 
 end
 function ENT:Spawn()
-	local door1 =SpawnDoor("lift/liftdoors.json",self,Vector(0,0,0),Vector(0,0,0),0.75,3190813)
-	local door2 =SpawnDoor("lift/liftdoors.json",self,Vector(0,0,0),Vector(0,180,0),0.75,3190814)
+	local door1 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,0,0),0.75,3190813)
+	local door2 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,180,0),0.75,3190814)
+	door1:RemoveFlag(FLAG_USEABLE)
+	door2:RemoveFlag(FLAG_USEABLE)
 	self.door1 = door1
 	self.door2 = door2
 	
 	local graph = BehaviorGraph(self) 
 	
 	graph:NewState("idle",function(s,e)   end)
-	graph:NewState("start",function(s,e) e.door1:Close() e.door2:Close() return 2 end)
+	graph:NewState("start",function(s,e) Multicall(self:GetDoors(),"Close") return 2 end)
 	graph:NewState("moving",function(s,e)  
 		local st = CurTime()
 		e.starttime = st
 		e.endtime = st + e.movetime
 	end)
-	graph:NewState("stop",function(s,e) e.door1:Open() e.door2:Open() return 2 end)
+	graph:NewState("stop",function(s,e) Multicall(self:GetDoors(),"Open") return 2 end)
+	graph:NewState("spawn",function(s,e) Multicall(self:GetDoors(),"Open") return 2 end)
 	
 	graph:NewTransition("start","moving",CND_ONEND)
 	graph:NewTransition("stop","idle",CND_ONEND)
@@ -188,7 +201,8 @@ function ENT:Spawn()
 	graph:NewTransition("idle","start",CND_ONREQ)
 	graph:NewTransition("moving","stop",CND_ONREQ)
 	
-	graph:SetState("idle")
+	graph:NewTransition("spawn","stop",CND_ONEND)
+	graph:SetState("spawn")
 	
 	self.graph = graph
 	
@@ -202,7 +216,7 @@ function ENT:Spawn()
 	self.light = light
 	
 	SpawnSO("lift/lift_ref.smd",self,Vector(0,0,0),0.75,true) 
-	SpawnSO("lift/lift.json",self,Vector(0,0,0),0.75) 
+	SpawnSO("lift/lift.stmd",self,Vector(0,0,0),0.75) 
 	
 	local collsmd = "lift/lift_ref.smd" 
 	local coll = self.coll
@@ -216,9 +230,9 @@ function ENT:Spawn()
 	--coll:SetShape(collsmd, matrix.Scaling(1)  * matrix.Rotation(-90,0,0) ) 
 	coll:SetShape(collsmd,matrix.Rotation(-90,0,0)) --matrix.Scaling(1 )  * 
 	
-	if TSHIP==self:GetParent() then
+	--if TSHIP==self:GetParent() then
 		SpawnMirror(self,Vector(0,2.543,-4.174)*0.75)
-	end
+	--end
 	door2:Open()
 end
 function ENT:SetModel(mdl,scale) 
@@ -245,6 +259,16 @@ function ENT:SetModel(mdl,scale)
 end 
 function ENT:Load()
 	self.graph:LoadState()
+end
+
+function ENT:GetDoors()
+	local net = self.network
+	local node =net[net.currentid]
+	local doors = {self.door1,self.door2}
+	for k,v in pairs(node.d or {}) do
+		doors[#doors+1] = v
+	end
+	return doors
 end
 
 function ENT:Think()
@@ -283,7 +307,7 @@ function ENT:Think()
 							self.starttime = st
 							self.endtime = st + self.movetime
 						else
-							--MsgN("PATH TRACK FINISHED")
+							--MsgN("PATH TRACK FINISHED") 
 							self.path = nil
 							self.pathid = nil
 							if(g:TrySetState("stop")) then
@@ -337,6 +361,7 @@ function ENT:OpenMenu(user)
 						if w then
 							w:SetVisible(false) 
 							w:Close() 
+							BLOCK_MOUSE = false
 							self.menuUser = nil
 						end
 					end
@@ -346,6 +371,7 @@ function ENT:OpenMenu(user)
 				end
 			end
 			wn = NewDialogPanel("Select destination",totalh+20)
+			BLOCK_MOUSE = true
 			for k,v in pairs(btns) do
 				wn:Add(v)
 				wn:SetupStyle(v)
@@ -362,6 +388,7 @@ function ENT:OpenMenu(user)
 				if w then
 					w:SetVisible(false) 
 					w:Close()
+					BLOCK_MOUSE = false
 					self.menuUser = nil
 				end
 			end

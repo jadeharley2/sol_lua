@@ -14,7 +14,7 @@ function ENT:Spawn()
 	
 	local model = self:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	model:SetModel("engine/csphere_36_cylproj.json") 
+	model:SetModel("engine/csphere_36_cylproj.stmd") 
 	model:SetMaterial("textures/space/distanceplanet.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -23,7 +23,7 @@ function ENT:Spawn()
 	local sz = self:GetSizepower()
 	local radius = self:GetParameter(VARTYPE_RADIUS) 
 	--model:SetMatrix(matrix.Scaling( 0.9086/szdiff * 2) * matrix.Rotation(90,0,0))
-	model:SetMatrix(matrix.Scaling( 0.9086*2*(radius/sz)) * matrix.Rotation(90,0,0))
+	model:SetMatrix(matrix.Scaling( 0.09086*2*(radius/sz)) * matrix.Rotation(90,0,0))
 	model:SetBrightness(0.8)
 	model:SetFadeBounds(0.01,99999,0.005) 
 	model:SetMaxRenderDistance(10000) 
@@ -46,42 +46,54 @@ function ENT:Enter()
 		local hrender = self:AddComponent(CTYPE_HEIGHTMAP) 
 		self.hrender = hrender
 		
-		self:SpawnSurface() 
-		--[[
+		--self:SpawnSurface() 
+		----[[ 
 		if CLIENT then 
 			hrender:RequestDraw(nil,function()
 				self:SpawnSurface() 
 			end)
 		else
-			self:AddEventListener(EVENT_HEIGHTMAP_DATA_RECEIVED,"event",function()  
-				self:SpawnSurface() 
-			end)
-		end]]
+			self:SpawnSurface() 
+			--self:AddEventListener(EVENT_HEIGHTMAP_DATA_RECEIVED,"event",function(self)  
+			--	self:SpawnSurface() 
+			--end)
+		end--]]
 	end
 	--self.model:Enable(false)
-	
+	if CLIENT then
+		 render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
+	end
 end
 function ENT:SpawnSurface() 
 	if not self.left then
 		local radius = self:GetParameter(VARTYPE_RADIUS) 
 		local seed = self:GetSeed()
-		local surface = ents.Create("planet_surface") 
-		surface:SetParent(self)
-		surface:SetSizepower(radius / 0.909090909090909) 
-		surface:SetSeed(seed+1000)--*k) 
-		--surface:SetPos(Vector(k/10,0,0))
-		local arch = self:GetParameter(VARTYPE_ARCHETYPE)
-		if arch then
-			surface:SetParameter(VARTYPE_ARCHETYPE,arch)
-		end 
-		surface.surfacenodelevel = self.surfacenodelevel
-		surface:Spawn()  
 		
-		self.surface = surface
+		
+		local surface = self.surface
+		if not surface or not IsValidEnt(surface) then 
+			local k = 0
+		--	for k=0,4 do 
+				surface = ents.Create("planet_surface") 
+				surface:SetParent(self)
+				surface:SetSizepower(radius / 0.909090909090909) 
+				surface:SetSeed(seed+1000*(k+1)) 
+				surface:SetPos(Vector(k/40,0,0))
+				local arch = self:GetParameter(VARTYPE_ARCHETYPE)
+				if arch then
+					surface:SetParameter(VARTYPE_ARCHETYPE,arch)
+				end 
+				surface.surfacenodelevel = self.surfacenodelevel
+				surface:Spawn()  
+			--end
+			self.surface = surface
+		end
+		
+		
 		self.partition = surface.partition
 		self.loaded = true  
 		self.partition:SetUpdating(true)
-		self.model:Enable(false)
+		--self.model:Enable(false)
 	end
 end
 --
@@ -100,5 +112,6 @@ function ENT:Leave()
 		self.loaded = false
 	--end
 	--self:UnloadSubs()
+	
 end
 

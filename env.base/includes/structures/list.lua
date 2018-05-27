@@ -1,5 +1,6 @@
 
-local list_meta = {}
+local list_meta = DEFINE_METATABLE("List")
+
 --[[
 	list:{
 		c - count
@@ -142,6 +143,17 @@ function list_meta:Count(val)
 	else
 		return self.c
 	end
+end
+function list_meta:Select(func) 
+	local tt = {}
+	for k,v in list(self) do
+		if v then
+			if func(v) then
+				tt[#tt+1] = v
+			end
+		end
+	end
+	return tt
 end
 
 function list_meta:MaxCount()

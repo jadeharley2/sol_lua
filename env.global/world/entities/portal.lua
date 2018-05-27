@@ -40,7 +40,7 @@ function ENT:Spawn()
 	light:SetBrightness(10) 
 	self.light = light
 	
-	self:AddEventListener(EVENT_USE,"use_event",function(user)
+	self:AddEventListener(EVENT_USE,"use_event",function(self,user)
 		MsgN(self," is used by aaa: ",user)
 		user:SetParent(self.target)
 		user:SetPos(self.target_pos)

@@ -49,8 +49,26 @@ function PANEL:SetScroll(pos)
 end
 function PANEL:SetColor(col)
 	local f = self.inner
-	if f then f:SetColor(col) end
-	--self:SetColor(col)
+	if f and f~=self then f:SetColor(col) end 
+	self.base.SetColor(self,col)
+end
+function PANEL:SetAlpha(a)
+	local vbar = self.vbar
+	local hbar = self.hbar
+	local inn = self.inner
+	if inn then inn:SetAlpha(a) end
+	if vbar then vbar:SetAlpha(a) end
+	if hbar then hbar:SetAlpha(a) end
+	self.base.SetAlpha(self,a)
+end
+ 
+function PANEL:Scroll(delta)
+	local bar = self.vbar
+	if bar then bar:Scroll(delta) end 
+end
+function PANEL:HScroll(delta)
+	local bar = self.hbar
+	if bar then bar:Scroll(delta) end 
 end
 
 

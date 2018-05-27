@@ -6,6 +6,7 @@ MOVETYPE_FLY = 4
  
 DeclareEnumValue("event","DAMAGE",					80001) 
 DeclareEnumValue("event","SET_VEHICLE",				80002) 
+DeclareEnumValue("event","EXIT_VEHICLE",			80003) 
 
 DeclareEnumValue("event","HEALTH_CHANGED",			81003) 
 DeclareEnumValue("event","MAXHEALTH_CHANGED",		81004) 
@@ -19,6 +20,7 @@ DeclareEnumValue("event","RESPAWN_AT",				82033)
 DeclareEnumValue("event","STATE_CHANGED",			82034) 
 DeclareEnumValue("event","GIVE_ITEM",				82066) 
 DeclareEnumValue("event","PICKUP_ITEM",				82067) 
+DeclareEnumValue("event","PICKUP_TOOL",				82068) 
 
 DeclareEnumValue("event","ABILITY_CAST",			83001) 
 DeclareEnumValue("event","EFFECT_APPLY",			83002) 
@@ -76,6 +78,7 @@ function ENT:Init()
 		selfobj:VelocityCheck()--collider,velonhit)
 	end)
 	
+	self.tmanager = TaskManager(self)
 	
 end
 
@@ -106,231 +109,239 @@ function ENT:PlayAnimation(aname,exitnode,ns)
 	graph:NewTransition(nodename,exitnode,CND_ONEND)
 	graph:SetState(nodename)
 end
-function ENT:LoadGraph()
+function ENT:LoadGraph(tab)
 
-	local graph = BehaviorGraph(self) 
-	
-	graph:NewState("idle",function(s,e) 
-		e:UpdateLean()
-		if e.model:HasAnimation("idle1") then
-			local rm =math.random(1,100)
-			if rm<90 then
-				return e.model:SetAnimation("idle") 
+	local graph = BehaviorGraph(self,tab) 
+	if tab then
+		graph.debug =true
+	end
+	if not tab then
+		graph:NewState("idle",function(s,e) 
+			e:UpdateLean()
+			if e.model:HasAnimation("idle1") then
+				local rm =math.random(1,100)
+				if rm<90 then
+					return e.model:SetAnimation("idle") 
+				else
+					local ar = math.random(1,4)
+					local aname = "idle"..ar
+					while (ar>0 ) do
+						if e.model:HasAnimation(aname) then break end
+						ar = ar - 1
+						aname = "idle"..ar
+					end
+					return e.model:SetAnimation(aname) 
+				end 
 			else
-				local ar = math.random(1,4)
-				local aname = "idle"..ar
-				while (ar>0 ) do
-					if e.model:HasAnimation(aname) then break end
-					ar = ar - 1
-					aname = "idle"..ar
-				end
-				return e.model:SetAnimation(aname) 
-			end 
-		else
-			return e.model:SetAnimation("idle") 
-		end
-		--e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end) 
-	graph:NewState("idle_loop",function(s,e)  return 0 end)
-	
-	graph:NewState("cidle",function(s,e) e.model:SetAnimation("cidle")  
-		--e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end)
-	
-	graph:NewState("run",function(s,e) e.model:SetAnimation("run") end)
-	graph:NewState("walk",function(s,e) e.model:SetAnimation("walk") end)
-	graph:NewState("cwalk",function(s,e) e.model:SetAnimation("cwalk") end)
-	
-	graph:NewState("attack",function(s,e)  
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-		return e.model:SetAnimation("attack") 
-	end)
-	
-	graph:NewState("ability",function(s,e)   
-		local anim = e.abilityanim
-		if anim then return e.model:SetAnimation(anim) end
-	end)
-	
-	graph:NewState("soar_idle",function(s,e) e.model:SetAnimation("soar_idle")  end)
-	graph:NewState("soar_in",function(s,e) return e.model:SetAnimation("soar_in")  end)
-	graph:NewState("soar_out",function(s,e) return e.model:SetAnimation("soar_out")  end)
-	
-	graph:NewState("jump",function(s,e) return e.model:SetAnimation("jump") end)
-	graph:NewState("jump_inair",function(s,e) return e.model:SetAnimation("jump_inair") end)
-	graph:NewState("land",function(s,e)  MsgN("MVD: ", e.phys:GetMovementDirection()) return e.model:SetAnimation("land") end)
-	
-	graph:NewState("sit",function(s,e) e.model:SetAnimation("sit")  
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end)
-	
-	graph:NewState("sit.chair",function(s,e) e.model:SetAnimation("sit.chair")  
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end)
-	graph:NewState("sit.capchair",function(s,e) e.model:SetAnimation("sit.capchair")  
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end)
-	graph:NewState("sit.saddle",function(s,e) e.model:SetAnimation("sit.saddle")  
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-	end)
-	
-	graph:NewState("recall",function(s,e) return e.model:SetAnimation("recall") end)
-	graph:NewState("recall_end",function(s,e) if e.Recall then return e:Recall(s) end return 0 end)
-	
-	graph:NewState("flight_start",function(s,e) 
-		if e.model:HasAnimation("fly_wings") then
-			if CLIENT then
-				local sp = self.spparts
-				if sp and sp.wings and sp.wings_folded then
-					sp.wings.model:Enable(true)
-					sp.wings.model:SetMaxRenderDistance(100)
-					sp.wings_folded.model:Enable(false)
-					sp.wings_folded.model:SetMaxRenderDistance(0)
-				end
+				return e.model:SetAnimation("idle") 
 			end
-			e.model:PlayLayeredSequence(38,"fly_wings") 
-		end
-	end)
-	graph:NewState("flight_end",function(s,e) 
-		if e.model:HasAnimation("fly_wings") then 
-			if CLIENT then
-				local sp = self.spparts
-				if sp and sp.wings and sp.wings_folded then
-					sp.wings.model:Enable(false)
-					sp.wings.model:SetMaxRenderDistance(0)
-					sp.wings_folded.model:Enable(true)
-					sp.wings_folded.model:SetMaxRenderDistance(100)
+			--e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end) 
+		graph:NewState("idle_loop",function(s,e)  return 0 end)
+		
+		graph:NewState("cidle",function(s,e) e.model:SetAnimation("cidle")  
+			--e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end)
+		
+		graph:NewState("run",function(s,e) e.model:SetAnimation("run") end)
+		graph:NewState("walk",function(s,e) e.model:SetAnimation("walk") end)
+		graph:NewState("cwalk",function(s,e) e.model:SetAnimation("cwalk") end)
+		
+		graph:NewState("attack",function(s,e)  
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			return e.model:SetAnimation("attack") 
+		end)
+		
+		graph:NewState("ability",function(s,e)   
+			local anim = e.abilityanim
+			if anim then return e.model:SetAnimation(anim) end
+		end)
+		
+		graph:NewState("soar_idle",function(s,e) e.model:SetAnimation("soar_idle")  end)
+		graph:NewState("soar_in",function(s,e) return e.model:SetAnimation("soar_in")  end)
+		graph:NewState("soar_out",function(s,e) return e.model:SetAnimation("soar_out")  end)
+		
+		graph:NewState("jump",function(s,e) return e.model:SetAnimation("jump") end)
+		graph:NewState("jump_inair",function(s,e) return e.model:SetAnimation("jump_inair") end)
+		graph:NewState("land",function(s,e)  MsgN("MVD: ", e.phys:GetMovementDirection()) return e.model:SetAnimation("land") end)
+		
+		graph:NewState("sit",function(s,e) e.model:SetAnimation("sit")  
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end)
+		
+		graph:NewState("sit.chair",function(s,e) e.model:SetAnimation("sit.chair")  
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end)
+		graph:NewState("sit.capchair",function(s,e) e.model:SetAnimation("sit.capchair")   
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end)
+		graph:NewState("sit.saddle",function(s,e) e.model:SetAnimation("sit.saddle")  
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+		end)
+		graph:NewState("vehicle_exit_start",function(s,e) return e.model:SetAnimation("capchair.exit")end)
+		graph:NewState("vehicle_exit_end",function(s,e) e.model:SetAnimation("idle",true)   e:SetVehicle() return 0 end)
+		
+		graph:NewState("recall",function(s,e) return e.model:SetAnimation("recall") end)
+		graph:NewState("recall_end",function(s,e) if e.Recall then return e:Recall(s) end return 0 end)
+		
+		graph:NewState("flight_start",function(s,e) 
+			if e.model:HasAnimation("fly_wings") then
+				if CLIENT then
+					local sp = self.spparts
+					if sp and sp.wings and sp.wings_folded then
+						sp.wings.model:Enable(true)
+						sp.wings.model:SetMaxRenderDistance(100)
+						sp.wings_folded.model:Enable(false)
+						sp.wings_folded.model:SetMaxRenderDistance(0)
+					end
 				end
+				e.model:PlayLayeredSequence(38,"fly_wings") 
 			end
-			e.model:StopLayeredSequence(38) 
-		end
-	end)
-	
-	graph:NewState("flight_idle",function(s,e) e.model:SetAnimation("fly_idle")   end)
-	graph:NewState("flight_move",function(s,e) e.model:SetAnimation("fly_move")   end)
-	
-	
-	graph:NewState("dead",function(s,e)
-		local phys = e.phys
-		phys:SetMovementDirection(Vector(0,0,0)) 
-		phys:SetGravity() 
-		phys:SetAirSpeed(0)
-		e.isflying = false
-		e.model:SetAnimation("death")   
-		return 5
-	end)
-	
-	graph:NewState("respawn",function(s,e) 
-		self:Respawn()
-	end)
-	
-	graph:NewState("spawn",function(s,e)
-		if e.Recall then e:Recall(s) end
-		return e.model:SetAnimation("spawn")  
-	end)
-	--graph:NewTransition("idle","run",function(s,e) return e.move or e.targetpos end)
-	--graph:NewTransition("run_stop","run",function(s,e) return e.move or e.targetpos end)
-	--graph:NewTransition("run","idle",function(s,e) 
-	--	if e.move then e.phys:SetMovementDirection(e.move) end
-	--	if e.targetpos then e.phys:SetMovementDirection(e.targetpos) end
-	--if e.targetpos then
-	--	local pos = e.targetpos
-	--	local dir = pos - e:GetPos()
-	--	local dist = dir:Length()
-	--	MsgN(dist)
-	--	if dist < 0.002 then
-	--		e.targetpos = nil
-	--	else
-	--		dir = dir / dist
-	--		e:SetAng(Vector(0,math.atan2(dir.z,dir.x)/3.1415926*-180,0)) 
-	--		e.phys:SetMovementDirection(Vector(0,0,1))
-	--	end
-	--end
-	---return not e.move and not e.targetpos 
-	-----
-	-----
-	---end)
-	--graph:NewTransition("run_stop","idle",function(s,e) return s.anim_end < CurTime() end)
-	
-	graph:NewGroup("g_movement",{"walk","run"})
-	
-	
-	graph:NewTransition("attack","idle",CND_ONEND)
-	graph:NewTransition("ability","idle",CND_ONEND)
-	--
-	--graph:NewTransition("soar_in","soar_idle",CND_ONEND)
-	--graph:NewTransition("soar_idle","soar_out",function(s,e) return e.move end)
-	--graph:NewTransition("soar_out","idle",CND_ONEND)
-	local CND_ONGROUND = function(s,e) return e.phys:OnGround() end
-	local CND_NOTONGROUND = function(s,e) return not e.phys:OnGround() end
-	graph:NewTransition("jump","idle", CND_ONGROUND)
-	graph:NewTransition("jump_inair","idle",CND_ONGROUND) 
-	graph:NewTransition("jump","jump_inair",CND_ONEND)
-	graph:NewTransition("land","idle",CND_ONEND)
-	
-	graph:NewTransition("idle","jump",CND_NOTONGROUND) 
-	graph:NewTransition("g_movement","jump",CND_NOTONGROUND)
-	
-	graph:NewTransition("idle","walk",CND_ONREQ)
-	graph:NewTransition("idle","run",CND_ONREQ)
-	graph:NewTransition("g_movement","idle",CND_ONREQ)  
-	graph:NewTwoWayTransition("walk","run",CND_ONREQ) 
-	graph:NewTransition("idle","jump",CND_ONREQ)
-	graph:NewTransition("g_movement","jump",CND_ONREQ)
-	
-	graph:NewTransition("idle","attack",CND_ONREQ)
-	
-	graph:NewTransition("idle","recall",CND_ONREQ)
-	graph:NewTransition("recall","recall_end",CND_ONEND)
-	graph:NewTransition("recall_end","idle",CND_ONEND)
-	
-	
-	--if self.model:HasAnimation("idle1") then 
-		graph:NewTransition("idle","idle_loop",CND_ONEND)
-		graph:NewTransition("idle_loop","idle",CND_ONEND) 
-	
-	--end
-	
-	graph:NewTransition("idle","cidle",function(s,e) return self.duckmode end)
-	graph:NewTransition("cidle","idle",function(s,e) return not self.duckmode end) 
-	graph:NewTransition("walk","cwalk",function(s,e) return self.duckmode end)
-	graph:NewTransition("cwalk","walk",function(s,e) return not self.duckmode end)
-	graph:NewTransition("run","cwalk",function(s,e) return self.duckmode end) 
-	graph:NewTransition("cidle","cwalk",CND_ONREQ)
-	graph:NewTransition("cwalk","cidle",CND_ONREQ)
-	
-	graph:NewTransition("idle","flight_start",CND_ONREQ)
-	graph:NewTransition("flight_idle","flight_end",CND_ONREQ)
-	graph:NewTransition("flight_idle","flight_move",CND_ONREQ)
-	graph:NewTransition("flight_move","flight_idle",CND_ONREQ)
-	
-	graph:NewTransition("flight_start","flight_idle",CND_ONEND)
-	graph:NewTransition("flight_end","idle",CND_ONEND)
-	
-	graph:NewTransition("flight_move","idle",function(s,e) if e.phys:OnGround() then e:Land() return true end end)
-	graph:NewTransition("flight_idle","idle",function(s,e) if e.phys:OnGround() then e:Land() return true end end)
-	
-	
-	
-	
-	
-	
-	
-	graph:NewState("unc_transition",function(s,e)
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-		return e.model:SetAnimation("tr_en_t_com")   
-	end)
-	graph:NewState("unc_stop",function(s,e)
-		e.phys:SetMovementDirection(Vector(0,0,0)) 
-		--TurnIntoStone(e)
-		return e.model:SetAnimation("tr_com_t_ncom")   
-	end) 
-	graph:NewTransition("idle","unc_transition",CND_ONREQ)
-	graph:NewTransition("unc_transition","unc_stop",CND_ONEND)
-	
-	
-	graph:NewTransition("dead","respawn",CND_ONEND)
-	graph:NewTransition("spawn","idle",CND_ONEND)
-	
+		end)
+		graph:NewState("flight_end",function(s,e) 
+			if e.model:HasAnimation("fly_wings") then 
+				if CLIENT then
+					local sp = self.spparts
+					if sp and sp.wings and sp.wings_folded then
+						sp.wings.model:Enable(false)
+						sp.wings.model:SetMaxRenderDistance(0)
+						sp.wings_folded.model:Enable(true)
+						sp.wings_folded.model:SetMaxRenderDistance(100)
+					end
+				end
+				e.model:StopLayeredSequence(38) 
+			end
+		end)
+		
+		graph:NewState("flight_idle",function(s,e) e.model:SetAnimation("fly_idle")   end)
+		graph:NewState("flight_move",function(s,e) e.model:SetAnimation("fly_move")   end)
+		
+		
+		graph:NewState("dead",function(s,e)
+			local phys = e.phys
+			phys:SetMovementDirection(Vector(0,0,0)) 
+			phys:SetGravity() 
+			phys:SetAirSpeed(0)
+			e.isflying = false
+			e.model:SetAnimation("death")   
+			return 5
+		end)
+		
+		graph:NewState("respawn",function(s,e) 
+			self:Respawn()
+		end)
+		
+		graph:NewState("spawn",function(s,e)
+			if e.Recall then e:Recall(s) end
+			return e.model:SetAnimation("spawn")  
+		end)
+		--graph:NewTransition("idle","run",function(s,e) return e.move or e.targetpos end)
+		--graph:NewTransition("run_stop","run",function(s,e) return e.move or e.targetpos end)
+		--graph:NewTransition("run","idle",function(s,e) 
+		--	if e.move then e.phys:SetMovementDirection(e.move) end
+		--	if e.targetpos then e.phys:SetMovementDirection(e.targetpos) end
+		--if e.targetpos then
+		--	local pos = e.targetpos
+		--	local dir = pos - e:GetPos()
+		--	local dist = dir:Length()
+		--	MsgN(dist)
+		--	if dist < 0.002 then
+		--		e.targetpos = nil
+		--	else
+		--		dir = dir / dist
+		--		e:SetAng(Vector(0,math.atan2(dir.z,dir.x)/3.1415926*-180,0)) 
+		--		e.phys:SetMovementDirection(Vector(0,0,1))
+		--	end
+		--end
+		---return not e.move and not e.targetpos 
+		-----
+		-----
+		---end)
+		--graph:NewTransition("run_stop","idle",function(s,e) return s.anim_end < CurTime() end)
+		
+		graph:NewGroup("g_movement",{"walk","run"})
+		
+		
+		graph:NewTransition("attack","idle",BEH_CND_ONEND)
+		graph:NewTransition("ability","idle",BEH_CND_ONEND)
+		--
+		--graph:NewTransition("soar_in","soar_idle",BEH_CND_ONEND)
+		--graph:NewTransition("soar_idle","soar_out",function(s,e) return e.move end)
+		--graph:NewTransition("soar_out","idle",BEH_CND_ONEND)
+		graph:NewTransition("jump","idle", BEH_CND_ONGROUND)
+		graph:NewTransition("jump_inair","idle",BEH_CND_ONGROUND) 
+		graph:NewTransition("jump","jump_inair",BEH_CND_ONEND)
+		graph:NewTransition("land","idle",BEH_CND_ONEND)
+		
+		graph:NewTransition("idle","jump",BEH_CND_NOTONGROUND) 
+		graph:NewTransition("g_movement","jump",BEH_CND_NOTONGROUND)
+		
+		graph:NewTransition("idle","walk",BEH_CND_ONCALL,"walk")
+		graph:NewTransition("idle","run",BEH_CND_ONCALL,"run")
+		graph:NewTransition("g_movement","idle",BEH_CND_ONCALL,"idle")  
+		graph:NewTransition("walk","run",BEH_CND_ONCALL,"run") 
+		graph:NewTransition("run","walk",BEH_CND_ONCALL,"walk") 
+		--graph:NewTwoWayTransition("walk","run",BEH_CND_ONCALL) 
+		graph:NewTransition("idle","jump",BEH_CND_ONCALL,"jump")
+		graph:NewTransition("g_movement","jump",BEH_CND_ONCALL,"jump")
+		
+		graph:NewTransition("idle","attack",BEH_CND_ONCALL,"attack")
+		
+		graph:NewTransition("idle","recall",BEH_CND_ONCALL,"recall")
+		graph:NewTransition("recall","recall_end",BEH_CND_ONEND)
+		graph:NewTransition("recall_end","idle",BEH_CND_ONEND)
+		
+		
+		--if self.model:HasAnimation("idle1") then 
+			graph:NewTransition("idle","idle_loop",BEH_CND_ONEND)
+			graph:NewTransition("idle_loop","idle",BEH_CND_ONEND) 
+		
+		--end
+		
+		graph:NewTransition("idle","cidle",function(s,e) return self.duckmode end)
+		graph:NewTransition("cidle","idle",function(s,e) return not self.duckmode end) 
+		graph:NewTransition("walk","cwalk",function(s,e) return self.duckmode end)
+		graph:NewTransition("cwalk","walk",function(s,e) return not self.duckmode end)
+		graph:NewTransition("run","cwalk",function(s,e) return self.duckmode end) 
+		graph:NewTransition("cidle","cwalk",BEH_CND_ONCALL,"cwalk")
+		graph:NewTransition("cwalk","cidle",BEH_CND_ONCALL,"cidle")
+		
+		graph:NewTransition("idle","flight_start",BEH_CND_ONCALL,"flight_start")
+		graph:NewTransition("flight_idle","flight_end",BEH_CND_ONCALL,"flight_end")
+		graph:NewTransition("flight_idle","flight_move",BEH_CND_ONCALL,"flight_move")
+		graph:NewTransition("flight_move","flight_idle",BEH_CND_ONCALL,"flight_idle")
+		
+		graph:NewTransition("flight_start","flight_idle",BEH_CND_ONEND)
+		graph:NewTransition("flight_end","idle",BEH_CND_ONEND)
+		
+		graph:NewTransition("flight_move","idle",function(s,e) if e.phys:OnGround() then e:Land() return true end end)
+		graph:NewTransition("flight_idle","idle",function(s,e) if e.phys:OnGround() then e:Land() return true end end)
+		
+		
+		
+		graph:NewTransition("vehicle_exit_start","vehicle_exit_end",BEH_CND_ONEND)
+		graph:NewTransition("vehicle_exit_end","idle",BEH_CND_ONEND)
+		
+		
+		
+		
+		graph:NewState("unc_transition",function(s,e)
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			return e.model:SetAnimation("tr_en_t_com")   
+		end)
+		graph:NewState("unc_stop",function(s,e)
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			--TurnIntoStone(e)
+			return e.model:SetAnimation("tr_com_t_ncom")   
+		end) 
+		graph:NewTransition("idle","unc_transition",BEH_CND_ONCALL,"unc_transition")
+		graph:NewTransition("unc_transition","unc_stop",BEH_CND_ONEND)
+		
+		
+		graph:NewTransition("dead","respawn",BEH_CND_ONEND)
+		graph:NewTransition("spawn","idle",BEH_CND_ONEND)
+	else 
+	end
 	
 	graph:SetState("idle")
 	 
@@ -348,8 +359,14 @@ function ENT:LoadGraph()
 	return graph
 end
 
+ENT.prf = Profiler("actor")
+
 function ENT:Think()
+	--self.prf:IS()
+	--debug.ProfilerBegin("actor")
+	--self.prf:ES("vel")
 	self:VelocityCheck()
+	--self.prf:EE()
 	local ai = self.controller 
 	if ai and not ai.camZoom then
 		if ai.Update then
@@ -357,14 +374,17 @@ function ENT:Think()
 		end
 	end
 
-	
+	--if self == LocalPlayer() then
+	--	self.prf:IS()
+	--end
 	if CLIENT and (not network.IsConnected() or self == LocalPlayer()) then
 		local graph = self.graph 
 		if graph then
 			graph:Run() 
 		end
 	end
-	self:RunTaskStep() 
+	--self:RunTaskStep() 
+	self.tmanager:Update()
 	
 	local m = self.model
 	local ct = CurTime()
@@ -408,7 +428,14 @@ function ENT:Think()
 --	--else
 --	--	self.phys:SetMovementDirection(Vector(0,0,0))
 --	--end
-	self:UpdateLean()
+	self:UpdateLean() 
+	--debug.ProfilerBegin("actor")
+	--self.prf:IE()
+	
+	
+end
+function ENT:BeginTask(...)
+	return self.tmanager:Begin(...)
 end
 
 function ENT:SetCharacter(id)
@@ -417,6 +444,7 @@ function ENT:SetCharacter(id)
 	if id then 
 		local data = json.Read("forms/characters/"..id..".json")
 		if data then 
+			self.directmove=false
 			if self.isflying then self:Land() end
 			self:SetParameter(VARTYPE_CHARACTER,id)
 			 
@@ -446,7 +474,7 @@ function ENT:SetCharacter(id)
 			
 			model:SetDynamic()
 			
-			self.graph = self:LoadGraph() or self.graph
+			self.graph = self:LoadGraph(data.behaviour) or self.graph
 			
 			
 			if CLIENT then
@@ -531,9 +559,25 @@ function ENT:SetCharacter(id)
 			
 			end 
 			
+			--if SERVER or not network.IsConnected() then
+			--	if data.equipment then  
+			--		for k,v in pairs(data.equipment.items or {}) do
+			--			self:Give(v)
+			--		end
+			--		for k,v in pairs(data.equipment.tools or {}) do
+			--			self:Give(v)
+			--		end
+			--	end
+			--end
+			
+			
 			self:SetUpdating(true,100)
 			--MsgN("faf ",self:GetPos())
 			--self:SetPos(self:GetPos()) 
+		else  
+			--if CLIENT and network.IsConnected() then
+			--	network.CallServer("_GetCharacter",self,LocalPlayer(),id) 
+			--end 
 		end
 	end
 end
@@ -601,12 +645,14 @@ function ENT:Config(data,species,variation)
 		if data.movement.walk then self.walkspeed = data.movement.walk.speed or self.walkspeed end
 		if data.movement.run then self.runspeed = data.movement.run.speed or self.runspeed end 
 		if data.movement.fly then self.flyspeed = data.movement.fly.speed or self.flyspeed end 
+		 
+		if data.movement.rotspeed then self.rotspeed = data.movement.rotspeed or self.rotspeed end 
 	end
 	if data.attributes then
 		self.attributes = data.attributes
 		for k,v in pairs(data.attributes) do
 			if v == "mount" then 
-				self:AddEventListener(EVENT_USE,"use_event",function(user) 
+				self:AddEventListener(EVENT_USE,"use_event",function(self,user) 
 					user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
 				end)
 				self:AddFlag(FLAG_USEABLE) 
@@ -652,6 +698,10 @@ function ENT:SetSize(val)
 	local phys = self.phys
 	if model and phys then
 		self.scale = val
+		self.phys:SetHeight(1.7*val)
+		self.phys:SetRadius(0.6*0.6*val)
+		self.phys:SetJumpSpeed(4.5)
+		
 		model:SetMatrix(matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val))
 	end
 end
@@ -702,7 +752,7 @@ function ENT:Jump()
 		end
 	else
 		if ong then 
-			if self.graph:TrySetState("jump") then
+			if self.graph:Call("jump") then
 				phys:Jump()
 			end 
 		else
@@ -726,19 +776,19 @@ function ENT:Move(dir,run,updatespeed)
 			else
 				phys:SetAirSpeed(self.flyspeed*0.1*spscale) 
 			end 
-			graph:TrySetState("flight_move")   
+			graph:Call("flight_move")   
 		else 
 			if self:Crouching() then
-				if graph:TrySetState("cwalk") or updatespeed  then 
+				if graph:Call("cwalk") or updatespeed  then 
 					phys:SetStandingSpeed(self.walkspeed*spscale) 
 				end
 			else
 				if run then 
-					if graph:TrySetState("run") or updatespeed then 
+					if graph:Call("run") or updatespeed then 
 						phys:SetStandingSpeed(self.runspeed*spscale) 
 					end
 				else  
-					if graph:TrySetState("walk") or updatespeed  then 
+					if graph:Call("walk") or updatespeed  then 
 						phys:SetStandingSpeed(self.walkspeed*spscale)  
 					end
 				end
@@ -834,25 +884,29 @@ function ENT:UpdateSpeed(run)
 	end 
 end
 function ENT:IsMoving() 
-	local mv = self.phys:GetMovementDirection()
-	return mv ~= Vector(0,0,0)
-	
+	if self.phys and  self.phys.GetMovementDirection then
+		local mv = self.phys:GetMovementDirection()
+		return mv ~= Vector(0,0,0)
+	end
 	--local cs = self.graph:CurrentState()
 	--return cs =="walk" or cs == "cwalk" or cs == "run" or cs == "flight_move"
+end
+function ENT:IsRunning() 
+	return self:IsMoving() and self.lastrun
 end
 function ENT:Stop()
 	local phys = self.phys
 	self.lastdir = Vector(0,0,0)
 	phys:SetMovementDirection(Vector(0,0,0)) 
 	if self:IsFlying() then
-		self.graph:TrySetState("flight_idle")
+		self.graph:Call("flight_idle")
 		phys:SetAirSpeed(0)
 		phys:SetLinearDamping(0.5)
 	else
 		if self:Crouching() then
-			if self.graph:TrySetState("cidle") then end
+			if self.graph:Call("cidle") then end
 		else
-			if self.graph:TrySetState("idle") then  end
+			if self.graph:Call("idle") then  end
 		end
 	end
 	local model = self.model 
@@ -862,11 +916,11 @@ function ENT:Stop()
 	self:UpdateLean()
 end
 function ENT:Attack() 
-	if self.graph:TrySetState("attack") then 
+	if self.graph:Call("attack") then 
 	end
 end
 function ENT:Recall() 
-	if self.graph:TrySetState("recall") then 
+	if self.graph:Call("recall") then 
 	end
 end
 function ENT:StartFlight()
@@ -902,21 +956,7 @@ end
 function ENT:IsFlying()  
 	return self.isflying or false
 end
-
-function ENT:RunTaskStep()
-	local task = self.task
-	if task then 
-		if ( coroutine.status( task ) == "dead" ) then
-			self.task = nil 
-			return 
-		end
-		local ok, message = coroutine.resume(task, self )
-		if ( ok == false ) then 
-			ErrorNoHalt( self, " Error: ", message, "\n" ) 
-			self.task = nil 
-		end  
-	end
-end 
+ 
 function ENT:Crouching()
 	return self.duckmode or false
 end
@@ -956,55 +996,8 @@ end
 function ENT:Unfreeze()
 	self:SetSpeedMul(1)
 end
-function ENT:MoveTo(target) 
-	self.target = target
-	self.task = coroutine.create(function()
-		while true do
-			local sz = self:GetParent():GetSizepower()
-			local cp = self:GetPos()
-			local tp = self.target
-			if tp then
-				local dir = self:GetLocalCoordinates(tp)
-				local dist = dir:Length()*sz
-				local Up = self:Up():Normalized()
-				local rad, polar,elev = self:GetHeadingElevation(-dir)
-				local lastdist = self.lastdist
-				local times = self.times22 or 0
-				if lastdist and lastdist<=dist then
-					times = times + 1
-					if times > 10 then
-						self:SendEvent(EVENT_ACTOR_JUMP)
-						times = 0
-						USE(self)
-					end
-				end
-				self.times22 = times
-				self.lastdist = dist
-				local drf = polar/ 3.1415926 * 180
-				--MsgN(polar)
-				self:EyeLookAt(tp) 
-				self:TRotateAroundAxis(Up, (-drf)/100) 
-				if dist>2 then  
-					--self:Stop()
-					self:Move(Vector(0,0,1),true)
-					local Forward = self:Right():Normalized()
-					self.phys:SetViewDirection(Forward) 
-					self.model:SetPoseParameter("move_yaw",  0)
-				else
-					self:Stop()
-					break
-				end
-			else
-				MsgN("ERROR:TARGET NOT SET")
-			end
-			coroutine.yield()
-		end
-	end)
-	--self.graph:SetState("run")
-	--self.phys:SetMovementDirection(Vector(0,0,1))
-	--self.model:SetAnimation("run")
-	--model:SetAnimation("idle")
-end  
+  
+
 function ENT:GetHeadingElevation(dir,b) 
 	if not b then
 		dir = dir:Rotate(Vector(0,-180,0))
@@ -1016,10 +1009,11 @@ function ENT:GetHeadingElevation(dir,b)
 	return rad,polar,elev
 end
 function ENT:EyeLookAt(dir) 
-	local sz = self:GetParent():GetSizepower()
-	local Up = self:Up():Normalized()
-	dir = self:GetLocalCoordinates(dir)---Up* (0.67/sz)
-	
+	--local sz = self:GetParent():GetSizepower()
+	--local Up = self:Up():Normalized()
+	if IsValidEnt(dir) then
+		dir = self:GetLocalCoordinates(dir)---Up* (0.67/sz)
+	end
 	local rad, polar,elev = self:GetHeadingElevation(dir,true)
 	self.model:SetPoseParameter("head_yaw",  polar/ 3.1415926 * 180)
 	self.model:SetPoseParameter("head_pitch",elev/ 3.1415926 * 180)
@@ -1027,7 +1021,17 @@ function ENT:EyeLookAt(dir)
 end
 function ENT:EyeLookAtLerped(dir) 
 	if not dir then return nil end
+	if self.lad then
+		self.lad:Stop()
+		self.lad=nil
+	end
 	local entt = dir
+	local co = GetCurrentController()
+	local cobcd = false
+	if self.controller ==co then
+		self.controller = nil
+		cobcd=true
+	end
 	dir = self:GetLocalCoordinates(entt)---Up* (0.67/sz)
 	
 	local sz = entt:GetParent():GetSizepower()
@@ -1040,7 +1044,7 @@ function ENT:EyeLookAtLerped(dir)
 	local tpp_yaw = polar/ 3.1415926 * 180 
 	local tpp_pitch = elev/ 3.1415926 * 180
 	local t = 0 
-	debug.DelayedTimer(0,10,15,function()
+	self.lad = debug.DelayedTimer(0,10,15,function()
 		t = t + 1/15 
 		local ss_p =cpp_pitch + (tpp_pitch-cpp_pitch)*t -- Smoothstep(cpp_pitch,tpp_pitch,t)
 		local ss_y =cpp_yaw + (tpp_yaw-cpp_yaw)*t -- Smoothstep(cpp_yaw,tpp_yaw,t)
@@ -1049,6 +1053,12 @@ function ENT:EyeLookAtLerped(dir)
 		self:SetEyeAngles(ss_p,ss_y)
 		--m:SetPoseParameter("head_yaw",  Smoothstep(cpp_yaw,tpp_yaw,t))
 		--m:SetPoseParameter("head_pitch", Smoothstep(cpp_pitch,tpp_pitch,t))
+		if  t>=(14/15) then
+			if cobcd then
+				self.controller = co
+			end
+			self.lad = nil
+		end
 	end)
 	
 end
@@ -1057,8 +1067,20 @@ function ENT:SetEyeAngles(pitch,yaw)
 	if not math.bad(yaw) then yaw = 0 end
 	local m = self.model
 	self.eyeangles = {pitch,yaw}
-	m:SetPoseParameter("head_yaw",yaw)
-	m:SetPoseParameter("head_pitch",pitch) 
+	local lms = self.lastheadmove or 0
+	local ha = self.headangles or {0,0}
+	
+	m:SetPoseParameter("eyes_x",yaw)
+	m:SetPoseParameter("eyes_y",pitch) 
+	--m:SetPoseParameter("head_yaw",yaw)
+	--m:SetPoseParameter("head_pitch",pitch) 
+	
+	if (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
+		self.headangles = {yaw,pitch}
+		self.lastheadmove = CurTime()
+	end
+	m:SetPoseParameter("head_yaw",ha[1])
+	m:SetPoseParameter("head_pitch",ha[2]) 
 	
 	local sForward = self:Right():Normalized()
 	--self.phys:SetViewDirection(sForward)
@@ -1075,14 +1097,6 @@ end
 function ENT:EyeAngles()
 	local eyea = self.eyeangles or {0,0}
 	return eyea[1], eyea[2]
-end
-function ENT:EyeLookAtTask(dir) 
-	self.task = coroutine.create(function()
-	while true do 
-		self:EyeLookAt(dir) 
-		coroutine.yield() 
-		end 
-	end)
 end
 
 function ENT:SetEyeTarget(pos)
@@ -1149,11 +1163,11 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			end
 			self.IsInVehicle = false
 			local vparent = self.vehicle:GetParent()
-			if SERVER or not network.IsConnected() then
-				self:SetPos(Vector(0,0,0))
+			if SERVER or not network.IsConnected() then 
+				self:SetPos(Vector(1.321081, 0.5610389, 0.01457999))--Vector(0,0,0))
 				self:Eject()
 				self:SetParent(vparent)
-				self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos())
+				--self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos()+Vector(0,2,0)/vparent:GetSizepower())
 			end 
 			self.vehicle = nil
 			self.graph:SetState("idle")
@@ -1194,13 +1208,27 @@ end
 --[[ ######## ITEMS ######## ]]--
 
 function ENT:Give(type)
-	if file.Exists("lua/env.global/world/tools/"..type..".lua") then 
-		local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
-		self:PickupWeapon(tool)
-	else 
-		if SERVER then
+
+	if SERVER or not network.IsConnected() then
+		local inv = self.inventory
+		if not inv then
+			self.inventory = Inventory(4*8,self:GetSeed()+3000) 
+		end  
+		local tool = forms.GetPath("tool",type)
+		if tool then  
+			local hasitem = self:HasTool(type)
+			if not hasitem then
+				local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
+				if tool then
+					if SERVER then
+						network.AddNodeImmediate(tool)
+					end
+					self:SendEvent(EVENT_PICKUP_TOOL,tool)
+				end
+			end 
+		else 
 			local app = CreateIA(type,self:GetParent(),self:GetPos(),GetFreeUID()) 
-			if app then 
+			if app then  
 				network.AddNodeImmediate(app)
 				local inv = self.inventory
 				if not inv then
@@ -1208,16 +1236,23 @@ function ENT:Give(type)
 				end
 				self:SendEvent(EVENT_PICKUP_ITEM,app)
 				--inv:AddItem(self, app)
-			end
+			end 
+		end 
+		if SERVER then
+			self:SendEvent(EVENT_GIVE_ITEM,type)
 		end
-	end
-	if SERVER then
-		self:SendEvent(EVENT_GIVE_ITEM,type)
 	end
 end
 
 
 --[[ ######## WEAPON|TOOLS ######## ]]--
+
+function ENT:HasTool(type) 
+	local inv = self.inventory 
+	if inv then
+		return #inv:Select(function(e) return e and e.type==type  end)>0
+	end
+end
 
 function ENT:PickupWeapon(weap)
 	----local wr = self.weapons or {}
@@ -1477,12 +1512,12 @@ function ENT:SetHealthPercentage(pc)
 end
 
 function ENT:Hurt(amount) 
-	self:SendEvent(EVENT_DAMAGE,amount)
+	--self:SendEvent(EVENT_DAMAGE,amount)
 end
 
 function ENT:Kill() 
-	if SERVER then self.graph:SetState("dead")  end
-	self:SendEvent(EVENT_DEATH)
+	--if SERVER then self.graph:SetState("dead")  end
+	--self:SendEvent(EVENT_DEATH)
 end
 function ENT:Respawn() 
 	if SERVER then self.graph:SetState("spawn")  end
@@ -1497,16 +1532,34 @@ function ENT:Dead()
 	return self.graph:CurrentState()=="dead"
 end
 
-
+function ENT:WeaponFire(dir,alternative) 
+	if CLIENT then
+		local weap = self:GetActiveWeapon() 
+		if alternative then
+			if RF and weap.AltFire and weap:IsReady() then
+				weap:SendEvent(EVENT_TOOL_FIRE,1,dir)  
+				return true
+			end  
+		else
+			if weap.Fire and weap:IsReady() then  
+				weap:SendEvent(EVENT_TOOL_FIRE,0,dir) 
+				return true
+			end 
+		end
+	end
+	return false
+end
+ 
 
 
 --[[ ######## OTHER ######## ]]--
 
 function ENT:Alert()
-	self.graph:TrySetState("unc_transition")
+	self.graph:Call("unc_transition")
 end
 
 function ENT:VelocityCheck(teleport)
+	if self:GetVehicle() then return end
 	local lastvel = self.lastvel
 	local vel = self.phys:GetVelocity()
 	if lastvel and not teleport and not self:IsFlying() then 
@@ -1581,8 +1634,13 @@ function ENT:GetAllParts()
 	return parts
 end
 
-
-
+ 
+function ENT:KeyDown(key) 
+	if CLIENT and LocalPlayer() == self then
+		return input.KeyPressed(key)
+	end
+	return false
+end
 
 
 ENT._typeevents = {
@@ -1633,6 +1691,14 @@ ENT._typeevents = {
 	[EVENT_TOOL_DROP] = {networked = true, f = ENT.DropActiveWeapon},
 	[EVENT_ACTOR_JUMP] = {networked = true, f = ENT.Jump},
 	[EVENT_SET_VEHICLE] = {networked = true, f = ENT.SetVehicle},
+	[EVENT_EXIT_VEHICLE] = {networked = true, f =function(self)
+		local m = self.model
+		if m and m:HasAnimation("capchair.exit") then
+			self.graph:SetState("vehicle_exit_start") 
+		else
+			self.graph:SetState("vehicle_exit_end") 
+		end
+	end},
 	
 	[EVENT_RESPAWN_AT] = {networked = true, f = function(self,pos) 
 		self:SetPos(pos)
@@ -1642,7 +1708,7 @@ ENT._typeevents = {
 		if SERVER or self ~= LocalPlayer() then self.graph:SetState(newstate) end 
 	end},
 	
-	[EVENT_GIVE_ITEM] = {networked = true, f = ENT.Give}, 
+	[EVENT_GIVE_ITEM] = {networked = true, f = ENT.Give,log = true}, 
 	[EVENT_PICKUP_ITEM] = {networked = true, f = function(self,item) 
 		self:Give(type)
 		local inv = self.inventory
@@ -1650,7 +1716,10 @@ ENT._typeevents = {
 			inv:AddItem(self, item)
 			item:SendEvent(EVENT_PICKUP,self)
 		end
-	end},
+	end,log = true},
+	[EVENT_PICKUP_TOOL] = {networked = true, f = function(self,tool) 
+		self:PickupWeapon(tool)
+	end,log = true},
 	
 	[EVENT_ABILITY_CAST] = {networked = true, f = ENT.Cast},  
 	[EVENT_EFFECT_APPLY] = {networked = true, f = function(self,abname,source,pos) 
@@ -1660,13 +1729,13 @@ ENT._typeevents = {
 				MsgN("Magic applied!")
 			else
 				MsgN("Magic failed!")
-			end
+			end 
 		else
 			MsgN("Ability not found: ", abname, " in ", self)
 		end
 	end},
 	[EVENT_GIVE_ABILITY] = {networked = true, f = ENT.GiveAbility},
-	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility},
+	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility}, 
 }
  
 ENT.editor = {
@@ -1677,7 +1746,7 @@ ENT.editor = {
 		hp_max_amount = {text = "maximum health",type="parameter",valtype="number",key=VARTYPE_MAXHEALTH}, 
 		enabled = {text = "enabled",type="parameter",valtype="number",key=VARTYPE_MAXHEALTH},  
 		posess = {text = "posess",type="action",action = function(ent)  
-			editor.Stop()
+			worldeditor:Close() 
 			SetLocalPlayer(ent)
 			SetController('actorcontroller') 
 		end},
@@ -1690,3 +1759,24 @@ debug.AddAPIInfo("/userclass/Entity/base_actor",{
 	SetSkin={_type="function",_arguments={{_name="str",_valuetype="string"}}},
 	
 })
+
+if SERVER then
+	local function _GetCharacter(plr,sender,id)
+		MsgN(a,plr,sender,id)
+		local cli = sender.player
+		local fname = "forms/characters/"..id..".json"
+		local data = json.Read(fname)
+		if data then  
+			MsgN("Send ",fname)
+			cli:SendFile(fname) 
+			local model = data.model
+			if model then
+				MsgN("Send ",model)
+				cli:SendFile("models/"..model,true)
+			end
+			cli:Call('_1',plr,EVENT_CHANGE_CHARACTER,id)
+		end
+	end
+
+	hook.Add("umsg._GetCharacter","char",_GetCharacter)
+end

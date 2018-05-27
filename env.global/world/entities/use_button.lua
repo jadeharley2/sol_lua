@@ -74,6 +74,9 @@ end
 function ENT:Press(user) 
 	local act = self.OnPress 
 	if act then act(self,user) end
+	if CLIENT then
+		self:EmitSound("events/lamp-switch.ogg",1)
+	end
 end
 
 ENT._typeevents = {

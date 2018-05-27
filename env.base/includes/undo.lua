@@ -1,5 +1,5 @@
 
-local undo_meta = {}
+local undo_meta = DEFINE_METATABLE("Undo")
 
 function undo_meta:Add(undofunc,redofunc,tag)
 	local ur = {u = undofunc,r = redofunc,t = tag} 

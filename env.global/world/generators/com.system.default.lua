@@ -71,14 +71,15 @@ function generator:GeneratePlanets(star, spacing, seed)
 		--ascendinglongitude, 
 		--meanAnomaly, 
 		--orbtialspeed
+		local dist = spacing + spacing * math.pow(2, i + rnd:NextFloat(-0.1, 0.1))
 		body.orbit:SetOrbit(
-			spacing + spacing * math.pow(2, i + rnd:NextFloat(-0.1, 0.1)),
+			dist,
 			rnd:NextFloat( 0, 0.2),
 			rnd:NextFloat( 0, 0.2),
 			rnd:NextFloat( 0, 0.2),
 			rnd:NextFloat( 0, 30),
 			0,
-			0.1
+			0.1/(i*i+1)
 		)
 		body.orbitIsSet = true
 		 
@@ -93,7 +94,7 @@ function generator:GeneratePlanets(star, spacing, seed)
 		body:SetSizepower(body.radius*100)
 		
 		local ssd = planetseed--body:GetSeed()
-		MsgN("?????!")
+		--MsgN("?????!")
 		if ssd ==2008649333 then
 		elseif ssd ==100310535 then 
 			--2008649333
@@ -103,13 +104,13 @@ function generator:GeneratePlanets(star, spacing, seed)
 		elseif ssd ==2091568607 then 
 			body:SetParameter(VARTYPE_ARCHETYPE,"hs_lowas") 
 		elseif  Random(ssd):NextDouble() > 0.1 then 
-			MsgN("asdfjas!")
+			--MsgN("asdfjas!")
 			body:SetParameter(VARTYPE_ARCHETYPE,"gen_barren")
 		end
 		
 		
 		body:Spawn()
-		body:SetUpdating(true)
+		body:SetUpdating(true,1000)
 		
 		planets[i+1] = body 
 		self:GenerateMoons(body,planetseed)
@@ -150,7 +151,7 @@ function generator:GenerateMoons(planet, seed)
 				moonrnd:NextFloat(  0, 0.2),
 				moonrnd:NextFloat(  0, 30),
 				0,
-				0.1
+				1/(i*i+1)
 			)
 		 
 			
@@ -159,7 +160,7 @@ function generator:GenerateMoons(planet, seed)
 			moon:SetSizepower(moon.radius*3)
 			moon:SetParameter(NTYPE_TYPENAME,"moon")
 			moon:Spawn()
-			moon:SetUpdating(true)
+			moon:SetUpdating(true,1000)
 			moons[i+1] = moon 
 		end
 	end

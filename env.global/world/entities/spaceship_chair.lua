@@ -44,7 +44,7 @@ function ENT:Spawn(c)
 	 
 	--local mountpoint = Vector(0,1,0)/10
 	
-	self:SetUpdating(true)
+	--self:SetUpdating(true)
 	self:SetSpaceEnabled(false) 
 	
 	self:AddFlag(FLAG_USEABLE)
@@ -68,7 +68,7 @@ function ENT:SetModel(mdl,scale)
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world)
-	 
+	   
 	local coll =  self.coll 
 	if(model:HasCollision()) then
 		coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
@@ -95,22 +95,28 @@ function ENT:Throttle(dir)
 		self.ship:Throttle(dir/10)  
 	end
 end
-function ENT:Turn(dir)  
-	self.ship:Turn(dir) 
+function ENT:Turn(dir)   
+	if self.ship and self.ship.Turn then  
+		self.ship:Turn(dir) 
+	end
 end
-function ENT:Turn2(dir)  
-	self.ship:Turn2(dir) 
+function ENT:Turn2(dir)
+	if self.ship and self.ship.Turn2 then  
+		self.ship:Turn2(dir) 
+	end
 end
-function ENT:HandleDriving(actor)  
-	self.ship:HandleDriving(actor) 
+function ENT:HandleDriving(actor) 
+	if self.ship and self.ship.HandleDriving then
+		self.ship:HandleDriving(actor) 
+	end
 end
 
-function ENT:Think() 
+function ENT:Think()  
 end
 
 ENT._typeevents = {
 	[EVENT_USE] = {networked = true, f = function(self,user)
-		MsgN(self," is used by aaa: ",user)
+		MsgN(self," is used by aaa: ",user," for ",self.ship) 
 		user:SendEvent(EVENT_SET_VEHICLE,self,1,self.ship)--SetVehicle(self,1,self.ship) 
 	end},
 } 

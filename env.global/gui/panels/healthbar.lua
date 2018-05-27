@@ -39,9 +39,7 @@ function PANEL:Init()
 	self:UpdateLayout()
 	
 	hook.Add( "window.resize","gui.health.repos",function()
-		local vsize = GetViewportSize()
-		local csize = self:GetSize() 
-		self:SetPos(0,-vsize.y+csize.y+110)
+		self:UpdatePos()
 	end)
 	
 	hook.Add( "main.update","gui.health.update",function() self:Think() end)
@@ -50,7 +48,13 @@ function PANEL:Init()
 	local csize = self:GetSize() 
 	self:SetPos(0,-vsize.y+csize.y+20)
 end
- 
+  
+function PANEL:UpdatePos() 
+	local vsize = GetViewportSize()
+	local csize = self:GetSize() 
+	self:SetPos(0,-vsize.y+csize.y+110)
+end
+
 function PANEL:UpdateHealth(val,maxval) 
 	if val then  
 		maxval = maxval or 100

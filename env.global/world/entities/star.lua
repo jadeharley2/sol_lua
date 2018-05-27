@@ -6,6 +6,7 @@
 function ENT:Init()  
 	--local orbit = self:AddComponent(CTYPE_ORBIT)  
 	--self.orbit = orbit
+	self:AddFlag(FLAG_STAR)
 end
 
 function ENT:Spawn()
@@ -33,10 +34,13 @@ function ENT:Spawn()
 	
 	surface:Spawn()  
 end
---function ENT:Enter()  
---
---	
---end
+function ENT:SetColor(color)  
+	self:SetParameter(VARTYPE_COLOR,color)
+	self.light:SetColor(color+Vector(0.1,0.1,0.1)) 
+end
+function ENT:GetColor()   
+	return self:GetParameter(VARTYPE_COLOR) or self.color or Vector(0.2,0.6,1.2)
+end
 ----
 --function ENT:Leave()   
 --end

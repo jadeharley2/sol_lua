@@ -36,13 +36,16 @@ function OBJ:KeyDown(key)
 	if input.KeyPressed(KEYS_D1) then
 		SetController("actorcontroller")
 	end
+	if input.KeyPressed(KEYS_C) then
+		self:ToggleMouse()
+	end
 end
 
 function OBJ:Update() 
 	
 	if input.GetKeyboardBusy() then return nil end
 		
-	if not input.KeyPressed(KEYS_C) then
+	--if not input.KeyPressed(KEYS_C) then
 		local dt = 1
 		
 		local cam = GetCamera()
@@ -57,8 +60,15 @@ function OBJ:Update()
 		if input.KeyPressed(KEYS_S) then result = result + Forward end
 		if input.KeyPressed(KEYS_D) then result = result - Right end
 		if input.KeyPressed(KEYS_A) then result = result + Right end
-		if input.KeyPressed(KEYS_R) then result = result - Up end
-		if input.KeyPressed(KEYS_F) then result = result + Up end
+		if worldeditor and worldeditor.Enabled then
+			if worldeditor.Enabled() then
+				if input.KeyPressed(KEYS_R) then result = result - Up end
+				if input.KeyPressed(KEYS_F) then result = result + Up end
+			else
+				if input.KeyPressed(KEYS_SPACE) then result = result - Up end
+				if input.KeyPressed(KEYS_CONTROLKEY) then result = result + Up end
+			end
+		end
  
 		if result ~= Vector(0,0,0) then 
 			result = result:Normalized()
@@ -72,7 +82,7 @@ function OBJ:Update()
 		end
 		local mhag = input.MouseIsHoveringAboveGui()
 		local rmb = input.rightMouseButton()
-		if not mhag and rmb then
+		if self:MouseLocked() then--not mhag and rmb then
 			if not self.lms_active then
 				input.SetCursorHidden(true)
 				self.lms_active = true
@@ -129,5 +139,39 @@ function OBJ:Update()
 			--CAMTESTPR:SetPos(cpp)
 		
 		--end
+	--end
+end
+
+
+function OBJ:ToggleMouse()
+	if self.mouseactive then
+		input.SetCursorHidden(false)
+		self.mouseactive = false
+	else 
+		input.SetCursorHidden(true)
+		self.mouseactive = true 
 	end
+	
+end
+function OBJ:MouseLocked()
+	if input.WindowActive() and not BLOCK_MOUSE then
+		if SHOWINV then return false end
+		 
+		if self.mouseactive then
+			if MAIN_MENU and MAIN_MENU:GetVisible() then
+				return false
+			else
+				return true 
+			end
+		else 
+			
+			local mhag = input.MouseIsHoveringAboveGui()
+			if not mghag then
+				return	 input.rightMouseButton()
+			else
+				return false
+			end
+		end
+	end
+	return false
 end

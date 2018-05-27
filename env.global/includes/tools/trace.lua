@@ -48,6 +48,31 @@ function GetTracedLocalPos(node,pos,dir,maxlen,dirmul,actorphys)
 	return pos + dir*maxlen
 end
 
+function IsVisibleAround(node,target,actorphys)
+	actorphys = actorphys or node.phys
+	local parentphysnode = node:GetParentWithComponent(CTYPE_PHYSSPACE)
+	if parentphysnode then
+		local space = parentphysnode:GetComponent(CTYPE_PHYSSPACE)
+		local lw = parentphysnode:GetLocalSpace(node)
+		local lwdiff = parentphysnode:GetSizepower()/node:GetSizepower()
+		
+		local pos = node:GetPos()
+		local pos2 = target:GetPos()
+		local dir = pos2-pos
+		
+		--local wpos = pos:TransformC(lw)
+		--local wdir = dir:TransformN(lw)
+		
+		local hit, hpos, hnorm, dist, ent = space:RayCast(pos,dir,actorphys)
+		--MsgN(hit, hpos, hnorm, dist, ent)
+		--debug.ShapeBoxCreate(100,node:GetParent(),matrix.Scaling(0.001)*matrix.Translation(hpos),Vector(1,0,0))
+		if hit and ent == target then
+			return true
+		end
+	end 
+	return false
+end
+
 
 function GetNodesInRadius(space,pos,r,flagfilter,nodefilter)
 	--flagfilter ent flag (number)

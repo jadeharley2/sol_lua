@@ -30,7 +30,7 @@ function ENT:Spawn()
 	self.sections = sections
 	self.thering = SpawnSO("test/ring3.json",self,Vector(0,0,0),model_scale) 
 	self.thering :SetAng(Vector(0,90,0))
-	self:SetUpdating(true)
+	--self:SetUpdating(true)
 	
 	  
 end

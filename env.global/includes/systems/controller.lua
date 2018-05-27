@@ -5,7 +5,7 @@ global_controller = global_controller or false
 function AddController(name,obj)
 	controllers[name] = obj 
 end
- 
+  
 function ScanControllers() 
 	local tempobj = OBJ   
 	for k,v in pairs(file.GetFiles("lua/env.global/world/controllers/","lua")) do
@@ -82,3 +82,18 @@ if global_controller then
 end    
 
 console.AddCmd("setcontroller",SetController)
+ 
+hook.Add("script.reload","controller", function(filename) 
+	if string.starts(filename,"env.global/world/controllers/") then 
+		local type = string.lower( file.GetFileNameWE(filename))
+		 
+		local tempobj = OBJ   
+		OBJ = {}   
+		include(filename)   
+		OBJ.name = string.lower( file.GetFileNameWE(filename))
+		AddController(OBJ.name,OBJ)  
+		OBJ = tempobj 
+		
+		return true
+	end
+end)

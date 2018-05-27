@@ -84,11 +84,10 @@ function PANEL:Init()
 			self:SetVisible(false)
 			self.enabled = false  
 		end
-	end
+	end 
+	
 	--hook.Add( "console.onchanged","gui.console.refresh",function()
-	hook.Add( "console.onchanged",debug.GetHashString(self),function()
-		self:Resize()
-	end)
+	self.upd = debug.DelayedTimer(0,100,-1,function() self:Resize() end)
 	
 	input_text:SetSize(30,30)
 	list:SetSize(30,30)
@@ -101,7 +100,7 @@ function PANEL:Init()
 	for k,v in pairs(self.clist) do
 		v:SetAlpha(calpha)
 	end 
-	self.list:SetAlpha2(calpha*4) 
+	self.list:SetAlpha(calpha*4) 
 	self.input_text:SetAlpha(calpha*3)
 	
 	--test

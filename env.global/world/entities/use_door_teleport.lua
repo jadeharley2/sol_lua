@@ -2,7 +2,7 @@
 
 function SpawnDT(model,parent,pos,ang,sca)
 	local e = ents.Create("use_door_teleport")
-	MsgN("lol"..model)
+	--MsgN("lol"..model)
 	e:SetModel(model) 
 	if sca then e:SetModelScale(sca) end
 	e:SetSizepower(1)

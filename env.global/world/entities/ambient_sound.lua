@@ -13,6 +13,12 @@ end
 function ENT:Despawn()
 	local snd = self.snd
 	if snd then snd:Stop() snd:Dispose()  self.snd = nil end
+	
+	local task = self.task
+	if task then
+		task:Stop()
+		self.task = nil
+	end
 end
  
 function ENT:StartTrack(id)
@@ -33,7 +39,10 @@ function ENT:StartTrack(id)
 			if snd then
 			
 				if(#list>1)then
-					debug.Delayed(snd:Duration()*1000,function()
+					if self.task then
+						self.task:Stop()
+					end
+					self.task = debug.Delayed(snd:Duration()*1000,function()
 						if IsValidEnt(self) then
 							self:NextTrack()
 						end

@@ -45,9 +45,7 @@ function PANEL:Init()
 	self.selector = selector
 	
 	hook.Add( "window.resize","gui.quickpanel.repos",function()
-		local vsize = GetViewportSize()
-		local csize = self:GetSize() 
-		self:SetPos(0,-vsize.y+csize.y)
+		self:UpdatePos()
 	end)
 	 
 	
@@ -57,6 +55,11 @@ function PANEL:Init()
 		end
 	end)
 	
+end
+function PANEL:UpdatePos()
+	local vsize = GetViewportSize()
+	local csize = self:GetSize() 
+	self:SetPos(0,-vsize.y+csize.y)
 end
 function PANEL:Select(actor,index)
 	cslot = self.cslot or 0

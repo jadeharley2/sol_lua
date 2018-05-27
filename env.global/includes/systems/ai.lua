@@ -5,8 +5,8 @@ function AI_META:AddReaction(id,condition,action,tag)
 	self.consys = self.consys or {}
 	self.consys[id] = {condition,action,tag}
 end       
-function AI_META:React()
-	if self.consys then   
+function AI_META:React() 
+	if self.consys then    
 		for k,v in pairs(self.consys) do
 			local condition = v[1]
 			local action = v[2]
@@ -14,7 +14,7 @@ function AI_META:React()
 			local istrue = true
 			if istable(condition) then
 				for c,c2 in pairs(condition) do
-					if not c2(self,self.ent,tag) then
+					if not c2(self,self.ent,tag) then 
 						istrue = false
 					end 
 				end     
@@ -66,12 +66,12 @@ function Ai(type,ent)
 	local ai = ai_class:Create(type)
 	ai.ent = ent
 	ai:Init()
-	return ai
+	return ai 
 end 
- 
+  
 
 local AI_TASK_META = AI_TASK_META or {}
-
+  
 
             
 debug.AddAPIInfo("/userclass/Ai",{

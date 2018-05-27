@@ -24,12 +24,12 @@ function ENT:Enter()
 			self.skybox = skybox
 			self.cubemap = cubemap
 			skybox:SetRenderGroup(RENDERGROUP_STARSYSTEM) 
-			skybox:SetBrightness(0.5)
+			skybox:SetBrightness(1)
 			cubemap:SetTarget(skybox)
 			--cubemap:RequestDraw(skybox,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
 			--skybox:SetTexture("data/textures/test/sky_day02.png")
 			--render.DisableGroup(RENDERGROUP_DEEPSPACE)
-			--self:ReloadSkybox()
+			 self:ReloadSkybox()
 		end
 		
 		
@@ -56,7 +56,7 @@ function ENT:Enter()
 		]]
 		if CLIENT then
 			--if GetCamera():GetParent()~=LocalPlayer() then
-			--	self:ReloadSkybox()
+			--	--self:ReloadSkybox()
 			--end
 		end
 	end
@@ -73,6 +73,10 @@ function ENT:Leave()
 	end
 	self:UnloadSubs()
 	self.loaded = nil
+	
+	if CLIENT then
+		 render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED) 
+	end
 end
 
 if CLIENT then

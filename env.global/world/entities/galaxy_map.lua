@@ -196,7 +196,7 @@ function ENT:Spawn()
 		renderer:SetRenderTarget(1,self.rt)
 		renderer:RequestDraw(holo)
 		
-		self:AddEventListener(EVENT_USE,"use_event",function(user)
+		self:AddEventListener(EVENT_USE,"use_event",function(self,user)
 			self:Convert(user)
 		end)
 		self:AddFlag(FLAG_USEABLE) 
@@ -210,6 +210,7 @@ function ENT:Despawn()
 	if root then
 		root:Despawn()
 	end
+	hook.Remove("main.postcontroller", "galaxymap"..tostring(seed))
 end
 
 function ENT:Convert(user)
@@ -761,7 +762,7 @@ function ENT:CreateCelestialBody(data,objects,root)
 	body.sptext = sptext 
 	
 	body.model = model
-	body:SetUpdating(true)
+	body:SetUpdating(true,1000)
 	
 end
 

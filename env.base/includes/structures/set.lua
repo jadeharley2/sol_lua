@@ -1,8 +1,8 @@
 
 
-local set_meta = {}
+local set_meta = DEFINE_METATABLE("Set")
 
-
+ 
 function set_meta:Add(key)
     self[key] = true
 end
@@ -13,7 +13,7 @@ end
 
 function set_meta:Contains(key)
     return self[key] ~= nil
-end
+end 
 
 function set_meta:Clear() 
 	for k,v in pairs(self) do

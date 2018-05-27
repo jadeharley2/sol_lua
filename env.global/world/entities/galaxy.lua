@@ -1,4 +1,4 @@
- 
+local CONST_SPACE_LIGHT_MULTIPLIER=50
 
 function ENT:Init()  
 	self:AddFlag(FLAG_GALAXY)
@@ -17,7 +17,7 @@ function ENT:Spawn()
 	model:SetRasterizerMode(RASTER_NODETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_DISABLED) 
 	model:SetMatrix(matrix.Scaling(1.8) * matrix.Rotation(90,0,0))
-	model:SetBrightness(0.3)--0.8
+	model:SetBrightness(0.0003*CONST_SPACE_LIGHT_MULTIPLIER)--0.3)--0.8
 	model:SetFadeBounds(0.05,100,0.1)  
 end
 

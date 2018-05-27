@@ -28,7 +28,7 @@ function ENT:Spawn()
 	self.model = model
 	
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel("lift/lift_mirror.smd")   
+	model:SetModel("lift/lift_mirror.stmd")   
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
@@ -43,7 +43,7 @@ function ENT:Spawn()
 	--rparam:SetDrawSprites(false)
 	
 	local rcamera = self:AddComponent(CTYPE_CAMERA) 
-	rcamera:SetCamera(cc)
+	rcamera:SetCamera(cc) 
 	rcamera:SetParameters(rparam)
 	
 	self.rparam = rparam 

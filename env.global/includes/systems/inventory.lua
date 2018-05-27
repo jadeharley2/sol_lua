@@ -32,6 +32,9 @@ end
 function INV_META:ContainsItem(item)
 	return self.list:Contains(item)
 end
+function INV_META:Select(func)  
+	return self.list:Select(func)
+end
 
 function INV_META:RemoveItem(actor,item)
 	if self.list:Remove(item) then

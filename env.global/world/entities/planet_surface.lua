@@ -80,7 +80,7 @@ function ENT:Spawn()
 	end
 	
 	
-	
+	self:SetUpdating(true,200)
 end
 
 function ENT:Enter() 
@@ -106,4 +106,15 @@ function ENT:Leave()
 	--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED) 
 	--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_ENABLED) 
 	self:UnloadSubs()
+	
+	if CLIENT then
+		local system =  self:GetParentWith(NTYPE_STARSYSTEM) 
+		MsgN("ad",system)
+		if system and system.cubemap then
+			render.SetCurrentEnvmap(system.cubemap)
+		end
+	end
+end
+function ENT:Think()
+	MsgN("d")
 end

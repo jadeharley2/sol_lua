@@ -27,7 +27,7 @@ function luaeditor.Toggle()
 		luaeditor.Enable()
 	end
 end
-
+ 
 console.AddCmd("ed_lua", luaeditor.Toggle)
 ---test
  

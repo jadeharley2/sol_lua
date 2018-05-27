@@ -11,6 +11,18 @@ end
 
 function ENT:Spawn()  
 
+	
+	
+	
+		
+end
+function ENT:Think()   
+	
+	-- 1 turn per 100 sec
+	self.ring:SetAng(Vector(0,0,CurTime()*360/100))
+end
+function ENT:Enter()
+
 	local dock = ents.Create() 
 	dock:SetSizepower(750)
 	dock:SetSeed(6230948)
@@ -41,15 +53,15 @@ function ENT:Spawn()
 	
 	
 	
-	local dock_model = SpawnSO("station/dock_ref.smd",dock,Vector(0,0,0),0.75)
+	local dock_model = SpawnSO("space/stations/dring/dock_ref.stmd",dock,Vector(0,0,0),0.75)
 	dock_model.model:SetMaterial("textures/debug/white.json") 
 	self.dock_model = dock_model
 	
-	local ring_model = SpawnSO("station/ring_ref.smd",ring,Vector(0,0,0),0.75)
+	local ring_model = SpawnSO("space/stations/dring/ring_ref.stmd",ring,Vector(0,0,0),0.75)
 	ring_model.model:SetMaterial("textures/debug/white.json") 
 	self.ring_model = ring_model
 	 
-	local ring_interior_model = SpawnSO("station/ring_interior_1.json",ring,Vector(0,0,0),0.75)
+	local ring_interior_model = SpawnSO("space/stations/dring/ring_interior_1.stmd",ring,Vector(0,0,0),0.75)
 	 
 	local mul = 0.75 / 750 
 	self.dock_coord = Coordinate(self.dock,Vector(94.161,-17.097,361.39)*mul)
@@ -62,7 +74,7 @@ function ENT:Spawn()
 	self.maxshipspeed = 0.001
 	self.dock.maxshipspeed = 0.0001
 	
-	self:SetUpdating(true,15)
+	self:SetUpdating(true,20)
 	
 	
 	local function pcon(x,y,z)
@@ -89,21 +101,19 @@ function ENT:Spawn()
 	pn.links = {{1,2,3,4,5,6,7,8,9,10}}
 	pn.currentid = 1
 	
-	self.lift = SpawnLift(dock,328502,pn,"station/lift_ref.smd")
+	self.lift = SpawnLift(dock,328502,pn,"space/stations/dring/lift_ref.stmd")
 	self.lift .speed = 100
 	
-	
-	
-	
-		
-end
-function ENT:Think()   
-	
-	-- 1 turn per 100 sec
-	self.ring:SetAng(Vector(0,0,CurTime()*360/100))
-end
-function ENT:Enter()
-	local ss = SpawnSO("space/ships/cargo1/all_ref.smd",self.dock,Vector(0.8,0,0.8),0.75)
+
+
+
+
+
+
+
+
+
+	local ss = SpawnSO("space/ships/cargo1/all_ref.stmd",self.dock,Vector(0.8,0,0.8),0.75)
 	ss:SetAng(Vector(130,130,130))
 	ss.model:SetMaterial("textures/debug/white.json") 
 	

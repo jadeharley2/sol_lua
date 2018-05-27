@@ -57,6 +57,9 @@ function editor.Toggle()
 	if editor.node then editor.Stop() 
 	else editor.Run() end
 end
+function editor.Enabled() 
+	return editor.node ~= nil 
+end
 
 function editor.Undo()
 	MsgN("undo:",editor.undo:Undo())
@@ -150,13 +153,13 @@ function editor.KeyDown()
 		editor.selected:Clear()
 		editor.ClearSelectionModels() 
 	elseif (input.KeyPressed(KEYS_Z)) then  
-		--if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+		if (input.KeyPressed(KEYS_CONTROLKEY)) then  
 			editor.Undo()
-		--end
+		end
 	elseif (input.KeyPressed(KEYS_Y)) then  
-		--if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+		if (input.KeyPressed(KEYS_CONTROLKEY)) then  
 			editor.Redo()
-		--end
+		end
 	end
 end
 
@@ -264,12 +267,12 @@ function editor.Select(node,multiselect)
 			editor.undo:Add(editor.action_select, editor.action_deselect, node)
 		end
 	else
+		local tbl = {} for k,v in pairs(editor.selected) do tbl[#tbl+1] = k end
 		editor.selected:Clear()
 		editor.selected:Add(node)
 		editor.ClearSelectionModels() 
 		editor.AddSelectionModel(node) 
 		
-		local tbl = {} for k,v in pairs(editor.selected) do tbl[#tbl+1] = k end
 		editor.undo:Add(
 			function(a,b) editor.action_deselect(a) for k,v in pairs(b) do MsgN(k,v) editor.action_select(v) end end, 
 			function(a) editor.ClearSelectionModels() editor.action_select(a) end, node,tbl)

@@ -3,6 +3,10 @@ EVENT_DOCK = 11002
 EVENT_DOCK_FINISH = 11003
 EVENT_HYPERJUMP = 11004
 
+function SpawnSS(type,pos,ent)
+	
+end
+
 function ENT:CreateStaticLight( pos, color,power)
 
 	local lighttest = ents.Create("omnilight") 
@@ -30,34 +34,14 @@ function CreateLight(ship, pos, color, vel)
 	lighttest:SetSpaceEnabled(false)
 	lighttest:Spawn()
 	
-	lighttest.model:SetMatrix(world*matrix.Translation(-phys:GetMassCenter()))
+	--lighttest.model:SetMatrix(world*matrix.Translation(-phys:GetMassCenter()))
 	lighttest.phys = phys
 	
 	lighttest:SetPos(pos) 
 	lighttest:AddFlag(FLAG_STOREABLE)
 	phys:ApplyImpulse(vel or Vector(0,4,40))
 	return lighttest
-end
-function CreateTestPlanet(ship, pos, color,seed)
-
-	local body = ents.Create("planet")  
-	body:RemoveComponents(CTYPE_ORBIT)
-	body.radius = 1000000
-	body:SetName( "omgplanet") 
-	body:SetSeed(seed or 0)
-	body.mass = 0.33E24  
-	body.radius = 1000000  
-	body:SetParameter( VARTYPE_RADIUS,body.radius) 
-	body:SetParameter(NTYPE_TYPENAME,"planet")
-	body:SetParent(ship)
-	body:SetSizepower(body.radius*1.1)
-	body:SetScale(Vector(1,1,1)*(1/body.radius/10))
-	body:Spawn() 
-	body:SetPos(pos) 
-	body:Enter() 
-	body.surface.surface:SetRenderGroup(RENDERGROUP_LOCAL)
-	return body
-end
+end 
 
 
 
@@ -91,15 +75,7 @@ function ENT:Init()
 	local coll = self:AddComponent(CTYPE_STATICCOLLISION) 
 	coll:SetShape(collsmd, matrix.Scaling(1000) * world ) 
 	self.coll = coll
-	
 	 
-	--local dock_coll = self:AddComponent(CTYPE_STATICCOLLISION) 
-	--dock_coll:SetShape("shiptest/dockslot.SMD", matrix.Scaling(1000) * world ) 
-	--self.dock_coll = dock_coll
-	--
-	--local hull_coll = self:AddComponent(CTYPE_STATICCOLLISION) 
-	--hull_coll:SetShape("shiptest/ship_surface.SMD", matrix.Scaling(1000) * world ) 
-	--self.hull_coll = hull_coll
 	
 end
 function ENT:Spawn()
@@ -110,14 +86,20 @@ function ENT:Spawn()
 		local rt1 = CreateRenderTarget(512,512,"@rt01:Texture2D")
 		self.rt1 = rt1
 		local rt2 = CreateRenderTarget(512,512,"@rt02:Texture2D")
-		self.rt2 = rt2
-		--self.starmap = TEST_CGM(self,Vector(0,17+5,254.5)*0.001)
-		--self.camera2 = SpawnRTCAM(rt2,self)
-		--self.camera1:SetUpdating(false)
-		--self.camera2:SetUpdating(false)
+		self.rt2 = rt2 
 	end
 	
-	SpawnSO("shiptest/ship_surface.json",self,Vector(0,0,0),0.75) 
+	local char = self:GetParameter(VARTYPE_CHARACTER)
+	local shipdata = json.Read("forms/spaceships/"..char..".json")
+	if shipdata then
+		self.shipdata = shipdata
+		if shipdata.hull then
+			SpawnSO(shipdata.hull.model,self,Vector(0,0,0),shipdata.hull.scale) 
+		end
+	end
+	
+	
+	--SpawnSO("shiptest/ship_surface.stmd",self,Vector(0,0,0),0.75) 
 	self.velocity = Vector(0,0,0)
 	self.angvelocity = Vector(0,0,0)
 	--self:SetUpdateSpace(true)
@@ -126,6 +108,15 @@ function ENT:Spawn()
 	self:SetUpdating(true,15)
 end
 function ENT:Load()
+	local char = self:GetParameter(VARTYPE_CHARACTER)
+	local shipdata = json.Read("forms/spaceships/"..char..".json")
+	
+	if shipdata then
+		self.shipdata = shipdata
+		if shipdata.hull then
+			SpawnSO(shipdata.hull.model,self,Vector(0,0,0),shipdata.hull.scale) 
+		end
+	end
 	local state = self:GetParameter(VARTYPE_STATE)
 	if state == "docked" then
 		local parent = self:GetParent()
@@ -148,6 +139,111 @@ function ENT:SEnter()
 		local function ToShipRVector(x,y,z)
 			return Vector(x*shipmodelmul,z*shipmodelmul,-y*shipmodelmul)
 		end
+		
+		 
+		local nav = self:AddComponent(CTYPE_NAVIGATION)  
+		--aatest:SetParent(space) 
+		--aatest:Spawn() 
+		self.nav = nav
+		
+		local shipdata = self.shipdata
+		local namedEnts = {}
+		if shipdata then   
+			if shipdata.interior then  
+				local posmul = shipdata.interior.posmul or 1
+				
+				local cc = shipdata.commandchair
+				if cc then
+					local chair = SpawnSPCH(cc.model,self,JVector(cc.pos)*posmul,cc.scale)  
+					chair:SetSeed(self:GetSeed()+38012)
+				end
+				local tp = shipdata.teleporter
+				if tp then 
+					local e = CreateTeleporter(self,JVector(tp.pos)*posmul)
+					if tp.name then
+						e:SetName(tp.name)
+						namedEnts[tp.name] = e
+					end
+					e:SetSeed(tp.seed)
+					self.teleporter = e
+				end
+				
+				for k,v in pairs(shipdata.interior.static) do  
+					local sm = SpawnSO(v.model,self,JVector(v.pos)*posmul,v.scale)  
+					nav:AddStaticMesh(sm)
+				end 
+				for k,room in pairs(shipdata.interior.rooms or {}) do
+					for k,v in pairs(room.static or {}) do  
+						local sm = SpawnSO(v.model,self,JVector(v.pos)*posmul,v.scale)  
+						nav:AddStaticMesh(sm)
+					end 
+					for k,v in pairs(room.doors or {}) do  
+						local e = SpawnDoor(v.model,self,JVector(v.pos)*posmul,JVector(v.ang),v.scale,v.seed) 
+						if v.name then
+							e:SetName(v.name)
+							namedEnts[v.name] = e
+						end
+						if v.seed then e:SetSeed(v.seed) end
+					end 
+					for k,v in pairs(room.props or {}) do
+						local e = SpawnPV(v.type,self,JVector(v.pos)*posmul,JVector(v.ang))
+						if v.name then
+							e:SetName(v.name)
+							namedEnts[v.name] = e
+						end
+						if v.seed then e:SetSeed(v.seed) end
+					end
+					for k,v in pairs(room.wire or {}) do
+						local from = namedEnts[v[1]]
+						local to = namedEnts[v[3]]
+						WireLink(from,v[2],to,v[4])
+					end
+				end
+				self.airlocks = {}
+				for k,lock in pairs(shipdata.interior.airlocks or {}) do
+					local ddi = lock.door_in
+					local ddo = lock.door_out
+					local door_in = SpawnDoor(ddi.model,self,JVector(ddi.pos)*posmul,JVector(ddi.ang),ddi.scale,ddi.seed)
+					local door_out = SpawnDoor(ddo.model,self,JVector(ddo.pos)*posmul,JVector(ddo.ang),ddo.scale,ddo.seed)
+					local airlock = Airlock(door_in,door_out)
+					self.airlocks[k] = airlock
+					for k,v in pairs(lock.static or {}) do  
+						local sm = SpawnSO(v.model,self,JVector(v.pos)*posmul,v.scale)  
+						nav:AddStaticMesh(sm)
+					end 
+				end
+				self.lifts = {}
+				for k,lift in pairs(shipdata.interior.lifts or {}) do
+					MsgN("LIFT")
+					local pn = {}
+					for k,v in pairs(lift.nodes) do
+						pn[k] = {p =JVector(v.p)*posmul,n=v.n,s=v.s,c=v.c}
+					end
+					pn.links = lift.links
+					pn.currentid = lift.spawnnodeid
+					MsgN("~~~~s")
+					--PrintTable(pn)
+					self.lifts[k] = SpawnLift(self,lift.seed,pn) 
+				end
+				for k,v in pairs(shipdata.interior.props or {}) do
+					local e = SpawnPV(v.type,self,JVector(v.pos)*posmul,JVector(v.ang))
+					if v.name then
+						e:SetName(v.name)
+						namedEnts[v.name] = e
+					end
+				end
+				
+				for k,v in pairs(shipdata.interior.wire or {}) do
+					local from = namedEnts[v[1]]
+					local to = namedEnts[v[3]]
+					WireLink(from,v[2],to,v[4])
+				end
+				
+			end  
+		end
+		self.named = namedEnts
+		
+		--[[
 		--------------------------------------------------------------------------------
 		--LIGHTS
 		--------------------------------------------------------------------------------
@@ -212,17 +308,11 @@ function ENT:SEnter()
 		CreateLight(self,Vector(0.004475257 ,0.02119615,0.2454512),Vector(1,1,1))
 		CreateLight(self,Vector(0.0006991078,0.02573425,0.2324287),Vector(0.2,0.5,1))
 		CreateLight(self,Vector(0.0016991078,0.02573425,0.2324287),Vector(0.2,1,0.5))
-		--CreateLight(self,Vector(0.0026991078,0.02573425,0.2324287),Vector(1,0.5,0.2))
-		
-		--CreateTestPlanet(self,Vector(0.0026991078,0.02563425,0.2324287),Vector(1,0.5,0.2),100310535)
-		--CreateTestPlanet(self,Vector(0.0036991078,0.02563425,0.2324287),Vector(1,0.5,0.2),2091568607)
-		
-		--self.model:SetTestModel()
 		
 		--------------------------------------------------------------------------------
 		--SCREENS
 		--------------------------------------------------------------------------------
-		local sm = SpawnSO("shiptest/debugscreen.json",self,Vector(0,0,0),0.75).model
+		local sm = SpawnSO("shiptest/debugscreen.stmd",self,Vector(0,0,0),0.75).model
 		if CLIENT then
 			local wn = panel.Create("window_console") 
 			wn:SetPos(0,0) 
@@ -230,26 +320,30 @@ function ENT:SEnter()
 			self.camera1 = SpawnScreen(self.rt1,self,wn,sm)
 			--sm:SetMaterial("textures/target/webrt.json") 
 		end
-		
+		]]
 		--------------------------------------------------------------------------------
 		--SHIP PARTS
 		--------------------------------------------------------------------------------
 		local shipdeftex = "models/shiptest/tex/default_texture.json"
 		
-		SpawnSO("shiptest/bridge_floor.json",self,Vector(0,15.789,255.621)*shipmodelmul,0.75) 
-		SpawnSO("shiptest/bridge_walls.json",self,Vector(0,22.12,251.181)*shipmodelmul,0.75) 
 		
-		SpawnSO("shiptest/bridge_second_chairs.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/bridge_tubes.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/bridge_rails.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/bridge_lights.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/maproom.json",self,Vector(0,26.197,197.172)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/portalroom.json",self,Vector(0,32.511,159.471)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/interior_all_textured_v2.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/dockslot.json",self,Vector(0,19.166,223.265)*shipmodelmul,0.75)
-		SpawnSO("shiptest/bridge_middle.json",self,Vector(0,0,0),0.75) 
-		SpawnSO("shiptest/portaleffect.smd",self,Vector(0,0,0),0.75).model:SetMaterial("models/shiptest/tex/target01.json") 
-		local chair = SpawnSPCH("shiptest/chair1.json",self,Vector(0,17,254.5)*shipmodelmul,0.75)  
+		--SpawnSO("space/ships/ship02.stmd",self,Vector(200,0,0)*shipmodelmul,0.5) 
+		
+		--SpawnSO("shiptest/bridge_floor.stmd",self,Vector(0,15.789,255.621)*shipmodelmul,0.75) 
+		--[[
+		SpawnSO("shiptest/bridge_walls.stmd",self,Vector(0,22.12,251.181)*shipmodelmul,0.75) 
+		
+		SpawnSO("shiptest/bridge_second_chairs.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/bridge_tubes.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/bridge_rails.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/bridge_lights.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/maproom.stmd",self,Vector(0,26.197,197.172)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/portalroom.stmd",self,Vector(0,32.511,159.471)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/interior_all_textured_v2.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/dockslot.stmd",self,Vector(0,19.166,223.265)*shipmodelmul,0.75)
+		SpawnSO("shiptest/bridge_middle.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/portaleffect.stmd",self,Vector(0,0,0),0.75).model:SetMaterial("models/shiptest/tex/target01.json") 
+		local chair = SpawnSPCH("shiptest/chair1.stmd",self,Vector(0,17,254.5)*shipmodelmul,0.75)  
 		chair:SetSeed(self:GetSeed()+38012)
 		
 		local debugwhite = "textures/debug/white_5.json"
@@ -257,15 +351,14 @@ function ENT:SEnter()
 		--SpawnSO("test/prison/block.json",self,Vector(0.5,0,0),0.04)  
 		
 		
-		SpawnSO("shiptest/reactor.json",self,Vector(0,45.797,-6.641)*shipmodelmul,0.75)  
-		SpawnSO("shiptest/reactor_tonnels.smd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/reactor.stmd",self,Vector(0,45.797,-6.641)*shipmodelmul,0.75)  
+		SpawnSO("shiptest/reactor_tonnels.stmd",self,Vector(0,0,0),0.75).model:SetMaterial(shipdeftex) 
 		
 		
 		local targetpos_ship = Vector(0,27.971,146.933)*shipmodelmul
 		CreateTeleporter(self,targetpos_ship)
-		
-		--[[
-		if CLIENT then
+		 
+		if false and CLIENT then
 			local beacon = ents.Create("beacon")
 			beacon:SetParent(self:GetParent())--planet
 			beacon:SetSizepower(1000) 
@@ -301,17 +394,16 @@ function ENT:SEnter()
 				AddOrigin(cam)
 			end
 			
-		end
-		]]
+		end 
 		
-		--[[]]
+		 
 		 
 		--SpawnTPS(self,Vector(0.0026991078,0.02573425,0.2324287))  
 		-- range 1000km ...  0.5 ly
 		
 		--SpawnSO("test/tiletestsurface2.smd",self,Vector(0,0,0),0.75) 
 		
-		SpawnSO("shiptest/corridors_tri.json",self,Vector(0,18.755,227.373)*shipmodelmul,0.75)--.model:SetMaterial("textures/debug/white.json")
+		SpawnSO("shiptest/corridors_tri.stmd",self,Vector(0,18.755,227.373)*shipmodelmul,0.75)--.model:SetMaterial("textures/debug/white.json")
 
 		--local sst = SpawnSO("station/all_ref.smd",self,Vector(0,0,0),0.75)
 		--sst.model:SetMaterial("textures/debug/white.json")  
@@ -327,7 +419,7 @@ function ENT:SEnter()
 		--WARP & ENGINE EFFECTS
 		--------------------------------------------------------------------------------
 		
-		local engines = SpawnSO("shiptest/engine.SMD",self,Vector(0,0,0),1) 
+		local engines = SpawnSO("shiptest/engine.stmd",self,Vector(0,0,0),1) 
 		local em = engines.model
 		em:SetMaterial("models/shiptest/tex/engine.json") 
 		em:SetBlendMode(BLEND_ADD) 
@@ -336,7 +428,7 @@ function ENT:SEnter()
 		em:SetMatrix( matrix.Scaling(0.75)* matrix.Rotation(-90,0,0))    
 		em:SetBrightness(1)
 		self.enginem = em
-		
+		]]
 		local warps = SpawnSO("engine/gsphere_24_inv.SMD",self,Vector(0,20,254.5)*shipmodelmul,1) 
 		local wm = warps.model
 		wm:SetMaterial("textures/space/warp/warp.json") 
@@ -348,22 +440,22 @@ function ENT:SEnter()
 		wm:SetBrightness(0)
 		wm:Enable(false)
 		self.warpm = wm
-		
+		--[[
 		--------------------------------------------------------------------------------
 		--AIRLOCK
 		-------------------------------------------------------------------------------- 
 		
-		local dds1 ={ SpawnDoor("door/door.json",self,Vector(14.218,16.502,217.146)*shipmodelmul,Vector(0,90,0),0.75,999005),
-					SpawnDoor("door/door.json",self,Vector(-14.218,16.502,217.146)*shipmodelmul,Vector(0,90,0),0.75,999006)}
+		local dds1 ={ SpawnDoor("door/door.stmd",self,Vector(14.218,16.502,217.146)*shipmodelmul,Vector(0,90,0),0.75,999005),
+					SpawnDoor("door/door.stmd",self,Vector(-14.218,16.502,217.146)*shipmodelmul,Vector(0,90,0),0.75,999006)}
 		--for k,v in pairs(dds1) do  v:SetAng(Vector(0,90,0))  end
-		SpawnDoor("door/door.json",self,Vector(8.84,16.502,238.92)*shipmodelmul,Vector(0,60,0),0.75,999007)--:SetAng(Vector(0,60,0))
-		SpawnDoor("door/door.json",self,Vector(-8.84,16.502,238.92)*shipmodelmul,Vector(0,-60,0),0.75,999008)--:SetAng(Vector(0,-60,0))
+		SpawnDoor("door/door.stmd",self,Vector(8.84,16.502,238.92)*shipmodelmul,Vector(0,60,0),0.75,999007)--:SetAng(Vector(0,60,0))
+		SpawnDoor("door/door.stmd",self,Vector(-8.84,16.502,238.92)*shipmodelmul,Vector(0,-60,0),0.75,999008)--:SetAng(Vector(0,-60,0))
 		
 													--  22,276  -223,01  16,502
-		local al2 = SpawnDoor("door/door.json",self,Vector(28.325,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999001)
-		local al1 = SpawnDoor("door/door.json",self,Vector(22.276,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999002)
-		local ar1 = SpawnDoor("door/door.json",self,Vector(-28.325,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999003)
-		local ar2 = SpawnDoor("door/door.json",self,Vector(-22.276,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999004)
+		local al2 = SpawnDoor("door/door.stmd",self,Vector(28.325,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999001)
+		local al1 = SpawnDoor("door/door.stmd",self,Vector(22.276,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999002)
+		local ar1 = SpawnDoor("door/door.stmd",self,Vector(-28.325,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999003)
+		local ar2 = SpawnDoor("door/door.stmd",self,Vector(-22.276,16.502,223.01)*shipmodelmul,Vector(0,0,0),0.75,999004)
 		local meta_airlock = {
 			Open = function(s) s.d1:Unlock() s.d2:Unlock() s.d1:Open()  end,
 			Close = function(s) s.d1:Close() s.d2:Close() s.d1:Lock() s.d2:Lock()  end,
@@ -413,16 +505,16 @@ function ENT:SEnter()
 		--------------------------------------------------------------------------------
 		--CINEMA ROOM
 		--------------------------------------------------------------------------------
-		SpawnButton(self,"useables/button.json",ToShipRVector(14.359,-63.487,48.099),Vector(0,180,0),
+		SpawnButton(self,"useables/button.stmd",ToShipRVector(14.359,-63.487,48.099),Vector(0,180,0),
 			function(b,u)
 				for k,v in pairs(lgroups.seqroom) do
 					v:Toggle()
 				end 
 			end,3204202)
-		SpawnSO("shiptest/seqroom.json",self,Vector(0,52.969,54.228)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
-		SpawnSO("shiptest/seq_seat_test.json",self,Vector(0,0,0)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/seqroom.stmd",self,Vector(0,52.969,54.228)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
+		SpawnSO("shiptest/seq_seat_test.stmd",self,Vector(0,0,0)*shipmodelmul,0.75)--.model:SetMaterial(shipdeftex) 
 		
-		local ws = SpawnWScreen(self,3248910,"shiptest/screen.json",ToShipRVector(0,-69.051,47.521),Vector(0,0,0))
+		local ws = SpawnWScreen(self,3248910,"shiptest/screen.stmd",ToShipRVector(0,-69.051,47.521),Vector(0,0,0))
 		hook.Add("chat.msg.received", "webreceivecommands", function(u, text)
 			if string.starts(text,"/") then
 				if string.starts(text,"/wurl") then
@@ -431,6 +523,7 @@ function ENT:SEnter()
 			end
 		end)
 		--ESpawnCorrv2(self,2325, Vector(0,-80,0),Vector(0,0,0),20,"tonnel_sub")
+		]]
 		self.loaded = true
 	end
 	
@@ -440,30 +533,51 @@ function ENT:SEnter()
 		
 		render.SetGroupBounds(RENDERGROUP_PLANET,1e2,1e10)
 		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
+		
+		self.shadow = CreateTestShadowMapRenderer(self,Vector(0,0,0))
+		
+		self.cubemap = SpawnCubemap(self,Vector(0,0.9,0),512)
+		self.cubemap:SetAng(Vector(0,180,0))
+		self.cubemap:RequestDraw() 
 	end 
 end
 
 function ENT:Enter()
 	
 	self:SEnter()
-	local starmap = TEST_CGM(self,Vector(0,23.182+1,199.078)*0.001)
-	starmap:SetSeed(1010011)
-	self.starmap = starmap
+	--local starmap = TEST_CGM(self,Vector(0,23.182+1,199.078)*0.001)
+	--starmap:SetSeed(1010011)
+	--self.starmap = starmap
 	if CLIENT then
 		render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
 		
 		render.SetGroupBounds(RENDERGROUP_PLANET,1e2,1e10)
 		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
+		
+		
+		debug.Delayed(1000,function() 
+			local system = self:GetParentWith(NTYPE_STARSYSTEM)
+			if system then 
+				if system.ReloadSkybox then system:ReloadSkybox() end 
+			end 
+		end)
 	end
 end
 function ENT:Leave()   
 	--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_ENABLED)
 	--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED)
 	--self:UnloadSubs()
+	if CLIENT then
+		local sm = self.shadow
+		if sm then
+			sm:Despawn()
+			self.shadow = nil
+		end
+	end
 end
 --local uup = {}
-function ENT:Think()  
+function ENT:Think()   
 	local curthink = CurTime()
 	local lastthink = self.lastthink or curthink
 	local dt = curthink - lastthink
@@ -558,6 +672,22 @@ function ENT:Think()
 		
 		 
 	end
+	
+	
+	if CLIENT then
+		local lp = LocalPlayer()
+		if lp and IsValidEnt(lp) and lp:GetParent()==self then
+			local plp = lp:GetPos():Length()
+			if plp > (self.shipdata.fallbackdistance or 1) then
+				local tpr = self.teleporter
+				tpr:TeleportStartup(lp,nil,nil,true)
+				
+				--lp:SetPos(JVector(self.shipdata.fallbackpos,Vector(0,0,0)))
+				MsgInfo("Fallback protection activated")
+			end
+		end
+	end
+	 
 	return true
 end
 
@@ -1058,18 +1188,18 @@ function ENT:DockLinkAirlocks(station)
 	local dock = station.dock
 	local shippos = self:GetPos()
 	local airlock_left = self.airlock_left
-	--local airlock_copy = SpawnSO("shiptest/dockslot.json",station,shippos,0.75)
+	--local airlock_copy = SpawnSO("shiptest/dockslot.stmd",station,shippos,0.75)
 	--airlock_left.copy = airlock_copy
 	
 	--											--  22,276  -223,01  16,502
-	--local al2 = SpawnDoor("door/door.json",self,Vector(28.325,16.502,223.01)*0.001,0.75)
-	--local al1 = SpawnDoor("door/door.json",self,Vector(22.276,16.502,223.01)*0.001,0.75)
+	--local al2 = SpawnDoor("door/door.stmd",self,Vector(28.325,16.502,223.01)*0.001,0.75)
+	--local al1 = SpawnDoor("door/door.stmd",self,Vector(22.276,16.502,223.01)*0.001,0.75)
 	local activator_ent = ents.Create()
 	activator_ent:SetSizepower(1000)
 	activator_ent:SetSpaceEnabled(false)
 	activator_ent:SetParent(dock)
 	activator_ent:SetPos(shippos-Vector(22.276,-16.502,223.01)*0.001)
-	activator_ent:AddEventListener(EVENT_USE,"use_event",function(user)  
+	activator_ent:AddEventListener(EVENT_USE,"use_event",function(self,user)  
 		local dt = self:GetLocalSpace(user)
 		user:SetParent(self)
 		user:SetPos(dt:Position()) 

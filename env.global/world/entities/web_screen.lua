@@ -23,7 +23,7 @@ function ENT:Init()
 	--webinterface:Initialize(1024,512)
 	--webinterface:SetTextureName("@webrt")
 	
-	self:AddEventListener(EVENT_SETURL,"set_url",function(url) self:LoadUrl(url) end)
+	self:AddEventListener(EVENT_SETURL,"set_url",function(self,url) self:LoadUrl(url) end)
 	self:SetNetworkedEvent(EVENT_SETURL) 
 end
 function ENT:Load()
