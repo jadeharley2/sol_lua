@@ -42,9 +42,11 @@ function AI_META:Init()
 	if self.OnInit then self:OnInit() end
 end
 function AI_META:Update()
-	if self.OnUpdate then self:OnUpdate() end 
-	self:React()
-	self:RunTaskStep()
+	if SERVER or not network.IsConnected() then
+		if self.OnUpdate then self:OnUpdate() end 
+		self:React()
+		self:RunTaskStep() 
+	end
 end    
 function AI_META:RunTaskStep()
 	local task = self.task

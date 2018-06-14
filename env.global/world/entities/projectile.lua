@@ -104,7 +104,7 @@ function ENT:Hit(a,collider,pos,normal,depth)
 					self:SetPos(lp)
 					--local lp = collider:GetLocalCoordinates(self)
 					--self:SetParent(collider)
-					--self:SetPos(lp)
+					--self:SetPos(lp) 
 					MsgN("hit! ",collider,pos,normal,depth)
 				end
 				self:EmitSound("events/hit/"..table.Random({"arrow-01.ogg","arrow-02.ogg","arrow-03.ogg","arrow-04.ogg","arrow-05.ogg","arrow-06.ogg"}),1,1)

@@ -58,7 +58,7 @@ local function cwinput2(char)
 	if static.CURRENT_INPUT then
 		local text = static.CURRENT_INPUT.text
 		if static.CURRENT_INPUT.rest_numbers then
-			if static.NUMBER_CHARS:Contains(char) then
+			if static.NUMBER_CHARS:Contains(char) or  static.NUMBER_ADD_CHARS:Contains(char) then
 				text = text .. char
 			end
 		else

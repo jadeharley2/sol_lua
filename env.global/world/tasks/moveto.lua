@@ -12,7 +12,11 @@ function task:OnBegin()
 	local target = self.target
 	local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
 	if e and nav then
-		local path = nav:GetPath(actor:GetPos(),target:GetPos(),0.001)
+		local pos_from = actor:GetPos()
+		local pos_to = self.target
+		if pos_to.GetPos then pos_to = pos_to:GetPos() end
+		
+		local path = nav:GetPath(pos_from,pos_to,0.001)
 		if path then
 			self.path = path
 			self.pid = 1
@@ -72,7 +76,7 @@ function task:Step()
 			else
 				if lastdist and lastdist<=dist then
 					times = times + 1
-					if times > 20 then
+					if times > 10 then
 						actor:SendEvent(EVENT_ACTOR_JUMP)
 						times = 0
 						USE(actor)

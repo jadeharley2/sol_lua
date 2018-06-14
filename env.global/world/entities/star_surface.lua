@@ -14,14 +14,14 @@ function ENT:Spawn()
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED) 
-	model:SetMatrix(matrix.Scaling(2))
+	model:SetMatrix(matrix.Scaling(1))
 	model:SetFullbright(true)
-	model:SetBrightness(100)
+	model:SetBrightness(10)
 	model:SetFadeBounds(0,99999,0)  
 	model:SetColor(scolor)
 	model:SetMaxRenderDistance(100000)
 	
-
+ 
 	--local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
 	--particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
 	--particlesys:SetNodeMode(false)
@@ -36,8 +36,10 @@ function ENT:Spawn()
 	
 end
 
-function ENT:Enter()  
+function ENT:Enter() 
+	self.model:SetRenderGroup(RENDERGROUP_PLANET)
 end
 
 function ENT:Leave()    
+	self.model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
 end

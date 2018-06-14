@@ -12,7 +12,7 @@ function ENT:Init()
 	self:SetSizepower(1000)
 	if CLIENT then
 		self.enabled = settings.GetBool("engine.mirrorsenabled",true)  
-		hook.Add("settings.changed","mirror.update."..tostring(seed),function() 
+		self:Hook("settings.changed","mirror.update",function() 
 			self:_UpdateEnabled()  
 		end) 
 	end
@@ -55,7 +55,7 @@ function ENT:Spawn()
 		local vsize = GetViewportSize()  
 		local rt = CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt:Texture2D")
 		self.rt = rt
-		hook.Add("window.resize","updatemirror",function() 
+		self:Hook("window.resize","updatemirror",function() 
 			local cm = GetCamera()
 			local vsize = GetViewportSize()  
 			ResizeRenderTarget(rt, vsize.x,vsize.y) 
@@ -96,11 +96,7 @@ function ENT:Spawn()
 	self.light = light
 end
 function ENT:Despawn() 
-	if CLIENT then
-		hook.Remove("window.resize","updatemirror")
-		hook.Remove("settings.changed","mirror.update."..tostring(seed)) 
-		hook.Remove("main.postcontroller","mirrorupdate"..tostring(seed))
-	end
+	self:DDFreeAll() 
 end
 function ENT:_UpdateEnabled()
 	local model = self.model
@@ -110,10 +106,10 @@ function ENT:_UpdateEnabled()
 			model:SetMaterial("textures/target/mirrorrt.json")
 			local cam = GetCamera()
 			self.cc:SetFOV(cam:GetFOV())  
-			hook.Add("main.postcontroller","mirrorupdate"..tostring(seed), function() self:UpdatePos() end)
+			self:Hook("main.postcontroller","mirrorupdate", function() self:UpdatePos() end)
 		else
 			model:SetMaterial("textures/debug/black.json")
-			hook.Remove("main.postcontroller","mirrorupdate"..tostring(seed))
+			self:UnHook("main.postcontroller","mirrorupdate")
 		end
 	end
 end

@@ -14,11 +14,8 @@ function ENT:Despawn()
 	local snd = self.snd
 	if snd then snd:Stop() snd:Dispose()  self.snd = nil end
 	
-	local task = self.task
-	if task then
-		task:Stop()
-		self.task = nil
-	end
+	
+	self:DDFreeAll() 
 end
  
 function ENT:StartTrack(id)
@@ -42,11 +39,11 @@ function ENT:StartTrack(id)
 					if self.task then
 						self.task:Stop()
 					end
-					self.task = debug.Delayed(snd:Duration()*1000,function()
+					self:Delayed("nexttrack",snd:Duration(),function()
 						if IsValidEnt(self) then
 							self:NextTrack()
 						end
-					end)
+					end) 
 				end
 			end
 		end

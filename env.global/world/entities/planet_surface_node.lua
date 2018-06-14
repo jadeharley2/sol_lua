@@ -2,8 +2,8 @@ TSNODE = false
 
 --function ENT:Init()  
 --end
---function ENT:Spawn() 
---end
+function ENT:Spawn() 
+end
 function ENT:Enter()
 	--local debugwhite = "textures/debug/white.json"
 	--for k=1,100 do
@@ -16,18 +16,21 @@ function ENT:Enter()
 	 
 	
 	if CLIENT then   
-		self.cubemap = SpawnCubemap(self,Vector(0,0.3,0),128)
-		self.cubemap:SetSizepower(self:GetSizepower())
+		self.cubemap = SpawnCubemap(self,Vector(0,0.02,0),128)
+		local sz = self:GetSizepower()
+		self.cubemap:SetSizepower(sz)
 		--self.cubemap:SetAng(Vector(0,0,90))
 		self.cubemap:RequestDraw()
-		--hook.Add("pre_cubemap_render","move_cb",function()
-		--	local c = GetCamera()
-		--	local cp = self:GetLocalCoordinates(c)
-		--	local sc = self.cubemap
-		--	if sc then
-		--		sc:SetPos(cp)
-		--	end
-		--end)
+		self:Hook("pre_cubemap_render","move_cb",function()
+			if self then
+				local c = GetCamera()
+				local cp = self:GetLocalCoordinates(c)
+				local sc = self.cubemap
+				if sc then
+					sc:SetPos(cp+Vector(0,3/sz,0))
+				end
+			end
+		end)
 		
 		if not SHADOW or not IsValidEnt(SHADOW) then 
 			local star = self:GetParentWithFlag(FLAG_STAR)
@@ -40,6 +43,7 @@ function ENT:Enter()
 				SHADOW = eshadow
 			end
 		end
+		local p = SpawnParticles(self,"clouds",Vector(0,0,0),0,100,1) 
 		--SHADOW = SHADOW or CreateTestShadowMapRenderer(GetCamera():GetParent(),Vector(0,0,0))
 	end
 end
@@ -47,8 +51,9 @@ function ENT:Leave()
 	if TSNODE == self then 
 		TSNODE = false
 	end
-	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
 	if CLIENT then
+		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
+		render.ClearShadowMaps()
 		local cb = self.cubemap
 		if cb then
 			cb:Despawn() 

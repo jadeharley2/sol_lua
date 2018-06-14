@@ -66,10 +66,10 @@ function WireLink(from,fname,to,tname)
 			end
 			out.targets[to:GetSeed()] = {to,tname}
 			ins.target = out
-			MsgN("wirelink! ",from,fname,to,".",tname)
-			PrintTable(tw)
-			MsgN("---")
-			PrintTable(fw)
+			--MsgN("wirelink! ",from,fname,to,".",tname)
+			--PrintTable(tw)
+			--MsgN("---")
+			--PrintTable(fw)
 		end
 	end
 end
@@ -80,8 +80,8 @@ function WireUnLink(to,tname)
 		if ins and ins.target then   
 			ins.target.targets[to:GetSeed()] = nil
 			ins.target = nil
-			MsgN("wireunlink! ",to,".",tname)
-			PrintTable(tw) 
+			--MsgN("wireunlink! ",to,".",tname)
+			--PrintTable(tw) 
 		end
 	end
 end

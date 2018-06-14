@@ -350,9 +350,10 @@ end
  
 function editor:Copy(ent)  
 	local ne = ents.Create(ent:GetClass() )
+	local uid =  (GetFreeUID()) 
 	ne:SetParent(ent:GetParent())
 	ne:SetSizepower(ent:GetSizepower())
-	ne:SetSeed(252326+math.random(0,100000)) 
+	ne:SetSeed(uid) 
 	ent:CopyFlags(ne)
 	ent:CopyParameters(ne)
 	
@@ -367,6 +368,7 @@ function editor:Copy(ent)
 	
 	ent:CopyFlags(ne)
 	ent:CopyParameters(ne)
+	ne:SetSeed(uid) 
 	return ne
 end
 

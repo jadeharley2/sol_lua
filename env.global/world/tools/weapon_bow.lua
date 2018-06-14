@@ -11,6 +11,17 @@ function TOOL:ToLocal(node,pos)
 	return pos:TransformC(w) 
 end
 function TOOL:Fire(dir)
+	--if CLIENT then
+	--	local user = self:GetParent()
+	--	local actor_model = user.model
+	--	if actor_model then
+	--		self.model:SetCopyTransforms(actor_model)
+	--		--self.model:SetMatrix(actor_model:GetMatrix())
+	--		self:SetPos(user.phys:GetFootOffset()*0.75*-0.001*0.5)
+	--	end
+	--	self:SetAng(Vector(-90,0,0))
+	--end
+	 
 	self.dir = dir
 	local state = self.state
 	--MsgN("state: ",state)
@@ -59,13 +70,15 @@ function TOOL:Reload()
 end
 
 function TOOL:Equip(actor)
-	local actor_model = actor.model
-	if actor_model then
-		self.model:SetCopyTransforms(actor_model)
-		--self.model:SetMatrix(actor_model:GetMatrix())
-		self:SetPos(actor.phys:GetFootOffset()*0.75*-0.001)
+	if CLIENT then
+		local actor_model = actor.model
+		if actor_model then
+			self.model:SetCopyTransforms(actor_model)
+			--self.model:SetMatrix(actor_model:GetMatrix())
+			self:SetPos(actor.phys:GetFootOffset()*0.75*-0.001)--0.75
+		end
+		self:SetAng(Vector(-90,0,0))
 	end
-	self:SetAng(Vector(-90,0,0))
 end
 function TOOL:Unequip(actor)
 	local actor_model = actor.model 

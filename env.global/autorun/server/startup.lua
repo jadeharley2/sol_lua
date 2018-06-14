@@ -49,20 +49,20 @@ SPAWNPOS = targetpos
 
 ]]
 
+function ServerStartup()
+	U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
+	network.AddNodeImmediate(U)
+	U:Create() 
+	SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
+	AddOrigin(SPAWNORIGIN)
+	MsgN("loaded world at: ",SPAWNORIGIN)
+end
 
-U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
-network.AddNodeImmediate(U)
-U:Create() 
-SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
-AddOrigin(SPAWNORIGIN)
-MsgN("loaded world at: ",SPAWNORIGIN)
 
-
-
--- player spawn
-local pid=true
+-- player spawn 
 local function OnPlayerSetModel(ply)  
 	local tagmodel = ply.player:GetTag(VARTYPE_MODEL)
+	MsgN("ply",ply," => ",tagmodel)
 	if tagmodel then
 		ply:SetCharacter(tagmodel) 
 	end
@@ -148,4 +148,8 @@ hook.Add("player.load","startup", OnPlayerLoad)
 
 for k,v in pairs(file.GetFiles("forms/characters")) do 
 	AddCSLuaFile(v)  
+end
+
+if not U then  
+	ServerStartup() 
 end

@@ -45,6 +45,9 @@ function PANEL:FromTable(tbl,parent,clickfn)
 	--if parent then self:Clear() end
 	local clickfn = clickfn or function(btn) self:ItemClick(btn) end
 	
+	for k,v in pairs(parent.subs or {}) do
+		parent:Remove(v)
+	end 
 	local subs = {}
 	if tabletype==1 then
 		for k,v in pairs(tbl) do

@@ -211,7 +211,7 @@ function BehaviorGraphMeta:SetState(name,donotwritestate)
 		end
 		if self._cstate then
 			from = self._cstate 
-			if self.debug then MsgN("changing state: ",from.name," => ",to.name) end
+			--if self.debug then MsgN("changing state: ",from.name," => ",to.name) end
 		else
 			if self.debug then MsgN("starting graph with state: ",to.name) end
 		end 

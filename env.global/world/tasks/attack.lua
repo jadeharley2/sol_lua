@@ -25,6 +25,9 @@ function task:Step()
 			local dir = target:GetPos()-actor:GetPos()
 			actor:WeaponFire(dir)
 		end
+		if target:Dead() then
+			return true 
+		end 
 	end
 end
 function task:OnEnd(result)

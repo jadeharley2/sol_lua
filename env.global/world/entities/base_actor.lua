@@ -27,6 +27,13 @@ DeclareEnumValue("event","EFFECT_APPLY",			83002)
 DeclareEnumValue("event","GIVE_ABILITY",			83003) 
 DeclareEnumValue("event","TAKE_ABILITY",			83004) 
 
+
+DeclareEnumValue("event","TASK_BEGIN",				84001) 
+DeclareEnumValue("event","TASK_RESET",				84009) 
+
+DeclareEnumValue("event","LERP_HEAD",				85001) 
+
+DeclareEnumValue("event","SET_AI",					85011) 
 --EVENT_DAMAGE = 80001
 --EVENT_SET_VEHICLE = 80002
 --
@@ -86,7 +93,7 @@ function ENT:Spawn()
 
 	local model = self.model
 	local phys = self.phys  
-	local modelfile = self:GetParameter(VARTYPE_MODEL)
+	--local modelfile = self:GetParameter(VARTYPE_MODEL)
 	
 	local char = self:GetParameter(VARTYPE_CHARACTER)
 	if char then
@@ -100,6 +107,11 @@ function ENT:Load()
 	--MsgN("WTF?? ",char)
 	self:SetCharacter(char)
 end
+function ENT:Despawn() 
+	self:DDFreeAll() 
+end
+
+
 function ENT:PlayAnimation(aname,exitnode,ns)
 	exitnode = exitnode or "idle"
 
@@ -434,150 +446,163 @@ function ENT:Think()
 	
 	
 end
-function ENT:BeginTask(...)
-	return self.tmanager:Begin(...)
+function ENT:BeginTask(a,...)
+	if isstring(a) then
+		return self.tmanager:Begin(Task(a,...))
+	else 
+		return self.tmanager:Begin(a,...)
+	end
+end
+function ENT:ResetTM()
+	self.tmanager = TaskManager(self)
 end
 
 function ENT:SetCharacter(id)
 	id = id or "kindred"
 	
 	if id then 
-		local data = json.Read("forms/characters/"..id..".json")
-		if data then 
-			self.directmove=false
-			if self.isflying then self:Land() end
-			self:SetParameter(VARTYPE_CHARACTER,id)
-			 
-			local model_scale = self.model_scale or 1
-			local world = matrix.Scaling(0.03) 
-			local model = self.model
-			local phys = self.phys
-			
-			if data.name and self:GetName() == "" then self:SetName(data.name) end
-			
-			if data.species then
-				self:SetSpecies(data.species)
-			end
-			
-			self.abilities = {}
-			
-			self:Config(data)
-			
-			model:SetModel(self:GetParameter(VARTYPE_MODEL))
-			model:SetRenderGroup(RENDERGROUP_LOCAL) 
-			model:SetBlendMode(BLEND_OPAQUE) 
-			model:SetRasterizerMode(RASTER_DETPHSOLID) 
-			model:SetDepthStencillMode(DEPTH_ENABLED)  
-			model:SetBrightness(1)
-			model:SetFadeBounds(0,99999,0)   
-			model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale))---*matrix.Scaling(0.0000001)
-			
-			model:SetDynamic()
-			
-			self.graph = self:LoadGraph(data.behaviour) or self.graph
-			
-			
-			if CLIENT then
-				local bpr = self.spparts
-				if bpr then
-					for k,v in pairs(bpr) do
-						v:Despawn()
-					end 
-					self.spparts = nil
-				end
-			end
-			if CLIENT and data.parts then
-				local bpath = self.species.model.basedir
-				local bpr = self.spparts or {}
-				for k,v in pairs(data.parts) do 
-					bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
-				end
-				self.spparts = bpr
+		local path = forms.GetForm("character",id)
+		if path then
+			local data = json.Read(path)--"forms/characters/"..id..".json")
+			if data then 
+				self.directmove=false
+				if self.isflying then self:Land() end
+				self:SetParameter(VARTYPE_CHARACTER,id)
+				 
+				local model_scale = self.model_scale or 1
+				local world = matrix.Scaling(0.03) 
+				local model = self.model
+				local phys = self.phys
 				
-				if data.materials then
-					local bmatdir = data.basematdir
-					for k,v in pairs(data.materials) do
-						local keys = k:split(':') 
-						local bpart = keys[1]
-						local id = tonumber( keys[2])
-						
-						local part = self.spparts[bpart]
-						if bpart == "root" then part = self end 
-						if part then  
-							local mat = dynmateial.LoadDynMaterial(v,bmatdir)
-							part.model:SetMaterial(mat,id)
-						end
-						
-						--
-						----procedural check
-						--local proc = {}
-						--for kk,vv in pairs(v) do
-						--	if istable(vv) and vv.subs then 
-						--		local root = gui.FromTable(vv) 
-						--		proc[kk] = root
-						--		v[kk] = "textures/ponygen/body.dds"
-						--	end
-						--end  
-						--local mat = NewMaterial(bmatdir, json.ToJson(v))
-						--local part = self.spparts[bpart]
-						--if bpart == "root" then part = self end 
-						--if part then 
-						--	for k,v in pairs(proc) do
-						--		RenderTexture(512,512,v,function(rtex)
-						--			SetMaterialProperty(mat,k,rtex) 
-						--		end)  
-						--	end
-						--	part.model:SetMaterial(mat,id)
-						--end
-					end 
-				end
-				--TEST!
-				--[[
-				local mat = NewMaterial("models/mlppony/tex/", json.ToJson({
-					shader = "shader.model", 
-					g_MeshTexture = "models/mlppony/tex/body_luna.jpg",
-					g_MeshTexture_n = "models/mlppony/tex/base_normal.dds",
-				}))
-				local root = panel.Create()
-				local btex = panel.Create() root:Add(btex)
-				btex:SetSize(1024,1024)
-				btex:SetTexture(LoadTexture("textures/ponygen/body.dds"))
-				btex:SetColor(Vector(56,73,125)/255) 
+				if data.name and self:GetName() == "" then self:SetName(data.name) end
 				
-				local tex = RenderTexture(1024,1024,root) 
-				SetMaterialProperty(mat,"g_MeshTexture",tex)
-				self.spparts.body.model:SetMaterial(mat,0)
-				]]
-			--END
-			
-				if bpr and bpr.wings and bpr.wings_folded then 
-					bpr.wings.model:Enable(false)
-					bpr.wings.model:SetMaxRenderDistance(0)
-					bpr.wings_folded.model:Enable(true)
-					bpr.wings_folded.model:SetMaxRenderDistance(100)
+				if data.species then
+					self:SetSpecies(data.species)
 				end
-			
-			end 
-			
-			--if SERVER or not network.IsConnected() then
-			--	if data.equipment then  
-			--		for k,v in pairs(data.equipment.items or {}) do
-			--			self:Give(v)
-			--		end
-			--		for k,v in pairs(data.equipment.tools or {}) do
-			--			self:Give(v)
-			--		end
-			--	end
-			--end
-			
-			
-			self:SetUpdating(true,100)
-			--MsgN("faf ",self:GetPos())
-			--self:SetPos(self:GetPos()) 
-		else  
-			--if CLIENT and network.IsConnected() then
-			--	network.CallServer("_GetCharacter",self,LocalPlayer(),id) 
-			--end 
+				
+				self.abilities = {}
+				
+				self:Config(data)
+				
+				model:SetModel(self:GetParameter(VARTYPE_MODEL))
+				model:SetRenderGroup(RENDERGROUP_LOCAL) 
+				model:SetBlendMode(BLEND_OPAQUE) 
+				model:SetRasterizerMode(RASTER_DETPHSOLID) 
+				model:SetDepthStencillMode(DEPTH_ENABLED)  
+				model:SetBrightness(1)
+				model:SetFadeBounds(0,99999,0)   
+				model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale))---*matrix.Scaling(0.0000001)
+				
+				model:SetDynamic()
+				
+				self.graph = self:LoadGraph(data.behaviour) or self.graph
+				
+				
+				if CLIENT then
+					local bpr = self.spparts
+					if bpr then
+						for k,v in pairs(bpr) do
+							v:Despawn()
+						end 
+						self.spparts = nil
+					end
+				end
+				if CLIENT and data.parts then
+					local bpath = self.species.model.basedir
+					local bpr = self.spparts or {}
+					for k,v in pairs(data.parts) do 
+						bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
+					end
+					self.spparts = bpr
+					
+					if data.materials then
+						local bmatdir = data.basematdir
+						for k,v in pairs(data.materials) do
+							local keys = k:split(':') 
+							local bpart = keys[1]
+							local id = tonumber( keys[2])
+							
+							local part = self.spparts[bpart]
+							if bpart == "root" then part = self end 
+							if part then  
+								local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+								part.model:SetMaterial(mat,id)
+							end
+							
+							--
+							----procedural check
+							--local proc = {}
+							--for kk,vv in pairs(v) do
+							--	if istable(vv) and vv.subs then 
+							--		local root = gui.FromTable(vv) 
+							--		proc[kk] = root
+							--		v[kk] = "textures/ponygen/body.dds"
+							--	end
+							--end  
+							--local mat = NewMaterial(bmatdir, json.ToJson(v))
+							--local part = self.spparts[bpart]
+							--if bpart == "root" then part = self end 
+							--if part then 
+							--	for k,v in pairs(proc) do
+							--		RenderTexture(512,512,v,function(rtex)
+							--			SetMaterialProperty(mat,k,rtex) 
+							--		end)  
+							--	end
+							--	part.model:SetMaterial(mat,id)
+							--end
+						end 
+					end
+					--TEST!
+					--[[
+					local mat = NewMaterial("models/mlppony/tex/", json.ToJson({
+						shader = "shader.model", 
+						g_MeshTexture = "models/mlppony/tex/body_luna.jpg",
+						g_MeshTexture_n = "models/mlppony/tex/base_normal.dds",
+					}))
+					local root = panel.Create()
+					local btex = panel.Create() root:Add(btex)
+					btex:SetSize(1024,1024)
+					btex:SetTexture(LoadTexture("textures/ponygen/body.dds"))
+					btex:SetColor(Vector(56,73,125)/255) 
+					
+					local tex = RenderTexture(1024,1024,root) 
+					SetMaterialProperty(mat,"g_MeshTexture",tex)
+					self.spparts.body.model:SetMaterial(mat,0)
+					]]
+				--END
+				
+					if bpr and bpr.wings and bpr.wings_folded then 
+						bpr.wings.model:Enable(false)
+						bpr.wings.model:SetMaxRenderDistance(0)
+						bpr.wings_folded.model:Enable(true)
+						bpr.wings_folded.model:SetMaxRenderDistance(100)
+					end
+				
+				end 
+				
+				--if SERVER or not network.IsConnected() then
+				--	if data.equipment then  
+				--		for k,v in pairs(data.equipment.items or {}) do
+				--			self:Give(v)
+				--		end
+				--		for k,v in pairs(data.equipment.tools or {}) do
+				--			self:Give(v)
+				--		end
+				--	end
+				--end
+				
+				
+				self:SetUpdating(true,100)
+				--MsgN("faf ",self:GetPos())
+				--self:SetPos(self:GetPos()) 
+			else  
+				--if CLIENT and network.IsConnected() then
+				--	network.CallServer("_GetCharacter",self,LocalPlayer(),id) 
+				--end 
+				Msg("warning error reading json: ",path)
+			end
+		else
+			Msg("warning unknown form id: ",id)
 		end
 	end
 end
@@ -1044,7 +1069,7 @@ function ENT:EyeLookAtLerped(dir)
 	local tpp_yaw = polar/ 3.1415926 * 180 
 	local tpp_pitch = elev/ 3.1415926 * 180
 	local t = 0 
-	self.lad = debug.DelayedTimer(0,10,15,function()
+	self.lad = self:Timer("lookat",0,10,15,function()
 		t = t + 1/15 
 		local ss_p =cpp_pitch + (tpp_pitch-cpp_pitch)*t -- Smoothstep(cpp_pitch,tpp_pitch,t)
 		local ss_y =cpp_yaw + (tpp_yaw-cpp_yaw)*t -- Smoothstep(cpp_yaw,tpp_yaw,t)
@@ -1216,18 +1241,19 @@ function ENT:Give(type)
 		end  
 		local tool = forms.GetPath("tool",type)
 		if tool then  
+		MsgN("TOOL!",tool)
 			local hasitem = self:HasTool(type)
 			if not hasitem then
-				local tool = CreateWeapon(type,self:GetParent(),self:GetPos(),GetFreeUID())
+				local tool = CreateWeapon(type,self:GetParent(),Vector(0,0,0),GetFreeUID())
 				if tool then
 					if SERVER then
 						network.AddNodeImmediate(tool)
-					end
+					end 
 					self:SendEvent(EVENT_PICKUP_TOOL,tool)
 				end
 			end 
 		else 
-			local app = CreateIA(type,self:GetParent(),self:GetPos(),GetFreeUID()) 
+			local app = CreateIA(type,self:GetParent(),Vector(0,0,0),GetFreeUID()) 
 			if app then  
 				network.AddNodeImmediate(app)
 				local inv = self.inventory
@@ -1238,9 +1264,9 @@ function ENT:Give(type)
 				--inv:AddItem(self, app)
 			end 
 		end 
-		if SERVER then
-			self:SendEvent(EVENT_GIVE_ITEM,type)
-		end
+		--if SERVER then
+		--	self:SendEvent(EVENT_GIVE_ITEM,type)
+		--end  
 	end
 end
 
@@ -1512,12 +1538,12 @@ function ENT:SetHealthPercentage(pc)
 end
 
 function ENT:Hurt(amount) 
-	--self:SendEvent(EVENT_DAMAGE,amount)
+	self:SendEvent(EVENT_DAMAGE,amount)
 end
 
 function ENT:Kill() 
-	--if SERVER then self.graph:SetState("dead")  end
-	--self:SendEvent(EVENT_DEATH)
+	if SERVER then self.graph:SetState("dead")  end
+	self:SendEvent(EVENT_DEATH)
 end
 function ENT:Respawn() 
 	if SERVER then self.graph:SetState("spawn")  end
@@ -1525,11 +1551,11 @@ function ENT:Respawn()
 end
 
 function ENT:Alive()
-	return self.graph:CurrentState()~="dead"
+	return not self._dead
 end
 
 function ENT:Dead()
-	return self.graph:CurrentState()=="dead"
+	return self._dead == true
 end
 
 function ENT:WeaponFire(dir,alternative) 
@@ -1677,6 +1703,7 @@ ENT._typeevents = {
 			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
 			healthbar:UpdateHealth(0,mhp) 
 		end
+		self._dead = true
 		self.graph:SetState("dead") 
 	end},
 	[EVENT_SPAWN] = {networked = true, f = function(self) 
@@ -1685,6 +1712,7 @@ ENT._typeevents = {
 		if CLIENT and LocalPlayer() == self then 
 			healthbar:UpdateHealth(hp,hp) 
 		end
+		self._dead = nil
 		self.graph:SetState("spawn") 
 	end},
 	[EVENT_CHANGE_CHARACTER] = {networked = true, f = ENT.SetCharacter},
@@ -1715,6 +1743,7 @@ ENT._typeevents = {
 		if inv then
 			inv:AddItem(self, item)
 			item:SendEvent(EVENT_PICKUP,self)
+			item:SetPos(Vector(0,0,0))
 		end
 	end,log = true},
 	[EVENT_PICKUP_TOOL] = {networked = true, f = function(self,tool) 
@@ -1736,6 +1765,12 @@ ENT._typeevents = {
 	end},
 	[EVENT_GIVE_ABILITY] = {networked = true, f = ENT.GiveAbility},
 	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility}, 
+	[EVENT_TASK_BEGIN] = {networked = true, f = ENT.BeginTask}, 
+	[EVENT_TASK_RESET] = {networked = true, f = ENT.ResetTM}, 
+	
+	[EVENT_LERP_HEAD] = {networked = true, f = ENT.EyeLookAtLerped}, 
+	[EVENT_SET_AI] = {networked = true, f = ENT.SetAi}, 
+	
 }
  
 ENT.editor = {
@@ -1764,17 +1799,19 @@ if SERVER then
 	local function _GetCharacter(plr,sender,id)
 		MsgN(a,plr,sender,id)
 		local cli = sender.player
-		local fname = "forms/characters/"..id..".json"
-		local data = json.Read(fname)
-		if data then  
-			MsgN("Send ",fname)
-			cli:SendFile(fname) 
-			local model = data.model
-			if model then
-				MsgN("Send ",model)
-				cli:SendFile("models/"..model,true)
+		local fname = forms.GetForm("character",id) -- "forms/characters/"..id..".json"
+		if fname then
+			local data = json.Read(fname)
+			if data then  
+				MsgN("Send ",fname)
+				cli:SendFile(fname) 
+				local model = data.model
+				if model then
+					MsgN("Send ",model)
+					cli:SendFile("models/"..model,true)
+				end
+				cli:Call('_1',plr,EVENT_CHANGE_CHARACTER,id)
 			end
-			cli:Call('_1',plr,EVENT_CHANGE_CHARACTER,id)
 		end
 	end
 

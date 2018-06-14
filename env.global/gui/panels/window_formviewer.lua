@@ -24,11 +24,10 @@ function PANEL:Setup(form_type,spawn_function)
 			spawn_function(LP,s.item)
 		end
 	end
-	for k,v in pairs(flist) do   
-		local data =  json.Read(v)
+	for k,v in pairs(flist) do    
 		
 		local sp_new = panel.Create("button")
-		sp_new:SetText(data.name or k) 
+		sp_new:SetText(v) 
 		sp_new:Dock(DOCK_TOP)
 		sp_new:SetTextColorAuto(bcol) 
 		sp_new:SetTextAlignment(ALIGN_LEFT)

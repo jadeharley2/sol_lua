@@ -95,7 +95,8 @@ function ENT:Spawn()
 			else
 				current_wepv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
-					LP:Give(itemname) 
+					--LP:Give(itemname) 
+					LP:SendEvent(EVENT_GIVE_ITEM,itemname)
 					MsgN("Give ",LP," <= ",itemname)
 				end
 				current_wepv:Setup("tool",givefunc)
@@ -226,9 +227,11 @@ function ENT:Spawn()
 	--local aatest = ents.Create() 
 	--aatest:SetSpaceEnabled(false) 
 	--aatest:SetSizepower(1000) 
+	if CLIENT then
 	local nav = space:AddComponent(CTYPE_NAVIGATION)   
 	nav:AddStaticMesh(map)
 	self.nav = nav
+	end
 		
 	SpawnDC(space,Vector(0.1,0.1,0))
 	local d1 = SpawnDT("door/door2.stmd",space,Vector(0.1,0.03,0),Vector(90,0,0),0.1)

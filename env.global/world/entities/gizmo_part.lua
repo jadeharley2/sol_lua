@@ -126,3 +126,7 @@ function ENT:Rescale(scale)
 	self.scale = scale
 	self:Load()
 end
+
+ENT.editor = {
+	hide = true,
+}

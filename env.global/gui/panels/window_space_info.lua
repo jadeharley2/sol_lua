@@ -27,8 +27,11 @@ function PANEL:Init()
 			for k,star in pairs(system.stars) do 
 				self:AddGroup(p_system,"Star")
 				self:AddRecord(p_system,"Name:", star:GetName() or "unknown") 
-				self:AddRecord(p_system,"Radius:", star:GetParameter(VARTYPE_RADIUS)/1000 .. "km" ) 
-				 
+				local r = star:GetParameter(VARTYPE_RADIUS)
+				self:AddRecord(p_system,"Radius:", r/1000 .. "km" ) 
+				local d = star:GetDistance(cam)
+				self:AddRecord(p_system,"D to center:", d/1000 .. "km" ) 
+				self:AddRecord(p_system,"D to surface:", (d-r)/1000 .. "km" ) 
 			end
 		end
 		p_system:UpdateLayout()
@@ -123,6 +126,8 @@ function PANEL.ToggleInstance()
 		PPL.instance = instance
 		instance:Show()
 	end
-	instance:SetPos(-vsize.x+180+150,0)  
+	if instance then
+		instance:SetPos(-vsize.x+180+150,0)  
+	end
 end
 hook.Add("spaceinfo_toggle","si",PANEL.ToggleInstance)

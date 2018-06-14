@@ -125,6 +125,9 @@ function ENT:Load()
 		end
 	end
 end
+function ENT:Despawn()  
+	self:DDFreeAll() 
+end
 function ENT:SEnter()  
 	TSHIP = self
 	local shipmodelmul = 0.001
@@ -556,7 +559,7 @@ function ENT:Enter()
 		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
 		
 		
-		debug.Delayed(1000,function() 
+		self:Delayed("reloadsky",1000,function() 
 			local system = self:GetParentWith(NTYPE_STARSYSTEM)
 			if system then 
 				if system.ReloadSkybox then system:ReloadSkybox() end 

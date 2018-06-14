@@ -1,7 +1,8 @@
 
 hook = hook or {}
 
-local lua_hooks = lua_hooks or {}
+hook.lua_hooks = hook.lua_hooks or {}
+local lua_hooks = hook.lua_hooks
 
 function hook.Add(type, id, func)
 	local case = lua_hooks[type] or {}
@@ -33,9 +34,13 @@ function hook.Call(eventid,...)
 	local case = lua_hooks[eventid]
 	if case then
 		for k,v in pairs(case.functions) do
-			local result = v(...)
-			if result then
-				return result
+			local success, result = pcall(v,...)
+			if success then
+				if result then
+					return result
+				end
+			else
+				MsgN("Error in hook: ",eventid,".",k," -> ",result)
 			end
 		end
 	end

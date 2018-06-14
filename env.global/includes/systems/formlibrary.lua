@@ -1,23 +1,26 @@
 forms = forms or {
-	_types={},
+	--_types={},
 }
   
-forms.GetList = function(type)
-	return forms._types[type]
-end
-forms.AddForm = function(type,key,path)
-	local list = forms._types[type] or {}
-	list[key] = path
-	forms._types[type] = list
-end
+--forms.GetList = function(type)
+--	return forms._types[type]
+--end
+
+--forms.AddForm = function(type,key,path)
+--	local list = forms._types[type] or {}
+--	list[key] = path
+--	forms._types[type] = list
+--end
+
 forms.HasForm = function(type,key)
-	local list = forms._types[type]
-	if list then
-		return list[key] ~= nil
-	end
-	return false
+	--local list = forms._types[type]
+	--if list then
+	--	return list[key] ~= nil
+	--end
+	--return false
+	return forms.GetForm(type,key)~=nil
 end
-forms.GetPath = function(type,key)
+forms.GetPath = forms.GetForm --[[ function(type,key)
 	local list = forms._types[type]
 	if list then
 		return list[key]
@@ -41,3 +44,4 @@ forms.UpdateLists = function()
 end
 
 forms.UpdateLists() 
+]]

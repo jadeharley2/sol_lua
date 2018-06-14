@@ -81,8 +81,10 @@ end
 
 if CLIENT then
 	function ENT:ReloadSkybox()
+		MsgN("reload star sky")
 		render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED)
-		self.cubemap:RequestDraw(self.skybox,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
+		--self.skybox
+		self.cubemap:RequestDraw(nil,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
 	end
 end
 

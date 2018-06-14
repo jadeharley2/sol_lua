@@ -31,6 +31,9 @@ end
 function TASK_META:Abort()
 	self.manager:Abort(self)
 end
+function TASK_META:IsFinished()
+	return self._finished == true
+end
 local task_class = DefineClass("Task","task","lua/env.global/world/tasks/",TASK_META)
  
 function Task(type,...) 
@@ -114,6 +117,7 @@ function TASKMANAGER_META:RunLoop()
 			task.errored = nil
 			if result ~=nil then
 				if task.OnEnd then task:OnEnd(result,rtype) end
+				task._finished = true
 				if result then 
 					if task.success then 
 						if rtype and task.success[rtype] then

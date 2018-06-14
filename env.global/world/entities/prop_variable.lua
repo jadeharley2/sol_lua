@@ -194,3 +194,12 @@ function ENT:SetModel(mdl,scale,norotation)
 	end
 	self.modelcom = true
 end 
+
+ENT.editor = {
+	name = "Prop Variable",
+	properties = {
+		type = {text = "type",type="parameter",valtype="string",key=VARTYPE_CHARACTER,reload=true}, 
+		 
+	},  
+	
+}

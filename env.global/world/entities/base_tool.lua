@@ -78,20 +78,23 @@ function ENT:SetType(type)
 		self.type = type
 		self:SetParameter(VARTYPE_CHARACTER,type)
 		
-		local data = json.Read("forms/items/tools/"..type..".json")
-		if data then 
-			self:SetName(data.name)
-			
-			if data.appearance then
-				self:SetParameter(VARTYPE_MODEL,data.appearance.model)
-				self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+		local path = forms.GetForm("tool",type)
+		if path then
+			local data = json.Read(path)
+			if data then 
+				self:SetName(data.name)
+				
+				if data.appearance then
+					self:SetParameter(VARTYPE_MODEL,data.appearance.model)
+					self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+				end
+				self.basetype = data.type
+				local bt = TOOL
+				TOOL = self
+				include("lua/env.global/world/tools/"..data.type..".lua") 
+				TOOL = bt
+				if self.OnSet then self:OnSet(data) end
 			end
-			self.basetype = data.type
-			local bt = TOOL
-			TOOL = self
-			include("lua/env.global/world/tools/"..data.type..".lua") 
-			TOOL = bt
-			if self.OnSet then self:OnSet(data) end
 		end
 	end
 end

@@ -1,4 +1,4 @@
-﻿
+﻿EVENT_CCOMMAND = 9999901
 _AI_chat = {}
 hook.Add("chat.msg.received","airead",function(sender,text)  
 	if sender and text then
@@ -51,7 +51,8 @@ ACT_LOOKAT_RNDTRG = function(s,e,t)
 	end
 	--MsgN("t:",ted)
 	if ted then
-		e:EyeLookAtLerped(ted) 
+		e:SendEvent(EVENT_LERP_HEAD,ted)
+		--e:EyeLookAtLerped(ted) 
 	end
 end
 ACT_ABILITY = function(s,e,t) 
@@ -63,27 +64,45 @@ ACT_ABILITY = function(s,e,t)
 	end
 end
 
-ACT_TEST_PRESSBUTTON = function(s,e,t) 
-	local button = Entity(23521234)
+hook.Add("umsg.test1234","aaa",function(s,e,t) 
+	local button = Entity(231632412)
 	if button then
-		local move = Task("moveto",button,2)
-		MsgN(move) 
-		PrintTable(move)
-		move:Next(Task(function(T) 
-				MsgN("SS",T,T.ent)
-				PrintTable(T)
-				USE(T.ent)
-				T.ent:Give("bow_kindred_gal")
-				return true
-			end))
-			:Next(Task("moveto",t.ent,2))
-		e:BeginTask(move)
+		local eid = e:GetSeed()
+		local eid2 = t:GetSeed()
+		local com = [[
+		local e = Entity(]]..tostring(eid)..[[)
+		local tent = Entity(]]..tostring(eid2)..[[)
+		local button = Entity(231632412)
+		local move = Task("moveto",button,2) 
+		move:Next(Task(function(T) USE(T.ent) return true end))
+			:Next(Task("wait",2))
+			:Next(Task(function(T) T.ent:SendEvent(EVENT_GIVE_ITEM,"tools.bow_kindred_gal") return true end)) 
+			:Next(Task("moveto",tent,2))
+		e:BeginTask(move)]]
+		network.BroadcastLua(com)
+	end
+end)
+ACT_TEST_PRESSBUTTON = function(s,e,t) 
+	if network.IsConnected() then 
+		network.CallServer("test1234",1,e,t.ent) 
+	else
+		local button = Entity(231632412)
+		if button then
+			local eid = e:GetSeed()  
+			local button = Entity(231632412)
+			local move = Task("moveto",button,2) 
+			move:Next(Task(function(T) USE(T.ent) return true end))
+				:Next(Task("wait",2))
+				:Next(Task(function(T) T.ent:SendEvent(EVENT_GIVE_ITEM,"tools.bow_kindred_gal") return true end)) 
+				:Next(Task("moveto",t.ent,2))
+			e:BeginTask(move)
+		end
 	end
 end
 
 ACT_MOVETO = function(s,e,t) 
-	--MsgN(e," s ",s," s.target ",s.target," t ",t," t.ent ",t.ent)
-	e:MoveTo((s.target or t.ent):GetPos(),4)
+	--MsgN(e," s ",s," s.target ",s.target," t ",t," t.ent ",t.ent) 
+	e:SendEvent(EVENT_TASK_BEGIN,"moveto",(s.target or t.ent),3)
 end
 ACT_RANDMOVE = function(s,e,t) 
 	local dd = math.random(1,4)
@@ -124,18 +143,16 @@ function ai:OnInit()
 	e:AddFlag(FLAG_USEABLE)
 	e:AddFlag(FLAG_NPC)
 	e:RemoveFlag(FLAG_PLAYER)
-	local char = e:GetParameter(VARTYPE_CHARACTER)
-	local data = json.Read("forms/characters/"..char..".json")
-	e:SetName(data.name)
+	local char = e:GetParameter(VARTYPE_CHARACTER) or ""
+	local cpath, cname = forms.GetForm("character",char)-- json.Read("forms/characters/"..char..".json")
+	if cname then e:SetName(cname) end
 	e.usetype = "dialog"
 	e:AddEventListener(EVENT_USE,"e",function(s,user)
 		self:OpenMenu(user)
-	end)
-	if CLIENT then
-		local l = LocalPlayer()
-		l:AddFlag(FLAG_PLAYER)
-		l:RemoveFlag(FLAG_NPC)
-	end
+	end) 
+	e:AddEventListener(EVENT_CCOMMAND,"e",function(s,user,com)
+		self:OpenMenu(user)
+	end) 
 	
 	self.seen = Set()
 end
@@ -159,8 +176,9 @@ function ai:OpenMenu(ply)
 		local e = self.ent 
 		if e then
 			MsgN("asd",e,ply)
-			e:EyeLookAtLerped(ply)
-			ply:EyeLookAtLerped(e)
+			e:SendEvent(EVENT_LERP_HEAD,ply)
+			ply:SendEvent(EVENT_LERP_HEAD,e)
+			--ply:EyeLookAtLerped(e)
 			if  ply == LocalPlayer()  then
 				local p = panel.Create("window_npc_dialog")  
 				--p:Init(e:GetName(),300,500)
@@ -190,17 +208,25 @@ function ai:OpenMenu(ply)
 				if self.ftask then
 					main[#main+1] =
 					{t="Стой тут",f=function(ai,dialog) 
-						if ai.ftask and ai.ftask.Abort then ai.ftask:Abort() end
 						ai.ftask = nil
+						if ai.ftask and ai.ftask.Abort then ai.ftask:Abort() end
+						e:SendEvent(EVENT_TASK_RESET)
 						dialog:Open(table.Random(phrases.agreement))
 						e:Stop()
 						return false
 					end}
 				else 
 					main[#main+1] =
-					{t="Иди за мной",f=function(ai,dialog) 
-						--ai:AddReaction("j3",CND_ONRND,{ACT_MOVETO}, { max = 100 }) 
-						ai.ftask = e:BeginTask(Task("follow",ai.target,2))
+					{t="Иди за мной",f=function(ai,dialog)  
+						ai.ftask = true
+						e:SendEvent(EVENT_TASK_BEGIN,"follow",ai.target,2)
+						dialog:Open(table.Random(phrases.agreement))
+						return false
+					end}
+					main[#main+1] =
+					{t="гуляй",f=function(ai,dialog)  
+						ai.ftask =true
+						e:SendEvent(EVENT_TASK_BEGIN,"wander")
 						dialog:Open(table.Random(phrases.agreement))
 						return false
 					end}
@@ -210,15 +236,17 @@ function ai:OpenMenu(ply)
 					if self.atask then
 						main[#main+1] =
 						{t="Хватит",f = function(ai,dialog)
-							if ai.atask and ai.atask.Abort then ai.atask:Abort() end
 							ai.atask = nil
+							if ai.atask and ai.atask.Abort then ai.atask:Abort() end
+							e:SendEvent(EVENT_TASK_RESET)
 							dialog:Open(table.Random(phrases.agreement))
 							return false
 						end}
 					else
 						main[#main+1] =
 						{t="Атакуй меня",f = function(ai,dialog)
-							ai.atask = e:BeginTask( Task("attack",ai.target))
+							ai.atask = true
+							e:SendEvent(EVENT_TASK_BEGIN,"attack",ai.target)
 							
 							dialog:Open(table.Random(phrases.agreement))
 							return false

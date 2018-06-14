@@ -26,9 +26,16 @@ function ENT:UpdateShadowMap()
 		cc:Spawn()
 		self.cc = cc  
 		
+		local shadowrp = render.RenderParameters()
+		shadowrp:SetRenderGroups({
+			{RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED,0.01,1e10},
+			{RENDERGROUP_LOCAL,RENDERMODE_ENABLED,0.01,1e10}
+		})
+		self.rp = shadowrp
 		 
 		local camera = self.camera or self:AddComponent(CTYPE_SHADOW) 
-		camera:SetCamera(cc)  
+		camera:SetCamera(cc)
+		camera:SetParameters(shadowrp)
 		camera:RequestDraw()
 		self.camera = camera 
 		
@@ -36,6 +43,7 @@ function ENT:UpdateShadowMap()
 		self.seed = seed 
 		
 		--self:SetUpdating(true)
+		--hook.Remove("main.predraw", "shadowmapupdate"..tostring(seed))
 		hook.Add("main.predraw", "shadowmapupdate"..tostring(seed), function() self:UpdatePos() end)
 	else
 		local cc = self.cc 
@@ -53,13 +61,13 @@ end
 function ENT:UpdatePos() 
 	local c = GetCamera()
 	
-	if not IsValidEnt(self) then 
+	if not IsValidEnt(self) or not self.camera then 
 		hook.Remove("main.predraw", "shadowmapupdate"..tostring(self.seed))
 	else
-		self:SetPos(Vector(0,0,0)) 
-		self:SetAng(Vector(0,0,0))
+		--self:SetPos(Vector(0,0,0)) 
+		--self:SetAng(Vector(0,0,0))
 		self:SetParent(c:GetParent()) 
-		
+		 
 		
 		local light = self.light
 		if light then 

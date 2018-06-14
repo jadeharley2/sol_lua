@@ -14,16 +14,16 @@ function ENT:Spawn()
 	local r = self:GetParameter(VARTYPE_RADIUS) or self.radius
 	local surface = ents.Create("star_surface") 
 	surface:SetParent(self) 
-	surface:SetSizepower(r)
+	surface:SetSizepower(r*2)
 	
 	local scolor =  self:GetParameter(VARTYPE_COLOR) or self.color or Vector(0.2,0.6,1.2)
 	local starlum = self:GetParameter(VARTYPE_BRIGHTNESS) or 2.23e22 
 	
 	
-	
+	local scolorlen = scolor:Length()
 	
 	local light = self:AddComponent(CTYPE_LIGHT)  
-	light:SetColor(scolor+Vector(0.1,0.1,0.1))
+	light:SetColor(scolor*(2/3)+Vector(1,1,1)*scolorlen*(1/3))
 	light:SetBrightness(starlum)
 	light:SetShadow(true)
 	--149597870700*149597870700 (sun lum)

@@ -23,8 +23,18 @@ PANEL.assettypes = {
 		--	p:SetAng(r)
 		--end
 		return p
+	end}, 
+	particle = {directory = "particles/",spawn = function(type,node,fulltype) 
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+		
+		local p = SpawnParticles(node,type,wtr.Position,0,1,1)
+		if p then
+			p:SetSeed(GetFreeUID())
+		end
+		return p
 	end},
-	particle = {directory = "particles/"},
 	font = {directory = "fonts/"},
 	
 	species = {directory = "forms/species/"},
@@ -41,7 +51,7 @@ PANEL.assettypes = {
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
 		actorD:Spawn()
-		actorD:SetPos(wtr.Position)
+		actorD:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
 		return actorD 
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
@@ -165,36 +175,36 @@ function PANEL:InitTabAssets()
 	
 	return P
 end
-function PANEL:InitTabNodes()
-	local P = panel.Create()
-	P:SetColor(Vector(0,0,0))
-	
-	local nodetree = panel.Create("tree")
-	nodetree:SetSize(200,400)
-	nodetree:Dock(DOCK_TOP)
-	P:Add(nodetree)
-	
-	
-	self.nodetree = nodetree
-	
-	local rtb = {"types"}
-	local cam = GetCamera()
-	local camp = cam:GetParent()
-	local chp = camp:GetChildren()
-	  
-	for k,v in pairs(chp) do 
-		local onclick = function(b)  
-			worldeditor:Select(v)
-		end 
-		local tb2 = {tostring(v),OnClick=onclick}  
-		rtb[#rtb+1] = tb2
-	end
-	nodetree:SetTableType(2)
-	
-	nodetree:FromTable(rtb)
-	nodetree:SetSize(200,400)
-	return P
-end
+--function PANEL:InitTabNodes()
+--	local P = panel.Create()
+--	P:SetColor(Vector(0,0,0))
+--	
+--	local nodetree = panel.Create("tree")
+--	nodetree:SetSize(200,400)
+--	nodetree:Dock(DOCK_TOP)
+--	P:Add(nodetree)
+--	
+--	
+--	self.nodetree = nodetree
+--	
+--	local rtb = {"types"}
+--	local cam = GetCamera()
+--	local camp = cam:GetParent()
+--	local chp = camp:GetChildren()
+--	  
+--	for k,v in pairs(chp) do 
+--		local onclick = function(b)  
+--			worldeditor:Select(v)
+--		end 
+--		local tb2 = {tostring(v),OnClick=onclick}  
+--		rtb[#rtb+1] = tb2
+--	end
+--	nodetree:SetTableType(2)
+--	
+--	nodetree:FromTable(rtb)
+--	nodetree:SetSize(200,400)
+--	return P
+--end
 
 function PANEL:Init() 
 	self:SetColor(Vector(0,0,0))
@@ -206,7 +216,7 @@ function PANEL:Init()
 	self.pnode = pnode
 	testtabmenu:AddTab("Nodes",pnode)
 	
-	testtabmenu:AddTab("Hierarchy",self:InitTabNodes())
+	--testtabmenu:AddTab("Hierarchy",self:InitTabNodes())
 	
 	testtabmenu:SetSize(100,100)
 	testtabmenu:Dock(DOCK_FILL)

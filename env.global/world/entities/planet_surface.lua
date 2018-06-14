@@ -26,12 +26,19 @@ function ENT:Spawn()
 	self.surface = surfacecom  
 	self.space = space
 	
+	if(surfacecom:HasAtmosphere() )then
+		local atmosphere = self:AddComponent(CTYPE_ATMOSPHERE)  
+		atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		self.atmosphere = atmosphere
+	end
 	if(surfacecom:HasAtmosphere() and false )then
 		local modelA = self:AddComponent(CTYPE_MODEL) 
 		local model = self:AddComponent(CTYPE_MODEL) 
 		local modelB = self:AddComponent(CTYPE_MODEL) 
 	
 	
+		
+		
 		--0.9096
 		local world= matrix.Scaling(2*0.91) * matrix.Rotation(90,0,0)
 		local world2= matrix.Scaling(Vector(-1,1,1)*2*0.91) * matrix.Rotation(90,0,0)
@@ -80,7 +87,7 @@ function ENT:Spawn()
 	end
 	
 	
-	self:SetUpdating(true,200)
+	self:SetUpdating(true,20)
 end
 
 function ENT:Enter() 
@@ -93,6 +100,9 @@ function ENT:Enter()
 		self.model:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 		self.modelB:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	end
+	if self.atmosphere then
+		self.atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
+	end
 end
 
 function ENT:Leave()   
@@ -102,19 +112,26 @@ function ENT:Leave()
 		self.model:SetRenderGroup(RENDERGROUP_PLANET)
 		self.modelB:SetRenderGroup(RENDERGROUP_PLANET)
 	end
+	if self.atmosphere then
+		self.atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
+	end
 	
 	--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED) 
 	--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_ENABLED) 
-	self:UnloadSubs()
+	--self:UnloadSubs()
 	
 	if CLIENT then
 		local system =  self:GetParentWith(NTYPE_STARSYSTEM) 
 		MsgN("ad",system)
-		if system and system.cubemap then
-			render.SetCurrentEnvmap(system.cubemap)
-		end
+		--if system and system.cubemap then
+		--	render.SetCurrentEnvmap(system.cubemap)
+		--else
+		--	render.SetCurrentEnvmap()
+		--end
+		render.SetCurrentEnvmap()
+		render.ClearShadowMaps()
 	end
 end
 function ENT:Think()
-	MsgN("d")
+	--MsgN("d")
 end
