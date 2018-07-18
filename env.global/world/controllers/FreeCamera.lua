@@ -11,9 +11,13 @@ OBJ.mouseWheelValue = 0
 OBJ.mouseWheelDelta = 0
 
 function OBJ:Init() 
+	local cam = GetCamera()
+	cam:SetUpdateSpace(true)
 	self.mouseWheelValue = input.MouseWheel()  
 end
 function OBJ:UnInit() 
+	local cam = GetCamera()
+	cam:SetUpdateSpace(false)
 	if self.lms_active then
 		input.SetCursorHidden(false)
 		self.lms_active = false
@@ -34,11 +38,20 @@ end
 function OBJ:KeyDown(key)  
 	if input.GetKeyboardBusy() then return nil end
 	if input.KeyPressed(KEYS_D1) then
-		SetController("actorcontroller")
+		SetController("actor")
 	end
 	if input.KeyPressed(KEYS_C) then
 		self:ToggleMouse()
 	end
+		if (input.KeyPressed(KEYS_U)) then 
+			self.mouseWheelDelta = self.mouseWheelDelta + 100
+			self.speed = math.pow(2, self.mouseWheelDelta / 100) * 0.01
+			MsgN("a")
+		end
+		if (input.KeyPressed(KEYS_J)) then 
+			self.mouseWheelDelta = self.mouseWheelDelta - 100
+			self.speed = math.pow(2, self.mouseWheelDelta / 100) * 0.01
+		end
 end
 
 function OBJ:Update() 
@@ -53,7 +66,7 @@ function OBJ:Update()
 		local parent_sz = cam_parent:GetSizepower()
 		local Forward = cam:Forward():Normalized()
 		local Right = cam:Right():Normalized()
-		local Up = cam:Up():Normalized()
+		local Up = cam:Up():Normalized() 
 		
 		local result = Vector(0,0,0)
 		if input.KeyPressed(KEYS_W) then result = result - Forward end
@@ -82,7 +95,7 @@ function OBJ:Update()
 		end
 		local mhag = input.MouseIsHoveringAboveGui()
 		local rmb = input.rightMouseButton()
-		if self:MouseLocked() then--not mhag and rmb then
+		if self:MouseLocked() and not mhag then--not mhag and rmb then
 			if not self.lms_active then
 				input.SetCursorHidden(true)
 				self.lms_active = true

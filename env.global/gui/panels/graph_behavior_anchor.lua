@@ -3,7 +3,7 @@ local CURRENT_SELECTED_ANCHOR = false
  
 
 PANEL.basetype = "button"
-local t_manchor = LoadTexture("gui/manchor.png")
+local t_manchor = LoadTexture("gui/nodes/manchor.png")
 function PANEL:Init() 
 	self.base.Init(self) 
 	self:SetSize(8,8)
@@ -60,5 +60,6 @@ function PANEL:CreateLink(a,b)
 	cuup[#cuup+1] = curve
 	GUI_CURVE_UPDATE()
 end
+
 
  

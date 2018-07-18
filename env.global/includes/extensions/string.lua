@@ -24,3 +24,13 @@ end
 function string.empty(s)
    return s == nil or s == ''
 end
+
+function string.join(separator,tab)
+	local r = tab[1]
+	for k,v in pairs(tab) do
+		if k > 1 then 
+			r = r .. separator .. v
+		end
+	end
+	return r
+end

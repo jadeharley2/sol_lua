@@ -2,7 +2,7 @@
 PANEL.msglist =PANEL.msglist or {}
 local _P = PANEL.msglist
 
-function MsgInfo(text)
+function MsgInfo(text,color)
 	local m = panel.Create("info_popup") 
 	if m and not isfunction(m) and m.ShowMsg then
 		local vsize = GetViewportSize()
@@ -17,7 +17,7 @@ function MsgInfo(text)
 		end
 		_P[1] = m
 		m.id = 1
-		m:ShowMsg(text,Point(-vsize.x+600,-vsize.y+50))
+		m:ShowMsg(text,Point(-vsize.x+600,-vsize.y+50),color)
 	end
 end
 
@@ -34,8 +34,9 @@ function PANEL:Init()
 	indicator:SetColor(Vector(1,0,0))  
 	indicator:SetAlpha(0.5)
 	self:Add(indicator)
+	self.indicator = indicator
 end
-function PANEL:ShowMsg(msg,pos)  
+function PANEL:ShowMsg(msg,pos,color)  
 	local text = panel.Create()
 	text:Dock(DOCK_FILL)
 	text:SetSize(10,10)
@@ -48,9 +49,9 @@ function PANEL:ShowMsg(msg,pos)
 	self:Show()
 	self.target = pos
 	self.target2 = pos + Point(-5000,0)
-	
 	local showtime = 4
 	
+	if color then self.indicator:SetColor(color) end
 	self:SetPos(pos+Point(0,-1000))
 	
 	debug.DelayedTimer(0,20,(showtime*1000+1000)/20, function() 

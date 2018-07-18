@@ -156,6 +156,7 @@ function PANEL:ReVis(n)
 			if v.OnShow then v:OnShow() end
 			v:SetVisible(true) 
 		else
+			if v.OnHide then v:OnHide() end
 			v:SetVisible(false) 
 		end
 	end

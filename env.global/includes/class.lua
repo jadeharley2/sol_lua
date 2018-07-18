@@ -60,7 +60,7 @@ function _CLASS_META:AddType(type)
 	else
 		result._base = self.meta
 	end 
-	result.id = type
+	result._name = type
 	_G[self.varn] = oldc or {}
 	self.types[type] = result
 	return result

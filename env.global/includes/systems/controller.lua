@@ -1,3 +1,33 @@
+--AddCSLuaFile()
+
+--AbilitiesList =  {}--AbilitiesList or
+local CONTROLLER = {}
+
+--props:
+--name
+  
+
+--
+--funcs:
+--self:Init(ent) - returns if effect can be applied
+--self:UnInit(ent)
+--self:MouseWheel()
+--self:MouseDown()
+--self:KeyDown(key)
+--self:Update()
+ 
+
+local con_class = DefineClass("Controller","OBJ","lua/env.global/world/controllers/",CONTROLLER)
+    
+function Controller(type) 
+	return con_class:Create(type)
+end 
+    
+
+
+
+
+
 
 local controllers = {}
 global_controller = global_controller or false
@@ -5,21 +35,21 @@ global_controller = global_controller or false
 function AddController(name,obj)
 	controllers[name] = obj 
 end
-  
-function ScanControllers() 
-	local tempobj = OBJ   
-	for k,v in pairs(file.GetFiles("lua/env.global/world/controllers/","lua")) do
-		OBJ = {}   
-		include(v)   
-		OBJ.name = string.lower( file.GetFileNameWE(v))
-		AddController(OBJ.name,OBJ) 
-	end
-	OBJ = tempobj      
-end                       
+   
+--function ScanControllers() 
+--	local tempobj = OBJ   
+--	for k,v in pairs(file.GetFiles("lua/env.global/world/controllers/","lua")) do
+--		OBJ = {}   
+--		include(v)   
+--		OBJ.name = string.lower( file.GetFileNameWE(v))
+--		AddController(OBJ.name,OBJ) 
+--	end
+--	OBJ = tempobj      
+--end                        
                                
 function SetController(name)   
 	if name then                
-		local ts = controllers[name]
+		local ts = Controller(name)--controllers[name]
 		if ts then    
 			local prev = global_controller   
 			if prev and prev ~=0 then 
@@ -41,9 +71,9 @@ function SetController(name)
 				if ts.KeyDown then hook.Add("input.keydown", "controller", function() ts:KeyDown() end) end
 				            
 				global_controller = ts
-				MsgN("Controller changed to ",  ts.name)
+				MsgN("Controller changed to ",  ts._name)
 			else                         
-				MsgN("Controller change to ",  ts.name, " is failed, revert initiated.") 
+				MsgN("Controller change to ",  ts._name, " is failed, revert initiated.") 
 				
 				local result = prev:Init() 
 				if result ~= false then
@@ -75,7 +105,7 @@ function GetCurrentController()
 	return global_controller
 end
 
-ScanControllers()
+--ScanControllers()
  
 if global_controller then
 	SetController(global_controller.name)
@@ -83,17 +113,17 @@ end
 
 console.AddCmd("setcontroller",SetController)
  
-hook.Add("script.reload","controller", function(filename) 
-	if string.starts(filename,"env.global/world/controllers/") then 
-		local type = string.lower( file.GetFileNameWE(filename))
-		 
-		local tempobj = OBJ   
-		OBJ = {}   
-		include(filename)   
-		OBJ.name = string.lower( file.GetFileNameWE(filename))
-		AddController(OBJ.name,OBJ)  
-		OBJ = tempobj 
-		
-		return true
-	end
-end)
+--hook.Add("script.reload","controller", function(filename) 
+--	if string.starts(filename,"env.global/world/controllers/") then 
+--		local type = string.lower( file.GetFileNameWE(filename))
+--		 
+--		local tempobj = OBJ   
+--		OBJ = {}   
+--		include(filename)   
+--		OBJ.name = string.lower( file.GetFileNameWE(filename))
+--		AddController(OBJ.name,OBJ)  
+--		OBJ = tempobj 
+--		
+--		return true
+--	end
+--end)

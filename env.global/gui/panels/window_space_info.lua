@@ -32,10 +32,23 @@ function PANEL:Init()
 				local d = star:GetDistance(cam)
 				self:AddRecord(p_system,"D to center:", d/1000 .. "km" ) 
 				self:AddRecord(p_system,"D to surface:", (d-r)/1000 .. "km" ) 
+				
+				self:AddGroup(p_system,"Planets")
+				for k,planet in pairs(star.planets) do 
+					self:AddRecord(p_system,"Name:", planet:GetName() or "unknown", function()
+						SetController("freecamera")
+						cam:SetParent( planet)
+						planet:Enter()
+						debug.Delayed(1000,function()
+							SetController("planetview")
+						end)
+					end) 
+					
+				end 
 			end
 		end
 		p_system:UpdateLayout()
-		tabs:AddTab("System",p_system)
+		tabs:AddTab("CurSystem",p_system)
 		
 		local planet = cam:GetParentWithFlag(FLAG_PLANET)
 		if planet then 
@@ -46,7 +59,7 @@ function PANEL:Init()
 			self:AddRecord(p_planet,"Radius:", planet:GetParameter(VARTYPE_RADIUS)/1000 .. "km" ) 
 			local dd,dp = DistanceNormalize(planet:GetAbsPos():Length(),true,false)
 			self:AddRecord(p_planet,"Dist to parent:",tostring(dd)..dp ) 
-			tabs:AddTab("Planet",p_planet)
+			tabs:AddTab("CurPlanet",p_planet)
 		end
 	end
 	
@@ -82,7 +95,7 @@ function PANEL:AddGroup(p,text)
 	p:Add(r)
 end
 
-function PANEL:AddRecord(p,text,value)
+function PANEL:AddRecord(p,text,value,onclick)
 	if not isstring(value) then
 		value = tostring(value)
 	end
@@ -100,7 +113,13 @@ function PANEL:AddRecord(p,text,value)
 	rt:SetColor(Vector(20,20,50)/100)
 	r:Add(rt)
 	
-	local rv = panel.Create()
+	local rv = false
+	if onclick then
+		rv = panel.Create("button")
+		rv.OnClick = onclick
+	else
+		rv = panel.Create()
+	end
 	rv:SetSize(150,20)
 	rv:Dock(DOCK_FILL)
 	rv:SetText(value)

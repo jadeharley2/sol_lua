@@ -1,6 +1,6 @@
 
-local SELECTED_BNODE = false
-local t_mpanel = LoadTexture("gui/bnode.png")
+local SELECTED_BNODE = Set()
+local t_mpanel = LoadTexture("gui/nodes/anode.png")
 
 function PANEL:Init()  
 	
@@ -13,8 +13,8 @@ function PANEL:Init()
 	atext:SetPos(0,0)
 	atext:SetText("Node")
 	atext:SetTextColor(Vector(0.5,0.8,1)*2)
-	--atext:SetTextOnly(true)
-	--atext:SetTextAlignment(ALIGN_CENTER) 
+	atext:SetTextOnly(true)
+	atext:SetTextAlignment(ALIGN_CENTER) 
 	--atext:SetCanRaiseMouseEvents(false)
 	self:Add(atext)
 	self.atext = atext
@@ -29,16 +29,13 @@ function PANEL:Load()
 	a:Attach(self)
 	self.anchor = a
 end
-function PANEL:Select()
-	if SELECTED_BNODE then
-		SELECTED_BNODE:Deselect()
-	end
+function PANEL:Select(selector) 
 	self:SetColor(Vector(83,255,164)/255)
-	SELECTED_BNODE = self
+	self.selector = selector
 end
 function PANEL:Deselect()
-	self:SetColor(Vector(83,164,255)/255)
-	SELECTED_BNODE = false
+	self:SetColor(Vector(83,164,255)/255) 
+	self.selector = nil
 end
 
 function PANEL:SetTitle(text)
@@ -48,13 +45,11 @@ end
 
 function PANEL:MouseDown(id)
 	if id == 1 then
-		if not CURRENT_WINDOW_MOVE then
-			if not self.fixedpos then
-				CURRENT_WINDOW_MOVE_POS = self:GetPos()
-				CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
-				CURRENT_WINDOW_MOVE = self
-				hook.Add("main.predraw", "gui.window.move", GUI_PANEL_GLOBALS.cwmove)
-			end
+		local sel = self.selector
+		if sel then
+			panel.start_drag(sel:GetSelected())
+		else
+			panel.start_drag(self) 
 		end
 	elseif id == 2 then
 		self:Select()

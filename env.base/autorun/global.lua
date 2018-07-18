@@ -35,10 +35,17 @@ function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
 function stdcomp(a,b)
-	if isuserdata(a) or isuserdata(b) then return true 
-	else
+	--if isuserdata(a) or isuserdata(b) then return true 
+	--elseif istable(a) or istable(b) then return tostring(a)<tostring(b) 
+	--elseif isnumber(a) and isstring(b) then return tostring(a)<b
+	--elseif isstring(a) and isnumber(b) then return a<tostring(b) 
+	--else
+	if isnumber(a) and isnumber(b) then
 		return a<b
+	else
+		return tostring(a)<tostring(b) 
 	end
+	--end
 end
 
 function TableToString (tbl, indent, maxlevel)

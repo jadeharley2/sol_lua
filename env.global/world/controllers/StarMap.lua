@@ -39,7 +39,7 @@ end
 
 function OBJ:KeyDown(key)  
 	if (input.KeyPressed(KEYS_D0)) then 
-		SetController("actorcontroller")
+		SetController("actor")
 	end
 	if input.KeyPressed(KEYS_E) then
 		local selected = TESTSELECTOR:GetParent()

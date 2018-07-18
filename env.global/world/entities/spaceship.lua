@@ -124,6 +124,13 @@ function ENT:Load()
 			self:DockLinkAirlocks(parent.station)
 		end
 	end
+	
+	self.velocity = Vector(0,0,0)
+	self.angvelocity = Vector(0,0,0)
+	--self:SetUpdateSpace(true)
+	self:SetSpaceEnabled(false)
+	--self:SEnter()
+	self:SetUpdating(true,15)
 end
 function ENT:Despawn()  
 	self:DDFreeAll() 

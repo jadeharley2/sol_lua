@@ -27,7 +27,7 @@ function AB:Cast(ent)
 			MsgN(self.Think)
 			ent.activeAbilities = ent.activeAbilities or {}
 			--self.id = #ent.meffects
-			ent.activeAbilities[self.id ] = self 
+			ent.activeAbilities[self._name] = self 
 			         
 			self.target = ent
 			if self.cooldownDelay then
@@ -62,7 +62,7 @@ function AB:Dispel()
 	if self.task_dispel then self.task_dispel:Stop() end
 	if self.task_think then self.task_think:Stop() end
 	if self.End then self:End(ent) end
-	ent.activeAbilities[self.id] = nil 
+	ent.activeAbilities[self._name] = nil 
 	--MsgN("dispelled") 
 end
 function AB:Ready()

@@ -38,7 +38,7 @@ function editor:Open()
 	hook.Add("input.keydown","editor", function() self:KeyDown() end )
 	--hook.Add("input.doubleclick","editor",editor.DoubleClick)
 	
-	SetController("freecameracontroller")
+	SetController("freecamera")
 	
 	self:Select(self.selected)
 	self.isopen = true
@@ -258,8 +258,9 @@ function editor:Update()
 		local s = false
 		for k,v in pairs(self.selected) do s = k break end 
 		if s and IsValidEnt(s) then
-			local dist = s:GetPos():Distance(GetCamera():GetPos())*100
-			gizmo:Rescale(dist)
+			local psz = s:GetParent():GetSizepower()
+			local dist = s:GetPos():Distance(GetCamera():GetPos())*10000000/psz
+			gizmo:Rescale(dist)  
 		else
 		end
 			--local sssd = ""
@@ -267,6 +268,7 @@ function editor:Update()
 			--if math.floor(CurTime()*10)%10==0 then MsgInfo(sssd) end
 	end
 end
+
 
 function editor:Select(node,multiselect)
 	MsgInfo("select: "..tostring(node))

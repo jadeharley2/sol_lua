@@ -1783,7 +1783,7 @@ ENT.editor = {
 		posess = {text = "posess",type="action",action = function(ent)  
 			worldeditor:Close() 
 			SetLocalPlayer(ent)
-			SetController('actorcontroller') 
+			SetController("actor") 
 		end},
 	},  
 	

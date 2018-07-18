@@ -22,13 +22,13 @@ function ENT:Enter()
 		--self.cubemap:SetAng(Vector(0,0,90))
 		self.cubemap:RequestDraw()
 		self:Hook("pre_cubemap_render","move_cb",function()
-			if self then
+			if self and IsValidEnt(self) then
 				local c = GetCamera()
 				local cp = self:GetLocalCoordinates(c)
 				local sc = self.cubemap
 				if sc then
 					sc:SetPos(cp+Vector(0,3/sz,0))
-				end
+				end 
 			end
 		end)
 		

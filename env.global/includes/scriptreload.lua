@@ -1,7 +1,7 @@
 
 function _ScriptReload(filename)
-	if string.starts(filename,"data/lua/") then
-		filename = string.sub(filename,10)
+	if string.starts(filename,"lua/") then
+		filename = string.sub(filename,5)
 		if not hook.Call("script.reload",filename) then
 			MsgN("script reload ", filename)
 			include(filename)

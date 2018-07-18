@@ -96,3 +96,18 @@ function PANEL:MouseLeave()
 		hook.Remove("input.mousewheel", "float.scroll")
 	end
 end
+
+function PANEL:Resize() 
+	local floater = self.floater 
+	local inner = self.inner
+	if floater and inner then
+		local vbar = self.vbar 
+		local hbar = self.hbar 
+		if vbar and not hbar then
+			local ssize = self:GetSize()
+			local bsize = vbar:GetSize()
+			local fsize = floater:GetSize()
+			floater:SetSize(ssize.x-bsize.x,fsize.y)
+		end
+	end
+end

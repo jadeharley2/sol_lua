@@ -20,11 +20,16 @@ function math.round(num, numDecimalPlaces)
   local mult = 10^(numDecimalPlaces or 0)
   return math.floor(num * mult + 0.5) / mult
 end
+math.round = math.Round
+
+function math.snap(num, to) 
+  return math.floor(num / to + 0.5) * to
+end
 
 function math.fix(num,def)
 	if math.finite(num) then
 		return num
 	else
 		return def
-	end
-end
+	end 
+end  

@@ -1,32 +1,16 @@
 
 local LAST_BUTTON_PRESSED = false 
 function PANEL:Init()
-	--self.upcolor = gui.style:GetColor("ButtonActive")--Vector(0.8,0.8,0.8)
-	--self.hovercolor = gui.style:GetColor("ButtonHovered")--Vector(0.8,0.4,0.4)
-	--self.downcolor = gui.style:GetColor("Button")-- Vector(1,0,0)
-	--self:SetColor( self.upcolor) 
-	
-	
-	self:AddState("idle",{color = gui.style:GetColor("ButtonActive"):ToTable()})
-	self:AddState("hover",{color = gui.style:GetColor("ButtonHovered"):ToTable()})
-	self:AddState("pressed",{color = gui.style:GetColor("Button"):ToTable()})
-	self:SetState("idle")
-	
+	self.downcolor = gui.style:GetColor("Button")-- Vector(1,0,0)
+	self.upcolor = gui.style:GetColor("ButtonActive")--Vector(0.8,0.8,0.8)
+	self.hovercolor = gui.style:GetColor("ButtonHovered")--Vector(0.8,0.4,0.4)
+	self:SetColor( self.upcolor) 
 end
-function PANEL:ApplyStyle(style)
-	if style.button then self:SetStates(style.button) end
-end
-
 function PANEL:SetColors(down,up,hover) 
-	--self.upcolor = up or  gui.style:GetColor("ButtonActive")--Vector(0.8,0.8,0.8)
-	--self.hovercolor = hover or  gui.style:GetColor("ButtonHovered")--Vector(0.8,0.4,0.4)
-	--self.downcolor = down or  gui.style:GetColor("Button")-- Vector(1,0,0)
-	--self:SetColor( self.upcolor) 
-	
-	self:AddState("idle",{color = (up or gui.style:GetColor("ButtonActive")):ToTable()})
-	self:AddState("hover",{color = (hover or gui.style:GetColor("ButtonHovered")):ToTable()})
-	self:AddState("pressed",{color = (down or gui.style:GetColor("Button")):ToTable()})
-	self:SetState("idle")
+	self.downcolor = down or  gui.style:GetColor("Button")-- Vector(1,0,0)
+	self.upcolor = up or  gui.style:GetColor("ButtonActive")--Vector(0.8,0.8,0.8)
+	self.hovercolor = hover or  gui.style:GetColor("ButtonHovered")--Vector(0.8,0.4,0.4)
+	self:SetColor( self.upcolor) 
 end
 function PANEL:SetTextColors(down,up,hover) 
 	self.flashtext = true
@@ -38,15 +22,10 @@ end
 
 function PANEL:SetColorAuto(color,mul)
 	mul = mul or 0.5
-	--self.upcolor = color
-	--self.hovercolor = color*(1+mul)
-	--self.downcolor = color*(1-mul)
-	--self:SetColor( self.upcolor) 
-	
-	self:AddState("idle",{color = (color):ToTable()})
-	self:AddState("hover",{color = (color*(1+mul)):ToTable()})
-	self:AddState("pressed",{color = (color*(1-mul)):ToTable()})
-	self:SetState("idle")
+	self.downcolor = color*(1-mul)
+	self.upcolor = color
+	self.hovercolor = color*(1+mul)
+	self:SetColor( self.upcolor) 
 end
 
 function PANEL:SetTextColorAuto(color,mul)
@@ -100,9 +79,7 @@ function PANEL:MouseDown(pulse)
 				--self:SetColor( self.downcolor) 
 			end
 		else 
-			---####---self:SetColor( self.downcolor) 
-			
-			self:SetState("pressed")
+			self:SetColor( self.downcolor) 
 		end
 		if self.flashtext then self:SetTextColor( self.textdowncolor) end
 		local OnClick = self.OnClick
@@ -118,22 +95,15 @@ function PANEL:MouseDown(pulse)
 	end
 end
 function PANEL:MouseUp()
-	---####---self:SetColor( self.upcolor) 
+	self:SetColor( self.upcolor) 
 	if self.flashtext then self:SetTextColor( self.textupcolor) end
 	--if not input.leftMouseButton() then
 	--	LAST_BUTTON_PRESSED = false 
 	--end
-	self:SetState("idle")
 end
 function PANEL:MouseEnter() 
-	---####---self:SetColor( self.hovercolor) 
+	self:SetColor( self.hovercolor) 
 	if self.flashtext then self:SetTextColor( self.texthovercolor) end
-	
-	self:SetState("hover")
-	
-	
-	local OnEnter = self.OnEnter 
-	if OnEnter then OnEnter(self) end
 end
 function PANEL:MouseLeave() 
 	if(self.toggleable) then
@@ -143,13 +113,9 @@ function PANEL:MouseLeave()
 			--self:SetColor( self.downcolor) 
 		end
 	else 
-		---####---self:SetColor( self.upcolor) 
-		self:SetState("idle")
+		self:SetColor( self.upcolor) 
 	end
 	if self.flashtext then self:SetTextColor( self.textupcolor) end
-	
-	local OnLeave = self.OnLeave 
-	if OnLeave then OnLeave(self) end
 end
 
 function PANEL:Test() 

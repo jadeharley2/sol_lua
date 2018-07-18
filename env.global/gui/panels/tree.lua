@@ -4,9 +4,13 @@
 	table types
 	1: 
 		key = {key,key={key}}, key
+		(label = key)
 	2:
 		1 = key,
 		2 = {1 = key,2 = {1=key,2=key}}
+	3:
+		key = {key,key,key = {key,key}}
+		(label = (key == string ?? key : value))
 ]]
 PANEL.itemheight = 20
 
@@ -55,12 +59,24 @@ function PANEL:FromTable(tbl,parent,clickfn)
 			nod.level = clevel
 			subs[#subs+1] = nod 
 		end
-	else--if tabletype == 2 then
+	elseif tabletype == 2 then
 		for k,v in ipairs(tbl) do 
 			if k > 1 then
 				local nod = self:AddItem(v[1],parent,v,clickfn)
 				nod.level = clevel
 				subs[#subs+1] = nod 
+			end
+		end
+	elseif tabletype == 3 then
+		for k,v in pairs(tbl) do 
+			if isnumber(k) then
+				local nod = self:AddItem(v,parent,nil,clickfn)
+				nod.level = clevel
+				subs[#subs+1] = nod 
+			else 
+				local nod = self:AddItem(k,parent,v,clickfn)
+				nod.level = clevel
+				subs[#subs+1] = nod  
 			end
 		end
 	end
@@ -92,7 +108,10 @@ function PANEL:AddItem(text,parent,value,clickfn)
 	--new_item:SetText("-"..tostring(text))
 	new_item:SetColor(Vector(0.5,0.5,0.5))
 	new_item:Dock(DOCK_TOP)
+	
 	if vistbl then new_item.tag = value.tag end
+	--new_item.tag = value.tag
+	new_item.text = tostring(text)
 	
 	new_text = panel.Create("button")
 	---new_text:SetFont(testDFont)
@@ -116,7 +135,7 @@ function PANEL:AddItem(text,parent,value,clickfn)
 		new_text.OnClick = clickfn
 	end
 	
-	if vistbl and (tabletype==1 or #value>1) then 
+	if vistbl and (tabletype~=1 or #value>1) then 
 		expand = panel.Create("button")
 		--
 		

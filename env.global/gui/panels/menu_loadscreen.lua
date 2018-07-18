@@ -1,19 +1,22 @@
  
-function PANEL:Init()  
+function PANEL:Init()   
 
-	local self = panel.Create()
-	self:SetSize(800,800) 
-	self:SetColor(Vector(1,1,1)/1000)
+	--local self = panel.Create()
+	self:SetSize(150,150) 
+	self:SetColor(Vector(100,100,100)/100)
 	self:SetTexture(LoadTexture("gui/menu/sn_1024.dds")) 
 	
-	
-	local loading_label = panel.Create()
-	loading_label:SetText("Loading")
-	loading_label:SetTextAlignment(ALIGN_CENTER)
-	loading_label:SetColor(Vector(0,0,0))
-	loading_label:SetTextColor( Vector(1,1,1))
-	loading_label:SetSize(280,20)
-	loading_label:SetPos(0,-520)
-	
-	self:Add(loading_label) 
+end
+
+function PANEL:OnShow()
+	self:Think()
+	hook.Add("main.predraw","loadscreen.think",function() self:Think() end)
+end
+function PANEL:OnHide()
+	hook.Remove("main.predraw","loadscreen.think")
+end
+function PANEL:Think()
+	self:SetRotation(self:GetRotation()-1)
+	local sw = GetViewportSize()
+	self:SetPos(sw.x-200,-sw.y+200)
 end

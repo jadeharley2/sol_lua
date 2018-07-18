@@ -53,16 +53,26 @@ function ConnectTo(ip)
 	hook.Call("network.connect")
 	return network.Connect(ip)
 end
-function LoadWorld(id)
-	if not id and not SAVEDGAME then hook.Call("menu") return error("world id unspecified") end
+function LoadWorld(id,savegame,onComplete,onFail)
+	if not id and not savegame then hook.Call("menu") return error("world id unspecified") end
 	local cam = GetCamera()
 	cam:SetUpdateSpace(true)
 	UNIid = id
 	
 	
+	MsgN("[WORLD] load sequence begun")
 	
-	if SAVEDGAME then 
-		local result, roottable = engine.LoadState(SAVEDGAME) 
+	if savegame then 
+		hook.Add("engine.location.loaded","spawner",function(origin) 
+			hook.Remove("engine.location.loaded","spawner")
+			if onComplete then onComplete() end
+		end)
+		hook.Add("engine.location.loadfailed","spawner",function(origin) 
+			hook.Remove("engine.location.loadfailed","spawner")
+			UnloadWorld()
+			if onFail then onFail() end
+		end)
+		local result, roottable = engine.LoadState(savegame) 
 		if result then
 			U = roottable
 		else
@@ -71,9 +81,33 @@ function LoadWorld(id)
 	else 
 		U = ents.Create("world_"..id)  
 		U:Create() 
-		SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
-		cam:SetParent(SPAWNORIGIN)
-		cam:SetPos(SPAWNPOS)
+		if U.GetSpawn then
+			SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
+			cam:SetParent(SPAWNORIGIN)
+			cam:SetPos(SPAWNPOS)
+			MsgN("[WORLD] load complete")
+			if onComplete then onComplete(U,origin,pos) end
+			hook.Call("engine.location.loaded", cam,"local")
+		else
+			if U.LoadSpawnpoint then
+				hook.Add("world.loaded","spawner",function(origin, pos) 
+					hook.Remove("world.loaded","spawner")
+					SPAWNORIGIN = origin
+					SPAWNPOS = pos
+					cam:SetParent(origin)
+					cam:SetPos(pos)
+					MsgN("[WORLD] load complete")
+					if onComplete then onComplete(U,origin,pos) end
+					hook.Call("engine.location.loaded", cam,"local")
+				end) 
+				hook.Add("world.load.error","spawner",function() 
+					hook.Remove("world.load.error","spawner") 
+					UnloadWorld()
+					if onFail then onFail() end
+				end) 
+				U:LoadSpawnpoint()
+			end
+		end
 	end
 	
 	--[[
@@ -131,7 +165,6 @@ function LoadWorld(id)
 	--local targetpos = Vector(0.003537618,0.01925059,0.2446546)
 	--cam:SetPos(targetpos)
 	cam:SetGlobalName("player_cam")
-	hook.Call("engine.location.loaded", cam,"local")
 	
 	return U
 end 
@@ -247,7 +280,7 @@ function SpawnPlayerChar(posoverride)
 	end
 	if playeractor then
 		SetLocalPlayer(playeractor)
-		SetController('actorcontroller')  
+		SetController('actor')  
 		
 		local system = playeractor:GetParentWith(NTYPE_STARSYSTEM)
 		if system then 
@@ -280,7 +313,7 @@ function SPA()
 	
 	TACTOR = actor2
 	TACTOR:SetGlobalName('player') 
-	SetController('actorcontroller')  
+	SetController('actor')  
 end
 function SPT(scale)
 	local cc = GetCamera()
@@ -348,31 +381,46 @@ end
 
 function LoadSingleplayer(world_id,savegame_id) 
 
-	SAVEDGAME = savegame_id or false
+	savegame_id = savegame_id or false
 	local load_timer = debug.Timer(true)
 	engine.PausePhysics() 
-	hook.Call("menu","loadscreen")
+	
+	hook.Call("menu") 
+	--hook.Call("menu","loadscreen")
+	
 	debug.Delayed(1,function() 
-		local U = LoadWorld(world_id)   
-		if U then
-			if U.OnPlayerSpawn then
-				U:OnPlayerSpawn()
-			else
-				SpawnPlayerChar()   
+		local U = LoadWorld(world_id,savegame_id,function(u,origin,pos)  
+			GetCamera():SetUpdateSpace(false)
+			if not savegame_id then
+				if u then
+					if u.OnPlayerSpawn then
+						u:OnPlayerSpawn()
+					else
+						SpawnPlayerChar()   
+					end
+				end
 			end
 			
 			load_timer:Stop()
-			MsgN("World loaded in: "..tostring(load_timer:ElapsedMs()).."ms")
+			MsgN("[WORLD] loaded in: "..tostring(load_timer:ElapsedMs()).."ms")
 			MsgN("")
 			
 			debug.Delayed(1,function() 
 				MAIN_MENU:SetWorldLoaded(true) 
-				hook.Call("menu") 
 				debug.Delayed(1,function() 
 					engine.ResumePhysics() 
+					if savegame_id then 
+						SetController("actor") 
+					end
+					hook.Call("menu") 
 				end)
+			end) 
+		end, function(u,err) 
+			debug.Delayed(1,function() 
+				MAIN_MENU:SetWorldLoaded(false) 
+				hook.Call("menu","main")  
 			end)
-		end
+		end)   
 	end)
 end
 

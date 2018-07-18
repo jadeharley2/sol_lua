@@ -1,7 +1,7 @@
 
 function ENT:Init()
 	local constrot  = self:AddComponent(CTYPE_CONSTROT) 
-	constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
+	constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
 	self.constrot = constrot
 	self:SetSpaceEnabled(true,1)
 end

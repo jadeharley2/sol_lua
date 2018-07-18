@@ -4,7 +4,11 @@ PANEL.assettypes = {
 		--local j = json.Read(fulltype)--"forms/props/"..type..".json")
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
-		if not wtr or not wtr.Hit then return nil end
+		local pos = Vector(0,0,0)
+		if not wtr or not wtr.Hit then --return nil
+		else
+			pos = wtr.Position
+		end
 		 
 		local p = SpawnPV(fulltype,node,wtr.Position)--,j.scale,false,false)
 		if p then

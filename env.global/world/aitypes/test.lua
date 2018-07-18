@@ -283,7 +283,7 @@ function ai:OpenMenu(ply)
 				--label:SetAlpha(0.7)
 				label:SetTextOnly(true)
 				p:Add(label)
-		
+		 
 				local opt = {}
 				local bopt = panel.Create("button")
 				bopt:SetText("Иди за мной")

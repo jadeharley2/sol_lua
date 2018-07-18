@@ -3,7 +3,7 @@ PANEL.basetype = "window"
 function PANEL:Init()
 	--PrintTable(self)
 	self.base.Init(self)
-	self:Resize(Point(500,200))
+	--self:Resize(Point(500,200))
 	self:SetColor(Vector(0.6,0.6,0.6))
 	
 	local list_view = panel.Create("list")

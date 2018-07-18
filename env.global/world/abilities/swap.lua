@@ -47,10 +47,10 @@ function ability:Swap(caster,target)
 		local player = LocalPlayer()
 		if caster == player then
 			SetLocalPlayer(target)
-			SetController('actorcontroller') 
+			SetController('actor') 
 		elseif target == player then
 			SetLocalPlayer(caster)
-			SetController('actorcontroller')
+			SetController('actor')
 		end
 	end
 end

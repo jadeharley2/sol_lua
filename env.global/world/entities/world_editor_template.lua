@@ -79,6 +79,6 @@ function ENT:GetSpawn()
 	return self.space, Vector(0,0,0)
 end
 function ENT:OnPlayerSpawn()
-	SetController("freecameracontroller")
+	SetController("freecamera")
 	WorldeditorOpen()
 end

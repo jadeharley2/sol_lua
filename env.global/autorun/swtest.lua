@@ -39,11 +39,11 @@ else
  
 	function swap()
 		if not LocalPlayer() or not TM2 then return false end
-		SetController('freecameracontroller')
+		SetController("freecamera")
 		local cc = LocalPlayer()
 		SetLocalPlayer(TM2)
 		TM2 = cc
-		SetController('actorcontroller')
+		SetController("actor")
 		return true
 	end
 end

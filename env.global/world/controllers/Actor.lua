@@ -25,7 +25,16 @@ function OBJ:Init()
 	
 	local cam = GetCamera()
 	local actor = LocalPlayer()
-	if not actor then  SetController("freecameracontroller") return end
+	if not actor or not IsValidEnt(actor) then  	
+		local cp = cam:GetParent()
+		if cp and IsValidEnt(cp) and cp.Duck then
+			SetLocalPlayer(cp)
+			actor = cp  
+		else
+			SetController("freecamera") 
+			return 
+		end
+	end
 	healthbar = panel.Create("healthbar")  
 	--healthbar:SetPos(-1610,-980) --+csize.x +csize.y 
 	healthbar:Show()
@@ -224,11 +233,11 @@ function OBJ:KeyDown(key)
 	if (input.KeyPressed(KEYS_F5)) then 
 		local fc = settings.GetBool("server.nofreecam")
 		if not fc then
-			SetController("freecameracontroller")
+			SetController("freecamera")
 		end
 	end
 	if (input.KeyPressed(KEYS_F6)) then 
-		SetController("starmapcontroller")
+		SetController("starmap")
 	end
 			 
 	if input.KeyPressed(KEYS_C) then
@@ -336,7 +345,7 @@ end
 function OBJ:Update() 
 
 	local actor = LocalPlayer() 
-	if not actor or not IsValidEnt(actor) then SetController("freecameracontroller") return end
+	if not actor or not IsValidEnt(actor) then SetController("freecamera") return end
 	local dt = 1
 	
 	if actor:HasFlag(FLAG_ACTOR) then
@@ -1031,7 +1040,7 @@ function OBJ:HandleCameraMovement(actor)
 	local mlock = self:MouseLocked()
 	local mhag = input.MouseIsHoveringAboveGui() or MOUSE_LOCKED
 	local lmb = input.leftMouseButton()
-	local rmb = mlock -- input.rightMouseButton()
+	local rmb = mlock  -- input.rightMouseButton()
 	
 	local controlled =-- not self:ActorIsBusy()--
 	actor:GetUpdating() and actor.controller == self--self:IsControlling( actor) 

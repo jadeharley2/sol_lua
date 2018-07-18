@@ -43,7 +43,7 @@ function UnlockMouse()
 end
 
 function gui.FromTable(t)
-	local node = panel.Create()
+	local node = panel.Create(t.type)
 	if t.size then node:SetSize(t.size[1],t.size[2]) end
 	if t.pos then node:SetPos(t.pos[1],t.pos[2]) end
 	--if t.angle then node:SetPos(t.pos[1],t.pos[2]) end
@@ -57,11 +57,18 @@ function gui.FromTable(t)
 		node:SetTexture(tex) 
 	end
 	if t.text then node:SetText(t.text) end
+	
+	local FromTable = node.FromTable
+	if FromTable then FromTable(node,t) end
+	
+	
 	if t.subs then
 		for k,v in ipairs(t.subs) do
 			node:Add(gui.FromTable(v)) 
 		end
 	end
+	
+	
 	return node
 end
 

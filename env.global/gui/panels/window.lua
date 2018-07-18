@@ -1,47 +1,7 @@
 
 PANEL.STATIC = PANEL.STATIC or {}
-local static = PANEL.STATIC 
-static.CURRENT_WINDOW_RESIZE = false
-static.CURRENT_WINDOW_RESIZE_POINTPOS = false
-static.CURRENT_WINDOW_RESIZE_SIZE = false
-static.CURRENT_WINDOW_RESIZE_POS = false
-static.CURRENT_WINDOW_RESIZE_DIR = false
-function static.cwresize()
-	local window = static.CURRENT_WINDOW_RESIZE
-	if window then 
-		local dir = static.CURRENT_WINDOW_RESIZE_DIR
-		local posdir = Point(dir.x,-dir.y)
-		local mousePos = input.getMousePosition() 
-		local mouseDiff = mousePos - static.CURRENT_WINDOW_RESIZE_POINTPOS 
-		local newSize = static.CURRENT_WINDOW_RESIZE_SIZE + mouseDiff * dir
-		window:SetSize(newSize)
-		
-		local rrs = window:GetSize() - static.CURRENT_WINDOW_RESIZE_SIZE
-		local newPos = static.CURRENT_WINDOW_RESIZE_POS + rrs * posdir
-		window:SetPos(newPos)
-		if not input.leftMouseButton() then
-			static.CURRENT_WINDOW_RESIZE = false
-			UnlockMouse()
-			hook.Remove("main.predraw", "gui.window.resize")
-		end
-	end
-end
-function static.cwmove()
-	local window = static.CURRENT_WINDOW_MOVE
-	if window then  
-		local mousePos = input.getMousePosition() 
-		local mouseDiff = mousePos - static.CURRENT_WINDOW_MOVE_POINTPOS   
-		local mouseDiffF = Point(mouseDiff.x*2,mouseDiff.y*-2)
-		local newPos = static.CURRENT_WINDOW_MOVE_POS + mouseDiffF
-		window:SetPos(newPos)
-		if not input.leftMouseButton() then
-			static.CURRENT_WINDOW_MOVE = false
-			UnlockMouse()
-			hook.Remove("main.predraw", "gui.window.move")
-		end
-	end
-end
-
+local static = PANEL.STATIC  
+ 
 
 function PANEL:Init() 
 	
@@ -69,27 +29,8 @@ function PANEL:Init()
 		gui.style:GetColor("HeaderHovered"))
 	
 	local sResize = function(s)
-		if not static.CURRENT_WINDOW_RESIZE then
-			if not self.fixedsize then
-				static.CURRENT_WINDOW_RESIZE_SIZE = self:GetSize()
-				static.CURRENT_WINDOW_RESIZE_POS = self:GetPos()
-				static.CURRENT_WINDOW_RESIZE_POINTPOS =  input.getMousePosition()
-				static.CURRENT_WINDOW_RESIZE_DIR = s.dir
-				static.CURRENT_WINDOW_RESIZE = self
-				hook.Add("main.predraw", "gui.window.resize", static.cwresize)
-			end
-		end
-	end
-	local sMove = function(s) 
-		if not static.CURRENT_WINDOW_MOVE then
-			if not self.fixedpos then
-				static.CURRENT_WINDOW_MOVE_POS = self:GetPos()
-				static.CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
-				static.CURRENT_WINDOW_MOVE = self
-				hook.Add("main.predraw", "gui.window.move", static.cwmove)
-			end
-		end
-	end
+		panel.start_resize(self,1,s.dir)
+	end 
 	--[[local sDock = function(s)  
 		local dock_l = panel.Create("button")
 		local dock_r = panel.Create("button")
@@ -114,6 +55,16 @@ function PANEL:Init()
 			self:Resize(ss.x,ps.y)
 		end
 	end]]
+	local rmenter = function(s)  
+		panel.cursor_resize(s.dir)
+	end
+	local rleave = function(s)  
+		if not panel.current_resize then
+			panel.SetCursor(0)
+		end
+	end
+	
+	
 	rs_b.dir = Point(0,1)
 	rs_t.dir = Point(0,-1)
 	rs_l.dir = Point(-1,0)
@@ -122,17 +73,32 @@ function PANEL:Init()
 	rs_tr.dir = Point(1,-1)
 	rs_bl.dir = Point(-1,1)
 	rs_br.dir = Point(1,1)
-	rs_b.OnClick = sResize
-	rs_t.OnClick = sResize
-	rs_l.OnClick = sResize
-	rs_r.OnClick = sResize 
-	rs_tl.OnClick = sResize
-	rs_tr.OnClick = sResize
-	rs_bl.OnClick = sResize
-	rs_br.OnClick = sResize 
-	 
+	self.rs_b  = rs_b
+	self.rs_t  = rs_t
+	self.rs_l  = rs_l
+	self.rs_r  = rs_r
+	self.rs_tl = rs_tl
+	self.rs_tr = rs_tr
+	self.rs_bl = rs_bl
+	self.rs_br = rs_br
+	self.borders = {rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}
 	
-	mv.OnClick = sMove 
+	for k,v in pairs(self.borders) do
+		v.OnClick = sResize
+		v.OnEnter = rmenter
+		v.OnLeave = rleave
+	end 
+	
+	
+	mv.OnClick = function(s)  
+		if not self.fixedpos then
+			panel.start_drag(self,1)
+			--static.CURRENT_WINDOW_MOVE_POS = self:GetPos()
+			--static.CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
+			--static.CURRENT_WINDOW_MOVE = self
+			--hook.Add("main.predraw", "gui.window.move", static.cwmove)
+		end 
+	end
 	--dockbtn.OnClick = sDock 
 	bc.OnClick = function() 
 		self:Close() 
@@ -161,15 +127,6 @@ function PANEL:Init()
 	
 	
 	if not fixedsize then 
-		self.rs_b  = rs_b
-		self.rs_t  = rs_t
-		self.rs_l  = rs_l
-		self.rs_r  = rs_r
-		self.rs_tl = rs_tl
-		self.rs_tr = rs_tr
-		self.rs_bl = rs_bl
-		self.rs_br = rs_br
-		self.borders = {rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}
 		for k,v in pairs(self.borders) do
 			v:SetSize(sizeframe_width,sizeframe_width)
 			v:SetColorAuto(bordcol)
@@ -205,37 +162,7 @@ function PANEL:Init()
 	
 	mv:Add(bc) bc:Dock(DOCK_RIGHT)
 	--self:Add(dockbtn)
-	
-	--function self:Resize(newSize) 
-	--	local sx =math.max( newSize.x ,40)
-	--	local sy =math.max( newSize.y ,40)
-	--	
-	--	self:SetSize(sx,sy) 
-	--	------rs_b:SetSize(sx-sizeframe_width*2,sizeframe_width)
-	--	------rs_t:SetSize(sx-sizeframe_width*2,sizeframe_width)
-	--	------rs_l:SetSize(sizeframe_width,sy-sizeframe_width*2)
-	--	------rs_r:SetSize(sizeframe_width,sy-sizeframe_width*2)
-	--	------mv:SetSize(sx-sizeframe_width*2,movepanel_height)
-	--	------local t = sy-sizeframe_width
-	--	------local b = -sy+sizeframe_width
-	--	------local l = -sx+sizeframe_width
-	--	------local r = sx-sizeframe_width 
-	--	------rs_b:SetPos(0,b)
-	--	------rs_t:SetPos(0,t)
-	--	------rs_l:SetPos(l,0)
-	--	------rs_r:SetPos(r,0) 
-	--	------rs_tl:SetPos(l,t)
-	--	------rs_tr:SetPos(r,t)
-	--	------rs_bl:SetPos(l,b)
-	--	------rs_br:SetPos(r,b)
-	--	------mv:SetPos(0,sy-sizeframe_width*2 - movepanel_height)
-	--	------bc:AlignTo(mv,ALIGN_LEFT,ALIGN_LEFT)
-	--	--dockbtn:SetPos(sx-sizeframe_width*2-movepanel_height,sy-sizeframe_width*2 - movepanel_height)
-	--	local sor = self.OnResize
-	--	if sor then
-	--		sor(self)
-	--	end
-	--end
+	 
 	
 	function self:SetTitle(text)
 		mv:SetText(text)

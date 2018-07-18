@@ -8,6 +8,11 @@ function set_meta:Add(key)
 end
 
 function set_meta:Remove(key)
+	for k,v in pairs(self) do
+		if k==key then
+			self[k] = nil 
+		end
+	end
     self[key] = nil
 end
 
@@ -25,6 +30,22 @@ function set_meta:First()
 	for k,v in pairs(self) do
 		return k
 	end 
+end
+
+function set_meta:ToTable() 
+	local t = {}
+	for k,v in pairs(self) do
+		t[#t+1] = k
+	end 
+	return t
+end
+
+function set_meta:Count() 
+	local c = 0;
+	for k,v in pairs(self) do
+		c = c + 1
+	end 
+	return c
 end
 
 set_meta.__index = set_meta
