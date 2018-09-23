@@ -23,10 +23,7 @@ function LoadMenu()
 			end
 		end
 	end) 
-	 
-	--O_O = panel.Create("graph_editor") 
-	--O_O:Show()
-	
+	  
 	--rdb = panel.Create("window_renderdebug") 
 	--rdb:SetPos(0,vsize.y*0.8) 
 	--rdb:SetTitle("Render")

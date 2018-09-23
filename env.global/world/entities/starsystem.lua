@@ -105,6 +105,32 @@ function ENT:Leave()
 		 render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED) 
 	end
 end
+function ENT:Regenerate()
+	local rebaseCam = false
+	if CLIENT then
+		local cam = GetCamera()
+		if self:IsParentOf(cam) then
+			rebaseCam = true
+			for k,v in ipairs(cam:GetHierarchy()) do
+				MsgN(k,v,v==self)
+				if v == self then
+					break
+				end
+				if v ~= cam then
+					cam:Eject()
+				end
+			end
+			--cam:SetParent(self)
+			MsgN("camrebase")
+		end
+	end
+	self:Leave()
+	self:Enter()
+	if rebaseCam then
+		local cam = GetCamera()
+		--cam:SetParent(self)
+	end
+end
 
 if CLIENT then
 	function ENT:ReloadSkybox()

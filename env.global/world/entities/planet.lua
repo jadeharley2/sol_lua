@@ -34,7 +34,7 @@ function ENT:Spawn()
 	
 		self.orbit:SetOrbit()
 	end
-	self:SetUpdating(true,1000)
+	self:SetUpdating(true,10)
 	--if self.ismoon then
 	--	self:Enter()
 	--end

@@ -43,6 +43,7 @@ function ENT:Enter()
 		---end
 		if self:GetParent().surface:HasAtmosphere() then
 			local p = SpawnParticles(self,"clouds",Vector(0,0,0),0,100,1)
+			p.particlesys2:SetColor(Vector(0.1,0.1,0.1))
 		end		
 		--SHADOW = SHADOW or CreateTestShadowMapRenderer(GetCamera():GetParent(),Vector(0,0,0))
 	end

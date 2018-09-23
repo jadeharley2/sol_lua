@@ -7,16 +7,16 @@ generator[EVENT_GENERATOR_SETUP] = function(self, node) -- system(self)
 	local seed = node:GetSeed()
 	
 	local rnd = Random(seed + 3452)
-	if(rnd:NextFloat(0,1)>0.90) then
+	if(rnd:NextFloat(0,1)>0.9) then --0.9
 		self:GenerateBinarySystem(node,seed) 
-		MsgInfo("binary!")
+		MsgInfo("binary!")  
 	else 
 		self:GenerateUnarySystem(node,seed) 
 		MsgInfo("unary!")
 	end 
 end
 function generator:GenerateUnarySystem(system, seed) 
-MsgN("aaaaaaaaaaaaa")  
+
 	--local seed = system.seed
 	local stars = {}
 	local rnd = Random(seed + 3218979)
@@ -44,12 +44,15 @@ MsgN("aaaaaaaaaaaaa")
 	
 	stars[1] = star
 	
-	self:GeneratePlanets(star,6.9551E8*60,seed)
+	self:GeneratePlanets(star,seed,6.9551E8*60,6.9551E8*60)
 	system.stars = stars
 end
 
  
-function generator:GeneratePlanets(star, spacing, seed)
+function generator:GeneratePlanets(star,  seed, spacing, mindist, maxdist)
+
+	mindist = mindist or spacing
+	maxdist = maxdist or 9E12
 
 	local planets = {}
 	local rnd = Random(seed + 435566)
@@ -74,7 +77,7 @@ function generator:GeneratePlanets(star, spacing, seed)
 		--ascendinglongitude, 
 		--meanAnomaly, 
 		--orbtialspeed
-		local dist = spacing + spacing * math.pow(2, i + rnd:NextFloat(-0.1, 0.1))
+		local dist = mindist + spacing * math.pow(2, i + rnd:NextFloat(-0.1, 0.1))
 		body.orbit:SetOrbit(
 			dist,
 			rnd:NextFloat( 0, 0.2),
@@ -191,8 +194,9 @@ function generator:GenerateBinarySystem(system, seed)
 	center:SetParameter(VARTYPE_COLOR,c)
 	center.radius = r
 	center.mass = 0  
-	center:SetSizepower(6.9551E8 * 20000) 
+	center:SetSizepower(6.9551E8 * 100000) 
 	center:SetParent(system)
+	center:RemoveFlag(FLAG_STAR)
 	center:Spawn() 
 	
 	
@@ -261,7 +265,7 @@ function generator:GenerateBinarySystem(system, seed)
 		0,
 		3.1415926,
 		0,
-		3000
+		1
 	)
 	--starA.orbit = SpaceOrbit()
 	--starA.orbit.a = orbit_a 
@@ -280,7 +284,7 @@ function generator:GenerateBinarySystem(system, seed)
 		0,
 		0,
 		0,
-		3000
+		1
 	)
 	--starB.orbit = SpaceOrbit()
 	--starB.orbit.a = orbit_a
@@ -294,6 +298,8 @@ function generator:GenerateBinarySystem(system, seed)
 	--
 	--GEN.GeneratePlanets(starA, 6.9551E8* 10, seed+32789)
 	--GEN.GeneratePlanets(starB, 6.9551E8* 10, seed-2390719)
+	
+	self:GeneratePlanets(center,seed,6.9551E8*500,6.9551E8*100,6.9551E8 * 20000)
 end
 --[[
 return GEN

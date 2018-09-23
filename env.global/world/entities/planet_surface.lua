@@ -1,7 +1,8 @@
 
 function ENT:Init()
 	local constrot  = self:AddComponent(CTYPE_CONSTROT) 
-	constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
+	--constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
+	constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0))
 	self.constrot = constrot
 	self:SetSpaceEnabled(true,1)
 end
@@ -100,6 +101,8 @@ end
 
 function ENT:Enter() 
 	--render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,1e8,0.5*UNIT_LY)
+	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND) 
 	render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8)
 	render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	self.surface:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
@@ -142,4 +145,5 @@ function ENT:Leave()
 end
 function ENT:Think()
 	--MsgN("d")
+	self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
 end
