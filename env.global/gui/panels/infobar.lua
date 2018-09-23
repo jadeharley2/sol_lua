@@ -58,8 +58,11 @@ function PANEL:UpdateBar(ent)
 			hp:SetSize(297*percentage,2)
 		elseif ent:HasFlag(FLAG_NPC) then
 			back:SetTextColor(Vector(255,255,255)/255)
-			back:SetText( ent:GetName())
-			
+			if ent.usetype then
+				back:SetText( ent:GetName()..": "..(ent.usetype or "unknown"))
+			else
+				back:SetText( ent:GetName())
+			end
 			local percentage = ent:GetHealthPercentage()
 			hp:SetAlpha(1)
 			hp:SetSize(297*percentage,2)

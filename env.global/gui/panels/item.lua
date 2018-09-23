@@ -199,6 +199,11 @@ function PANEL:Set(item)
 		local name = item:GetName()
 		if name and name~="" then
 			self.title:SetText(name)
+		else 
+			local char = item:GetParameter(VARTYPE_CHARACTER) 
+			if char then
+				self.title:SetText(char)
+			end
 		end
 		if name then
 			self:TrySetTexture(name)

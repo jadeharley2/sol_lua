@@ -5,6 +5,9 @@ if not LOBBY then
 	LOBBY:SetSeed(1000003)
 	LOBBY:SetName("lobby")
 	LOBBY:SetGlobalName("lobby")
+	local sspace = LOBBY:AddComponent(CTYPE_PHYSSPACE)  
+	sspace:SetGravity(Vector(0,-0.0000001,0))
+	LOBBY.space = sspace
 	LOBBY:Spawn()
 	--network.AddNode(LOBBY)
 
@@ -129,7 +132,7 @@ if SERVER then
 			["actor"] = actor
 		}
 		--network.BroadcastLua("local l =  ents.GetById("..tostring(120000+id)..") if l then l:Load() end")
-		client:SendLua("local p = ents.GetById("..tostring(120000+id)..") SetLocalPlayer(p) p:SetGlobalName('player') SetController('actorcontroller') p:SetPos(GLOBAL_SPAWN_pos)")
+		client:SendLua("local p = ents.GetById("..tostring(120000+id)..") SetLocalPlayer(p) p:SetGlobalName('player') SetController('actor') p:SetPos(GLOBAL_SPAWN_pos)")
 		 
 		hook.Call("player.firstspawn", actor) 
 		network.BroadcastCall("player.connected",id,actor)
@@ -140,6 +143,7 @@ if SERVER then
 			client:Call("player.connected",k,v.actor)
 			--llist[k] = v.actor
 		end
+		client:SendLua("SetController('actor')")
 	end
 	local onClientDisconnected = function(client, id)
 		local v = player_list[id] 

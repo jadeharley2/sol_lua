@@ -44,7 +44,7 @@ function ENT:LoadSpawnpoint()
 
 		local ship = ents.Create("spaceship")
 		ship:SetSeed(2397131)
-		ship:SetSizepower(750)
+		ship:SetSizepower(1000)
 		ship:SetName("The ship")
 		ship:SetParent(origin_loader:GetParent())
 		ship:SetPos(Vector(0.0129999995529652, 0, 0))

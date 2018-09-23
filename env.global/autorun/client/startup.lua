@@ -1,7 +1,7 @@
 if SERVER then return nil end
 
 SAVEDGAME = false 
-
+CONSOLE = CONSOLE or false
 	-- lua_run  TACTOR:GetParentWith(NTYPE_STARSYSTEM):ReloadSkybox()
 function LoadMenu() 
 	local t_start = CurTime()
@@ -14,19 +14,15 @@ function LoadMenu()
 	
 	chat:SetPos(-vsize.x,-vsize.y) --+csize.x +csize.y
 	chat:SetTitle("Chat")
-	chat:Show()
 	hook.Add("input.keydown","chat",function(key)  
-		if not input.GetKeyboardBusy() then
-			if key == KEYS_T then
-				_CCC = chat
+		if not input.GetKeyboardBusy() and chat:IsOpened() then
+			if key == KEYS_T then 
 				debug.Delayed(1,function()
-					_CCC:Select()
-					_CCC = nil
+					chat:Select() 
 				end)
 			end
 		end
-	end)
-	chat:SetVisibility(false)
+	end) 
 	 
 	--O_O = panel.Create("graph_editor") 
 	--O_O:Show()
@@ -42,8 +38,45 @@ function LoadMenu()
 	wn:SetPos(0,0)  
 	wn:Show()
 	
-	debugmenu = panel.Create("debug_panel_menu")   
-	debugmenu:Show()
+	local console = CONSOLE or panel.Create("panel_console")  
+	local wsize = GetViewportSize()
+	console:SetPos(0,100000)	
+	console:SetSize(800,600)
+	console:Dock(DOCK_TOP)
+	console:UpdateLayout()  
+	CONSOLE = console
+	
+	hook.Add("input.keydown","console",function(key)   
+		if key == KEYS_OEMTILDE then 	 
+			if not settings.GetBool("server.noconsole") then
+				local console = CONSOLE  
+				if console.enabled then
+					console:Close()
+					console.enabled = false 
+				else 
+					console:Show()
+					console.enabled = true
+					console:Select()
+				end 
+			end
+		end
+	end)
+	hook.Add("settings.changed","consolecheck",function()
+		local c = settings.GetBool("server.noconsole")
+		local console = CONSOLE
+		if console and c then
+			console:SetVisible(false)
+			console.enabled = false  
+		end
+		--self.console_enabled = not c
+	end)
+	
+	
+	if( settings.GetBool("editor",false)) then
+		
+		debugmenu = panel.Create("debug_panel_menu")   
+		debugmenu:Show()
+	end
 	
 	MsgN("Menu Load finished in:",CurTime()-t_start,"seconds. Total load time:",CurTime())
 end
@@ -172,7 +205,7 @@ function UnloadWorld()
 	if network.IsConnected() then
 		network.Disconnect()
 	end
-	SetController()  
+	SetController()   
 	local cam = GetCamera()
 	cam:SetParent(LOBBY)
 	
@@ -185,6 +218,7 @@ function UnloadWorld()
 		U = nil 
 	end
 	engine.ClearState()
+	if chat then chat:Close() end
 end
 function CreateTestShadowMapRenderer(ent, pos)
 	local e = ents.Create("test_shadowmap")  
@@ -212,14 +246,14 @@ function SpawnPlayerChar(posoverride)
 		--actorC:Create() 
 		--actorC:SetPos(targetpos+Vector(0.001,0,0.001)) 
 		--
-		local actorD = ents.Create("base_actor")
-		actorD:SetSizepower(1000)
-		actorD:SetParent(ship)
-		actorD:SetSeed(120003)
-		actorD:SetCharacter("kindred_galactic")
-		actorD:Create() 
-		actorD:SetPos(targetpos+Vector(0,0,0.001)) 
-		actorD:SetAi("test")
+		--local actorD = ents.Create("base_actor")
+		--actorD:SetSizepower(1000)
+		--actorD:SetParent(ship)
+		--actorD:SetSeed(120003)
+		--actorD:SetCharacter("kindred_galactic")
+		--actorD:Create() 
+		--actorD:SetPos(targetpos+Vector(0,0,0.001)) 
+		--actorD:SetAi("test")
 		
 		--local actorF = ents.Create("base_actor")
 		--actorF:SetSizepower(1000)
@@ -258,8 +292,8 @@ function SpawnPlayerChar(posoverride)
 		--actorC:SetPos(targetpos+Vector(0.001,0,0.001)) 
 		--actor:SetPos(targetpos+Vector(0.001,0,0)) 
 		--actor2:SetPos(targetpos)
-		TM2 = actorD
-		TM2:AddFlag(FLAG_NPC)
+		--TM2 = actorD
+		--TM2:AddFlag(FLAG_NPC)
 		
 		--actor2:Give("tool_magic")
 
@@ -356,6 +390,7 @@ function OnStartup()
 	
 	render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_BACKGROUND) 
 	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)  
+	render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
 	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
 	render.SetGroupMode(RENDERGROUP_LOCAL,RENDERMODE_ENABLED) 
@@ -385,8 +420,8 @@ function LoadSingleplayer(world_id,savegame_id)
 	local load_timer = debug.Timer(true)
 	engine.PausePhysics() 
 	
-	hook.Call("menu") 
-	--hook.Call("menu","loadscreen")
+	--hook.Call("menu") 
+	hook.Call("menu","loadscreen")
 	
 	debug.Delayed(1,function() 
 		local U = LoadWorld(world_id,savegame_id,function(u,origin,pos)  

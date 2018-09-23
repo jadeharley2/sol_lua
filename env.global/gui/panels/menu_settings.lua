@@ -14,6 +14,8 @@ function PANEL:Init()
 	settings_save:SetSize(70,20)
 	settings_save:SetPos(-300,-200) 
 	self:SetupStyle(settings_save)
+	 
+	
 	settings_save.OnClick = function()
 		for k,v in pairs(self.savelist) do
 			if v.type == "string" then
@@ -49,7 +51,7 @@ function PANEL:Init()
 	settings_back:SetSize(70,20)
 	settings_back:SetPos(0,-200)
 	self:SetupStyle(settings_back)
-	settings_back.OnClick = function() hook.Call("menu","main") end
+	settings_back.OnClick = function()  settings.Apply() hook.Call("menu","main") end
 	
 	local settings_addons = panel.Create("button")
 	settings_addons:SetText("Addons")
@@ -90,16 +92,22 @@ function PANEL:Init()
 			if v2.type == "bool" then
 				inp = panel.Create("checkbox") 
 				inp:SetValue(settings.GetBool(v2.var,v2.default))
+				inp.OnValueChanged = function(s,val)
+					if v2.apply then v2.apply(val or false) end 
+				end
 			elseif v2.type == "number" then 
 				inp = panel.Create("input_text")   
 				inp:SetSize(280,20) 
 				inp.rest_numbers = true
-				inp:SetText(tostring(settings.GetNumber(v2.var,v2.default))) 
+				inp:SetText2(tostring(settings.GetNumber(v2.var,v2.default))) 
 				inp.evalfunction = v2.proc 
+				inp.OnKeyDown = function(s,k)
+					if v2.apply then v2.apply(s:GetText() or "") end 
+				end
 			elseif v2.type == "string" then 
 				inp = panel.Create("input_text")  
 				inp:SetSize(280,20)
-				inp:SetText(settings.GetString(v2.var,v2.default)) 
+				inp:SetText2(settings.GetString(v2.var,v2.default)) 
 				inp.evalfunction = v2.proc 
 			end
 			inp.applyfunction = v2.apply

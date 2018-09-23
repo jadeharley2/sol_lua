@@ -88,6 +88,14 @@ function ENT:Spawn()
 	
 	
 	self:SetUpdating(true,20)
+	
+	
+	local testmod = ents.Create("planet_surface_mod")
+	testmod:SetSizepower(100000)
+	testmod:SetParent(self) 
+	testmod:SetPos(Vector(1,-0.15,0)*0.90908)
+	testmod:Spawn() 
+	
 end
 
 function ENT:Enter() 

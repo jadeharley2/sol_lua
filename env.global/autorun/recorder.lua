@@ -42,12 +42,12 @@ function meta_recorder:Start()
 	self.events = { }
 	self.starttime = CurTime()
 	--CrtEventHook(self.ent,"SetPos",self)
-	self:AddEvent("SetPos",self.ent:GetPos())
+	self:AddEvent("SetAbsPos",self.ent:GetAbsPos()+Vector(0,1,0))
 	self:AddEvent("SetAng",self.ent:GetWorld())
 	for k,v in pairs(rdtlist) do
 		CrtEventHook(self.ent,v,self)
 	end 
-	
+	 
 	local realSetVehicle = self.ent["SetVehicle"]
 	self.ent["SetVehicle"] = function(e,v,...)
 		self:AddEvent("SetVehicle",v,...)

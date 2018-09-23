@@ -111,6 +111,11 @@ function MsgN2(...)
 	debug2.Msg(str)--.."\r\n"
 end
 
+if SERVER then
+	--serverside fix
+	MsgInfo = MsgN
+end
+
 function ErrorNoHalt(...)
 	MsgN("Lua warning: ",...)
 	MsgN(debug.traceback())
@@ -148,6 +153,7 @@ function DeclareEnumValue(type,name,id)
 	local key = string.upper(type.."_"..name)
 	_G[key] = id
 	debug.AddAPIInfo("/"..type.."_/"..key,id)
+	engine.AddDEnumValue(type,name,id)
 end
 
 function ConcatFunc(functable)

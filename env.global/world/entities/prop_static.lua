@@ -4,9 +4,9 @@ local COLLISION_ONLY = COLLISION_ONLY or 1
 function SpawnSO(model,ent,pos,scale,collonly,norotation)
 	local e = ents.Create("prop_static") 
 	e.collonly = collonly
-	e:SetModel(model,scale,norotation)
 	e:SetSizepower(1)
 	e:SetParent(ent)
+	e:SetModel(model,scale,norotation)
 	e:SetPos(pos) 
 	e:Spawn()
 	return e
@@ -70,15 +70,15 @@ function ENT:SetModel(mdl,scale,norotation)
 		local coll =  self.coll 
 		if norotation then
 			if(model:HasCollision()) then
-				coll:SetShapeFromModel(matrix.Scaling(scale/0.75 )  ) 
+				coll:SetShapeFromModel(matrix.Scaling(scale))--matrix.Scaling(scale/0.75 )  ) 
 			else
-				coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) ) 
+				--coll:SetShape(mdl,matrix.Scaling(scale))--matrix.Scaling(scale/0.75 ) ) 
 			end
 		else
 			if(model:HasCollision()) then
-				coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+				coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0))--matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
 			else
-				coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+				--coll:SetShape(mdl,matrix.Scaling(scale)* matrix.Rotation(-90,0,0))--matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
 			end
 		end
 		if self.collonly then

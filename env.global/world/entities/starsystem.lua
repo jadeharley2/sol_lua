@@ -1,4 +1,5 @@
  
+local rdtex = LoadTexture("space/star_sprites.png")
 
 function ENT:Init() 
 	self:SetLoadMode(1)
@@ -10,6 +11,8 @@ function ENT:Enter()
 		self:SetParameter(VARTYPE_TYPE,NTYPE_STARSYSTEM) 
 		--self:SetParameter(VARTYPE_TYPENAME,"star")
 	
+		
+		
 		local generator = self:AddComponent(CTYPE_PROCEDURAL) 
 		
 		generator:AddEvent(EVENT_GENERATOR_SETUP)
@@ -30,6 +33,29 @@ function ENT:Enter()
 			--skybox:SetTexture("data/textures/test/sky_day02.png")
 			--render.DisableGroup(RENDERGROUP_DEEPSPACE)
 			 self:ReloadSkybox()
+			 
+			 
+			
+			--if self.stars then  
+			--	for k1,star in pairs(self.stars) do  
+			--		local particlesys = star:AddComponent(CTYPE_PARTICLESYSTEM) 
+			--	  
+			--		particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+			--		particlesys:SetBrightness(0.5)--0.3
+			--		star.particlesys = particlesys
+			--		
+			--		particlesys:SetNodeMode(false)
+			--		particlesys:AddNode(1) 
+			--		particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
+			--		particlesys:SetTexture(1,rdtex)
+			--		particlesys:SetMaxRenderDistance(1000)
+			--		
+			--		for k2,planet in pairs(star.planets) do  
+			--			particlesys:AddParticle(1,planet:GetPos(),star.color*0.2,0.00001,0) 
+			--		end
+			--	end
+			--end
+			
 		end
 		
 		
@@ -70,6 +96,7 @@ function ENT:Leave()
 	if CLIENT then
 		self:RemoveComponents(CTYPE_SKYBOX) 
 		self:RemoveComponents(CTYPE_CUBEMAP) 
+		self:RemoveComponents(CTYPE_PARTICLESYSTEM) 
 	end
 	self:UnloadSubs()
 	self.loaded = nil
@@ -83,8 +110,13 @@ if CLIENT then
 	function ENT:ReloadSkybox()
 		MsgN("reload star sky")
 		render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED)
+		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_DISABLED)
 		--self.skybox
-		self.cubemap:RequestDraw(nil,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
+		self.cubemap:RequestDraw(nil,function() 
+			render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
+			render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
+			render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
+		end)
 	end
 end
 

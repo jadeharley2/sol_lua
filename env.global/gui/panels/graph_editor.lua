@@ -189,7 +189,8 @@ function PANEL:Init()
 		variables = {"string","boolean","int","float","vector3","quaternion","scriptednode"},
 		functions = functlist,
 		compounds = comlist,
-		"group"
+		"group",
+		map = {"point","line","polygon","group"},
 	} 
 	trpanel:SetTableType(3) 
 	trpanel:FromTable(tab) 
@@ -261,6 +262,56 @@ function PANEL:Init()
 			local n = panel.Create("graph_group")  
 			ED:AddNode(n)
 			n:Load()
+		elseif epr[1] == "map" then
+			if epr[2] == "point" then
+				local n = panel.Create("editor_point")  
+				ED:AddNode(n)
+				n:Load(epr[3])
+			elseif epr[2] == "line" then
+				local n = panel.Create("line") 
+				n:SetColor(Vector(83,164,255)/255)
+				n:SetUseGlobalScale(true)
+				ED:AddNode(n)
+				local first = false
+				hook.Add("input.mousedown","linebuild",function()
+					if input.leftMouseButton() then
+						local top = panel.GetTopElement()
+						if top then
+							local point = false
+							if top:__eq(ED.nodelayer) then
+								local pn = panel.Create("editor_point")  
+								ED:AddNode(pn)
+								pn:Load(epr[3])
+								pn:SetPos(ED.nodelayer:GetLocalCursorPos()) 
+								point = pn
+							elseif top.edpt then
+								point = top
+							end
+							if point then
+								n:AddPoint(point)
+								if point._tempfirst then
+									hook.Remove("input.mousedown","linebuild")
+									point._tempfirst = nil
+								else
+									if not first then
+										first = point
+										first._tempfirst = true
+									end
+								end
+							end
+						end 
+					elseif input.rightMouseButton() then
+						hook.Remove("input.mousedown","linebuild")
+						if first then
+							first._tempfirst = nil
+							first = false
+						end
+					end
+				end)
+				--n:Load(epr[3])
+			else
+			
+			end
 		end
 	end
 	self.trpanel= trpanel
@@ -380,7 +431,9 @@ function PANEL:RemoveNode(n)
 	if n.id then
 		self.named[n.id] = nil
 	end
-	n:UnlinkAll()
+	if n.UnlinkAll then
+		n:UnlinkAll()
+	end
 	nl:Remove(n) 
 	MsgN("RemoveNode",n.id)
 end 

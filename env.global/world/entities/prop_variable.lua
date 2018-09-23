@@ -19,12 +19,15 @@ function SpawnPV(type,ent,pos,ang)
 	local e = ents.Create("prop_variable") 
 	e.data = j
 	e.tags = tags
-	e.collonly = false
+	e.collonly = false 
 	e:SetParameter(VARTYPE_CHARACTER,type)  
-	e:SetModel(j.model,j.scale,false)
 	e:SetSizepower(1)
 	e:SetParent(ent)
 	e:SetPos(pos) 
+	if j.modeldata then
+		e:SetParameter(VARTYPE_MODELDATA, json.ToJson(j.modeldata))
+	end
+	e:SetModel(j.model,j.scale,false)
 	e:Spawn()
 	e:SetAng(r)
 	
@@ -34,13 +37,16 @@ end
 
 function ENT:Init()  
 	local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
+	local phys = self:AddComponent(CTYPE_PHYSOBJ)  
 	local model = self:AddComponent(CTYPE_MODEL)  
 	self.model = model
 	self.coll = coll 
+	self.phys = phys
 	self:SetSpaceEnabled(false) 
 	
 end
 function ENT:Load()
+	self:PreLoadData()
 	local modelval = self:GetParameter(VARTYPE_MODEL)
 	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
 	if modelval then 
@@ -51,6 +57,7 @@ function ENT:Load()
 	self:LoadData()
 end  
 function ENT:Spawn()  
+	self:PreLoadData()
 	local modelcom = self.modelcom
 	if not modelcom then
 		local modelval = self:GetParameter(VARTYPE_MODEL)
@@ -81,13 +88,15 @@ local function ButtonUse(s,user)
 		s:EmitSound("events/lamp-switch.ogg",1)
 	end
 end
+function ENT:PreLoadData() 
+	if not self.data then
+		local type = self:GetParameter(VARTYPE_CHARACTER)  
+		self.data = json.Read(type) 
+	end
+end
 
 function ENT:LoadData()
 	
-	if not self.data then
-		local type = self:GetParameter(VARTYPE_CHARACTER)  
-		self.data =  json.Read(type) 
-	end
 	local j = self.data
 	
 	
@@ -126,6 +135,9 @@ function ENT:LoadData()
 		local wio = Component("wireio",self)
 		wio:AddOutput("out")
 	end
+	if tags.item then
+		self:AddFlag(FLAG_STOREABLE) 
+	end
 	if j.replacematerial then
 		local rmodel = self.model
 		for k,v in pairs(j.replacematerial) do
@@ -151,6 +163,10 @@ function ENT:LoadData()
 			end
 		end
 	end
+	if j.viewdistance then
+		MsgN("mvd",j.viewdistance)
+		self.model:SetMaxRenderDistance(j.viewdistance)
+	end
 end
 
 function ENT:SetModel(mdl,scale,norotation) 
@@ -174,22 +190,31 @@ function ENT:SetModel(mdl,scale,norotation)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world) 
 	if self.collonly ~= NO_COLLISION then 
-		local coll =  self.coll 
-		if norotation then
+		local data = self.data
+		if data.phys then
+			local phys =  self.phys 
+		
 			if(model:HasCollision()) then
-				coll:SetShapeFromModel(matrix.Scaling(scale/0.75 )  ) 
-			else
-				coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) ) 
-			end
+				phys:SetShapeFromModel(world)  
+			end 
+			phys:SetMass(data.mass or 10)  
+			phys:SoundCallbacks()
+			phys:SetMaterial("wood")
 		else 
-			if(model:HasCollision()) then 
-				coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+			local coll =  self.coll 
+			if norotation then
+				if(model:HasCollision()) then
+					coll:SetShapeFromModel(matrix.Scaling(scale))--matrix.Scaling(scale/0.75 )  ) 
+				end
 			else
-				coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+				if(model:HasCollision()) then
+					coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0))--matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+				end 
 			end
-		end
-		if self.collonly then
-			model:Enable(false)
+			
+			if self.collonly then
+				model:Enable(false)
+			end
 		end
 	end
 	self.modelcom = true

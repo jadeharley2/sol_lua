@@ -1,12 +1,12 @@
   
-local EDITOR = {}
+local EDITOR = {}   
 
 --props: 
 --
 --funcs: 
 
-function EDITOR:Open()  
-end              
+function EDITOR:Open()
+end
 function EDITOR:Close() 
 end
 
@@ -15,5 +15,4 @@ local editor_class = DefineClass("Editor","editor","lua/env.global/editor/",EDIT
 function Editor(type) 
 	return editor_class:Create(type)
 end 
-         
- 
+

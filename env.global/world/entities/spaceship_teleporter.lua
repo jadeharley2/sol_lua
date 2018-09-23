@@ -128,6 +128,10 @@ end
 function ENT:TeleportIn(ent)
 	ent:SetParent(self:GetParent())
 	ent:SetPos(self:GetPos())
+	local phy = ent.phys
+	if phy then
+		phy:SetVelocity(Vector(0,0,0))
+	end
 	self.wireio:SetOutput("teleport_in")
 end
 

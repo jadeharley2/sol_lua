@@ -50,6 +50,39 @@ behaviour.AddFunction("anim.set",function(state,ent,to,tag)
 		end 
 	end 
 end)
+behaviour.AddFunction("anim.set.ns",function(state,ent,to,tag) 
+	if tag then local m = ent.model 
+		if m then 
+			if istable(tag) then
+				return m:SetAnimation(table.Random(tag),true) 
+			else
+				return m:SetAnimation(tag,true) 
+			end
+		end 
+	end 
+end)
+behaviour.AddFunction("anim.reset",function(state,ent,to,tag) 
+	if tag then local m = ent.model 
+		if m then 
+			if istable(tag) then
+				return m:ResetAnimation(table.Random(tag)) 
+			else
+				return m:ResetAnimation(tag) 
+			end
+		end 
+	end 
+end)
+behaviour.AddFunction("anim.reset.ns",function(state,ent,to,tag) 
+	if tag then local m = ent.model 
+		if m then 
+			if istable(tag) then
+				return m:ResetAnimation(table.Random(tag),true) 
+			else
+				return m:ResetAnimation(tag,true) 
+			end
+		end 
+	end 
+end)
 behaviour.AddFunction("anim.layer.play",function(state,ent,to,tag) 
 	if tag then 
 		id = tag[1] or 1

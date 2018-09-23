@@ -14,6 +14,7 @@ function SpawnProjectile(parent,pos,vel,radius,color,glow,model)
 	e:Spawn() 
 	e:SetAng(ang)
 	e:SetPos(pos) 
+	e:SetUpdateSpace(false)
 	e.phys:ApplyImpulse(vel)
 	return e
 end

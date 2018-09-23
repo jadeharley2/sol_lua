@@ -20,7 +20,7 @@ function PANEL:Init()
 	network_address:SetColor(network_address.upcolor)
 	network_address:SetTextColor( Vector(1,1,1))
 	network_address:SetSize(280,20)
-	network_address:SetText(settings.GetString("network.lastip",""))
+	network_address:SetText2(settings.GetString("network.lastip",""))
 	
 	local network_connect = panel.Create("button")
 	network_connect:SetText("Connect")
@@ -62,6 +62,7 @@ function PANEL:Init()
 				end)
 			end
 		end)
+		if chat then chat:Show() end
 	end
 	network_back.OnClick = function() hook.Call("menu","main") end
 	

@@ -9,11 +9,11 @@ editor.action_move = function(from,to) node:SetPos(to) end
 editor.action_moveundo = function(from,to) node:SetPos(from) end 
 
 function editor:Open()
-	--MsgInfo("OPEN!")
+	--MsgInfo("OPEN!") 
 	self.selected = self.selected or Set() 
 	self.mode = false
 	self:Close()
-	--engine.PausePhysics()
+	engine.PausePhysics()
 	local vsize = GetViewportSize()
 	
 	local nsi = 430
@@ -24,7 +24,31 @@ function editor:Open()
 	--self.node:SetPos(vsize.x-nsi,0)
 	--self.node:Show()
 	
+	self.selectortemp = panel.Create()
+	self.selectortemp:SetSize(vsize.x,vsize.y)
+	self.selectortemp:SetCanRaiseMouseEvents(false)
+	self.selectortemp:SetAlpha(0)
+	self.selectortemp:Show()
 	
+	self.selector = panel.Selector() 
+	self.selector.onupdate = function(s,p1,p2)
+		local sel = self.selected
+		self:Select() 
+		local rtd = {}
+		for k,v in pairs(render.GetDrawablesByScreenBox(self.mousedownpos or p1,p2)) do 
+			if v then
+				local vn = v:GetNode()
+				if vn and IsValidEnt(vn) then
+					if not vn.root then  
+						rtd[#rtd+1] = vn
+					end
+				end
+			end
+		end
+		if #rtd>0 then
+			self:SelectMany( rtd) 
+		end
+	end
 	
 	self.assets = panel.Create("editor_panel_assets")
 	self.assets:Dock(DOCK_RIGHT)
@@ -32,6 +56,8 @@ function editor:Open()
 	self.assets:SetPos(vsize.x-nsi,0)--SetPos(0-nsi,-vsize.y+nsi)
 	self.assets:Show()
 	self.node = self.assets.pnode
+	
+	render.DCISetEnabled(true)
 	
 	hook.Add("main.predraw","editor",function() self:Update() end)
 	hook.Add("input.mousedown","editor",function() self:MouseDown() end )
@@ -44,12 +70,18 @@ function editor:Open()
 	self.isopen = true
 end
 function editor:Close()  
+	render.DCISetEnabled(false)
+	
 		self.selected:Clear()
 	--if self.node then self.node:Close() self.node = nil end
 	if self.assets then 
 		if not isfunction(self.assets) then self.assets:Close() end
 		self.assets = nil 
 	end
+	if self.selectortemp then 
+		if not isfunction(self.selectortemp) then self.selectortemp:Close() end
+		self.selectortemp = nil 
+	end 
 	hook.Remove("main.predraw","editor")
 	hook.Remove("input.mousedown","editor")
 	hook.Remove("input.keydown","editor")
@@ -63,7 +95,7 @@ function editor:Close()
 		gizmo:Despawn()
 		self.gizmo = nil
 	end  
-	--engine.ResumePhysics()
+	engine.ResumePhysics()
 	self.isopen = false
 end
 function editor:Toggle()
@@ -82,44 +114,52 @@ function editor:Redo()
 end
 
 function editor:MouseDown()  
-	if not input.MouseIsHoveringAboveGui() then
-		local LMB = input.leftMouseButton() 
-		local RMB = input.rightMouseButton()
-		local MMB = input.middleMouseButton()
-		if not self.mode then
-			if LMB and not RMD and not MMB then
-				local wcposgizmo = GetMousePhysTrace(GetCamera(),-CGROUP_NOCOLLIDE_PHYSICS)
-				if wcposgizmo and wcposgizmo.Hit then
-					if wcposgizmo.Entity then
-						--MsgInfo("das?")
-						local OnClick = wcposgizmo.Entity.OnClick
-						if OnClick then
-							OnClick(wcposgizmo.Entity) 
-						end 
-					end
-				else
-					local wcpos = GetMousePhysTrace(GetCamera(),self.selected)--,self.selected)  
-					if wcpos and wcpos.Hit then
-						if wcpos.Entity then
-							local OnClick = wcpos.Entity.OnClick
-							if OnClick then 
-								OnClick(wcpos.Entity)
-							else
-								--self:Select( wcpos.Entity )
-							end
-						else
-							--self:Select( wcpos.Entity )
-						end
-					end 
-				end 
-				
-			end
-		end
-	end
+	--if not input.MouseIsHoveringAboveGui() then
+	--	local LMB = input.leftMouseButton() 
+	--	local RMB = input.rightMouseButton()
+	--	local MMB = input.middleMouseButton()
+	--	if not self.mode then
+	--		if LMB and not RMD and not MMB then
+	--			local wcposgizmo = GetMousePhysTrace(GetCamera(),-CGROUP_NOCOLLIDE_PHYSICS)
+	--			if wcposgizmo and wcposgizmo.Hit then
+	--				if wcposgizmo.Entity then
+	--					--MsgInfo("das?")
+	--					local OnClick = wcposgizmo.Entity.OnClick
+	--					if OnClick then
+	--						OnClick(wcposgizmo.Entity) 
+	--					end 
+	--				end
+	--			else
+	--				local wcpos = GetMousePhysTrace(GetCamera(),self.selected)--,self.selected)  
+	--				if wcpos and wcpos.Hit then
+	--					if wcpos.Entity then
+	--						local OnClick = wcpos.Entity.OnClick
+	--						if OnClick then 
+	--							OnClick(wcpos.Entity)
+	--						else
+	--							--self:Select( wcpos.Entity )
+	--						end
+	--					else
+	--						--self:Select( wcpos.Entity )
+	--					end
+	--				end 
+	--			end 
+	--			
+	--		end
+	--	end
+	--end
+	
+	
 	self:DoubleClick() 
 end
-
-function editor:DoubleClick()  
+function editor:GetNodeUnderCursor()
+	local drw = render.DCIGetDrawable()
+	if drw then
+		return drw:GetNode()
+	end
+end
+function editor:DoubleClick() 
+	self.mousedowntime = nil
 	if not input.MouseIsHoveringAboveGui() then
 		local LMB = input.leftMouseButton() 
 		local RMB = input.rightMouseButton()
@@ -128,33 +168,49 @@ function editor:DoubleClick()
 		if not self.mode then
 			--MsgInfo("CLICL!")
 			if LMB and not RMD and not MMB then
-				local tbl = {}
-				for k,v in pairs(self.selected) do 
-					tbl[#tbl+1] = k
-				end
-				local wcpos = false 
-				if #tbl>0 and not multiselect then
-					wcpos = GetMousePhysTrace(GetCamera(),tbl)
-				else
-					wcpos = GetMousePhysTrace(GetCamera())
-				end
-				--local wcpos = self.curtrace 
-				if wcpos and wcpos.Hit then
-					---MsgN("hit!",wcpos.Entity)
-					if wcpos.Entity then
-						local OnClick = wcpos.Entity.OnClick
-						if OnClick then
-							--OnClick(wcpos.Entity)
-						else
-							self:Select( wcpos.Entity,multiselect)
-						end 
+				----  local tbl = {}
+				----  for k,v in pairs(self.selected) do 
+				----  	tbl[#tbl+1] = k
+				----  end
+				----  local wcpos = false 
+				----  if #tbl>0 and not multiselect then
+				----  	wcpos = GetMousePhysTrace(GetCamera(),tbl)
+				----  else
+				----  	wcpos = GetMousePhysTrace(GetCamera())
+				----  end
+				----  --local wcpos = self.curtrace 
+				----  if wcpos and wcpos.Hit then
+				----  	---MsgN("hit!",wcpos.Entity)
+				----  	if wcpos.Entity then
+				----  		local OnClick = wcpos.Entity.OnClick
+				----  		if OnClick then
+				----  			--OnClick(wcpos.Entity)
+				----  		else
+				----  			self:Select( wcpos.Entity,multiselect)
+				----  		end 
+				----  	else
+				----  		self:Select( wcpos.Entity )
+				----  	end
+				----  end 
+				
+				local complete = false
+				local under = self:GetNodeUnderCursor()
+				if under and IsValidEnt(under) then
+					if under.root then
+						complete = true
+						under:OnClick()
 					else
-						self:Select( wcpos.Entity )
+						self:Select( under,multiselect)  
 					end
-				end 
+				end
+				if not complete then
+					self.mousedowntime = CurTime()
+					self.mousedownpos = self.selectortemp:GetLocalCursorPos()
+				end
+				--self.selector:BeginSelection(self.selectortemp,1)
 			end
 		end
-	end
+	end 
 end
 function editor:KeyDown()  
 	if (input.KeyPressed(KEYS_F)) then  
@@ -186,7 +242,14 @@ end
 --{ent,-group,ent,ent,-ent}
 
 function editor:Update()
+	render.DCIRequestRedraw()
 	if not input.MouseIsHoveringAboveGui() then
+	 
+		if self.mousedowntime and input.leftMouseButton() and CurTime()>self.mousedowntime+0.2 then
+			self.mousedowntime = nil 
+			self.selector:BeginSelection(self.selectortemp,1,self.mousedownpos)
+		end
+	
 		local mode = self.mode
 		local cam = GetCamera()
 		self.wtrace = GetCameraPhysTrace(cam,tbl)
@@ -208,45 +271,59 @@ function editor:Update()
 			end
 		end
 		
-		local wcposgizmo = GetMousePhysTrace(cam,-CGROUP_NOCOLLIDE_PHYSICS)
-		if wcposgizmo and wcposgizmo.Hit and wcposgizmo.Entity then 
-			if wcposgizmo.Entity.Highlight then
-				self.gizmo:Highlight(wcposgizmo.Entity)
-			else
-				if self.gizmo then
-					self.gizmo:Highlight(nil)
+		
+		if self.gizmo and not self.gizmo.GIZMO_DRAG then 
+			local under = self:GetNodeUnderCursor()
+			local hlt = true
+			if under and IsValidEnt(under) then
+				if under.root then
+					under.root:Highlight(under)
+					hlt = false
 				end
 			end
-		else
-			local tbl = {}
-			for k,v in pairs(self.selected) do 
-				tbl[#tbl+1] = k
-			end
-			local wcpos = GetMousePhysTrace(cam,tbl)--,self.selected)
-			self.curtrace = wcpos
-			--if wcpos and wcpos.Hit then
-			--	if mode ~= "drag" and wcpos.Entity then
-			--		if wcpos.Entity.Highlight then
-			--			self.gizmo:Highlight(wcpos.Entity)
-			--		else
-			--			--local m = wcpos.Entity.model
-			--			--if m then
-			--			--	local vpos,vsize = m:GetVisBox()
-			--			--	debug.ShapeBoxCreate(100,wcpos.Entity,matrix.Translation(Vector(-0.5,-0.5,-0.5))*matrix.Scaling(vsize*2)*matrix.Translation(vpos))
-			--			--else
-			--			--	debug.ShapeBoxCreate(100,wcpos.Entity,matrix.Scaling(1)*matrix.Translation(Vector(-0.5,-0.5,-0.5))) 
-			--			--end
-			--			
-			--			if self.gizmo then
-			--				self.gizmo:Highlight(nil)
-			--			end
-			--		end
-			--	end
-			--end 
-			if self.gizmo then
-				self.gizmo:Highlight(nil)
+			if hlt then
+					self.gizmo:Highlight(nil) 
 			end
 		end
+		---local wcposgizmo = GetMousePhysTrace(cam,-CGROUP_NOCOLLIDE_PHYSICS)
+		---if wcposgizmo and wcposgizmo.Hit and wcposgizmo.Entity then 
+		---	if wcposgizmo.Entity.Highlight then
+		---		self.gizmo:Highlight(wcposgizmo.Entity)
+		---	else
+		---		if self.gizmo then
+		---			self.gizmo:Highlight(nil)
+		---		end
+		---	end
+		---else
+		---	local tbl = {}
+		---	for k,v in pairs(self.selected) do 
+		---		tbl[#tbl+1] = k
+		---	end
+		---	local wcpos = GetMousePhysTrace(cam,tbl)--,self.selected)
+		---	self.curtrace = wcpos
+		---	--if wcpos and wcpos.Hit then
+		---	--	if mode ~= "drag" and wcpos.Entity then
+		---	--		if wcpos.Entity.Highlight then
+		---	--			self.gizmo:Highlight(wcpos.Entity)
+		---	--		else
+		---	--			--local m = wcpos.Entity.model
+		---	--			--if m then
+		---	--			--	local vpos,vsize = m:GetVisBox()
+		---	--			--	debug.ShapeBoxCreate(100,wcpos.Entity,matrix.Translation(Vector(-0.5,-0.5,-0.5))*matrix.Scaling(vsize*2)*matrix.Translation(vpos))
+		---	--			--else
+		---	--			--	debug.ShapeBoxCreate(100,wcpos.Entity,matrix.Scaling(1)*matrix.Translation(Vector(-0.5,-0.5,-0.5))) 
+		---	--			--end
+		---	--			
+		---	--			if self.gizmo then
+		---	--				self.gizmo:Highlight(nil)
+		---	--			end
+		---	--		end
+		---	--	end
+		---	--end 
+		---	if self.gizmo then
+		---		self.gizmo:Highlight(nil)
+		---	end
+		---end
 		
 		
 	end
@@ -257,9 +334,10 @@ function editor:Update()
 		end
 		local s = false
 		for k,v in pairs(self.selected) do s = k break end 
-		if s and IsValidEnt(s) then
+		if s and IsValidEnt(s) and gizmo.parts[1] then
+			local gsz = gizmo.parts[1]:GetParent():GetSizepower()
 			local psz = s:GetParent():GetSizepower()
-			local dist = s:GetPos():Distance(GetCamera():GetPos())*10000000/psz
+			local dist = s:GetPos():Distance(GetCamera():GetPos())*(gsz/psz)
 			gizmo:Rescale(dist)  
 		else
 		end
@@ -269,15 +347,43 @@ function editor:Update()
 	end
 end
 
-
+function editor:SelectMany(nodes)
+	if istable(nodes) then
+		local selected = self.selected
+		local last = false
+		local medpos = Vector(0,0,0)
+		local ncount = 0
+		for k,v in pairs(nodes) do
+			if not selected:Contains(v) then 
+				self.selected:Add(v)
+				self:AddSelectionModel(v)  
+				medpos = medpos + v:GetPos()
+				last = v
+				ncount = ncount + 1
+			end
+		end
+		if last then
+			local gizmo = self.gizmo or CreateGizmo(last:GetParent())
+			gizmo:SetParent(last:GetParent())
+			gizmo:SetPos(medpos/ncount) 
+			gizmo:SetAng(last:GetMatrixAng())
+			gizmo.mnode = last
+			self.gizmo = gizmo 
+		end
+	end
+end
 function editor:Select(node,multiselect)
-	MsgInfo("select: "..tostring(node))
+	--MsgInfo("select: "..tostring(node))
 	--MsgN("multiselect",multiselect)
 	--MsgInfo("Select: "..tostring(node))
 	--multiselect = multiselect or false
 	if not IsValidEnt(node) then
 		self:ClearSelectionModels() 
 		self.selected:Clear()
+		local gizmo = self.gizmo
+		if gizmo then
+			gizmo:SetPos(Vector(0,0,99999999999))
+		end
 		return nil
 	end
 	
@@ -293,11 +399,11 @@ function editor:Select(node,multiselect)
 		if self.selected:Contains(node) then
 			self.selected:Remove(node)
 			self:RemoveSelectionModel(node) 
-			self.undo:Add(self.action_deselect, self.action_select, node)
+			--self.undo:Add(self.action_deselect, self.action_select, node)
 		else
 			self.selected:Add(node)
 			self:AddSelectionModel(node) 
-			self.undo:Add(self.action_select, self.action_deselect, node)
+			--self.undo:Add(self.action_select, self.action_deselect, node)
 		end
 	else
 		local tbl = {} for k,v in pairs(self.selected) do tbl[#tbl+1] = k end
@@ -306,15 +412,15 @@ function editor:Select(node,multiselect)
 		self:ClearSelectionModels() 
 		self:AddSelectionModel(node) 
 		
-		self.undo:Add(
-			function(a,b) self.action_deselect(a) for k,v in pairs(b) do MsgN(k,v) self.action_select(v) end end, 
-			function(a) self:ClearSelectionModels() self.action_select(a) end, node,tbl)
+		--self.undo:Add(
+		--	function(a,b) self.action_deselect(a) for k,v in pairs(b) do MsgN(k,v) self.action_select(v) end end, 
+		--	function(a) self:ClearSelectionModels() self.action_select(a) end, node,tbl)
 	end
 	
-	MsgN("sadsa")
-	for k,v in pairs(self.selected) do
-		MsgN(k,v)
-	end
+	--MsgN("sadsa")
+	--for k,v in pairs(self.selected) do
+	--	MsgN(k,v)
+	--end
 	self.node:SelectNode(node)
 end
 

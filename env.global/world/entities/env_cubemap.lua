@@ -18,18 +18,27 @@ function ENT:Spawn()
 	cubemap:SetSize(self.size or 1024)
 	cubemap:SetTarget()--skybox)
 	--self.skybox = skybox
-	hook.Add("cubemap_render","last_cubemap",function() self:RequestDraw() end)
 end 
 
-function ENT:RequestDraw() 
+function ENT:RequestDraw(fast) 
 	if self and IsValidEnt(self) then
 		local cubemap = self.cubemap
 		if cubemap then
 			cubemap:RequestDraw()
-			render.SetCurrentEnvmap(cubemap)
+			render.SetCurrentEnvmap(cubemap,fast)
 		end
 	else
 		hook.Remove("cubemap_render","last_cubemap")
 	end
 end
+ 
+function GlobalSetCubemap(cb,fast)
+	hook.Remove("cubemap_render","last_cubemap")
+	if cb then
+		cb:RequestDraw(fast)
+		hook.Add("cubemap_render","last_cubemap",function() cb:RequestDraw() end)
+	end
+	
+end
+
  

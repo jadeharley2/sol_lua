@@ -2,11 +2,12 @@
 function SpawnCONT(model,parent,pos)
 	local e = ents.Create("use_container")
 	MsgN("lol"..model)
-	e:SetModel(model) 
 	e:SetSizepower(1)
 	e:SetParent(parent)
+	e:SetModel(model) 
 	e:SetPos(pos) 
-	e:Spawn()
+	e:SetSeed(43589)
+	e:Create()
 	return e
 end
 
@@ -17,13 +18,14 @@ function ENT:Init()
 	self.phys = phys
 	self:SetSpaceEnabled(false)
 	self:AddFlag(FLAG_PHYSSIMULATED)
-	
+	 
+	self:AddFlag(FLAG_STOREABLE)
 
 	--phys:SetMass(10)  
 	
 end
 function ENT:LoadModel() 
-	local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+	local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 0.6--0.2
 	
 	local model = self.model
 	local world = matrix.Scaling(model_scale)-- * matrix.Rotation(-90,0,0)
@@ -39,17 +41,17 @@ function ENT:LoadModel()
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,99999,0)  
-	
+	model:SetMatrix(world)
 	
 	if(model:HasCollision()) then
-		phys:SetShapeFromModel(world * matrix.Scaling(1/amul) ) 
+		phys:SetShapeFromModel(world) 
 	else
-		phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
+		phys:SetShape(mdl,world) 
 	end
 	--phys:SetShape(phymodel,world * matrix.Scaling(1/amul) )
 	phys:SetMass(10) 
 	
-	model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul*10 ))
+	--model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul*10 ))
 	
 	--MsgN("model    "..tostring(phys:GetMassCenter()) )
 end

@@ -1,4 +1,4 @@
-local CONST_SPACE_LIGHT_MULTIPLIER=50
+local CONST_SPACE_LIGHT_MULTIPLIER=50*2
 
 function ENT:Init()  
 	self:AddFlag(FLAG_GALAXY)
@@ -7,7 +7,7 @@ end
 function ENT:Spawn() 
 	local model = self:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(RENDERGROUP_DEEPSPACE)
-	model:SetModel("galaxy_add.SMD")
+	model:SetModel("space/galaxy_add.stmd")
 	local rtex = tostring(math.random(1,3))
 	if(self:GetSeed()==1712499733) then
 		rtex = 1

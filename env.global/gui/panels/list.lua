@@ -139,3 +139,6 @@ end
 function PANEL:ScrollToTop()
 	self.ff_grid:Scroll(-9999999)
 end
+function PANEL:Scroll(e)
+	self.ff_grid:Scroll(e or 0)
+end

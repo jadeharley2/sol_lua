@@ -7,6 +7,7 @@ function ENT:Init()
 	
 	self.iscelestialbody = true
 	self:AddFlag(FLAG_PLANET)
+	self:SetSpaceEnabled(true,1)
 end
 
 function ENT:Spawn()  
@@ -30,8 +31,10 @@ function ENT:Spawn()
 	self.model = model
 	 
 	if not self.orbitIsSet then
+	
 		self.orbit:SetOrbit()
 	end
+	self:SetUpdating(true,1000)
 	--if self.ismoon then
 	--	self:Enter()
 	--end

@@ -12,6 +12,7 @@ PANEL.assettypes = {
 		 
 		local p = SpawnPV(fulltype,node,wtr.Position)--,j.scale,false,false)
 		if p then
+			p:AddFlag(FLAG_EDITORNODE)
 			p:SetSeed(GetFreeUID())
 		end
 		--if p then
@@ -35,6 +36,7 @@ PANEL.assettypes = {
 		
 		local p = SpawnParticles(node,type,wtr.Position,0,1,1)
 		if p then
+			p:AddFlag(FLAG_EDITORNODE)
 			p:SetSeed(GetFreeUID())
 		end
 		return p
@@ -52,6 +54,7 @@ PANEL.assettypes = {
 		local actorD = ents.Create("base_actor")
 		actorD:SetSizepower(1000)
 		actorD:SetParent(node)
+		actorD:AddFlag(FLAG_EDITORNODE)
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
 		actorD:Spawn()
@@ -59,13 +62,48 @@ PANEL.assettypes = {
 		return actorD 
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
-		return SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
+		local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
+		ap:AddFlag(FLAG_EDITORNODE)
+		return ap
+	end},
+	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+		
+		local ap = ents.Create("planet_surface_mod")
+		ap:SetSizepower(100)
+		ap:SetParent(node)
+		ap:AddFlag(FLAG_EDITORNODE)
+		ap:SetSeed(GetFreeUID())
+		ap:SetParameter(VARTYPE_CHARACTER,type)
+		ap:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
+		ap:SetAng(Vector(90,0,0))
+		ap:Spawn()  
+		return ap
 	end},
 	--tool = {},
-	planet = {directory = "forms/planets/"},
+	--planet = {directory = "forms/planets/"},
 	
 
 }
+PANEL.specialtypes = {
+	door = {spawn = function(node)
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+		
+		local d1 = SpawnDT("door/door2.stmd",node,wtr.Position+Vector(0,1/node:GetSizepower(),0),Vector(0,0,0),0.05) 
+		d1:SetGlobalName("flatgrass.door")
+		d1:AddFlag(FLAG_EDITORNODE)
+		d1:SetSeed(GetFreeUID())
+		d1.target = {"models/dyntest/sdm/interior_main.dnmd","foyer.flatgrass.door"}
+		d1:SetParameter(VARTYPE_CHARACTER,"models/dyntest/sdm/interior_main.dnmd:foyer.flatgrass.door")
+		return d1
+	end},
+
+}
+
 function PANEL:Scandir(name,dir,onclick,recursive,keytable)
 	local files = file.GetFiles(dir,".json",false)  
 	
@@ -110,11 +148,13 @@ function PANEL:InitTabAssets()
 			local s = panel.Create("window_save")
 			s:SetTitle("Save node") 
 			s:SetButtons("Save","Back") 
-			s.OnAccept = function(s,name) engine.SaveNode(cparent, name) end
+			s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, FLAG_EDITORNODE) end
 			s:Show() 
 		end
 	end 
 	mpanel:Add(bsave)
+	
+	
 	 
 	local bload = panel.Create("button")
 	bload:SetSize(100,40)
@@ -125,12 +165,27 @@ function PANEL:InitTabAssets()
 			local s = panel.Create("window_save")
 			s:SetTitle("Load node") 
 			s:SetButtons("Load","Back") 
-			s.OnAccept = function(s,name) engine.LoadNode(cparent, name) end
+			s.OnAccept = function(s,name) engine.LoadNode(cparent, "manual/"..name) end
 			s:Show() 
 		end 
 	end
 	bload:Dock(DOCK_LEFT)
 	mpanel:Add(bload)
+	
+	
+	
+	local bsaveStatic = panel.Create("button")
+	bsaveStatic:SetSize(100,40)
+	bsaveStatic:SetText("SaveNode")
+	bsaveStatic:Dock(DOCK_LEFT)
+	bsaveStatic.OnClick = function()
+		local cparent = GetCamera():GetParent()
+		local cseed = cparent:GetSeed()
+		if cseed ~= 0 then
+			engine.SaveNode(cparent, tostring(cseed), FLAG_EDITORNODE)
+		end
+	end 
+	mpanel:Add(bsaveStatic)
 	
 	----------
 	
@@ -171,6 +226,17 @@ function PANEL:InitTabAssets()
 		---	tb2[#tb2+1] = {vv,OnClick=onclick}
 		---end
 		rtb[#rtb+1] = self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
+	end
+	for k,v in pairs(self.specialtypes) do
+		linkt[k] = {}
+		local spt = v
+		local onclick = function(b) 
+			if(spt.spawn) then
+				local e = spt.spawn(GetCamera():GetParent())
+				worldeditor:Select(e)
+			end
+		end   
+		rtb[#rtb+1] ={k,OnClick=onclick}-- self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
 	end
 	dirtree:SetTableType(2)
 	

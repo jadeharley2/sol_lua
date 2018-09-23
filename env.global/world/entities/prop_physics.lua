@@ -45,7 +45,7 @@ function ENT:LoadModel()
 	if(model:HasCollision()) then
 		phys:SetShapeFromModel(world * matrix.Scaling(1/amul) ) 
 	else
-		phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
+		--phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
 	end
 	--phys:SetShape(phymodel,world * matrix.Scaling(1/amul) )
 	phys:SetMass(10) 

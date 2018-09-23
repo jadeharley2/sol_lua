@@ -69,7 +69,6 @@ function ENT:Init()
 	self.runspeed = 6
 	self.movementtype = MOVETYPE_IDLE
 	
-	phys:SetMass(10) 
 	
 	
 	
@@ -79,25 +78,22 @@ function ENT:Init()
 	
 	self:AddFlag(FLAG_PHYSSIMULATED)
 	
-	phys:SetupCallbacks()
-	self:AddNativeEventListener(EVENT_PHYSICS_COLLISION_STARTED,"event",
-	function(selfobj,eid,collider,velonhit) 
-		selfobj:VelocityCheck()--collider,velonhit)
-	end)
-	
 	self.tmanager = TaskManager(self)
 	
 end
 
 function ENT:Spawn()
-
 	local model = self.model
 	local phys = self.phys  
 	--local modelfile = self:GetParameter(VARTYPE_MODEL)
-	
 	local char = self:GetParameter(VARTYPE_CHARACTER)
 	if char then
 		self:SetCharacter(char)
+	end
+	self:InitPhys()
+	local graph = self.graph
+	if graph then
+		graph:SetState(self:GetParameter(VARTYPE_STATE) or "idle")
 	end
 end
 function ENT:Load()
@@ -106,20 +102,41 @@ function ENT:Load()
 	local char = self:GetParameter(VARTYPE_CHARACTER)
 	--MsgN("WTF?? ",char)
 	self:SetCharacter(char)
+	self:InitPhys()
 end
 function ENT:Despawn() 
 	self:DDFreeAll() 
 end
 
+function ENT:InitPhys()
+	local phys = self.phys  
+	local physok = self.physok  
+	if phys and not physok then
+		local data = self.data
+		if data then
+			phys:SetShape(data.height or 1.9,data.radius or 0.4)
+		else
+			phys:SetShape(1.9,0.4)
+		end
+		phys:SetMass(10) 
+		phys:SetupCallbacks()
+		--self:AddNativeEventListener(EVENT_PHYSICS_COLLISION_STARTED,"event",
+		--function(selfobj,eid,collider,velonhit) 
+		--	selfobj:VelocityCheck()--collider,velonhit)
+		--end)
+		self.physok =true
+	end
+end
 
 function ENT:PlayAnimation(aname,exitnode,ns)
 	exitnode = exitnode or "idle"
-
-	local nodename = "_autoanim_"..aname
-	local graph = self.graph
-	graph:NewState(nodename,function(s,e) return e.model:ResetAnimation(aname,ns) end)
-	graph:NewTransition(nodename,exitnode,CND_ONEND)
-	graph:SetState(nodename)
+	self.model:ResetAnimation(aname,ns)
+	MsgN(aname)
+	--local nodename = "_autoanim_"..aname
+	--local graph = self.graph
+	--graph:NewState(nodename,function(s,e) return e.model:ResetAnimation(aname,ns) end)
+	--graph:NewTransition(nodename,exitnode,CND_ONEND)
+	--graph:SetState(nodename)
 end
 function ENT:LoadGraph(tab)
 
@@ -310,11 +327,11 @@ function ENT:LoadGraph(tab)
 		
 		--end
 		
-		graph:NewTransition("idle","cidle",function(s,e) return self.duckmode end)
-		graph:NewTransition("cidle","idle",function(s,e) return not self.duckmode end) 
-		graph:NewTransition("walk","cwalk",function(s,e) return self.duckmode end)
-		graph:NewTransition("cwalk","walk",function(s,e) return not self.duckmode end)
-		graph:NewTransition("run","cwalk",function(s,e) return self.duckmode end) 
+		graph:NewTransition("idle","cidle",function(s,e) return self:Crouching() end)
+		graph:NewTransition("cidle","idle",function(s,e) return not self:Crouching() end) 
+		graph:NewTransition("walk","cwalk",function(s,e) return self:Crouching() end)
+		graph:NewTransition("cwalk","walk",function(s,e) return not self:Crouching() end)
+		graph:NewTransition("run","cwalk",function(s,e) return self:Crouching() end) 
 		graph:NewTransition("cidle","cwalk",BEH_CND_ONCALL,"cwalk")
 		graph:NewTransition("cwalk","cidle",BEH_CND_ONCALL,"cidle")
 		
@@ -443,7 +460,11 @@ function ENT:Think()
 	self:UpdateLean() 
 	--debug.ProfilerBegin("actor")
 	--self.prf:IE()
-	
+	if CLIENT and self == LocalPlayer() then 
+		self:SetUpdating(true,20)
+	else
+		self:SetUpdating(true,100)
+	end
 	
 end
 function ENT:BeginTask(a,...)
@@ -465,6 +486,7 @@ function ENT:SetCharacter(id)
 		if path then
 			local data = json.Read(path)--"forms/characters/"..id..".json")
 			if data then 
+				self.data = data
 				self.directmove=false
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
@@ -494,9 +516,12 @@ function ENT:SetCharacter(id)
 				model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale))---*matrix.Scaling(0.0000001)
 				
 				model:SetDynamic()
+				model:SetUpdateRate(60)
+				--model:SetBrightness(0)
+				--model:SetBlendMode(BLEND_ADD) 
+				--model:SetRenderGroup(RENDERGROUP_NONE) 
 				
 				self.graph = self:LoadGraph(data.behaviour) or self.graph
-				
 				
 				if CLIENT then
 					local bpr = self.spparts
@@ -591,6 +616,12 @@ function ENT:SetCharacter(id)
 				--	end
 				--end
 				
+				local phys = self.phys   
+				if phys then
+					if data.height then phys:SetHeight(data.height) end
+					if data.radius then phys:SetRadius(data.radius) end
+					if data.mass   then phys:SetMass(data.mass) end 
+				end
 				
 				self:SetUpdating(true,100)
 				--MsgN("faf ",self:GetPos())
@@ -629,6 +660,8 @@ function ENT:SetSpecies(spstr)
 end
 function ENT:Config(data,species,variation)
 
+	self:RemoveEventListener(EVENT_USE,"use_event")
+	self:RemoveFlag(FLAG_USEABLE) 
 	local phys = self.phys
 	if species then
 		if data.bodyparts then
@@ -750,15 +783,25 @@ end
 
 function ENT:Turn(ang)
 	if self.model:HasAnimation("turn_l") then 
-		local Up = self:Up():Normalized()
-		self:TRotateAroundAxis(Up, ang)   
-		MsgN(ang)
-		if(ang>0) then 
-			self:PlayAnimation("turn_l","idle",true) 
+		--MsgN(ang)
+			local graph = self.graph
+			graph.debug = true
+		if graph and (ang>0) then 
+			MsgN(ang)
+			if graph:Call("turn_l") then 
+				local Up = self:Up():Normalized()
+				self:TRotateAroundAxis(Up, ang) 
+				return true  
+			end
+			--self:PlayAnimation("turn_l","idle",true) 
 		else 
-			self:PlayAnimation("turn_r","idle",true) 
+			if  graph:Call("turn_r") then
+				local Up = self:Up():Normalized()
+				self:TRotateAroundAxis(Up, ang) 
+				return true
+			end
+			--self:PlayAnimation("turn_r","idle",true) 
 		end
-		return true
 	else 
 		return false
 	end
@@ -805,7 +848,7 @@ function ENT:Move(dir,run,updatespeed)
 		else 
 			if self:Crouching() then
 				if graph:Call("cwalk") or updatespeed  then 
-					phys:SetStandingSpeed(self.walkspeed*spscale) 
+					phys:SetCrouchingSpeed(self.walkspeed*spscale) 
 				end
 			else
 				if run then 
@@ -841,8 +884,8 @@ function ENT:Move(dir,run,updatespeed)
 		--MsgN(dfa)
 		local model = self.model
 		model:SetPoseParameter("move_yaw",dfa) 
-		model:SetPoseParameter("move_x",dir.x*100)
-		model:SetPoseParameter("move_y",dir.z*100)
+		model:SetPoseParameter("move_x",dir.x*200)
+		model:SetPoseParameter("move_y",dir.z*200) 
 	else 
 		self:Stop()
 	end
@@ -898,7 +941,7 @@ function ENT:UpdateSpeed(run)
 		end    
 	else 
 		if self:Crouching() then 
-			phys:SetStandingSpeed(self.walkspeed*spscale)  
+			phys:SetCrouchingSpeed(self.walkspeed*spscale)  
 		else
 			if run then  
 				phys:SetStandingSpeed(self.runspeed*spscale)  
@@ -935,8 +978,8 @@ function ENT:Stop()
 		end
 	end
 	local model = self.model 
-	model:SetPoseParameter("move_x",0)
-	model:SetPoseParameter("move_y",0)
+	model:SetPoseParameter("move_x",0,true)
+	model:SetPoseParameter("move_y",0,true)
 	
 	self:UpdateLean()
 end
@@ -983,10 +1026,21 @@ function ENT:IsFlying()
 end
  
 function ENT:Crouching()
-	return self.duckmode or false
+	return self.phys:GetStance() ==1--.duckmode or false
 end
 function ENT:SetCrouching(value)
-	self.duckmode = value
+	--self.duckmode = value
+	if value then
+		self.phys:SetStance(1)
+		if self.graph then
+			return self.graph:Call("duck")
+		end
+	else
+		self.phys:SetStance(0)
+		if self.graph then
+			return self.graph:Call("idle")
+		end
+	end
 end
 function ENT:Duck()
 	if self:IsFlying() then
@@ -1091,6 +1145,7 @@ function ENT:SetEyeAngles(pitch,yaw)
 	if not math.bad(pitch) then pitch = 0 end
 	if not math.bad(yaw) then yaw = 0 end
 	local m = self.model
+	local noeyedelay = self.noeyedelay or false
 	self.eyeangles = {pitch,yaw}
 	local lms = self.lastheadmove or 0
 	local ha = self.headangles or {0,0}
@@ -1100,7 +1155,7 @@ function ENT:SetEyeAngles(pitch,yaw)
 	--m:SetPoseParameter("head_yaw",yaw)
 	--m:SetPoseParameter("head_pitch",pitch) 
 	
-	if (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
+	if noeyedelay or (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
 		self.headangles = {yaw,pitch}
 		self.lastheadmove = CurTime()
 	end
@@ -1169,10 +1224,19 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		--	self.assignednode = assignnode
 		--	ply:AssignNode(assignnode)
 		--end
-		if CLIENT and LocalPlayer()==self then
-			network.RequestAssignNode(assignnode)
-			self.assignednode = assignnode
+		if SERVER then
+			if veh.player then
+				veh.player:UnassignNode(veh)
+			end
+			if self.player then
+				self.player:AssignNode(assignnode)
+				self.assignnode = assignnode 
+			end
 		end
+		--if CLIENT and LocalPlayer()==self then
+		--	network.RequestAssignNode(assignnode)
+		--	self.assignednode = assignnode
+		--end
 	else
 		local v = self.vehicle
 		if v then
@@ -1189,10 +1253,17 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			self.IsInVehicle = false
 			local vparent = self.vehicle:GetParent()
 			if SERVER or not network.IsConnected() then 
-				self:SetPos(Vector(1.321081, 0.5610389, 0.01457999))--Vector(0,0,0))
+				--self:SetPos(Vector(1.321081, 0.5610389, 0.01457999))--Vector(0,0,0))
 				self:Eject()
 				self:SetParent(vparent)
 				--self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos()+Vector(0,2,0)/vparent:GetSizepower())
+				if self.player and self.assignnode then
+					v.player:UnassignNode(self.assignnode)
+					self.assignnode = nil
+				end
+				if v.player then
+					v.player:AssignNode(v)
+				end
 			end 
 			self.vehicle = nil
 			self.graph:SetState("idle")
@@ -1206,10 +1277,10 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			--	self.assignednode = nil
 			--	ply:UnassignNode(self.assignednode)
 			--end
-			if self.assignednode and  LocalPlayer()==self then 
-				self.assignednode = nil
-				network.RequestUnassignNode(v)
-			end
+			--if CLIENT and self.assignednode and  LocalPlayer()==self then 
+			--	self.assignednode = nil
+			--	network.RequestUnassignNode(v)
+			--end
 			cmp.ent = nil
 		end
 	end
@@ -1585,6 +1656,7 @@ function ENT:Alert()
 end
 
 function ENT:VelocityCheck(teleport)
+	if true then return end
 	if self:GetVehicle() then return end
 	local lastvel = self.lastvel
 	local vel = self.phys:GetVelocity()

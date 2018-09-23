@@ -31,6 +31,13 @@ function set_meta:First()
 		return k
 	end 
 end
+function set_meta:Last() 
+	local vv = nil
+	for k,v in pairs(self) do
+		vv = k
+	end 
+	return vv
+end
 
 function set_meta:ToTable() 
 	local t = {}

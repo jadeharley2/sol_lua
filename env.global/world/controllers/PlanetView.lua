@@ -15,7 +15,7 @@ function OBJ:Init()
 	local cam = GetCamera()
 	self.mouseWheelValue = input.MouseWheel() 
 	self.center = Vector(0,0,0)
-	self.zoom = 0.1
+	self.zoom = 0.2
 	
 	local parentplanet = cam:GetParentWithFlag(FLAG_PLANET)
 	self.planet = parentplanet
@@ -99,5 +99,8 @@ function OBJ:Update()
 	local mindist = sealevel_r/sz
 	local Forward = cam:Forward():Normalized()
 	cam:SetPos( Center - Forward * (mindist+zoom*zoom/2) )
-		
+	
+	if input.KeyPressed(KEYS_B) then
+		SetController("systemview")
+	end
 end

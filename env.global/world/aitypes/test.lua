@@ -146,12 +146,16 @@ function ai:OnInit()
 	local char = e:GetParameter(VARTYPE_CHARACTER) or ""
 	local cpath, cname = forms.GetForm("character",char)-- json.Read("forms/characters/"..char..".json")
 	if cname then e:SetName(cname) end
-	e.usetype = "dialog"
+	e.usetype = "talk"
 	e:AddEventListener(EVENT_USE,"e",function(s,user)
-		self:OpenMenu(user)
-	end) 
+		--if self:Alive() then
+			self:OpenMenu(user)
+		--end
+	end)  
 	e:AddEventListener(EVENT_CCOMMAND,"e",function(s,user,com)
-		self:OpenMenu(user)
+		--if self:Alive() then
+			self:OpenMenu(user)
+		--end
 	end) 
 	
 	self.seen = Set()

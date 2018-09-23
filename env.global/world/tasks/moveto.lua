@@ -15,7 +15,8 @@ function task:OnBegin()
 		local pos_from = actor:GetPos()
 		local pos_to = self.target
 		if pos_to.GetPos then pos_to = pos_to:GetPos() end
-		
+		self._storedcon = actor.controller
+		--actor.controller = self
 		local path = nav:GetPath(pos_from,pos_to,0.001)
 		if path then
 			self.path = path
@@ -53,7 +54,9 @@ function task:Step()
 				
 				return nil
 			else 
-				actor:Stop() 
+				if self.wasmoving then
+					actor:Stop() 
+				end
 				return true
 			end
 		end
@@ -73,6 +76,7 @@ function task:Step()
 				local Forward = actor:Right():Normalized()
 				phys:SetViewDirection(Forward) 
 				actor.model:SetPoseParameter("move_yaw",  0) 
+				self.wasmoving = true
 			else
 				if lastdist and lastdist<=dist then
 					times = times + 1
@@ -89,5 +93,5 @@ function task:Step()
 	end
 end
 function task:OnEnd(result)
-	
+	--self.ent.controller = self._storedcon
 end

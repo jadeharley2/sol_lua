@@ -1,7 +1,8 @@
 
 local rdtex = LoadTexture("space/star_sprites.png")
---function ENT:Init()  
---end
+function ENT:Init()  
+	self:SetSpaceEnabled(true,1)
+end
 function ENT:Spawn()  
 	local star = self:GetParent()
 	
@@ -22,6 +23,16 @@ function ENT:Spawn()
 	model:SetMaxRenderDistance(100000)
 	
  
+	local particlesys2 = self:AddComponent(CTYPE_PARTICLESYSTEM2) 
+	particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	particlesys2:SetBlendMode(BLEND_ADD) 
+	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
+	particlesys2:SetDepthStencillMode(DEPTH_READ)  
+	particlesys2:Set("particles/star.json")
+	particlesys2:SetSpeed(0.1)--0.1)
+	particlesys2:SetColor(scolor)
+	self.particlesys2 = particlesys2 
+	
 	--local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
 	--particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
 	--particlesys:SetNodeMode(false)
@@ -34,12 +45,27 @@ function ENT:Spawn()
 	--self.particlesys = particlesys
 	self.model = model
 	
+	--local constrot  = self:AddComponent(CTYPE_CONSTROT) 
+	--constrot:SetParams(1,0,matrix.Rotation(0.1,0.1,0.2))
+	--self.constrot = constrot
+	self:SetUpdating(true,20)
+end
+
+function ENT:Think()  
+	self:SetAng(self:GetMatrixAng()* matrix.Rotation(0.01,0.01,0))
+	
 end
 
 function ENT:Enter() 
 	self.model:SetRenderGroup(RENDERGROUP_PLANET)
+	self.particlesys2:SetRenderGroup(RENDERGROUP_PLANET)
+	
+	
 end
 
 function ENT:Leave()    
 	self.model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	self.particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	
+	--self:RemoveComponents(CTYPE_PARTICLESYSTEM2)
 end

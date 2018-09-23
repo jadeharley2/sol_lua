@@ -154,10 +154,10 @@ function ENT:Spawn()
 	--self.coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) ) 
 	
 	local amul = 0.8
-	phys:SetShapeFromModel(world * matrix.Scaling(1/amul) ) 
+	phys:SetShapeFromModel(world)-- * matrix.Scaling(1/amul) ) 
 	phys:SetMass(10) 
 	
-	model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul ))
+	--model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter() ))
 	
 	self.modelcom = true
 end

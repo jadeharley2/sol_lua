@@ -8,6 +8,7 @@ SETTINGS_VALUES = {
 				{ type = "string", name = "Character", var = "player.model", default = "kindred"},
 				{ type = "string", name = "Skin IDs", var = "player.skinid", default = ""},
 				{ type = "bool", name = "Hide in FP", var = "player.fpmode2", default = true},
+				{ type = "bool", name = "Disable RI in FP", var = "player.fpmode2.rotintertia", default = false},
 			}
 		},
 		{
@@ -26,6 +27,7 @@ SETTINGS_VALUES = {
 					return math.Clamp(n,16,256) end, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAOSamples(v) end},
 				{type = "bool", name = "SSLR", var = "engine.pp_sslr", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSLR(v) end},
 				{type = "bool", name = "Bloom enabled", var = "engine.pp_bloom", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessBloom(v) end},
+				{type = "bool", name = "Grass enabled", var = "engine.gsh_grass", default = true, apply = function(v) render.GlobalRenderParameters():SetDrawGSGrass(v) end},
 			}
 		},
 		{

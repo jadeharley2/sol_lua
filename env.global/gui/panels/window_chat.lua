@@ -128,6 +128,7 @@ function PANEL:Resize()
 		list:Refresh()
 	--	input_text:SetSize(ss.x-20,30)
 	--	input_text:SetPos(0,-ss.y+50)
+		list:ScrollToBottom()
 	end
 end
 function PANEL:SetVisibility(onoff)

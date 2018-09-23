@@ -10,14 +10,30 @@ function ENT:Spawn()
 	
 	self:NextTrack()
 end
-function ENT:Despawn()
-	local snd = self.snd
-	if snd then snd:Stop() snd:Dispose()  self.snd = nil end
-	
+function ENT:Despawn() 
+	self:Stop()
 	
 	self:DDFreeAll() 
 end
  
+function ENT:Stop()
+	local snd = self.snd
+	if snd then snd:Stop() snd:Dispose()  self.snd = nil end
+end
+function ENT:Start()
+	self:NextTrack()
+end
+
+--no functions
+--function ENT:Pause()
+--	local snd = self.snd
+--	if snd then snd:Stop() end
+--end
+--function ENT:Resume()
+--	local snd = self.snd
+--	if snd then snd:S() end
+--end
+
 function ENT:StartTrack(id)
 	MsgN("nexttrack: ",id)
 	local list = self.list

@@ -358,8 +358,7 @@ function OBJ:Update()
 				if not input.GetKeyboardBusy() and network.CanBeControlled(actor) then  
 					self:HandleActions(actor)
 					self:HandleMovement(actor)
-				end
-				---self:HandleWaterTest(actor)
+				end 
 			end
 		end
 	end
@@ -465,6 +464,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 	local Up = actor:Up():Normalized()
 	local inUp = Vector(0,1,0)
 	local aibusy = self:ActorIsBusy()
+	local is_first_person = self.camZoom ==0
 	
 	local result = Vector(0,0,0)
 	
@@ -559,21 +559,28 @@ function OBJ:HandleThirdPersonMovement(actor)
 				local smt = (self.sm_targetval or 0) 
 				local ISR = 0
 				if IsRunning then ISR = 1 end
-				smt = smt + math.AngleDelta(-targetval,smt)/((20 + (20*ISR))*(actor.rotspeed or 1))  --4
+				local rotspeed = actor.rotspeed or 1
+				smt = smt + math.AngleDelta(-targetval,smt)/((20 + (20*ISR))*rotspeed)  --4
+				if is_first_person and HIDE_CHAR_IN_FIRST_PERSON() and settings.GetBool("player.fpmode2.rotintertia") then
+					--rotspeed =0.1
+					smt = -targetval
+				end
 				self.sm_targetval = smt
 				local angd = math.AngleDelta(smt , self.ctargetval or 0)
 				local dval = angd/180*3.1415926
 				actor:TRotateAroundAxis(Up, dval)
 				cam:TRotateAroundAxis(inUp, -dval)
+				Right = cam:Right():Normalized()
+				
 				self.ctargetval = math.NormalizeAngle((self.ctargetval or 0) + angd)
 				--MsgN(angd)
 				actor:Move(Vector(0,0,1),IsRunning)
 			end
 			 
 			self.rmode = true
-			
+			self.wasmoving = true
 		else
-			if actor:IsMoving() then actor:Stop() end
+			if actor:IsMoving() and self.wasmoving then actor:Stop() self.wasmoving = false end
 		end 
 	 
 		local mlock = self:MouseLocked() -- input.rightMouseButton()
@@ -596,13 +603,16 @@ function OBJ:HandleThirdPersonMovement(actor)
 			end
 			
 			cam:TRotateAroundAxis(Right, (offy / -1000))
+			Right = cam:Right():Normalized()
 			
 			self.totalCamRotationY = (self.totalCamRotationY or 0) + (offx / -1000)
 			local tcr = self.totalCamRotationY
-			
+			 
 			cam:TRotateAroundAxis(inUp, (offx / -1000))
+			Right = cam:Right():Normalized()
 			local totalCamAngle = tcr / 3.1415926 * 180
-			if tcr and math.abs(totalCamAngle)>=90 then
+			local turn_angle = actor.turn_angle or 90
+			if tcr and math.abs(totalCamAngle)>=turn_angle then
 				--if actor.model:HasAnimation("turn_l") then
 				--	cam:TRotateAroundAxis(Up, -tcr)
 				--	actor:TRotateAroundAxis(Up, tcr)
@@ -610,6 +620,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 				if actor:Turn(tcr) then
 					self.totalCamRotationY = 0
 					cam:TRotateAroundAxis(Up, -tcr)
+					Right = cam:Right():Normalized()
 					--actor:TRotateAroundAxis(Up, tcr)  
 				else
 					self.rmode = true
@@ -629,13 +640,14 @@ function OBJ:HandleThirdPersonMovement(actor)
 				--end
 				--self.totalCamRotationY = nil
 			end
-			if self.rmode then
+			if self.rmode then 
 				local tcr2 = self.totalCamRotationY/10--2 
 				if actor:IsFlying() then
 					local sRight = actor:Forward():Normalized()
 					local cctcr2 =(self.totalCamRotationX or 0)/10--2 
 					actor:TRotateAroundAxis(sRight, -cctcr2) 
-					cam:TRotateAroundAxis(Right, -cctcr2)
+					cam:TRotateAroundAxis(Right, -cctcr2) 
+					Right = cam:Right():Normalized()
 					actor:TRotateAroundAxis(Up, tcr2) 
 					cam:TRotateAroundAxis(inUp, -tcr2)
 					self.totalCamRotationY = self.totalCamRotationY - tcr2
@@ -644,18 +656,18 @@ function OBJ:HandleThirdPersonMovement(actor)
 						self.rmode = false 
 						self.totalCamRotationY = 0
 						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
-						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+						--cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 					end
 					
 				else
 					cam:TRotateAroundAxis(inUp, -tcr2)
 					actor:TRotateAroundAxis(Up, tcr2) 
-					self.totalCamRotationY = self.totalCamRotationY - tcr2
+					self.totalCamRotationY = self.totalCamRotationY - tcr2 
 					if  math.abs(tcr2)<0.001 then
 						self.rmode = false 
 						self.totalCamRotationY = 0
 						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
-						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+						--cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 					end
 				end
 				
@@ -669,29 +681,48 @@ function OBJ:HandleThirdPersonMovement(actor)
 	
 	--stabilizer
 	if not actor:IsFlying() or self.flightmode then
+		local aspd,aspp,aspn = actor.phys:GetSupportData()
 		local vel = math.max(1,actor.phys:GetVelocity():Length()) 
 		if not actor:IsFlying() then
 			vel = 0.5
 		end
 		local sp = actor:GetParent():GetLocalSpace(actor)
 
-		local downInLocal = Vector(0,0,1):TransformN(sp)
+		local div = 50
+		if actor.phys:OnGround() then
+			div = 5
+		end
+		
+		local downInLocal = Vector(0,0,1)
+		:TransformN(sp)
 		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
 		
-		actor:TRotateAroundAxis(sForward , dd_e/50) 
+		actor:TRotateAroundAxis(sForward , dd_e/div) 
 		
 		local sRight = actor:Forward():Normalized()
 		--local sr2 = Vector(sForward.x,0,sForward.z):Normalized()
 		local downInLocal = Vector(1,0,0):TransformN(sp)
 		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
 		
-		actor:TRotateAroundAxis(sRight, dd_e/50/vel) 
+		actor:TRotateAroundAxis(sRight, dd_e/div/vel) 
+		
+		
+		--local sRight = actor:Forward():Normalized()
+		--local sd_rddir = sForward:Cross(aspn):Normalized()
+		--local sd_fddir = sRight:Cross(aspn):Normalized() 
+		--local rang = sRight:Angle(aspn)/10
+		--local fang = sForward:Angle(aspn)/10 
+		--local dd_r,dd_p,dd_e = actor:GetHeadingElevation(sd_rddir)
+		--MsgN(dd_p*100)
+		--actor:TRotateAroundAxis(aspn ,0.01)-- dd_r/10/div) 
+		--actor:TRotateAroundAxis(sRight, dd_e/div) 
+		
 	end
 	--
 	if not actor.directmove then	
-	actor.model:SetPoseParameter("move_yaw",0)
-	actor.model:SetPoseParameter("move_x",0)
-	actor.model:SetPoseParameter("move_y",100)
+		actor.model:SetPoseParameter("move_yaw",0)
+		actor.model:SetPoseParameter("move_x",0)
+		actor.model:SetPoseParameter("move_y",100)
 	end
 	--phys:SetViewDirection(sForward)
 end
@@ -733,8 +764,9 @@ function OBJ:HandleFirstPersonMovement(actor)
 	
 	if not aibusy then
 		if input.KeyPressed(KEYS_CONTROLKEY) then
-			actor:Duck()
-			if not actor:Crouching() then actor:SetCrouching(true) end
+			 actor:Duck() --ifthen
+				if not actor:Crouching() then actor:SetCrouching(true) end
+			--end
 		else 
 			if actor:Crouching() then actor:SetCrouching(false) end
 		end
@@ -803,7 +835,8 @@ function OBJ:HandleFirstPersonMovement(actor)
 			
 			cam:TRotateAroundAxis(inUp, (offx / -1000))
 			local totalCamAngle = tcr / 3.1415926 * 180
-			if tcr and math.abs(totalCamAngle)>=90 then
+			local turn_angle = actor.turn_angle or 90
+			if tcr and math.abs(totalCamAngle)>=turn_angle then
 				--if actor.model:HasAnimation("turn_l") then
 				--	cam:TRotateAroundAxis(Up, -tcr)
 				--	actor:TRotateAroundAxis(Up, tcr)
@@ -936,6 +969,9 @@ function OBJ:HandlePickup(actor)
 		if nearestent then
 			nearestent:SendEvent(EVENT_PICKUP,actor)
 			inv:AddItem(actor, nearestent)
+			if CLIENT then
+				actor:EmitSound("events/lamp-switch.ogg",1)
+			end
 		end 
 	end
 end
@@ -1003,6 +1039,10 @@ function OBJ:SwitchToFirstperson(actor)
 		end
 	end
 	actor.model:SetHideHead(true)
+	
+	local cam = GetCamera()
+	local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
+	cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 end
 function OBJ:SwitchToThirdperson(actor)
 	--if HIDE_CHAR_IN_FIRST_PERSON() then
@@ -1022,6 +1062,10 @@ function OBJ:SwitchToThirdperson(actor)
 			end
 		end
 	--end
+	
+	local cam = GetCamera()
+	local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
+	cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 end
 function OBJ:HandleCameraMovement(actor)
 	
@@ -1045,8 +1089,8 @@ function OBJ:HandleCameraMovement(actor)
 	local controlled =-- not self:ActorIsBusy()--
 	actor:GetUpdating() and actor.controller == self--self:IsControlling( actor) 
 	
-	local tps_height = actor.tpsheight or 0.5
-	local fps_height = actor.fpsheight or 1
+	local tps_height = actor.tpsheight or 1.3
+	local fps_height = actor.fpsheight or 1.6
 	
 	local is_first_person = self.camZoom ==0
 	local is_VR = vr.IsEnabled()
@@ -1135,7 +1179,7 @@ function OBJ:HandleCameraMovement(actor)
 				if m:HasAttachment("eyes") then pos = m:GetAttachmentPos("eyes") 
 				elseif m:HasAttachment("head") then pos = m:GetAttachmentPos("head")   
 				elseif m:HasAttachment("muzzle") then pos = m:GetAttachmentPos("muzzle") end -- * parent_sz
-			end
+			end 
 			--cam:SetPos((pos - Forward * 2 * 0    +Vector(-0.4,0,0)  - Forward * self.camZoom) / parent_sz)
 			--DrawPoint(-10,actor,pos)
 			cam:SetPos(( pos + Forward * 0.05 * ascale) )
@@ -1228,19 +1272,7 @@ function OBJ:HandleCameraMovement(actor)
 			self.rmode = true
 	end
 end
-function OBJ:HandleWaterTest(actor)
-	local planet = actor:GetParentWithFlag(FLAG_PLANET) 
-	if planet then
-		local dist = actor:GetDistance(planet)
-		local radius = planet.radius
-		if radius then
-			local sealevel_height = dist-radius 
-			if sealevel_height<0 then
-				actor.phys:ApplyImpulse(Vector(0,-sealevel_height,0))
-			end
-		end
-	end
-end
+
 
 function OBJ:HandleFlight(actor)
 	 

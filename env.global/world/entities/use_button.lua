@@ -1,9 +1,9 @@
 
 function SpawnButton(parent,model,pos,ang,action,seed,scale)
 	local e = ents.Create("use_button")  
-	e:SetModel(model,scale or 1)
 	e:SetSizepower(1)
 	e:SetParent(parent)
+	e:SetModel(model,scale or 1)
 	e:SetPos(pos) 
 	e:SetAng(ang or Vector(0,0,0)) 
 	e.OnPress = action
@@ -29,7 +29,7 @@ function ENT:Load()
 		self:SetModel(modelval,modelscale)
 	else
 		MsgN("no model specified for button model at spawn time")
-	end 
+	end  
 end  
 function ENT:Spawn()  
 	local modelcom = self.modelcom
@@ -65,7 +65,7 @@ function ENT:SetModel(mdl,scale)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world)
 	 
-	self.coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) ) 
+	self.coll:SetShapeFromModel(matrix.Scaling(scale) ) 
 	
 	self.modelcom = true
 end 

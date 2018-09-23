@@ -53,7 +53,7 @@ function ENT:Spawn()
 	
 	if CLIENT then
 		local vsize = GetViewportSize()  
-		local rt = CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt:Texture2D")
+		local rt = CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt")
 		self.rt = rt
 		self:Hook("window.resize","updatemirror",function() 
 			local cm = GetCamera()

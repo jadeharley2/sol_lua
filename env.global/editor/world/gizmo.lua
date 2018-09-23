@@ -6,7 +6,7 @@ local function CreatePart(parent,model,color,rotation,type)
 	R:SetParent(parent)
 	R:SetParameter(VARTYPE_MODEL, model)
 	R:SetParameter(VARTYPE_COLOR, color)
-	R.gtype = type
+	R.gtype = type 
 	R:Spawn()
 	R.defang = rotation
 	R:SetAng(rotation) 
@@ -15,7 +15,7 @@ end
  
 function gizmometa:StartDrag(part)
 	if not self.GIZMO_DRAG then 
-
+		 
 		if input.KeyPressed(KEYS_SHIFTKEY) then
 			for k,v in pairs(worldeditor.selected) do
 				worldeditor:Copy(k)
@@ -25,11 +25,12 @@ function gizmometa:StartDrag(part)
 		end 
 		
 		worldeditor.mode = "drag"
+		self.first = true
 		self.lastmp = nil
 		self.GIZMO_DRAG = part
 		self.GIZMO_DRAG_POS = part:GetPos()
 		self.GIZMO_DRAG_POINTPOS = input.getMousePosition() 
-		self.startnodepos = worldeditor.curtrace.Position
+		--self.startnodepos =-- worldeditor.curtrace.Position
 		
 		
 		if self.mnode and self.mnode.GetScale then
@@ -45,6 +46,7 @@ end
 
 function gizmometa:Shift(oldpos,newpos)
 	local shift = newpos - oldpos
+	MsgN(shift)
 	for k,v in pairs(worldeditor.selected) do
 		k:SetPos(k:GetPos()+shift)
 	end
@@ -56,10 +58,15 @@ function gizmometa:Rotate(axis,shift)
 	end
 	--if lsn then lsn:SetPos(newPos) end
 end
+function gizmometa:Scale(anewscale) 
+	for k,v in pairs(worldeditor.selected) do
+		k:SetScale(anewscale)  
+	end 
+end
 
 function gizmometa:DragUpdate()
 	local G = self.GIZMO_DRAG
-	if G then  
+	if G and self.parts then  
 		local mousePos = input.getMousePosition() 
 		local mouseDiff2 = mousePos - (self.lastmp or mousePos)
 		self.lastmp = mousePos
@@ -68,7 +75,7 @@ function gizmometa:DragUpdate()
 		--local newPos = self.GIZMO_DRAG_POS + G.constraint * mouseDiff.x/10000--Vector( mouseDiff.x,mouseDiff.y)
 		
 		local startnodepos = self.GIZMO_DRAG_POS
-		local startpos = self.startnodepos --
+		local startpos = startnodepos--self.startnodepos --
 		local startscale = self.startscale
 		local camera = GetCamera()
 		local constr = G.constraint
@@ -79,21 +86,21 @@ function gizmometa:DragUpdate()
 		local up = camera:Up()
 		local right = camera:Right()
 		local campos = camera:GetPos() 
-		
-		local snap = input.KeyPressed(KEYS_MENU)
+		  
+		local snap = false-- input.KeyPressed(KEYS_MENU)
 		
 		local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
 		local dir = camera:Unproject(mpos):Normalized()
 		--local dir = (worldeditor.curtrace.Position - campos):Normalized()
-		local lsn = worldeditor.selected:First()
-		if not lsn then return nil end
-		
+		if not  worldeditor.selected:First() then return nil end
+		local lsn =self.parts[1]-- worldeditor.selected:Last() 
+		local lsp = worldeditor.selected:First():GetParent()
 		local first = self.first or false
 		local spos = self._startpos or Vector(0,0,0)
 		local dpos = self._startlen or 0
 		if constr then
 		
-			local W =lsn:GetParent():GetLocalSpace(lsn)
+			local W =lsp:GetLocalSpace(lsn) 
 			constr = constr:TransformN(W)
 			if(constr2) then
 				constr2 = constr2:TransformN(W)
@@ -104,7 +111,7 @@ function gizmometa:DragUpdate()
 				if hit then  
 					if first then
 						self._startpos = pos
-						spos = pos
+						spos =  pos
 					end
 					
 					local newPos = startnodepos+ pos - spos
@@ -116,7 +123,8 @@ function gizmometa:DragUpdate()
 					for k,v in pairs(self.parts) do
 						v:SetPos(newPos)
 					end 
-					self:Shift(oldPos, newPos)
+				
+					self:Shift(oldPos, newPos) 
 				end
 			else  
 				--local pp = Plane(startpos, startpos + constr, startpos + up*100)
@@ -150,7 +158,7 @@ function gizmometa:DragUpdate()
 					end
 					--local newPos =   rps---campos
 			--MsgN(pos)
-					local newPos = startnodepos + constr * (rps - dpos) *1000000 / (startscale*startscale)
+					local newPos = startnodepos + constr * (rps - dpos)-- *1000000 / (startscale*startscale)
 					if snap then
 						newPos = Vector(math.round(newPos.x,3),math.round(newPos.y,3),math.round(newPos.z,3))
 					end
@@ -194,7 +202,8 @@ function gizmometa:DragUpdate()
 				else
 					newScale = startscale * (ddist+1)
 				end
-				if lsn then lsn:SetScale(newScale) end 
+				self:Scale(newScale)
+				--if lsn then lsn:SetScale(newScale) end 
 			end
 			
 		end
@@ -275,20 +284,20 @@ function gizmometa:ChangeMode(newmode)
 			newmode = "move"
 		end
 	end
-	
-	if newmode == "rotate" then 
-		for k,v in pairs(self.parts) do 
-			v:Enable( v.type == "rotate")
-		end
-	elseif newmode == "scale" then 
-		for k,v in pairs(self.parts) do 
-			v:Enable( v.type == "scale")
-		end 
-	else--if newmode == "move" then 
-		for k,v in pairs(self.parts) do 
-			v:Enable( v.type == "move")
-		end 
-	end
+	--
+	--if newmode == "rotate" then 
+	--	for k,v in pairs(self.parts) do 
+	--		v:Enable( v.type == "rotate")
+	--	end
+	--elseif newmode == "scale" then 
+	--	for k,v in pairs(self.parts) do 
+	--		v:Enable( v.type == "scale")
+	--	end 
+	--else--if newmode == "move" then 
+	--	for k,v in pairs(self.parts) do 
+	--		v:Enable( v.type == "move")
+	--	end 
+	--end
 	self.mode = newmode
 end
 
@@ -333,18 +342,18 @@ gizmometa.__index = gizmometa
 
 function CreateGizmo(parent)
 	local gizmo = {}
-	
+	local Vzero = Vector(0,0,0)
 	local Vx = Vector(1,0,0)
 	local Vy = Vector(0,1,0)
 	local Vz = Vector(0,0,1)
 	
-	local mX = CreatePart(parent, "engine/gizmo/arrow.smd",  Vx, matrix.AxisRotation(Vz, 90))
-	local mY = CreatePart(parent, "engine/gizmo/arrow.smd",  Vy, matrix.Identity())
-	local mZ = CreatePart(parent, "engine/gizmo/arrow.smd",  Vz, matrix.AxisRotation(Vx, 90))
+	local mX = CreatePart(parent, "models/editor/handle/move_arrow.stmd",  Vx, matrix.Identity())
+	local mY = CreatePart(parent, "models/editor/handle/move_arrow.stmd",  Vy, matrix.AxisRotation(Vz, 90))
+	local mZ = CreatePart(parent, "models/editor/handle/move_arrow.stmd",  Vz, matrix.AxisRotation(Vy, 90))
 
-	local mXY = CreatePart(parent, "engine/gizmo/square.smd",  Vector(1, 1, 0), matrix.AxisRotation(Vy, 90))
-	local mYZ = CreatePart(parent, "engine/gizmo/square.smd",  Vector(0, 1, 1), matrix.AxisRotation(Vy, 180))
-	local mZX = CreatePart(parent, "engine/gizmo/square.smd",  Vector(1, 0, 1), matrix.AxisRotation(Vz, 90)* matrix.AxisRotation(Vy, 90) )
+	local mXY = CreatePart(parent, "models/editor/handle/dmove_prism.stmd",  Vx+Vy, matrix.Identity())
+	local mYZ = CreatePart(parent, "models/editor/handle/dmove_prism.stmd",  Vy+Vz, matrix.AxisRotation(Vy, 90))
+	local mZX = CreatePart(parent, "models/editor/handle/dmove_prism.stmd",  Vz+Vx, matrix.AxisRotation(Vx, 90)* matrix.AxisRotation(Vy, 90) )
 
 	mX.constraint = Vx
 	mY.constraint = Vy
@@ -358,9 +367,9 @@ function CreateGizmo(parent)
 	mZX.constraint2 = Vx 
 	
 	----[[
-	local rP = CreatePart(parent, "engine/gizmo/circle.smd",  Vx, matrix.AxisRotation(Vz, 90),"rotation")
-	local rY = CreatePart(parent, "engine/gizmo/circle.smd",  Vy, matrix.Identity(),"rotation")
-	local rR = CreatePart(parent, "engine/gizmo/circle.smd",  Vz, matrix.AxisRotation(Vx, 90),"rotation")
+	local rP = CreatePart(parent, "models/editor/handle/rotate_circle.stmd",  Vx, matrix.AxisRotation(Vy, 90),"rotation")
+	local rY = CreatePart(parent, "models/editor/handle/rotate_circle.stmd",  Vy, matrix.AxisRotation(Vx, 90) ,"rotation")
+	local rR = CreatePart(parent, "models/editor/handle/rotate_circle.stmd",  Vz, matrix.Identity() ,"rotation")
 	 
 	rP.axis = Vx 
 	rY.axis = Vy  
@@ -371,7 +380,7 @@ function CreateGizmo(parent)
 	rR.ax = 2
 	--]]
 	 
-	 
+	----[[
 	gizmo.mX = mX
 	gizmo.mY = mY
 	gizmo.mZ = mZ 
@@ -385,52 +394,64 @@ function CreateGizmo(parent)
 	gizmo.rR = rR
 	
 	
+	 
+	local sX = CreatePart(parent, "models/editor/handle/scale_cube.stmd",  Vx, matrix.Identity())
+	local sY = CreatePart(parent, "models/editor/handle/scale_cube.stmd",  Vy, matrix.AxisRotation(Vz, 90))
+	local sZ = CreatePart(parent, "models/editor/handle/scale_cube.stmd",  Vz, matrix.AxisRotation(Vy, 90))
 	
-	local sX = CreatePart(parent, "engine/gizmo/arrow.smd",  Vx, matrix.AxisRotation(Vz, 90)) 
-	local sY = CreatePart(parent, "engine/gizmo/arrow.smd",  Vy, matrix.Identity())
-	local sZ = CreatePart(parent, "engine/gizmo/arrow.smd",  Vz, matrix.AxisRotation(Vx, 90))
-	
-	local sXY = CreatePart(parent, "engine/gizmo/corner.smd", Vector(1, 1, 0), matrix.AxisRotation(Vy, 90))
-	local sYZ = CreatePart(parent, "engine/gizmo/corner.smd", Vector(0, 1, 1), matrix.AxisRotation(Vy, 180))
-	local sZX = CreatePart(parent, "engine/gizmo/corner.smd", Vector(1, 0, 1), matrix.AxisRotation(Vz, 90)* matrix.AxisRotation(Vy, 90) )
-
-	local sXYZ = CreatePart(parent, "engine/gizmo/scalesphere.smd",   Vector(1, 1, 1), matrix.Identity())
+	--local sXY = CreatePart(parent, "engine/gizmo/corner.smd", Vector(1, 1, 0), matrix.AxisRotation(Vy, 90))
+	--local sYZ = CreatePart(parent, "engine/gizmo/corner.smd", Vector(0, 1, 1), matrix.AxisRotation(Vy, 180))
+	--local sZX = CreatePart(parent, "engine/gizmo/corner.smd", Vector(1, 0, 1), matrix.AxisRotation(Vz, 90)* matrix.AxisRotation(Vy, 90) )
+    --
+	--local sXYZ = CreatePart(parent, "engine/gizmo/scalesphere.smd",   Vector(1, 1, 1), matrix.Identity())
 	 
 	sX.sconstraint = Vx
 	sY.sconstraint = Vy
 	sZ.sconstraint = Vz
 
-	sXY.sconstraint = Vx 
-	sYZ.sconstraint = Vy 
-	sZX.sconstraint = Vz 
-	sXY.sconstraint2 = Vy 
-	sYZ.sconstraint2 = Vz 
-	sZX.sconstraint2 = Vx  
+	--sXY.sconstraint = Vx 
+	--sYZ.sconstraint = Vy 
+	--sZX.sconstraint = Vz 
+	--sXY.sconstraint2 = Vy 
+	--sYZ.sconstraint2 = Vz 
+	--sZX.sconstraint2 = Vx  
 	
 	gizmo.sX = sX
 	gizmo.sY = sY
 	gizmo.sZ = sZ 
 	
-	gizmo.sXY = sXY
-	gizmo.sYZ = sYZ
-	gizmo.sZX = sZX
+	--gizmo.sXY = sXY
+	--gizmo.sYZ = sYZ
+	--gizmo.sZX = sZX
+	--
+	--gizmo.sXYZ = sXYZ
 	
-	gizmo.sXYZ = sXYZ
-	
+	--]]
 	gizmo.mode = "move"
-	gizmo.parts = {mX,mY,mZ,mXY,mYZ,mZX,  rP,rY,rR,  sX,sY,sZ,sXY,sYZ,sZX,sXYZ}
-	for k,v in pairs(gizmo.parts) do
-		v.root = gizmo
-	end
+	local parts = {}--mX,mY,mZ,mXY,mYZ,mZX,  rP,rY,rR,  sX,sY,sZ,sXY,sYZ,sZX,sXYZ}
+	 
 	for k,v in pairs({mX,mY,mZ,mXY,mYZ,mZX})do
-		v.type = "move"
+		if v then
+			v.type = "move"
+			v.root = gizmo
+			parts[#parts+1] = v
+		end
 	end
 	for k,v in pairs({rP,rY,rR})do
-		v.type = "rotate"
+		if v then
+			v.type = "rotate"
+			v.root = gizmo
+			parts[#parts+1] = v
+		end 
 	end
 	for k,v in pairs({sX,sY,sZ,sXY,sYZ,sZX,sXYZ})do
-		v.type = "scale"
+		if v then
+			v.type = "scale"
+			v.root = gizmo
+			parts[#parts+1] = v
+		end   
 	end
+	gizmo.parts = parts 
 	
 	--rP.disabled = true
 	--rY.disabled = true 

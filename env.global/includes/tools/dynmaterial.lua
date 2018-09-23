@@ -58,3 +58,8 @@ function ModNodeRenderOrder(node,newOrder)
 		ModNodeRenderOrder(v,newOrder)
 	end
 end
+function ModMaterial(mat,modtable) 
+	for kk,vv in pairs(modtable) do
+		SetMaterialProperty(mat,kk,vv)
+	end
+end

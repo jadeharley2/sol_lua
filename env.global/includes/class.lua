@@ -117,7 +117,7 @@ function DefineClass(Name,Varname,Directory,Metatable)
 	
 	local luabasedDir = string.sub(Directory,5)
 	hook.Add("script.reload","class."..Name, function(filename)
-		--MsgN("check ",filename,luabasedDir,string.starts(filename,luabasedDir))
+		MsgN("check ","class."..Name," : ",filename,luabasedDir,string.starts(filename,luabasedDir))
 		if string.starts(filename,luabasedDir) then 
 			local type = string.lower( file.GetFileNameWE(filename))
 			nc:AddType(type)

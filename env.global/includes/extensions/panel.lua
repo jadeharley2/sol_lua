@@ -365,13 +365,13 @@ end
 local Selector = DEFINE_METATABLE("Selector")
  
  
-function Selector:BeginSelection(node,mbuttonid)
+function Selector:BeginSelection(node,mbuttonid,overridestartpos)
 	if not self.current_select and not MOUSE_LOCKED then 
 		self:Deselect() 
 		
 		self.current_select_mbuttonid = mbuttonid or 0 
 		self.current_select_pointpos = input.getMousePosition() 
-		self.current_select_movepos = node:GetLocalCursorPos()
+		self.current_select_movepos = overridestartpos or node:GetLocalCursorPos()
 		self.current_select = node
 		--self.current_recursive = recursive
 		--self.current_testfunction = testfunction
@@ -416,7 +416,8 @@ function Selector:function_select()
 	local frame = self.current_select_frame
 	local selected = self.selected
 	if node and frame then  
-		local scalemul = node:GetParent():GetTotalScaleMul()
+		local scalemul = 1
+		if node:GetParent() then scalemul = node:GetParent():GetTotalScaleMul() end
 		local startPos = self.current_select_movepos
 		local endPos = node:GetLocalCursorPos()
 		local diff = endPos-startPos
@@ -427,7 +428,10 @@ function Selector:function_select()
 		frame:SetSize(newSize)
 		
 		local isup = panel.IsUpMbutton(self.current_select_mbuttonid) 
-		  
+		
+		if self.onupdate then
+			self:onupdate(startPos,endPos)
+		end
 		
 		if isup then 
 			self.current_select = false

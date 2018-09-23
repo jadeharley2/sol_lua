@@ -9,7 +9,7 @@ function PANEL:Init()
 	
 	self:AddState("idle",{color = gui.style:GetColor("ButtonActive"):ToTable()})
 	self:AddState("hover",{color = gui.style:GetColor("ButtonHovered"):ToTable()})
-	self:AddState("pressed",{color = gui.style:GetColor("Button"):ToTable()})
+	self:AddState("pressed",{color = gui.style:GetColor("Button"):ToTable()}) 
 	self:SetState("idle")
 	
 end
@@ -60,8 +60,7 @@ end
 function PANEL:SetPulse(period)
 	self.cooldown = period
 end
-function PANEL:SetToggleable(tgl)
-	self.active = false
+function PANEL:SetToggleable(tgl) 
 	self.toggleable = tgl
 end
 
@@ -91,23 +90,24 @@ function PANEL:MouseDown(pulse)
 			end
 		end
 		
+		local newstate = false
+		
 		if(self.toggleable) then
-			if self.active then
-				self.active = false
-				--self:SetColor( self.upcolor) 
-			else
-				self.active = true
-				--self:SetColor( self.downcolor) 
+			if self:IsPressed() then 
+				self:SetState("idle") 
+				newstate = false
+			else 
+				self:SetState("pressed") 
+				newstate = true
 			end
-		else 
-			---####---self:SetColor( self.downcolor) 
-			
+		else  
 			self:SetState("pressed")
+			newstate = true
 		end
 		if self.flashtext then self:SetTextColor( self.textdowncolor) end
 		local OnClick = self.OnClick
 		if OnClick then
-			OnClick(self,self.active)
+			OnClick(self,newstate)
 		end
 		LAST_BUTTON_PRESSED = self
 		if pulse ~= true then
@@ -123,25 +123,29 @@ function PANEL:MouseUp()
 	--if not input.leftMouseButton() then
 	--	LAST_BUTTON_PRESSED = false 
 	--end
-	self:SetState("idle")
+	if(not self.toggleable) then
+		self:SetState("idle")
+	end
 end
 function PANEL:MouseEnter() 
 	---####---self:SetColor( self.hovercolor) 
 	if self.flashtext then self:SetTextColor( self.texthovercolor) end
 	
-	self:SetState("hover")
+	if(not self.toggleable) then
+		self:SetState("hover")
+	end
 	
 	
 	local OnEnter = self.OnEnter 
 	if OnEnter then OnEnter(self) end
 end
 function PANEL:MouseLeave() 
-	if(self.toggleable) then
-		if self.active then 
-			--self:SetColor( self.upcolor) 
-		else 
-			--self:SetColor( self.downcolor) 
-		end
+	if self.toggleable then 
+		if self:IsPressed() then
+			self:SetState("pressed")
+		else
+			self:SetState("idle")
+		end  
 	else 
 		---####---self:SetColor( self.upcolor) 
 		self:SetState("idle")
@@ -151,6 +155,10 @@ function PANEL:MouseLeave()
 	local OnLeave = self.OnLeave 
 	if OnLeave then OnLeave(self) end
 end
+
+function PANEL:IsPressed()
+	return self:GetState() == "pressed"
+end 
 
 function PANEL:Test() 
 	-- при вызове через панель:Test()

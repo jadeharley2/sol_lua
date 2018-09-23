@@ -120,7 +120,7 @@ function ENT:SetModel(mdl,scale)
 	
 	local phys =  self.phys
 	phys:SetShapeFromModel(matrix.Scaling(1))
-	--phys:SetMass(0)--static  
+	phys:SetMass(-1)--static  
 	
 	self:LoadGraph()
 	 

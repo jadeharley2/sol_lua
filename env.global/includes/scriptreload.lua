@@ -8,5 +8,6 @@ function _ScriptReload(filename)
 		end
 	end
 end 
-
-   
+function _FileReload(filename) 
+	hook.Call("file.reload",filename)
+end 

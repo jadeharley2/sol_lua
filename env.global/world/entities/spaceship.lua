@@ -48,7 +48,7 @@ end
 function ENT:Init()  
 	
 	self:SetSeed(2397131)
-	self:SetSizepower(750)
+	self:SetSizepower(1000)--750)
 	self:SetState("flight")
 	local space = self:AddComponent(CTYPE_PHYSSPACE) 
 	
@@ -160,7 +160,7 @@ function ENT:SEnter()
 		local namedEnts = {}
 		if shipdata then   
 			if shipdata.interior then  
-				local posmul = shipdata.interior.posmul or 1
+				local posmul = (shipdata.interior.posmul or 1)*0.75
 				
 				local cc = shipdata.commandchair
 				if cc then

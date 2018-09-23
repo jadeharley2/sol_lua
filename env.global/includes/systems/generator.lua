@@ -16,3 +16,17 @@ end
 --local testE = entsCreate("")
 --testE:SetVar("rotation",Angle(10,20,30))
  ]]
+ 
+local ldir ="env.global/world/generators/"
+hook.Add("script.reload","generator", function(filename)
+	MsgN("check ","generator : ",filename,ldir,string.starts(filename,ldir))
+	if string.starts(filename,ldir) then 
+		local type = string.lower( file.GetFileNameWE(filename))
+		local _tempvar = generator 
+		generator = {} 
+		include(filename) 
+		_tempvar.Add(type,generator) 
+		generator = _tempvar  
+		return true
+	end
+end)

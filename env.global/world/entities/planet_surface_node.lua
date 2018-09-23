@@ -12,10 +12,13 @@ function ENT:Enter()
 	--	
 	--end
 	--TSNODE = self
-	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED) 
 	 
 	
 	if CLIENT then   
+		--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_DISABLED) 
+		--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_DISABLED) 
+		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED) 
+	
 		self.cubemap = SpawnCubemap(self,Vector(0,0.02,0),128)
 		local sz = self:GetSizepower()
 		self.cubemap:SetSizepower(sz)
@@ -23,29 +26,38 @@ function ENT:Enter()
 		self.cubemap:RequestDraw()
 		self:Hook("pre_cubemap_render","move_cb",function()
 			if self and IsValidEnt(self) then
-				local c = GetCamera()
-				local cp = self:GetLocalCoordinates(c)
-				local sc = self.cubemap
-				if sc then
-					sc:SetPos(cp+Vector(0,3/sz,0))
-				end 
+				self:CubemapFrame()
 			end
 		end)
-		
-		if not SHADOW or not IsValidEnt(SHADOW) then 
-			local star = self:GetParentWithFlag(FLAG_STAR)
-			if star then
-				local eshadow = ents.Create("test_shadowmap2")  
-				eshadow.light = star
-				eshadow:SetParent(GetCamera():GetParent()) 
-				eshadow:Spawn() 
-				---self.shadow = eshadow
-				SHADOW = eshadow
-			end
-		end
-		local p = SpawnParticles(self,"clouds",Vector(0,0,0),0,100,1) 
+		GlobalSetCubemap(self.cubemap)
+		---if not SHADOW or not IsValidEnt(SHADOW) then 
+		---	local star = self:GetParentWithFlag(FLAG_STAR)
+		---	if star then
+		---		local eshadow = ents.Create("test_shadowmap2")  
+		---		eshadow.light = star
+		---		eshadow:SetParent(GetCamera():GetParent()) 
+		---		eshadow:Spawn() 
+		---		---self.shadow = eshadow
+		---		SHADOW = eshadow
+		---	end
+		---end
+		if self:GetParent().surface:HasAtmosphere() then
+			local p = SpawnParticles(self,"clouds",Vector(0,0,0),0,100,1)
+		end		
 		--SHADOW = SHADOW or CreateTestShadowMapRenderer(GetCamera():GetParent(),Vector(0,0,0))
 	end
+	
+	 
+end
+function ENT:CubemapFrame()
+	local c = GetCamera()
+	local cp = self:GetLocalCoordinates(c)
+	local sc = self.cubemap
+	local sz = self:GetSizepower()
+	if sc then
+		sc:SetPos(cp+Vector(0,3/sz,0))
+		sc:SetAng(Vector(90,90,0))
+	end 
 end
 function ENT:Leave() 
 	if TSNODE == self then 
@@ -53,6 +65,8 @@ function ENT:Leave()
 	end
 	if CLIENT then
 		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
+		--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND) 
+		--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
 		render.ClearShadowMaps()
 		local cb = self.cubemap
 		if cb then

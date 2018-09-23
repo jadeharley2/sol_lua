@@ -88,49 +88,8 @@ function PANEL:Init()
 			if self.worldIsLoaded then 
 				self:MenuToggle() 
 			end
-		end
-		if key == KEYS_OEMTILDE then 	 
-			if not settings.GetBool("server.noconsole") then
-				local console = self.console
-				if not console then
-					console = panel.Create("window_console")  
-					console:SetTitle("Console")
-					console:SetSize(800,800)
-					console:UpdateLayout()
-					local wsize = GetViewportSize()
-					console:SetPos(vsize.x-800,vsize.y-800)
-					self:Add(console)
-					self.console = console
-				end
-				if not self:GetVisible() then
-					if self.worldIsLoaded then hook.Call("menu","main") end 
-					console:SetVisible(true)
-					console.enabled = true
-					console:Select()
-				else
-					if console.enabled then
-						console:SetVisible(false)
-						console.enabled = false
-						if self.worldIsLoaded then hook.Call("menu") end
-					else
-						if self.worldIsLoaded then hook.Call("menu","main") end 
-						console:SetVisible(true)
-						console.enabled = true
-						console:Select()
-					end
-				end
-			end
-		end
-	end)
-	hook.Add("settings.changed","consolecheck",function()
-		local c = settings.GetBool("server.noconsole")
-		local console = self.console
-		if console and c then
-			console:SetVisible(false)
-			console.enabled = false  
-		end
-		self.console_enabled = not c
-	end)
+		end 
+	end) 
 	
 	
 	hook.Add("menu","event",function(name)

@@ -6,14 +6,17 @@ generator.target = "starSystem"
 generator[EVENT_GENERATOR_SETUP] = function(self, node) -- system(self)
 	local seed = node:GetSeed()
 	
-	--local rnd = Random(seed + 3452)
-	--if(NextFloat(rnd, 0,1)>0.90) then
-		--self:GenerateBinarySystem(node,seed) 
-	--else 
+	local rnd = Random(seed + 3452)
+	if(rnd:NextFloat(0,1)>0.90) then
+		self:GenerateBinarySystem(node,seed) 
+		MsgInfo("binary!")
+	else 
 		self:GenerateUnarySystem(node,seed) 
-	--end
+		MsgInfo("unary!")
+	end 
 end
 function generator:GenerateUnarySystem(system, seed) 
+MsgN("aaaaaaaaaaaaa")  
 	--local seed = system.seed
 	local stars = {}
 	local rnd = Random(seed + 3218979)
@@ -110,7 +113,6 @@ function generator:GeneratePlanets(star, spacing, seed)
 		
 		
 		body:Spawn()
-		body:SetUpdating(true,1000)
 		
 		planets[i+1] = body 
 		self:GenerateMoons(body,planetseed)
@@ -167,67 +169,133 @@ function generator:GenerateMoons(planet, seed)
 	planet.moons = moons
 end
 
---[[
-function GEN.GenerateBinarySystem(system, seed) 
-
-	local seed = system.seed
+function generator:GenerateBinarySystem(system, seed) 
+ 
+	--local rnd = Random(seed)
 	
-	local center = sCelestialBody()--ents.Create("star")
-	center.name = (system.name or "") .. "_"
-	center.radius = 0
-	center.mass = 0
-	center.sizepower = 6.9551E8 * 20000
+	--local center = sCelestialBody()--ents.Create("star")
+	--center.name = (system.name or "") .. "_"
+	--center.radius = 0
+	--center.mass = 0
+	--center.sizepower = 6.9551E8 * 20000
+	--center:SetParent(system)
+	--center:Spawn() 
+	
+	local center = ents.Create("star") 
+	center.szdiff = 20000
+	center:SetSeed(seed + 3218888)
+	center:SetName(  system:GetName().."_")
+	local r = 0
+	local c = system:GetParameter(VARTYPE_COLOR)
+	center:SetParameter(VARTYPE_RADIUS,r)
+	center:SetParameter(VARTYPE_COLOR,c)
+	center.radius = r
+	center.mass = 0  
+	center:SetSizepower(6.9551E8 * 20000) 
 	center:SetParent(system)
 	center:Spawn() 
 	
+	
 	local rnd = Random(seed + 3218979)
 	
-	local starmass = 1.9891E30*NextFloat(rnd, 0.8, 2.3)
-	local orbit_a = 1E11*NextFloat(rnd, 0.8, 2.3)
-	local orbit_e = NextFloat(rnd, 0, 0.3)
+	local starmass = 1.9891E30*rnd:NextFloat( 0.8, 2.3)
+	local orbit_a = 1E11*rnd:NextFloat( 0.8, 2.3)
+	local orbit_e = rnd:NextFloat(0, 0.3)
 	
-	local starA = sCelestialBody()--ents.Create("star")
-	starA.name = (system.name or "") .. " A"
-	starA.radius = 6.9551E8
-	starA.mass = starmass
-	starA.color = system.color
-	starA.sizepower = starA.radius * 100
-	starA:SetValue("typename","star")
+	--local starA = sCelestialBody()--ents.Create("star")
+	--starA.name = (system.name or "") .. " A"
+	--starA.radius = 6.9551E8
+	--starA.mass = starmass
+	--starA.color = system.color
+	--starA.sizepower = starA.radius * 100
+	--starA:SetValue("typename","star")
+	--starA:SetParent(center)
+	--starA:Spawn() 
+	
+	local starA = ents.Create("star") 
+	starA.szdiff = 20000
+	starA:SetSeed(seed + 3218255)
+	starA:SetName(  system:GetName() .. " A" )
+	local r = 6.9551E8
+	local c = system:GetParameter(VARTYPE_COLOR)
+	starA:SetParameter(VARTYPE_RADIUS,r)
+	starA:SetParameter(VARTYPE_COLOR,c)
+	starA.radius = r
+	starA.mass = 0  
+	starA:SetSizepower(r * 100) 
 	starA:SetParent(center)
 	starA:Spawn() 
 	
-	local starB = sCelestialBody()--ents.Create("star")
-	starB.name = system.name .. " B"
-	starB.radius = 6.9551E8
-	starB.mass = starmass
-	starB.color = system.color
-	starB.sizepower = starB.radius * 100
-	starB:SetValue("typename","star")
+	
+	--local starB = sCelestialBody()--ents.Create("star")
+	--starB.name = system.name .. " B"
+	--starB.radius = 6.9551E8
+	--starB.mass = starmass
+	--starB.color = system.color
+	--starB.sizepower = starB.radius * 100
+	--starB:SetValue("typename","star")
+	--starB:SetParent(center)
+	--starB:Spawn()  
+	
+	local starB = ents.Create("star") 
+	starB.szdiff = 20000
+	starB:SetSeed(seed + 3218324)
+	starB:SetName(  system:GetName() .. " B" )
+	local r = 6.9551E8
+	local c = system:GetParameter(VARTYPE_COLOR)
+	starB:SetParameter(VARTYPE_RADIUS,r)
+	starB:SetParameter(VARTYPE_COLOR,c)
+	starB.radius = r
+	starB.mass = 0  
+	starB:SetSizepower(r * 100) 
 	starB:SetParent(center)
-	starB:Spawn()  
+	starB:Spawn() 
 	
-	starA.orbit = SpaceOrbit()
-	starA.orbit.a = orbit_a 
-	starA.orbit.e = orbit_e
-	starA.orbit.inclination = 0
-	starA.orbit.periargument = 0
-	starA.orbit.ascendinglongitude = 0
-		starA:SetUpdating()
 	
-	starB.orbit = SpaceOrbit()
-	starB.orbit.a = orbit_a
-	starB.orbit.e = orbit_e
-	starB.orbit.inclination = 0
-	starB.orbit.periargument = 0
-	starB.orbit.ascendinglongitude = 3.1415926
-		starB:SetUpdating()
+	local orbit = starA:AddComponent(CTYPE_ORBIT)  
+	starA.orbit = orbit 
+	starA.orbit:SetOrbit(
+		orbit_a,
+		orbit_e,
+		0,
+		0,
+		3.1415926,
+		0,
+		3000
+	)
+	--starA.orbit = SpaceOrbit()
+	--starA.orbit.a = orbit_a 
+	--starA.orbit.e = orbit_e
+	--starA.orbit.inclination = 0
+	--starA.orbit.periargument = 0
+	--starA.orbit.ascendinglongitude = 0
+	starA:SetUpdating(true,10)
 	
-	GEN.GeneratePlanets(center, orbit_a* 3, seed+23979)
-	
-	GEN.GeneratePlanets(starA, 6.9551E8* 10, seed+32789)
-	GEN.GeneratePlanets(starB, 6.9551E8* 10, seed-2390719)
+	local orbit = starB:AddComponent(CTYPE_ORBIT)  
+	starB.orbit = orbit
+	starB.orbit:SetOrbit(
+		orbit_a,
+		orbit_e,
+		0,
+		0,
+		0,
+		0,
+		3000
+	)
+	--starB.orbit = SpaceOrbit()
+	--starB.orbit.a = orbit_a
+	--starB.orbit.e = orbit_e
+	--starB.orbit.inclination = 0
+	--starB.orbit.periargument = 0
+	--starB.orbit.ascendinglongitude = 3.1415926
+	starB:SetUpdating(true,10)
+	--
+	--GEN.GeneratePlanets(center, orbit_a* 3, seed+23979)
+	--
+	--GEN.GeneratePlanets(starA, 6.9551E8* 10, seed+32789)
+	--GEN.GeneratePlanets(starB, 6.9551E8* 10, seed-2390719)
 end
-
+--[[
 return GEN
 ]]
  
