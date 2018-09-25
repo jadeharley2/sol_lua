@@ -29,7 +29,7 @@ function ENT:Spawn()
 	
 	if(surfacecom:HasAtmosphere() )then
 		local atmosphere = self:AddComponent(CTYPE_ATMOSPHERE)  
-		atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
 		self.atmosphere = atmosphere
 	end
 	if(surfacecom:HasAtmosphere() and false )then
@@ -112,7 +112,7 @@ function ENT:Enter()
 		self.modelB:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	end
 	if self.atmosphere then
-		self.atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
+		self.atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	end
 end
 

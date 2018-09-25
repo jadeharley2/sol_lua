@@ -389,8 +389,11 @@ function OnStartup()
 	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)  
 	render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8)
 	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	render.SetGroupMode(RENDERGROUP_LOCAL,RENDERMODE_ENABLED) 
+	 
 	
 	cam:SetFOV(settings.GetNumber("engine.fov"))
 	settings.Apply() 

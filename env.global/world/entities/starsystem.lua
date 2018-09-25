@@ -131,7 +131,26 @@ function ENT:Regenerate()
 		--cam:SetParent(self)
 	end
 end
-
+function ENT:MapMode()
+	for	k,v in pairs(self.stars[1].planets) do
+		v.orbit = nil
+		v:RemoveComponents(CTYPE_ORBIT)
+		v:SetPos(Vector(0.0001+k*0.00001,0,k*-0.000001))
+		local spt = v.sptext or v:AddComponent(CTYPE_SPRITETEXT)
+		if spt then
+			spt:SetText(v:GetName() 
+			.."\nClass: "..(v:GetParameter(VARTYPE_ARCHETYPE) or "default")
+			.."\nRadius: "..((v:GetParameter(VARTYPE_RADIUS) or 0)/1000).."km"
+			)
+			spt:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+			spt:SetMatrix(matrix.Translation(Vector(0,-0.03,0)))
+			--spt:SetColor(Vector(0.1,0.1,0.1))
+			spt:SetBrightness(0.1)
+			v.sptext = spt
+		end
+	end
+	self.stars[1]:SetBrightness(1e18)
+end
 if CLIENT then
 	function ENT:ReloadSkybox()
 		MsgN("reload star sky")

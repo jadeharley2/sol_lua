@@ -36,6 +36,11 @@ function ENT:Spawn()
 		surface:Spawn()  
 	end
 end
+function ENT:SetBrightness(b)
+	if self.light then
+		self.light:SetBrightness(b) 
+	end
+end
 function ENT:SetColor(color)  
 	self:SetParameter(VARTYPE_COLOR,color)
 	self.light:SetColor(color+Vector(0.1,0.1,0.1)) 
