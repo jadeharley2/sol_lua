@@ -43,12 +43,11 @@ function OBJ:KeyDown(key)
 	if input.KeyPressed(KEYS_C) then
 		self:ToggleMouse()
 	end
-		if (input.KeyPressed(KEYS_U)) then 
+		if (input.KeyPressed(KEYS_R)) then 
 			self.mouseWheelDelta = self.mouseWheelDelta + 100
-			self.speed = math.pow(2, self.mouseWheelDelta / 100) * 0.01
-			MsgN("a")
+			self.speed = math.pow(2, self.mouseWheelDelta / 100) * 0.01 
 		end
-		if (input.KeyPressed(KEYS_J)) then 
+		if (input.KeyPressed(KEYS_F)) then 
 			self.mouseWheelDelta = self.mouseWheelDelta - 100
 			self.speed = math.pow(2, self.mouseWheelDelta / 100) * 0.01
 		end
@@ -95,7 +94,16 @@ function OBJ:Update()
 		end
 		local mhag = input.MouseIsHoveringAboveGui()
 		local rmb = input.rightMouseButton()
-		if self:MouseLocked() and not mhag then--not mhag and rmb then
+
+
+		local shx = 0
+		local shy = 0
+		if input.KeyPressed(KEYS_H) then shx = shx - 10 end
+		if input.KeyPressed(KEYS_K) then shx = shx + 10 end
+		if input.KeyPressed(KEYS_U) then shy = shy - 10 end
+		if input.KeyPressed(KEYS_J) then shy = shy + 10 end
+
+		if (self:MouseLocked() and not mhag) or (shx~=0 or shy~=0) then--not mhag and rmb then
 			if not self.lms_active then
 				input.SetCursorHidden(true)
 				self.lms_active = true
@@ -108,9 +116,18 @@ function OBJ:Update()
 			local offset = mousePos - center
 			self.mouse_lastpos = mousePos
 			input.setMousePosition(center)
-			cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
-			cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+
+			
+			offset = offset + Point(shx,shy)
+			if self.firstp then
+				cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
+				cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+			end
+			self.firstp = true
 		end 
+		if self.firstp and not self:MouseLocked() and (shx==0 and shy==0) then
+			self.firstp = false
+		end
 		if self.lms_active and (not rmb or mhag) then
 			input.SetCursorHidden(false)
 			self.lms_active = false
