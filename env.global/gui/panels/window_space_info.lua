@@ -18,6 +18,8 @@ end
 function PANEL:Set(actor) 
 	self.stats:Set(actor) 
 end
+local au = 149597870700 --m
+local earth_m = 5.97237*10e24
 function PANEL:UpdateData()
 
 	self.inner:Clear()
@@ -72,8 +74,11 @@ function PANEL:UpdateData()
 			self:AddGroup(p_planet,"General")
 			self:AddRecord(p_planet,"Name:", planet:GetName() or "unknown") 
 			self:AddRecord(p_planet,"Radius:", planet:GetParameter(VARTYPE_RADIUS)/1000 .. "km" ) 
-			local dd,dp = DistanceNormalize(planet:GetAbsPos():Length(),true,false)
-			self:AddRecord(p_planet,"Dist to parent:",tostring(dd)..dp ) 
+			self:AddRecord(p_planet,"Mass:", (planet:GetParameter(VARTYPE_MASS) or "unknown")/earth_m  .. " e.m." ) 
+			local dptp = planet:GetAbsPos():Length()
+			local dd,dp = DistanceNormalize(dptp,true,false)
+			self:AddRecord(p_planet,"Dist to parent:",tostring(dd)..dp )  
+			self:AddRecord(p_planet,"Dist to parent2:",tostring(dptp/au).."au" ) 
 			tabs:AddTab("CurPlanet",p_planet)
 		end
 

@@ -65,6 +65,10 @@ function ENT:Enter()
 	--self.model:Enable(false)
 	if CLIENT then
 		 render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
+		 
+		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND) 
+		render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8)
+		render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	end
 end
 function ENT:SpawnSurface() 

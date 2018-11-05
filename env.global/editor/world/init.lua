@@ -59,7 +59,7 @@ function editor:Open()
 	
 	render.DCISetEnabled(true)
 	
-	hook.Add("main.predraw","editor",function() self:Update() end)
+	hook.Add(EVENT_GLOBAL_PREDRAW,"editor",function() self:Update() end)
 	hook.Add("input.mousedown","editor",function() self:MouseDown() end )
 	hook.Add("input.keydown","editor", function() self:KeyDown() end )
 	--hook.Add("input.doubleclick","editor",editor.DoubleClick)
@@ -82,7 +82,7 @@ function editor:Close()
 		if not isfunction(self.selectortemp) then self.selectortemp:Close() end
 		self.selectortemp = nil 
 	end 
-	hook.Remove("main.predraw","editor")
+	hook.Remove(EVENT_GLOBAL_PREDRAW,"editor")
 	hook.Remove("input.mousedown","editor")
 	hook.Remove("input.keydown","editor")
 	--hook.Remove("input.doubleclick","editor")

@@ -6,6 +6,7 @@ function ENT:Init()
 end
 
 function ENT:Enter()  
+	self:AddFlag(FLAG_STARSYSTEM)
 	TSYSTEM = self
 	if not self.loaded then 
 		self:SetParameter(VARTYPE_TYPE,NTYPE_STARSYSTEM) 

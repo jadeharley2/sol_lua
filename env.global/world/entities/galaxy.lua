@@ -52,6 +52,7 @@ function ENT:Enter()
 		
 		self.loaded = true
 	end
+	console.Call("r_maxexposure 5") 
 end
 
 function ENT:Leave() 
@@ -60,4 +61,5 @@ function ENT:Leave()
 	self:RemoveComponents(CTYPE_PARTITION3D)
 	self:RemoveComponents(CTYPE_PROCEDURAL) 
 	self.loaded = nil
+	console.Call("r_maxexposure 20") 
 end

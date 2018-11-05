@@ -54,7 +54,7 @@ function SetController(name)
 			local prev = global_controller   
 			if prev and prev ~=0 then 
 				prev:UnInit()       
-				if prev.Update then hook.Remove("main.predraw", "controller") end
+				if prev.Update then hook.Remove(EVENT_GLOBAL_PREDRAW, "controller") end
 				if prev.MouseWheel then hook.Remove("input.mousewheel", "controller" ) end 
 				if prev.MouseDown then hook.Remove("input.mousedown", "controller") end
 				if prev.KeyDown then hook.Remove("input.keydown", "controller" ) end
@@ -62,7 +62,7 @@ function SetController(name)
 			
 			local result = ts:Init()
 			if result ~= false then
-				if ts.Update then hook.Add("main.predraw", "controller", function() 
+				if ts.Update then hook.Add(EVENT_GLOBAL_PREDRAW, "controller", function() 
 					ts:Update()  
 					hook.Call("main.postcontroller")
 				end) end   
@@ -77,7 +77,7 @@ function SetController(name)
 				
 				local result = prev:Init() 
 				if result ~= false then
-					if prev.Update then hook.Add("main.predraw", "controller", function() 
+					if prev.Update then hook.Add(EVENT_GLOBAL_PREDRAW, "controller", function() 
 						prev:Update()  
 						hook.Call("main.postcontroller")
 					end) end
@@ -92,7 +92,7 @@ function SetController(name)
 	else                                      
 		if global_controller and global_controller ~=0 then
 			global_controller:UnInit()
-			if global_controller.Update then hook.Remove("main.predraw", "controller") end
+			if global_controller.Update then hook.Remove(EVENT_GLOBAL_PREDRAW, "controller") end
 			if global_controller.MouseWheel then hook.Remove("input.mousewheel", "controller" ) end
 			if global_controller.MouseDown then hook.Remove("input.mousedown", "controller") end
 			if global_controller.KeyDown then hook.Remove("input.keydown", "controller" ) end

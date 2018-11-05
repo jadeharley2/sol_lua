@@ -40,13 +40,13 @@ function gizmometa:StartDrag(part)
 		end
 		
 		
-		hook.Add("main.predraw","GIZMO_DRAG",function() self:DragUpdate() end)
+		hook.Add(EVENT_GLOBAL_PREDRAW,"GIZMO_DRAG",function() self:DragUpdate() end)
 	end
 end
 
 function gizmometa:Shift(oldpos,newpos)
 	local shift = newpos - oldpos
-	MsgN(shift)
+	--MsgN(shift)
 	for k,v in pairs(worldeditor.selected) do
 		k:SetPos(k:GetPos()+shift)
 	end

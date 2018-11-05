@@ -3,13 +3,13 @@
     // Наведите указатель мыши, чтобы просмотреть описания существующих атрибутов.
     // Для получения дополнительной информации посетите: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
+    "debugServer" : 41912,
     "configurations": [
-    
+        
         {
-            "type": "lua",
-            "request": "launch",
-            "name": "Launch",
-            "program": "${file}"
+            "name": "MoonSharp Attach",
+            "type": "moonsharp-debug",
+            "request": "attach",
         }
-    ]
+    ] 
 }

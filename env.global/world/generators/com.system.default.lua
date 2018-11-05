@@ -7,13 +7,21 @@ generator[EVENT_GENERATOR_SETUP] = function(self, node) -- system(self)
 	local seed = node:GetSeed()
 	
 	local rnd = Random(seed + 3452)
-	if(rnd:NextFloat(0,1)>0.9) then --0.9
-		self:GenerateBinarySystem(node,seed) 
-		MsgInfo("binary!")  
-	else 
-		self:GenerateUnarySystem(node,seed) 
-		MsgInfo("unary!")
-	end 
+	--MsgN("seed",seed)
+	if seed~=1062413718 then
+		self:GenerateSystemEntry(node,seed) 
+	else
+		---[[
+		if(rnd:NextFloat(0,1)>0.9) then --0.9
+			self:GenerateBinarySystem(node,seed) 
+			--self:GenerateHierarchicalSystem(node,node,seed) 
+			--MsgInfo("binary!")  
+		else 
+			self:GenerateUnarySystem(node,seed) 
+			--MsgInfo("unary!")
+		end 
+		--]]
+	end
 end
 function generator:GenerateUnarySystem(system, seed) 
 
@@ -305,3 +313,248 @@ end
 return GEN
 ]]
  
+local au = 149597870700 --m
+local sol_mass = 1.9891E30 --kg
+local sol_r = 695700000 -- m
+local sol_lum = 2.23e22  -- m
+local earth_r = 6371000 --m
+local earth_m = 5.97237*10e24 --kg 
+local jupiter_r = 69911000 --m
+local jupiter_m = 1.8982*10e27 --kg
+
+local spd =1-- 1e8--10000/(orbit_a/au)
+--[[
+	56±2 % single, 
+	33±2% binary, 
+	8±1% triple, 
+	3±1% +.
+
+]]
+function generator:GenerateSystemEntry(system, seed, mass) 
+	local rnd = Random(seed)
+
+	mass = mass or sol_mass * rnd:NextFloat( 0.1, 10) --total system mass
+	radius = radius or 100 * au -- max subnode distance
+
+	local stars = {}
+	local planets = {}
+	system.stars = stars
+	system.planets = planets
+
+	self:GenerateHierarchicalSystem(system, system, seed, mass, radius) 
+  
+end
+function generator:GenerateHierarchicalSystem(system, parent, seed, mass, radius) 
+  
+	local rnd = Random(seed)
+
+	mass = mass or sol_mass * rnd:NextFloat( 0.1, 10) --total system mass
+	radius = radius or 100 * au -- max subnode distance
+	
+	local anchor_mass = mass * rnd:NextFloat( 0.6, 0.9)
+
+	if mass > 0.1*sol_mass and rnd:NextFloat(0,1)>0.66 then --binary object probability
+		
+		local center = ents.Create("mass_center")  
+		center:SetSeed(seed + 3218888)  
+		center:SetSizepower(radius) 
+		center:SetParent(parent) 
+		center:SetParameter(VARTYPE_MASS,anchor_mass)
+		center:Spawn() 
+
+
+	
+		local starmass = anchor_mass * 0.45
+		local orbit_a = radius*rnd:NextFloat( 0.1, 0.4)
+		local orbit_e = rnd:NextFloat(0, 0.3) 
+ 
+
+		local starA = self:GenerateHierarchicalSystem(system, center, seed + 3218255, starmass, radius/10) 
+		local starB = self:GenerateHierarchicalSystem(system, center, seed + 3218324, starmass, radius/10) 
+ 
+		
+		local orbit = starA:AddComponent(CTYPE_ORBIT)  
+		starA.orbit = orbit 
+		starA.orbit:SetOrbit(
+			orbit_a,orbit_e,
+			0,
+			0,
+			3.1415926,
+			0,
+			spd
+		)  
+		orbit:SetParameter("ms",spd*orbit:GetOrbitalSpeed(anchor_mass,starmass))
+		starA:SetSizepower(orbit:GetHillSphereRadius(anchor_mass,starmass))
+
+		local orbit = starB:AddComponent(CTYPE_ORBIT)  
+		starB.orbit = orbit
+		starB.orbit:SetOrbit(
+			orbit_a,orbit_e,
+			0,
+			0,
+			0,
+			0,
+			spd
+		)  
+		orbit:SetParameter("ms",spd*orbit:GetOrbitalSpeed(anchor_mass,starmass))
+		starB:SetSizepower(orbit:GetHillSphereRadius(anchor_mass,starmass))
+
+		starA:SetAng(Vector(rnd:NextFloat(-90, 90),rnd:NextFloat(-180, 180),rnd:NextFloat(-90, 90)))
+		starB:SetAng(Vector(rnd:NextFloat(-90, 90),rnd:NextFloat(-180, 180),rnd:NextFloat(-90, 90)))
+		starA:SetUpdating(true,10)
+		starB:SetUpdating(true,10) 
+		-- if orbit is less than star.radius*number -> can spawn subs inside [minr...maxr] bounds
+		--if orbit_a < r
+		local sza = starA:GetSizepower()
+		for k,v in pairs(starA:GetChildren()) do
+			if v.orbit and v.orbit:GetParameter('a')>sza then
+				v:Despawn()
+			end
+		end
+		local szb = starB:GetSizepower()
+		for k,v in pairs(starB:GetChildren()) do
+			if v.orbit and v.orbit:GetParameter('a')>szb then
+				v:Despawn()
+			end
+		end
+
+		local minimum_r = orbit_a*2
+		local maximum_r = radius/3
+
+		self:GenerateLinearSystem(system,center,seed + 345235, anchor_mass * 0.1,radius,minimum_r,maximum_r)
+		 
+
+		return center
+	else
+
+		local starmass = anchor_mass
+
+		local starA = ents.Create("star") 
+		starA.szdiff = 20000
+		starA:SetSeed(seed + 3218255)
+		starA:SetName(  system:GetName() .. " A" )
+		local r = 6.9551E8*(starmass/sol_mass)
+		local c = system:GetParameter(VARTYPE_COLOR)
+		starA:SetParameter(VARTYPE_RADIUS,r)
+		starA:SetParameter(VARTYPE_COLOR,c)
+		starA:SetParameter(VARTYPE_MASS,starmass)
+		starA:SetParameter(VARTYPE_BRIGHTNESS,sol_lum*(starmass/sol_mass)/100) 
+		starA.radius = r 
+		starA:SetSizepower(radius) 
+		starA:SetParent(parent)
+		starA:Spawn() 
+		
+		local minimum_r = r*2.5
+		local maximum_r = radius*2
+		self:GenerateLinearSystem(system,starA,seed + 355335,anchor_mass,radius,minimum_r,maximum_r)
+
+		local id = #system.stars+1 
+		system.stars[id] = starA
+
+		starA:SetName(system:GetName().." star "..id)
+
+		return starA
+	end
+	
+	 
+	--self:GeneratePlanets(center,seed,6.9551E8*500,6.9551E8*100,6.9551E8 * 20000)
+end
+ 
+
+function generator:GenerateLinearSystem(system, parent, seed, mass, radius,minr,maxr) 
+
+	local rnd = Random(seed)
+
+	local starmass = parent:GetParameter(VARTYPE_MASS) 
+
+	--local a_min_a = (parent:GetParameter(VARTYPE_RADIUS) or 6.9551E8)*2--starA.orbit:GetRocheLimitRigid(anchor_mass,starmass)
+	--local a_max_a = parent:GetSizepower()--parent.orbit:GetHillSphereRadius(mass,starmass)
+	minr = minr + minr*rnd:NextFloat(0,10)
+	local sbradius = radius/10
+	if maxr>minr then
+		local ncount =rnd:NextFloat(0, 10) --math.min( rnd:NextFloat(0, 6),(maxr-minr)/(sbradius/10))
+		local ptd = minr--(maxr-minr)/ncount*2 
+		local medmass = mass/ncount
+		for k=1,ncount do
+			
+
+
+
+			local m = earth_m*rnd:NextFloat(0.1, 5) 
+			local r = earth_r*(m/earth_m) 
+			
+
+
+
+			local body = ents.Create("planet")
+			local planetseed = seed+23*k--planetrnd:NextInt()
+			body:SetSeed(planetseed)
+			--body:SetName(  (star:GetName() or "") .. " " .. "planet "..tostring(i+1))--NameGenerator.GetChar(i))
+			body.mass = m
+			body.radius = r 
+			body:SetParameter( VARTYPE_RADIUS,r)
+			body:SetParameter( VARTYPE_MASS,m)
+			
+
+			local sub = body
+
+
+
+			local orbit_a = minr + ptd*(k-1)*(k-1)
+			local orbit_e = rnd:NextFloat(0, 0.3) 
+			local orbit_i = rnd:NextFloat(0, 0.1) 
+			local orbit_al = rnd:NextFloat(0, 10) 
+			local orbit = sub:GetComponent(CTYPE_ORBIT) or sub:AddComponent(CTYPE_ORBIT)  
+			sub.orbit = orbit
+			sub.orbit:SetOrbit(
+				orbit_a,orbit_e,
+				orbit_i,
+				0,
+				orbit_al,
+				0,
+				spd
+			)  
+			orbit:SetParameter("ms",spd*orbit:GetOrbitalSpeed(starmass,m))
+			sub:SetUpdating(true,10)
+			local psz = orbit:GetHillSphereRadius(starmass,m)
+			sub:SetSizepower(psz)
+
+			body.szdiff = psz/r
+
+
+			body.orbitIsSet = true 
+			
+			body:SetParameter(NTYPE_TYPENAME,"planet")
+			body:SetParent(parent)
+			--body:SetSizepower(body.radius*100)
+			
+			local ssd = planetseed--body:GetSeed()
+			--MsgN("?????!")
+			if ssd ==2008649333 then
+			elseif ssd ==100310535 then 
+				--2008649333
+				body:SetParameter(VARTYPE_ARCHETYPE,"sd_hellworld") 
+			elseif ssd ==311834050 then 
+				body:SetParameter(VARTYPE_ARCHETYPE,"earth") 
+			elseif ssd ==2091568607 then 
+				body:SetParameter(VARTYPE_ARCHETYPE,"hs_lowas") 
+			elseif  Random(ssd):NextDouble() > 0.1 then 
+				--MsgN("asdfjas!")
+				body:SetParameter(VARTYPE_ARCHETYPE,"gen_barren")
+			end
+			
+			
+			body:Spawn()
+			
+
+			local id = #system.planets+1 
+			system.planets[id] = body
+
+			body:SetName(system:GetName().." planet "..id)
+
+
+
+
+		end
+	end
+end

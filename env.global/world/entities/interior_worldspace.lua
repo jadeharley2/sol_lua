@@ -1,3 +1,4 @@
+module.Require("procedural")
 
 function ENT:CreateStaticLight( pos, color,power)
 
@@ -55,7 +56,7 @@ function ENT:Spawn()
 		
 		local b = procedural.Builder()
 		b:BuildNode(data,space)
-
+ 
 		--local map = SpawnSO(wtype,space,Vector(0,0,0),1)  
 		--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
 		 

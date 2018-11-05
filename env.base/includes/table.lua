@@ -35,3 +35,12 @@ table.Select = function(t,func,...)
 	end
 	return t2
 end
+table.Merge = function(from,to,deep) 
+	for k,v in pairs(from) do
+		if deep then
+			to[k] = deepcopy(v)
+		else
+			to[k] = v
+		end
+	end 
+end

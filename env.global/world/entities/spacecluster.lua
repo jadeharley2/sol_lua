@@ -54,7 +54,7 @@ function ENT:Init()
 	particlesys:SetRenderGroup(RENDERGROUP_DEEPSPACE)
 	particlesys:AddNode(0)
 	particlesys:SetTexture(0,GspcInit)
-	particlesys:SetBrightness(0.0001*50)--0.2)
+	particlesys:SetBrightness(0.0001*50*4)--0.2)
 	
 	--self:AddEventListener(EVENT_PARTITION_CREATE,"space", OnPCreate)
 	--self:AddEventListener(EVENT_PARTITION_COLLAPSE,"space", OnPDestroy)

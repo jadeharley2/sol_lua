@@ -15,7 +15,7 @@ function ENT:Spawn()
 	self:UpdateShadowMap()
 end
 function ENT:Despawn() 
-	hook.Remove("main.predraw", "shadowmapupdate")
+	hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate")
 	hook.Remove("settings.changed","shadowmapupdate")
 end
 function ENT:UpdateShadowMap()
@@ -43,7 +43,7 @@ function ENT:UpdateShadowMap()
 		
 		
 		--self:SetUpdating(true)
-		hook.Add("main.predraw", "shadowmapupdate", function() self:UpdatePos() end)
+		hook.Add(EVENT_GLOBAL_PREDRAW, "shadowmapupdate", function() self:UpdatePos() end)
 	else
 		local cc = self.cc 
 		local target = self.target
@@ -54,13 +54,13 @@ function ENT:UpdateShadowMap()
 		if camera then camera:UnsetShadowMap() self:RemoveComponent(camera) self.camera = nil end
 		
 		--self:SetUpdating(false)
-		hook.Remove("main.predraw", "shadowmapupdate")
+		hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate")
 	end 
 end
 function ENT:UpdatePos() 
 	local c = GetCamera()
 	if not self or not IsValidEnt(self) then
-		hook.Remove("main.predraw", "shadowmapupdate")
+		hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate")
 		return
 	end
 	local p = self:GetParent()
@@ -86,6 +86,6 @@ function ENT:UpdatePos()
 			end
 		end
 	else 
-		hook.Remove("main.predraw", "shadowmapupdate")
+		hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate")
 	end
 end

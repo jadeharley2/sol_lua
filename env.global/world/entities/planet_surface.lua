@@ -2,7 +2,8 @@
 function ENT:Init()
 	local constrot  = self:AddComponent(CTYPE_CONSTROT) 
 	--constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
-	constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0))
+	--constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0)) 
+	--constrot:SetSpeed(0.001)
 	self.constrot = constrot
 	self:SetSpaceEnabled(true,1)
 end
@@ -145,5 +146,6 @@ function ENT:Leave()
 end
 function ENT:Think()
 	--MsgN("d")
-	self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
+	--self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
+	--cr:SetPostOffset()
 end
