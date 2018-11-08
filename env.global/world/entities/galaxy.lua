@@ -28,7 +28,7 @@ function ENT:Enter()
 		local partition = self:AddComponent(CTYPE_PARTITION3D)
 		local generator = self:AddComponent(CTYPE_PROCEDURAL) 
 		
-		partition:SetBBoxPower(2)
+		partition:SetBBoxPower(2.5)
 		partition:SetPowerLimit(16)
 		
 		generator:AddEvent(EVENT_GENERATOR_SETUP)

@@ -21,7 +21,7 @@ function ENT:Spawn()
 	model:SetFadeBounds(0,99999,0)  
 	model:SetColor(scolor)
 	model:SetMaxRenderDistance(100000)
-	
+	model:SetFlare(true)
  
 	local particlesys2 = self:AddComponent(CTYPE_PARTICLESYSTEM2) 
 	particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
@@ -43,7 +43,7 @@ function ENT:Spawn()
 	--particlesys:SetMaxRenderDistance(100000)
 	--
 	--self.particlesys = particlesys
-	self.model = model
+	self.model = model 
 	
 	--local constrot  = self:AddComponent(CTYPE_CONSTROT) 
 	--constrot:SetParams(1,0,matrix.Rotation(0.1,0.1,0.2))

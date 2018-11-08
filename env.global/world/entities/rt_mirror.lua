@@ -149,7 +149,7 @@ function ENT:UpdatePos()
 		end
 	end
 	
-	rc:RequestDraw()
+	rc:RequestDraw(self.model)
 	
 	 
 	MIRROR = self
