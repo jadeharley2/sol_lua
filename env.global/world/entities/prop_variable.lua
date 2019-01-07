@@ -1,6 +1,23 @@
 local NO_COLLISION = NO_COLLISION or 2
 local COLLISION_ONLY = COLLISION_ONLY or 1 
 
+function ItemPV(type,seed,modtable)
+	local j = json.Read(type) 
+	if not j then return nil end 
+	local t = {
+		sizepower=1, 
+		seed= seed, 
+		updatespace= 0,
+		parameters =  {
+			luaenttype = "prop_variable",
+			name = j.name,
+			form = type,
+			icon = j.icon,
+		}, 
+	}
+	if modtable then table.Merge(modtable,t,true) end
+	return json.ToJson(t)
+end
 function SpawnPV(type,ent,pos,ang)
 	local j = json.Read(type) 
 	if not j then return nil end
@@ -20,7 +37,7 @@ function SpawnPV(type,ent,pos,ang)
 	e.data = j
 	e.tags = tags
 	e.collonly = false 
-	e:SetParameter(VARTYPE_CHARACTER,type)  
+	e:SetParameter(VARTYPE_FORM,type)  
 	e:SetSizepower(1)
 	e:SetParent(ent)
 	e:SetPos(pos) 
@@ -47,8 +64,8 @@ function ENT:Init()
 end
 function ENT:Load()
 	self:PreLoadData()
-	local modelval = self:GetParameter(VARTYPE_MODEL)
-	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+	local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
+	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
 	if modelval then 
 		self:SetModel(modelval,modelscale)
 	else
@@ -90,8 +107,12 @@ local function ButtonUse(s,user)
 end
 function ENT:PreLoadData() 
 	if not self.data then
-		local type = self:GetParameter(VARTYPE_CHARACTER)  
+		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
 		self.data = json.Read(type) 
+	end
+	if not self.data then
+		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
+		MsgN("prop_variable error no type "..tostring(type or "nil"))
 	end
 end
 
@@ -223,7 +244,7 @@ end
 ENT.editor = {
 	name = "Prop Variable",
 	properties = {
-		type = {text = "type",type="parameter",valtype="string",key=VARTYPE_CHARACTER,reload=true}, 
+		type = {text = "type",type="parameter",valtype="string",key=VARTYPE_FORM,reload=true}, 
 		 
 	},  
 	

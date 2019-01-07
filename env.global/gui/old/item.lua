@@ -4,7 +4,39 @@ CURRENT_AB_ITEMS = {}
 
 local unknowntex = LoadTexture("textures/gui/icons/unknown.png")
 local equippedtex = LoadTexture("textures/gui/equipped.png")
- 
+
+local function dragupdate() 
+	local c = CURRENT_DRAG
+	if c then 
+		local mousePos = input.getMousePosition() 
+		local vsize = GetViewportSize()
+		c:SetPos((mousePos-vsize/2)*Point(2,-2)+Point(70,50))
+		c:SetCanRaiseMouseEvents(false)
+		
+		local mhag = input.MouseIsHoveringAboveGui()
+		local lmb = input.leftMouseButton() 
+		if not lmb then
+			if not mhag then
+				hook.Call("event.item.droprequest",c)
+					--MsgN("Dropped to world")
+			else
+				c:OnDrop()
+				if CURRENT_SLOT then
+					CURRENT_SLOT:Drop(c)
+					CURRENT_SLOT = nil
+					--CURRENT_DRAG = false 
+					--MsgN("Dropped on new slot")
+				else 
+					c.lastSlot:Drop(c)
+					--CURRENT_DRAG = false 
+					--MsgN("Dropped on last slot")
+				end
+				c:SetCanRaiseMouseEvents(true)
+			end
+			hook.Remove("main.predraw", "gui.item.drag")
+		end
+	end
+end
 local function abupdate() 
 	local ct = CurTime()
 	for k,v in pairs(CURRENT_AB_ITEMS) do
@@ -24,22 +56,16 @@ local function abupdate()
 		end
 	end
 end
-hook.Add(EVENT_GLOBAL_PREDRAW, "gui.item.abupdate", abupdate)
+hook.Add("main.predraw", "gui.item.abupdate", abupdate)
 --hook.Add("ability.cast","item.update",function() 
 --end)
 
-function Item(storage,slot,data)
+function Item(ent,inv)
 	local item =  panel.Create("item")
-	item.storage = storage
+	item.inv = inv
 	item:Dock(DOCK_FILL)
-	item:Set(slot,data)
+	item:Set(ent)
 	return item
-end
-function PANEL:MakeCopy()
-	local cpy = panel.Create("item")
-	cpy.original = self
-	cpy:Set(self.storeslot,self.item) 
-	return cpy
 end
 
 function PANEL:Init() 
@@ -86,59 +112,52 @@ function PANEL:Init()
 end
 
 function PANEL:MouseDown(fid)
-	if not panel.current_drag and fid == 1 then
-	
-		if self.original == nil then 
-			panel.start_drag_on_shift(self,1,function(s) 		
-				local p = s:GetParent()
-				if p then p:Remove(s) end
-				s:Show()
-				s:SetPos(input.getInterfaceMousePos()*GetViewportSize()+Point(50,-50))
-				s.lastSlot = p
-				--s:SetCanRaiseMouseEvents(true)
-				return true 
-			end,true) 
-		else
-			local p = self:GetParent() 
-			if p then p:Remove(self) p.item = nil  end
-			if p.OnUnset then p:OnUnset(self) end
-		end
-		
-		 
-	end  
-end
-function PANEL:MouseClick(fid) 
-	if not panel.current_drag and fid==2 then 
-		local itemi = self.item
-		--local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
-		local context = {
-			{text = ""..self.title:GetText()},
-			--{text = "use",action = ACT_USE},
-			{text = "drop",action = function(item) item.storage:TakeItem(item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
-			--{text = "B",action = function(item,context) MsgN("ho!") end},
-			--{text = "CCC",sub={
-			--	{text = "lel"},
-			--	{text = "1"},
-			--	{text = "2"},
-			--	{text = "3",action = function(item,context) MsgN("JA!") end},
-			--}},
-		}
-		
-		if itemi and itemi.IsEquipped then
-			if itemi:IsEquipped() then
-				context[2] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
-			else
-				context[2] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
+	if not CURRENT_DRAG then
+		--MsgN("CLICK! ",fid)
+		if fid==1 then
+			local CTD = CurTime()-0.2
+			--MsgN(LAST_CONTEXTMENU_CLOSE_TIME)
+			if (LAST_DROP~=self or LAST_DROP_TIME < CTD) and (not LAST_CONTEXTMENU_CLOSE_TIME or LAST_CONTEXTMENU_CLOSE_TIME<CTD) then--
+				self:Pick() 
 			end
+			--MsgN("CLICK=> ",CURRENT_DRAG)
+		else
 		end
-		
-		ContextMenu(self,context)
-	end 
+	end
+end
+function PANEL:MouseClick(fid)
+	if not CURRENT_DRAG then
+		if fid==2 then 
+			local itemi = self.item
+			local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
+			local context = {
+				{text = ""..self.title:GetText()},
+				{text = "use",action = ACT_USE},
+				{text = "drop",action = function(item) hook.Call("event.item.droprequest",item) return false end},
+				--{text = "B",action = function(item,context) MsgN("ho!") end},
+				--{text = "CCC",sub={
+				--	{text = "lel"},
+				--	{text = "1"},
+				--	{text = "2"},
+				--	{text = "3",action = function(item,context) MsgN("JA!") end},
+				--}},
+			}
+			
+			if itemi.IsEquipped then
+				if itemi:IsEquipped() then
+					context[2] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
+				else
+					context[2] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
+				end
+			end
+			
+			ContextMenu(self,context)
+		end
+	end
 end
 
 function PANEL:TrySetTexture(name)
 	if not name then return false end
-	if not isstring(name) then return false end
 	local basedir = "textures/gui/icons/"
 	local tfn = basedir..name..".png"
 	if file.Exists(tfn) then
@@ -150,40 +169,20 @@ function PANEL:TrySetTexture(name)
 	end
 end
 
-function PANEL:Set(slot,item)
+function PANEL:Set(item)
 	--hook.Remove("ability.cast","item."..tostring(3))
 	
-	
 	self.base.SetColorAuto(self,Vector(0.9,0.9,0.9),0.1)
-	self.storeslot = slot
-	self.item = item
-	 
-	local data = item.data
-	if data then
-		local title =   data:Read("/parameters/name")
-		local luatype = data:Read("/parameters/luaenttype")
-		local class =   data:Read("/parameters/form") or data:Read("/parameters/character")
-		local amount =  data:Read("/parameters/amount")
-		local icon =    data:Read("/parameters/icon")
-		--MsgN(icon)
-		self.title:SetText(title or class or luatype or "???")
-		
-		if not ( self:TrySetTexture(icon) or self:TrySetTexture(class) or self:TrySetTexture(luatype) ) then 
-			if class then
-				
-			end
+	
+	if item.GetClass then 
+		local class = item:GetClass()
+		self.title:SetText(item.title or class)
+		if not self:TrySetTexture(class) then  
 			self:SetTexture(unknowntex)
 		end
-		
-		if item.count>1 then
-			self.amount:SetText(tostring(item.count)) 
-		else
-			self.amount:SetText("")
-		end 
+	else
+		self:SetTexture(unknowntex)
 	end
-	
-	if true then return nil end
-	 
 	if item.GetParameter then
 		local char = item:GetParameter(VARTYPE_CHARACTER) 
 		if char then 
@@ -236,19 +235,72 @@ function PANEL:Set(slot,item)
 	self.item = item
 	
 end
- 
+
+function PANEL:Pick()
+	--if not CURRENT_DRAG then
+		if self.original == nil then
+			CURRENT_DRAG = self 
+			CURRENT_SLOT = nil
+			local p = self:GetParent()
+			self.lastSlot = p
+			if p then p:Remove(self) p.item = nil end
+			dragupdate()
+			self:Show()
+			input.SetKeyboardBusy(true)
+			hook.Add("main.predraw", "gui.item.drag", dragupdate)
+			--hook.Add("input.mousedown", "gui.item.drag", function()
+			--	self:Drop()
+			--	hook.Remove("input.mousedown","gui.item.drag") 
+			--end)
+		else
+			local p = self:GetParent() 
+			if p then p:Remove(self) p.item = nil  end
+			if p.OnUnset then p:OnUnset(self) end
+		end
+	--else
+		--if self.original ~= nil then 
+		--	if CURRENT_DRAG ~= self then
+		--		local p = self:GetParent() 
+		--		if p then p:Remove(self) p.item = nil  end
+		--		if p.OnUnset then p:OnUnset(self) end
+		--		p:Drop(CURRENT_DRAG)
+		--		CURRENT_DRAG = false
+		--	end
+		--else  
+		--	if self.item and self.item.GetClass then
+		--		local classself = self.item:GetClass()
+		--		local classtarg = CURRENT_DRAG.item:GetClass()
+		--		if classself == classtarg then
+		--			if self.item.Stack then 
+		--				if(self.item:Stack(CURRENT_DRAG.item))then
+		--					CURRENT_DRAG:OnDrop() 
+		--					self:Set(self.item)
+		--				end
+		--			end
+		--		end
+		--	end
+		--end
+	--end
+end
 function PANEL:OnDrop()
 	if CURRENT_DRAG == self then
 		CURRENT_DRAG = false
 		input.SetKeyboardBusy(false)
 	end
 	self:Close()
-	hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.item.drag")
+	hook.Remove("main.predraw", "gui.item.drag")
 	
 	--MsgN("Dropped !")
 	--MsgN(debug.traceback())
 	LAST_DROP = self
 	LAST_DROP_TIME = CurTime()
+end
+
+function PANEL:MakeCopy()
+	local cpy = panel.Create("item")
+	cpy.original = self
+	cpy:Set(self.item)
+	return cpy
 end
 
 function PANEL:Select(actor)

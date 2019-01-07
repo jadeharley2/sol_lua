@@ -1,13 +1,14 @@
 
 function ENT:Init()
 	local constrot  = self:AddComponent(CTYPE_CONSTROT) 
-	--constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
+	constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
 	--constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0)) 
 	--constrot:SetSpeed(0.001)
 	self.constrot = constrot
 	self:SetSpaceEnabled(true,1)
 end
 function ENT:Spawn()  
+	
 	
 	local partition = self:AddComponent(CTYPE_PARTITION2D) 
 	local surfacecom = self:AddComponent(CTYPE_SURFACE)  
@@ -17,6 +18,19 @@ function ENT:Spawn()
 	if arch then
 		surfacecom:SetArchetype(arch)
 	end
+	if arch == "earth" then--TODO: add set mapdata source
+		local mapdata = self:AddComponent(CTYPE_MAPDATA)
+		self.mapdata = mapdata
+	end
+	--local testmod = ents.Create("planet_surface_mod")
+	--testmod:SetSizepower(100000) 
+	--testmod:SetParameter(VARTYPE_CHARACTER,"test_earth") 
+	--testmod:SetParent(self) 
+	--testmod:SetPos(Vector(0,0,0))-- Vector(1,-0.15,0)*0.90908)
+	----testmod:SetAng(Vector(0,-90,0))
+	--testmod:Spawn() 
+	
+	
 	if self.surfacenodelevel then
 		surfacecom:LinkToPartition(self.surfacenodelevel)
 	else
@@ -30,7 +44,7 @@ function ENT:Spawn()
 	
 	if(surfacecom:HasAtmosphere() )then
 		local atmosphere = self:AddComponent(CTYPE_ATMOSPHERE)  
-		atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
+		atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
 		self.atmosphere = atmosphere
 	end
 	if(surfacecom:HasAtmosphere() and false )then
@@ -89,14 +103,8 @@ function ENT:Spawn()
 	end
 	
 	
-	self:SetUpdating(true,20)
+	--self:SetUpdating(true,20)
 	
-	
-	local testmod = ents.Create("planet_surface_mod")
-	testmod:SetSizepower(100000)
-	testmod:SetParent(self) 
-	testmod:SetPos(Vector(1,-0.15,0)*0.90908)
-	testmod:Spawn() 
 	
 end
 
@@ -134,7 +142,7 @@ function ENT:Leave()
 	
 	if CLIENT then
 		local system =  self:GetParentWith(NTYPE_STARSYSTEM) 
-		MsgN("ad",system)
+		--MsgN("ad",system)
 		--if system and system.cubemap then
 		--	render.SetCurrentEnvmap(system.cubemap)
 		--else
@@ -144,8 +152,8 @@ function ENT:Leave()
 		render.ClearShadowMaps()
 	end
 end
-function ENT:Think()
-	--MsgN("d")
-	--self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
-	--cr:SetPostOffset()
-end
+--function ENT:Think()
+--	--MsgN("d") 
+--	self.constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0))
+--	--cr:SetPostOffset()
+--end

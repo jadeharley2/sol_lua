@@ -1,14 +1,17 @@
 CONTEXTMENU_ALL = {}
  
-function ContextMenu(parent,data,custompos,level)
+function ContextMenu(parent,data,custompos,level,crtbtn)
 	level = level or 0
 	
-	local b = panel.Create("context_menu")
-	b:SetData(parent,data)
-	local mpos = (custompos or input.getInterfaceMousePos()*GetViewportSize())+b:GetSize()*Point(1,-1)
-	b:SetPos(mpos)
-	b:Show()
-	b.level = level
+	local b = false
+	if data then
+		b = panel.Create("context_menu")
+		b:SetData(parent,data,crtbtn)
+		local mpos = (custompos or input.getInterfaceMousePos()*GetViewportSize())+b:GetSize()*Point(1,-1)
+		b:SetPos(mpos) 
+		b:Show()
+		b.level = level
+	end
 	
 	if level==0 then
 		for k,v in pairs(CONTEXTMENU_ALL) do
@@ -17,22 +20,25 @@ function ContextMenu(parent,data,custompos,level)
 		CONTEXTMENU_ALL = {}
 		LAST_CONTEXTMENU_CLOSE_TIME = CurTime()
 		hook.Remove("input.mousedown","contextmenu.close")
+		
+		if data then
 					
-		hook.Add("input.mousedown","contextmenu.close",function()
-			debug.Delayed(100,function()
-				if not CONTEXTMENU_ISBUTTON_PRESSED then
-					for k,v in pairs(CONTEXTMENU_ALL) do
-						v:Close()
-					end 
-					CONTEXTMENU_ALL = {}
-					LAST_CONTEXTMENU_CLOSE_TIME = CurTime()
-					hook.Remove("input.mousedown","contextmenu.close")
-				end
-				CONTEXTMENU_ISBUTTON_PRESSED = false
+			hook.Add("input.mousedown","contextmenu.close",function()
+				debug.Delayed(100,function()
+					if not CONTEXTMENU_ISBUTTON_PRESSED then
+						for k,v in pairs(CONTEXTMENU_ALL) do
+							v:Close()
+						end 
+						CONTEXTMENU_ALL = {}
+						LAST_CONTEXTMENU_CLOSE_TIME = CurTime()
+						hook.Remove("input.mousedown","contextmenu.close")
+					end
+					CONTEXTMENU_ISBUTTON_PRESSED = false
+				end)
 			end)
-		end)
+		end
 	end
-	CONTEXTMENU_ALL[#CONTEXTMENU_ALL+1] = b
+	if data then CONTEXTMENU_ALL[#CONTEXTMENU_ALL+1] = b end
 	--MsgN(mpos)
 end
   
@@ -48,18 +54,24 @@ end
 		}
 	}
 ]]
-function PANEL:SetData(base,data)
+function PANEL:SetData(base,data,crtbtn)
 	self.base = base
 	self.data = data
 	local hperrow = 20
-	local height = hperrow*#data
-	self:SetSize(200,height)
+	local height = 0 --hperrow*#data
+	local width = 200
+	--self:SetSize(200,height)
 	for k,v in pairs(data) do
 		local b = panel.Create("button")
 		b:SetSize(200,hperrow)
 		b:SetText(v.text)
 		self:Add(b)
 		b:Dock(DOCK_TOP) 
+		if crtbtn then crtbtn(b) end
+		local sz = b:GetSize()
+		height = height + sz.y
+		width = sz.x
+		
 		--MsgN(v.text,"= ",v.action ) 
 		if v.sub then
 			b.OnClick = function(s)
@@ -74,5 +86,6 @@ function PANEL:SetData(base,data)
 			end
 		end
 	end
+	self:SetSize(width,height)
 end
  

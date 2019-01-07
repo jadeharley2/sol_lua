@@ -48,13 +48,13 @@ function ENT:Spawn()
 	--local constrot  = self:AddComponent(CTYPE_CONSTROT) 
 	--constrot:SetParams(1,0,matrix.Rotation(0.1,0.1,0.2))
 	--self.constrot = constrot
-	self:SetUpdating(true,20)
+	--self:SetUpdating(true,1000)
 end
 
-function ENT:Think()  
-	self:SetAng(self:GetMatrixAng()* matrix.Rotation(0.01,0.01,0))
-	
-end
+--function ENT:Think()  
+--	self:SetAng(self:GetMatrixAng()* matrix.Rotation(0.01,0.01,0))
+--	
+--end
 
 function ENT:Enter() 
 	self.model:SetRenderGroup(RENDERGROUP_PLANET)

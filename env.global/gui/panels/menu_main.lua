@@ -1,86 +1,97 @@
 local button_color = Vector(38,12,8)/255
 local panel_color = button_color*1.2
-
+local style = { 
+	menu = {
+		size = {250,20},
+		textonly = true, 
+		textcolor = {0.5,0.5,0.5}, 
+		textalignment = ALIGN_CENTER,
+		states = {
+			idle    = {textColor = {83/255, 164/255, 255/255}},
+			hover   = {textColor = {100/255,200/255, 255/255}},
+			pressed = {textColor = {53/255, 104/255, 205/255}},
+		}, 
+		state = "idle", 
+	},
+	submenu = {
+		visible = false
+	},
+}
+local layout = {
+	name = "self",
+	texture="gui/menu/bkg1.png",
+	pvsize = {2,2},
+	subs = { 
+		{name = "main"    ,type="panel",   class = "submenu",
+			visible = true,
+			texture="gui/menu/sn_1024.dds", 
+			size = {800,800},
+			color = {0.001,0.001,0.001},
+			subs = {
+				{name = "bsingle"   ,type="button",
+					text = "Singleplayer", 
+					class = "menu", 
+					pos = {0,200}, 
+					OnClick = fwrap(hook.Call,{"menu","sp"}),
+				},
+				{name = "bmulti"    ,type="button", class = "menu",
+					text = "Multiplayer",  
+					pos = {0,100}, 
+					OnClick = fwrap(hook.Call,{"menu","mp"}),
+				},
+				{name = "boptions"  ,type="button", class = "menu",
+					text = "Options",  
+					pos = {0,-100},
+					OnClick = fwrap(hook.Call,{"menu","settings"}),
+				},
+				{name = "bexit"     ,type="button", class = "menu",
+					text = "Exit", 
+					class = "menu", 
+					pos = {0,-200},
+					OnClick = engine.Exit,
+				},
+				
+				{name = "bcontinue"   ,type="button", class = "menu",
+					text = "Continue",  
+					pos = {0,200},
+					OnClick = fwrap(hook.Call,{"menu"}),
+					visible = false
+				},
+				{name = "bsave"       ,type="button", class = "menu",
+					text = "Save",  
+					pos = {0,100}, 
+					OnClick = fwrap(hook.Call,{"menu","save"}),
+					visible = false
+				},
+				{name = "bmainmenu"    ,type="button", class = "menu",
+					text = "Main menu",  
+					pos = {0,-200}, 
+					OnClick = function(s)
+						UnloadWorld()
+						s.menu.self:SetWorldLoaded(false)  
+					end,
+					visible = false
+				},
+			},
+		}, 
+		{name = "loadscreen"    ,type="menu_loadscreen",   class = "submenu"},
+		{name = "sp"            ,type="menu_singleplayer", class = "submenu"},
+		{name = "mp"            ,type="menu_multiplayer",  class = "submenu"},
+		{name = "settings"      ,type="menu_settings",     class = "submenu"},
+		{name = "addons"        ,type="menu_addons",       class = "submenu"},
+		{name = "save"          ,type="menu_savegame",     class = "submenu"},
+		{name = "load"          ,type="menu_loadgame",     class = "submenu"},
+		{name = "editor"        ,type="menu_editors",      class = "submenu"},
+	}
+}
 	
-function PANEL:Init()  
-	local vsize = GetViewportSize() 
-	--self:SetColor(Vector(0,0,0))
-	self:SetSize( vsize*2)
-	self:SetTexture(LoadTexture("gui/menu/bkg1.png")) 
-	--menu
-	local menu = panel.Create()
-	menu:SetSize(800,800)
-	menu:SetColor(Vector(1,1,1)/1000)
-	menu:SetTexture(LoadTexture("gui/menu/sn_1024.dds"))
+function PANEL:Init()   
 	
-	local bcol = Vector(83,164,255)/255
-	local CrtMenuLabel = function(text,pos,action)
-		local label = panel.Create("button")
-		label:SetText(text)
-		label:SetPos(pos)
-		
-		label:SetSize(250,20) 
-		label:SetTextAlignment(ALIGN_CENTER)
-		label:SetTextColor(Vector(1,1,1)/2)
-		--label:SetColors(Vector(1,1,1),button_color,button_color*2) 
-		label:SetTextColorAuto(bcol)
-		label:SetTextOnly(true)
-		label.OnClick  = action
-		menu:Add(label) 
-		return label
-	end
-	
-	
-	 
-	menu.sp = CrtMenuLabel("Singleplayer",Point(0,200),function() 
-		if self.worldIsLoaded then
-			hook.Call("menu")
-		else 
-			hook.Call("menu","sp") 
-		end
-	end) 
-	menu.mp = CrtMenuLabel("Multiplayer",Point(0,100),function() 
-		if self.worldIsLoaded then
-			hook.Call("menu","save")
-		else 
-			hook.Call("menu","mp") 
-		end
-	end) 
-	menu.opt = CrtMenuLabel("Options",Point(0,-100),function() hook.Call("menu","settings") end) 
-	menu.exi = CrtMenuLabel("Exit",Point(0,-200),function() engine.Exit() end) 
-	menu.mmn = CrtMenuLabel("Main menu",Point(0,-200),function()
-		UnloadWorld()
-		self:SetWorldLoaded(false) 
-	end) 
-	menu.mmn:SetVisible(false)
-	
-	
-	menu.edi = CrtMenuLabel("Editor",Point(00,300),function() hook.Call("menu","editor") end) 
-	
-	
-	self:Add(menu) 
-	self.menu = menu
-	 
-	
-	self.panels = self.panels or {["main"] = menu}
-	function self:AddPanel(id,class)
-		local p = panel.Create(class)  
-		self:Add(p)
-		self.panels[id] = p
-		p:SetVisible(false)
-	end
-	 
-	self:AddPanel("loadscreen","menu_loadscreen") 
-	self:AddPanel("sp","menu_singleplayer")  
-	self:AddPanel("mp","menu_multiplayer") 
-	self:AddPanel("settings","menu_settings") 
-	self:AddPanel("addons","menu_addons") 
-	self:AddPanel("save","menu_savegame") 
-	self:AddPanel("load","menu_loadgame") 
-	self:AddPanel("editor","menu_editors") 
-	   
-	--self:Add(chat)
-	--self.chat = chat
+	local nt = {}
+	gui.FromTable(layout,self,style,nt,"menu")
+	--MsgN("menu loaded")
+	--PrintTable(nt)
+	self.nodes = nt
 	
 	hook.Add("input.keydown","mainmenu",function(key)  
 		if input.GetKeyboardBusy() then return nil end
@@ -94,7 +105,7 @@ function PANEL:Init()
 	
 	hook.Add("menu","event",function(name)
 		if name then
-			local panel = self.panels[name]
+			local panel = self.nodes[name]
 			MsgN("menu call ",name," -> ",panel)
 			if panel then
 				self:SetVisible(true) 
@@ -110,13 +121,15 @@ function PANEL:Init()
 end
 
 function PANEL:ReVis(n)
-	for k,v in pairs(self.panels) do
-		if(n==v) then
-			if v.OnShow then v:OnShow() end
-			v:SetVisible(true) 
-		else
-			if v.OnHide then v:OnHide() end
-			v:SetVisible(false) 
+	for k,v in pairs(self.nodes) do
+		if v.class == "submenu" then
+			if(n==v) then
+				if v.OnShow then v:OnShow() end
+				v:SetVisible(true) 
+			else
+				if v.OnHide then v:OnHide() end
+				v:SetVisible(false) 
+			end
 		end
 	end
 end
@@ -138,15 +151,21 @@ function PANEL:SetWorldLoaded(b)
 	self.worldIsLoaded = b
 	if b then
 		self:SetAlpha(0)
-		self.menu.mmn:SetVisible(true)
-		self.menu.exi:SetVisible(false)
-		self.menu.sp:SetText("Continue")
-		self.menu.mp:SetText("Save")
+		self.nodes.bsingle:SetVisible(false)
+		self.nodes.bmulti:SetVisible(false) 
+		self.nodes.bexit:SetVisible(false) 
+		
+		self.nodes.bcontinue:SetVisible(true)
+		self.nodes.bsave:SetVisible(true)
+		self.nodes.bmainmenu:SetVisible(true) 
 	else
 		self:SetAlpha(1)
-		self.menu.mmn:SetVisible(false)
-		self.menu.exi:SetVisible(true)
-		self.menu.sp:SetText("Singleplayer")
-		self.menu.mp:SetText("Multiplayer")
+		self.nodes.bcontinue:SetVisible(false)
+		self.nodes.bsave:SetVisible(false)
+		self.nodes.bmainmenu:SetVisible(false)
+		
+		self.nodes.bsingle:SetVisible(true)
+		self.nodes.bmulti:SetVisible(true) 
+		self.nodes.bexit:SetVisible(true)  
 	end
 end

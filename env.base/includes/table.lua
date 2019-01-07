@@ -37,10 +37,19 @@ table.Select = function(t,func,...)
 end
 table.Merge = function(from,to,deep) 
 	for k,v in pairs(from) do
-		if deep then
-			to[k] = deepcopy(v)
-		else
-			to[k] = v
+		local rv = to[k]
+		if rv==nil or not istable(rv) then 
+			if deep then
+				to[k] = deepcopy(v)
+			else
+				to[k] = v
+			end
+		else 
+			if deep then
+				if istable(v) then
+					table.Merge(deepcopy(v), to[k], true)
+				end
+			end
 		end
 	end 
 end

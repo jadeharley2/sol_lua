@@ -69,9 +69,23 @@ function PANEL:Init()
 				end
 				info._name = key
 				tab[#tab+1] = {key.."("..argstr..")"..poststr,tag=info}
-			elseif isfunction(value) or isuserdata(value) then
-				local n = {key.."()"}
+			elseif isfunction(value) then
+				local argstr = "" 
+				for k=1,30 do
+					local vname = debug.getlocal(value,k)
+					if not vname then break end
+					if k~=1 or vname~='self' then
+						if argstr ~= "" then 
+							argstr = argstr..", "..vname
+						else
+							argstr = vname
+						end
+					end
+				end
+				local n = {key.."("..argstr..")"}
 				tab[#tab+1] = n 
+			elseif isuserdata(value) then 
+				tab[#tab+1] = {key.."()"}
 			else 
 				local n = {key}
 				tab[#tab+1] = n 

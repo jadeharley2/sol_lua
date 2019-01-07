@@ -74,6 +74,9 @@ static.cwinput = function(key)
 		if dtext~=ctext then 
 			und:Add(static.UNDO_SETTEXT,static.REDO_SETTEXT,{a=CI,b=ctext,c=dtext,d = cp})
 		end
+		
+		
+		
 	end
 end
 static.cwinput2 = function(char) 
@@ -97,6 +100,11 @@ static.cwinput2 = function(char)
 		CI.text = text
 		CI:SetText(text) 
 		CI:CaretUpdate(1)
+		
+		local kd = CI.OnTextChanged 
+		if(kd) then
+			kd(CI,text)
+		end
 	end
 end
 

@@ -1,5 +1,6 @@
-function SpawnCubemap(parent,pos,size) 
+function SpawnCubemap(parent,pos,size,target) 
 	local cubemap = ents.Create("env_cubemap")
+	cubemap.target = target
 	cubemap.size = size
 	cubemap:SetSizepower(1000)
 	cubemap:SetParent(parent)
@@ -16,7 +17,7 @@ function ENT:Spawn()
 	self.cubemap = cubemap
 	--local skybox = self:AddComponent(CTYPE_SKYBOX) 
 	cubemap:SetSize(self.size or 1024)
-	cubemap:SetTarget()--skybox)
+	cubemap:SetTarget(nil,self.target)--skybox)
 	--self.skybox = skybox
 end 
 
@@ -25,7 +26,7 @@ function ENT:RequestDraw(fast)
 		local cubemap = self.cubemap
 		if cubemap then
 			cubemap:RequestDraw()
-			render.SetCurrentEnvmap(cubemap,fast)
+			--render.SetCurrentEnvmap(cubemap,fast)
 		end
 	else
 		hook.Remove("cubemap_render","last_cubemap")

@@ -92,11 +92,7 @@ function PANEL:Init()
 	
 	mv.OnClick = function(s)  
 		if not self.fixedpos then
-			panel.start_drag(self,1)
-			--static.CURRENT_WINDOW_MOVE_POS = self:GetPos()
-			--static.CURRENT_WINDOW_MOVE_POINTPOS =  input.getMousePosition() 
-			--static.CURRENT_WINDOW_MOVE = self
-			--hook.Add("main.predraw", "gui.window.move", static.cwmove)
+			panel.start_drag(self,1) 
 		end 
 	end
 	--dockbtn.OnClick = sDock 

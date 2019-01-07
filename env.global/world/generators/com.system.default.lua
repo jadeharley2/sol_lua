@@ -481,7 +481,7 @@ function generator:GenerateLinearSystem(system, parent, seed, mass, radius,minr,
 
 
 			local m = earth_m*rnd:NextFloat(0.1, 5) 
-			local r = earth_r*(m/earth_m) 
+			local r = earth_r*(m/earth_m)
 			
 
 

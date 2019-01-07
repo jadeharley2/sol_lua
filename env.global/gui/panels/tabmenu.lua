@@ -45,10 +45,12 @@ function PANEL:ShowTab(id)
 	local plist = self.plist
 	local framePanel = self.framePanel
 	local pp = plist[id]
-	framePanel:Clear()
-	framePanel:Add(pp)
-	pp:SetPos(0,0)
-	pp:Dock(DOCK_FILL)
-	framePanel:UpdateLayout()
-	self:UpdateLayout()
-end
+	if pp then
+		framePanel:Clear()
+		framePanel:Add(pp)
+		pp:SetPos(0,0)
+		pp:Dock(DOCK_FILL)
+		framePanel:UpdateLayout()
+		self:UpdateLayout()
+	end
+end 

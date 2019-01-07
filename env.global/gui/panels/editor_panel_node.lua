@@ -271,6 +271,8 @@ function PANEL:ConstructParams(node,meta,parent,com)
 				pva:SetColorAuto(Vector(0.6,0.6,0.8))
 				pva:SetText("click to "..v.text)
 				pva.OnClick = function(b) v.action(node,b) end
+			elseif v.type == "scripted" then  
+				if v.getvalue then pva:SetText(v.text..":"..tostring(v.getvalue(node,com) or "")) end
 			end
 			totalY = totalY + 20
 			 

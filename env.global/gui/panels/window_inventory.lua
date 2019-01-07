@@ -1,35 +1,114 @@
 PANEL.basetype = "window"
 
+temp_allinvwindows = temp_allinvwindows or {}
+
+function InventoryWindow(container)
+	if container then
+		local seed = container:GetSeed()
+		local prev = temp_allinvwindows[seed]
+		if prev then
+			prev:Close()
+			temp_allinvwindows[seed] = nil
+			hook.Call("player.inventory.close")
+		else
+			local s =  container:GetComponent(CTYPE_STORAGE)
+			if s then
+				local ww = panel.Create("window_inventory")
+				ww.node = container
+				ww.storage = s
+				ww:ReloadTabs() 
+				ww:Show()
+				temp_allinvwindows[seed] = ww
+				hook.Call("player.inventory.open")
+			end
+		end
+	end
+end
+function OpenInventoryWindow(container)
+	if container then
+		local seed = container:GetSeed()
+		local prev = temp_allinvwindows[seed] 
+		if not prev then
+			local s =  container:GetComponent(CTYPE_STORAGE)
+			if s then
+				local ww = panel.Create("window_inventory")
+				ww.node = container
+				ww.storage = s
+				ww:ReloadTabs() 
+				ww:Show()
+				temp_allinvwindows[seed] = ww
+				hook.Call("player.inventory.open")
+			end
+		end
+	end
+end
+function CloseInventoryWindow(container)
+	if container then
+		local seed = container:GetSeed()
+		local prev = temp_allinvwindows[seed] 
+		if prev then
+			prev:Close()
+			temp_allinvwindows[seed] = nil
+			hook.Call("player.inventory.close")
+		end
+	end
+end
+
 function PANEL:Init()
 	--PrintTable(self)
 	self.fixedsize = true
 	self.base.Init(self)
 	self:SetSize(500,200)
 	self:SetColor(Vector(0.6,0.6,0.6))
-	 
+	self:ReloadTabs() 
+end
+function PANEL:ReloadTabs()
+	self.inner:Clear()
+	
 	local tabs = panel.Create("tabmenu")
 	
 	self.tabs = tabs
 	tabs:Dock(DOCK_FILL)
 	self:Add(tabs) 
 	
-	local grid = panel.Create("icongrid") 
-	local inv = Inventory(30)
+	--local grid = panel.Create("icongrid") 
+	--local inv = Inventory(30)
+	--
+	--local ab_grid = panel.Create("icongrid") 
+	--local ab_inv = Inventory(30)
+	--
+	--grid:SetSize(40,40)
+	--ab_grid:SetSize(40,40)
+	--
+	--self.inv = inv
+	--self.ab_inv = ab_inv
+	--
+	----lua_run for k,v in list(chat.list.inv.list) do MsgN(v) end
+	--grid:Dock(DOCK_FILL)
+	--
+	--tabs:AddTab("INV",grid)
+	--tabs:AddTab("ABL",ab_grid)
 	
-	local ab_grid = panel.Create("icongrid") 
-	local ab_inv = Inventory(30)
 	
-	grid:SetSize(40,40)
-	ab_grid:SetSize(40,40)
+	local ply = self.node or LocalPlayer()
+	local storage = self.storage or ply:GetComponent(CTYPE_STORAGE)
+	if storage then
+		local grid2 = panel.Create("grid") 
+		
+		local items = storage:GetItems() 
+		for k=1,10*3 do
+			local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
+			slot.storage = storage
+			slot.storeslot = k
+			local item  = items[k]
+			if item then
+				slot:Add(Item(storage,k,item))
+			end
+			grid2:AddPanel(slot)
+		end 
+		tabs:AddTab("GRD",grid2)
+	end
 	
-	self.inv = inv
-	self.ab_inv = ab_inv
-	
-	--lua_run for k,v in list(chat.list.inv.list) do MsgN(v) end
-	grid:Dock(DOCK_FILL)
-	
-	tabs:AddTab("INV",grid)
-	tabs:AddTab("ABL",ab_grid)
 	
 	--local ff_grid_floater = panel.Create("graph_grid")  
 	--ff_grid_floater:SetSize(4000,4000)
@@ -40,7 +119,7 @@ function PANEL:Init()
 	--ff_grid:SetScrollbars(3)
 	--ff_grid:SetFloater(ff_grid_floater)
 	--tabs:AddTab("TEST",ff_grid)
-	tabs:AddTab("TEST",panel.Create("tree"))
+	--tabs:AddTab("TEST",panel.Create("tree"))
 	
 	self.grid = grid
 	self.ab_grid = ab_grid
@@ -48,8 +127,10 @@ function PANEL:Init()
 	--grid:Refresh()
 	--ab_grid:Refresh()
 	self:UpdateLayout() 
-	tabs:ShowTab(2)
-	tabs:ShowTab(1)
+	--tabs:ShowTab(3)
+	--tabs:ShowTab(2) 
+	tabs:ShowTab(1) 
+	--tabs:ShowTab(3)
 end
 function PANEL:SetInventory(inv)
 	self.inv = inv
@@ -66,11 +147,12 @@ function PANEL:SetInventory2(inv)
 	self:UpdateLayout()
 end
 function PANEL:Open() 
-	self:UpdateLayout()
-	self.grid:LoadInventory(self.inv)
-	self.grid:Refresh()
-	self.ab_grid:LoadInventory(self.ab_inv)
-	self.ab_grid:Refresh()
+	--self:UpdateLayout()
+	--self.grid:LoadInventory(self.inv)
+	--self.grid:Refresh()
+	--self.ab_grid:LoadInventory(self.ab_inv)
+	--self.ab_grid:Refresh()
+	self:ReloadTabs() 
 	self:UpdateLayout()
 	self:Show()
 end

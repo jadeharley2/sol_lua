@@ -154,6 +154,7 @@ function DeclareEnumValue(type,name,id)
 	_G[key] = id
 	debug.AddAPIInfo("/"..type.."_/"..key,id)
 	engine.AddDEnumValue(type,name,id)
+	return id
 end
 
 function ConcatFunc(functable)
@@ -174,4 +175,11 @@ function OrFunc(functable)
 		end  
 		return false
 	end
+end
+
+function fwrap(func,args)  
+	return function() func(unpack(args))end
+end
+function fcall(func,args)  
+	return function() func(unpack(args))end
 end

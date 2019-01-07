@@ -1,4 +1,5 @@
 
+
 function SpawnCONT(model,parent,pos)
 	local e = ents.Create("use_container")
 	MsgN("lol"..model)
@@ -11,21 +12,25 @@ function SpawnCONT(model,parent,pos)
 	return e
 end
 
+ENT.usetype = "open container"
+
 function ENT:Init()  
 	local phys = self:AddComponent(CTYPE_PHYSOBJ)  
 	local model = self:AddComponent(CTYPE_MODEL)  
+	local storage = self:AddComponent(CTYPE_STORAGE)  
 	self.model = model
 	self.phys = phys
+	self.storage = storage
 	self:SetSpaceEnabled(false)
 	self:AddFlag(FLAG_PHYSSIMULATED)
 	 
-	self:AddFlag(FLAG_STOREABLE)
+	self:AddFlag(FLAG_USEABLE)
 
 	--phys:SetMass(10)  
 	
 end
 function ENT:LoadModel() 
-	local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 0.6--0.2
+	local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 0.2	--0.2
 	
 	local model = self.model
 	local world = matrix.Scaling(model_scale)-- * matrix.Rotation(-90,0,0)
@@ -82,3 +87,15 @@ end
 --	--end
 --end
  
+ENT._typeevents = { 
+	[EVENT_USE] = {networked = true, f = function(self,user)   
+		self.isopened = not self.isopened 
+		if self.isopened then
+			self:EmitSound("events/storage-open.ogg",1)
+			if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
+		else
+			self:EmitSound("events/storage-close.ogg",1)
+			if CLIENT and LocalPlayer() == user then CloseInventoryWindow(self) end
+		end
+	end},
+}  

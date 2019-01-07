@@ -73,12 +73,18 @@ function ENT:Spawn()
 		SpawnSO("map/citytest/sky.json",space,Vector(0,0,0),5,NO_COLLISION) 
 		  
 		if CLIENT then 
-			local cbm  = SpawnCubemap(otherspace,Vector(0,0.002,0),512)
+			local cbm =  space:AddComponent(CTYPE_CUBEMAP)
+			cbm:SetSize(512)
+			cbm:SetTarget() 
 			space.cubemap = cbm
+		
+			cbm:RequestDraw()
+			--local cbm  = SpawnCubemap(otherspace,Vector(0,0.002,0),512)
+			--space.cubemap = cbm
 			--otherspace.cubemap:RequestDraw()
-			 
+			
 			space:AddNativeEventListener(EVENT_ENTER,"cubmapset",function() 
-				GlobalSetCubemap(cbm,true)   
+				--GlobalSetCubemap(cbm,true)   
 			end)
 			space:AddNativeEventListener(EVENT_LEAVE,"dt",function()    
 				self:Despawn()

@@ -19,6 +19,7 @@ OBJ.mouseWheelDelta = 0
 OBJ.mouseactive = true
 
 OBJ.flightmode = true
+OBJ.waitforreturn = true
 
 
 function OBJ:Init()
@@ -314,17 +315,18 @@ function OBJ:CreateCharacterPanels(actor)
 			if not isfunction(v) and v.Close then v:Close() end
 		end
 	end
-	hook.Add("event.inventory.update","updatecurrent",function() 
-		local cpanels = self.cpanels or {}
-		if cpanels.inv then
-			cpanels.inv:SetInventory(actor.inventory)  
-			cpanels.inv:SetInventory2(actor.abilities) 
+	hook.Add("player.inventory.open","inventory",function() 
+		if not SHOWINV then
+			cpanels:Open() 
+			SHOWINV=true 
 		end
 	end)
-	if cpanels.inv and actor.inventory then
-		cpanels.inv:SetInventory(actor.inventory) 
-		cpanels.inv:SetInventory2(actor.abilities) 
-	end
+	hook.Add("player.inventory.close","inventory",function() 
+		cpanels:Close() 
+		SHOWINV=false 
+	end)
+	hook.Add("event.inventory.update","updatecurrent",function()  
+	end) 
 	self.cpanels = cpanels
 end
 function OBJ:DestroyCharacterPanels(actor)
@@ -345,7 +347,14 @@ end
 function OBJ:Update() 
 
 	local actor = LocalPlayer() 
-	if not actor or not IsValidEnt(actor) then SetController("freecamera") return end
+	if not actor or not IsValidEnt(actor) then 
+		if self.waitforreturn then
+			SetController("actorwait") 
+		else
+			SetController("freecamera") 
+		end
+		return 
+	end
 	local dt = 1
 	
 	if actor:HasFlag(FLAG_ACTOR) then
@@ -517,8 +526,11 @@ function OBJ:HandleThirdPersonMovement(actor)
 	--end
 	---
 	
-	
-	if not aibusy then
+	if SHOWINV and self.wasmoving then
+		actor:Stop() 
+		self.wasmoving = false
+	end
+	if not aibusy and not SHOWINV then
 		if input.KeyPressed(KEYS_CONTROLKEY) then
 			actor:Duck()
 			if not actor:Crouching() then actor:SetCrouching(true) end
@@ -948,31 +960,61 @@ function OBJ:HandleUse(actor)
 	USE(actor) 
 end
 function OBJ:HandlePickup(actor)
-	local inv = actor.inventory
+	--local inv = actor.inventory
+	--if inv then
+	--	local maxPickupDistance = 2
+	--	local pos = actor:GetPos()
+	--	local par = actor:GetParent()
+	--	local sz = par:GetSizepower()
+	--	local entsc = par:GetChildren()
+	--	local nearestent = false
+	--	local ndist = maxPickupDistance*maxPickupDistance
+	--	for k,v in pairs(entsc) do
+	--		if v~=actor and v:HasFlag(FLAG_STOREABLE) then 
+	--			local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
+	--			if edist<ndist and edist>0 then
+	--				nearestent = v
+	--				ndist = edist
+	--			end
+	--		end
+	--	end
+	--	if nearestent then
+	--		nearestent:SendEvent(EVENT_PICKUP,actor)
+	--		inv:AddItem(actor, nearestent)
+	--		if CLIENT then
+	--			actor:EmitSound("events/lamp-switch.ogg",1)
+	--		end
+	--	end 
+	--end
+	local inv = actor:GetComponent(CTYPE_STORAGE)
 	if inv then
-		local maxPickupDistance = 2
-		local pos = actor:GetPos()
-		local par = actor:GetParent()
-		local sz = par:GetSizepower()
-		local entsc = par:GetChildren()
-		local nearestent = false
-		local ndist = maxPickupDistance*maxPickupDistance
-		for k,v in pairs(entsc) do
-			if v~=actor and v:HasFlag(FLAG_STOREABLE) then 
-				local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
-				if edist<ndist and edist>0 then
-					nearestent = v
-					ndist = edist
+		local freeslot = inv:GetFreeSlot()
+		if freeslot then
+			local maxPickupDistance = 2
+			local pos = actor:GetPos()
+			local par = actor:GetParent()
+			local sz = par:GetSizepower()
+			local entsc = par:GetChildren()
+			local nearestent = false
+			local ndist = maxPickupDistance*maxPickupDistance
+			for k,v in pairs(entsc) do
+				if v~=actor and v:HasFlag(FLAG_STOREABLE) then 
+					local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
+					if edist<ndist and edist>0 then
+						nearestent = v
+						ndist = edist
+					end 
 				end
 			end
+			if nearestent then
+				nearestent:SendEvent(EVENT_PICKUP,actor)
+				if inv:PutItem(freeslot,nearestent) then
+					if CLIENT then
+						actor:EmitSound("events/lamp-switch.ogg",1)
+					end
+				end
+			end 
 		end
-		if nearestent then
-			nearestent:SendEvent(EVENT_PICKUP,actor)
-			inv:AddItem(actor, nearestent)
-			if CLIENT then
-				actor:EmitSound("events/lamp-switch.ogg",1)
-			end
-		end 
 	end
 end
 function OBJ:HandleDrop(actor,c)

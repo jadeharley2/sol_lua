@@ -19,7 +19,7 @@ function ENT:Load()
 end
 function ENT:LoadData()
 	self:RemoveComponents(CTYPE_SURFACEMOD)
-	
+	 
 	local type = self:GetParameter(VARTYPE_CHARACTER) 
 	
 		MsgN("type!",type) 

@@ -42,13 +42,29 @@ if CLIENT then
 
 
 	local TACTOR = false
-	function LocalPlayer()
-		return TACTOR
+	local lastPlayerUid = 0
+	function LocalPlayer(returncheck)
+		if TACTOR and IsValidEnt(TACTOR) then
+			lastPlayerUid = TACTOR:GetSeed()
+			return TACTOR
+		else
+			if returncheck and lastPlayerUid~=0 then
+				local ply = Entity(lastPlayerUid)
+				if ply and IsValidEnt(ply) then
+					TACTOR = ply
+					return TACTOR
+				end
+			end
+			return nil
+		end
 	end
 	function SetLocalPlayer(actor)
-		TACTOR = actor 
-		if not network.IsConnected() then
-			player_list[1] = actor
+		if actor and IsValidEnt(actor) then
+			TACTOR = actor 
+			lastPlayerUid = TACTOR:GetSeed()
+			if not network.IsConnected() then
+				player_list[1] = actor
+			end
 		end
 	end
 	
@@ -73,8 +89,7 @@ if CLIENT then
 	hook.Add("umsg.player.connected", "playerspawn",OnPlayerConnected)
 	hook.Add("umsg.player.disconnected", "playerspawn",OnPlayerDisconnected)
 	hook.Add("umsg.player.sendlist", "playerspawn",OnPlayerList)
-	hook.Add("network.disconnect","player", function() 
-		MsgN("PADIS")
+	hook.Add("network.disconnect","player", function()  
 		for k,v in pairs(player_list) do
 			player_list[k] = nil
 		end  

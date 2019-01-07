@@ -1843,6 +1843,9 @@ ENT._typeevents = {
 	[EVENT_LERP_HEAD] = {networked = true, f = ENT.EyeLookAtLerped}, 
 	[EVENT_SET_AI] = {networked = true, f = ENT.SetAi}, 
 	
+	[EVENT_ITEM_ADDED] = {networked = true, f = function(e,index) MsgN("new item at: "..tostring(index or '?')) end}, 
+	[EVENT_ITEM_TAKEN] = {networked = true, f = function(e,index) MsgN("taken item from: "..tostring(index or '?')) end}, 
+	
 }
  
 ENT.editor = {

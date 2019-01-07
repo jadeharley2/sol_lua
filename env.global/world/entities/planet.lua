@@ -34,7 +34,7 @@ function ENT:Spawn()
 	
 		self.orbit:SetOrbit()
 	end
-	self:SetUpdating(true,10)
+	self:SetUpdating(true,1000)
 	--if self.ismoon then
 	--	self:Enter()
 	--end
@@ -55,6 +55,7 @@ function ENT:Enter()
 			hrender:RequestDraw(nil,function()
 				self:SpawnSurface() 
 			end)
+			
 		else
 			self:SpawnSurface() 
 			--self:AddEventListener(EVENT_HEIGHTMAP_DATA_RECEIVED,"event",function(self)  

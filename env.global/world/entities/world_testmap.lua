@@ -220,17 +220,29 @@ function ENT:Spawn()
 		eshadow:Spawn() 
 		self.shadow = eshadow
 		 
-		local cbm = SpawnCubemap(space,Vector(0,0.0013627,0),512)
+		 
+		 
+		local cbm =  space:AddComponent(CTYPE_CUBEMAP)
+		cbm:SetSize(512)
+		cbm:SetTarget() 
 		self.cubemap = cbm
 		
+		 
+		
+		--local cbm = SpawnCubemap(space,Vector(0,0.0013627,0),512)
+		--self.cubemap = cbm
+		
 		space:AddNativeEventListener(EVENT_ENTER,"cubmapset",function() 
-			GlobalSetCubemap(cbm,true) 
+			--GlobalSetCubemap(cbm,true) 
 			ambient:Start()
 		end)
 		space:AddNativeEventListener(EVENT_LEAVE,"dt",function()   
 			ambient:Stop()
 		end)
-		self.cubemap:RequestDraw()
+		--debug.Delayed(3000,function()
+		--MsgN("RENDER!")
+		cbm:RequestDraw()
+		--end) 
 	end
 	
 	--local aatest = ents.Create() 
@@ -300,6 +312,55 @@ function ENT:Spawn()
 	d1.target = {"models/dyntest/sdm/interior_main.dnmd","foyer.flatgrass.door"}--d2
 	--d2.target = d1
 	
+	
+	local dynamicmodel = ents.Create()
+	dynamicmodel:SetSeed(45312341)
+	local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
+	dynamicmodel.model = model 
+	dynamicmodel:SetSpaceEnabled(false) 
+	dynamicmodel:SetSizepower(1)
+	
+	dynamicmodel:SetPos(Vector(0,0.008022659,0)) 
+	dynamicmodel:SetAng(Vector(-90,0,0))
+	dynamicmodel:SetParent(space)
+	
+	model:SetRenderGroup(RENDERGROUP_LOCAL) 
+	model:SetBlendMode(BLEND_OPAQUE) 
+	model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	model:SetDepthStencillMode(DEPTH_ENABLED)  
+	model:SetBrightness(1)
+	model:SetFadeBounds(0,9e20,0)   
+	
+	model:SetModel("dyntest/maptest.dnmd")
+	
+	---local dynamicmodel = ents.Create()
+	---dynamicmodel:SetSeed(45312341)
+	---local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
+	---dynamicmodel.model = model 
+	---dynamicmodel:SetSpaceEnabled(false) 
+	---dynamicmodel:SetSizepower(1)
+	---dynamicmodel:SetParent(space)
+	---
+	---model:SetRenderGroup(RENDERGROUP_LOCAL) 
+	---model:SetBlendMode(BLEND_OPAQUE) 
+	---model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	---model:SetDepthStencillMode(DEPTH_ENABLED)  
+	---model:SetBrightness(1)
+	---model:SetFadeBounds(0,9e20,0)   
+	--- 
+	---local procgen = dynamicmodel:AddComponent(CTYPE_PROCGEN) 
+	---dynamicmodel.procgen = procgen
+	---procgen:SetModel("models/dyntest/test_dynamic.dnmd")
+	---
+	---
+	---dynamicmodel:Spawn()
+	---dynamicmodel:SetPos(-0.02885208, 0.007299021, 0)
+	
+	
+	
+	
+	
+	
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
 	
 	
@@ -329,409 +390,6 @@ function ENT:Spawn()
 	--hook.Add("aat","fst",function() 
 	--	self:CreateTestPM()
 	--end)
-end
-  
-function ENT:CreateTestPM()
-	if self.testme then
-		self.testme:Despawn()
-		self.testme = nil
-	end
-	if self.testmewf then
-		self.testmewf:Despawn()
-		self.testmewf = nil
-	end
-	
-	module.Require("procedural")
-	local b = procedural.Builder()
-	b:BuildModel("@testmodel",json.ToJson(
-	{    
-		variables = {
-			["$roof_height"] = 0.1
-		},
-		operations = { 
-			 
-			--[[--test rope
-			{ type = "line",out = "test1",  
-				points = {{-15,0,10},{-15,4,14},{-10,0,16},{-15,-5,16},{-15,-5,13}},
-				loop = true
-			},    
-			{ type = "tesselate",["in"] = "test1",out = "test2", 
-				interpolation = "cubic",
-				times=5,
-			},       
-			{ type = "column",["in"] = "test2",out = "test3", 
-				r = "@((sin($p/4)+15)*0.02)",
-				sides = 10,   
-			},
-			]]       
-
-			--buildings
-			{ type = "surface",out = "building_base",  
-				points = {{-15,0,-1.3}, {-15,8,-1.3},{-10,8,-1.3},{-10,0,-1.3}}
-			},  
-			
-			{ type = "surface",out = "building_base",  
-				points = {{-35,0,-1.3}, {-35,8,-1.3},{-30,8,-1.3},{-30,4,-1.3},
-				{-25,4,-1.3}, {-25,8,-1.3},{-20,8,-1.3},{-20,0,-1.3}}
-			},  
-			{ type = "surface",out = "building_base",  
-				points = {{-5,0,-1.3},{-7,4,-1.3}, {-5,8,-1.3},{0,8,-1.3},{2,4,-1.3},{0,0,-1.3}}
-			},  
-			
-			--[[
-			{ type = "ngon",out = "building_base", 
-				pos = {40,20,0},
-				r = 5,
-				sides = 10,      
-			}, 
-			{ type = "ngon",out = "building_base", 
-				pos = {20,20,0},
-				r = 3,
-				sides = 5,      
-			}, 
-			{ type = "ngon",out = "building_base", 
-				pos = {10,20,0},
-				r = 4,
-				sides = 3,      
-			}, 
-			]]
-			--{ type = "surface",out = "roof_base", 
-			--	points = {{-10,0,0},{-10,10,0},{0,10,0},{0,0,0}}
-			--},  
-			
-			--base
-			
-			{ type = "extrude",from = "building_base",out = "walls_a", outtop = "floor_base",
-				mode = "normal",  
-				shift = 0.2 ,   
-			},  
-			{ type = "extrude",["in"] = "floor_base",out = "walls_b", outtop = "ceil_base",
-				mode = "normal",  
-				shift = 2 ,   
-			}, 
-			{ type = "extrude",["in"] = "ceil_base",out = "walls_c", outtop = "roof_base",
-				mode = "normal",  
-				shift = 0.7 ,   
-			}, 
-			{ type = "split",["in"] = "walls_b",out = "wall_panels", 
-				steps ="@(floor($l*0.7))",        
-				stype="constant",      
-			},     
-			{ type = "flip",from = "ceil_base",out = "ceiling", },     
-			{ type = "inset",from = "ceiling",out = {face = "c_inner",edge="c_outer"}, 
-				amount = 0.1,   
-			},  
-			{ type = "extrude",from = "c_inner",out = "t333", 
-				mode = "normal",   
-				shift = -0.5,     
-			},  
-			--{ type = "inset",["in"] = "wall_panels",out = {face = "wp_inner",edge="wp_outer"}, 
-			--	amount = 0.1,   
-			--},     
-			--{ type = "extrude",["in"] = "wp_inner",out = "t333", 
-			--	mode = "normal",   
-			--	shift = -0.1,     
-			--},      
-			
-			
-			--walls
-			{ type = "split",["in"] = "wall_panels",out = "wall_subpanels", 
-				steps =2,        
-				stype="constant",      
-			},     
-			 
-			{ type = "select", ["in"] = "wall_panels", out = "column_base",
-				mode = "dotnormalsegments", normal = {0,0,1},
-			},     
-			{ type = "random",["in"] = "wall_subpanels", var = "i",
-				variants = {
-					{ 
-						{ type = "extrude",["in"] = "i",out = "final", 
-							mode = "normal",   
-							shift = 0.05,     
-						},  
-						{ type = "flip",from = "i",out = "final", }, 
-					}, 
-					{
-						{ type = "remove",["in"] = {"i"}}
-					},
-				}   
-			}, 
-			--{ type = "select", ["in"] = "wall_panels", out = "column_base",
-			--	mode = "dotnormalsegments", normal = {1,0,0},
-			--},       
-			{ type = "column",["in"] = "column_base",out = "column_main",outcap = "ccap",
-				angle = 45,  
-				r =  0.15 ,
-				sides = 8,       
-			}, 
-			{ type = "extrude",from = "ccap",out = "column_extend", 
-				mode = "normal",   
-				shift = 0.8,     
-			},   
-			
-			{ type = "material",["in"] = {"column_main","column_extend"},
-				material = "black.json"
-			},   
-			
-			
-			{ type = "remove",["in"] = {"wp_inner","wall_panels","walls_b"}  },
-			
-			---floor 
-			
-			{ type = "inset",from = "floor_base",out = {face = "floor_inner",edge="floor_outer"}, 
-				amount = 0.5,   
-			},  
-			{ type = "extrude",from = "floor_inner",out = "t333", 
-				mode = "normal",   
-				shift = -0.1,     
-			},   
-			--{ type = "remove",["in"] = {"floor_base", "floor_inner"}  },
-			    
-			--pad floor
-			
-			{ type = "extrude",from = "walls_a",outtop = "floor_abase", out = "dump",
-				mode = "normal",  
-				shift = 0.2 ,    
-				merge = true   
-			},  
-			{ type = "extrude",from = "floor_abase",out = "floor_around",
-				mode = "normal",  
-				shift = 0.8 ,   
-				merge = true
-			},  
-			
-			
-			{ type = "material",["in"] = {"floor_around","t333"},
-				material = "black.json"
-			},   
-			{ type = "material",["in"] = {"floor_base","dump"},
-				material = "darkgray.json"
-			},   
-			--[[]]
-			---roof
-			
-			
-			--[[
-			{ type = "ngon",out = "roof_base", 
-				pos = {20,0,0},
-				r = 3,
-				sides = 5,      
-			}, 
-			{ type = "ngon",out = "roof_base", 
-				pos = {10,0,0},
-				r = 4,
-				sides = 3,      
-			}, 
-			]]
-			{ type = "inset",from = "roof_base",out = {face = "roof_f",edge="roof_f"}, 
-				amount = 1, extrude =0.5,
-			}, 
-			{ type = "extrude",["in"] = "roof_f",out = "t3top", outtop = "roof",
-				mode = "normal",  
-				shift = 0.2 ,  
-				merge = true,
-			},   
-			{ type = "extrude",from = "t3top",out = "t33", outtop = "t33",
-				mode = "normal",  
-				shift = 2  ,  
-				merge = true,
-			},   
-			            
-			
-			--{ type = "inset",["in"] = "roof_base",out = {face = "roof_f",edge="roof_f"}, 
-			--	amount = 1, extrude =1,
-			--},
-			--{ type = "extrude",["in"] = "roof_f",out = "t3", outtop = "roof",
-			--	mode = "normal",  
-			--	shift = 0.3  ,  
-			--},   
-			          
-			   
-			{ type = "select",["in"]="roof",out = "second_roof_base",
-				mode = "dotnormal",
-				normal = {0,0,-1}, 
-				maxangle = 10,  
-			}, 
-			{ type = "select",["in"]="t33",out = "roof_bottom", remove = true, 
-				mode = "dotnormal",
-				normal = {0,0,1}, 
-				maxangle = 30,  
-			}, 
-			   
-			--{ type = "extrude",["in"] = "roof_bottom",out = "t3", 
-			--	mode = "normal",  
-			--	merge = true,
-			--	shift = 0.1  ,    
-			--},      
-			{ type = "split",from = "roof_bottom",out = "re", 
-				steps ="@($l*4)",--20,       
-				stype="constant",     
-			},      
-			 
-			--{ type = "inset",["in"] = "re",out = {face = "roof_f",edge="roof_f"}, 
-			--	amount = 0.1, 
-			--},  
-			
-			{ type = "inset",from = "second_roof_base",out = {face = "roof2_f",edge="roof2_c"}, 
-				amount = 0.4, extrude =0.5, 
-			},        
-			{ type = "inset",from = "roof2_f",out = {face = "roof2_f",edge="roof2_c"}, 
-				amount = 0.4, extrude =-0.2 , 
-			},      
-			
-			{ type = "extrude",["in"] = "re",out = "roof_grate", 
-				mode = "normal",   
-				shift = "@($i % 2 * 0.1)",    
-			},      
-			     
-			{ type = "select",["in"] = "t33", out = "testdef2", 
-				mode = "points",--{{-16,9,3}},--,{1.5,20,-3}
-			},  
-
-			{ type = "select",["in"]="roof",out = "*", remove = true,
-				mode = "dotnormal",
-				normal = {0,0,-1}, 
-				maxangle = 4,  
-			}, 
-			
-			{ type = "split",from = "t33",out = "roof_tesselated", 
-				steps =30,       
-				stype="constant",     
-			},    
-			{ type = "split",from = "roof",out = "roof_tesselated", 
-				steps =30,       
-				stype="constant",     
-			},     
-			--{ type = "tesselate", from = "t33", out = "roof_tesselated", 
-			--	interpolation = "linear",
-			--	times = 2,
-			--},  
-			--{ type = "tesselate", from = "roof", out = "roof_tesselated", 
-			--	interpolation = "linear",
-			--	times = 2,
-			--},  
-			{ type =  "pointdeform", ["in"] = {"roof_tesselated","roof_grate"},inpoints = "testdef2",
-				r = 1,pow = 0.05,dir = {0,0,1},
-				func = "sin",
-			},        
-			
-			{ type = "material",["in"] = {"roof_grate","roof2_c"},
-				material = "black.json"
-			},   
-			{ type = "material",["in"] = {"roof_tesselated","roof2_f"},
-				material = "teal.json"
-			}, 
-			 
-			 
-			{ type = "remove",["in"] = {"roof_f"}  },
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			--test ark
-			
-			{ type = "point", out = "gate_base", 
-				points = {{-1.5,20,-3},{1.5,20,-3}},
-			},   
-			{ type = "line", out = "gate_middle_base", 
-				points = {{-2,20,1},{2,20,1}},
-			},           
-			{ type = "line", out = "gate_top_base", 
-				points = {{-3,20,2},{3,20,2}},
-			},                          
-			{ type = "line", out = "gate_top_base2", 
-				points = {{-3.2,20,2.2},{3.2,20,2.2}},
-			},    
-			
-			{ type = "extrude",["in"] = "gate_base",out = "gate_column_base",   
-				shift = {0,0,2},
-				times = 1,
-			},         
-			{ type = "column",["in"] = "gate_column_base",out = "gate_columns",outcap="gate_column_cap", 
-				angle = 45,  
-				r =  0.2 , 
-				sides = 8,       
-			},      
-			{ type = "select",["in"]="gate_column_cap",out = "gate_column_top", remove = true, 
-				mode = "dotnormal",
-				normal = {0,0,-1}, 
-				maxangle = 30,  
-			}, 
-			{ type = "inset",from = "gate_column_top",out = {face = "gate_column_top",edge="gate_columns_edges"}, 
-				amount = 0.04, extrude =0 , 
-			},  
-			{ type = "inset",from = "gate_column_top",out = "gate_column_top",  
-				extrude = 3,
-				amount = 0.02,
-			},            
-			{ type = "tesselate", from = "gate_top_base", out = "gate_top_base", 
-				interpolation = "linear",
-				times = 3,
-			},                  
-			{ type = "tesselate", from = "gate_top_base2", out = "gate_top_base2", 
-				interpolation = "linear",
-				times = 3,
-			},              
-			{ type = "deform", ["in"] = "gate_top_base", out = "gate_top_base2", 
-				mode = "bend",  
-				amountx = {0,0,-0.2},       
-				mul = {0.5,1,1},
-			},            
-			{ type = "deform", ["in"] = "gate_top_base2", out = "gate_top_base2", 
-				mode = "bend",  
-
-				amountx = {0,0,-0.2},      
-				mul = {0.5,1,1}, 
-			},            
-			{ type = "column",["in"] = "gate_middle_base",out = "gate_top",outcap="gate_top", 
-				angle = 45,   
-				r =  0.15 ,  
-				sides = 4,     
-				normal = {0,0,1},
-			},  
-			{ type = "column",["in"] = "gate_top_base",out = "gate_top",outcap="gate_top", 
-				angle = 45,  
-				r =  0.2 , 
-				sides = 4,     
-				normal = {0,0,1},
-			},  
-			{ type = "column",["in"] = "gate_top_base2",out = "gate_topb",outcap="gate_topb", 
-				angle = 0,  
-				r =  0.22 , 
-				sides = 4,     
-				normal = {0,0,1},
-			},  
-			    
-			{ type = "material",["in"] = {"gate_columns","gate_columns_edges","gate_topb"},
-				material = "black.json"
-			},  
-			{ type = "material",["in"] = {"gate_column_top","gate_column_base","gate_top"},
-				material = "med_red.json"
-			},  
-			 
-			--{ type = "point", out = "testdef", 
-			--	points = {{-1.5,20,3}},--,{1.5,20,-3}
-			--},    
-			--{ type =  "pointdeform", ["in"] = {"gate_top","gate_top_cap"},inpoints = "testdef",
-			--	r = 3,pow = 1,dir = {0,0,1},
-			--},   
-			
-		}       
-	}       
-	))           
-	local testme = SpawnSO("@testmodel",self.space,Vector(0,0.01,0),1) 
-	local testmewf = SpawnSO("@testmodel",self.space,Vector(0,0.01,0),1) 
-	self.testme = testme
-	self.testmewf = testmewf  
-	local mat = LoadMaterial("debug/white.json")
-	local matwf = CopyMaterial(mat)
-	--ModMaterial(matwf,{wireframe = 1,FullbrightMode = true}) 
-	--testme.model:SetMaterial(mat)  
-	--testmewf.model:SetMaterial(matwf)        
 end 
 function ENT:CTO(user,ss)
 	user:SetParent(ss)
@@ -786,8 +444,45 @@ function ENT:GetSpawn()
 	--end)
 	--space2:AddFlag(FLAG_USEABLE) 
 
-	SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
+	local c = SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
+	local cc = c:GetComponent(CTYPE_STORAGE)
+	if cc then
+		cc:PutItemAsData(1, ItemPV("forms/props/clutter/clut_lab_book.json",24879,{ 
+			parameters = { name = "The Book",  },
+		}))
+		cc:PutItemAsData(2,ItemPV("forms/props/furniture/futur/chair_a.json",346334,{
+			parameters = {name = "Egg chair"},
+			flags = {"storeable"},
+		}))
+	end
 	
+	--[[
+	{
+		"sizepower" : 1,
+		"seed" : 1000002,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000002,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0232629049569368, 0.00792624987661839, -0.00735787861049175, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "dyntest/test_road.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/architecture/test_rails.json"
+		},
+		"flags" : ["editornode"]
+	},
+	]]
 	--local chair = SpawnSPCH("shiptest/chair1.json",space,Vector(0,0,0.0002),0.75)  
 	--chair:SetSeed(space:GetSeed()+38012)
 	--chair.usetype = "sit"

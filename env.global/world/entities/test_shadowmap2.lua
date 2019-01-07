@@ -5,6 +5,7 @@ function ENT:Init()
 	self:SetSpaceEnabled(false) 
 	self:SetDonotsave(true) 
 	self:SetSizepower(1000)
+	self:SetSelfContained(true)
 end
 
 function ENT:Spawn()   

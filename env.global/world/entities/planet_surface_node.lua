@@ -19,16 +19,17 @@ function ENT:Enter()
 		--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_DISABLED) 
 		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED) 
 	
-		self.cubemap = SpawnCubemap(self,Vector(0,0.02,0),128)
+		self.cubemap = self.cubemap or SpawnCubemap(self,Vector(0,0.02,0),128,self:GetParent())
 		local sz = self:GetSizepower()
 		self.cubemap:SetSizepower(sz)
 		--self.cubemap:SetAng(Vector(0,0,90))
-		self.cubemap:RequestDraw()
+		self:CubemapFrame()
 		self:Hook("pre_cubemap_render","move_cb",function()
 			if self and IsValidEnt(self) then
 				self:CubemapFrame()
 			end
 		end)
+		--self.cubemap:RequestDraw()
 		GlobalSetCubemap(self.cubemap)
 		---if not SHADOW or not IsValidEnt(SHADOW) then 
 		---	local star = self:GetParentWithFlag(FLAG_STAR)
@@ -48,6 +49,11 @@ function ENT:Enter()
 		--SHADOW = SHADOW or CreateTestShadowMapRenderer(GetCamera():GetParent(),Vector(0,0,0))
 	end
 	
+	local pmd = self:GetParent().mapdata
+	if pmd and not self.chunkisloading then
+		self.chunkisloading = true
+		pmd:LoadChunk(self)
+	end
 	 
 end
 function ENT:CubemapFrame()

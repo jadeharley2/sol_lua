@@ -46,11 +46,12 @@ function LoadMenu()
 	hook.Add("input.keydown","console",function(key)   
 		if key == KEYS_OEMTILDE then 	 
 			if not settings.GetBool("server.noconsole") then
-				local console = CONSOLE  
+				local console = CONSOLE   
+				
 				if console.enabled then
 					console:Close()
 					console.enabled = false 
-				else 
+				else  
 					console:Show()
 					console.enabled = true
 					console:Select()
@@ -300,6 +301,9 @@ function SpawnPlayerChar(posoverride)
 		playeractor:SetName(name)
 		playeractor:AddFlag(FLAG_PLAYER)
 	
+		local inventory = playeractor:AddComponent(CTYPE_STORAGE)  
+		
+		
 		-- local pp = SpawnWeapon("testgun",ship,targetpos+Vector(-0.001,0.001,0))--0.006
 		-- local pp2 = SpawnWeapon("lightgun",ship,targetpos+Vector(-0.002,0.001,0))--0.006
 	
@@ -329,55 +333,12 @@ end
 
 
 
--- test functions
-function SPA() 
-	local cc = GetCamera()
-	local fpos = cc:GetPos()
-	local actor2 = ents.Create("base_actor")
-	actor2:SetSizepower(1000)
-	actor2:SetParent(cc:GetParent())
-	actor2:SetSeed(120000)
-	actor2:SetPos(fpos) 
-	actor2:SetModel(settings.GetString("player.model"))
-	actor2:Spawn()
-	actor2.phys:SetGravity(Vector(0,-4,0))
-	
-	TACTOR = actor2
-	TACTOR:SetGlobalName('player') 
-	SetController('actor')  
-end
-function SPT(scale)
-	local cc = GetCamera()
-	local fpos = cc:GetPos()
-	--SpawnSO("engine/unit_box.SMD",cc:GetParent(),fpos,scale or 0.01).model:SetMaterial("textures/debug/white.json") 
-	SpawnSO("test/tree2/dtree.json",cc:GetParent(),fpos,scale or 0.01)
-end
-
- 
-function fff_GoToPos(npc,pos)
-	local sz = npc:GetParent():GetSizepower()
-	local a1pos = npc:GetPos()*sz
-	local a2pos = pos*sz
-	local dir = (a2pos-a1pos):Normalized()
-	local dist = a1pos:Distance(a2pos)
-	npc.phys:SetStandingSpeed(1)
-	if npc.targetpos then
-		npc:LookAt((a2pos-a1pos):Rotate(Vector(0,90,0)))
-		npc.phys:SetViewDirection(dir)
-	end
-	if(dist>4)then
-		npc.targetpos = Vector(0,0,1)
-	end
-	if(dist<2)then
-		npc.targetpos  = nil 
-	end
-end
-
 
 -- startup function 
 function OnStartup()
  
 	local cam = GetCamera() or ents.CreateCamera()
+	cam:SetSelfContained(true)
 	cam:SetParent(LOBBY)
 	cam:Spawn()
 
@@ -429,7 +390,9 @@ function LoadSingleplayer(world_id,savegame_id)
 			if not savegame_id then
 				if u then
 					if u.OnPlayerSpawn then
-						u:OnPlayerSpawn()
+						if u:OnPlayerSpawn() then --return true
+							SpawnPlayerChar() 
+						end
 					else
 						SpawnPlayerChar()   
 					end
@@ -459,5 +422,55 @@ function LoadSingleplayer(world_id,savegame_id)
 	end)
 end
 
+--hook.Add("main.startup","main",OnStartup)
 hook.Add("main.startup","main",OnStartup)
 hook.Add("engine.location.loaded","main",OnLocationLoad)
+
+
+
+
+
+-- test functions
+function SPA() 
+	local cc = GetCamera()
+	local fpos = cc:GetPos()
+	local actor2 = ents.Create("base_actor")
+	actor2:SetSizepower(1000)
+	actor2:SetParent(cc:GetParent())
+	actor2:SetSeed(120000)
+	actor2:SetPos(fpos) 
+	actor2:SetModel(settings.GetString("player.model"))
+	actor2:Spawn()
+	actor2.phys:SetGravity(Vector(0,-4,0))
+	
+	TACTOR = actor2
+	TACTOR:SetGlobalName('player') 
+	SetController('actor')  
+end
+function SPT(scale)
+	local cc = GetCamera()
+	local fpos = cc:GetPos()
+	--SpawnSO("engine/unit_box.SMD",cc:GetParent(),fpos,scale or 0.01).model:SetMaterial("textures/debug/white.json") 
+	SpawnSO("test/tree2/dtree.json",cc:GetParent(),fpos,scale or 0.01)
+end
+
+ 
+function fff_GoToPos(npc,pos)
+	local sz = npc:GetParent():GetSizepower()
+	local a1pos = npc:GetPos()*sz
+	local a2pos = pos*sz
+	local dir = (a2pos-a1pos):Normalized()
+	local dist = a1pos:Distance(a2pos)
+	npc.phys:SetStandingSpeed(1)
+	if npc.targetpos then
+		npc:LookAt((a2pos-a1pos):Rotate(Vector(0,90,0)))
+		npc.phys:SetViewDirection(dir)
+	end
+	if(dist>4)then
+		npc.targetpos = Vector(0,0,1)
+	end
+	if(dist<2)then
+		npc.targetpos  = nil 
+	end
+end
+

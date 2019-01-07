@@ -21,14 +21,14 @@ function PANEL:OnClick()
 end
 
 function PANEL:MouseEnter()
-	self.base.SetColorAuto(self,Vector(20,60,20)/256) 
+	--self.base.SetColorAuto(self,Vector(20,60,20)/256) 
 	CURRENT_SLOT = self
 end
 function PANEL:MouseLeave()
 	if CURRENT_DRAG then
 		--
-	end
-	self.base.SetColorAuto(self,Vector(20,20,20)/256)  
+	end 
+	--self.base.SetColorAuto(self,Vector(20,20,20)/256)  
 	--CURRENT_SLOT = nil
 end
 
@@ -46,6 +46,7 @@ function PANEL:Drop(item)
 	
 	
 	if item then
+		item:Close()
 		--MsgN(self.text," -> ",self.item, " <> ",item) 
 		if self.item then
 			local II = self.item
@@ -63,10 +64,32 @@ function PANEL:Drop(item)
 		item:Dock(DOCK_FILL)
 		self:UpdateLayout()
 		item:SetPos(0,0)
+		
+		local storage_from = item.storage
+		local slot_from = item.storeslot
+		local storage_to = self.storage
+		local slot_to = self.storeslot
+		if storage_from and slot_from and storage_to then 
+			--local slot_to = storage_to:GetFreeSlot()
+			if slot_to and not storage_to:HasItemAt(slot_to) then
+				storage_from:MoveItem(slot_from,storage_to,slot_to,1)
+			end
+		end
+		
+		
 	end
 	if self.OnSet then self:OnSet(item) end
 end
-
+function PANEL:DragDrop(node) 
+	MsgN("DROP!",node) 
+	self:Drop(node)
+end
+function PANEL:DragEnter(node) 
+	--MsgN("enter",node) 
+end
+function PANEL:DragExit(node) 
+	--MsgN("exit",node) 
+end
 function PANEL:Select(actor)
 	local item = self.item 
 	if item then

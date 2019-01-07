@@ -61,7 +61,7 @@ function panel.start_drag_on_shift(node,mbuttonid,ontrue,...)
 		panel.current_drag_args = {mbuttonid,...}
 		panel.current_drag_ontrue = ontrue
 		LockMouse()
-		hook.Add("main.predraw", "gui.drag.check", panel.function_drag_check)
+		hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag.check", panel.function_drag_check)
 	end
 end
 
@@ -73,7 +73,7 @@ function panel.function_drag_check()
 			MsgN("drag FALSE")
 			panel.current_drag = false
 			UnlockMouse()
-			hook.Remove("main.predraw", "gui.drag.check")  
+			hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag.check")  
 		else
 			local startpos = panel.current_drag_pointpos
 			local cpos = input.getMousePosition() 
@@ -81,7 +81,7 @@ function panel.function_drag_check()
 				MsgN("drag TRUE")
 				panel.current_drag = false
 				UnlockMouse()
-				hook.Remove("main.predraw", "gui.drag.check")  
+				hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag.check")  
 				
 				local ontrue = panel.current_drag_ontrue
 				if ontrue then
@@ -112,12 +112,12 @@ function panel.start_drag(node,mbuttonid,on_drop,snap)
 			end
 			panel.current_drag = tab
 			LockMouse()
-			hook.Add("main.predraw", "gui.drag", panel.function_drag_multiple)
+			hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag", panel.function_drag_multiple)
 		else
 			panel.current_drag_movepos = node:GetPos()
 			panel.current_drag = node 
 			LockMouse()
-			hook.Add("main.predraw", "gui.drag", panel.function_drag)
+			hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag", panel.function_drag)
 		end
 		return true
 	end
@@ -135,13 +135,15 @@ function panel.callrecursively(pn,funcname,...)
 	end
 end
 function panel.getwith(pn,funcname) 
-	local fn = pn[funcname] 
-	if fn then 
-		return pn
-	else
-		local par = pn:GetParent()
-		if par then
-			return panel.getwith(par,funcname) 
+	if pn then
+		local fn = pn[funcname] 
+		if fn then 
+			return pn
+		else
+			local par = pn:GetParent()
+			if par then
+				return panel.getwith(par,funcname) 
+			end
 		end
 	end
 end
@@ -201,7 +203,7 @@ function panel.function_drag()
 		if isup then
 			panel.current_drag = false
 			UnlockMouse()
-			hook.Remove("main.predraw", "gui.drag")
+			hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag")
 			
 			if panel.current_drag_on_drop then 
 				if top then
@@ -248,7 +250,7 @@ function panel.function_drag_multiple()
 		if isup then
 			panel.current_drag = false
 			UnlockMouse()
-			hook.Remove("main.predraw", "gui.drag")
+			hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag")
 			if panel.current_drag_on_drop and isfunction(panel.current_drag_on_drop) then
 				panel.current_drag_on_drop(node)
 			end
@@ -297,7 +299,7 @@ function panel.start_resize(node,mbuttonid,dir,ondrop,snap)
 		 
 		panel.cursor_resize(dir)
 		 
-		hook.Add("main.predraw", "gui.panel.resize", panel.function_resize) 
+		hook.Add(EVENT_GLOBAL_PREDRAW, "gui.panel.resize", panel.function_resize) 
 		return true
 	end
 end 
@@ -335,7 +337,7 @@ function panel.function_resize()
 			panel.SetCursor(0)
 			panel.current_resize = false
 			UnlockMouse()
-			hook.Remove("main.predraw", "gui.panel.resize")
+			hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.panel.resize")
 			if panel.current_resize_on_drop then
 				panel.current_resize_on_drop(node)
 			end 
@@ -406,7 +408,7 @@ function Selector:BeginSelection(node,mbuttonid,overridestartpos)
 		frame_right:Dock(DOCK_RIGHT)
 		frame:Add(frame_right) 
 		
-		hook.Add("main.predraw", "gui.select", function() self:function_select() end)
+		hook.Add(EVENT_GLOBAL_PREDRAW, "gui.select", function() self:function_select() end)
 	 
 	end
 end
@@ -437,7 +439,7 @@ function Selector:function_select()
 			self.current_select = false
 			UnlockMouse()
 			node:Remove(frame)
-			hook.Remove("main.predraw", "gui.select")
+			hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.select")
 		else
 			self:function_select_child(node,newPos,newSize)
 		end
