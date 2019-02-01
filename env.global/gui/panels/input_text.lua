@@ -137,6 +137,8 @@ function PANEL:SetText2(text)
 end
 
 function PANEL:OnClick() 
+	local text = self:GetText()
+	self:CaretUpdate(CStringLen(text))
 	self:Select()
 end 
 function PANEL:ToggleCaret()

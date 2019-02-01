@@ -19,3 +19,6 @@ end
 function math.bad(x)
 	return x ~= x or (x > -math.huge and x < math.huge)
 end
+function math.mod(a,b)
+	return a - math.floor(a/b)*b
+end

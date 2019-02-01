@@ -544,11 +544,11 @@ function ENT:SEnter()
 		render.SetGroupBounds(RENDERGROUP_PLANET,1e2,1e10)
 		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
 		
-		self.shadow = CreateTestShadowMapRenderer(self,Vector(0,0,0))
+		--self.shadow = CreateTestShadowMapRenderer(self,Vector(0,0,0))
 		
-		self.cubemap = SpawnCubemap(self,Vector(0,0.9,0),512)
-		self.cubemap:SetAng(Vector(0,180,0))
-		self.cubemap:RequestDraw() 
+		--self.cubemap = SpawnCubemap(self,Vector(0,0.9,0),512)
+		--self.cubemap:SetAng(Vector(0,180,0))
+		--self.cubemap:RequestDraw() 
 	end 
 end
 

@@ -326,7 +326,7 @@ function PANEL:Init()
 	--nodelayer:Add(TESTONLY)
 	 
 	
-	--[[
+	---[[
 	local TESTONLY = panel.Create("dockslot") 
 	TESTONLY:SetSize(vsize.x,vsize.y)
 	TESTONLY:SetPos(100,10000*0) 
@@ -344,7 +344,7 @@ function PANEL:Init()
 		TESTONLY2:AddTab("A"..tostring(k),contents)
 		TESTONLY2:ShowTab()
 	end
-	]]
+	--]]
 	
 	--do 
 	--	local TESTONLY2 = panel.Create("testdragable")  

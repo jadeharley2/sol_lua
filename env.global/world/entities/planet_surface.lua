@@ -44,10 +44,10 @@ function ENT:Spawn()
 	
 	if(surfacecom:HasAtmosphere() )then
 		local atmosphere = self:AddComponent(CTYPE_ATMOSPHERE)  
-		atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
+		atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
 		self.atmosphere = atmosphere
 	end
-	if(surfacecom:HasAtmosphere() and false )then
+	if(surfacecom:HasAtmosphere() and false )then -- TODO:DELETE
 		local modelA = self:AddComponent(CTYPE_MODEL) 
 		local model = self:AddComponent(CTYPE_MODEL) 
 		local modelB = self:AddComponent(CTYPE_MODEL) 
@@ -58,11 +58,13 @@ function ENT:Spawn()
 		--0.9096
 		local world= matrix.Scaling(2*0.91) * matrix.Rotation(90,0,0)
 		local world2= matrix.Scaling(Vector(-1,1,1)*2*0.91) * matrix.Rotation(90,0,0)
+		
+		local cloud_mat = "textures/atmosphere/clouds.json"
 		----[[
 		--- cloud layer 1
 		modelA:SetRenderGroup(RENDERGROUP_PLANET)
 		modelA:SetModel("engine/csphere_36_cylproj.json") 
-		modelA:SetMaterial("textures/atmosphere/clouds.json") 
+		modelA:SetMaterial(cloud_mat) 
 		modelA:SetBlendMode(BLEND_ADD) 
 		modelA:SetRasterizerMode(RASTER_NODETPHSOLID) 
 		modelA:SetDepthStencillMode(DEPTH_DISABLED)  
@@ -75,7 +77,7 @@ function ENT:Spawn()
 		--- cloud layer 2
 		model:SetRenderGroup(RENDERGROUP_PLANET)
 		model:SetModel("engine/csphere_36_cylproj.json") 
-		model:SetMaterial("textures/atmosphere/clouds.json") 
+		model:SetMaterial(cloud_mat) 
 		model:SetBlendMode(BLEND_ALPHA) 
 		model:SetRasterizerMode(RASTER_NODETPHSOLID) 
 		model:SetDepthStencillMode(DEPTH_DISABLED)  
@@ -90,7 +92,7 @@ function ENT:Spawn()
 		
 		modelB:SetRenderGroup(RENDERGROUP_PLANET)
 		modelB:SetModel("engine/csphere_36_cylproj.json") 
-		modelB:SetMaterial("textures/atmosphere/clouds.json") 
+		modelB:SetMaterial(cloud_mat) 
 		modelB:SetBlendMode(BLEND_ALPHA) 
 		modelB:SetRasterizerMode(RASTER_DETPHSOLID) 
 		modelB:SetDepthStencillMode(DEPTH_ENABLED)  
@@ -110,9 +112,9 @@ end
 
 function ENT:Enter() 
 	--render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,1e8,0.5*UNIT_LY)
-	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND) 
+	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)  
 	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND) 
-	render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8)
+	render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8) 
 	render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	self.surface:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	if self.modelA then
@@ -121,12 +123,13 @@ function ENT:Enter()
 		self.modelB:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	end
 	if self.atmosphere then
-		self.atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		self.atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
 	end
 end
 
 function ENT:Leave()   
 	self.surface:SetRenderGroup(RENDERGROUP_PLANET)
+	render.SetGroupMode(RENDERGROUP_RINGS,RENDERMODE_BACKGROUND) 
 	if self.modelA then
 		self.modelA:SetRenderGroup(RENDERGROUP_PLANET)
 		self.model:SetRenderGroup(RENDERGROUP_PLANET)

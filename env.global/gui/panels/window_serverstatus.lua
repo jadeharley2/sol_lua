@@ -46,7 +46,7 @@ end
 local PAN = PANEL
 PAN.SST = false 
 hook.Add("input.keydown", "tabmenu",function()
-	if input.KeyPressed(KEYS_TAB) then 
+	if network.IsConnected() and input.KeyPressed(KEYS_TAB) then 
 		PAN.SST = PAN.SST or panel.Create("window_serverstatus") 
 		PAN.SST:SetCanRaiseMouseEvents(false)
 		if PAN.SST.opened then

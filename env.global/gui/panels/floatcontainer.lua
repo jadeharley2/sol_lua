@@ -6,8 +6,14 @@ function PANEL:Init()
 end
 
 function PANEL:SetFloater(floater)
-	self.floater = floater 
-	self.inner:Add(floater)
+	if istable(floater) then 
+		self:SetScrollbars(floater.scrollbars or 1)
+		self.floater = gui.FromTable(floater,nil,{}) 
+		self.inner:Add(self.floater)
+	else
+		self.floater = floater 
+		self.inner:Add(floater)
+	end
 	local bar = self.vbar
 	local bar2 = self.hbar
 	if bar then bar:SetScroll(-1) end
@@ -71,12 +77,13 @@ function PANEL:HScroll(delta)
 	if bar then bar:Scroll(delta) end 
 end
 
-
+local cscroll = false
 function PANEL:MouseEnter() 
 	local bar = self.vbar
 	local bar2 = self.hbar
 	if bar or bar2 then 
 		local sWVal = input.MouseWheel() 
+		cscroll = self
 		hook.Add("input.mousewheel", "float.scroll",function() 
 			local mWVal = input.MouseWheel() 
 			local delta = mWVal - sWVal
@@ -93,7 +100,9 @@ function PANEL:MouseLeave()
 	local bar = self.vbar
 	local bar2 = self.hbar
 	if bar or bar2 then 
-		hook.Remove("input.mousewheel", "float.scroll")
+		if cscroll == self then
+			hook.Remove("input.mousewheel", "float.scroll")
+		end
 	end
 end
 

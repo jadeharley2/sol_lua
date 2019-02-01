@@ -10,6 +10,12 @@ OBJ.speed = 0.01
 OBJ.mouseWheelValue = 0
 OBJ.mouseWheelDelta = 0
 
+OBJ.sounds = {
+	wind = "ambient/wind.wav"
+}
+ 
+
+
 function OBJ:Init() 
 	local cam = GetCamera()
 	cam:SetUpdateSpace(true)
@@ -54,13 +60,14 @@ function OBJ:KeyDown(key)
 end
 
 function OBJ:Update() 
-	
+	self:UpdateSounds()
 	if input.GetKeyboardBusy() then return nil end
 		
 	--if not input.KeyPressed(KEYS_C) then
 		local dt = 1
 		
 		local cam = GetCamera()
+		local fov = cam:GetFOV()
 		local cam_parent = cam:GetParent()
 		local parent_sz = cam_parent:GetSizepower()
 		local Forward = cam:Forward():Normalized()
@@ -92,6 +99,18 @@ function OBJ:Update()
 		if input.KeyPressed(KEYS_E) then 
 			cam:RotateAroundAxis(VEC_FORWARD, 0.01)
 		end
+		
+		
+		if input.KeyPressed(KEYS_NUMPAD1) then 
+			cam:SetFOV(fov*0.99)
+		end
+		if input.KeyPressed(KEYS_NUMPAD2) then 
+			cam:SetFOV(fov*1.01)
+		end
+		if input.KeyPressed(KEYS_NUMPAD3) then 
+			cam:SetFOV(80)
+		end
+		
 		local mhag = input.MouseIsHoveringAboveGui()
 		local rmb = input.rightMouseButton()
 
@@ -120,8 +139,8 @@ function OBJ:Update()
 			
 			offset = offset + Point(shx,shy)
 			if self.firstp then
-				cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
-				cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+				cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000 )*fov/80)
+				cam:RotateAroundAxis(VEC_UP, (offset.x / -1000)*fov/80)
 			end
 			self.firstp = true
 		end 
@@ -172,6 +191,54 @@ function OBJ:Update()
 	--end
 end
 
+global_atmosphere_sound = global_atmosphere_sound or false
+
+lastcampos = false
+function OBJ:UpdateSounds()
+	
+	local dt = 60 --60 Hz
+	
+	local atmPressure = env.AtmPressure()
+	local windSpeed = 1
+	if atmPressure then
+		
+		
+		
+		local cam = GetCamera()
+		local cp = cam:GetParent()
+		local cpz  = cp:GetSizepower()
+		local cpos = cam:GetPos()
+		if lastcampos then
+			local cspd = (cpos-lastcampos):Length()*cpz
+			local camSpeed = cspd*dt/4
+			--MsgN(camSpeed)
+			windSpeed = camSpeed/dt +0.5
+			if camSpeed>331 then
+				windSpeed =1
+			end
+		end
+		lastcampos = cpos
+		
+		if atmPressure <0 then
+			windSpeed=0.2
+			atmPressure=1
+		end
+	
+	end
+		if atmPressure and atmPressure > 0.01 and windSpeed>0.01 then
+			if not global_atmosphere_sound then
+				global_atmosphere_sound = sound.Start(self.sounds.wind,0.9)
+			end
+			local volume = atmPressure*math.min(1,windSpeed)
+			global_atmosphere_sound:SetVolume(volume)
+			global_atmosphere_sound:SetSpeed(atmPressure*atmPressure*windSpeed)
+		else
+			if global_atmosphere_sound then
+				global_atmosphere_sound:Stop()
+				global_atmosphere_sound = false
+			end 
+		end
+end
 
 function OBJ:ToggleMouse()
 	if self.mouseactive then

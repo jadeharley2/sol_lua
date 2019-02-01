@@ -1,4 +1,5 @@
 TSNODE = false
+ 
 
 --function ENT:Init()  
 --end
@@ -47,6 +48,7 @@ function ENT:Enter()
 			p.particlesys2:SetColor(Vector(0.1,0.1,0.1))
 		end		
 		--SHADOW = SHADOW or CreateTestShadowMapRenderer(GetCamera():GetParent(),Vector(0,0,0))
+		
 	end
 	
 	local pmd = self:GetParent().mapdata
@@ -79,7 +81,7 @@ function ENT:Leave()
 		if cb then
 			cb:Despawn() 
 			self.cubemap = nil
-		end 
+		end  
 	end 
 end 
 

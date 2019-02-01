@@ -38,6 +38,32 @@ function ENT:Spawn()
 	--if self.ismoon then
 	--	self:Enter()
 	--end
+	
+	if true then--
+		local radius = self:GetParameter(VARTYPE_RADIUS) 
+		local seed = self:GetSeed()
+		 
+		--self:GetSeed()==361001 then --saturn test
+		local ringsEnt = ents.Create() 
+		ringsEnt:SetSizepower(radius / 0.909090909090909)
+		ringsEnt:SetParent(self)
+		ringsEnt:SetSpaceEnabled(false)
+		ringsEnt:Spawn()
+		ringsEnt.iscelestialbody=true
+		
+		local model2 = ringsEnt:AddComponent(CTYPE_MODEL) 
+		model2:SetRenderGroup(RENDERGROUP_PLANET)
+		model2:SetModel("space/rings3.SMD") 
+		model2:SetMaterial("textures/space/rings_test.json") 
+		model2:SetBlendMode(BLEND_OPAQUE) 
+		model2:SetRasterizerMode(RASTER_DETPHSOLID) 
+		model2:SetDepthStencillMode(DEPTH_ENABLED)  
+		model2:SetMatrix(matrix.Scaling(1)*matrix.Rotation(90+10,0,20))
+		model2:SetBrightness(4)
+		model2:SetFadeBounds(0.01,99999,0.05)  
+		model2:SetMaxRenderDistance(99999)
+		--self.modelR = model2
+	end
 end
 function ENT:Enter()  
 	self.left = false
@@ -86,7 +112,7 @@ function ENT:SpawnSurface()
 				surface:SetParent(self)
 				surface:SetSizepower(radius / 0.909090909090909) 
 				surface:SetSeed(seed+1000*(k+1)) 
-				surface:SetPos(Vector(k/40,0,0))
+				surface:SetPos(Vector(0,0,0))-- Vector(k/40,0,0))
 				local arch = self:GetParameter(VARTYPE_ARCHETYPE)
 				if arch then
 					surface:SetParameter(VARTYPE_ARCHETYPE,arch)

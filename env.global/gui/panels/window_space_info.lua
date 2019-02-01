@@ -40,30 +40,66 @@ function PANEL:UpdateData()
 		self:AddRecord(p_system,"Name:", system:GetName() or "unknown") 
 		self:AddRecord(p_system,"Class:", system:GetParameter(VARTYPE_ARCHETYPE) or "unknown") 
 		
-		if system.stars then
-			for k,star in pairs(system.stars) do 
-				self:AddGroup(p_system,"Star")
-				self:AddRecord(p_system,"Name:", star:GetName() or "unknown") 
-				local r = star:GetParameter(VARTYPE_RADIUS)
-				self:AddRecord(p_system,"Radius:", r/1000 .. "km" ) 
-				local d = star:GetDistance(cam)
-				self:AddRecord(p_system,"D to center:", d/1000 .. "km" ) 
-				self:AddRecord(p_system,"D to surface:", (d-r)/1000 .. "km" ) 
-				
-				self:AddGroup(p_system,"Planets")
-				for k,planet in pairs(star.planets) do 
-					self:AddRecord(p_system,"Name:", planet:GetName() or "unknown", function()
-						SetController("freecamera")
-						cam:SetParent( planet)
-						planet:Enter()
-						debug.Delayed(1000,function()
-							SetController("planetview")
-						end)
-					end) 
-					
-				end 
+		
+		local dirtree = panel.Create("tree")
+		dirtree:SetSize(600,600)
+		dirtree:Dock(DOCK_FILL)
+		p_system:Add(dirtree)
+	
+		local strs = {"stars"}
+		
+		function recadd(nod,tab)
+			for k,v in pairs(nod:GetChildren()) do
+				MsgN(k,v)
+				if v:HasFlag(FLAG_STAR) then
+					local st = {v:GetName() or "unknown star"}
+					recadd(v,st)
+					tab[#tab+1] = st
+				elseif v:HasFlag(FLAG_PLANET) then
+					local st = {v:GetName() or "unknown planet"}
+					recadd(v,st)
+					tab[#tab+1] = st
+				elseif v:HasFlag(35335) then
+					local st = {"mass center"}
+					recadd(v,st)
+					tab[#tab+1] = st 
+				end
 			end
 		end
+		recadd(system,strs)
+		--if system.stars then
+		--	for k,star in pairs(system.stars) do 
+		--		--self:AddGroup(p_system,"Star")
+		--		--self:AddRecord(p_system,"Name:", star:GetName() or "unknown") 
+		--		--local r = star:GetParameter(VARTYPE_RADIUS)
+		--		--self:AddRecord(p_system,"Radius:", r/1000 .. "km" ) 
+		--		--local d = star:GetDistance(cam)
+		--		--self:AddRecord(p_system,"D to center:", d/1000 .. "km" ) 
+		--		--self:AddRecord(p_system,"D to surface:", (d-r)/1000 .. "km" ) 
+		--		
+		--		--self:AddGroup(p_system,"Planets")
+		--		strs[#strs+1] = {star:GetName() or "unknown"}
+		--		if star.planets then
+		--			for k,planet in pairs(star.planets) do 
+		--				--self:AddRecord(p_system,"Name:", planet:GetName() or "unknown", function()
+		--				--	SetController("freecamera")
+		--				--	cam:SetParent( planet)
+		--				--	planet:Enter()
+		--				--	debug.Delayed(1000,function()
+		--				--		SetController("planetview")
+		--				--	end)
+		--				--end) 
+		--				
+		--			end 
+		--		end
+		--	end
+		--end
+		
+		dirtree:SetTableType(2) 
+		dirtree:FromTable(strs)
+		dirtree.root:SetSize(600,dirtree.root:GetSize().x)
+		dirtree.grid:SetColor(Vector(0.1,0.1,0.1)) 
+		
 		p_system:UpdateLayout()
 		tabs:AddTab("CurSystem",p_system)
 		
@@ -82,31 +118,31 @@ function PANEL:UpdateData()
 			tabs:AddTab("CurPlanet",p_planet)
 		end
 
-		self:AddGroup(p_system,"Other stars")
-		local galaxy = system:GetParent()
-		if galaxy then
-			local spccount=0
-			for k,v in pairs(galaxy:GetChildren()) do
-				if v~=system then
-					local dist = v:GetDistance(system)
-					if spccount<10 and dist<9.4e15*20 then
-						self:AddRecord(p_system,"Name:","["..v:GetParameter(VARTYPE_ARCHETYPE).."]"..(v:GetName() or "unknown"), function()
-							SetController("freecamera")
-							cam:SetParent( v)
-							system:Leave()
-							v:Enter()
-							debug.Delayed(1000,function()
-								--SetController("planetview")
-								self:UpdateData()
-								self.tabs:ShowTab(1)
-							end)
-						end) 
-						self:AddRecord(p_system,"Distance:", " ly: "..(dist/9.4e15))
-						spccount = spccount + 1
-					end	
-				end
-			end
-		end
+		--self:AddGroup(p_system,"Other stars")
+		--local galaxy = system:GetParent()
+		--if galaxy then
+		--	local spccount=0
+		--	for k,v in pairs(galaxy:GetChildren()) do
+		--		if v~=system then
+		--			local dist = v:GetDistance(system)
+		--			if spccount<10 and dist<9.4e15*20 then
+		--				self:AddRecord(p_system,"Name:","["..v:GetParameter(VARTYPE_ARCHETYPE).."]"..(v:GetName() or "unknown"), function()
+		--					SetController("freecamera")
+		--					cam:SetParent( v)
+		--					system:Leave()
+		--					v:Enter()
+		--					debug.Delayed(1000,function()
+		--						--SetController("planetview")
+		--						self:UpdateData()
+		--						self.tabs:ShowTab(1)
+		--					end)
+		--				end) 
+		--				self:AddRecord(p_system,"Distance:", " ly: "..(dist/9.4e15))
+		--				spccount = spccount + 1
+		--			end	
+		--		end
+		--	end
+		--end
 	end
 	
 	self:UpdateLayout() 

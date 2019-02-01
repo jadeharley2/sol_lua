@@ -128,6 +128,15 @@ function isnumber(arg) return type(arg) == "number" end
 function isboolean(arg) return type(arg) == "boolean" end
 function isfunction(arg) return type(arg) == "function" end
 function isuserdata(arg) return type(arg) == "userdata" end
+function isarray(arg)
+	if type(arg) == "table" then
+		for k,v in pairs(arg) do
+			if type(k) ~= "number" then return false end
+		end
+		return true
+	end
+	return false 
+end
 
 function UniversalSort(a,b)
 	local a_type = type(a)

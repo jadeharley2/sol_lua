@@ -21,7 +21,29 @@ env.Humidity = function()
 	return 0
 end 
 env.AtmPressure = function()
-	return 0
+	--return 0
+	local cam = GetCamera() 
+	local planet = cam:GetParentWithFlag(FLAG_PLANET)
+	if planet then 
+	
+		if planet.surface then
+		
+			local sc = planet.surface.surface
+			
+			if sc and sc:HasAtmosphere() then
+				local dptp = planet:GetDistance(cam) 
+				local radius = planet:GetParameter(VARTYPE_RADIUS)
+				local surfdist = dptp-radius
+				--MsgN(surfdist)
+				if surfdist<=0 then
+					return -1
+				else
+					local atmwidth = 100000--temp linear 100km = 1
+					return math.max(0, 1-surfdist/atmwidth)
+				end
+			end
+		end
+	end
 end
 env.Gravity = function()
 	return Vector(0,0,-1)

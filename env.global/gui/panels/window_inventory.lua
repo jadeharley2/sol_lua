@@ -106,9 +106,24 @@ function PANEL:ReloadTabs()
 			end
 			grid2:AddPanel(slot)
 		end 
-		tabs:AddTab("GRD",grid2)
+		tabs:AddTab("INV",grid2)
 	end
 	
+	local abilities = ply.abilities  
+	if abilities then
+		local grid2 = panel.Create("grid")  
+		for k,v in pairs(abilities) do 
+			local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
+			--slot.storage = storage
+			--slot.storeslot = k
+			local item  = abilities[k]
+			if item then
+				slot:Add(Item(storage,k,item))
+			end
+			grid2:AddPanel(slot)
+		end 
+		tabs:AddTab("ABL",grid2) 
+	end
 	
 	--local ff_grid_floater = panel.Create("graph_grid")  
 	--ff_grid_floater:SetSize(4000,4000)

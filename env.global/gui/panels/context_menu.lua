@@ -56,7 +56,7 @@ end
 ]]
 function PANEL:SetData(base,data,crtbtn)
 	self.base = base
-	self.data = data
+	self.data = data 
 	local hperrow = 20
 	local height = 0 --hperrow*#data
 	local width = 200
@@ -82,7 +82,7 @@ function PANEL:SetData(base,data,crtbtn)
 		else
 			if v.action then
 				b.action = v.action
-				b.OnClick = function(s) CONTEXTMENU_ISBUTTON_PRESSED = s.action(base,self) end
+				b.OnClick = function(s) CONTEXTMENU_ISBUTTON_PRESSED = s.action(base,self,v) end
 			end
 		end
 	end

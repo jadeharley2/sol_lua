@@ -50,6 +50,7 @@ function gui.ApplyParameters(node,t)
 			local vsize = GetViewportSize()  
 			node:SetSize(v[1]*vsize.x,v[2]*vsize.y) 
 		elseif k == 'pos' then node:SetPos(v[1],v[2])
+		elseif k == 'rotation' then node:SetRotation(v)
 		elseif k == 'dock' then node:Dock(v)
 		elseif k == 'padding' then node:SetPadding(v[1],v[2],v[3],v[4])
 		elseif k == 'margin' then node:SetMargin(v[1],v[2],v[3],v[4])
@@ -69,13 +70,21 @@ function gui.ApplyParameters(node,t)
 		
 		elseif k == 'font' then node:SetFont(LoadFont(v))
 		
+		elseif k == 'autosize' then node:SetAutoSize(v[1],v[2])
+		elseif k == 'value' and node.SetValue then node:SetValue(v)
+		
 		elseif k == 'states' then  
 			for kk,vv in pairs(v) do 
 				node:AddState(kk,vv)
 			end 
 		elseif k == 'state' then --skip
 		else
-			node[k] = v
+			local customfunction = node['Set'..k]
+			if customfunction and isfunction(customfunction) then
+				customfunction(node,v)
+			else 
+				node[k] = v
+			end
 		end
 	end
 	
