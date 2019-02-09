@@ -95,7 +95,7 @@ function ENT:Spawn(c)
 		particlesys2:Set(customtype)
 	else
 		local type = self:GetParameter(VARTYPE_CHARACTER,"magic_explosion")
-		particlesys2:Set("particles/"..type..".json")
+		particlesys2:Set("particles/"..type..".particle")
 	end
 	self.particlesys2 = particlesys2 
 	 

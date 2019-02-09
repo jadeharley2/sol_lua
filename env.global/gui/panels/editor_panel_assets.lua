@@ -210,6 +210,10 @@ function PANEL:InitTabAssets()
 			MsgN(type)
 			if(spt.spawn) then
 				local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
+				local edt = e.editor
+				if edt and edt.onSpawn then
+					edt.onSpawn(e)
+				end
 				worldeditor:Select(e)
 			end
 		end  

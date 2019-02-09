@@ -119,7 +119,7 @@ function generator:GeneratePlanets(star,  seed, spacing, mindist, maxdist)
 			body:SetParameter(VARTYPE_ARCHETYPE,"hs_lowas") 
 		elseif  Random(ssd):NextDouble() > 0.1 then 
 			--MsgN("asdfjas!")
-			body:SetParameter(VARTYPE_ARCHETYPE,"gen_barren")
+			--body:SetParameter(VARTYPE_ARCHETYPE,"gen_barren")
 		end
 		
 		

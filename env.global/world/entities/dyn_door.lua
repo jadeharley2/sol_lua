@@ -88,12 +88,12 @@ function ENT:LoadGraph()
 		w:SetOutput("closed")
 		return e.model:SetAnimation("idle_closed") 
 		end)
-	graph:NewTransition("open","preidle_open",CND_ONEND)
-	graph:NewTransition("close","preidle_closed",CND_ONEND)
-	graph:NewTransition("preidle_open","idle_open",CND_ONEND)
-	graph:NewTransition("preidle_closed","idle_closed",CND_ONEND)
-	graph:NewTransition("idle_open","close",CND_ONREQ)
-	graph:NewTransition("idle_closed","open",CND_ONREQ)
+	graph:NewTransition("open","preidle_open",BEH_CND_ONEND)
+	graph:NewTransition("close","preidle_closed",BEH_CND_ONEND)
+	graph:NewTransition("preidle_open","idle_open",BEH_CND_ONEND)
+	graph:NewTransition("preidle_closed","idle_closed",BEH_CND_ONEND)
+	graph:NewTransition("idle_open","close",BEH_CND_ONCALL,"close")
+	graph:NewTransition("idle_closed","open",BEH_CND_ONCALL,"open")
 	
 	self.graph = graph 
 	graph:LoadState("preidle_closed")
@@ -150,10 +150,10 @@ end
 
 function ENT:Toggle()
 	if not self.locked then
-		if(self.graph:TrySetState("open"))then
+		if(self.graph:Call("open"))then
 			self:SetUpdating(true)
 			return true
-		elseif(self.graph:TrySetState("close"))then
+		elseif(self.graph:Call("close"))then
 			self:SetUpdating(true) 
 			return true
 		end
@@ -162,14 +162,14 @@ function ENT:Toggle()
 end
 
 function ENT:Open() 
-	if(not self.locked and self.graph:TrySetState("open"))then
+	if(not self.locked and self.graph:Call("open"))then
 		self:SetUpdating(true) 
 		return true
 	end
 	return false
 end
 function ENT:Close()
-	if(not self.locked and self.graph:TrySetState("close"))then
+	if(not self.locked and self.graph:Call("close"))then
 		self:SetUpdating(true)
 		return true
 	end 

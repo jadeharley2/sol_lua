@@ -32,7 +32,7 @@ function ENT:Spawn(c)
 	particlesys2:SetBlendMode(BLEND_ADD) 
 	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
 	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	particlesys2:Set("particles/explosion.json")--lines_test.json")--explosion.json")
+	particlesys2:Set("particles/explosion.particle")--lines_test.json")--explosion.json")
 	self.particlesys2 = particlesys2 
 	
 	

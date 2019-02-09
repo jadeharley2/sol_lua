@@ -68,6 +68,7 @@ function editor:Open()
 	
 	self:Select(self.selected)
 	self.isopen = true
+	hook.Call("editor.world.open")
 end
 function editor:Close()  
 	render.DCISetEnabled(false)
@@ -97,6 +98,7 @@ function editor:Close()
 	end  
 	engine.ResumePhysics()
 	self.isopen = false
+	hook.Call("editor.world.close")
 end
 function editor:Toggle()
 	if self.isopen then self:Close() 
@@ -345,6 +347,14 @@ function editor:Update()
 			--for k,v in pairs(self.selected) do sssd = sssd .. ", {".. tostring(k).."} " end
 			--if math.floor(CurTime()*10)%10==0 then MsgInfo(sssd) end
 	end
+	for k,v in pairs(self.selected) do
+		if k and k.editor then
+			local ed = k.editor 
+			if ed and ed.onUpdate then
+				ed.onUpdate(k) 
+			end
+		end
+	end 
 end
 
 function editor:SelectMany(nodes)
@@ -477,6 +487,8 @@ function editor:Copy(ent)
 	ent:CopyFlags(ne)
 	ent:CopyParameters(ne)
 	ne:SetSeed(uid) 
+MsgN("asasd?")
+	hook.Call("EditorNodeCopy",ent,ne)
 	return ne
 end
 

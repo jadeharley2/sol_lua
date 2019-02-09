@@ -668,7 +668,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 						self.rmode = false 
 						self.totalCamRotationY = 0
 						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
-						--cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 					end
 					
 				else
@@ -679,7 +679,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 						self.rmode = false 
 						self.totalCamRotationY = 0
 						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
-						--cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+						cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
 					end
 				end
 				

@@ -41,10 +41,10 @@ function SpawnPV(type,ent,pos,ang)
 	e:SetSizepower(1)
 	e:SetParent(ent)
 	e:SetPos(pos) 
-	if j.modeldata then
-		e:SetParameter(VARTYPE_MODELDATA, json.ToJson(j.modeldata))
-	end
-	e:SetModel(j.model,j.scale,false)
+	--if j.modeldata then
+	--	e:SetParameter(VARTYPE_MODELDATA, json.ToJson(j.modeldata))
+	--end
+	--e:SetModel(j.model,j.scale,false)
 	e:Spawn()
 	e:SetAng(r)
 	
@@ -63,7 +63,7 @@ function ENT:Init()
 	
 end
 function ENT:Load()
-	self:PreLoadData()
+	self:PreLoadData(true)
 	local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
 	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
 	if modelval then 
@@ -75,17 +75,26 @@ function ENT:Load()
 end  
 function ENT:Spawn()  
 	self:PreLoadData()
-	local modelcom = self.modelcom
-	if not modelcom then
-		local modelval = self:GetParameter(VARTYPE_MODEL)
-		local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
-		if modelval then 
-			self:SetModel(modelval,modelscale)
-		else
-			error("no model specified for static model at spawn time")
+	if not self.data.luatype then
+		local modelcom = self.modelcom
+		if not modelcom then
+			local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
+			local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
+			if modelval then 
+				self:SetModel(modelval,modelscale)
+			else
+				error("no model specified for static model at spawn time")
+			end
 		end
 	end
 	self:LoadData()
+end
+function ENT:Despawn()
+	local sb = self._secondbase
+	if sb and sb._despawn then
+		sb._despawn(self)
+	end
+	self:DDFreeAll() 
 end
 
 local function LampInputs(self,f,k,v)
@@ -105,14 +114,57 @@ local function ButtonUse(s,user)
 		s:EmitSound("events/lamp-switch.ogg",1)
 	end
 end
-function ENT:PreLoadData() 
+function ENT:PreLoadData(isLoad) 
 	if not self.data then
 		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
 		self.data = json.Read(type) 
 	end
 	if not self.data then
+		MsgN("prop_variable error loading type "..tostring(type or "nil"))
+	end
+	if not self.data then
 		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
 		MsgN("prop_variable error no type "..tostring(type or "nil"))
+	end
+	local data = self.data
+	if data and data.modeldata then 
+		e:SetParameter(VARTYPE_MODELDATA, json.ToJson(data.modeldata))
+	end
+	if data and data.model then
+		self:SetParameter(VARTYPE_MODEL,data.model)
+	end
+
+	local lt = data.luatype
+	if lt and isstring(lt) then
+		local meta = ents.GetType(lt)
+		if meta then
+			--for k,v in pairs(meta) do
+			--	if k ~= 'Spawn' and k ~= 'Despawn' then
+			--		self[k] = v 
+			--	end
+			--end 
+			self._secondbase = meta
+
+			if meta.Init then
+				meta.Init(self)
+			end
+			if meta.PreLoadData then
+				meta.PreLoadData(self)
+			end
+			MsgN("load!",isLoad)
+			if isLoad then
+				if meta.Load then 
+					meta.Load(self)
+				end
+			else
+				if meta._spawn then 
+					meta._spawn(self)
+				end
+			end
+			if meta.Think then 
+				self:AddNativeEventListener(EVENT_UPDATE,"think",meta.Think)
+			end
+		end
 	end
 end
 
@@ -189,7 +241,7 @@ function ENT:LoadData()
 		self.model:SetMaxRenderDistance(j.viewdistance)
 	end
 end
-
+ 
 function ENT:SetModel(mdl,scale,norotation) 
 	scale = scale or 1
 	norotation = norotation or false

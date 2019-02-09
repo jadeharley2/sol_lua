@@ -22,9 +22,15 @@ function JPoint(jvec,default)
 		return default
 	end
 end
+function VectorJ(vec)
+	return {vec.x,vec.y,vec.z}
+end
 
 function Multicall(tab_obj,func,...)
 	for k,v in pairs(tab_obj) do
-		v[func](v,...)
+		local t = type(v)
+		if t=='userdata' or t=='table' then
+			v[func](v,...)
+		end
 	end
-end
+end 

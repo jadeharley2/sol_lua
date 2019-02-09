@@ -309,7 +309,7 @@ function ENT:Spawn()
 	--local d2 = SpawnDT("door/door2.stmd",otherspace,Vector(4.656322E-10, 0, 0.007867295),Vector(0,0,0),0.1)
 	d1:SetSeed(334001)
 	d1:SetGlobalName("flatgrass.door")
-	d1.target = {"models/dyntest/sdm/interior_main.dnmd","foyer.flatgrass.door"}--d2
+	d1.target = {"forms/levels/sdm/interior_main.dnlv","foyer.flatgrass.door"}--d2
 	--d2.target = d1
 	
 	
@@ -390,6 +390,22 @@ function ENT:Spawn()
 	--hook.Add("aat","fst",function() 
 	--	self:CreateTestPM()
 	--end)
+
+
+
+	
+	local pn = {}
+	-- x, z, -y
+	pn[1] = {p = Vector(-0.01907886, 0, 0.01137811),n ="eeew",s=true,c=1,d={b=true}}
+	pn[2] = {p = Vector(-0.01907886,0,53.011*0.001)}
+	pn[3] = {p = Vector(0,0,53.011)*0.001,n ="u?",s=true,c=1,d={b=true}}
+	pn[4] = {p = Vector(0,100,53.011)*0.001,n ="unyu?",s=true,c=1}
+	
+	pn.links = {{1,2,3,4}}
+	pn.currentid = 1
+	
+	self.lift = SpawnLift(space,325402,pn,'forms/levels/train/carriage.dnmd')
+ 
 end 
 function ENT:CTO(user,ss)
 	user:SetParent(ss)

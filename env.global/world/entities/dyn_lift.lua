@@ -131,11 +131,27 @@ function SpawnLift(ent,seed,network,model)
 	local sz = ent:GetSizepower()
 	for k,v in pairs(network) do
 		if isnumber(k) and v.s then
-			local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
-			local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
-			door1:RemoveFlag(FLAG_USEABLE)
-			door2:RemoveFlag(FLAG_USEABLE)
-			v.d = {door1,door2}
+			if v.d then
+				local dl = {}
+				if v.d.a then 
+					local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
+					door1:RemoveFlag(FLAG_USEABLE)
+					dl[1] = door1
+				end
+				if v.d.b then 
+					local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
+					door2:RemoveFlag(FLAG_USEABLE)
+					dl[2] = door2
+				end
+				 
+				v.d = dl
+			else
+				local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
+				local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
+				door1:RemoveFlag(FLAG_USEABLE)
+				door2:RemoveFlag(FLAG_USEABLE)
+				v.d = {door1,door2}
+			end
 		end
 	end
 	return e
@@ -155,6 +171,7 @@ function ENT:Init()
 	--self.coll = coll 
 	self:SetSpaceEnabled(false)
 	self.speed = 30
+	self.movetime = 0
 	--phys:SetMass(10)  
 	
 	local coll = self:AddComponent(CTYPE_STATICCOLLISION) 
@@ -173,9 +190,10 @@ function ENT:Init()
 			self:OpenMenu(user)
 		end
 	end)
-	self:AddFlag(FLAG_USEABLE) 
+	self:AddFlag(FLAG_USEABLE)  
 end
 function ENT:Spawn()
+	local mdl = self:GetParameter(VARTYPE_MODEL) or "lift/lift.stmd"
 	local door1 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,0,0),0.75,3190813)
 	local door2 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,180,0),0.75,3190814)
 	door1:RemoveFlag(FLAG_USEABLE)
@@ -195,13 +213,14 @@ function ENT:Spawn()
 	graph:NewState("stop",function(s,e) Multicall(self:GetDoors(),"Open") return 2 end)
 	graph:NewState("spawn",function(s,e) Multicall(self:GetDoors(),"Open") return 2 end)
 	
-	graph:NewTransition("start","moving",CND_ONEND)
-	graph:NewTransition("stop","idle",CND_ONEND)
+	graph:NewTransition("start","moving",BEH_CND_ONEND)
+	graph:NewTransition("stop","idle",BEH_CND_ONEND)
 	
-	graph:NewTransition("idle","start",CND_ONREQ)
-	graph:NewTransition("moving","stop",CND_ONREQ)
+	graph:NewTransition("idle","start",BEH_CND_ONCALL,"start")
+	graph:NewTransition("moving","stop",BEH_CND_ONCALL,"stop")
 	
-	graph:NewTransition("spawn","stop",CND_ONEND)
+	graph:NewTransition("spawn","stop",BEH_CND_ONEND)
+	graph.debug = true
 	graph:SetState("spawn")
 	
 	self.graph = graph
@@ -215,23 +234,44 @@ function ENT:Spawn()
 	light:Spawn() 
 	self.light = light
 	
-	SpawnSO("lift/lift_ref.smd",self,Vector(0,0,0),0.75,true) 
-	SpawnSO("lift/lift.stmd",self,Vector(0,0,0),0.75) 
-	
-	local collsmd = "lift/lift_ref.smd" 
+	--SpawnSO("lift/lift_ref.smd",self,Vector(0,0,0),0.75,true) 
+	SpawnSO(mdl,self,Vector(0,0,0),1) 
+	 
 	local coll = self.coll
 	
 	
+
+
+
+	local scale = scale or 1
+	local model = self.model
+	local world = matrix.Scaling(scale)
+	if not norotation then
+		world = world * matrix.Rotation(-90,0,0)
+	end
+	
+	self:SetParameter(VARTYPE_MODEL,mdl)
+	self:SetParameter(VARTYPE_MODELSCALE,scale)
+	
+	--model:SetRenderGroup(RENDERGROUP_LOCAL)
+	model:SetModel(mdl)   
+	model:SetBlendMode(BLEND_OPAQUE) 
+	model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	model:SetDepthStencillMode(DEPTH_ENABLED)  
+	model:SetBrightness(1)
+	model:SetFadeBounds(0,9e20,0)  
+	model:SetMatrix(world) 
+ 
 	--if(model:HasCollision()) then
 	--	coll:SetShapeFromModel(matrix.Scaling(scale/0.75 )  ) 
 	--else
 	--	coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) ) 
 	--end
 	--coll:SetShape(collsmd, matrix.Scaling(1)  * matrix.Rotation(-90,0,0) ) 
-	coll:SetShape(collsmd,matrix.Rotation(-90,0,0)) --matrix.Scaling(1 )  * 
-	
+	coll--:SetShape(collsmd,matrix.Rotation(-90,0,0)) --matrix.Scaling(1 )  * 
+	:SetShapeFromModel(matrix.Scaling(scale)*matrix.Rotation(-90,0,0))
 	--if TSHIP==self:GetParent() then
-		SpawnMirror(self,Vector(0,2.543,-4.174)*0.75)
+		--SpawnMirror(self,Vector(0,2.543,-4.174)*0.75)
 	--end
 	door2:Open()
 end
@@ -264,9 +304,15 @@ end
 function ENT:GetDoors()
 	local net = self.network
 	local node =net[net.currentid]
-	local doors = {self.door1,self.door2}
-	for k,v in pairs(node.d or {}) do
-		doors[#doors+1] = v
+	local doorsa = {self.door1,self.door2}
+	local doorsb = node.d or {}
+	local doors = {}
+	for k,v in pairs(doorsa) do
+		local v2 = doorsb[k]
+		if v2 then
+			doors[#doors+1] = v
+			doors[#doors+1] = v2
+		end
 	end
 	return doors
 end
@@ -290,7 +336,7 @@ function ENT:Think()
 				if(d>=1)then
 					self.targetpos = nil
 					net.currentid = self.endid
-					--MsgN("REACHED: ",self.endid)
+					MsgN("REACHED: ",self.endid)
 					local node = net[net.currentid]
 					if node and node.a then
 						node.a(self,node)
@@ -301,16 +347,16 @@ function ENT:Think()
 						self.pathid = pd
 						local next = path[pd]
 						if next then
-							--MsgN("NEXT NODE: ",next)
+							MsgN("NEXT NODE: ",next)
 							self:PathMoveTo(next)
 							local st = CurTime()
 							self.starttime = st
 							self.endtime = st + self.movetime
 						else
-							--MsgN("PATH TRACK FINISHED") 
+							MsgN("PATH TRACK FINISHED") 
 							self.path = nil
 							self.pathid = nil
-							if(g:TrySetState("stop")) then
+							if(g:Call("stop")) then
 								local u = self.user
 								if u then
 									if CLIENT then
@@ -428,7 +474,7 @@ function ENT:SetPathNetwork(pn)
 end
 function ENT:MoveTo(nodeid,user)
 	
-	--MsgN("MOVE REQUEST TO: ",nodeid)
+	MsgN("MOVE REQUEST TO: ",nodeid)
 	local nid = self.network.currentid
 	
 	local path = self:GetPathTo(nodeid)
@@ -441,7 +487,7 @@ function ENT:MoveTo(nodeid,user)
 		--	self:PathMoveTo(1)
 		--end
 		self:PathMoveTo(path[1])
-		if self.graph:TrySetState("start") then
+		if self.graph:Call("start") then
 			self.user = user
 			local ltf = self:GetLocalCoordinates(user)
 			user:SetParent(self)
@@ -505,7 +551,7 @@ function ENT:GetPathTo(nodeid)
 				--MsgN("set node prev to ",minnode.pt_p)
 				start = minnode
 				if start == target then 
-					--MsgN("path found")
+					MsgN("path found")
 					local path = List()
 					while start do
 						--MsgN(start.id)
@@ -520,12 +566,12 @@ function ENT:GetPathTo(nodeid)
 				end
 			end
 		else
-			--MsgN("no path found")
+			MsgN("no path found")
 			return nil 
 		end
 		iterleft = iterleft - 1
 		if iterleft<=0 then 
-			--MsgN("LOOP ERROR no path found")
+			MsgN("LOOP ERROR no path found")
 			return nil 
 		end
 	end
@@ -534,7 +580,7 @@ end
 function ENT:PathMoveTo(nodeid) 
 	local net = self.network
 	if nodeid == net.currentid then return nil end
-	--MsgN("MOVE TARGET NODE SET: ",nodeid)
+	MsgN("MOVE TARGET NODE SET: ",nodeid)
 	local tn = net[nodeid]
 	
 	local cp = self:GetPos()

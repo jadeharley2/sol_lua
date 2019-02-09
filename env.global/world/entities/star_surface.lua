@@ -28,7 +28,7 @@ function ENT:Spawn()
 	particlesys2:SetBlendMode(BLEND_ADD) 
 	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
 	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	particlesys2:Set("particles/star.json")
+	particlesys2:Set("particles/star.particle")
 	particlesys2:SetSpeed(0.1)--0.1)
 	particlesys2:SetColor(scolor)
 	self.particlesys2 = particlesys2 
