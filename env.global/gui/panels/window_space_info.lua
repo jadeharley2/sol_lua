@@ -115,8 +115,10 @@ function PANEL:UpdateData()
 			local dd,dp = DistanceNormalize(dptp,true,false)
 			self:AddRecord(p_planet,"Dist to parent:",tostring(dd)..dp )  
 			self:AddRecord(p_planet,"Dist to parent2:",tostring(dptp/au).."au" ) 
+			self:AddRecord(p_planet,"Local Time:",tostring(daycycle.GetLocalTime()))   
+			
 			tabs:AddTab("CurPlanet",p_planet)
-		end
+		end   
 
 		--self:AddGroup(p_system,"Other stars")
 		--local galaxy = system:GetParent()

@@ -87,3 +87,40 @@ end
 --	end
 --	return self.spawnnode, self.spawnpos
 --end
+
+ENT.modes = {
+	free = {
+		selected = function(self,origin)
+
+		end
+	},
+	character = {
+		selected = function(self,origin)
+			
+		end
+	},
+	spaceship = {
+		selected = function(self,origin) 
+			local ship = ents.Create("spaceship")
+			ship:SetSeed(2397131)
+			ship:SetSizepower(1000)
+			ship:SetName("The ship")
+			ship:SetParent(origin_loader:GetParent())
+			ship:SetPos(Vector(0.0129999995529652, 0, 0))
+			ship:SetParameter(VARTYPE_CHARACTER,"libra")
+			ship:Create()
+			ship:Enter()
+			ship:SetUpdateSpace(true)
+
+			local targetpos = Vector(0.003537618,0.01925059,0.2446546) 
+			self.spawnnode = ship
+			self.spawnpos = targetpos
+			self.loaded = true
+			hook.Call("world.loaded", ship, targetpos) 
+		end
+	},
+	spacelab = {
+		selected = function(self,origin) 
+		end
+	}
+}

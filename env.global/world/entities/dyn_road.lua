@@ -10,7 +10,7 @@ end
 
  
 
-function ENT:Init()   
+function ENT:Init()    
 	local model = self:AddComponent(CTYPE_MODEL)  
     self.model = model 
     self:SetSizepower(1)
@@ -43,7 +43,9 @@ function ENT:LoadModelData()
             end
             self.points =slp
         end
+        self.pathloop = mdata.loop
     end
+    self:AddNativeEventListener(EVENT_GENERATOR_FINISHED,"upd",self.UpdateCollision)
 end
 function ENT:Despawn()  
 	self:DDFreeAll() 
@@ -124,13 +126,13 @@ function ENT:UpdateModel(forced)
         
     -- PrintTable(jm)
 
-        local bld = procedural.Builder()
-        bld:BuildModel("@tempname",json.ToJson(jm),"") --+tostring(self:GetSeed())
+        --local bld = procedural.Builder()
+        --bld:BuildModel("@tempname",json.ToJson(jm),"") --+tostring(self:GetSeed())
 
         
         
         model:SetRenderGroup(RENDERGROUP_LOCAL)
-        model:SetModel("@tempname")   
+        --model:SetModel("@tempname")   
         model:SetBlendMode(BLEND_OPAQUE) 
         model:SetRasterizerMode(RASTER_DETPHSOLID) 
         model:SetDepthStencillMode(DEPTH_ENABLED)  
@@ -139,9 +141,23 @@ function ENT:UpdateModel(forced)
         model:SetMatrix(world)
         
         
+        local bld = procedural.Builder()
+        bld:BuildModelAsync(model,json.ToJson(jm),"") --+tostring(self:GetSeed())
+
+        
         self.pthash = newhash
+
+        --self:UpdateCollision() 
     end
 end  
+function ENT:UpdateCollision() 
+    local coll = self.coll or self:GetComponent(CTYPE_STATICCOLLISION) or self:AddComponent(CTYPE_STATICCOLLISION)  
+    self.coll = coll
+     
+    local world = matrix.Scaling(1)  
+    coll:SetShapeFromModel(world)
+    MsgN("waf")
+end
 
 hook.Add("EditorNodeCopy","dynroad",function(old,new)
     if old and old.rnod then 
@@ -202,8 +218,9 @@ ENT.editor = {
         local daf = false
         --local fd = false
         local pts = {}
+        local sz = spp:GetSizepower()
         for k=1,2 do 
-            pts[k+1] = spo+Vector(k*0.01,0,0)
+            pts[k+1] = spo+Vector(5*k/sz,0,0)
             --local ee = SpawnSO("primitives/sphere.stmd",spp,spo+Vector(k*0.01,0,0),0.8)
            -- ee.rnod = true
            -- if daf then daf.next = ee ee.prev = daf end

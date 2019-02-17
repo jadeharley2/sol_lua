@@ -75,6 +75,6 @@ function ENT:OnPlayerSpawn()
 		
 		render.SetGroupBounds(RENDERGROUP_PLANET,1e2,1e10)
 		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)
-		
+		--CreateTestShadowMapRenderer(self.spawnnode,self.spawnpos)
 	end
 end

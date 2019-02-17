@@ -113,11 +113,11 @@ function ENT:Enter()
 
 
 
-	local ss = SpawnSO("space/ships/cargo1/all_ref.stmd",self.dock,Vector(0.8,0,0.8),0.75)
-	ss:SetAng(Vector(130,130,130))
-	ss.model:SetMaterial("textures/debug/white.json") 
+	--local ss = SpawnSO("space/ships/cargo1/all_ref.stmd",self.dock,Vector(0.8,0,0.8),0.75)
+	--ss:SetAng(Vector(130,130,130))
+	--ss.model:SetMaterial("textures/debug/white.json") 
 	
-	self.unload = {ss}
+	self.unload ={}-- {ss}
 end
 function ENT:Leave()
 	for	k,v in pairs(self.unload) do

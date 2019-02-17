@@ -32,17 +32,17 @@ function ENT:Enter()
 		end)
 		--self.cubemap:RequestDraw()
 		GlobalSetCubemap(self.cubemap)
-		---if not SHADOW or not IsValidEnt(SHADOW) then 
-		---	local star = self:GetParentWithFlag(FLAG_STAR)
-		---	if star then
-		---		local eshadow = ents.Create("test_shadowmap2")  
-		---		eshadow.light = star
-		---		eshadow:SetParent(GetCamera():GetParent()) 
-		---		eshadow:Spawn() 
-		---		---self.shadow = eshadow
-		---		SHADOW = eshadow
-		---	end
-		---end
+		if not SHADOW or not IsValidEnt(SHADOW) then 
+			local star = self:GetParentWithFlag(FLAG_STAR)
+			if star then
+				local eshadow = ents.Create("test_shadowmap2")  
+				eshadow.light = star
+				eshadow:SetParent(GetCamera():GetParent()) 
+				eshadow:Spawn() 
+				---self.shadow = eshadow
+				SHADOW = eshadow
+			end
+		end
 		if self:GetParent().surface:HasAtmosphere() then
 			local p = SpawnParticles(self,"clouds",Vector(0,0,0),0,100,1)
 			p.particlesys2:SetColor(Vector(0.1,0.1,0.1))

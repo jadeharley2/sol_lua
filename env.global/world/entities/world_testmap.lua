@@ -313,15 +313,35 @@ function ENT:Spawn()
 	--d2.target = d1
 	
 	
+	--local dynamicmodel = ents.Create()
+	--dynamicmodel:SetSeed(45312341)
+	--local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
+	--dynamicmodel.model = model 
+	--dynamicmodel:SetSpaceEnabled(false) 
+	--dynamicmodel:SetSizepower(1)
+	--
+	--dynamicmodel:SetPos(Vector(0,0.008022659,0)) 
+	--dynamicmodel:SetAng(Vector(-90,0,0))
+	--dynamicmodel:SetParent(space)
+	--
+	--model:SetRenderGroup(RENDERGROUP_LOCAL) 
+	--model:SetBlendMode(BLEND_OPAQUE) 
+	--model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	--model:SetDepthStencillMode(DEPTH_ENABLED)  
+	--model:SetBrightness(1)
+	--model:SetFadeBounds(0,9e20,0)   
+	--
+	--model:SetModel("dyntest/maptest.dnmd")
+	
+
+
+
 	local dynamicmodel = ents.Create()
 	dynamicmodel:SetSeed(45312341)
 	local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
 	dynamicmodel.model = model 
 	dynamicmodel:SetSpaceEnabled(false) 
 	dynamicmodel:SetSizepower(1)
-	
-	dynamicmodel:SetPos(Vector(0,0.008022659,0)) 
-	dynamicmodel:SetAng(Vector(-90,0,0))
 	dynamicmodel:SetParent(space)
 	
 	model:SetRenderGroup(RENDERGROUP_LOCAL) 
@@ -330,31 +350,14 @@ function ENT:Spawn()
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,9e20,0)   
+	 
+	local procgen = dynamicmodel:AddComponent(CTYPE_PROCGEN) 
+	dynamicmodel.procgen = procgen
+	procgen:SetModel("models/dyntest/test_dynamic.dnmd")
 	
-	model:SetModel("dyntest/maptest.dnmd")
 	
-	---local dynamicmodel = ents.Create()
-	---dynamicmodel:SetSeed(45312341)
-	---local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
-	---dynamicmodel.model = model 
-	---dynamicmodel:SetSpaceEnabled(false) 
-	---dynamicmodel:SetSizepower(1)
-	---dynamicmodel:SetParent(space)
-	---
-	---model:SetRenderGroup(RENDERGROUP_LOCAL) 
-	---model:SetBlendMode(BLEND_OPAQUE) 
-	---model:SetRasterizerMode(RASTER_DETPHSOLID) 
-	---model:SetDepthStencillMode(DEPTH_ENABLED)  
-	---model:SetBrightness(1)
-	---model:SetFadeBounds(0,9e20,0)   
-	--- 
-	---local procgen = dynamicmodel:AddComponent(CTYPE_PROCGEN) 
-	---dynamicmodel.procgen = procgen
-	---procgen:SetModel("models/dyntest/test_dynamic.dnmd")
-	---
-	---
-	---dynamicmodel:Spawn()
-	---dynamicmodel:SetPos(-0.02885208, 0.007299021, 0)
+	dynamicmodel:Spawn()
+	dynamicmodel:SetPos(-0.02885208, 0.007299021, 0)
 	
 	
 	
@@ -404,7 +407,7 @@ function ENT:Spawn()
 	pn.links = {{1,2,3,4}}
 	pn.currentid = 1
 	
-	self.lift = SpawnLift(space,325402,pn,'forms/levels/train/carriage.dnmd')
+	self.lift = SpawnLift(space,325402,pn)--'forms/levels/train/carriage.dnmd')
  
 end 
 function ENT:CTO(user,ss)

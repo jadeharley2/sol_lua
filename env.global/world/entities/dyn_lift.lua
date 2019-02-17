@@ -115,7 +115,7 @@ end
 EVENT_LIFT_CALL = 11010
 
 function SpawnLift(ent,seed,network,model)
-	model = model or "lift/lift_ref.json"
+	model = model or "lift/lift.stmd"
 	local e = ents.Create("dyn_lift")
 	e:SetSeed(seed)
 	e:SetParameter(VARTYPE_MODEL,model)
@@ -235,7 +235,8 @@ function ENT:Spawn()
 	self.light = light
 	
 	--SpawnSO("lift/lift_ref.smd",self,Vector(0,0,0),0.75,true) 
-	SpawnSO(mdl,self,Vector(0,0,0),1) 
+	local scale = scale or 0.75
+	SpawnSO(mdl,self,Vector(0,0,0),scale) 
 	 
 	local coll = self.coll
 	
@@ -243,7 +244,6 @@ function ENT:Spawn()
 
 
 
-	local scale = scale or 1
 	local model = self.model
 	local world = matrix.Scaling(scale)
 	if not norotation then

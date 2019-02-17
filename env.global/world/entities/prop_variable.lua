@@ -53,29 +53,39 @@ function SpawnPV(type,ent,pos,ang)
 end
 
 function ENT:Init()  
-	local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
-	local phys = self:AddComponent(CTYPE_PHYSOBJ)  
-	local model = self:AddComponent(CTYPE_MODEL)  
-	self.model = model
-	self.coll = coll 
-	self.phys = phys
 	self:SetSpaceEnabled(false) 
 	
 end
 function ENT:Load()
 	self:PreLoadData(true)
-	local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
-	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
-	if modelval then 
-		self:SetModel(modelval,modelscale)
-	else
-		MsgN("no model specified for static model at spawn time")
-	end 
+	if not self.data.luatype then
+		local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
+		local phys = self:AddComponent(CTYPE_PHYSOBJ)  
+		local model = self:AddComponent(CTYPE_MODEL)  
+		self.model = model
+		self.coll = coll 
+		self.phys = phys
+
+		local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
+		local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
+		if modelval then 
+			self:SetModel(modelval,modelscale)
+		else
+			MsgN("no model specified for static model at spawn time")
+		end 
+	end
 	self:LoadData()
 end  
 function ENT:Spawn()  
 	self:PreLoadData()
 	if not self.data.luatype then
+		local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
+		local phys = self:AddComponent(CTYPE_PHYSOBJ)  
+		local model = self:AddComponent(CTYPE_MODEL)  
+		self.model = model
+		self.coll = coll 
+		self.phys = phys
+		
 		local modelcom = self.modelcom
 		if not modelcom then
 			local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model

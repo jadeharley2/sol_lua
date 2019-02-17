@@ -84,8 +84,16 @@ function ConnectTo(ip)
 	hook.Call("network.connect")
 	return network.Connect(ip)
 end
-function LoadWorld(id,savegame,onComplete,onFail)
-	if not id and not savegame then hook.Call("menu") return error("world id unspecified") end
+function LoadScenario(world,spawn,mode) 
+	U = ents.Create("world_"..world)  
+	if U then
+		U:Create() 
+		local s,p = U:GetSpawn(spawn)
+		
+	end
+end
+function LoadWorld(id,savedgamestate,onComplete,onFail)
+	if not id and not savedgamestate then hook.Call("menu") return error("world id unspecified") end
 	local cam = GetCamera()
 	cam:SetUpdateSpace(true)
 	UNIid = id
@@ -93,7 +101,7 @@ function LoadWorld(id,savegame,onComplete,onFail)
 	
 	MsgN("[WORLD] load sequence begun")
 	
-	if savegame then 
+	if savedgamestate then 
 		hook.Add("engine.location.loaded","spawner",function(origin) 
 			hook.Remove("engine.location.loaded","spawner")
 			if onComplete then onComplete() end
@@ -103,7 +111,7 @@ function LoadWorld(id,savegame,onComplete,onFail)
 			UnloadWorld()
 			if onFail then onFail() end
 		end)
-		local result, roottable = engine.LoadState(savegame) 
+		local result, roottable = engine.LoadState(savedgamestate) 
 		if result then
 			U = roottable
 		else

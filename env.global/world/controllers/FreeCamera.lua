@@ -212,7 +212,7 @@ function OBJ:UpdateSounds()
 			local cspd = (cpos-lastcampos):Length()*cpz
 			local camSpeed = cspd*dt/4
 			--MsgN(camSpeed)
-			windSpeed = camSpeed/dt +0.5
+			windSpeed = camSpeed/dt-- +0.01
 			if camSpeed>331 then
 				windSpeed =1
 			end
