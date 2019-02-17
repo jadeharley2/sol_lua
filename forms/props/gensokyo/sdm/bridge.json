@@ -1,0 +1,8 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "forms/levels/sdm/bridge.dnmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"luatype":"dyn_road"
+}

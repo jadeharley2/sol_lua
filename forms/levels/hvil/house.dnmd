@@ -1,0 +1,170 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat"],
+     
+    "operations": [ 
+        //{"type": "surface", "out": "base",
+        //    "points": [
+        //        [0,10,0],
+        //        [5,10,0],
+        //        [5,0,0],
+        //        [0,0 ,0],
+        //    ]
+        //}, 
+        //{"type": "surface", "out": "base",
+        //    "points": [
+        //        [0,10,0],
+        //        [5,10,0],
+        //        [5,5,0],
+        //        [10,5,0],
+        //        [10,0,0],
+        //        [0,0,0] ],
+        //},    
+       //{"type": "surface", "out": "base",
+       //    "points": [
+       //        [0,10,0],
+       //        [5,10,0],
+       //        [5,5,0],                     
+       //        [10,5,0],
+       //        [10,0,0],
+       //        [8,0,0],          
+       //        [8,-5,0],
+       //        [3,-5,0],
+       //        [3,-8,0],
+       //        [-3,-8,0],
+       //        [-3,3,0],
+       //        [0,3,0],
+       //    ],   
+       //}, 
+        {"type": "surface", "out": "base",
+            "points": [
+                [0,10,0],
+                [5,10,0],
+                [5,5,0],                     
+                [10,5,0],
+                [10,0,0],
+                [8,0,0],          
+                [8,-5,0],
+                [3,-5,0],
+                [3,-8,0],
+                //[0,-8,0],
+                //[0,-10,0],
+               // [-4,-10,0],
+               // [-4,-8,0],
+                [-10,-8,0],
+                //[-10,-6,0],
+                //[-12,-5,0],
+                //[-10,-4,0],
+                [-10,3,0],
+                [0,3,0],
+            ],       
+        },   
+        //{"type": "ngon","out": "base",
+        //"r":10,
+        //"sides":20
+        //},  
+      
+   
+   
+        {"type": "roof","in":"base", "out": ["vo","sup","cap"],                     
+        },   
+        //{"type": "roof","in":"base", "out": "vo",                     
+        //},           
+        {"type": "inset","from":["vo","cap"], "out": ["%","frame"],
+            "amount": 0.1,
+            "extrude": 0
+        }, 
+           
+        {"type": "material","in": "frame",
+            "material":"wood","smooth":false
+        },            
+        {"type": "stop"},    
+
+        {"type": "stop"},
+           
+        //{"type": "rectangle","out": "base",
+        //    "w":5,
+        //    "l":10
+        //},
+        {"type": "material","in": "base",
+            "material":"wireframe"
+        },
+
+        {"type": "inset","from":"base", "out": ["base","walls"],
+            "amount": 0,
+            "extrude": 3
+        },
+
+
+        //wall decor
+        {"type": "split","from": "walls","out": "seg",
+            "stype":"constant",
+            "steps":"@($l/2)"
+        },
+        //segment types: wall,door,window
+        {"type": "split","from": "seg*","out": ["*t","*m"],
+            "stype":"constant",
+            "size":[-0.25,0],
+            "side":"third"
+        },
+        {"type": "inset","from":"seg*", "out": ["%","frame"],
+            "amount": 0.1,
+            "extrude": 0
+        }, 
+
+
+
+        //roof
+        {"type": "cut","from": "base","out": ["rl","rr"],
+            "p1":2,
+            "p2":5
+        },
+        {"type": "frotate","in":"rr","add":1},
+        {"type": "cut","from": ["rl","rr"],"out": ["rlb","rla"],
+            "p1":0,
+            "p2":2,
+            "shift":0.5
+        }, 
+        {"type": "select","in": "rlb",
+            "out": ["*","rtop","*","*"],
+            "mode":"segments",
+            "copy":false
+        },
+        {"type": "deform","in": "rtop", "mode":"move",
+            "shift":[0,0,1]
+        },
+
+       //{"type": "material","in": "vo",
+       //    "material":"wireframe"
+       //}, 
+        {"type": "material","in": "frame",
+            "material":"wood"
+        },
+
+
+   
+     
+        {"type": "stop"},
+        {"type": "inset","from":"base", "out": ["base","roof_e"],
+            "amount": -0.05,
+            "extrude": 0.2
+        }, 
+        {"type": "inset","from":"roof_e", "out": ["roof_e","roof_es"],
+            "amount": 0,
+            "extrude": 1,"group":true
+        }, 
+        {"type": "inset","from":"base", "out": ["base","roof_s"],
+            "amount": 1,
+            "extrude": 0.7
+        }, 
+        {"type": "inset","from":"base", "out": ["base","roof_s"],
+            "amount": 2,
+            "extrude": 1
+        }, 
+        //{"type": "data","in":"base","length":"$ll"},
+        //{"type": "inset","from":"base", "out": ["*","roof_s"],
+        //    "inamount": [0,"$ll"],
+        //    "extrude": 1
+        //}, 
+
+    ]
+}

@@ -1,0 +1,18 @@
+{	
+	"type" : "weapon_bow",
+	"name" : "Kindred bow",
+	"description" : "",
+	"appearance" : {
+		"model":"kindred_bow.stmd",
+		"scale":1 
+	},
+	"projectile" : {
+		"damage": [{"amount": 10,"type": "default"}],
+		"appearance": {
+			"model": "",
+			"scale": 1
+		}
+	},
+	
+	"testbool" : true
+} 

@@ -1,0 +1,15 @@
+{  
+	"type":"object",
+	"default":{ 
+		"speed":1
+	},
+	"description":"movement settings",
+	"properties":
+	{ 
+		"speed": {
+			"type":"number",
+			"default": 1,
+			"description": "movement speed"
+		}
+	} 
+}

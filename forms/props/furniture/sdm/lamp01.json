@@ -1,0 +1,9 @@
+{
+	"group" : "furniture",
+	"tags" : ["sdm","chair"],
+	"model" : "forms/levels/sdm/furn/lamp01.dnmd", 
+	"scale" : 1.2,
+	"rotation" : [0,0,0], 
+	"light" : { "pos" : [0.1,0.2,0], "color" :[1,0.8,0.5],"brightness":0.1 },
+	"viewdistance": 1000,
+}

@@ -1,0 +1,10 @@
+{
+	"group" : "furniture",
+	"tags" : ["modern"],
+	"model" : "furniture/modern/bed.stmd",
+	"scale" : 0.05,
+	"rotation" : [0,0,0],
+	"phys" :true,
+	"mass" :50,
+	
+}

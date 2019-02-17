@@ -1,0 +1,11 @@
+{   
+	"type": "object",
+	"description" : "prop form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+	"properties":{    
+		"appearance": {
+			"$ref":"appearance.json"
+		} 
+	} 
+}

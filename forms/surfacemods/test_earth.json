@@ -1,0 +1,41 @@
+{
+	layers : [
+		{ 
+			layertype : 1, 
+			dir : "surfacedata/earth/",
+			data : "earth_heightmap.sdb", 
+			
+			minpower : 0, 
+			maxpower : 8,
+			
+			mode : "set", 
+			 
+			width : 4096, 
+			height : 2048, 
+			op_add : -128,
+			op_mul : 50,  
+			projection:"cylindrical", 
+		}, 
+		{ 
+			layertype : 1, 
+			idoverride: 10,
+			dir : "surfacedata/earth/local_terrain/",
+			
+			minpower : 4, 
+			maxpower : 12,
+			
+			mode : "set", 
+			 
+			data : "earth_heightmap.sdb", 
+			width : 1201, 
+			height : 1201, 
+			op_add : -12,
+			op_mul : 2,  
+			projection:"cylindrical",
+			grid:{
+				prefix:"",
+				size:[360,180],
+			},
+		}, 
+	],
+}

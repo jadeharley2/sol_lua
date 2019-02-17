@@ -1,0 +1,21 @@
+[
+ 
+	{ 
+		"components" : [],
+		"sizepower" : 9.46073E+20,
+		"seed" : 1102010,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1102010,
+			"abssize" :  9.46073E+20,
+			"name" : "andromeda",
+			"position" : [-0.002719285, 0.00059878088, 0.004296058, "vec3"],
+			"rotation" : [0, 1, 0, 0, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "galaxy"
+		}
+	}, 
+]

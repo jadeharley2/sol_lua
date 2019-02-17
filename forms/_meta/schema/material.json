@@ -1,0 +1,35 @@
+{
+    "description": "material definition",
+    "properties": {
+        "shader":{
+            "type":"string",
+            "description": "target shader name"
+        }
+    }, 
+    "if": {
+      "properties": {
+        "shader": {
+          "enum": [
+            "shader.model"
+          ]
+        }
+      } 
+    },
+    "then": {
+        "allOf":[{"$ref": "material_model.json"}]
+    },
+    "else": {
+        "if": {
+          "properties": {
+            "shader": {
+              "enum": [
+                "shader.eyes"
+              ]
+            }
+          } 
+        },
+        "then": {
+            "allOf":[{"$ref": "material_eye.json"}]
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+	"group" : "furniture",
+	"tags" : ["sdm","chair"],
+	"model" : "forms/levels/sdm/furn/cupboard01.dnmd", 
+	"scale" : 0.75,
+	"rotation" : [0,0,0], 
+	//"phys" : true,
+	//"mass" : 40, 
+}

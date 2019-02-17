@@ -1,0 +1,60 @@
+{
+	name : "fence.subtest", 
+	input : {
+		"window" : { type : "surface", "default" : [[-0.5,0,-1],[-0.5,0,1],[0.5,0,1],[0.5,0,-1]], loop : true },
+	}, 
+	variables : {
+		"$framew" : 0.04 ,
+		"$spacing" : 4 ,
+	},
+	operations : [ 
+	
+		{ type : "data",in:"window",
+			"length" : "$len",
+			"width" : "$wdt",
+			"major" : "$amaj",
+		},
+		{ type : "material",in : "window",
+			material : "teal.json"//"stone.json"
+		},  
+		{ type : "inset", from : "window",out : {face : "window",edge:"windowframe"}, 
+			mode : "normal",
+			amount : "@($framew/2)", 
+			extrude : 0, 
+			edgemode:true, 
+		},  
+		{ type : "split", from : "window",out : ["aaaa","ffff","aaaa"],//
+			stype:"constant",  
+			//size:[0,0.165,0.165,0],
+			//size:[0.335,0.165,0.165,0.335],
+			size:[0,"@($framew*$spacing)",0],
+			side:"minor",  
+		},         
+		{ type : "split", from : "ffff",out : "aaaa",//
+			stype:"constant",  
+			steps:2, 
+			side:"minor",  
+		},              
+		   
+		  
+		{ type : "split", from : "aaaa",out : ["bbbb","bbbb","bbbb"],
+			stype:"constant",  
+			size:[-0.2,"@($framew*3)",0],
+			side:"major",
+			axis:"$amaj",           
+		},  
+		
+		{ type : "inset", from : "bbbb",out : {face : "windeep",edge:"dump"}, 
+			amount : "@($framew/2)",   
+		},   
+		{ type : "extrude", from : "windeep" ,out : "sides", outtop : "window",  
+			mode : "normal",
+			shift : -0.01,
+			times : 1,
+		},        
+		{ type : "material",in : "window",
+			material : "white.json"//"stone.json"
+		},  
+		  
+	]   
+} 

@@ -1,0 +1,94 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat"],
+    "variables":{
+        "$height":2
+    },
+    "input_operations": [
+        {"type": "line", "out": "base",
+            "points": [[0,0,0],[10,0,0],[10,5,0],[5,5,0],[5,10,0]]
+        }
+    ],
+    "operations": [
+        {"type": "extrude","in": "base","out": "fbase",
+            "shift":[0,0,"$height"]
+        }, 
+        {"type": "select","in": "fbase","out":["cbase","*"],
+            "mode":"segments" 
+        },
+        {"type": "split","from": "fbase","out": "segments",
+            "stype":"constant",
+            "steps":"@($l/3)"
+        },
+        {"type": "select","in": "segments","out":["*","*","c2base","*"],
+            "mode":"segments" 
+        },
+        {"type": "frotate","in": "segments","align":[0,0,-1]}, 
+        {"type": "split","from": "segments","out": ["tbase","fbase"],
+            "stype":"constant",
+            "side":"third",
+            "size":[0.5,0]
+        },
+        {"type": "select","in": "tbase","out":["cbase","*","*","*"],
+            "mode":"segments" 
+        },
+        
+        {"type":"deform","in":"c2base","mode":"transform", 
+            "world":{"sca":[1,1,1.4]},
+            "around":"center"
+        },
+        {"type": "column","in": ["cbase","c2base"],"out": "columns",
+            "r": 0.1,
+            "sides":4, 
+            "angle":0,
+            "normal":[1,1,1]
+        },
+        {"type": "split","from": "tbase","out": "segments_top",
+            "stype":"constant",
+            "steps":"@($l/3)"
+        },
+        {"type": "split","from": "segments_top","out": ["segments_top","*"],
+            "stype":"constant",
+            "steps":"@($l*6)"
+        },
+        {"type": "flip","in": "segments_top","out": "segments_top"},  
+        {"type": "inset","from": "segments_top","out": ["segments_top","sd"],
+           "amount": 0, "extrude": 0.02 
+        },
+        {"type": "flip","in": "fbase","out": "fbase"},  
+        {"type": "inset","from": "fbase","out": ["fbase","*"],
+           "amount": 0, "extrude": 0.02 
+        },
+        {"type": "line", "out":"roof_profile",
+            "points": [[0,0,0.8],[0,-0.8,0],[0,-1,0],[0,0,1],[0,1,0],[0,0.8,0]],
+            "loop":true
+        },
+        {"type":"deform","in":"roof_profile","mode":"transform", 
+            "world":{"ang":[-90,0,0],"sca":[0.5,0.5,0.5]}
+        },
+        {"type":"deform","in":"base","mode":"move", 
+            "shift":[0,0,"$height"]
+        },
+        {"type": "pathextrude","in": "base","out": "ttt",
+            "profile":"roof_profile","normal":[0,0,1]
+        },
+
+
+		{ "type" : "uvmap", "in":["ttt","columns","sd","segments_top"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+		{ "type" : "uvmap", "in":["fbase"],
+			"edge" : 2,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["ttt","columns","sd","segments_top","fbase"],
+            "material":"wood",
+            "smooth":false
+        },
+
+    ]
+}

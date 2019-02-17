@@ -1,0 +1,6 @@
+{ 
+	"name" : "moon",
+	"class" : "planetarchetype",
+	"surface" : {  
+	}, 
+}

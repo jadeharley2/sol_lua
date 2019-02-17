@@ -1,0 +1,41 @@
+[
+
+	{
+		"components" : ["physactor", "model"],
+		"sizepower" : 1000,
+		"seed" : 120000,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 120000,
+			"abssize" : 1000,
+			"name" : null,
+			"position" : [-0.412683963775635, -0.0263115838170052, -0.371491283178329, "vec3"],
+			"rotation" : [0, -0.776757061481476, 0, 0.629800498485565, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "kindred/kindred.json",
+			"luaenttype" : "base_actor"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.557372152805328, 0.127166539430618, -0.00816371198743582, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "architecture/jade_room.SMD",
+			"modelscale" : 0.1,
+			"luaenttype" : "static_object"
+		}
+	}
+]

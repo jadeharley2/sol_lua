@@ -1,0 +1,29 @@
+[
+	{ 
+		"name":"keyword",
+		"short":"kywd",
+		"data":[
+			{"name":"color",	"type":"color"}
+		]
+	},
+	{ 
+		"name":"light",
+		"short":"ligh",
+		"data":[
+			{"name":"time",			"type":"int32"},
+			{"name":"radius",		"type":"byte"},
+			{"name":"color",		"type":"color"},
+			{"name":"flags",		"type":"int32"},
+			{"name":"falloff",		"type":"float"},
+			{"name":"fov",			"type":"float"},
+			{"name":"nearclip",		"type":"float"},
+			{"name":"flicker",		"type":"sub",	"len":12, "data":[
+				{"name":"period",		"type":"float"},
+				{"name":"intencity",	"type":"float"},
+				{"name":"movement",		"type":"float"}
+			]},
+			{"name":"value",		"type":"float"},
+			{"name":"weight",		"type":"float"}
+		]
+	}
+]

@@ -1,0 +1,9 @@
+{  
+	"type":"array",  
+
+	"description":"vector",
+	"items": {
+		"minItems":3,
+		"type":"number" 
+	}
+}

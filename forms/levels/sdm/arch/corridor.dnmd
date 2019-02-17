@@ -1,0 +1,265 @@
+{
+	name : "sdm.corridor.style", 
+	input : {
+		"wall" : {},
+		"door" : {},
+		"window" : {},
+		"ceiling" : {},
+		"floor" : {},
+	}, 
+	input_operations : [   
+		{ type:"rectangle", out : "floor",
+			pos : [0,0,0],
+			w : 10,
+			l : 3, 
+			angle:0,
+		},   
+		{ type:"rectangle", out : "floor",
+			pos : [10,0,0],
+			w : 10,
+			l : 3, 
+			angle:90,
+		},  
+		{type:"flip",from:"floor",out:"floor"},
+		{ type : "inset", in : "floor",out : ["celing",["wall","door","window","wall"]], 
+			mode : "normal",
+			amount : [0],  
+			extrude : -3.5,   
+		},    		   
+		{type:"flip",from:"floor",out:"floor"},
+		
+		{ type : "material",in : ["floor","wall","celing","door","window","wall"],
+			material : "concrete06b.json"
+		},  
+		{ type : "uvmap", in:["floor","wall","celing","door","window","wall"],
+			edge : 2,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},            
+	],  
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {   
+		"$mat.main" : "concrete06.json",
+		"$mat.secondary" : "concrete06b.json",
+		"$mat.columns" : "fo_floor.json",//"concrete06b.json",
+		"$mat.floor" : "fo_floor.json",
+		"$mat.floorb" : "concrete06b.json",
+		"$mat.ceiling" : "ceiling31.json",
+		"$mat.carpet" : "redcarpet.json",
+		
+		"$walls" : true,
+	},  
+	operations : [   
+		
+		{type:"foreach",from:"door", var:"door_cur", out:["door","wall"],
+			operations:[ 
+				{type:"frotate", in:["door_cur"],
+					align:[0,0,1],	add:1,	 
+				}, 
+				{ type:"data",in:"door_cur", lengths:"$len_"},
+				{ type:"branch", condition: "greater", value : "@($len_0-4)",
+					ontrue:[ 
+						{ type : "split", from : "door_cur",out : ["wall","door","wall"],//
+							stype:"constant",   
+							size : [0,4,0], 
+							side:"first",  
+						},         
+					],
+					onfalse:[  
+						{ type : "union", in : "door_cur", out : "door"}, 
+					],
+				},
+			], 
+		},
+		 
+		{type:"frotate", in:["wall"],
+			align:[0,0,1],	add:1,	 
+		}, 
+		
+		{type:"foreach",from:"wall", var:"wall_cur", out:"wall_faces",
+			operations:[ 
+				{ type:"data",in:"wall_cur", lengths:"$len_"},
+				{ type:"branch", condition: "greater", value : "@($len_0-3)",
+					ontrue:[
+						{ type : "split", from : "wall_cur",out : ["wall_faces"],//
+							stype:"constant",   
+							steps : "@($l/4)", 
+							side:"first",  
+						},   
+					],
+					onfalse:[ 
+						{type:"frotate", in:["wall_cur"],
+							align:[0,0,1],	add:2,	 
+						}, 
+						{ type : "union", in : "wall_cur", out : "wall_faces"}, 
+					],
+				},
+			],
+		},  
+		{ type : "uvmap", in:"wall_faces",
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},     
+		      
+		
+		{ type : "material",in : ["wall_faces"],
+			material : "$mat.main" //"red.json"
+		},  
+		
+		{type:"foreach",from:"floor", var:"floor_cur", out:"floor_faces",
+			operations:[ 
+				{ type:"data",in:"floor_cur", lengths:"$len_"},
+				{ type:"branch", condition: "greater", value : "@($len_1+$len_0-10)",
+					ontrue:[ 
+						{ type : "inset", from : "floor_cur",out : ["floor_center","floor_edges"], 
+							mode : "normal",
+							amount : 0.25,  
+							extrude : 0, 
+						},     
+						{ type : "material",in : ["floor_center"],
+							material : "$mat.floor" //"red.json"
+						},  
+						{ type : "material",in : ["floor_edges"],
+							material : "$mat.floorb"  
+						},  
+						{ type : "union", in : "floor_center", out : "floor_faces"}, 
+						{ type : "union", in : "floor_edges", out : "floor_faces"}, 
+					],
+					onfalse:[   
+						{ type : "material",in : ["floor_cur"],
+							material : "$mat.floorb"  
+						},  
+						{ type : "union", in : "floor_cur", out : "floor_faces"}, 
+					],
+				},
+			],
+		},
+		
+		{ type : "select",in : ["wall_faces","door","window"], out : "wall_edges",
+			mode : "dotnormalsegments",
+			normal : [0,0,1],
+		},  
+		
+		{ type : "column", in : "wall_edges",out : "wall_columns",outcap:"*", 
+			angle : 45,  
+			r :  0.3 , 
+			sides : 4,
+		}, 
+		
+		{ type : "select",in : ["celing"], out : "celing_edges",
+			mode : "dotnormalsegments",
+			normal : [0,0,1],
+			maxangle : 180,
+		},  
+		{ type : "select",in : ["wall_faces"], out : "celing_edges",
+			mode : "dotnormalsegments",
+			normal : [0,0,1],
+			maxangle : 180,
+		},  
+		{ type : "column", in : "celing_edges",out : "wall_columns",outcap:"*", 
+			angle : 45,  
+			r :  0.2 , 
+			sides : 4,
+			connect:false
+		},
+		{ type : "material",in : ["wall_columns"],
+			material : "$mat.columns" //"red.json"
+		},  
+		{ type : "uvmap", in:["wall_columns"],
+			edge : 2,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},            
+		
+		{ type : "split", from : "wall_faces",out : ["wall_b","wall_m","wall_b"],//
+			stype:"constant",   
+			size : [1,0,0.4], 
+			side:"first",  
+		},         
+		{ type : "material",in : ["wall_b"],
+			material : "$mat.secondary" //"red.json"
+		},  
+		{ type : "inset", from : "wall_b",out : ["wall_b","wall_b_edges"], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 0.1, 
+		},     
+		{ type:"branch", condition: "bool", value : "$walls",
+			ontrue:[         
+			],
+			onfalse:[  
+				{ type : "remove", in : "wall_m"}, 
+			],
+		},
+		
+		
+		
+		{ 	type : "structure", out : "2ndfloordoors",
+			path : "parts/stddoor.dnmd",
+			from : {"base":"door"}, 
+		},       
+		{ 	type : "structure", out : "2ndfloordoors",
+			path : "parts/stdwindow.dnmd",
+			from : {"base":"window"}, 
+		},        
+		
+		
+		
+		
+		
+		//ceiling
+		
+		{type:"foreach",from:"ceiling", var:"ceiling_cur", out:"ceiling_faces",
+			operations:[ 
+				{ type:"data",in:"ceiling_cur", lengths:"$len_"},
+				{ type:"branch", condition: "greater", value : "@($len_1+$len_0-10)",
+					ontrue:[ 
+						{ type : "split", from : "ceiling_cur",out : ["ceiling_cur"],//
+							stype:"constant",   
+							steps : "@($l/6)", 
+							side:"first",  
+						},          
+						{ type : "split", from : "ceiling_cur",out : ["ceiling_cur"],//
+							stype:"constant",   
+							steps : "@($l/6)", 
+							side:"first",  
+						},          
+						{ type : "inset", from : "ceiling_cur",out : ["ceiling_cur","ceiling_faces"], 
+							mode : "normal",
+							amount : 0.5,  
+							extrude : 0, 
+						},     
+						{ type : "inset", from : "ceiling_cur",out : ["ceiling_cur","ceiling_faces"], 
+							mode : "normal",
+							amount : 0.1,  
+							extrude : -.2, 
+						},     
+						{ type : "material",in : ["ceiling_cur"],
+							material : "$mat.floor" //"red.json"
+						},  
+						{ type : "union", in : "ceiling_cur", out : "ceiling_faces"}, 
+					],
+					onfalse:[  
+						{ type : "union", in : "ceiling_cur", out : "ceiling_faces"}, 
+					],
+				},
+			],
+		},
+		      
+		
+		
+		
+		
+		
+		
+		
+		
+	]     
+} 

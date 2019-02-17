@@ -1,0 +1,26 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug",
+		"textures/single/painting",
+	],
+	variables : {
+		"$width" : 0.5,
+		"$length" : 0.5, 
+		"$frame" : "Wood07.json",
+		"$painting" : "orb.json",
+	},
+	operations : [ 
+		
+		{ 	type : "structure", out : "wall_faces",
+			path : "painting01.dnmd",
+			from : {},  
+			"$width"    : "$width",
+			"$length"   : "$length" , 
+			"$frame"    : "$frame",
+			"$painting" : "$painting",
+		},        
+		 
+	]
+}

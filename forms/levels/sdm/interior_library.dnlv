@@ -1,0 +1,124 @@
+{
+	name : "scarlet devil mansion library",  
+	operations : [  
+		{type : "point", out : "zero",
+			pos : [0,0,0], 
+			loop : false 
+		},
+		{type:"entity", in : "zero" , out : "foyer", 
+			etype : "prop_static",
+			data : { 
+				variables : {
+					model : "forms/levels/sdm/arch/library.dnmd",
+				} 
+			},
+		},
+		
+		  
+		
+		//-19.55551, 2.157696, -3.0373
+		
+		{type : "point", out : "outl2",
+			points :[
+				[-17.55551, 2.157696, -3.0373], 
+				[-17.55551, 8.157696, -3.0373], 
+				 
+				[-17.55551, 2.157696, 8.0373], 
+				[-17.55551, 8.157696, 8.0373], 
+				 
+				[17.55551, 2.157696, 9.0373],  
+				[17.55551, 8.157696, 9.0373],  
+				
+				 
+				//[33.77758, 5.974127, 18.08671], 
+				//
+				//[42.11064, 6.093858, 23.64177], 
+				//
+				//[11.0603, 5.817188, 14.99348],
+				//[11.0603, 5.817188, 18.99348], 
+			],
+			loop : false 
+		},   
+		{type:"entity", in : "outl2" , out : "lights", 
+			etype : "omnilight",
+			data : { 
+				variables : { 
+					brightness : 0.01,
+					color :  [0.028,0.018,0.0165],
+				} 
+			},
+		},  
+		
+		{type : "point", out : "outl3",
+			points :[ 
+				[14.55551, 7.157696, 0.0373],  
+				[-10.55551, 7.157696, 0.0373],  
+			],  
+			loop : false 
+		},   
+		{type:"entity", in : "outl3" , out : "lights", 
+			etype : "omnilight",
+			data : { 
+				variables : { 
+					brightness : 0.01,
+					color :  [0.10,0.10,0.12],
+				} 
+			},
+		}, 
+		      
+		  
+		{type : "point", out : "s3",
+			pos : [100,400,200], 
+			loop : false 
+		},
+		{type:"entity", in : "s3" , out : "lights", 
+			etype : "omnilight",
+			data : {  
+				variables : { 
+					brightness : 1,
+					color : [500,500,500],//
+					//[2000,2000,2000],
+				} 
+			},
+		}, 
+		
+		
+		
+		
+		{type : "point", out : "sdoor",
+			pos : [-0.5, 5.6, -10.2], 
+			loop : false 
+		},
+		{type:"entity", in : "sdoor" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname :"sdm.f2.corridors.door",
+			ang : [0,180,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.07,
+					character : "forms/levels/sdm/interior_main.dnlv:sdm.f2.library.door", 
+				} 
+			},
+		},
+		
+		
+		{type : "point", out : "sdoor2",
+			pos : [18, 0, -10.2], 
+			loop : false 
+		},
+		{type:"entity", in : "sdoor2" , out : "entrydoor2", 
+			etype : "use_door_teleport",
+			globalname :"sdm.f1.corridors.door",
+			ang : [0,180,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.07,
+					character : "forms/levels/sdm/interior_main.dnlv:sdm.f1.library.door", 
+				} 
+			},
+		},
+		
+	]   
+} 

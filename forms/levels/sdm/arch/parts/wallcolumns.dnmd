@@ -1,0 +1,43 @@
+{
+	name : "sdm_building",
+	input : {
+		"walls" : { type : "surface", "default" : [[-15,-25,-1],[-15,25,-1],[15,25,-1],[15,-25,-1]] },
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {
+		"$sides" : 4, 
+		"$r" : 0.2,   
+		"$angle" : 0,   
+		"$mat.secondary" : "concrete06b.json", 
+	},
+	operations : [   
+		          
+		{ type : "select",in : "walls", out : "edgecolumns",
+			mode : "dotnormalsegments",
+			normal : [0,0,1],
+			maxangle :10,  
+			directed:true,
+		}, 
+		{ type : "column", in : "edgecolumns",out : "edgecolumns_mesh",outcap:"*", 
+			angle :"$angle", 
+			r :  "$r" , 
+			sides : "$sides", 
+			normal : [0,1,0],
+		},           
+		{ type : "material",in : ["edgecolumns_mesh"],
+			material : "$mat.secondary"
+		},     
+		{ type : "uvmap", in:["edgecolumns_mesh"],
+			edge : 2,     
+			scale : 3.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},   
+		{type : "remove", in:"walls"},
+		
+	]   
+} 

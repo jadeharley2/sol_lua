@@ -1,0 +1,360 @@
+[
+
+	{
+		"sizepower" : 9460730000000,
+		"seed" : 254001,
+		"parameters" : 
+		{
+			"radius" : 695510000,
+			"mass" : 1.9891E+30,
+			"name" : "Sun",
+			"luaenttype" : "star",
+			"typename" : "star",
+			"color" : [1, 0.956, 0.859],
+			"brightness" : 2.23E+23
+		},
+		"subs" : 		[
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "MERCURY",
+					"mass" : 3.3E+23,
+					"radius" : 2439500,
+					"orbit_data" : 
+					{
+						"a" : 57900000000,
+						"b" : 56670318242.8862,
+						"i" : 0.122173048555851,
+						"pa" : 0.110653877258301,
+						"al" : 0.843535125255585,
+						"ma" : 0,
+						"mos" : 8.27001523842245E-07
+					},
+					"archetype" : "gen_barren"
+				},
+				"subs" : [],
+				"seed" : 355001,
+				"sizepower" : 175370972.832239
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "VENUS",
+					"mass" : 4.87E+24,
+					"radius" : 6052000,
+					"orbit_data" : 
+					{
+						"a" : 108200000000,
+						"b" : 108197349067.526,
+						"i" : 0.0593411959707737,
+						"pa" : 0.957353055477142,
+						"al" : 1.33828353881836,
+						"ma" : 0,
+						"mos" : 3.23730605719074E-07
+					},
+					"archetype" : "venus"
+				},
+				"subs" : [],
+				"seed" : 356001,
+				"sizepower" : 1004061238.99674
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "EARTH",
+					"mass" : 5.97E+24,
+					"radius" : 6378000,
+					"orbit_data" : 
+					{
+						"a" : 149600000000,
+						"b" : 149578381237.932,
+						"i" : 0,
+						"pa" : 1.99330270290375,
+						"al" : -0.196535244584084,
+						"ma" : 0,
+						"mos" : 1.99125729931567E-07
+					},
+					"archetype" : "earth"
+				},
+				"subs" : 				[
+
+					{
+						"parameters" : 
+						{
+							"luaenttype" : "planet",
+							"typename" : "planet",
+							"position" : [0.1, 0, 0, "vec3"],
+							"name" : "MOON",
+							"mass" : 7.3E+22,
+							"radius" : 1737500,
+							"orbit_data" : 
+							{
+								"a" : 384500000,
+								"b" : 383918003.281625,
+								"i" : 0.0890117883682251,
+								"pa" : 0,
+								"al" : 0,
+								"ma" : 0,
+								"mos" : 2.66365260140855E-06
+							},
+							"archetype" : "gen_barren"
+						},
+						"subs" : [],
+						"seed" : 385001,
+						"sizepower" : 58041315.3764744
+					}
+				],
+				"seed" : 357001,
+				"sizepower" : 1470789747.5514
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "MARS",
+					"mass" : 6.42E+23,
+					"radius" : 3396000,
+					"orbit_data" : 
+					{
+						"a" : 227900000000,
+						"b" : 226890903760.464,
+						"i" : 0.0331612564623356,
+						"pa" : 4.99971055984497,
+						"al" : 0.865020096302032,
+						"ma" : 0,
+						"mos" : 1.05902863145552E-07
+					},
+					"archetype" : "gen_barren"
+				},
+				"subs" : [],
+				"seed" : 358001,
+				"sizepower" : 982030337.160809
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "JUPITER",
+					"mass" : 1.898E+27,
+					"radius" : 71492000,
+					"orbit_data" : 
+					{
+						"a" : 778550000000,
+						"b" : 777614789027.252,
+						"i" : 0.0226892791688442,
+						"pa" : 4.8008074760437,
+						"al" : 1.75391614437103,
+						"ma" : 0,
+						"mos" : 1.67803671552198E-08
+					},
+					"archetype" : "jupiter"
+				},
+				"subs" : [],
+				"seed" : 359001,
+				"sizepower" : 50540531036.6658
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "SATURN",
+					"mass" : 5.68E+26,
+					"radius" : 60268000,
+					"orbit_data" : 
+					{
+						"a" : 1433550000000,
+						"b" : 1431219303376.49,
+						"i" : 0.0436332300305367,
+						"pa" : 5.86454820632935,
+						"al" : 1.98344123363495,
+						"ma" : 0,
+						"mos" : 6.71377605275939E-09
+					},
+					"archetype" : "saturn"
+				},
+				"subs" : 				[
+
+					{
+						"parameters" : 
+						{
+							"luaenttype" : "planet",
+							"typename" : "planet",
+							"position" : [0.1, 0, 0, "vec3"],
+							"name" : "?TITAN?",
+							"mass" : 1.3452E+23,
+							"radius" : 2575000,
+							"orbit_data" : 
+							{
+								"a" : 1221870000,
+								"b" : 1221363160.95365,
+								"i" : 0.00608317088335752,
+								"pa" : 0,
+								"al" : 0,
+								"ma" : 0,
+								"mos" : 4.55915012629168E-06
+							},
+							"archetype" : "gen_barren"
+						},
+						"subs" : [],
+						"seed" : 415001,
+						"sizepower" : 50906444.3019826
+					}
+				],
+				"seed" : 360001,
+				"sizepower" : 61723141465.1822
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "URANUS",
+					"mass" : 8.68E+25,
+					"radius" : 25559000,
+					"orbit_data" : 
+					{
+						"a" : 2872450000000,
+						"b" : 2869409338538.28,
+						"i" : 0.013962633907795,
+						"pa" : 1.69294941425323,
+						"al" : 1.29153215885162,
+						"ma" : 0,
+						"mos" : 2.36676358344663E-09
+					},
+					"archetype" : "uranus"
+				},
+				"subs" : [],
+				"seed" : 361001,
+				"sizepower" : 66893122115.1022
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "NEPTUNE",
+					"mass" : 1.02E+26,
+					"radius" : 24764000,
+					"orbit_data" : 
+					{
+						"a" : 4495100000000,
+						"b" : 4494828038222.91,
+						"i" : 0.0314159244298935,
+						"pa" : 4.76857852935791,
+						"al" : 2.30004668235779,
+						"ma" : 0,
+						"mos" : 1.20899976859718E-09
+					},
+					"archetype" : "neptune"
+				},
+				"subs" : 				[
+
+					{
+						"parameters" : 
+						{
+							"luaenttype" : "planet",
+							"typename" : "planet",
+							"position" : [0.1, 0, 0, "vec3"],
+							"name" : "?TRITON?",
+							"mass" : 2.15E+22,
+							"radius" : 1352500,
+							"orbit_data" : 
+							{
+								"a" : 355000000,
+								"b" : 354999999.95456,
+								"i" : 2.74540305137634,
+								"pa" : 0,
+								"al" : 0,
+								"ma" : 0,
+								"mos" : 1.23367034275645E-05
+							},
+							"archetype" : "gen_barren"
+						},
+						"subs" : [],
+						"seed" : 435001,
+						"sizepower" : 14648520.0841478
+					}
+				],
+				"seed" : 362001,
+				"sizepower" : 114518700704.36
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "PLUTO",
+					"mass" : 1.46E+22,
+					"radius" : 1185000,
+					"orbit_data" : 
+					{
+						"a" : 5906350000000,
+						"b" : 5727831939694.08,
+						"i" : 0.300196647644043,
+						"pa" : 1.98578321933746,
+						"al" : 1.92511570453644,
+						"ma" : 0,
+						"mos" : 8.02685379429481E-10
+					},
+					"archetype" : "gen_barren"
+				},
+				"subs" : [],
+				"seed" : 363001,
+				"sizepower" : 6016805395.94614
+			},
+
+			{
+				"parameters" : 
+				{
+					"luaenttype" : "planet",
+					"typename" : "planet",
+					"position" : [0.1, 0, 0, "vec3"],
+					"name" : "?CERES?",
+					"mass" : 9.393E+20,
+					"radius" : 236500,
+					"orbit_data" : 
+					{
+						"a" : 414000000000,
+						"b" : 412706091018.778,
+						"i" : 0.185004904866219,
+						"pa" : 0,
+						"al" : 0,
+						"ma" : 0,
+						"mos" : 4.32537342655655E-08
+					},
+					"archetype" : "gen_barren"
+				},
+				"subs" : [],
+				"seed" : 375001,
+				"sizepower" : 205874291.485299
+			}
+		]
+	}
+]

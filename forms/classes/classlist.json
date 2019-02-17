@@ -1,0 +1,27 @@
+{
+	"shader":			{},//native use only(temp)
+	"model":			{},
+	"material":			{},
+	"effect":			{},
+	"sound":			{},
+	"interface":		{},
+	"object":			{},
+	"galaxy":			{"baseclass":"object"},
+	"system":			{"baseclass":"object"},
+	"planet":			{"baseclass":"object"},
+	"actor":			{"baseclass":"object"},
+	"item":				{"baseclass":"object"},
+	"weapon":			{"baseclass":"item"},
+} 
+
+//preset - any class  
+
+
+//data sources
+//structure			json
+//texture			tga, bmp, png, jpg
+//shader_source		fx
+//model_source		smd
+//data_chunk		hmd (heightmap)
+//table_data		csv
+//

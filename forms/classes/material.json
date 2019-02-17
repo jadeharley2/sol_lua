@@ -1,0 +1,5 @@
+{ 
+	"type" : "asset", 
+	"assettype" : "material", 
+	"output":["mtl"] 
+}

@@ -1,0 +1,8 @@
+{
+	"group" : "nature",
+	"tags" : [],
+	"model" : "Tree/TreeFull.json",
+	"scale" : 1,
+	"rotation" : [90,0,0]
+	
+}

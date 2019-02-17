@@ -1,0 +1,16 @@
+
+{//globalname = filename
+	"sizepower_pow2" : 88, 
+	"seed" : 1000001, 
+	"subs" : [
+		{ 
+			"sizepower_pow2" : 86, 
+			"seed" : 1000002, 
+			"globalname" : "u1.mc",
+			"parameters" : 
+			{ 
+				"luaenttype" : "spaceCluster", 
+			}, 
+		},
+	],
+}

@@ -1,0 +1,8 @@
+{
+	"group" : "arch",
+	"tags" : ["shrine"],
+	"model" : "forms/levels/shr/house.dnmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	
+}

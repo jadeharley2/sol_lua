@@ -1,0 +1,10 @@
+{	
+	"type" : "weapon_bow",
+	"name" : "Galactic Kindred bow",
+	"description" : "",
+	"appearance" : {"model":"kindred_gal_bow.stmd","scale":1},
+	"projectile" : {
+		"damage" : [{"type":"default","amount":10}], 
+		"appearance" : {}
+	}
+}

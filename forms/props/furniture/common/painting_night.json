@@ -1,0 +1,8 @@
+{
+	"#include" : "painting_base.json", 
+	
+	"modmaterial" :  [{},{},{ 
+			"g_MeshTexture" : "textures/single/painting/night.dds",   
+		},
+	]
+}

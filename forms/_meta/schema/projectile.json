@@ -1,0 +1,22 @@
+{  
+	"type":"object",
+	"default":{
+		"damage":[
+			{
+
+			}
+		]
+	},
+	"description":"projectile settings",
+	"properties":{
+		"damage" : {
+			"type": "array",
+			"items": {
+			  "$ref": "damage.json"
+			} 
+		},
+		"appearance" : {
+			"$ref": "appearance.json"
+		}
+	} 
+}

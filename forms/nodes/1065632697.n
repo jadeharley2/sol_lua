@@ -1,0 +1,28 @@
+[
+ 
+	{//fakeearth
+		"components" : [],
+		"sizepower" :  6371.0E5,
+		"seed" : 2000039,
+		"parameters" : 
+		{  
+			"radius" : 6371.0E3,
+			"name" : "Earth",
+			"position" : [0.1, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],  
+			"luaenttype" : "planet",
+			"typename" : "planet", 
+			"archetype" : "earth",
+			"orbit_data" : { 
+				"a" : 149598023.0E3, 
+				"b" : 147095000.0E3,
+				"i" : 1,
+				"pa" : 0.3,
+				"al" : 3,
+				"ma" : 0,
+				"mos" : 0.1,
+			},
+		},
+	}, 
+]

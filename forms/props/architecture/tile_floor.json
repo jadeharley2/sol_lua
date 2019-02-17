@@ -1,0 +1,8 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "tile/floor.json",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	
+}

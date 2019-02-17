@@ -1,0 +1,8 @@
+{
+	"group" : "furniture",
+	"tags" : ["futur"],
+	"model" : "furniture/futur/bed.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],
+	
+}

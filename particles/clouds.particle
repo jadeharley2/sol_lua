@@ -1,0 +1,32 @@
+{
+	"name" : "magic",
+	
+	"emitters": [ 
+		{"type":"continuously","rate":1}
+	],
+	"initializers": [
+		//{"type":"positionrandomsphere","pos":[0,0,0],"max":1000},
+		{"type":"positionrandombox","min":[-400,40,-400],"max":[400,200,400]},
+		//{"type":"attractor","dir":[0,0,0],"power":-3,"mode":0}, 
+		{"type":"rotationrand"}, 
+		{"type":"lifetime","time":100},
+	],
+	"updaters": [
+		{"type":"movement","dir":[0.2,0,0.1],"drag":0.2},
+		//{"type":"movement","dir":[0,0,0],"drag":0.2},
+		{"type":"scale","startscale":50,"endscale":50,"starttime":0,"endtime":1},
+		{"type":"tint","starttint":[0,0,0],"endtint":[1,1,1],"starttime":0,"endtime":10},
+		{"type":"tint","starttint":[1,1,1],"endtint":[0,0,0],"starttime":90,"endtime":99},
+		//{"type":"parent","power":1},
+		//{"type":"scale","startscale":10,"endscale":0,"starttime":0.2,"endtime":1},
+	],
+	
+	"renderers": [ 
+		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.02,0.02,0.02,0.02] },//"tint":[0.05,0.07,0.1,1] },
+		//{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/warp/warp3.png","tint":[0.1,0.1,0.1,1] },//"tint":[0.05,0.07,0.1,1] },
+	],
+	
+	"forces": [
+		
+	], 
+}

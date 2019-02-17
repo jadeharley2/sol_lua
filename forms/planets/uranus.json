@@ -1,0 +1,14 @@
+{ 
+	"name" : "uranus",
+	"class" : "planetarchetype", 
+	"atmosphere" : 
+	{ 
+		"color" : [176,229,235],
+		"hazecolor" : [176,229,235],
+		"clouds": {
+			"texture":"textures/atmosphere/uranus.jpg",
+			"color":[255,255,255],
+		},
+	},  
+	"noHydrosphere" : 1,
+}

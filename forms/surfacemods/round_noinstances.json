@@ -1,0 +1,16 @@
+{
+	layer : {
+		layertype : 2, 
+		dir : "surfacedata/default/",
+		
+		minpower : 13, 
+		
+		mode : "level", 
+		
+		data : "crater_hm1.sdb", 
+		width : 1024, 
+		height : 1024, 
+		op_add : 100000,//0.0000001f
+		op_mul : 0.01,  
+	},
+}

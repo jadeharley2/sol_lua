@@ -1,0 +1,64 @@
+{
+    "input_operations":[
+        {"type": "rectangle", "out": "base",
+            "w":2, 
+            "l":1 
+        }, 
+        {"type": "deform","in": "base","mode":"rotate",
+            "axis":[0,1,0],"angle":-90
+        },
+    ],
+    "operations": [
+        
+        //cu
+        {"type": "split", "from": "base","out": ["wb","other"],
+            "stype":"constant", 
+            "size":[0.05,0],
+            "side":"fourth",  
+        },
+        {"type": "inset","from": "wb","out": ["wb","wbb"],
+            "amount": 0, "extrude": 0.45 
+        }, 
+        {"type": "select","in": "wbb","out": "cu_b",
+            "mode":"dotnormal",
+            "normal":[0,0,-1],
+            "maxangle":5
+        },
+        {"type": "inset","from": "cu_b","out": ["cu_b","cu_bsd"],
+            "amount": [0,0,0,-0.05], "extrude": 0.3 
+        },  
+        {"type": "inset","from": "cu_b","out": ["cu_b","cu_bs"],
+            "amount": [-0.1,0,-0.1,-0.1], "extrude": 0 
+        }, 
+        {"type": "inset","from": "cu_b","out": ["cu_b","cu_bs"],
+            "amount": 0, "extrude": 0.15
+        },
+        {"type": "split", "from": "cu_b","out": ["cu_b","cu_o"],
+            "stype":"constant", 
+            "size":[0.15,0],
+            "side":"second", 
+        }, 
+        {"type": "inset","from": "cu_b","out": ["cu_b","cu_bs"],
+            "amount": 0, "extrude": 0.2
+        },
+        {"type": "inset","from": "cu_b","out": ["cu_b","cu_bs"],
+            "amount": [0,0.05,0,0], "extrude": 0.2
+        },  
+        { "type" : "uvmap", "in":["cu_b","cu_bs","cu_o",
+            "cu_bsd","wbb","wb"],
+			"edge" : 2,     
+			"scale" : 0.5     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["cu_b","cu_bs","cu_o"],
+            "material":"redleather",
+            "smooth":true
+        },  
+        {"type": "material", "in": ["cu_bsd","wbb","wb"],
+            "material":"shinymetal",
+            "smooth":false
+        },
+         
+    ]
+}

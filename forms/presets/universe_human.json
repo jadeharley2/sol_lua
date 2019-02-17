@@ -1,0 +1,50 @@
+{
+	"name" : "u.human", 
+	"type" : "sUniverse",
+	"sizepower" : 309485009821345068724781056,//{"exp":{"pow":[2,88]}}, 
+	"nodes":[
+		{  
+			"name" : "u.human.main", 
+			"type": "sSpaceCaust",
+			"sizepower" : 77371252455336267181195264,//{"exp":{"pow":[2,86]}},
+			"preset" : "default",
+			"nodes":[
+				{
+					"name" : "galaxy.milkyway", 
+					"type": "sGalaxy",
+					"sizepower" : 9.46073E20,
+					"preset" : "default", 
+					"variables":[
+						{ "name":"color", "type":"vector3", "value":[1.5,1.5,1.5]}
+					],
+					"nodes":[
+						{
+							"name" : "star.sol", 
+							"type": "sStarSystem",
+							"seed": 23542,
+							"sizepower" : 1.892146E16,//{"exp":{"div":[ 9,46073E16 , 5]}},
+							"preset" : "default",  
+							"transformation":{"pos":[-0.2497424,0.003247981,-0.2092827],"ang":[0.1, 0, 1]},
+							"variables":[
+								{ "name":"color", "type":"vector3", "value":[1,1,1]} 
+							]
+						},
+						{
+							"name" : "star.sagastar", 
+							"type": "sStarSystem",
+							"seed": 45525,
+							"sizepower" : 1.892146E16, 
+							"preset" : "default",  
+							"transformation":{"pos":[0,0,0],"ang":[0.3, 0, 2]},
+							"variables":[
+								{ "name":"color", "type":"vector3", "value":[1,1,1]},
+								{ "name":"generator", "type":"string", "value":"saga1"} 
+							]
+						}
+					],
+					"script" : "data/lua/env.global/generators/galaxygentest.lua"
+				}
+			]
+		}
+	]
+}

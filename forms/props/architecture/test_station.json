@@ -1,0 +1,8 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "space/stations/dynparts/cylinder_block.dnmd",
+	"scale" : 0.75,
+	"rotation" : [0,0,0],
+	
+}

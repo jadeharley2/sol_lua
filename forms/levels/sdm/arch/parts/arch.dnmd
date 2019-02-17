@@ -1,0 +1,116 @@
+{
+	name : "fence.subtest", 
+	input : {
+		"base" : { type : "surface", "default" : [[-1,-1,0],[1,-1,0],[1,1,0],[-1,1,0]],},
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {
+		"$framew" : 0.1 , 
+		
+		"$segments" : 5, 
+		
+		"$mul_x" : 1.5 , 
+		"$mul_y" : 1.5 , 
+		
+		"$normal_x" : 0.5, 
+		"$normal_xz" : 0.5, 
+		
+		"$normal_y" : 0.5, 
+		"$normal_yz" : 0.5, 
+		
+		"$edges" : false,
+		"$mat.primary" :"red.json",
+	},  
+	operations : [   
+		{type:"foreach", in:"base",var:"base_it", out : ["msurface_faces"],
+			operations: [
+				{type:"debug",in:"base",dtype:"count",prefix:"base: "},
+				{type:"debug",in:"base_it",dtype:"count",prefix:"base_it: "},
+				
+				{type:"inset", in:"base_it",out:["inb","sides"],
+					amount:["$framew"], 
+				},     
+				{type:"frotate", in:["inb"],
+					normal:[0,1,0],add:1,
+				},
+				{type:"data", in:"inb",
+					//length : "$len", 
+					//width : "$wdt", 
+					normal:"$norm",
+					points : "$bpt_",  
+					directions :"$bpn_",
+				},        
+				  
+				{type:"curve", out : "test0a",   
+					start:"$bpt_1",//"@($cen+$nmaj-$nmin)",//[-0.9,-0.9,0], 
+					end:"$bpt_0",//"@($cen-$nmaj-$nmin)",//[-0.9,0.9,0], 
+					endnormal:"@($norm*$normal_xz+$bpn_0*$normal_x)",//["$normal_x",0,"$normal_xz"],
+					startnormal:"@($norm*$normal_xz-$bpn_0*$normal_x)",//["@(0-$normal_x)",0,"$normal_xz"], 
+					mul:"$mul_x",       
+					segments:"$segments", 
+				},    
+				{type:"curve", out : "test0c",   
+					start:"$bpt_1",//[-0.9,-0.9,0], 
+					end:"$bpt_2",//[0.9,-0.9,0],   
+					//normal:[0,0,1],
+					//mul:1,    
+					endnormal:"@($norm*$normal_yz-$bpn_1*$normal_y)",//["$normal_x",0,"$normal_xz"],
+					startnormal:"@($norm*$normal_yz+$bpn_1*$normal_y)",//["@(0-$normal_x)",0,"$normal_xz"], 
+					mul:"$mul_y",     
+					segments:"$segments",
+				},   
+				{type:"msurface",in1:"test0c",in2:"test0a",out:"msurface_faces"}, 
+				
+				{ type : "material",in : "msurface_faces",
+					material : "$mat.primary",
+					smooth:true,
+				},  	 		   
+				
+				{type:"branch", condition:"bool", value:"$edges",
+					ontrue:[
+								
+						{type:"extrude",in:"test0a",out:"msurface_faces2",shift:"@($bpn_1*(0-$framew))"},//[-0.1,0,0]},
+						{type:"extrude",in:"test0c",out:"msurface_faces2_flip",shift:"@($bpn_2*(0-$framew))"},//[0,-0.1,0]}, 
+						
+						
+						
+						{type:"curve", out : "test0ff1",   
+							start:"$bpt_2", 
+							end:"$bpt_3",   
+							endnormal:"@($norm*$normal_xz+$bpn_0*$normal_x)",//["$normal_x",0,"$normal_xz"],
+							startnormal:"@($norm*$normal_xz-$bpn_0*$normal_x)",//["@(0-$normal_x)",0,"$normal_xz"], 
+							mul:"$mul_y",    
+							segments:"$segments", 
+						},   
+						{type:"curve", out : "test0ff2",   
+							start:"$bpt_3",  
+							end:"$bpt_0",     
+						startnormal	:"@($norm*$normal_yz-$bpn_1*$normal_y)",//["$normal_x",0,"$normal_xz"],
+						endnormal	:"@($norm*$normal_yz+$bpn_1*$normal_y)",//["@(0-$normal_x)",0,"$normal_xz"], 
+							mul:"$mul_x",    
+							segments:"$segments",
+						},   
+						{type:"extrude",in:"test0ff1",out:"msurface_faces2_flip",shift:"@($bpn_1*$framew)"},//shift:[0.1,0,0]},
+						{type:"extrude",in:"test0ff2",out:"msurface_faces2_flip",shift:"@($bpn_2*$framew)"},//shift:[0,0.1,0]}, 
+						
+						{type:"flip",from:"msurface_faces2_flip",out:"msurface2_faces"},
+						
+						{ type : "material",in : "msurface2_faces",
+							material : "$mat.primary",
+							smooth:false,
+						},  	 	
+						{type:"union",in:"msurface2_faces",out:"msurface_faces"},
+					],
+				},
+				
+				{type:"remove",from:["base_it","inb","sides"]},
+						{type:"debug",in:"test0a",dtype:"count"},
+			],
+		},
+		
+	]   
+} 

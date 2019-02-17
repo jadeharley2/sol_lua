@@ -1,0 +1,31 @@
+{   
+	"type": "object",
+	"description" : "form definition",
+	"additionalProperties": true,
+	"properties":{   
+		"name":{ 
+			"type":"string",
+			"default":"New Form",
+			"description":"displayed name"
+		},
+		"description":{ 
+			"type":"string",
+			"default":"",
+			"description":"form description"
+		},
+		"tags":{
+			"type":"array",
+			"items": {
+				"type":"string"
+			},
+			"description":"form tags"
+		},
+		"group":{
+			"type":"string",
+			"default":"default",
+			"description":"form group"
+		}
+		
+
+	}
+}

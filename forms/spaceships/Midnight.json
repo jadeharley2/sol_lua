@@ -1,0 +1,104 @@
+{
+	"name" : "Midnight",
+	"sizepower" : 750,
+	"hull" : {"model":"space/ships/midnight/ship_surface.stmd",	"scale":0.75,},
+	"fallbackpos" : [0.003537618,0.01925059,0.2446546],
+	"fallbackdistance" : 1,
+	"commandchair" : {"model":"space/ships/common/chair1.stmd","pos":[0,17,254.5],"scale":0.75},
+	"interior": {
+		"posmul" : 0.001,
+		
+		"rooms" : {
+			"bridge" : {
+				"static" : [
+					{"model":"space/ships/midnight/bridge_floor.stmd","pos":[0,15.789,255.621],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_walls.stmd","pos":[0,22.12,251.181],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_second_chairs.stmd","pos":[0,0,0],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_tubes.stmd","pos":[0,0,0],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_rails.stmd","pos":[0,0,0],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_lights.stmd","pos":[0,0,0],"scale":0.75},
+					{"model":"space/ships/midnight/bridge_middle.stmd","pos":[0,0,0],"scale":0.75},
+				],
+				"doors" : [
+					{"model":"door/door.stmd","pos":[14.218,16.502,217.146],"ang":[0,90,0],"scale":0.75,"seed":999005},
+					{"model":"door/door.stmd","pos":[-14.218,16.502,217.146],"ang":[0,90,0],"scale":0.75,"seed":999006},
+					
+					{"model":"door/door.stmd","pos":[8.84,16.502,238.92],"ang":[0,60,0],"scale":0.75,"seed":999007},
+					{"model":"door/door.stmd","pos":[-8.84,16.502,238.92],"ang":[0,-60,0],"scale":0.75,"seed":999008},
+				],
+			},
+			"tricor" : {
+				"static" : [
+					{"model":"space/ships/midnight/corridors_tri.stmd","pos":[0,18.755,227.373],"scale":0.75},
+				],
+			},
+			"maproom" : {
+				"static" : [
+					{"model":"space/ships/midnight/maproom.stmd","pos":[0,26.197,197.172],"scale":0.75},
+				],
+			},
+			"portalroom":{
+				"static" : [
+					{"model":"space/ships/midnight/portalroom.stmd","pos":[0,32.511,159.471],"scale":0.75},
+					{"model":"space/ships/midnight/portaleffect.stmd","pos":[0,0,0],"scale":0.75},
+				]
+			}, 
+			"reactor":{
+				"static" : [
+					{"model":"space/ships/midnight/reactor.stmd","pos":[0,45.797,-6.641],"scale":0.75},
+					//{"model":"space/ships/midnight/reactor_tonnels.stmd","pos":[0,0,0],"scale":0.75},
+				]
+			},  
+			"seqroom":{
+				"static" : [
+					{"model":"space/ships/midnight/seqroom.stmd","pos":[0,52.969,54.228],"scale":0.75},
+					{"model":"space/ships/midnight/seq_seat_test.stmd","pos":[0,0,0],"scale":0.75},
+				]
+			}, 
+			
+		},
+		"airlocks":{
+			"left" : {
+				"door_out" : {"model":"door/door.stmd","pos":[28.325,16.502,223.01],"ang":[0,0,0],"scale":0.75,"seed":999001},
+				"door_in": {"model":"door/door.stmd","pos":[22.276,16.502,223.01],"ang":[0,0,0],"scale":0.75,"seed":999002},
+			},
+			"right": {
+				"door_out" : {"model":"door/door.stmd","pos":[-28.325,16.502,223.01],"ang":[0,0,0],"scale":0.75,"seed":999001},
+				"door_in": {"model":"door/door.stmd","pos":[-22.276,16.502,223.01],"ang":[0,0,0],"scale":0.75,"seed":999002},
+			},
+		},
+		"links" : [ 
+			["bridge","tricor"],["tricor","maproom"],["maproom","portalroom"],
+		],
+		"lifts" : [
+			{
+				"nodes" : [
+					{"p":[0,22.764,223.011],"n":"upbridge","s":true,"c":1},
+					{"p":[0,16.685,223.011],"n":"bridge","s":true,"c":1},
+					{"p":[0,8.162,223.011 ]},
+					{"p":[0,15.303,170.021]},
+					{"p":[0,17.983,138.173]},
+					{"p":[0,17.983,138.173]},
+					{"p":[0,19.504,109.83 ]},
+					{"p":[0,27.702,109.83 ],"n":"middle1","s":true,"c":2},
+					{"p":[0,35.773,109.83 ],"n":"middle2","s":true,"c":2},
+					{"p":[0,41.209,109.83 ],"n":"middle3","s":true,"c":2},
+					
+					{"p":[0,16.893,26.454 ],"n":"back0/cargobay","s":true,"c":3},
+					{"p":[0,27.717,26.454 ],"n":"back1","s":true,"c":3},
+					{"p":[0,35.783,26.454 ],"n":"back2","s":true,"c":3},
+					{"p":[0,41.209,26.454 ],"n":"back3","s":true,"c":3},
+					{"p":[0,48.878,26.454 ],"n":"back4","s":true,"c":3},
+				],
+				"links" : [[1,2,3,4,5,6,7,8,9,10],[7,11,12,13,14,15]],
+				"spawnnodeid" : 2,
+				"seed" : 325402,
+			},
+		],
+		"static" : [ 
+			{"model":"space/ships/midnight/interior_all_textured_v2.stmd","pos":[0,0,0],"scale":0.75},
+			{"model":"space/ships/midnight/dockslot.stmd","pos":[0,19.166,223.265],"scale":0.75}, 
+			//{"model":"space/ships/midnight/engine.stmd","pos":[0,0,0],"scale":0.75}, 
+		],
+	},
+}

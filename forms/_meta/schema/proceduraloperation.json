@@ -1,0 +1,100 @@
+{
+    "type":"object",  
+    "description": "procedural operation",
+    "properties": {
+        "type":{ 
+            "description": "operation type",
+            "enum": ["point","line","ngon","column","curve",
+            "rectangle","stairs","structure","surface","text","tree",
+            "bridge","cut","extrude","inset","remove","clone","collapse",
+            "debug","stop","deform","frotate","findpoly","flip","data",
+            "osm","merge","mirror","msurface","pathextrude","pathplace",
+            "placeprims","pointdeform","select","bone","except","union",
+            "intersect","material","uvmap","shatter","split","tesselate",
+            "area","toposplit","toposurface","branch","for","foreach",
+            "random","animation","event","animation_sequence","entity"]
+        },
+        "pos":{ 
+            "type":["array","string"]
+        },
+        "r":{
+            "type":["number","string"]
+        },
+        "points":{
+            "type":["array","string"]
+        },  
+        "in":{
+            "type":["string","array"],
+            "description": "input primitives"
+        },   
+        "out":{
+            "type":["string","array","object"],
+            "description": "output primitives"
+        }, 
+        "from":{
+            "type":["string","array"],
+            "description": "input primitives and convert"
+        }  
+    },
+    "required": ["type"],
+    "anyOf": [
+        {
+            "properties": {
+            "type": { "enum": ["point"] }
+            },
+            "required": ["pos"]
+        }, 
+        {
+            "properties": {
+            "type": { "enum": ["column"] }
+            },
+            "required": []
+        }, 
+        {
+            "properties": { 
+                "type": { "enum": ["extrude"] },
+                "mode":{ 
+                    "desctiption":"extrude direction mode",
+                    "enum":["normal","offset"]
+                },
+                "times":{
+                    "description": "extrude iterations",
+                    "type":["number","string"]
+                },
+                "merge":{
+                    "type":"boolean"
+                }
+            },
+            "required": []
+        },
+        {
+            "properties": { 
+                "type": { "enum": ["inset"] }, 
+                "amount":{
+                    "description": "side offset amount",
+                    "type":["number","array","string"]
+                }, 
+                "chamfer":{
+                    "description": "egde chamfer amount",
+                    "type":["number","array","string"]
+                }, 
+                "extrude":{
+                    "description": "extrude amount",
+                    "type":["number","string"]
+                }
+            },
+            "required": []
+        },
+        {
+            "properties": {
+            "type": { "enum": ["ngon"] },
+            "sides":{
+                "type":"number"
+            }
+            }
+        }, 
+        {
+
+        } 
+    ]
+}

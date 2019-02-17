@@ -1,0 +1,114 @@
+{
+	name : "jp.fence",
+	input : {
+		"path" : { type : "line", "default" : [[0,0,0],[10,0,0],[10,5,0],[0,2,0]], loop : true },
+	},
+	variables : { 
+		"$height" : 1
+	},
+	operations : [ 
+		
+		//anchors
+		 
+		//edge columns
+		{ type : "select", in : "path", out : "pts_rc", 
+			mode : "points", 
+		},   
+		{ type : "extrude", from : "pts_rc",out : "pts_rc",   
+			shift : [0,0,1.2],
+			times : 1,
+		},         
+		{ type : "column", in : "pts_rc",out : "columns",outcap:"column_caps", 
+			angle : 45,  
+			r :  0.2 , 
+			sides : 10,
+		},      
+		
+		
+		//fence
+		
+		{ type : "split",in : "path",out : "path_div", 
+			steps :"@($l*0.6)",      
+			stype:"constant",     
+		},       
+		
+		//medium fence posts
+		
+		{ type : "select", in : "path_div", out : "pts", 
+			mode : "points", 
+		},   
+		{ type : "extrude", in : "pts",out : "col_base",   
+			shift : [0,0,1],
+			times : 1,
+		},         
+		{ type : "column", in : "col_base",out : "columns",outcap:"column_caps", 
+			angle : 45,  
+			r :  0.1 , 
+			sides : 4,
+		},      
+		
+		//small fence posts
+		{ type : "split",in : "path_div",out : "path_div2", 
+			steps :2,      
+			stype:"constant",     
+		},       
+		{ type : "select", in : "path_div2", out : "pts2", 
+			mode : "points", 
+		},   
+		{ type : "deform", in : "path_div2",
+			mode : "move",
+			shift : [0,0,0.1],
+		},
+		{ type : "extrude", in : "pts2",out : "col_base2",   
+			shift : [0,0,0.5],
+			times : 1,
+		},         
+		{ type : "column", in : "col_base2",out : "columns",outcap:"column_caps", 
+			angle : 45,  
+			r :  0.08 , 
+			sides : 4,
+		},    
+		
+		//horisontal planks lower to upper 3x
+		
+		{ type : "deform", in : "path_div",
+			mode : "move",
+			shift : [0,0,0.1],
+		},
+		{ type : "column", in : "path_div",out : "columns",outcap:"*", 
+			angle : 45,  
+			r :  0.08 , 
+			sides : 4,
+			normal:[0,0,1], 
+			connect : false,
+		},    
+		{ type : "deform", in : "path_div",
+			mode : "move",
+			shift : [0,0,0.45],
+		},
+		{ type : "column", in : "path_div",out : "columns",outcap:"*", 
+			angle : 45,  
+			r :  0.08 , 
+			sides : 4,
+			normal:[0,0,1], 
+			connect : false,
+		},     
+		{ type : "deform", in : "path_div",
+			mode : "move",
+			shift : [0,0,0.444],
+		}, 
+		{ type : "column", in : "path_div",out : "columns",outcap:"*", 
+			angle : 45,  
+			r :  0.08 , 
+			sides : 4,
+			normal:[0,0,1], 
+			connect : false,
+		},    
+		
+		
+		{ type : "material",in : ["columns","column_caps"],
+			material : "red.json"//"stone.json"
+		},  
+		      
+	]   
+} 

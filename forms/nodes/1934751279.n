@@ -1,0 +1,22 @@
+[
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.780721068382263, 0.164575681090355, -0.490755528211594, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "architecture/jade_room.SMD",
+			"modelscale" : 0.1,
+			"luaenttype" : "static_object"
+		}
+	}
+]

@@ -1,0 +1,138 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat",
+        "textures/tile/tilt"],
+    "variables":{
+        "$width":5
+    },
+    "input_operations": [
+        {"type": "line", "out": "base",
+            "points": [[-20,0,0],[-10,0,0],[0,0,0],[10,0,0],[20,0,0]]
+        }
+    ],
+    "operations": [ 
+         
+
+
+
+		{ "type" : "ngon", "out" : "road_dd",  
+			"r" : 1,
+            "sides" : 4, 
+            "angle":45
+		},      
+        {"type":"deform","in":"road_dd","mode":"transform", 
+            "world":{"ang":[180,0,0],"pos":[4,0,-0.5]}
+        },   
+        {"type":"clone","in":"road_dd","out":"road_dd", 
+            "world":{"ang":[0,0,0],"pos":[-8,0,0]}
+        }, 
+		{ "type" : "inset","from" : "road_dd","out" : ["road_dd","road_dd"], 
+			"extrude":15, 
+			"amount":0,
+		},      
+
+   
+		{ "type" : "pathplace", "in":"base", "fromform": "road_dd", "out" : "road_s2",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[-90,0,90],"pos":[0,0.2,0]},  //3 -3
+			"amount" : 1,
+		},   
+
+
+
+
+
+
+		{ "type" : "tesselate","from" : "base","out" : "base", 
+			"interpolation" : "cubic",
+			"mindist":3//2 ,
+        },      
+         
+        {"type": "line", "out":"brdg_profile",
+            "points": [[0,1,0],[0,1,-1],[0,-1,-1],[0,-1,0]],
+            "loop":true
+        },
+        {"type":"deform","in":"brdg_profile","mode":"transform", 
+            "world":{"ang":[-90,0,0],"sca":[1,5,1]}
+        },  
+        {"type": "pathextrude","in": "base","out": "ttt",
+            "profile":"brdg_profile","normal":[0,0,1]
+        },    
+
+		{ "type" : "rectangle", "out" : "brdg_profile_2",  
+			"w" : 0.9,
+			"l" : 0.5,
+			"angle":0
+		},  
+        {"type":"deform","in":"brdg_profile_2","mode":"transform", 
+            "world":{"ang":[0,90,90],"pos":[0,-1.9,4]}
+        },     
+        {"type": "pathextrude","in": "base","out": "ttt2",
+            "profile":"brdg_profile_2","normal":[0,0,1]
+        },    
+        {"type":"deform","in":"brdg_profile_2","mode":"transform", 
+            "world":{"pos":[0,0,-8]}
+        },      
+        {"type": "pathextrude","in": "base","out": "ttt2",
+            "profile":"brdg_profile_2","normal":[0,0,1]
+        },    
+        {"type": "remove","in": "brdg_profile_2"},
+
+
+		{ "type" : "rectangle", "out" : "road_fd",  
+			"w" : 0.6,
+			"l" : 9.8,
+			"angle":0
+		},      
+        {"type":"deform","in":"road_fd","mode":"transform", 
+            "world":{"ang":[180,0,0],"pos":[0,0,-1]}
+        }, 
+		{ "type" : "inset","from" : "road_fd","out" : ["road_fd","road_fd"], 
+			"extrude":1, 
+			"amount":[0,0.2],
+		},      
+
+   
+		{ "type" : "pathplace", "in":"base", "fromform": "road_fd", "out" : "road_s",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[-90,0,90],"pos":[0,0,0]},  //3 -3
+			"amount" : 1,
+		},   
+
+
+        //bord
+        {"type": "select","in": "ttt","out":"ttttop", "remove":true,
+            "mode":"top","maxangle":30
+        },  
+        {"type": "inset","from": "ttttop","out": ["ttttop","bsd"],
+            "amount": [0.3,0]
+        },
+        {"type": "select","in": "ttttop","out":["*","cbase","*","cbase"],
+            "mode":"segments" 
+        }, 
+
+		{ 	"type" : "structure", "out" : "wall",
+			"path" : "forms/levels/sdm/rail.dnmd",
+			"in" : {"base":"cbase"},
+		},
+ 
+		{ "type" : "uvmap", "in":[  "ttt","ttt2","road_s","road_s2","bsd","ttttop"],
+			"edge" : 2,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": [  "ttt","ttt2","road_s2","bsd"],
+            "material": "brick",
+            "smooth":false
+        }, 
+        {"type": "material", "in": [ "ttt2","road_s"],
+            "material": "brick",
+            "smooth":false
+        },
+        {"type": "material", "in": [ "ttttop"],
+            "material":"concrete",
+            "smooth":false
+        }, 
+
+    ]    
+}   

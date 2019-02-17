@@ -1,0 +1,9 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "forms/levels/east_common/jp_fence.dnmd",
+	"modelkey":"path",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"luatype":"dyn_road"
+}

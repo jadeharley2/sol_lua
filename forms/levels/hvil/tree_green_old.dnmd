@@ -1,0 +1,154 @@
+{ 
+	"seed":322,  
+	"matpath" : [ 
+		"models/dyntest/mat",
+		"textures/stdif",
+		"textures/tile/mat",
+		"textures/nature/branch",
+		"textures/nature/trunk"
+	], 
+	"input" : {  
+	},
+	"variables" : { 
+		"$height" : 1
+	},
+	"operations" : [ 
+		{"type": "seed","value":3},
+		{ "type" : "tree","out" : ["wood","leaf"],   
+			"pos" : [0,0,0],  
+			"dir" : [0,0,1],
+			             
+			"templates" : {
+				"trunk" : { 
+					"length" : [4,8],
+					"segments" : 38,    
+					"baserotation" : [0,0,90], // from parent direction
+					"rotation" : ["@(rand(0-0.05,0.05))","@(rand(0-0.05,0.05))",0],//rotate dir by local angles 
+					"shape" : {
+						"sides" : 6, 
+						"r" : "@((1.3-$v)*0.2)",
+					},    
+					"spawn" : [   
+						{ 
+							"template" : "branch",
+							"baselenbounds" : [0.4,0.99],//in % of total len [0..1]
+							"count" : [15,20],  
+						}            
+					],          
+				},  
+				"branch" : {  
+					"length" : [4,5],
+					"segments" : 10, 
+					"baserotation" : ["@(rand(0-1,1))","@(rand(0-1,1))",0], // from parent direction
+					"rotation" : ["@(rand(0-0.3,0.3))","@(rand(0-0.3,0.3))",0],//rotate dir by local angles 
+					   
+					"shape" : {
+						"sides" : 6, 
+						"r" : "@((1.1-$v)*0.04)",
+					},    
+					"spawn" : [ 
+						{ 
+							"template" : "subbranch",
+							"baselenbounds" : [0.2,0.9],//in % of total len [0..1]
+							"count" : [1,5],  
+						},       
+						{ 
+							"template" : "leafbranch",
+							"baselenbounds" : [0.2,0.99],//in % of total len [0..1]
+							"count" : [4,20],  
+						},           
+					],    
+				},     
+				"subbranch" : {     
+					"length" : [0.3,3],
+					"segments" : 3, 
+					"baserotation" : ["@(rand(0-1,1))","@(rand(0-1,1))",0], // from parent direction
+					"rotation" : ["@(rand(0-0.3,0.3))","@(rand(0-0.3,0.3))",0],//rotate dir by local angles 
+					      
+					"shape" : { 
+						"sides" : 3, 
+						"r" : "@((1.1-$v)*0.02)",
+					},   
+					"spawn" : [      
+						{ 
+							"template" : "leafbranch",
+							"baselenbounds" : [0.2,0.9],//in % of total len [0..1]
+							"count" : [2,10],  
+						},           
+					],    
+				}, 
+				"leafbranch" : {    
+					"out" : "leaf",
+					"length" : 1,
+					"segments" : 1, 
+					"baserotation" : ["@(rand(0-1,1))","@(rand(0-1,1))",0], // from parent direction
+					"normal":[0,0,1],
+					"shape" : {
+						"sides" : 2, 
+						"r" : 0.5,
+						"angle":90,
+					},   
+				}, 
+			},  
+			"spawn" : [
+				{ 
+					"template" : "trunk",
+					"count" : 1,
+				}, 
+			],
+		},       
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		 
+		
+		//{ type:"line",out:"base",
+		//	add:[
+		//		"@(rand(0-0.1,0.1))",
+		//		"@(rand(0-0.1,0.1))",
+		//		"@(rand(0.7,1))"
+		//	],  
+		//	points : 10, 
+		//},    
+		{ "type" : "column", "in" : "base","out" : "columns","outcap":"column_caps", 
+			"angle" : 45,   
+			"r" :  0.1,//"@(1-pow($v,2))",  
+			"sides" : 8,
+			"normal":[1,1,0],      
+		},     
+		      
+		
+		{ "type" : "uvmap", "in":["wood"],
+			"edge" : 1,     
+			"scale" : 1.0,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"fix" : [0,0,0]  
+		},         
+		{ "type" : "material","in" : ["wood"],
+			//material : "wireframe.json"//
+			"material" : "deciduous.json",  
+			"smooth":true,   
+		},         
+		{ "type" : "uvmap", "in":["leaf"],
+			"edge" : 1,      
+			"scale" : 1.0,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1]  
+		},      
+		{ "type" : "material","in" : ["leaf"],
+			//material : "wireframe.json"//
+			"material" : "green.json",
+			"smooth":true,    
+		},   
+	]   
+}  

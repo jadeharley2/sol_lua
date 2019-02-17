@@ -1,0 +1,61 @@
+{
+	name : "sdm_building",
+	input : {
+		"roofbase" : { type : "surface", "default" : [[-15,-25,-1],[-15,25,-1],[15,25,-1],[15,-25,-1]] },
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {
+		"$roof_height" : 5, 
+		 
+		"$roof_lean" : [2,0],
+		"$roof_width" : 0.2, 
+		"$edge_length" : 0.4,
+		
+		"$mat.walls" : "bricks11.json",
+		"$mat.roof" : "roof03.json",
+	},
+	operations : [   
+		          
+		{ type : "material",in : ["roofbase"],
+			material : "$mat.walls"
+		},     
+		{ type : "inset", from : "roofbase", out:["roof_mini","roof_mini"],
+			mode : "normal",
+			extrude : "$roof_height",   
+			amount : "$roof_lean",  
+		},    	
+		{ type : "uvmap", in:["roof_mini"],
+			edge : 2,     
+			scale : 3.0     ,
+			shift : [0.0 ,0.0],  
+			mul : [1,1,1],
+		},            
+		{ type : "select",in : ["roof_mini"], out : "roof_mini_top",
+			mode : "dotnormal",
+			normal : [0,0,-1],        
+			maxangle : 85,
+			directed: true,
+			remove:true,
+		},  	        
+		{ type : "material",in : ["roof_mini_top"],
+			material : "$mat.roof"
+		},     
+		{ type : "extrude", from : "roof_mini_top",outtop :"wall_faces", out:"rmt_e",,
+			mode : "normal", 
+			shift : "$roof_width",  
+			times : 1,  
+			merge : true,
+		},    		   
+		{ type : "extrude", from : "rmt_e",outtop :"wall_faces", out:"wall_faces",,
+			mode : "normal",
+			shift : "$edge_length",  
+			times : 1,  
+			merge : true,
+		},  		 
+		
+	]   
+} 

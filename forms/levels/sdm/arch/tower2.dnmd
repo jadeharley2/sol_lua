@@ -1,0 +1,81 @@
+{
+	name : "sdm.tower2",  
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : { 
+		"$mat.main" : "concrete06b.json",
+		"$mat.columns" : "concrete06b.json",
+		"$mat.floor" : "fo_floor.json",
+		"$mat.ceiling" : "ceiling31.json",
+		"$mat.carpet" : "redcarpet.json",
+		 
+	},  
+	operations : [   
+		   
+		{type : "rectangle", out : "room_lb5_1", //1floor
+			pos : [0,0,-6],//[-31,-12.54,-6],
+			l : 6, 
+			w : 12,
+			angle : 0,
+		},       
+		{ 	type : "structure", out : "room_faces",
+			path : "tower2_room.dnmd",
+			from : {"room":"room_lb5_1"}, 
+			"$floor":true,
+		},          
+		
+		{type : "rectangle", out : "room_lb5_2",//2floor
+			pos : [0,0,0],
+			l : 6, 
+			w : 12,
+			angle : 0,
+		},       
+		{ 	type : "structure", out : "room_faces",
+			path : "tower2_room.dnmd",
+			from : {"room":"room_lb5_2"},   
+		},        
+		
+		
+		{type : "rectangle", out : "room_lb5_3",//3floor
+			pos : [0,0,6],
+			l : 6, 
+			w : 12,
+			angle : 0,
+		},        
+		{ 	type : "structure", out : "room_faces",
+			path : "tower2_room.dnmd",
+			from : {"room":"room_lb5_3"},   
+		},         
+		
+		
+		{type : "rectangle", out : "room_lb5_4",//4floor
+			pos : [0,0,12],
+			l : 6, 
+			w : 12,
+			angle : 0,
+		},       
+		{ 	type : "structure", out : "room_faces",
+			path : "tower2_room.dnmd",
+			from : {"room":"room_lb5_4"},   
+			"$widewindows":true,
+		},        
+		
+		
+		{type : "rectangle", out : "room_lb5_5",//5floor
+			pos : [0,0,18],
+			l : 6, 
+			w : 12,
+			angle : 0,
+		},       
+		{ 	type : "structure", out : "room_faces",
+			path : "tower2_room.dnmd",
+			from : {"room":"room_lb5_5"},   
+			"$staircase":false,
+			"$widewindows":true,
+		},        
+		
+	]   
+} 

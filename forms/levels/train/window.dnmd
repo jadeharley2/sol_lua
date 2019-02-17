@@ -1,0 +1,46 @@
+{
+    "input_operations":[
+        {"type": "rectangle", "out": "base",
+            "w":3, 
+            "l":2 
+        }, 
+        {"type": "deform","in": "base","mode":"rotate",
+            "axis":[0,1,0],"angle":90
+        },
+    ],
+    "operations": [
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0.02, "extrude": 0 
+        },    
+        {"type": "split","from": "base","out": ["a","a","a"],
+            "stype":"constant", 
+            "size":[0,0,0],
+            "side":"first", 
+        },
+        {"type": "split","from": "a","out": ["a","a"],
+            "stype":"constant", 
+            "size":[0,-0.3],
+            "side":"first", 
+        },
+        {"type": "inset","from": "a","out": ["a","side"],
+           "amount": 0.02, "extrude": 0 
+        },    
+        {"type": "inset","from": "a","out": ["a","side"],
+           "amount": 0, "extrude": -0.05
+        },    
+        {"type": "material", "in": ["a"],
+            "material":"glass",
+            "smooth":false
+        },   
+		{ "type" : "uvmap", "in":["side"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["side"],
+            "material":"wood",
+            "smooth":false
+        },
+    ]
+} 

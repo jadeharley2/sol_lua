@@ -1,0 +1,14 @@
+{
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "clutter/lab/book.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],
+	"modmaterial" :  [{
+		"tint":[0.6,0.1,0.03],
+		"g_MeshTexture" : "textures/tile/plain/plastic2.png",   
+		}
+	],
+	"phys" : true,
+	"mass" : 1, 
+}

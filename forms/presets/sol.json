@@ -1,0 +1,11 @@
+{
+	"name" : "star.sol", 
+	"type": "sStarSystem",
+	"seed": 23542,
+	"sizepower" : 1.892146E16, 
+	"transformation":{"pos":[-0.2497424,0.003247981,-0.2092827],"ang":[0.1, 0, 1]}
+	"nodes":[
+		"type": "sCelestialBody",
+		
+	]
+}

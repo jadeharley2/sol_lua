@@ -1,0 +1,58 @@
+[
+ 
+	//{
+	//	//"idynamic" : 1, 
+	//	"sizepower" : 750,
+	//	"seed" : 2397131,
+	//	"updatespace" : 1,
+	//	"parameters" : 
+	//	{
+	//		"type" : 0,
+	//		"typename" : "none",
+	//		"seed" : 2397131,
+	//		"abssize" : 750,
+	//		"name" : "the ship",
+	//		"position" : [0.0129999995529652, 0, 0, "vec3"],
+	//		"rotation" : [0, 1, 0, 0, "quat"],
+	//		"scale" : [1, 1, 1, "vec3"],
+	//		"luaenttype" : "spaceship",
+	//		"character" : "libra",
+	//	}
+	//},
+	{
+		"components" : ["physspace", "model", "staticcollision"],
+		"sizepower" : 10000,
+		"seed" : 2364346908,
+		"updatespace" : 1,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 2364346908,
+			"abssize" : 10000,
+			"name" : "the station",
+			"position" : [0.0121, 0.00001, 0.00001, "vec3"],
+			"rotation" : [0, 0, 0, 0, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "spacestation"
+		}
+	},
+	//{
+	//	"components" : ["physspace", "model"],
+	//	"sizepower" : 10000,
+	//	"seed" : 2364346908,
+	//	"updatespace" : 1,
+	//	"parameters" : 
+	//	{
+	//		"type" : 0,
+	//		"typename" : "none",
+	//		"seed" : 2364346908,
+	//		"abssize" : 10000,
+	//		"name" : "the test",
+	//		"position" : [0.0199, 0, 0, "vec3"],
+	//		"rotation" : [0, 0, 0, 0, "quat"],
+	//		"scale" : [1, 1, 1, "vec3"],
+	//		"luaenttype" : "test_procmesh"
+	//	}
+	//}
+]

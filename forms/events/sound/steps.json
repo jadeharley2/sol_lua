@@ -1,0 +1,91 @@
+[
+	{
+		"type" : "soundevent",
+		"name" : "step.stone",
+		"sounds" : [
+			"step/stone-01.ogg",
+			"step/stone-02.ogg",
+			"step/stone-03.ogg",
+			"step/stone-04.ogg",
+			"step/stone-05.ogg",
+			"step/stone-06.ogg",
+			"step/stone-07.ogg"
+		],
+		"channel" : "step",
+		"volume" : 0.5
+	},
+	{
+		"type" : "soundevent",
+		"name" : "step.soil",
+		"sounds" : [
+			"step/soil-01.ogg",
+			"step/soil-02.ogg",
+			"step/soil-03.ogg",
+			"step/soil-04.ogg",
+			"step/soil-05.ogg",
+			"step/soil-06.ogg",
+			"step/soil-07.ogg",
+			"step/soil-08.ogg",
+			"step/soil-09.ogg"
+		],
+		"channel" : "step",
+		"volume" : 0.5
+	},
+	{
+		"type" : "soundevent",
+		"name" : "step.hhshoes",
+		"sounds" : [
+			"step/shoes_hh-01.ogg",
+			"step/shoes_hh-02.ogg",
+			"step/shoes_hh-03.ogg",
+			"step/shoes_hh-04.ogg",
+			"step/shoes_hh-05.ogg",
+			"step/shoes_hh-06.ogg",
+			"step/shoes_hh-07.ogg",
+			"step/shoes_hh-08.ogg",
+			"step/shoes_hh-09.ogg",
+			"step/shoes_hh-10.ogg",
+			"step/shoes_hh-11.ogg"
+		],
+		"channel" : "step",
+		"volume" : 0.5
+	},
+	{
+		"type" : "soundevent",
+		"name" : "step.hoof",
+		"sounds" : [
+			"step/hoof-01.ogg",
+			"step/hoof-02.ogg",
+			"step/hoof-03.ogg",
+			"step/hoof-04.ogg"
+		],
+		"channel" : "step",
+		"volume" : 0.5
+	},
+	
+	
+	{
+		"type" : "steptype",
+		"object" : "shoe",
+		"surface": {
+			"stone" : "step.stone", 
+			"soil" : "step.soil"
+		}
+	}, 
+	{
+		"type" : "steptype",
+		"object" : "shoe.hh",
+		"parent" : "shoe",
+		"surface": {
+			"stone" : "step.hhshoes" 
+		}
+	}, 
+	{
+		"type" : "steptype",
+		"object" : "hoof",
+		"parent" : "shoe",
+		"surface": {
+			"stone" : "step.hoof" 
+		} 
+	}
+]

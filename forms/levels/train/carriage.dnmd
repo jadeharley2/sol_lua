@@ -1,0 +1,450 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat"],
+    "operations": [
+        {"type": "rectangle", "out": "floor",
+            "w":3, 
+            "l":20 
+        },
+        //{"type": "material","in": "floor",
+        //    "material":"wireframe"
+        //},
+        {"type": "inset","in": "floor","out": ["top",["sideA","sideB"]],
+           "amount": 0,
+           "extrude": 2 
+        },
+        {"type": "flip", "from": ["top","sideA","sideB"],"out": "%"},
+        
+		{ "type" : "uvmap", "in":["floor","top","sideA","sideB"],
+			"edge" : 1,     
+			"scale" : 1.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},        
+        {"type": "material", "in": ["top","sideA","sideB"],
+            "material":"plastic_y",
+            "smooth":false
+        },       
+        {"type": "material", "in": ["floor"],
+            "material":"plastic_g",
+            "smooth":false 
+        },   
+
+        //floor  
+        {"type": "split", "from": "floor","out": ["bot","botc","bot"],
+            "stype":"constant", 
+            "size":[0,2,0],
+            "side":"minor" 
+        },
+        {"type": "split", "from": "botc","out": ["bot","bot"],
+            "stype":"constant", 
+            "size":[0,0],
+            "side":"minor" 
+        },
+        {"type": "split", "from": "bot","out": 
+            ["bot","bot","bot","bot","bot","bot","bot","bot","bot"],
+            "stype":"constant", 
+            "size":[0.2,1.3,0,1.3,0,1.3,0,1.3,0.2],
+            "side":"major" 
+        },
+        {"type": "inset","from": "bot","out": ["bot","frames"],
+           "amount": 0.04,
+           "extrude": 0
+        },
+
+        //ceil
+
+        {"type": "inset","from": "top","out": ["top","tsides"],
+            "amount": [0.05,0], "extrude": -0.1 
+        },
+        {"type": "inset","from": "top","out": ["top","tsides"],
+            "amount": [0.1,0], "extrude": -0.1 
+        },
+        {"type": "inset","from": "top","out": ["top","tsides"],
+            "amount": [0.15,0], "extrude": -0.1 
+        },
+        {"type": "inset","from": "top","out": ["top","tsides"],
+            "amount": [0.5,0],
+            "extrude": -0.2 
+        },
+        {"type": "split", "from": "top","out": 
+            ["csu","csd","csw","csd","csw","csd","csw","csd","csu"],
+            "stype":"constant", 
+            "size":[0.2,1.3,0,1.3,0,1.3,0,1.3,0.2],
+            "side":"major" 
+        },
+        {"type": "inset","from": "csd","out": ["csd","tsides"],
+           "amount": 0.04, "extrude": 0.04 
+        },
+        {"type": "inset","from": "csd","out": ["csd","frames"],
+           "amount": 0.1, "extrude": 0 
+        },
+        {"type": "inset","from": "csd","out": ["csd","tsides"],
+           "amount": 0.02, "extrude": -0.02 
+        },
+        {"type": "foreach","in": "csd", "out": "csd_f", "var":"id",
+            "operations":[
+                {"type":"data","in":"id","center":"$cp"}, 
+                {"type": "ngon","out": "ng",
+                    "sides": 16,
+                    "r": 0.5,
+                    "axis":[0,0,-1], 
+                    "pos":"$cp"
+                }, 
+                {"type": "inset","from": "ng","out": ["ng","csd_f"],
+                   "amount": 0.1, "extrude": 0.1 
+                },
+                {"type": "inset","from": "ng","out": ["csd_f","csd_f"],
+                   "amount": 0.03, "extrude": -0.03 
+                },
+            ]
+        },
+
+        {"type": "split", "in": "csw","out": ["*","cswvb","*"], 
+            "stype":"constant", 
+            "size":[0.1,0,0.1],
+            "side":"first", 
+        },
+        {"type": "frotate","in": "cswvb","add":3},
+        {"type": "point","out": "pplines","pos": [0,0,0]},
+
+        {"type": "foreach","from": "cswvb", "out": "romb", "var":"id",
+            "operations":[
+            {"type": "select","in": "id","out": ["*","iid","*","*"],"mode":"segments"},
+            {"type":"deform","in":"iid","mode":"transform",
+                "around":"center",
+                "world":{"pos":[0,-0,-0.5],"sca":[0.9,1,1]}
+            },
+            
+            {"type":"column", "in":"iid","out":"romb",
+                "r":0.015,
+                "sides":8,
+                "normal" : [0,1,0],
+            },
+            
+            {"type": "split", "in": "id","out": ["*","wtsp"],
+                "stype":"constant", 
+                "size":[0,0.1],
+                "side":"first", 
+            }, 
+            {"type": "split", "from": "wtsp","out": 
+                ["*","wtsp","wtsp","wtsp","wtsp","*"],
+                "stype":"constant", 
+                "size":[0.5,0.1,0,0,0.1,0.5],
+                "side":"first", 
+            }, 
+            {"type": "foreach","from": "wtsp", "out": "sada3", "var":"id",
+                "operations":[
+                    {"type":"data","in":"id","center":"$cp"},
+                    { 	"type" : "structure", "out" : "sada3",
+                        "path" : "mpart1.dnmd",//"mpart1.dnmd",
+                        "from" : {"*":"id"},  
+                        "world":{
+                            "pos":"$cp",
+                            "ang":[0,90,-90],
+                            "sca":[1.25,0.6,1.1]
+                        }
+                    }
+                ]
+            }, 
+            {"type":"union","from":"sada3","out":"romb"},
+            
+            {"type":"deform","in":"iid","mode":"transform",
+                "around":"center",
+                "world":{ "sca":[0.80,1,1]}
+            },
+            {"type":"union","in":"iid","out":"pplines"},
+            ]
+        },
+		{ "type" : "uvmap", "in":"romb",
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["romb"],
+            "material":"shinymetal",
+            "smooth":false
+        },
+        {"type":"mirror","in":"romb","out":"romb",
+            "pos":[0,0,0], 
+            "dir":[0,1,0]
+        }, 
+        
+
+
+        { 	"type" : "structure", "out" : "osh",
+            "path" : "mpart2.dnmd",//"mpart1.dnmd",
+            "from" : {},  
+            "world":{
+                "pos":[0,0,0],
+                "ang":[0,0,-90],
+                "sca":[0.6,0.6,0.6]
+            }
+        },  
+        {"type": "tesselate", "from": "pplines","out": "pplines",
+            "times":3
+        }, 
+        {"type":"mirror","in":"pplines","out":"pplines",
+            "pos":[0,0,0], 
+            "dir":[0,1,0]
+        }, 
+        {"type": "pathplace","in":"pplines", "out": "osh_i",
+            "inform":"osh",
+            "amount":1,
+            "normal":[0,-1,0]
+        },
+
+        //{"type": "stop"},
+
+        {"type": "split", "from": "csw","out": 
+            ["csw_s","csw_c","csw_s"],
+            "stype":"constant", 
+            "size":[0,0,0],
+            "side":"major" 
+        },
+        {"type": "inset","from": "csw_c","out": ["csw_c","tsides"],
+           "amount": 0.05, "extrude": 0.1 
+        },
+        {"type": "inset","from": "csw_c","out": ["csw_c","frames"],
+           "amount": 0.2, "extrude": 0
+        },
+
+
+
+
+        //sidea
+        {"type": "split", "from": "sideA","out": ["saw","saw2","saw"],
+            "stype":"constant", 
+            "size":[0,0.9,0],
+            "side":"first" 
+        },
+        {"type": "inset","from": "saw2","out": ["saw","other"],
+           "amount": 0, "extrude": -0.03 
+        },
+        {"type": "split", "from": "saw","out": ["saw","swi"],
+            "stype":"constant", 
+            "size":[0,1.1],
+            "side":"third" 
+        },
+        {"type": "inset","from": "swi","out": ["swi","wcs"],
+           "amount": 0.1, "extrude": 0,"chamfer": 0.1
+        },
+        {"type": "inset","from": "swi","out": ["swi","frames"],
+           "amount": 0.03, "extrude": 0 
+        },
+        {"type": "inset","from": "swi","out": ["swi","frames"],
+           "amount": 0, "extrude": -0.1 
+        }, 
+        {"type": "material", "in": ["swi"],
+            "material":"glass",
+            "smooth":false
+        },
+        //sideB 
+
+
+        {"type": "split", "from": "sideB","out":
+            // ["swL","sd","sw","sd","sw","sd","sw","sd","swR"],
+             ["wws","sd","sw","sd","sw","sd","sw","sd","wws"],
+            "stype":"constant", 
+            "size":[0.2,1.3,0,1.3,0,1.3,0,1.3,0.2],
+            "side":"major" 
+        },
+        //doors
+        //{"type": "inset","from": "sd","out": ["sd","sds"],
+        //   "amount": [0.2,0.3,0,0.3], "extrude": 0
+        //},
+        {"type": "split", "from": "sd","out": ["sd","sds"],
+            "stype":"constant", 
+            "size":[0,0.2],
+            "side":"third" 
+        },
+        {"type": "inset","from": "sd","out": ["sd","sds"],
+           "amount": 0, "extrude": -0.1 
+        }, 
+        //walls
+        {"type": "split", "from": "sw","out": ["wws","sw","wws"],
+            "stype":"constant", 
+            "size":[0.8,0,0.8],
+            "side":"second" 
+        },
+        //{"type": "split", "from": "swR","out": ["wws","sw","wws"],
+        //    "stype":"constant", 
+        //    "size":[0.2,0,0.8],
+        //    "side":"second" 
+        //},
+        //{"type": "split", "from": "swL","out": ["wws","sw","wws"],
+        //    "stype":"constant", 
+        //    "size":[0.8,0,0.2],
+        //    "side":"second" 
+        //},
+        {"type": "split", "from": "sw","out": ["wb","wc","wt"],
+            "stype":"constant", 
+            "size":[0.7,0,0.3],
+            "side":"first" 
+        },
+        //{"type": "inset","from": "wc","out": ["wc","wcs"],
+        //   "amount": [0.5,0.13], "extrude": 0
+        //},
+        {"type": "inset","from": "wc","out": ["wc","frames"],
+           "amount": 0, "extrude": -0.02 
+        }, 
+        //windows
+        {"type": "frotate","in": "wc","add":2},
+        { 	"type" : "structure", "out" : "aaaasda",
+            "path" : "window.dnmd",//"mpart1.dnmd",
+            "from" : {"base":"wc"} 
+        },
+        {"type": "inset","from": "wws","out": ["wws","frames"],
+           "amount": 0.02, "extrude": 0 
+        },   
+
+        {"type": "inset","from": "wb","out": ["wb_corr","*"],
+            "amount": [-0.2,0], "extrude": 0 
+        }, 
+        { 	"type" : "structure", "out" : "sofa",
+            "path" : "sofa.dnmd", 
+            "from" : {"base":"wb_corr"} 
+        },
+        
+
+        //doors
+        {"type": "remove","from": "sd"},
+        //{"type": "split", "from": "sd","out": ["doorL","doorR"],
+        //    "stype":"constant", 
+        //    "size":[0,0],
+        //    "side":"first" 
+        //},
+        //{"type": "inset","from": ["doorL","doorR"],"out": ["door","dframes"],
+        //   "amount": 0.02, "extrude": 0, 
+        //},
+        //{"type": "split", "from": "door","out": ["ss1","ss2"],
+        //    "stype":"constant", 
+        //    "size":[0,1.1],
+        //    "side":"third" 
+        //},
+        //{"type": "inset","from": "ss2","out": ["ss2","ss1"],
+        //   "amount": 0.1, "extrude": 0,"chamfer": 0.1
+        //},
+        //{"type": "inset","from": "ss2","out": ["ss2","dframes"],
+        //   "amount": 0.03, "extrude": 0 
+        //},
+        //{"type": "inset","from": "ss2","out": ["ss2","dframes"],
+        //   "amount": 0, "extrude": -0.04 
+        //}, 
+        //{"type": "material", "in": ["dframes"],
+        //    "material":"shinymetal",
+        //    "smooth":false
+        //},
+        //{"type": "material", "in": ["ss2"],
+        //    "material":"glass",
+        //    "smooth":false
+        //},
+        //{"type":"union","from":["ss2","dframes","ss1"],"out":"doors"},
+
+
+        //{"type": "stop"},
+
+
+
+        //tubes
+        {"type": "ngon","out": "profile_a",
+            "sides": 8,
+            "r": 0.02,
+            "axis":[1,0,0],
+            "start":[0,1,0],
+        }, 
+
+
+        {"type": "select","in": "sd", "out": "sd_sideL","mode":"plane",
+            "pos":[0,0,0], 
+            "dir":[0,1,0]
+        },
+        {"type": "foreach","in": "sd_sideL", "out": "testl", "var":"doorfr",
+            "operations":[
+            {"type": "select","in": "doorfr","out": ["*","*","ppd2","*"],"mode":"points"},
+            {"type":"clone","in":"ppd2","out":"ppd", 
+                "world":{"pos":[-0.3,0,0]}
+            }, 
+            {"type": "line","in":"ppd","out": "testl1",
+                "offsets":[
+                    {"pos":[-0.35,0.5,0.3]},
+                    {"pos":[0.2,0,0]},
+                    {"pos":[0,0,0.3]},
+                    {"pos":[0.1,0,0.1]},
+                    {"pos":[0,0,1.02]},
+                    {"pos":[0,-0.4,0]}
+                ] 
+            }, 
+            {"type": "line","in":"ppd","out": "testl1",
+                "offsets":[
+                    {"pos":[-0.35,0.25,0.3]},
+                    {"pos":[0.2,0,0]},
+                    {"pos":[0,0,0.3]},
+                    {"pos":[0.1,0,0.1]},
+                    {"pos":[0,0,0.3]}, 
+                ] 
+            },  
+            {"type": "line","in":"ppd","out": "testl1",
+                "offsets":[
+                    {"pos":[-0.05,0,1]},
+                    {"pos":[0,0.5,0]}, 
+                ] 
+            },  
+            {"type":"data","in":"doorfr","center":"$cen" },
+            {"type":"mirror","in":"testl1","out":"testl",
+                "pos":"$cen", 
+                "dir":[1,0,0]
+            },
+            {"type":"union","from":"testl1","out":"testl"}
+        ]},
+        
+        {"type":"mirror","in":"testl","out":"testl",
+            "pos":[0,0,0], 
+            "dir":[0,1,0]
+        }, 
+        {"type": "pathextrude","in": "testl","out": "ttt",
+            "profile":"profile_a","normal":[0,1,1]
+        },
+		{ "type" : "uvmap", "in":"ttt",
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},        
+        {"type": "material", "in": "ttt",
+            "material":"silver",
+            "smooth":true
+        },   
+ 
+        //top 
+        {"type": "select","in": "wt", "out": "rambase","mode":"plane",
+            "pos":[0,0,0], 
+            "dir":[0,-1,0]
+        },
+        {"type": "inset","from": "rambase","out": ["rambase","*"],
+            "amount": [-0.45,-1,-0.45,0.1],
+            "nolimits":true 
+        },
+        //{"type": "stop"},
+        {"type": "foreach","in": "rambase", "out": "grate", "var":"id",
+            "operations":[
+                { 	"type" : "structure", "out" : "grate",
+                    "path" : "grate.dnmd", 
+                    "from" : {"base":"id"},
+                    "world":{"ang":[0,0,0]}
+                }
+            ], 
+        },
+        {"type":"mirror","in":"grate","out":"grate",
+            "pos":[0,0,0], 
+            "dir":[0,1,0]
+        }, 
+        
+        {"type": "material", "in": ["frames"],
+            "material":"shinymetal",
+            "smooth":false
+        },
+        {"type": "remove", "in": ["profile_a","osh"]}
+ 
+    ]
+} 

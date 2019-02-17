@@ -1,0 +1,85 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {
+		"$width" : 0.8,
+		"$length" : 1,
+		"$leg.height" : 0.1,
+		"$mat.primary" : "Wood07.json",
+		"$mat.secondary" : "concrete06b.json",
+	},
+	operations : [ 
+		
+		//anchors
+		
+		{ type : "rectangle", out : "base", 
+			w : "$width",
+			l : "$length",
+			pos : [0,0,"$leg.height"], 
+		},     
+		{ type : "material",in : "base",
+			material : "$mat.primary",
+		},  
+		{ type : "uvmap", in:["base"],
+			edge : 1,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},        
+		
+		{ type : "inset", in : "base",out : ["top",["s1s","s1f","s1s","s1b"]], 
+			mode : "normal",
+			amount : 0, 
+			extrude : 1,  
+		},    
+		{ type : "inset", from : "s1f",out : ["s1f","s1frame"], 
+			mode : "normal",
+			amount : 0.1, 
+			extrude : 0,  
+		},    
+		{ type : "inset", from : "s1f",out : ["s1f","s1frame"], 
+			mode : "normal",
+			amount : 0, 
+			extrude : -0.03,"@(0.1-$width)",  
+		},    
+		{ type : "uvmap", in:["s1frame","s1f","s1s","s1b"],
+			edge : 1,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},        
+		//{ 	type : "structure", out : "shelf",
+		//	path : "parts/shelf.dnmd",
+		//	in : {"base":"s1f"},    
+		//	"$depth" : 0.8, 
+		//},        
+		{ type : "split", from : "s1f",out : "s1f",
+			steps : 3, 
+			stype:"constant",   
+			side:"second", 
+		},     
+		{type:"frotate",in:"s1f",add:1},
+		 
+		{ 	type : "structure", out : "cupdoor2",
+			path : "parts/cupdoor2.dnmd",
+			from : {"base":"s1f"},    
+			"$frame.splitx" : 3, 
+			"$frame.splity" : 1, 
+			"$handle.shift" : 0, 
+		},      
+		
+		////// second
+		 
+		{type:"flip",from :"base",out:"base"},
+		{ 	type : "structure", out : "legs",
+			path : "parts/legs.dnmd",
+			in : {"base":"base"},   
+			"$leg.height" : "$leg.height",
+		},         
+		
+		 
+	]
+}

@@ -1,0 +1,7 @@
+{
+	"group" : "arch",
+	"tags" : ["shrine"],
+	"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd", 
+	"scale" : 1,
+	"rotation" : [0,0,0]
+}

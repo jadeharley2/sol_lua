@@ -1,0 +1,57 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	input : {
+		"base" : { type : "surface", "default" : [[0.3,0,0],[-0.3,0,0],[-0.3,0,1.5],[0.3,0,1.5]],},
+	}, 
+	variables : { 
+		"$depth" : 0.3, 
+		"$width" : 0.02, 
+		"$split" : 3,  
+		"$mat.primary" : "Wood07.json", 
+	},
+	operations : [ 
+		
+		//anchors
+		  
+		{ type : "material",in : "base",
+			material : "$mat.primary", //"red.json"
+		},    
+		{ type : "uvmap", in:["base"],
+			edge : 3,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		 
+		{ type : "split", from : "base",out : ["base"],
+			steps : "@($l*$split)", 
+			stype:"constant",   
+			side:"second", 
+		},         
+		{ type : "split", from : "base",out : ["base","shelf"],
+			size : [0,"$width"], 
+			stype:"constant",   
+			side:"second", 
+		},         
+		{ type : "inset", from : "shelf",out :["shelf","sides"], 
+			mode : "normal",
+			amount : 0,  
+			extrude : "$depth", 
+		},       
+		
+		//{ type : "material",in : "shelf",
+		//	material : "$mat.secondary", //"red.json"
+		//},    
+		{ type : "uvmap", in:["frame","sides"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		 
+	]
+}

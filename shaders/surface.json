@@ -1,0 +1,59 @@
+{
+	"name" : "surface",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"surface.fx", 
+		"headers/lightning.fxh",
+		"headers/atmosphere.fxh"
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	], 
+	"parameters" : {
+		"tNoise" 					: {"type":"texture"},
+		"cTexture" 					: {"type":"texture"},
+		"tileTexture" 				: {"type":"texture"},
+		"tileNearTexture_d" 		: {"type":"texture"},
+		"tLightRamp" 				: {"type":"texture"},
+		"tileSpaceTexture_d" 		: {"type":"texture"},
+		"tileSpaceTexture_n" 		: {"type":"texture"},
+		"time" 						: {"type":"float"},
+	},
+	"onload" : {
+		"tech" : "Render",
+		"layout" :"VertexNBTTexture",
+		"values" : {
+			"tNoise" 				: "textures/noise/perlinover_n.jpg",
+			"cTexture" 				: "textures/atmosphere/clouds.dds",
+			"tileTexture" 			: "textures/surface/terrain/test/tiletest2.png",
+			"tileNearTexture_d" 	: "textures/surface/terrain/test/nearsurface_d.dds",
+			"tLightRamp" 			: "textures/atmosphere/skyramp.png",
+			"tileSpaceTexture_d" 	: "textures/surface/space/surface_d.dds",
+			"tileSpaceTexture_n" 	: "textures/surface/space/surface_n.dds",
+		},
+	},
+	"onframe" : { },
+	"ondraw"  : { },
+}            

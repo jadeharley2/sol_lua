@@ -1,0 +1,49 @@
+{
+	name : "fence.subtest",  
+	operations : [ 
+		 
+		{ 	type : "line", out : "testline",
+			points : [[1,0,0],[10,0,0],[10,10,0],[-10,10,0],[-10,0,0],[-1,0,0]], 
+			loop : false 
+		},
+		{ type : "ngon", out : "test2_b", 
+			sides : 10,
+			r : 20,
+			pos : [0,0,0],
+			angle:0
+		},      
+		{ type : "select", in : "test2_b", out : "testline", 
+			mode : "line", 
+		},   
+		{type : "flip",in : "test2_b",out :"aaaa" },
+		
+		{ type : "inset", from : "aaaa",out : {face : "aaaa",edge:"roof"}, 
+			mode : "normal",
+			amount : -0.2,  
+			extrude : 0, 
+		},      
+		{ type : "inset", from : "aaaa",out : {face : "aaaa",edge:"roof"}, 
+			mode : "normal",
+			amount : 0,  
+			extrude : 0.3, 
+		},      
+		{ type : "inset", from : "aaaa",out : {face : "aaaa",edge:"roof"}, 
+			mode : "normal",
+			amount : -2,  
+			extrude : 1, 
+		},      
+		{ 	type : "structure", out : "fence",
+			path : "forms/levels/east_common/jp_fence.dnmd",,
+			in : {"path":"testline"},
+		},
+		 
+		{ 	type : "structure", out : "gate",
+			path : "forms/levels/east_common/gate.dnmd" 
+		},
+		{ type : "deform", in : "gate",
+			mode : "move", 
+			shift : [0,-19,-0.8],
+		},
+		  
+	]   
+} 

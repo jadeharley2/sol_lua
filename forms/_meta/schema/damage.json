@@ -1,0 +1,13 @@
+{  
+	"type":"object", 
+	"description":"damage settings",
+	"properties":{
+		"type" : { 
+			"type":"string",
+			"default":"default"
+		},
+		"amount" : {
+			"type":"number" 
+		}
+	} 
+}

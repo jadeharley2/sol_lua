@@ -1,0 +1,46 @@
+{
+	"name" : "atmosphere2",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"atmosphere2.fx",
+		"headers/lightning.fxh",
+		"headers/atmosphere.fxh" 
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	],
+	"parameters" : {
+		"tClouds" 					: {"type":"texture"},
+		"tCloudNoise" 					: {"type":"texture"},
+	},
+	"onload" : {
+		"tech" : "DefaultTech",
+		"layout" :"VertexNBTTextureSkin",
+		"values" : { 
+			"tClouds" 				: "textures/atmosphere/clouds.dds",
+			"tCloudNoise" 			: "textures/noise/perlin1.jpg"
+		}
+	} 
+}            

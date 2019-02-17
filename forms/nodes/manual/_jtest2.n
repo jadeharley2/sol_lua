@@ -1,0 +1,35 @@
+[
+
+	{
+		"components" : ["physactor", "model"],
+		"sizepower" : 1000,
+		"seed" : 1000001,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000001,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"scriptdata" : 
+			{
+				"val" : [3, 23, 24, 23],
+				"name" : "c"
+			}
+		}
+	}
+]

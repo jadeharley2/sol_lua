@@ -1,0 +1,20 @@
+{   
+	"type": "object",
+	"description" : "tool form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+	"properties":{   
+		"location":{  
+			"type":"array", 
+			"description":"anchor location",
+			"items": {
+				"type":["string","number","array"]
+			}
+		},
+		"position":{ 
+			"description": "end local position", 
+			"$ref": "vector3.json"
+		}
+	},
+	"required": ["location"]
+}

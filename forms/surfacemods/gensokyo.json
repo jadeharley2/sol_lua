@@ -1,0 +1,33 @@
+{
+	layers : [
+		{//relief
+			layertype : 1, 
+			dir : "surfacedata/default/",
+			
+			minpower : 10, 
+			maxpower : 14,
+			
+			mode : "set", 
+			
+			data : "gensokyo.sdb", 
+			width : 1024, 
+			height : 1024, 
+			op_add : -24.2,
+			op_mul : 10,  
+		},
+		{//climate
+			layertype : 2, 
+			dir : "surfacedata/default/",
+			
+			minpower : 10, 
+			
+			mode : "level", 
+			
+			data : "square.sdb", 
+			width : 4, 
+			height : 4, 
+			op_add : 100000,//0.0000001f
+			op_mul : 0.01,  
+		}
+	],
+}

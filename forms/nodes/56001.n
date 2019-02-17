@@ -1,0 +1,257 @@
+[ 
+	{
+		"components" : [],
+		"sizepower" : 9.46073E12,
+		"seed" : 57001,
+		"parameters" : 
+		{  
+			"radius" : 543345.0E4,
+			"name" : "STAR",
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],  
+			"luaenttype" : "star",
+			"typename" : "star",
+			"color" : [1, 0.956, 0.859],
+			"brightness" : 2.23e24,
+		},
+		"subs" :
+		[ 
+			{//1
+				"components" : [],
+				"sizepower" :  4254.0E6,
+				"seed" : 59001,
+				"parameters" : 
+				{  
+					"radius" : 4254.0E4,
+					"name" : "Resmov",
+					"position" : [0.1, 0, 0, "vec3"],
+					"rotation" : [0, 0, 0, 1, "quat"],
+					"scale" : [1, 1, 1, "vec3"],  
+					"luaenttype" : "planet",
+					"typename" : "planet", 
+					"archetype" : "gen_barren",
+					"orbit_data" : { 
+						"a" : 50816900.0E4, 
+						"b" : 49816900.0E4,
+						"i" : 0.04,
+						"pa" : 0.3,
+						"al" : 3,
+						"ma" : 0,
+						"mos" : 0.1,
+					},
+				},
+			}, 
+			//ASTEROID FIELD HERE
+			{//2 (red)
+				"components" : [],
+				"sizepower" :  3532.0E6,
+				"seed" : 59002,
+				"parameters" : 
+				{  
+					"radius" : 3532.0E4,
+					"name" : "Cheratum",
+					"position" : [0.1, 0, 0, "vec3"],
+					"rotation" : [0, 0, 0, 1, "quat"],
+					"scale" : [1, 1, 1, "vec3"],  
+					"luaenttype" : "planet",
+					"typename" : "planet", 
+					"archetype" : "gen_barren",
+					"orbit_data" : { 
+						"a" : 70816900.0E4, 
+						"b" : 70416900.0E4,
+						"i" : 0.03,
+						"pa" : 0.3,
+						"al" : -4,
+						"ma" : 0,
+						"mos" : 0.05,
+					},
+				},
+			},
+			{//3
+				"components" : [],
+				"sizepower" :  5125.0E6,
+				"seed" : 59003,
+				"parameters" : 
+				{  
+					"radius" : 5125.0E4,
+					"name" : "Maonerth",
+					"position" : [0.1, 0, 0, "vec3"],
+					"rotation" : [0, 0, 0, 1, "quat"],
+					"scale" : [1, 1, 1, "vec3"],  
+					"luaenttype" : "planet",
+					"typename" : "planet", 
+					"archetype" : "gen_barren",
+					"orbit_data" : { 
+						"a" : 110816900.0E4, 
+						"b" : 108816900.0E4,
+						"i" : 0.02,
+						"pa" : 0.3,
+						"al" : -10,
+						"ma" : 0,
+						"mos" : 0.025,
+					},
+				},
+			},
+			{//4
+				"components" : [],
+				"sizepower" :  18435.0E6,
+				"seed" : 59004,
+				"parameters" : 
+				{  
+					"radius" : 8435.0E4,
+					"name" : "Toskora",
+					"position" : [0.1, 0, 0, "vec3"],
+					"rotation" : [0, 0, 0, 1, "quat"],
+					"scale" : [1, 1, 1, "vec3"],  
+					"luaenttype" : "planet",
+					"typename" : "planet",  
+					"orbit_data" : { 
+						"a" : 150100000.0E4, 
+						"b" : 149995000.0E4,
+						"i" : 0.01,
+						"pa" : 0.3,
+						"al" : -100,
+						"ma" : 0,
+						"mos" : 0.005,
+					},
+				},
+				"subs" :
+				[ 
+					{
+						"components" : [],
+						"sizepower" :  5435.0E4,
+						"seed" : 59101,
+						"parameters" : 
+						{  
+							"radius" : 1245.0E4,
+							"name" : "Marum",
+							"position" : [0.1, 0, 0, "vec3"],
+							"rotation" : [0, 0, 0, 1, "quat"],
+							"scale" : [1, 1, 1, "vec3"],  
+							"luaenttype" : "planet",
+							"typename" : "planet",  
+							"archetype" : "moon",
+							"orbit_data" : { 
+								"a" : 40600.0E4, 
+								"b" : 39600.0E4,
+								"i" : 0.01,
+								"pa" : 0.3,
+								"al" : -100,
+								"ma" : 0,
+								"mos" : 0.05,
+							},
+						},
+					}, 
+					{
+						"components" : [],
+						"sizepower" :  5435.0E4,
+						"seed" : 59102,
+						"parameters" : 
+						{  
+							"radius" : 857.0E4,
+							"name" : "Alleyn",
+							"position" : [0.1, 0, 0, "vec3"],
+							"rotation" : [0, 0, 0, 1, "quat"],
+							"scale" : [1, 1, 1, "vec3"],  
+							"luaenttype" : "planet",
+							"typename" : "planet",  
+							"archetype" : "moon",
+							"orbit_data" : { 
+								"a" : 100060.0E4, 
+								"b" : 93600.0E4,
+								"i" : 0.4,
+								"pa" : 0.3,
+								"al" : 10,
+								"ma" : 0,
+								"mos" : 0.05,
+							},
+						},
+					}
+				],
+			},
+			
+			
+			
+			
+			
+			{//special planet
+				"components" : [],
+				"sizepower" :  760166454.315186,
+				"seed" : 2008649333,
+				"parameters" : 
+				{  
+					"radius" : 7601664.54315186,
+					"name" : "Uldis",
+					"position" : [0.1, 0, 0, "vec3"],
+					"rotation" : [0, 0, 0, 1, "quat"],
+					"scale" : [1, 1, 1, "vec3"],  
+					"luaenttype" : "planet",
+					"typename" : "planet",  
+					"orbit_data" : { 
+						"a" : 130100000.0E4, 
+						"b" : 129995000.0E4,
+						"i" : 0.5,
+						"pa" : 0.4,
+						"al" : -100,
+						"ma" : 0,
+						"mos" : 0.005,
+					},
+				},
+				"subs" :
+				[ 
+					//{
+					//	"components" : [],
+					//	"sizepower" :  5435.0E4,
+					//	"seed" : 59101,
+					//	"parameters" : 
+					//	{  
+					//		"radius" : 1245.0E4,
+					//		"name" : "Marum",
+					//		"position" : [0.1, 0, 0, "vec3"],
+					//		"rotation" : [0, 0, 0, 1, "quat"],
+					//		"scale" : [1, 1, 1, "vec3"],  
+					//		"luaenttype" : "planet",
+					//		"typename" : "planet",  
+					//		"archetype" : "moon",
+					//		"orbit_data" : { 
+					//			"a" : 40600.0E4, 
+					//			"b" : 39600.0E4,
+					//			"i" : 0.01,
+					//			"pa" : 0.3,
+					//			"al" : -100,
+					//			"ma" : 0,
+					//			"mos" : 0.05,
+					//		},
+					//	},
+					//}, 
+					//{
+					//	"components" : [],
+					//	"sizepower" :  5435.0E4,
+					//	"seed" : 59102,
+					//	"parameters" : 
+					//	{  
+					//		"radius" : 857.0E4,
+					//		"name" : "Alleyn",
+					//		"position" : [0.1, 0, 0, "vec3"],
+					//		"rotation" : [0, 0, 0, 1, "quat"],
+					//		"scale" : [1, 1, 1, "vec3"],  
+					//		"luaenttype" : "planet",
+					//		"typename" : "planet",  
+					//		"archetype" : "moon",
+					//		"orbit_data" : { 
+					//			"a" : 100060.0E4, 
+					//			"b" : 93600.0E4,
+					//			"i" : 0.4,
+					//			"pa" : 0.3,
+					//			"al" : 10,
+					//			"ma" : 0,
+					//			"mos" : 0.05,
+					//		},
+					//	},
+					//}
+				],
+			},
+		]
+	}
+]

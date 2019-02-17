@@ -1,0 +1,3615 @@
+[
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.126605600118637, -0.00284515414386988, -0.101807430386543, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0658317357301712, -0.00484076794236898, 0.104558661580086, "vec3"],
+			"rotation" : [-0.0127463331446052, -0.0726851895451546, -0.0960632786154747, 0.992635071277618, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.127000004053116, 0, -0.046000000089407, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0795251578092575, -0.00336678791791201, -0.101807430386543, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0350000001490116, -0.0149999996647239, -0.0810000002384186, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.103000000119209, -0.0020000000949949, -0.114000000059605, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.127064168453217, -0.0024783662520349, -0.0767949819564819, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0795414298772812, -0.00336678791791201, -0.0767949819564819, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.103346310555935, -0.00336678791791201, -0.0767949819564819, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, -0.00300000002607703, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0232592821121216, -0.0024783662520349, -0.0250124726444483, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0237178523093462, -0.00211157836019993, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0237178523093462, -0.00211157836019993, 0.025067076086998, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0233463123440742, -0.00263321213424206, 0.0247949361801147, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00045856973156333, -0.00263321213424206, 0.0247949361801147, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, -0.00300000002607703, -0.0250124726444483, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0238048825412989, -0.00300000002607703, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.023821147158742, -0.00300000002607703, -0.0250124726444483, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0860000029206276, -0.00100000004749745, -0.109999999403954, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0623944029211998, -0.00284515414386988, -0.13480743765831, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0619358345866203, -0.0024783662520349, -0.109794974327087, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0619358345866203, -0.0024783662520349, -0.0847278609871864, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.108999997377396, -0.00300000002607703, -0.0850000008940697, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0851951166987419, -0.00300000002607703, -0.0850000008940697, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0856536850333214, -0.00336678791791201, -0.13480743765831, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.109458565711975, -0.00336678791791201, -0.109794974327087, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.108999997377396, -0.00600000005215406, -0.138999998569489, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.136999994516373, 0.00100000004749745, 0.118000000715256, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.113394401967525, -0.00284515414386988, 0.0931925773620605, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.112935833632946, -0.0024783662520349, 0.118205040693283, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.112935833632946, -0.0024783662520349, 0.143272146582603, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.159999996423721, -0.00300000002607703, 0.14300000667572, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.136195108294487, -0.00300000002607703, 0.14300000667572, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.136999994516373, -0.00899999961256981, 0.0920000001788139, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.160458564758301, -0.00336678791791201, 0.118205040693283, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.160474836826324, -0.00336678791791201, 0.0931925773620605, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.108999997377396, 0.00499999988824129, 0.108999997377396, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.132605612277985, -0.00284515414386988, 0.0861925780773163, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.133064180612564, -0.0024783662520349, 0.111205041408539, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.133064180612564, -0.0024783662520349, 0.136272147297859, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0860000029206276, -0.00300000002607703, 0.136000007390976, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.109804883599281, -0.00300000002607703, 0.136000007390976, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.108999997377396, -0.00999999977648258, 0.0810000002384186, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0855414345860481, -0.00336678791791201, 0.111205041408539, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0855251625180244, -0.00336678791791201, 0.0861925780773163, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.103804878890514, -0.00300000002607703, -0.0520000010728836, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0829999968409538, -0.00800000037997961, 0.00400000018998981, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0199999995529652, -0.0020000000949949, 0.119000002741814, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0240000002086163, -0.0109999999403954, 0.0759999975562096, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.141000002622604, -0.00899999961256981, 0.0439999997615814, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0740000009536743, -0.00800000037997961, 0.0350000001490116, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0149999996647239, -0.00300000002607703, -0.133000001311302, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0890000015497208, 0.00400000018998981, -0.0219999998807907, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00391160137951374, -0.00249999994412065, -0.00422258395701647, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["physactor", "model"],
+		"sizepower" : 1000,
+		"seed" : 1000001,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000001,
+			"abssize" : 1000,
+			"name" : "Enchantress",
+			"position" : [-0.000708450563251972, -0.001862499746494, 0.00408354215323925, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "enchantress/enchantress.json",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "enchantress",
+			"health" : 100,
+			"maxhealth" : 100
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0223037116229534, -0.00141174905002117, -0.0248255450278521, "vec3"],
+			"rotation" : [0, 0.991189420223236, 0, 0.132451593875885, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "nature/tree3.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0231946147978306, -0.00250000134110451, 0.0261761546134949, "vec3"],
+			"rotation" : [0, 0.959052801132202, 0, -0.283227831125259, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "nature/tree3.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0227898173034191, -0.00141174905002117, 0.0242077074944973, "vec3"],
+			"rotation" : [0, 0.991189420223236, 0, 0.132451593875885, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "nature/tree3.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-5.61313354410231E-05, -0.00222103483974934, -0.0105290301144123, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0639083683490753, 0.00191981717944145, -0.0954987034201622, "vec3"],
+			"rotation" : [0, 0.119712375104427, 0, 0.992809236049652, "quat"],
+			"scale" : [10.7053451538086, 10.7053451538086, 10.7053451538086, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0666200891137123, 0.00191982090473175, -0.0857677832245827, "vec3"],
+			"rotation" : [0, 0.119712375104427, 0, 0.992809236049652, "quat"],
+			"scale" : [10.7053451538086, 10.7053451538086, 10.7053451538086, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00033021904528141, 0.00191981717944145, -0.027122650295496, "vec3"],
+			"rotation" : [0, 0.266731441020966, 0, 0.963770925998688, "quat"],
+			"scale" : [10.7053451538086, 10.7053451538086, 10.7053451538086, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0606678202748299, 0.000722946599125862, -0.080600343644619, "vec3"],
+			"rotation" : [0, 0.380188792943954, 0, 0.92490953207016, "quat"],
+			"scale" : [7.54808664321899, 7.54808664321899, 7.54808664321899, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0667798146605492, 0.0101049160584807, -0.0863626897335052, "vec3"],
+			"rotation" : [0, 0.104807399213314, 0, 0.994492709636688, "quat"],
+			"scale" : [7.54808664321899, 7.54808664321899, 7.54808664321899, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0874226540327072, -0.00119224935770035, -0.111755311489105, "vec3"],
+			"rotation" : [0.395453572273254, 0.233295321464539, 0.301856458187103, 0.835506916046143, "quat"],
+			"scale" : [14.6754808425903, 14.6754808425903, 14.6754808425903, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0213847309350967, 0.00191981717944145, -0.0259950719773769, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [10.7053451538086, 10.7053451538086, 10.7053451538086, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0181441809982061, 0.000722946599125862, -0.0110967196524143, "vec3"],
+			"rotation" : [0, 0.266731441020966, 0, 0.963770925998688, "quat"],
+			"scale" : [7.54808664321899, 7.54808664321899, 7.54808664321899, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0240964516997337, 0.00191982090473175, -0.0162641555070877, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [10.7053451538086, 10.7053451538086, 10.7053451538086, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0242561791092157, 0.0101049160584807, -0.0168590638786554, "vec3"],
+			"rotation" : [0, 0.266731441020966, 0, 0.963770925998688, "quat"],
+			"scale" : [7.54808664321899, 7.54808664321899, 7.54808664321899, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.024199279025197, 0.0219584815204144, -0.0168249551206827, "vec3"],
+			"rotation" : [0, 0.266731441020966, 0, 0.963770925998688, "quat"],
+			"scale" : [5.18957138061523, 5.18957138061523, 5.18957138061523, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0242561791092157, 0.0166907086968422, -0.0168590638786554, "vec3"],
+			"rotation" : [0, 0.266731441020966, 0, 0.963770925998688, "quat"],
+			"scale" : [6.19842004776001, 6.19842004776001, 6.19842004776001, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0667798146605492, 0.0166907086968422, -0.0863626897335052, "vec3"],
+			"rotation" : [0, 0.104807399213314, 0, 0.994492709636688, "quat"],
+			"scale" : [6.19842004776001, 6.19842004776001, 6.19842004776001, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.083667017519474, -0.00802340917289257, 0.0734105855226517, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [28.2783870697021, 28.2783870697021, 28.2783870697021, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00323518738150597, -0.00802341662347317, -0.102308467030525, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [28.2783870697021, 28.2783870697021, 28.2783870697021, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.118552997708321, -0.00802341662347317, -0.00022561103105545, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [28.2783870697021, 28.2783870697021, 28.2783870697021, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0280000008642673, 0.090999998152256, 0.513999998569489, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0652521625161171, -0.00802341662347317, -0.0124901607632637, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [28.2783870697021, 28.2783870697021, 28.2783870697021, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0649999380111694, 0.0469999983906746, 0.888999879360199, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.106000065803528, 0.0379999950528145, 0.675000071525574, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.156999915838242, 0.202999994158745, 0.749000132083893, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.406000018119812, -0.0139999836683273, 0.694999873638153, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.363999903202057, -0.0629999786615372, 1.00400042533875, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.116999983787537, -0.180999979376793, 1.06800007820129, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.103000044822693, 0.0190000087022781, 1.09000015258789, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.25, 0.0729999989271164, 0.941999971866608, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.457000136375427, 0.0659999996423721, 0.87199991941452, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.249000191688538, 0.0659999996423721, 1.17200016975403, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.339000046253204, 0.0590000003576279, 0.434000074863434, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["physactor", "model"],
+		"sizepower" : 1000,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1000,
+			"name" : "Twilight Sparkle",
+			"position" : [0, 0.812077403068542, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "mlppony/parts/base_l2.json",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "mlp_twilight",
+			"health" : 100,
+			"maxhealth" : 100
+		}
+	},
+
+	{
+		"components" : ["physactor", "model"],
+		"sizepower" : 1000,
+		"seed" : 1000005,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000005,
+			"abssize" : 1000,
+			"name" : "Princess Luna",
+			"position" : [1.79800391197205, 0.361101031303406, -0.154810845851898, "vec3"],
+			"rotation" : [3.39673626713564E-39, 0.996284365653992, 3.8850313287158E-38, -0.0870466083288193, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 20,
+			"model" : "mlppony/parts/base_l3.json",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "mlp_luna",
+			"health" : 99996.637459709,
+			"maxhealth" : 100000,
+			"viewtarget" : [1.15910983085632, 0.276804089546204, -0.0669197887182236, "vec3"]
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.148000001907349, 0.0399999991059303, -0.33899998664856, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00300000002607703, -0.028999999165535, -0.328999996185303, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.185000002384186, -0.00800000037997961, -0.0199999995529652, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.28600001335144, -0.0689999982714653, -0.214000001549721, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.244000002741814, -0.118000000715256, 0.0949999988079071, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0209999997168779, -0.0700000002980232, 0.163000002503395, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.370000004768372, 0.0179999992251396, 0.0329999998211861, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.223000004887581, -0.0359999984502792, 0.180999994277954, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.218999996781349, 0.00400000018998981, -0.474999994039536, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.12899999320507, 0.0109999999403954, 0.263000011444092, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.225999996066093, -0.017000000923872, -0.233999997377396, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.337000012397766, 0.0109999999403954, -0.0370000004768372, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.763999879360199, -0.126000016927719, -0.119000181555748, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.893999814987183, 0.148000001907349, -0.103999897837639, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.705999851226807, 0.16899998486042, 0.205000102519989, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.17999982833862, -0.0689999982714653, 0.00999999791383743, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.13799977302551, -0.118000000715256, 0.318999946117401, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.869999885559082, 0.10699999332428, 0.388000130653381, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.523999989032745, 0.0179999992251396, 0.256999999284744, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.688999831676483, -0.202000007033348, 0.400999784469604, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.11299991607666, 0.00400000018998981, -0.251000046730042, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.02300000190735, 0.0109999999403954, 0.486999988555908, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.667999923229218, -0.017000000923872, -0.010000005364418, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.23099994659424, 0.0109999999403954, 0.187000006437302, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.539000034332275, 0.0420000031590462, -0.945999920368195, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.68699985742569, 0.149999991059303, -0.934999823570251, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.501999974250793, -0.00600000005215406, -0.627000033855438, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.972999930381775, -0.0669999867677689, -0.821000039577484, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.930999875068665, -0.11599999666214, -0.51199996471405, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.6839998960495, -0.234000012278557, -0.448000133037567, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.334999889135361, -0.146000012755394, -0.57800018787384, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.463999956846237, -0.0339999943971634, -0.425999999046326, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.906000018119812, 0.00600000098347664, -1.08199977874756, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.81300014257431, 0.189999997615814, -0.342999875545502, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.457999855279922, 0.161999985575676, -0.839999794960022, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-1.02400004863739, 0.0130000002682209, -0.643999993801117, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.398999929428101, 0.0939999967813492, -1.1969997882843, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.248000025749207, 0.0249999985098839, -1.18699979782104, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.418000102043152, -0.120000012218952, -0.882000207901001, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0319999158382416, 0.162000015377998, -1.07099986076355, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00700008869171143, -0.0639999806880951, -0.762999951839447, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.275000035762787, 0.160999998450279, -0.693999826908112, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.620999991893768, 0.0719999969005585, -0.824999988079071, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.474000036716461, 0.0180000029504299, -0.676999986171722, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.031999945640564, 0.0579999983310699, -1.33299970626831, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.121999770402908, 0.0649999976158142, -0.594999969005585, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.477000057697296, 0.0369999967515469, -1.09199976921082, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.10400003194809, -0.101000010967255, -0.89900016784668, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.921000182628632, -0.0910000056028366, -0.44500008225441, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.13000011444092, 0.273000001907349, -0.13099992275238, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.659000098705292, 0.212000012397766, -0.325000077486038, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.698000133037567, -0.0139999762177467, -0.0169999673962593, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.945000052452087, -0.131999999284744, 0.0469998642802238, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.31200003623962, 0.122000001370907, -0.0790000036358833, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.16500008106232, 0.0680000111460686, 0.0689999982714653, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.72299998998642, 0.108000002801418, -0.586999893188477, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.812999844551086, 0.115000002086163, 0.150999993085861, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.16800010204315, 0.0869999974966049, -0.345999926328659, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.604999899864197, 0.115000002086163, -0.148999989032745, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.812999844551086, 0.138000041246414, 0.355000019073486, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.662000000476837, 0.0689999982714653, 0.365000128746033, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.852999985218048, 0.266999989748001, 0.675000011920929, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.202000007033348, 0.0179999992251396, 0.395999997854233, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.424000144004822, 0.15700002014637, 0.790000319480896, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.667999982833862, -0.137999996542931, 0.852999985218048, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.0349999666214, 0.11599999666214, 0.726999998092651, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.888000011444092, 0.0620000064373016, 0.875000059604645, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.445999920368195, 0.101999998092651, 0.219000101089478, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.535999774932861, 0.108999997377396, 0.957000017166138, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.891000032424927, 0.080999992787838, 0.460000097751617, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.469999998807907, 0.11599999666214, 0.526000022888184, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.08999991416931, 0.144000038504601, -0.45100000500679, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [141.39567565918, 141.39567565918, 141.39567565918, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-5.0338134765625, 0.620606601238251, 0.692737817764282, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [6343.50439453125, 6343.50439453125, 6343.50439453125, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [2.12874126434326, -0.599229454994202, -0.229600340127945, "vec3"],
+			"rotation" : [-0.00314372451975942, -0.10475991666317, 0.0298302955925465, 0.994044184684753, "quat"],
+			"scale" : [2044.70886230469, 2044.70886230469, 2044.70886230469, "vec3"],
+			"model" : "primitives/sphere.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0799999982118607, -0.00600000005215406, -0.0469999983906746, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [23.8875293731689, 1, 25.3935203552246, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0612470433115959, -0.00512658664956689, 0.105101630091667, "vec3"],
+			"rotation" : [-0.0012245096731931, -0.0349714085459709, 0.0349714569747448, 0.998775660991669, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0543464347720146, -0.00410816259682179, 0.105584032833576, "vec3"],
+			"rotation" : [-0.00453626597300172, -0.0346975661814213, 0.129554748535156, 0.990954637527466, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0430111512541771, -0.00253771990537643, -0.0357763767242432, "vec3"],
+			"rotation" : [0, -0.0749296769499779, 0, 0.99718850851059, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0586210861802101, -0.00469252094626427, -0.0376847051084042, "vec3"],
+			"rotation" : [-0.00453626597300172, -0.0346975661814213, 0.129554748535156, 0.990954637527466, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0655216947197914, -0.00571094499900937, -0.0381671041250229, "vec3"],
+			"rotation" : [-0.0012245096731931, -0.0349714085459709, 0.0349714569747448, 0.998775660991669, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0387365035712719, -0.00195336155593395, 0.107492357492447, "vec3"],
+			"rotation" : [0, -0.0749296769499779, 0, 0.99718850851059, "quat"],
+			"scale" : [16.5915946960449, 0.694571375846863, 3.6178662776947, "vec3"],
+			"model" : "primitives/box.json",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	}
+]

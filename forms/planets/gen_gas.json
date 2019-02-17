@@ -1,0 +1,17 @@
+{ 
+	"name" : "gen_gas",
+	"class" : "planetarchetype", 
+	"atmosphere" : 
+	{ 
+		"_srandom_1921": [
+			{"_p" : 30, "color" : [179.297, 145.43, 78.6914], "hazecolor" : [179.297, 145.43, 78.6914],  },
+			{"_p" : 30, "color" : [125.093, 149.15, 303.111], "hazecolor" : [125.093, 149.15, 303.111],  },
+			{"_p" : 40, "color" : [69.7266, 37.8516, 5.97656],"hazecolor" : [69.7266, 37.8516, 5.97656],  }, 
+		],
+		"clouds": {
+			"texture":"textures/atmosphere/jupiter.jpg",
+			"color":[255,255,255],
+		},
+	},  
+	"noHydrosphere" : 1,
+}

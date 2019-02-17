@@ -1,0 +1,277 @@
+{
+	"class" : "level", 
+	"rotationformat" : "angle",
+	"transformation" : {"sca": 0.00008, "ang": [-90,0,0] },
+	"assets" : [
+		//room
+		{  "name" : "room",  "type" : "phymodel_mesh", 					"mesh" : "data/models/architecture/jade_room.SMD"  },
+		{  "name" : "roomLadders",  "type" : "phymodel_mesh", 			"mesh" : "data/models/architecture/jade_room_ladders.SMD" },
+		{  "name" : "room_ceilpots", 	"type" : "model_mesh", 			"mesh" : "data/models/architecture/jade_room_ceilpots.SMD"  },
+		
+		//exterior
+		{  "name" : "ext_maintower",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_maintower.SMD"  },
+		{  "name" : "ext_bridge",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_bridge.SMD"  },
+		{  "name" : "ext_atrium",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_atrium.SMD"  },
+		{  "name" : "ext_lowlevels",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_lowlevels.SMD"  },
+		{  "name" : "ext_basement",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_basement.SMD"  },
+		{  "name" : "ext_terrain",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_terrain.SMD"  },
+		
+		//interior
+		{  "name" : "int_atrium",  "type" : "phymodel_mesh", 			"mesh" : "data/models/architecture/jade_atrium_interior.SMD"  },
+		{  "name" : "int_atrium_windows", "type" : "phymodel_mesh", 	"mesh" : "data/models/architecture/jade_atrium_windows.SMD" },
+		{  "name" : "int_atrium_ladder", "type" : "phymodel_mesh", 		"mesh" : "data/models/architecture/jade_atrium_ladder.SMD" },
+		{  "name" : "int_atrium_ceilpots", "type" : "model_mesh", 		"mesh" : "data/models/architecture/jade_atrium_ceilpots.SMD" },
+		
+		{  "name" : "int_mtladder",  "type" : "phymodel_mesh",    		"mesh" : "data/models/architecture/jade_maintower_ladder.SMD"  },
+		{  "name" : "int_mtladder2",  "type" : "phymodel_mesh", 		"mesh" : "data/models/architecture/jade_maintower_ladder2.SMD"  },
+		{  "name" : "int_lowlevels_core",  "type" : "phymodel_mesh", 	"mesh" : "data/models/architecture/jade_lowlevels_core.SMD"  },
+		{  "name" : "int_foyer_fire",  "type" : "model_mesh", 	"mesh" : "data/models/architecture/jade_gfloor_obstacles.SMD"  },
+		
+		{
+			"name" : "bed", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/bed_m.SMD",
+			"phy" : "data/models/furniture/jade/bed_c.SMD"
+		},
+		{
+			"name" : "chest", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/chest_m.SMD",
+			"phy" : "data/models/furniture/jade/chest_c.SMD"
+		},
+		{
+			"name" : "pot", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/pot_m.SMD",
+			"phy" : "data/models/furniture/jade/pot_c.SMD"
+		},
+		{
+			"name" : "wardrobifier", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/wardrobifier_m.SMD",
+			"phy" : "data/models/furniture/jade/wardrobifier_c.SMD"
+		},
+		{
+			"name" : "table", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/table_m.SMD",
+			"phy" : "data/models/furniture/jade/table_c.SMD"
+		},
+		{
+			"name" : "transportalizer", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/transportalizer_m.SMD",
+			"phy" : "data/models/furniture/jade/transportalizer_c.SMD",
+			"texdir" : "data/textures/model/machines/"
+		},
+		{  
+			"name" : "column", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/architecture/jade_column_m.SMD",
+			"phy" : "data/models/architecture/jade_column_c.SMD"
+		},
+		{  
+			"name" : "flowertablesmall", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/furniture/jade/flowertable_small_m.SMD",
+			"phy" : "data/models/furniture/jade/flowertable_small_c.SMD"
+		},
+		{  
+			"name" : "flowertablebig", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/furniture/jade/flowertable_big_m.SMD",
+			"phy" : "data/models/furniture/jade/flowertable_big_c.SMD"
+		}
+		//,
+		//{
+		//	"#include" : "data/models/terezi/model.terezi.json",
+		//	"name" : "actor.terezi"
+		//}
+	],
+	"objects" : [ 
+		{"asset" : "ext_maintower", "pos": [0,0,0]},
+		{"asset" : "ext_bridge", "pos": [0,0,0]},
+		{"asset" : "ext_atrium", "pos": [0,0,0]},
+		{"asset" : "ext_lowlevels", "pos": [0,0,0]},
+		{"asset" : "ext_basement", "pos": [0,0,0]},
+		{"asset" : "ext_terrain", "pos": [0,0,0]},
+		
+		{"asset" : "int_atrium", "pos": [0,0,0]},
+		{"asset" : "int_atrium_ceilpots", "pos": [0,0,0]},
+		{"asset" : "int_atrium_ladder", "pos": [0,0,0]},
+		//{"asset" : "int_atrium_windows", "pos": [0,0,0]},
+		
+		{"asset" : "int_mtladder", "pos": [0,0,0]},
+		{"asset" : "int_mtladder2", "pos": [0,0,0]},
+		{"asset" : "int_lowlevels_core", "pos": [0,0,0]},
+		
+		//ROOM
+		{"asset" : "room", "pos" : [0,0,0]},
+		{"asset" : "roomLadders", "pos" : [0,0,0]},
+		{"asset" : "room_ceilpots", "pos" : [0,0,0]},
+		{"asset" : "bed", "pos"  : [0,36.891,0]}, 
+		{"asset" : "chest", "pos"  : [53.216,-20.751,0]},
+		{"asset" : "wardrobifier", "pos"  : [57.036,20.054,0], "ang":[0,-90,0]},
+		{"asset" : "table", "pos"  : [-50,0,0]},
+		{"asset" : "pot", "pos"  : [63.923,3.82,18.998]},
+		{"asset" : "pot", "pos"  : [56.521,-7.036,10]},
+		{"asset" : "pot", "pos"  : [3.499,-17.572,10]},
+		{"asset" : "pot", "pos"  : [-26.505,-18.303,10]},
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.room", 
+			"target": "tp.atrium", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [0,0,-120]
+		},
+		//ATRIUM
+		{"asset" : "column", "phys": "static", "pos"  : [-320,-60,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-260,0,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-320,60,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-380,0,-1030]}, 
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,178.369,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,176.661,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,92.974,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,91.267,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,-97.991,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,-100.669,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,-183.386,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,-185.094,-1030], "ang"  : [0,-180,0]},
+		
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-288.38 ,-146.544,-1030]},
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-344.471,-142.637,-1030], "ang"  : [0,-180,0]},
+		
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-288.38 , 132.544,-1030]},
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-344.471, 129.637,-1030], "ang"  : [0,-180,0]},
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.atrium", 
+			//"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1030]
+		},
+		
+		//GROUNDFLOOR
+		{"asset" : "column", "phys": "static", "pos"  : [-370,-50,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,-50,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-370,50,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,50,-1770]}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.gfloor", 
+			//"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1770]
+		},
+		{"asset" : "int_foyer_fire", "pos"  : [0,0,0]}, 
+		{"asset" : "column", "phys": "static", "pos"  : [-250,-110,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-250,-210,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-390,-110,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-390,-210,-1770]}, 
+		
+		{"asset" : "column", "phys": "static", "pos"  : [-250,110,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-250,210,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-390,110,-1770]},
+		{"asset" : "column", "phys": "static", "pos"  : [-390,210,-1770]}, 
+		
+		//1FLOOR
+		{"asset" : "column", "phys": "static", "pos"  : [-370,-50,-1670]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,-50,-1670]},
+		{"asset" : "column", "phys": "static", "pos"  : [-370,50,-1670]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,50,-1670]}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.1floor", 
+			//"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1670]
+		},
+		//2FLOOR
+		{"asset" : "column", "phys": "static", "pos"  : [-370,-50,-1570]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,-50,-1570]},
+		{"asset" : "column", "phys": "static", "pos"  : [-370,50,-1570]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,50,-1570]}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.2floor", 
+			"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1570]
+		},
+		//3FLOOR
+		{"asset" : "column", "phys": "static", "pos"  : [-370,-50,-1470]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,-50,-1470]},
+		{"asset" : "column", "phys": "static", "pos"  : [-370,50,-1470]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,50,-1470]}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.3floor", 
+			//"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1470]
+		},
+		//4FLOOR
+		{"asset" : "column", "phys": "static", "pos"  : [-370,-50,-1370]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,-50,-1370]},
+		{"asset" : "column", "phys": "static", "pos"  : [-370,50,-1370]},
+		{"asset" : "column", "phys": "static", "pos"  : [-270,50,-1370]}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.4floor", 
+			//"target": "tp.room", 
+			"action": "teleport", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1370]
+		}, 
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.faraway",  
+			"action": "teleportsimple", 
+			"interaction": "active", 
+			"phys": "static", 
+			"pos"  : [-520,0,-1770],
+			"coordinates"  : [[ 2, 10, 183, 122, 13],0,[-0.000619263,0.002861677,-0.004076382]]
+		},
+		{
+			"name" : "actor.terezi", 
+			"type": "sActor",
+			"sizepower" : 1, 
+			"pos"  : [53.216,-20.751,0],
+			//"transformation":{"sca": [0.03,0.03,0.03] ,"ang":[0, -1.5708, 0]},
+			"variables":[ 
+				{ "name":"model", "type":"string", "value":"data/models/terezi/model.terezi.json"},
+				{ "name":"modelworld", "type":"matrix", "value":{"sca": [0.03,0.03,0.03] }}//,"ang":[0, -1.5708, 0]
+			],
+		}
+		//, 
+		//{
+		//	"asset" : "actor.terezi", 
+		//	"name": "Terezi",    
+		//	"pos"  : [53.216,-20.751,0]
+		//}
+	],
+	"nodes": [
+	],
+	"links" : [ 
+		{ 
+			"type" : "teleportgroup",
+			"nodes" : 
+			[
+				"tp.gfloor", "tp.1floor", "tp.2floor", "tp.3floor", "tp.4floor", "tp.atrium", "tp.room"
+			]
+		}
+	]
+}

@@ -1,0 +1,120 @@
+
+{
+	"input" : 	[
+
+		{
+			"pos" : [-1300, 200],
+			"id" : 100,
+			"name" : "value",
+			"vtype" : "float",
+			"type" : "input"
+		},
+
+		{
+			"pos" : [-1300, -60],
+			"id" : 101,
+			"name" : "shift",
+			"vtype" : "float",
+			"type" : "input"
+		}
+	],
+	"nodes" : 	[
+1,
+
+		{
+			"pos" : [-480, 460],
+			"id" : 5,
+			"args" : 
+			{
+				"b" : [101, 1, "output"],
+				"a" : [100, 1, "output"]
+			},
+			"func" : "math.Add:double",
+			"type" : "func"
+		},
+
+		{
+			"pos" : [160, -60],
+			"id" : 1,
+			"args" : 
+			{
+				"d" : [6, 1, "output"]
+			},
+			"func" : "math.Cos:double",
+			"type" : "func"
+		},
+
+		{
+			"pos" : [-480, -60],
+			"id" : 6,
+			"args" : 
+			{
+				"b" : [101, 1, "output"],
+				"a" : [100, 1, "output"]
+			},
+			"func" : "math.Add:double",
+			"type" : "func"
+		},
+
+		{
+			"pos" : [160, 200],
+			"id" : 3,
+			"args" : 
+			{
+				"d" : [100, 1, "output"]
+			},
+			"func" : "math.Cos:double",
+			"type" : "func"
+		},
+
+		{
+			"pos" : [160, 460],
+			"id" : 4,
+			"args" : 
+			{
+				"d" : [5, 1, "output"]
+			},
+			"func" : "math.Cos:double",
+			"type" : "func"
+		},
+
+		{
+			"event" : "entry",
+			"pos" : [-1300, 480],
+			"id" : 2,
+			"next" : [200, -1, ">>"],
+			"type" : "event"
+		}
+	],
+	"output" : 	[
+
+		{
+			"pos" : [780, -40],
+			"value" : [1, 1, "output"],
+			"id" : 202,
+			"name" : "b3",
+			"vtype" : "float",
+			"type" : "output"
+		},
+
+		{
+			"next" : [201, -1, ">>"],
+			"pos" : [780, 480],
+			"value" : [4, 1, "output"],
+			"id" : 200,
+			"name" : "b1",
+			"vtype" : "float",
+			"type" : "output"
+		},
+
+		{
+			"next" : [202, -1, ">>"],
+			"pos" : [780, 220],
+			"value" : [3, 1, "output"],
+			"id" : 201,
+			"name" : "b2",
+			"vtype" : "float",
+			"type" : "output"
+		}
+	]
+}

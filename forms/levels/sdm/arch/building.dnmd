@@ -1,0 +1,759 @@
+{
+	name : "sdm_building",
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {
+		"$floor_height" : 8,//10,
+		"$levels" : 2,
+		"$mat.walls" : "bricks11.json",
+		"$mat.secondary" : "concrete06b.json",
+		"$mat.roof" : "roof03.json",
+	},
+	operations : [    
+		//{type : "rectangle", out : "tempground",
+		//	pos : [0,0,-2],
+		//	l : 1000, 
+		//	w : 1000,
+		//	angle : 90,
+		//},        
+		//{ type : "material",in : ["tempground"],
+		//	material : "$mat.secondary"
+		//},     
+		//{ type : "uvmap", in:["tempground"],
+		//	edge : 2,     
+		//	scale : 2.0     ,
+		//	shift : [0.0 ,0.0], 
+		//	mul : [1,1,1],
+		//},        
+		
+		//{type : "surface", out : "base",
+		//	points : [[-15,-25,-1],[-15,25,-1],[15,25,-1],[15,-25,-1]],  
+		//},      
+		{type : "rectangle", out : "base",
+			pos : [0,0,-1],
+			l : 60, 
+			w : 26,
+			angle : 90,
+		},      
+		{type : "rectangle", out : "base_wing_b",
+			pos : [-40,0,-1],
+			l : 60, 
+			w : 26,
+			angle : 90,
+		},     
+		{type : "rectangle", out : "base_wing_l",
+			pos : [-18,40,-1],
+			l : 80, 
+			w : 20,
+		},     
+		{type : "rectangle", out : "base_wing_r",
+			pos : [-18,-40,-1],
+			l : 80, 
+			w : 20,
+		},     
+		{type : "rectangle", out : "base_btower1",
+			pos : [-30,20,-1],
+			l : 20, 
+			w : 20,
+		},     
+		{type : "rectangle", out : "base_btower2",
+			pos : [-50,-14,-1],
+			l : 18, 
+			w : 18,
+		},     
+		{type : "rectangle", out : "base_ctower",
+			pos : [-40,-40,23],//29
+			l : 16, 
+			w : 16,
+		},     
+		
+		
+		
+		{ type : "inset", in : ["base","base_wing_l","base_wing_r","base_wing_b","base_btower1","base_btower2"], out:["aaa_basement","*"],
+			mode : "normal",
+			extrude : -2,   
+			amount : [-3],  
+		},    		 
+		{ type : "extrude", from : ["aaa_basement"],out : "aaa_basement", outtop : "aaa_basement",  
+			mode : "normal",
+			shift : 2,   
+			times : 1,    
+		},    
+		{ type : "material",in : ["aaa_basement"],
+			material : "$mat.secondary"
+		},     
+		{ type : "uvmap", in:["aaa_basement"],
+			edge : 2,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},        
+		
+		
+		
+		
+		{ type : "extrude", from : ["base_btower1"],out : "wallse", outtop : "topbase_b",  
+			mode : "normal",
+			shift : "@($floor_height*4)",   
+			times : 1,    
+		},    
+		{ type : "extrude", from : ["base_btower2"],out : "wallse", outtop : "topbase_b",  
+			mode : "normal",
+			shift : "@($floor_height*5)",   
+			times : 1,    
+		},    
+		{ type : "extrude", from : ["base_ctower"],out : "wallsd", outtop : "topbase_c",  
+			mode : "normal",
+			shift : "@($floor_height*2)",   
+			times : 1,    
+		},  
+		{ type : "extrude", from : ["base_wing_r","base_wing_l"],out : "wallsc", outtop : "topbase2",  
+			mode : "normal",
+			shift : "@($floor_height*3)",   
+			times : 1,    
+		},    
+		{ type : "extrude", from : ["base"],out : "walls", outtop : "topbase",  
+			mode : "normal",
+			shift : "@($floor_height*2)",   
+			times : 1,    
+		},    
+		{ type : "extrude", from : ["base_wing_b"],out : "wallsb", outtop : "topbase",  
+			mode : "normal",
+			shift : "@($floor_height*2)",   
+			times : 1,    
+		},    
+		//{ type : "extrude", from : "base",out : "walls", outtop : "topbase",  
+		//	mode : "normal",
+		//	shift : "@($floor_height*$levels)",   
+		//	times : 1,    
+		//},   
+		
+		//{ type: "remove", in : ["topbase_b","topbase_c","topbase","topbase2"]},
+		{ 	type : "structure", out : "roof_faces",
+			path : "parts/roof.dnmd",
+			from : {"roofbase":"topbase"}, 
+			"$roof_height" : 12,
+			"$edge_length" : 0.5,
+			"$roof_width" : 0.5,
+			"$roof_lean" : [6,0],
+		},     
+		{ 	type : "structure", out : "roof_faces",
+			path : "parts/roof.dnmd",
+			from : {"roofbase":"topbase2"}, 
+			"$roof_height" : 15,
+			"$edge_length" : 0.5,
+			"$roof_width" : 0.5,
+			"$roof_lean" : [6,0],
+		},    
+		{ 	type : "structure", out : "roof_faces",
+			path : "parts/roof.dnmd",
+			from : {"roofbase":"topbase_b"}, 
+			"$roof_height" : 8,
+			"$edge_length" : 2,
+			"$roof_width" : 0.5,
+			"$levels" : 1,
+			"$roof_lean" : [8,8],
+		},    
+		///*  
+		 
+		 
+		//wall decorations - edge columns  
+		{ 	type : "structure", out : "edgecolumns_mesh",
+			path : "parts/wallcolumns.dnmd",
+			in : {"walls":["wallsb","walls","wallsc","wallsd","wallse"]},    
+			"$r" : 0.4,  
+		},         
+		//
+		 
+		 
+		//main wing
+		{ type : "select",in : ["walls","roofbase"], out : "a",
+			mode : "dotnormal",
+			normal : [0,1,0],
+			maxangle :10,  
+		},
+		{ type : "select",in : ["walls","roofbase"], out : "a",
+			mode : "dotnormal",
+			normal : [0,-1,0],
+			maxangle :10,  
+		},   
+		{ type : "remove", in:"a"},
+		
+		   
+		{ type : "material",in : ["walls","wallsb","wallsc","wallsd","wallse"],
+			material : "$mat.walls"
+		},     
+		{ type : "uvmap", in:["walls","wallsb","wallsc","wallsd","wallse"],
+			edge : 2,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},            
+		{ type : "material",in : ["roofbase"],
+			material : "$mat.roof"
+		},     
+		{ type : "uvmap", in:["roofbase"],
+			edge : 2,     
+			scale : 3.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},            
+         
+		{ type : "split", from : "walls",  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [ 
+				{ type : "split", from : "floor" ,out : ["sidel","f1_c","sider"],
+					stype:"constant", 
+					size : [0,25,0], 
+					side:"first", 
+				},       
+				
+				//MIDDLE
+				
+				
+				
+				{ type : "branch", condition : "greaterthan0",
+					value : "@($floor-0.5)", //"@(($face/2)%2)", 
+					ontrue :
+					[
+						{ type : "inset", from : "f1_c",out : ["wall_centere_f",["wall_centere","*","wall_centere","walltop"]], 
+							mode : "normal",
+							amount : [0,4],  
+							extrude : -4, 
+						}, 
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f",["wall_centere","walltop"]], 
+							mode : "normal",
+							amount : [0],  
+							extrude : -4, 
+						}, 
+						{ type : "uvmap", in:["wall_centere"],
+							edge : 3,     
+							scale : 2.0     ,
+							shift : [0.0 ,0.0], 
+							mul : [1,1,1],
+						},         
+						     
+						{ type : "material",in : ["walltop"],
+							material : "$mat.secondary"
+						},     
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallcolumns.dnmd",
+							in : {"walls":"wall_centere"},    
+						},        
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"wall_centere"},
+							"$window" : false, 
+						},         
+						
+						{ type : "uvmap", in:["wall_centere","walltop"],
+							edge : 3,     
+							scale : 2.0     ,
+							shift : [0.0 ,0.0], 
+							mul : [1,1,1],
+						},         
+						
+						{ type : "union", in : "walltop", out : "wall_faces"},
+						
+						//balcony
+						
+						
+						
+						{ type : "split", from : "wall_centere_f" ,out : ["wall_centere_f","wall_centere_b"],
+							stype:"constant", 
+							size : [0,1],
+							side:"first", 
+						},     
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f","wall_centere_e"], 
+							mode : "normal",
+							amount : [4,0],   
+						}, 
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallcolumns.dnmd",
+							in : {"walls":"wall_centere_f"},     
+							"$angle" : 45,
+						},      
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f","wall_centere_e"], 
+							mode : "normal",
+							amount : [0],   
+							extrude: -0.2
+						}, 
+						
+						{ type : "material",in : ["wall_centere_f"],
+							material : "$mat.secondary"
+						},      
+						
+						
+						{ type : "material",in : ["wall_centere_b"],
+							material : "$mat.secondary"
+						},      
+						{ type : "inset", from : "wall_centere_b",out : ["wall_centere_bw","wall_centere_bf"], 
+							mode : "normal",
+							amount : [0,0],  
+							extrude : 4,   
+						},    		 
+						{ type : "inset", from : "wall_centere_bw",out : ["wall_centere_bw","wall_centere_bf"], 
+							mode : "normal",
+							amount : [1,0],  
+							extrude : 1,   
+						},    		  
+						{ type : "inset", from : "wall_centere_bw",out : ["wall_centere_bw","wall_centere_bf"], 
+							mode : "normal",
+							amount : [2,0],  
+							extrude : 1,   
+						},    		   
+						{ type : "inset", from : "wall_centere_bw",out : ["wall_centere_bw","wall_centere_bf"], 
+							mode : "normal",
+							amount : [3,0],  
+							extrude : 1,   
+						},    		 
+						{ type : "uvmap", in:["wall_centere_bf"],
+							edge : 3,     
+							scale : 2.0     ,
+							shift : [0.0 ,0.0], 
+							mul : [1,1,1],
+						},         
+						
+						
+						
+						
+						{ type : "union", in : "wall_centere_e", out : "wall_faces"},
+						{ type : "union", in : "wall_centere_bw", out : "wall_faces"},
+						{ type : "union", in : "wall_centere_bf", out : "wall_faces"},
+					],
+					onfalse: [
+						
+						{ type : "inset", from : "f1_c",out : ["wall_centere_f",["wall_centere","*"]], 
+							mode : "normal",
+							amount : [0,4],  
+							extrude : -4, 
+						}, 
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallcolumns.dnmd",
+							in : {"walls":"wall_centere"},    
+						},       
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"wall_centere"},
+							"$window" : false, 
+						},      
+						
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f","wall_centere_e"], 
+							mode : "normal",
+							amount : [0,5],   
+						},   
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallcolumns.dnmd",
+							in : {"walls":"wall_centere_f"},  
+							"$angle" : 45,
+							"$r" : 0.4,
+						},      
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"wall_centere_e"},
+							"$window" : false,  
+						},      
+						
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f","wall_centere_e"], 
+							mode : "normal",
+							amount : [1,1.5,0,1.5],   
+						}, 
+						{ type : "inset", from : "wall_centere_f",out : ["wall_centere_f","wall_centere_e"], 
+							mode : "normal",
+							amount : [0.1],   
+							extrude: -0.5,
+						}, 
+						{ type : "material",in : ["wall_centere_f"],
+							material : "$mat.secondary"
+						},      
+						 
+						{ type : "union", in : "wall_centere_f", out : "wall_faces"},
+						{ type : "union", in : "wall_centere_e", out : "wall_faces"},
+					],
+				},        
+						
+				
+				
+				{ type : "union", in : "wall_centere_f", out : "wall_faces"},
+				{ type : "union", in : "wall_centere", out : "wall_faces"},
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				///SIDES
+				
+				{ type : "foreach", in : ["sidel","sider"], var : "face",
+					operations : [
+						{ type : "branch", condition : "greaterthan0",
+							value : "@($face-1)", //"@(($face/2)%2)", 
+							ontrue : [   
+								{ type : "split", from : "face" ,out : ["w","c","g","c"],
+									stype:"constant", 
+									size : [0,3.5,7,3.5],
+									side:"second", 
+								},     
+							], 
+							onfalse : [  
+								{ type : "split", from : "face" ,out : ["c","g","c","w"],
+									stype:"constant", 
+									size : [3.5,7,3.5,0],
+									side:"second", 
+								},     
+							],
+						},
+						{ type : "extrude", from : "c",outtop :"c1", out:"ced",
+							mode : "normal",
+							shift : 0.5,  
+							times : 1,     
+						},    		   
+						
+						//miniroof
+						{ type : "branch", condition : "greaterthan0",
+							value : "@($floor-0.5)", 
+							ontrue : [  
+								
+								{ type : "select",in : ["ced"], out : "ced_top",
+									mode : "dotnormal",
+									normal : [0,0,-1],
+									directed: true,
+								},  
+								{ type : "inset", from : "ced_top", out:["roof_minibase","wall_faces"],
+									mode : "normal",
+									extrude : 0.2,   
+									amount : [0,-9,0,0],  
+								},    		 
+								
+								{ 	type : "structure", out : "roof_mini",
+									path : "parts/roof_small.dnmd",
+									from : {"roofbase":"roof_minibase"}, 
+									//"$roof_height" : 5,
+									//"$edge_length" : 0.5,
+									//"$levels" : 1,
+									"$roof_lean" : [2,0],
+								},        
+						
+								{ type : "union", in : "roof_mini",out : "wall_faces"}, 
+							],  
+						}, 
+						 
+						//wall blank 
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"w"},
+							"$window" : false, 
+						},     
+						
+						//wall center
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"g"}, 
+						},   
+						
+						//wall extruded
+						
+						
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"c1"}, 
+							"$window.width" : 2,
+							"$window.height" : 6,
+							"$sides" : true, 
+						},    
+						
+						{ type : "material",in : ["c1s","ced"],
+							material : "$mat.secondary"
+						},     
+						{ type : "uvmap", in:["ced"],
+							edge : 3,     
+							scale : 8.0     ,
+							shift : [0.0 ,0.0], 
+							mul : [1,1,1],
+						},   
+						{ type : "union", in : "ced",out : "wall_faces"},  
+						
+					], 
+				}, 
+			],           
+		}, 
+		
+		
+		
+		
+		// side wings
+		
+		
+		//{ type : "select",in : ["wallsc"], out : "w3_facade",
+		//	mode : "dotnormal",
+		//	normal : [-1,0,0],
+		//	maxangle :10,  
+		//},   
+		//{ type : "extrude", from : ["w3_facade"],out : "w3_facade", outtop : "w3_facade",  
+		//	mode : "normal",
+		//	shift : 3,   
+		//	times : 1,    
+		//},    
+		
+		
+		{ type : "select",in : "wallsc", out : "wallsc_a", remove :true,
+			mode : "dotnormal",
+			normal : [-1,0,0], 
+		},  
+		{ type : "select",in : "wallsc", out : "wallsc_a", remove :true,
+			mode : "dotnormal",
+			normal : [1,0,0], 
+		},   
+		{ type : "split", from : "wallsc",  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				  
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [  
+				{ type : "split", from : "floor" ,out : ["abs","abw","abg","abw","abs","abw","abg","abw","abs"],
+					stype:"constant", 
+					size : [5,0,5,0,5,0,5,0,5],
+					side:"first",  
+				},     
+				
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"abs"}, 
+					
+					"$sides" : true, 
+					"$window.width" : 2,
+					"$window.height" : 4,
+				},     
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"abw"}, 
+					
+					"$window" : false, 
+				},        
+				 
+				{ type : "extrude", from : "abg",outtop :"abg1", out:"abg1",
+					mode : "normal",
+					shift : 0.5,  
+					times : 1,     
+				},  
+				{ type : "material",in : ["abg1"],
+					material : "$mat.secondary"
+				},     
+				{ type : "uvmap", in:["abg1"],
+					edge : 3,     
+					scale : 8.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},   
+				{ type : "union", in : "abg1",out : "wall_faces"},  
+				
+			],
+		},
+		{ type : "split", from : "wallsc_a",  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				  
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [ 
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"floor"}, 
+					
+					"$window.width" : 2,
+					"$window.height" : 6,
+				},    
+			],
+		},
+		
+		
+		
+		//back wing
+		{ type : "split", from : "wallsb",  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				  
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [ 
+			  
+				{ type : "split", from : "floor" ,out : ["fcw","fcc","fcg","fcg","fcc","fcw","fcw"],
+					stype:"constant", 
+					size : [0,3.5,0,0,3.5,0,24],
+					side:"first", 
+				},     
+				{ type : "extrude", from : "fcc",outtop :"fcc1", out:"fccbt",
+					mode : "normal",
+					shift : 0.5,  
+					times : 1,     
+				},  
+				{ type : "material",in : ["fccbt"],
+					material : "$mat.secondary"
+				},     
+				{ type : "uvmap", in:["fccbt"],
+					edge : 3,     
+					scale : 8.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},   
+				{ type : "union", in : "fccbt",out : "wall_faces"},  
+				
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"fcc1"}, 
+					 
+					"$sides" : true,  
+					"$window.width" : 2,
+					"$window.height" : 6,
+				},    
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"fcw"}, 
+					
+					"$window" : false, 
+				},   
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"fcg"}, 
+					
+					"$window" : true, 
+					"$window.width" : 2,
+					"$window.height" : 6,
+				},   
+			],
+		},
+		
+		
+		{ type : "select",in : "wallse", out : "wallse_a", remove :true,
+			mode : "dotnormal",
+			normal : [-1,0,0], 
+		},  
+		{ type : "select",in : "wallse", out : "wallse_a", remove :true,
+			mode : "dotnormal",
+			normal : [1,0,0], 
+		},  
+		{ type : "split", from : ["wallse","wallsd"],  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				  
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [  
+			 
+				{ type : "split", from : "floor" ,out : ["wac","wmi","wac"],
+					stype:"constant", 
+					size : [0,1,0],
+					side:"first", 
+				},        
+				
+				
+				{ type : "extrude", from : "wmi",outtop :"wmi1", out:"wmi1",
+					mode : "normal",
+					shift : 0.5,  
+					times : 1,     
+				},  
+				{ type : "material",in : ["wmi1"],
+					material : "$mat.secondary"
+				},     
+				{ type : "uvmap", in:["wmi1"],
+					edge : 3,     
+					scale : 8.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},   
+				{ type : "union", in : "wmi1",out : "wall_faces"}, 
+				 
+				{ 	type : "structure", out : "wall_faces",
+					path : "parts/wallsegment_a.dnmd",
+					from : {"wall":"wac"}, 
+					
+					"$window" : false, 
+				},   
+			],
+		},
+		{ type : "split", from : "wallse_a",  
+			stype:"constant", side:"second", 
+			steps : "@($l/$floor_height)",
+				  
+			foreach : "floor",   
+			out : "wall_faces",
+			do : [  
+			 
+				{ type : "split", from : "floor" ,out : ["wac","wmi","wac"],
+					stype:"constant", 
+					size : [0,1,0],
+					side:"first", 
+				},        
+				
+				
+				{ type : "extrude", from : "wmi",outtop :"wmi1", out:"wmi1",
+					mode : "normal",
+					shift : 0.5,  
+					times : 1,     
+				},  
+				{ type : "material",in : ["wmi1"],
+					material : "$mat.secondary"
+				},     
+				{ type : "uvmap", in:["wmi1"],
+					edge : 3,     
+					scale : 8.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},   
+				{ type : "union", in : "wmi1",out : "wall_faces"}, 
+				
+				   
+				{ type : "branch", condition : "greaterthan0",
+					value : "@($floor-2.5)", 
+					ontrue : [  
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"wac"}, 
+							
+							"$window" : true, 
+							"$window.width" : 4,
+							"$window.height" : 4,
+						},   
+					],
+					onfalse : [  
+						{ 	type : "structure", out : "wall_faces",
+							path : "parts/wallsegment_a.dnmd",
+							from : {"wall":"wac"}, 
+							
+							"$window" : true, 
+							"$window.width" : 2,
+							"$window.height" : 6,
+						},   
+					],
+				},
+			],
+		},
+		
+		//clocktower
+		
+		{ 	type : "structure", out : "wall_faces",
+			path : "parts/clocktower.dnmd",
+			from : {"base":"topbase_c"},  
+		},        
+		 
+		
+	]   
+} 

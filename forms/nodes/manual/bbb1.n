@@ -1,0 +1,638 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "map/map_01.stmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 32542389,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 32542389,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00749194901436567, 0.000883142987731844, -0.00698762806132436, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.stmd",
+			"modelscale" : 0.8,
+			"luaenttype" : "use_button"
+		},
+		"flags" : ["useable"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 231632412,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 231632412,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00749194901436567, 0.000883142987731844, -0.00468762777745724, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.stmd",
+			"modelscale" : 0.8,
+			"luaenttype" : "use_button"
+		},
+		"flags" : ["useable"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 23521234,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 23521234,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00749194901436567, 0.000883142987731844, -0.00268762791529298, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.stmd",
+			"modelscale" : 0.8,
+			"luaenttype" : "use_button"
+		},
+		"flags" : ["useable"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : -2147483648,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : -2147483648,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00749194901436567, 0.000883142987731844, -0.000687627994921058, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "primitives/box.stmd",
+			"modelscale" : 0.8,
+			"luaenttype" : "use_button"
+		},
+		"flags" : ["useable"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "ambient_sound"
+		}
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1000,
+			"name" : null,
+			"position" : [0.000558927597012371, 0.00121731299441308, -0.0149167096242309, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [-1, 1, 1, "vec3"],
+			"luaenttype" : "rt_mirror"
+		}
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1000,
+			"name" : null,
+			"position" : [0, 0.00136270001530647, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "env_cubemap"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.100044324994087, 0.0103400871157646, -1.72153377206996E-05, "vec3"],
+			"rotation" : [0.000315538316499442, 0.00207555154338479, -0.00360051007010043, 0.999991297721863, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "@testdynconstruct",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [3.70597699657083E-05, -0.00205786083824933, -0.000567213341128081, "vec3"],
+			"angvelocity" : [-0.000424898986238986, -0.000106621911982074, -7.88294782978483E-05, "vec3"],
+			"luaenttype" : "test_dynamic_construct"
+		},
+		"flags" : ["physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.100019752979279, 0.00841164588928223, -5.07504091729061E-06, "vec3"],
+			"rotation" : [-2.24492487177486E-06, -0.000623479252681136, -0.0036044220905751, 0.99999326467514, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [4.63059359390172E-06, 4.13993293477688E-05, 2.99773000733694E-05, "vec3"],
+			"angvelocity" : [1.23006418561999E-06, -1.19933332598521E-07, 3.14764776021548E-07, "vec3"],
+			"luaenttype" : "use_door_teleport"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.100009761750698, 0.00827308837324381, 1.77184824678989E-06, "vec3"],
+			"rotation" : [-1.05773951872834E-05, 2.12361719604814E-05, 0.00355008291080594, 0.999993681907654, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [2.28667286137352E-05, -0.00327053852379322, -9.109072038882E-07, "vec3"],
+			"angvelocity" : [-7.56644112698268E-07, -5.45493028525357E-09, 2.27934137342345E-07, "vec3"],
+			"luaenttype" : "use_door_teleport"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00576427765190601, 0.000170805491507053, -0.000350106041878462, "vec3"],
+			"rotation" : [-0.392883062362671, 0.586875379085541, -0.590605974197388, -0.390390485525131, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "useables/container.stmd",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0.000541627407073975, -0.00141382613219321, 0.000251544319326058, "vec3"],
+			"angvelocity" : [0.0010298453271389, -4.25307480327319E-05, -0.00253382255323231, "vec3"],
+			"luaenttype" : "use_container"
+		},
+		"flags" : ["physsimulated"]
+	},
+
+	{
+		"iscreated" : True,
+		"sizepower" : 1000,
+		"seed" : 120003,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 120003,
+			"abssize" : 1000,
+			"name" : "Kindred",
+			"position" : [-1.94277254195185E-06, 0.000629755260888487, 0.0010118733625859, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "kindred.stmd",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -0.000109194726974238, -6.50860094986161E-12, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "kindred",
+			"health" : 100,
+			"maxhealth" : 100
+		},
+		"flags" : ["actor", "npc", "physsimulated"]
+	},
+
+	{
+		"iscreated" : True,
+		"sizepower" : 1000,
+		"seed" : 120001,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 120001,
+			"abssize" : 1000,
+			"name" : "Jade Harley",
+			"position" : [0.000561128254048526, 0.000629754271358252, 0.0102525949478149, "vec3"],
+			"rotation" : [0, -0.0245803482830524, 0, 0.999699354171753, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [2.67509730334894E-17, 7.0723363023717E-05, 4.21534768896281E-12, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 28.4661184583192,
+			"maxhealth" : 100,
+			"viewtarget" : [0.00389097072184086, 0.000997008988633752, 0.0103895645588636, "vec3"]
+		},
+		"flags" : ["actor", "player", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00317822769284248, 0.000591922318562865, 0.0106176733970642, "vec3"],
+			"rotation" : [0, 0, -0.999990820884705, -0.0042035561054945, "quat"],
+			"scale" : [11.3926000595093, 11.3926000595093, 11.3926000595093, "vec3"],
+			"model" : "clutter/lab/glass_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00509797828271985, -3.28524041304235E-10, 0.0071850623935461, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [11.3926000595093, 11.3926000595093, 11.3926000595093, "vec3"],
+			"model" : "clutter/lab/glass_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0030597597360611, 0.000579900806769729, 0.0105658229440451, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/bowl_c.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0032964339479804, 0.000577911036089063, 0.0104201417416334, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/bowl_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00331095978617668, 0.000577789032831788, 0.0107108931988478, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/bowl_d.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00329938158392906, 0.000575696816667914, 0.0105809327214956, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/glass_b.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00342807173728943, 0.000577521743252873, 0.0105395819991827, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/icecream.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0030745230615139, 0.000605903565883636, 0.0107677839696407, "vec3"],
+			"rotation" : [0, 0.685288727283478, 0, 0.728271424770355, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00330163165926933, 0.00057772290892899, 0.0108517929911613, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/vase.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00432283990085125, -1.22368801385164E-05, 0.0089534567669034, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1.51298975944519, 1.51298975944519, 1.51298975944519, "vec3"],
+			"model" : "clutter/lab/lamp_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00387684162706137, -2.3283064365387E-10, 0.00967647228389978, "vec3"],
+			"rotation" : [0, 0.979908287525177, 0, 0.199449807405472, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/futur/cabinet.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00399373518303037, -2.43376707658172E-05, 0.00848144292831421, "vec3"],
+			"rotation" : [0, 0.982154428958893, 0, -0.188076823949814, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/futur/chair_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00392461195588112, 0.000896009034477174, 0.00955141801387072, "vec3"],
+			"rotation" : [0, -0.0449848100543022, 0, 0.99898761510849, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/futur/monitor_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00384185463190079, -3.03611136232007E-10, 0.0105396145954728, "vec3"],
+			"rotation" : [0, -0.556360960006714, 0, 0.830940663814545, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/disk_holder.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00342400651425123, 0.000563764246180654, 0.0106376055628061, "vec3"],
+			"rotation" : [0, 0.999991297721863, 0, -0.00420367205515504, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/lamp_a.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00373156135901809, -1.39698386192322E-09, 0.0117315696552396, "vec3"],
+			"rotation" : [0, 0.999957621097565, 0, -0.00920362118631601, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/futur/console.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable"
+		}
+	}
+]

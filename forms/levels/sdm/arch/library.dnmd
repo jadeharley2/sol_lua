@@ -1,0 +1,469 @@
+{
+	name : "fence.subtest",  
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat"
+	],
+	variables : {
+		"$mat.main" : "concrete06b.json",
+		"$mat.columns" : "concrete06.json",
+		"$mat.floor" : "fo_floor.json",
+		"$mat.ceiling" : "ceiling31.json",
+	},
+	seed:0, 
+	operations : [ 
+		   
+		
+		//library_main_hall
+		    
+		{type : "rectangle", out : "room",//"room_lib_mh",
+			pos : [0,0,0],//[-15,-37.3,-6],
+			l : 40, 
+			w : 20,
+			angle : 0,
+		},       
+		   
+			  
+		{ type : "material",in : "room",
+			material : "$mat.main", //"red.json"
+		},   
+		
+		{ type : "flip",from : "room",out : "room", },     
+			 
+		{ type : "inset", in : "room",out : ["rm_ceiling",["rm_wall_multi_ff","rm_wall_multi_dd","rm_wall","rm_wall_multi_b2"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : -4, 
+		},     
+		{ type : "inset", from : "rm_ceiling",out : ["rm_ceiling",["rm_wall_multi_f","rm_wall_multi_d","rm_wall","rm_wall_multi_b1"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : -2, 
+		},     
+		{ type : "inset", from : "rm_ceiling",out : ["rm_ceiling",["rm_wall_multi_ff","rm_wall_multi_dd","rm_wall","rm_wall_multi_b0"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : -4,  
+		},     
+		
+		//inner wall
+		{ type : "split", from : "rm_wall_multi_b0",out : ["rm_wall","rm_wall","rm_door","rm_wall","rm_wall"],   
+			size : [4,0,3,15,4], 
+			stype:"constant",   
+			side:"third", 
+		},        
+		{ type : "split", from : "rm_wall_multi_b1",out : ["rm_wall","rm_wall","rm_wall","rm_wall","rm_wall"],   
+			size : [4,0,3,15,4], 
+			stype:"constant",   
+			side:"third", 
+		},           
+		{ type : "split", from : "rm_wall_multi_b2",out : ["rm_door","rm_wall","rm_wall","rm_wall","rm_door"],   
+			size : [4,0,3,15,4],  
+			stype:"constant",   
+			side:"third", 
+		},        
+		
+		//outer wall
+		
+		{ type : "split", from : "rm_wall_multi_d",out : ["rm_wall_ext","rm_wall"],   
+			size : [0,4], 
+			stype:"constant",   
+			side:"third", 
+		},       
+		{ type : "split", from : "rm_wall_multi_dd",out : ["rm_window","rm_shelf_section","rm_wall_window_wide"],   
+			size : [4,0,4], 
+			stype:"constant",   
+			side:"third",  
+		},       
+		
+		
+		{ type : "split", from : "rm_shelf_section",out : ["rm_shelf"],
+			steps : "@($l/4)",  
+			stype:"constant",   
+			side:"first", 
+		},       
+		
+		//overhang - outer wall
+		{ type : "inset", from : "rm_wall_ext",out : ["rm_wall",["rm_wall","rm_ceiling_multi","rm_wall","rm_overhang_floor"]], 
+			mode : "normal",
+			amount : [0],  
+			extrude : 4, 
+		},     
+		
+		{ type : "split", from : "rm_ceiling_multi",out : ["rm_ceiling","rm_ceiling_multi"],  
+			size : [3.1,0], 
+			stype:"constant",   
+			side:"second", 
+		},        
+		
+		//{ type : "split", from : "rm_wall_ext",out : ["rm_wall","rm_wall_ext","rm_wall"],  
+		//	size : [7,5,0], 
+		//	stype:"constant",   
+		//	side:"second", 
+		//},       
+		//{ type : "inset", from : "rm_wall_ext",out : ["rm_wall_ext",["rm_wall","rm_ceiling_multi","rm_wall","rm_floor"]], 
+		//	mode : "normal",
+		//	amount : [0],  
+		//	extrude : 4, 
+		//},     
+		
+		
+		///overhang rails
+		
+		{ type : "split", from : "rm_overhang_floor",out : ["rm_overhang_floor","rm_overhang_ext"],  
+			size : [0,0.3], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		
+		{ type : "split", from : "rm_overhang_floor",out : ["rm_floor","rm_overhang_floor"],  
+			size : [0,0.3], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{ type : "split", from : "rm_overhang_floor",out :
+			["room_lib_faces","rm_overhang_ext","room_lib_faces","rm_overhang_ext"],  
+			size : [2.5,9.7,9.5,0], 
+			stype:"constant",   
+			side:"third", 
+		},       
+		{ type : "inset", from : "rm_overhang_ext",out : "room_lib_faces", 
+			mode : "normal",
+			amount : [0],  
+			extrude : 1, 
+		},     
+		
+		
+		
+		///
+		
+		
+		
+		
+		
+		   
+		{ type : "split", from : "rm_wall_multi_f",out : ["rm_wall","rm_wall","rm_wall"],   
+			size : [0,4,5], 
+			stype:"constant",   
+			side:"third", 
+		},       
+		{ type : "split", from : "rm_wall_multi_ff",out : ["rm_wall","rm_window","rm_wall"],   
+			size : [0,4,5], 
+			stype:"constant",   
+			side:"third", 
+		},       
+		
+		{ type : "flip",from : "room",out : "room", },  
+			 
+		{ type : "uvmap", in:["room","rm_ceiling","rm_wall","rm_wall_window_wide","rm_window"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},       
+			
+		{ type : "split", from : "room",out : ["room_left","room_c","room"],  
+			size : [4,0,10], 
+			stype:"constant",   
+			side:"second", 
+		},       
+		{ type : "split", from : "room_c",out : ["room","room_c"],  
+			size : [3,0], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{type:"frotate", in:["room_c"],
+				add:1,	 
+		}, 
+		//{ type : "inset", from : "room",out : ["room_c",["room"]], 
+		//	mode : "normal",
+		//	amount : [0.1,4,3,4],  
+		//	extrude : 0, 
+		//},     
+		
+		{ type : "split", from : "room_c",out : ["room_c","room_center","room_c"],  
+			size : [0,10,0], 
+			stype:"constant",   
+			side:"second", 
+		},       
+		
+		{ type : "split", from : "room_c",out : ["room_c"],
+			steps : "@($l/4)", 
+			stype:"constant",   
+			side:"first", 
+		},       
+		
+		//{ type : "split", from : "room_c",out : ["room_c","room"],  
+		//	size : [0,1], 
+		//	stype:"constant",   
+		//	side:"first", 
+		//},       
+		{ type : "split", from : "room_c",out : ["room_c","shb"],  
+			size : [0,1], 
+			stype:"constant",   
+			side:"second", 
+		},       
+		
+		
+		{ type : "inset", from : "shb",out : ["room_c",["rm_shelf","shs","rm_shelf","shs"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 4,  
+		},     
+		{ type : "union", in : "shs", out : "room_lib_faces"},
+		
+		//stairs 
+		
+		{ type : "split", from : "room_left",out : ["room","cs2_wall","room_left","room"],  
+			size : [3,1,10,0], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		
+		 
+		 
+		
+		{ type : "split", from : "room_left",out : ["room","room_left"],  
+			size : [1.5,0], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{type:"stairs",from:"room_left",out:["sstairs","sstairs","testr"],
+			side:3, 
+			height:6, 
+			stepheight:0.15, 
+			leftside:true,
+			rightside:true, 
+			sidewidth:0.3,  
+			sideheight: 0.1, 
+				
+		},   
+		{ 	type : "structure", out : "fence",
+			path : "forms/levels/east_common/jp_fence.dnmd",
+			in : {"path":"testr"},
+		},    
+		{ type : "material",in : "fence",
+			material : "$mat.main", //"red.json"
+		},    
+		
+		{ type : "uvmap", in:["sstairs"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},       
+		{ type : "union", in : "sstairs", out : "room_lib_faces"},
+		{ type : "union", in : "fence", out : "room_lib_faces"},
+		
+		//stairs backwall
+		
+		{ type : "split", from : "cs2_wall",out : ["rldt","cs2_wall"],  
+			size : [1.5,0], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{ type : "inset", from : "cs2_wall",out : ["*",["temp_faces"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 4,  
+		},     
+		{ type : "inset", in : "rldt",out : ["st_arch_base","*"], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 3,  
+		},       
+		{ type : "uvmap", in:["temp_faces"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		{ type : "union", in : "temp_faces", out : "room_lib_faces"},
+		{ type : "union", in : "rldt", out : "room_lib_faces"},
+		
+		{ type : "flip", from : "st_arch_base" ,out: "st_arch_base"},
+		{ 	type : "structure", out : "room_lib_faces",
+			path : "parts/library_arch.dnmd",
+			from : { 
+				"base":"st_arch_base", 
+			}, 
+			"$mul":1,
+			"$height" : 1 ,  
+			"$framee" : 0.02 , 
+		},     
+		
+		
+		
+		//tower mechanism
+		//room_center
+		{ type : "inset", from : "room_center",out : ["room_center",["rm_wall_multi_csa","rm_wall","rm_wall_multi_csb","rm_wall"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 4,  
+		},     
+		{ type : "inset", from : "room_center",out : ["room_center",["wfaces_a","*","wfaces_b","*"]],
+			mode : "normal",
+			amount : 0,  
+			extrude : 2,  
+		},     
+		{ type : "split", from : "room_center",out : ["rm_floor2_side","room_center"],  
+			size : [3,0], 
+			stype:"constant",   
+			side:"second", 
+		},       
+		{ type : "split", from : "room_center",out : ["rmc_s","room_l2","rmc_s","*"],  
+			size : [3,0,3,1], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{ type : "inset", from : "rmc_s",out : ["rmc_s",["rm_shelf","rm_wall","rm_shelf","rm_wall"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 4.2,  
+		},     
+		{ type : "frotate", in : "rm_wall_multi_csa" ,align: [0,0,1]},
+		{ type : "frotate", in : "rm_wall_multi_csb" ,align: [0,0,-1]},
+		{ type : "union", in : "rm_wall_multi_csa", out : "rm_wall_multi_cs"},
+		{ type : "union", in : "rm_wall_multi_csb", out : "rm_wall_multi_cs"},
+		{ type : "split", from : "rm_wall_multi_cs",out : ["rm_custom"],
+			steps : "@($l/4)", 
+			stype:"constant",   
+			side:"second", 
+		},        
+		{ type : "split", from : "rm_custom",out : ["rm_custom","rm_wall"],
+			size : [3,0], 
+			stype:"constant",   
+			side:"second", 
+		},        
+		{ type : "frotate", in : "rm_custom" ,align: [0,0,1]},
+		{ type : "inset", from : "rm_custom",out : ["*",["rm_wall","room","rm_wall","rm_ceil_custom"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : -5,  
+		},       
+		{type:"remove",in:"rm_wall_multi_csa"},
+		{type:"remove",in:"rm_wall_multi_csb"},
+		
+		{ type : "frotate", in : "rm_ceil_custom" ,add: 1},
+		{ 	type : "structure", out : "room_lib_faces",
+			path : "parts/library_arch.dnmd",
+			from : {
+				"base":"rm_ceil_custom", 
+			}, 
+		},        
+		 
+		
+		//second level walkway  rm_floor2_side
+		
+		{ type : "split", from : "rm_floor2_side",out : ["rm_floor2_side","*"],  
+			size : [0,1], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		{ type : "split", from : "rm_floor2_side",out : ["rm_floor","rm_f2st_ext"],  
+			size : [0,0.3], 
+			stype:"constant",   
+			side:"first", 
+		},        
+		
+		
+		//second level shelf
+		 
+		{ type : "split", from : "room_l2",out : ["room_l2_sp","shb2","room_l2_sp"],  
+			size : [0,1,0], 
+			stype:"constant",   
+			side:"second", 
+		},       
+		
+		{ type : "inset", from : "shb2",out : ["room_c",["rm_shelf","rm_wall","rm_shelf","room_lib_faces"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : 4,  
+		},     
+		 
+		
+		{ type : "split", from : "room_l2_sp",out : ["rm_floor","rm_f2st_ext"],  
+			size : [0,0.3], 
+			stype:"constant",   
+			side:"first", 
+		},       
+		
+		{ type : "inset", from : "rm_f2st_ext",out : "room_lib_faces", 
+			mode : "normal",
+			amount : [0],  
+			extrude : 1, 
+		},     
+		
+		
+		
+		//middle level faces (wfaces)
+		
+		//{ type : "union", in : "wfaces", out : "room_lib_faces"},
+		
+		{ type : "frotate", in : "wfaces_a" ,align: [0,0,1]},
+		{ type : "frotate", in : "wfaces_b" ,align: [0,0,-1]},
+		{ type : "union", in : "wfaces_a", out : "wfaces"},
+		{ type : "union", in : "wfaces_b", out : "wfaces"},
+		 
+		{ type : "split", from : "wfaces",out : ["wfaces_cs"],
+			steps : "@($l/4)", 
+			stype:"constant",   
+			side:"second", 
+		},        
+		{ type : "split", from : "wfaces_cs",out : ["wfaces_cs","rm_wall"],
+			size : [3,0], 
+			stype:"constant",   
+			side:"second", 
+		},        
+		{type:"remove",in:"wfaces_a"},
+		{type:"remove",in:"wfaces_b"},
+		{type:"remove",in:"wfaces_cs"},
+		
+		
+		
+		
+		 
+		
+		
+		{ 	type : "structure", out : "room_lib_faces",
+			path : "corridor.dnmd",
+			from : {
+				"floor":["room","room_c","rm_floor"],
+				"ceiling":"rm_ceiling",
+				"door":"rm_door",
+				"wall":"rm_wall",  
+				"window":"rm_window",  
+			}, 
+		},    
+		
+		
+		
+		
+		
+		{ type : "split", from : "rm_shelf",out : ["rm_shelf"],//
+			stype:"constant", 
+			steps : "@($l/3)", 
+			side:"first",  
+		},      
+		{ 	type : "structure", out : "room_lib_faces",
+			path : "parts/bookshelf.dnmd",
+			from : {
+				"face":"rm_shelf",  
+			}, 
+			seed:0, 
+		},   
+		{ 	type : "structure", out : "room_lib_faces",
+			path : "parts/stdwindow.dnmd",
+			from : {"base":"rm_wall_window_wide"}, 
+			"$width":2,
+			"$height" : 2.6,
+		},         
+		
+		
+		//{ type : "union", in : "room", out : "room_lib_faces"},
+		//{ type : "union", in : "rm_ceiling", out : "room_lib_faces"},
+		//{ type : "union", in : "rm_wall", out : "room_lib_faces"},
+			 
+		
+	]   
+} 

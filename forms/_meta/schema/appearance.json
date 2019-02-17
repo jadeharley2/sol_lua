@@ -1,0 +1,18 @@
+{  
+	"type":"object",
+	"default":{
+		"model":"",
+		"scale":1
+	},
+	"description":"appearance settings",
+	"properties":
+	{
+		"model": {
+			"$ref":"modelpath.json"
+		},
+		"scale": {
+			"type":"number",
+			"default": 1
+		}
+	} 
+}

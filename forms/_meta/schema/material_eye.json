@@ -1,0 +1,26 @@
+
+{
+	"properties" : 
+	{
+		"g_MeshTexture" : 
+		{
+			"type" : "string",
+			"description" : "diffuse texture path"
+		},
+		"g_IrisTexture" : 
+		{
+			"type" : "string",
+			"description" : "iris texture path"
+		},
+		"eyeId" : 
+		{
+			"type" : "integer",
+			"description" : "eye index"
+		},
+		"flipuv" : 
+		{
+			"description" : "texture coords multiplier"
+		}
+	},
+	"description" : "eye shader"
+}

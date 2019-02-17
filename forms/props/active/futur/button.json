@@ -1,0 +1,9 @@
+{
+	"group" : "active",
+	"tags" : ["futur"],
+	"model" : "active/button.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"button" : true
+	
+}

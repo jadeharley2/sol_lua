@@ -1,0 +1,61 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	input : {
+		"base" : { type : "surface", "default" : [[0.005,0,0],[-0.005,0,0],[-0.005,0,0.1],[0.005,0,0.1]],},
+	}, 
+	variables : {
+		"$width" : 0.01, 
+		"$extend" : 0.015, 
+		"$mat.primary" : "Wood07.json",
+		"$mat.secondary" : "concrete06b.json",
+	},
+	operations : [ 
+		
+		//anchors
+		 
+		{type:"data",in:"base",normal:"$snorm"},  
+		{ type : "split", from : "base",out : ["base","bt","base"],
+			size : ["$width",0,"$width"] ,
+			stype:"constant",   
+			side:"second", 
+		},        
+		{ type : "inset", from : "base",out : ["base","sides"], 
+			mode : "normal",
+			amount : 0, 
+			extrude : "$extend" ,  
+		},     
+		{ type : "inset", from : "bt",out : ["bt","*"], 
+			mode : "normal",
+			amount : 0, 
+			extrude : "$extend" ,  
+		},     
+		{type:"flip",in:"bt",out:"btb"},
+		{type:"union",in:"bt",out:"base"},
+		{ type : "extrude", from : "base",out : "sides", outtop : "base",  
+			mode : "normal",
+			shift : "$width",  
+			times : 1,   
+			merge : true,
+		},   
+		 
+		{ type : "material",in : ["base","sides","btb"],
+			material : "$mat.primary", 
+		},    
+		{ type : "uvmap", in:["sides"],
+			edge : 3,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		{ type : "uvmap", in:["base","btb"],
+			edge : 2,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+	]
+}

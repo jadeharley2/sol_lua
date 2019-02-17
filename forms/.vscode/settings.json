@@ -1,0 +1,28 @@
+{ 
+    "json.schemas": [
+        {
+            "fileMatch": ["/_meta/schema/*.json"],
+            "url": "http://json-schema.org/draft-07/schema#"
+        },
+        {
+            "fileMatch": ["/_meta/formtypedecl_*.json"],
+            "url": "/_meta/schema/formdeclaration.json"
+        },
+        {
+            "fileMatch": ["/items/tools/*.json"],
+            "url": "/_meta/schema/tool.json"
+        },
+        {
+            "fileMatch": ["/props/*.json"],
+            "url": "/_meta/schema/prop.json"
+        },
+        {
+            "fileMatch": ["/characters/*.json"],
+            "url": "/_meta/schema/character.json"
+        },
+        {
+            "fileMatch": ["/anchors/*.json"],
+            "url": "/_meta/schema/anchor.json"
+        }
+    ]  
+}

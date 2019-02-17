@@ -1,0 +1,37 @@
+{
+	"name" : "u.furthestring", 
+	"type" : "sUniverse",
+	"sizepower" : 1E24, 
+	"nodes":[
+		{  
+			"type": "sSpace",
+			"sizepower" : 1E22,  
+			"nodes":[
+				{  
+					"type": "sGalaxy",
+					"sizepower" : 9.46073E20,
+					"preset" : "empty", 
+					"variables":[
+						{ "name":"persistent", "type":"bool", "value":1},
+						{ "name":"color", "type":"vector3", "value":[0.3,0.7,0.4]},
+						{ "name":"generator", "type":"string", "value":"native.empty"}
+					], 
+					"nodes":[
+						{
+							"name" : "star.sol", 
+							"type": "sStarSystem",
+							"seed": 23542,
+							"sizepower" : 1.892146E16,//{"exp":{"div":[ 9,46073E16 , 5]}},
+							"preset" : "default",  
+							"transformation":{"pos":[-0.2497424,0.003247981,-0.2092827],"ang":[0.1, 0, 1]},
+							"variables":[
+								{ "name":"persistent", "type":"bool", "value":1},
+								{ "name":"color", "type":"vector3", "value":[1,1,1]} 
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

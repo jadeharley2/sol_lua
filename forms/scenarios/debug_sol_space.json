@@ -1,0 +1,40 @@
+{
+    //world_solverse:debugsystem:spaceship
+    //world_solverse:gensokyo:character
+    //...
+    
+    "name" : "Sol Space: Debug",
+    "world" : "world_solverse",
+    "options" : [
+        {   
+            "name":"Debug system",
+            "anchor":"debugsystem",
+            "mode":["free","spaceship"]
+        },
+        {   
+            "name":"Debug system: Spacelab",
+            "anchor":"spacelab",
+            "mode":["spacelab"]
+        },
+        {
+            "name":"Origin system",
+            "anchor":"othersystem",
+            "mode":"free"
+        },
+        {
+            "name":"Sol system",
+            "anchor":"sol",
+            "mode":"free"
+        },
+        {
+            "name":"Gensokyo: Scarlet Devil Mansion",
+            "anchor":"gensokyo",
+            "modes":["free","character"]
+        },
+        {
+            "name":"Gensokyo: Human Village",
+            "anchor":"human_village",
+            "modes":["free","character"]
+        },
+    ] 
+}

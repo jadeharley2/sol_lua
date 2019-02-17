@@ -1,0 +1,16 @@
+[
+	{
+		"type" : "sStarSystem", 
+		"name" : "starsystem.normal",
+		"variables":[
+			{ "name":"color", "type":"vector3", "value":[0,0,0]}
+		]
+	},
+	{
+		"type" : "sStarSystem", 
+		"name" : "starsystem.blackhole",
+		"variables":[
+			{ "name":"color", "type":"vector3", "value":[0,0,0]}
+		]
+	}
+]

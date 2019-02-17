@@ -1,0 +1,205 @@
+{
+	name : "shrine",
+	variables : {
+		"$size" : 1
+	},
+	operations : [ 
+		
+		{ type : "rectangle", out : "base",
+			w:6,
+			l:8, 
+			pos:[0,0,0.25]
+		},  
+		
+		{ type : "material",in : ["base"],
+			material : "white.json",//"wireframe.json"
+		},  
+		
+		{ type : "extrude",from : "base",out : "walls_a", outtop : "floor_base",
+			mode : "normal",  
+			shift : 0.2 ,   
+		},  
+		{ type : "extrude", in : "floor_base",out : "walls_b", outtop : "ceil_base",
+			mode : "normal",  
+			shift : 2 ,   
+		}, 
+		{ type : "extrude", in : "ceil_base",out : "walls_c", outtop : "roof_base",
+			mode : "normal",  
+			shift : 0.7 ,   
+		}, 
+		{ type : "split", in  : "walls_b",out : "wall_panels", 
+			steps :"@(floor($l*0.7))",        
+			stype:"constant",      
+		},  
+
+		{ type : "flip",from : "ceil_base",out : "ceiling", },     
+		{ type : "inset",from : "ceiling",out : {face : "c_inner",edge:"c_outer"}, 
+			amount : 0.1,   
+		},  
+		{ type : "extrude",from : "c_inner",out : "t333", 
+			mode : "normal",   
+			shift : -0.5,     
+		},  		
+			
+			
+		//walls
+		{ type : "split",in : "wall_panels",out : "wall_subpanels", 
+			steps :2,        
+			stype:"constant",      
+		},     
+		 
+		{ type : "select", in : "wall_panels", out : "column_base",
+			mode : "dotnormalsegments", normal : [0,0,1],
+		},     
+		{ type : "random",in : "wall_subpanels", var : "face",
+			variants : [
+				[ 
+					{ type : "extrude",in : "face",out : "final", 
+						mode : "normal",   
+						shift : 0.05,     
+					},  
+					{ type : "flip",from : "face",out : "final", }, 
+				], 
+				[
+					{ type : "remove",in : "face"}
+				],
+			]
+		}, 
+		
+		
+		{ type : "column",in : "column_base",out : "column_main",outcap : "ccap",
+			angle : 45,  
+			r :  0.15 ,
+			sides : 8,       
+		}, 
+		{ type : "extrude",from : "ccap",out : "column_extend", 
+			mode : "normal",   
+			shift : 0.8,     
+		},   
+		
+		{ type : "material",in : ["column_main","column_extend"],
+			material : "black.json"
+		},   
+		
+		
+		{ type : "remove",in : ["wp_inner","wall_panels","walls_b"]  },
+			
+			
+		//floor 
+		
+		{ type : "inset",from : "floor_base",out : {face : "floor_inner",edge:"floor_outer"}, 
+			amount : 0.5,   
+		},  
+		{ type : "extrude",from : "floor_inner",out : "t333", 
+			mode : "normal",   
+			shift : -0.1,     
+		},   
+		
+		//pad floor
+		
+		{ type : "extrude",from : "walls_a",outtop : "floor_abase", out : "dump",
+			mode : "normal",  
+			shift : 0.2 ,    
+			merge : true   
+		},  
+		{ type : "extrude",from : "floor_abase",out : "floor_around",
+			mode : "normal",  
+			shift : 0.8 ,   
+			merge : true
+		},  
+		
+		
+		{ type : "material",in : ["floor_around","t333"],
+			material : "black.json"
+		},   
+		{ type : "material",in : ["floor_base","dump"],
+			material : "darkgray.json"
+		},   
+		
+		//ROOF
+		
+		
+		{ type : "inset",from : "roof_base",out : {face : "roof_f",edge:"roof_f"}, 
+			amount : 1, extrude :0.5,
+		}, 
+		{ type : "extrude",in : "roof_f",out : "t3top", outtop : "roof",
+			mode : "normal",  
+			shift : 0.2 ,  
+			merge : true,
+		},   
+		{ type : "extrude",from : "t3top",out : "t33", outtop : "t33",
+			mode : "normal",  
+			shift : 2  ,  
+			merge : true,
+		},   
+		
+		{ type : "select",in:"roof",out : "second_roof_base",
+			mode : "dotnormal",
+			normal : [0,0,-1], 
+			maxangle : 10,  
+		}, 
+		{ type : "select",in:"t33",out : "roof_bottom", remove : true, 
+			mode : "dotnormal",
+			normal : [0,0,1], 
+			maxangle : 30,  
+		}, 
+		{ type : "split",from : "roof_bottom",out : "re", 
+			steps :"@($l*4)",//--20,       
+			stype:"constant",     
+		},      
+		{ type : "inset",from : "second_roof_base",out : {face : "roof2_f",edge:"roof2_c"}, 
+			amount : 0.4, extrude :0.5, 
+		},        
+		{ type : "inset",from : "roof2_f",out : {face : "roof2_f",edge:"roof2_c"}, 
+			amount : 0.4, extrude :-0.2 , 
+		},      
+		
+		{ type : "extrude",in : "re",out : "roof_grate", 
+			mode : "normal",   
+			shift : "@($i % 2 * 0.1)",    
+		},       
+		
+			 
+		{ type : "select",in : "t33", out : "testdef2", 
+			mode : "points", 
+		},  
+
+		{ type : "select",in:"roof",out : "*", remove : true,
+			mode : "dotnormal",
+			normal : [0,0,-1], 
+			maxangle : 4,  
+		}, 
+		 
+		{ type : "split",from : "t33",out : "roof_tesselated", 
+			steps :30,       
+			stype:"constant",     
+		},    
+		{ type : "split",from : "roof",out : "roof_tesselated", 
+			steps :30,       
+			stype:"constant",     
+		},     
+		{ type :  "pointdeform", in : ["roof_tesselated","roof_grate"],inpoints : "testdef2",
+			r : 1,pow : 0.05,dir : [0,0,1],
+			func : "sin",
+		},        
+		
+		{ type : "material",in : ["roof_grate","roof2_c"],
+			material : "black.json"
+		},   
+		{ type : "material",in : ["roof_tesselated","roof2_f"],
+			material : "teal.json",
+			//smooth:true,
+		}, 
+		 
+		 
+		{ type : "remove",in : ["roof_f"]  },
+			   
+			
+		{ type : "material",in : ["gate_columns","gate_columns_edges","gate_topb"],
+			material : "black.json"
+		},  
+		{ type : "material",in : ["gate_column_top","gate_column_base","gate_top","gate_topb"],
+			material : "med_red.json"
+		},  
+	]
+}

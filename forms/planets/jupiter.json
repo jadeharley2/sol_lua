@@ -1,0 +1,14 @@
+{ 
+	"name" : "jupiter",
+	"class" : "planetarchetype", 
+	"atmosphere" : 
+	{ 
+		"color" : [172,164,153],
+		"hazecolor" : [172,164,153],
+		"clouds": {
+			"texture":"textures/atmosphere/jupiter.jpg",
+			"color":[255,255,255],
+		},
+	},  
+	"noHydrosphere" : 1,
+}

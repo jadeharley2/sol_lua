@@ -1,0 +1,91 @@
+{
+	"name" : "jp.gate",
+	"variables" : {
+		"$size" : 1
+	},
+	"operations" : [ 
+	 
+	
+		//anchors
+		
+		{ "type" : "point", "out" : "gate_base", 
+			"points" : [[-1.5,0,0],[1.5,0,0]]
+		},   
+		{ "type" : "line", "out" : "gate_middle_base", 
+			"points" : [[-2,0,4],[2,0,4]]
+		},           
+		{ "type" : "line", "out" : "gate_top_base", 
+			"points" : [[-3,0,5],[3,0,5]]
+		},                          
+		{ "type" : "line", "out" : "gate_top_base2", 
+			"points" : [[-3.2,0,5.2],[3.2,0,5.2]]
+		},    
+		
+		//actions
+		
+		{ "type" : "extrude", "in" : "gate_base","out" : "gate_column_base",   
+			"shift" : [0,0,2],
+			"times" : 1
+		},         
+		{ "type" : "column", "in" : "gate_column_base","out" : "gate_columns","outcap":"gate_column_cap", 
+			"angle" : 45,  
+			"r" :  0.2 , 
+			"sides" : 8
+		},
+		{ "type" : "select", "in":"gate_column_cap","out" : "gate_column_top", "remove" : true, 
+			"mode" : "dotnormal",
+			"normal" : [0,0,-1], 
+			"maxangle" : 30 
+		}, 
+		{ "type" : "inset","from" : "gate_column_top","out" : {"face" : "gate_column_top","edge":"gate_columns_edges"}, 
+			"amount" : 0.04, "extrude" :0  
+		},  
+		{ "type" : "inset","from" : "gate_column_top","out" : "gate_column_top",  
+			"extrude" : 3,
+			"amount" : 0.02
+		},            
+		{ "type" : "tesselate", "from" : "gate_top_base", "out" : "gate_top_base", 
+			"interpolation" : "linear",
+			"times" : 3
+		},                  
+		{ "type" : "tesselate", "from" : "gate_top_base2", "out" : "gate_top_base2", 
+			"interpolation" : "linear",
+			"times" : 3
+		},              
+		{ "type" : "deform", "in" : "gate_top_base", "out" : "gate_top_base2", 
+			"mode" : "bend",  
+			"amountx" : [0,0,-0.2],       
+			"mul" : [0.5,1,1]
+		},            
+		{ "type" : "deform", "in" : "gate_top_base2", "out" : "gate_top_base2", 
+			"mode" : "bend",  
+			"amountx" : [0,0,-0.2],      
+			"mul" : [0.5,1,1]
+		},            
+		{ "type" : "column","in" : "gate_middle_base","out" : "gate_top","outcap":"gate_top", 
+			"angle" : 45,   
+			"r" :  0.15 ,  
+			"sides" : 4,     
+			"normal" : [0,0,1]
+		},  
+		{ "type" : "column","in" : "gate_top_base","out" : "gate_top","outcap":"gate_top", 
+			"angle" : 45,  
+			"r" :  0.2 , 
+			"sides" : 4,     
+			"normal" : [0,0,1]
+		},  
+		{ "type" : "column","in" : "gate_top_base2","out" : "gate_topb","outcap":"gate_topb", 
+			"angle" : 45,  
+			"r" :  0.22 , 
+			"sides" : 4,     
+			"normal" : [0,0,1]
+		},  
+			
+		{ "type" : "material","in" : ["gate_columns","gate_columns_edges","gate_topb"],
+			"material" : "black.json"
+		},  
+		{ "type" : "material","in" : ["gate_column_top","gate_column_base","gate_top","gate_topb"],
+			"material" : "med_red.json"
+		}  
+	]
+}

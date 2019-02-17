@@ -1,0 +1,203 @@
+
+{
+	"properties" : 
+	{
+		"g_MeshTexture" : 
+		{
+			"type" : "string",
+			"description" : "diffuse texture path"
+		},
+		"SkyboxMode" : 
+		{
+			"type" : "boolean",
+			"description" : "Skybox Mode toggle (using g_EnvTexture)"
+		},
+		"g_MeshTexture_n" : 
+		{
+			"type" : "string",
+			"description" : "bump map texture path"
+		},
+		"g_DetailTexture_n" : 
+		{
+			"type" : "string",
+			"description" : "detail bump map texture path"
+		},
+		"g_MeshTexture_m" : 
+		{
+			"type" : "string",
+			"description" : "mask texture path (channels: red(1) - reflectivity, green(2) - rim brightness, blue(3) - metalness, alpha(4) - smoothness )"
+		},
+		"g_MeshTexture_e" : 
+		{
+			"type" : "string",
+			"description" : "emissive texture path"
+		},
+		"g_NoiseTexture" : 
+		{
+			"type" : "string",
+			"description" : "noise texture path"
+		},
+		"g_LightwarpTexture" : 
+		{
+			"type" : "string",
+			"description" : "lightwarp texture path"
+		},
+		"g_SkyTexture" : 
+		{
+			"type" : "string",
+			"description" : "enviroment texture path (skybox only)"
+		},
+		"g_DetailTexture" : 
+		{
+			"type" : "string",
+			"description" : "detail texture path"
+		},
+		"detailscale" : 
+		{
+			"description" : "detail scale vector (multiplied by texture coordinates)"
+		},
+		"detailblendfactor" : 
+		{
+			"type" : "number",
+			"description" : "detail blend factor"
+		},
+		"brightness" : 
+		{
+			"type" : "number",
+			"description" : "brightness"
+		},
+		"FullbrightMode" : 
+		{
+			"type" : "boolean",
+			"description" : "toggles lighting"
+		},
+		"ssao_mul" : 
+		{
+			"type" : "number",
+			"description" : "ssao multiplier"
+		},
+		"tint" : 
+		{
+			"description" : "texture tint"
+		},
+		"LightwarpEnabled" : 
+		{
+			"type" : "boolean",
+			"description" : "toggles lightwarp by (g_LightwarpTexture)"
+		},
+		"rimfade" : 
+		{
+			"type" : "boolean",
+			"description" : "fades rims on fullbright materials"
+		},
+		"alpha" : 
+		{
+			"type" : "integer",
+			"description" : "enables alpha blending"
+		},
+		"alphatest" : 
+		{
+			"type" : "boolean",
+			"description" : "clips alpha < 0.91 (243)"
+		},
+		"screenTexture" : 
+		{
+			"type" : "boolean",
+			"description" : "replaces model texcoords with screencoords"
+		},
+		"textureshiftdelta" : 
+		{
+			"description" : "shifts texcoords by vector multiplied by time in seconds (texcoord += textureshiftdelta * time)"
+		},
+		"texcoordmul" : 
+		{
+			"description" : "texcoord *= texcoordmul"
+		},
+		"noiseclip" : 
+		{
+			"type" : "boolean",
+			"description" : "clips by noise map (g_NoiseTexture)"
+		},
+		"nodarkenspec" : 
+		{
+			"type" : "boolean",
+			"description" : "disable specular intencity mask darkening"
+		},
+		"wireframe" : 
+		{
+			"type" : "integer",
+			"description" : "wireframe rendering"
+		},
+		"additive" : 
+		{
+			"type" : "integer",
+			"description" : "switches blend mode: 0 - opaque, 1 - additive"
+		},
+		"noiseclipedge" : 
+		{
+			"type" : "number",
+			"description" : "noiseclipedge"
+		},
+		"noiseclipmul" : 
+		{
+			"type" : "number",
+			"description" : "clipping noise map multiplier"
+		},
+		"base_specular_power" : 
+		{
+			"type" : "number",
+			"description" : "base value of smootheness"
+		},
+		"base_specular_intencity" : 
+		{
+			"type" : "number",
+			"description" : "base value of reflectivity"
+		},
+		"base_specular_tint" : 
+		{
+			"type" : "number",
+			"description" : "base value of metalness"
+		},
+		"base_specular_rim_intencity" : 
+		{
+			"type" : "number",
+			"description" : "base value of rimlight intencity"
+		},
+		"base_tdencity_val" : 
+		{
+			"type" : "number",
+			"description" : "material dencity"
+		},
+		"mul_specular_power" : 
+		{
+			"type" : "number",
+			"description" : "smootheness multiplier"
+		},
+		"mul_specular_intencity" : 
+		{
+			"type" : "number",
+			"description" : "reflectivity multiplier"
+		},
+		"mul_specular_tint" : 
+		{
+			"type" : "number",
+			"description" : "metalness multiplier"
+		},
+		"mul_specular_rim_intencity" : 
+		{
+			"type" : "number",
+			"description" : "rimlight multiplier"
+		},
+		"mul_emissive_intencity" : 
+		{
+			"type" : "number",
+			"description" : "emissive map multiplier (g_MeshTexture_e)"
+		},
+		"speculardarkenmul" : 
+		{
+			"type" : "number",
+			"description" : "specular darkening multiplier"
+		}
+	},
+	"description" : "model shader"
+}

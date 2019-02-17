@@ -1,0 +1,9 @@
+{
+	"#include" : "painting_base.json", 
+	"model" : "dyntest/sdm/furn/painting01_square.dnmd", 
+	
+	"modmaterial" :  [{},{},{ 
+			"g_MeshTexture" : "textures/single/painting/orb.dds",   
+		},
+	]
+}

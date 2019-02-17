@@ -1,0 +1,262 @@
+[
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000013,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000013,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [-0.274243861436844, 0.0234767198562622, 0.616467118263245, "vec3"],
+			"rotation" : [0.707106828689575, 0, 0, 0.70710688829422, "quat"],
+			"scale" : [49.6208992004395, 45.0475769042969, -13.2139577865601, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_noinstances"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000014,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000014,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.0110191674903035, 0.00104036601260304, 0.42743980884552, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_sdm_lake_test"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000015,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000015,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0101495953276753, 2.19745561480522E-05, 0.436654806137085, "vec3"],
+			"rotation" : [-0.061831034719944, -0.648894488811493, 0.0719360783696175, 0.754942238330841, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/building.dnmd",
+			"modelscale" : 0.5,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/architecture/test_sdm.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000017,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000017,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0127202048897743, 0.00205707992427051, 0.437257885932922, "vec3"],
+			"rotation" : [0.0625524446368217, 0.762586355209351, 0.641919076442719, -0.0498898848891258, "quat"],
+			"scale" : [0.999653100967407, 1, 1.00492799282074, "vec3"],
+			"model" : "dyntest/sdm/furn/painting01.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/common/painting_dawn.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000018,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000018,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0123653430491686, 0.0016537468181923, 0.437436491250992, "vec3"],
+			"rotation" : [0, 0.119712099432945, 0, 0.99280858039856, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/cupboard01.dnmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/cupboard01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000019,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000019,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0125217121094465, 0.00183809059672058, 0.437328815460205, "vec3"],
+			"rotation" : [-0.0494074933230877, -0.657530903816223, 0.0563325732946396, 0.74969208240509, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000020,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000020,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0126442369073629, 0.00166235561482608, 0.437414228916168, "vec3"],
+			"rotation" : [0, 0.688921630382538, 0, 0.724836051464081, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/chair01.dnmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/chair01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000021,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000021,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0125416768714786, 0.00166235561482608, 0.437415361404419, "vec3"],
+			"rotation" : [0, 0.74797123670578, 0, 0.663731455802917, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/chair01.dnmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/chair01.json"
+		},
+		"flags" : ["editornode", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000022,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000022,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0125708188861609, 0.00166075408924371, 0.437527805566788, "vec3"],
+			"rotation" : [0, 0.00999983306974173, 0, 0.999949872493744, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/table01.dnmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/table01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000023,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000023,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0127650639042258, 0.00167582230642438, 0.437359511852264, "vec3"],
+			"rotation" : [0, 0.0599639974534512, 0, 0.998200416564941, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/cupboard_small01.dnmd",
+			"modelscale" : 0.75,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/sdm/cupboard_small01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000024,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000024,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0125673469156027, 0.00175311940256506, 0.437510460615158, "vec3"],
+			"rotation" : [0, 0.375559151172638, 0, 0.926798403263092, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/clutter/clut_lab_book.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000025,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000025,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.012411518022418, 0.00184694968629628, 0.437420785427094, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "clutter/lab/vase.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/clutter/clut_lab_vase.json"
+		},
+		"flags" : ["editornode"]
+	}
+]

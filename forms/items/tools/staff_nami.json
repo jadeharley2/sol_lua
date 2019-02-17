@@ -1,0 +1,9 @@
+{	
+	"type" : "staff_nami",
+	"name" : "Nami staff",
+	"description" : "",
+	"appearance" : {
+		"model":"nami_staff.stmd",
+		"scale":1
+	}
+}

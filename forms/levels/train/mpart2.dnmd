@@ -1,0 +1,75 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat"],
+    "operations": [
+        {"type": "rectangle", "out": "base",
+            "w":0.02, 
+            "l":0.2 
+        }, 
+        {"type": "deform","in": "base","mode":"move","shift": [0,0,-0.545]},
+        {"type": "flip","in": "base","out": "sidea"},
+        {"type": "inset","from": "base","out": ["base",["sidea","sideb"]],
+           "amount": [0,-0.02], "extrude": 0.03 
+        },  
+        {"type": "inset","from": "base","out": ["base",["sidea","sideb"]],
+           "amount": [0,0.098], "extrude": 0.15 
+        },  
+        {"type": "merge","from": "sideb","out": "sideb"},
+        {"type": "inset","from": "sideb","out": ["sideb","sr"],
+           "amount": 0.02, "extrude": 0
+        },   
+        {"type": "inset","from": "sideb","out": ["*","sr"],
+           "amount": 0, "extrude": -0.01
+        },  
+
+        
+        {"type": "inset","from": "base","out": ["base","wdd"],
+            "amount": [-0.002,0.004], "extrude": 0.01
+        },  
+        {"type": "inset","from": "base","out": ["base","wdd"],
+            "amount": 0, "extrude": 0.14
+        },  
+
+		{ "type" : "uvmap", "in":["wdd","sidea","sr"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},       
+        {"type": "material", "in": ["wdd","sidea","sr"],
+            "material":"shinymetal",
+            "smooth":true
+        },    
+
+        {"type": "inset","from": "base","out": ["base",["wx1","wx2"]],
+            "amount": [0,-0.02], "extrude": 0.2
+        },  
+        {"type": "inset","from": "base","out": ["base",["wx1","wx2"]],
+            "amount": [0,0], "extrude": 0.02
+        },  
+        {"type": "inset","from": "base","out": ["base",["wx1","wx2"]],
+            "amount": [0,0.01], "extrude": 0.02
+        },  
+        {"type": "inset","from": "base","out": ["wx1",["wx1","wx2"]],
+            "amount": [0,0.02], "extrude": 0.01
+        },  
+        {"type": "merge","from": "wx2","out": "wx2"},
+        {"type": "inset","from": "wx2","out": ["wx2","sss"],
+           "amount": 0.01, "extrude": 0
+        },    
+        {"type": "inset","from": "wx2","out": ["*","sss"],
+           "amount": 0, "extrude": -0.012
+        },   
+
+		{ "type" : "uvmap", "in":["wx1","sss"],
+			"edge" : 1,     
+			"scale" : 1.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},     
+        {"type": "material", "in": ["wx1","sss"],
+            "material":"redleather",
+            "smooth":true
+        },
+        
+    ]
+} 

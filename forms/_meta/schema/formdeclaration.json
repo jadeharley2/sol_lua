@@ -1,0 +1,38 @@
+{  
+	"description":"form declaration file",
+	"type":"object",
+	"properties": {
+		"types":{
+			"type":"array",   
+			"items": { 
+				"type":"object",
+				"properties": {
+					"name":{
+						"type":"string",
+						"description": "form type name"
+					},
+					"shortname":{
+						"type":"string",
+						"minLength": 4,
+						"maxLength": 4,
+						"description": "four letter form type id"
+					}, 
+					"directory":{
+						"type":"string",
+						"description": "form definitions directiory",
+					},
+					"recursive":{
+						"type":"boolean",
+						"description": "include subdirectories"
+					},
+					"baseclass":{
+						"type":"string", 
+						"description": "lua form base class"
+					}
+				} 
+			},
+			"required": ["name","shortname","directory"]
+		}
+	},
+	
+}

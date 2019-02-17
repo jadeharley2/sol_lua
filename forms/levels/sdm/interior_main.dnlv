@@ -1,0 +1,321 @@
+{
+	name : "scarlet devil mansion",  
+	seed : 44300001,
+	operations : [  
+		{type : "point", out : "zero",
+			pos : [0,0,0], 
+			loop : false 
+		},
+		{type:"entity", in : "zero" , out : "foyer", 
+			etype : "prop_static",
+			data : { 
+				variables : {
+					model : "forms/levels/sdm/arch/foyer.dnmd",
+				} 
+			},
+		},
+		
+		
+		
+		
+		
+		
+		{type : "point", out : "zero2",
+			pos : [21.29,-2,0], 
+			loop : false 
+		},
+		{type:"entity", in : "zero2" , out : "entrance", 
+			etype : "prop_static",
+			data : { 
+				variables : {
+					model : "forms/levels/sdm/arch/entrance_room.dnmd",
+				} 
+			},
+		},
+		 
+		{type : "point", out : "s2",
+			pos : [0,3,0], 
+			loop : false 
+		},
+		{type : "point", out : "s2", cwdc
+			pos : [12,4,0], 
+			loop : false 
+		}, 
+		{type : "point", out : "s2",
+			pos : [20,4,0], 
+			loop : false 
+		},
+		{type:"entity", in : "s2" , out : "lights", 
+			etype : "omnilight",
+			data : { 
+				variables : { 
+					brightness : 0.01,
+					color : //[0.15,0,0],//
+						[0.3,0.2,0.1],
+				} 
+			},
+		}, 
+		
+		
+		
+		
+		
+		{type : "point", out : "zero3",
+			pos : [0,4,0], 
+			loop : false 
+		},
+		{type:"entity", in : "zero3" , out : "f2corridors", 
+			etype : "prop_static",
+			data : { 
+				variables : {
+					model : "forms/levels/sdm/arch/corridors_2floor.dnmd",
+				} 
+			},
+		},
+		
+		{type : "point", out : "zero4",
+			pos : [0,-2,0], 
+			loop : false 
+		},
+		{type:"entity", in : "zero4" , out : "f1corridors", 
+			etype : "prop_static",
+			data : { 
+				variables : {
+					model : "forms/levels/sdm/arch/corridors_1floor.dnmd",
+				} 
+			},
+		},   
+		
+		
+		
+		{type : "point", out : "outl2",
+			points :[
+				[33.77758, 5.974127, 11.58671], 
+				[33.77758, 5.974127, 18.08671], 
+				
+				[42.11064, 6.093858, 23.64177], 
+				
+				[11.0603, 5.817188, 14.99348],
+				[11.0603, 5.817188, 18.99348], 
+			],
+			loop : false 
+		}, 
+		//{type : "point", out : "outl2_nomirror",
+		//	points :[  
+		//		[42.11064, 6.093858, 33.64177],  
+		//		[42.11064, 6.093858, 41.64177],  
+		//		[42.11064, 0.093858, 33.64177],  
+		//		[42.11064, 0.093858, 41.64177],  
+		//		
+		//		[35.51064, 6.093858, 45.64177],  
+		//		[35.51064, 0.093858, 45.64177],  
+		//		[25, 6.093858, 45.64177],  
+		//		[25, 0.093858, 45.64177],  
+		//		[14.5, 6.093858, 45.64177],  
+		//		[14.5, 0.093858, 45.64177],  
+		//	],
+		//	loop : false 
+		//}, 
+		//{ type : "mirror", in : "outl2", out : "outl2",
+		//	pos : [0,0,0],
+		//	dir : [0,0,1], 
+		//},   
+		{type:"entity", in : ["outl2","outl2_nomirror"] , out : "lights", 
+			etype : "omnilight",
+			data : { 
+				variables : { 
+					brightness : 0.01,
+					color :  [0.028,0.018,0.0165],
+				} 
+			},
+		}, 
+		
+		{type : "point", out : "outl4",
+			points :[  
+				[32.11064, 4, 37.5],   
+				[15.11064, 4, 37.5],   
+			],
+			loop : false 
+		}, 
+		{type:"entity", in : ["outl4"] , out : "lights", 
+			etype : "omnilight",
+			data : { 
+				variables : { 
+					brightness : 0.01,
+					color :  [0.5,0.45,0.4],
+				} 
+			},
+		}, 
+		 
+		
+		 
+		 
+		 {type : "point", out : "s3",
+		 	pos : [100,400,200], 
+		 	loop : false 
+		 },
+		 {type:"entity", in : "s3" , out : "lights", 
+		 	etype : "omnilight",
+		 	data : {  
+		 		variables : { 
+		 			brightness : 1,
+		 			color : [500,500,500],//
+		 			//[3000,3000,3000],
+		 		} 
+		 	},  
+		 }, 
+		 
+		
+		
+		
+		{type : "point", out : "sdoor",
+			pos : [5.554467, 0, 5.538571],//[0, 0, -7.867295], 
+			loop : false 
+		},
+		{type:"entity", in : "sdoor" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname :"foyer.flatgrass.door",
+			seed:328842120,
+			ang : [0,45,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.1,
+					character : "planet_location_test:flatgrass.door", 
+				} 
+			},
+		},
+		{type : "point", out : "wwdoor",
+			pos : [5.554467, 0, -5.538571],//[0, 0, -7.867295], 
+			loop : false 
+		},
+		{type:"entity", in : "wwdoor" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname :"foyer.sol.door",
+			seed:328842050,
+			ang : [0,135,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.1,
+					character : "planet_location_test:sol.door", 
+				} 
+			},
+		},
+		
+		{type : "point", out : "bdoor",
+			pos : [31.763,-1.925866,0],//[7.867295, 0,0], 
+			loop : false  
+		},
+		{type:"entity", in : "bdoor" , out : "entrydoor2", 
+			etype : "use_door_teleport",
+			globalname :"foyer.exit.door",
+			seed:328842080,
+			ang : [0,90,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.1,
+					character : "gensokyo:gensokyo.door",//"forms/levels/sdm/exterior.dnmd:sdm.main.door",
+				} 
+			},
+		},
+		
+		{type : "point", out : "fdoor",
+			pos : [28.763,3.961589,0],//[-7.867295, 0,0], 
+			loop : false 
+		},
+		{type:"entity", in : "fdoor" , out : "entrydoor2", 
+			etype : "use_door_teleport",
+			globalname :"foyer.secondfexit.door",
+			seed:328842020,
+			ang : [0,90,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.1,
+					character : "forms/levels/sdm/exterior.dnlv:sdm.second.door",
+				} 
+			},
+		},
+		
+		
+		{type : "point", out : "ldoor",
+			pos : [-15.4784, 4.010748, 26.89052], 
+			loop : false 
+		},
+		{type:"entity", in : "ldoor" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname : "sdm.f2.library.door" ,
+			seed:328842030,
+			ang : [0,0,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.07,
+					character : "forms/levels/sdm/interior_library.dnlv:sdm.f2.corridors.door", 
+				} 
+			}, 
+		},
+		
+		
+		
+		{type : "point", out : "st2door",
+			pos : [-27.62312, 4.049592, 12.6], 
+			loop : false 
+		},
+		{type:"entity", in : "st2door" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname : "sdm.f2.tower2.door" ,
+			seed:328842012,
+			ang : [0,-90,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.07,
+					character : "forms/levels/sdm/interior_tower2.dnlv:sdm.f2.corridors.door", 
+				} 
+			}, 
+		},
+		
+		{type : "point", out : "st2door2",
+			pos : [-27.62312, -2.049592, 12.6], 
+			loop : false 
+		},
+		{type:"entity", in : "st2door2" , out : "entrydoor", 
+			etype : "use_door_teleport",
+			globalname : "sdm.f1.tower2.door" ,
+			seed:328842010,
+			ang : [0,-90,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.07,
+					character : "forms/levels/sdm/interior_tower2.dnlv:sdm.f1.corridors.door", 
+				} 
+			}, 
+		},
+		
+		
+		 
+		{type : "point", out : "lib2door",
+			pos : [3.467292, -1.96076, 26.92152], 
+			loop : false 
+		},
+		{type:"entity", in : "lib2door" , out : "libdoor2", 
+			etype : "use_door_teleport",
+			globalname : "sdm.f1.library.door" ,
+			seed:328842011,
+			ang : [0,0,0], 
+			data : { 
+				variables : {  
+					model : "door/door2.stmd",
+					modelscale : 0.08,
+					character : "forms/levels/sdm/interior_library.dnlv:sdm.f1.corridors.door", 
+				} 
+			},  
+		},
+		 
+		 
+	]    
+} 

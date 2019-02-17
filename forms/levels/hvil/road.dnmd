@@ -1,0 +1,56 @@
+{
+    "variables":{
+        "$width":5
+    },
+    "matpath": [
+        "textures/tile/road",
+        "textures/debug",
+    ],
+    "input_operations": [
+        {"type": "line", "out": "base", 
+            "points": [[-20,0,0],[-10,0,0],[0,0,0],[10,10,0],[20,20,0]] 
+        }
+    ],
+    "operations": [ 
+          
+
+		{ "type" : "tesselate","from" : "base","out" : "base", 
+			"interpolation" : "cubic",
+			"mindist":5//2 ,
+        },      
+        
+        {"type": "line", "out":"brdg_profile",
+            "points": [[0,-2,-3],[0,-1,0.3],[0,1,0.3],[0,2,-3]],
+            "loop":false
+        },
+        {"type":"deform","in":"brdg_profile","mode":"transform", 
+            "world":{"ang":[-90,0,0],"sca":[1,2,0.5]}
+        },  
+        {"type": "pathextrude","in": "base","out": ["tts","ttt","tts"],
+            "profile":"brdg_profile","normal":[0,0,1]
+        },     
+
+		{ "type" : "uvmap", "in":[ "ttt","tts"],
+			"edge" : 1,     
+			"scale" : 4.0     ,
+			"shift" : [0.0 ,0.0], 
+            "mul" : [1,1,1] 
+		},   
+        //{ "type" : "uvmap", "in":[ "ttt"],
+        //    "mode":"face",
+		//	"edge" : 1,     
+		//	"scale" : 4.0     ,
+		//	"shift" : [0.0 ,0.0], 
+        //    "mul" : [1,1,1] 
+		//}, 
+        {"type": "material", "in": [ "ttt"],
+            "material":"dirt.json",
+            "smooth":true
+        },
+        {"type": "material", "in": [ "tts"],
+            "material":"grass.json",
+            "smooth":true
+        },
+
+    ]
+}

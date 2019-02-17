@@ -1,0 +1,14 @@
+{ 
+	"name" : "saturn",
+	"class" : "planetarchetype", 
+	"atmosphere" : 
+	{ 
+		"color" : [244,217,172],
+		"hazecolor" : [244,217,172],
+		"clouds": {
+			"texture":"textures/atmosphere/saturn.jpg",
+			"color":[255,255,255],
+		},
+	},  
+	"noHydrosphere" : 1,
+}

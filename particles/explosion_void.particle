@@ -1,0 +1,89 @@
+{
+	"name" : "magic",
+	
+	"emitters": [
+		{"type":"once","count":1000}
+	],
+	"initializers": [
+		{"type":"positionrandomsphere","pos":[0,0,0],"max":10},
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		{"type":"attractor","dir":[0,0,0],"power":-10,"mode":0}, 
+		{"type":"rotationrand"}, 
+		
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		{"type":"movement","dir":[0,0,0],"drag":0.2},
+		{"type":"scale","startscale":0,"endscale":10,"starttime":0,"endtime":0.2},
+		{"type":"scale","startscale":10,"endscale":0,"starttime":0.2,"endtime":1},
+	],
+	
+	"renderers": [ 
+		{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/warp/warp3.png","tint":[0.3,0.3,0.3,1] },//"tint":[0.05,0.07,0.1,1] },
+		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/warp/warp3.png","tint":[0.1,0.1,0.1,1] },//"tint":[0.05,0.07,0.1,1] },
+	],
+	
+	"forces": [
+		
+	],
+	"children" : [
+		{ 
+			"name" : "sparks",
+			"emitters": [
+				{"type":"once","count":100}
+			],
+			"initializers": [
+				{"type":"positionrandomsphere","pos":[0,0,0],"max":10},
+				//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+				{"type":"attractor","dir":[0,0,0],"power":-20,"mode":0}, 
+				{"type":"rotationrand"},  
+			],
+			"updaters": [
+				{"type":"movement","dir":[0,-100,0],"drag":0.2},
+				{"type":"scale","startscale":0,"endscale":0.4,"starttime":0,"endtime":0.2},
+				{"type":"scale","startscale":0.4,"endscale":0,"starttime":0.2,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.5,0.7,1,1] },
+			],
+		},
+		{
+			"name" : "flare",
+			"emitters": [
+				{"type":"once","count":1}
+			],
+			"initializers": [    
+			],
+			"updaters": [ 
+				{"type":"scale","startscale":0,"endscale":50,"starttime":0,"endtime":0.2},
+				{"type":"scale","startscale":50,"endscale":0,"starttime":0.2,"endtime":0.4},
+				{"type":"scale","startscale":0,"endscale":0,"starttime":0.4,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[1,0.4,0.2,1] },
+			],
+		},
+		//{
+		//	"name" : "dust",
+		//	"emitters": [
+		//		{"type":"once","count":100}
+		//	],
+		//	"initializers": [
+		//		{"type":"positionrandomsphere","pos":[0,0,0],"max":10}, 
+		//		{"type":"attractor","dir":[0,0,0],"power":-20,"mode":0}, 
+		//		{"type":"rotationrand"},  
+		//	],
+		//	"updaters": [
+		//		{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		//		{"type":"scale","startscale":0,"endscale":10,"starttime":0,"endtime":0.2},
+		//		{"type":"scale","startscale":10,"endscale":0,"starttime":0.2,"endtime":1},
+		//	],
+		//	
+		//	"renderers": [  
+		//		{ "type":"stars", "blend" : 2, "depth" : "read", "texture":"textures/space/spcloud1.dds","tint":[0.3,0.3,0.3,1] },
+		//	],
+		//},
+	],
+}

@@ -1,0 +1,79 @@
+{
+	"name" : "scarlet devil mansion",  
+	"operations" : [    
+		{"type" : "point", "out" : "ssd",
+			"pos" : [0,10,0], 
+			"loop" : false 
+		},
+		{"type":"entity", "in" : "ssd" , "out" : "building", 
+			"etype" : "prop_static", 
+			"data" : { 
+				"variables" : {
+					"model" : "forms/levels/sdm/arch/building.dnmd",
+					"modelscale" : 0.5,
+				} 
+			},
+		},
+		{"type" : "point", "out" : "s2",
+			"pos" : [0,4,0], 
+			"loop" : false 
+		},
+		{"type":"entity", "in" : "s2" , "out" : "lights", 
+			"etype" : "omnilight",
+			"data" : { 
+				"variables" : { 
+					"brightness" : 0.01,
+					"color" : //[0.1,0,0],//
+						[0.3,0.2,0.1],
+				} 
+			},
+		},
+		{"type" : "point", "out" : "s3",
+			"pos" : [100,400,200], 
+			"loop" : false 
+		},
+		{"type":"entity", "in" : "s3" , "out" : "lights", 
+			"etype" : "omnilight",
+			"data" : { 
+				"variables" : { 
+					"brightness" : 1,
+					"color" : [2000,2000,2000],
+				} 
+			},
+		},
+		
+		{"type" : "point", "out" : "sdoor",
+			"pos" : [4.462571, 9.457041, 0], //.7623632
+			"loop" : false 
+		},
+		{"type":"entity", "in" : "sdoor" , "out" : "entrydoor", 
+			"etype" : "use_door_teleport",
+			"globalname" :"sdm.main.door",
+			"ang" : [0,-90,0], 
+			"data" : { 
+				"variables" : {  
+					"model" : "door/door2.stmd",
+					"modelscale" : 0.1,
+					"character" : "forms/levels/sdm/interior_main.dnlv:foyer.exit.door",
+				} 
+			},
+		},
+		
+		{"type" : "point", "out" : "ddoor",
+			"pos" : [2.462571, 14, 0], //.7623632
+			"loop" : false 
+		},
+		{"type":"entity", "in" : "ddoor" , "out" : "entrydoor", 
+			"etype" : "use_door_teleport",
+			"globalname" :"sdm.second.door",
+			"ang" : [0,-90,0], 
+			"data" : { 
+				"variables" : {  
+					"model" : "door/door2.stmd",
+					"modelscale" : 0.1,
+					"character" : "forms/levels/sdm/interior_main.dnlv:foyer.secondfexit.door",
+				} 
+			},
+		},
+	]   
+} 

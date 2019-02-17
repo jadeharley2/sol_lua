@@ -1,0 +1,74 @@
+{
+	"name" : "Libra",
+	"sizepower" : 750,
+	"hull" : {"model":"space/ships/libra/hull.stmd",	"scale":0.5,},
+	"fallbackpos" : [-0.005031675, -0.0004091228, 0.03210592],
+	"fallbackdistance" : 0.1,
+	"commandchair" : {"model":"space/ships/common/chair1.stmd","pos":[-0.002029603, 0.00202461, 0.03024052],"scale":0.75},
+	"teleporter" : {"pos":[-0.005031675, -0.0004091228, 0.03210592],"ang":[0,0,0],"scale":0.5,"seed":43433534,"name":"teleporter","seed":333004},
+	"interior": {
+		"rooms" : {
+			"l1_entrance":{
+			},
+			"l1_hall":{
+				"props" : [ 
+					{"type":"forms/props/active/futur/button.json","pos":[-0.0009849225, -0.0008214328, 0.02827399],"ang":[0,-90,0],"name":"l1btn","seed":333003}, 
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-2.716709E-05, 1.38788E-05, 0.03081206],"ang":[0,180,0],"name":"l1lamp","seed":333002},
+				],
+				"wire" : [
+					["l1btn","out","l1lamp","toggle"],
+				],
+			},
+			"l1_teleport" : { 
+				"doors" : [
+					{"model":"space/ships/libra/teleport_door.stmd","pos":[-0.002956, -0.002193, 0.0308513],"ang":[0,0,0],"scale":0.5,"seed":2329929,"name":"door"},
+				],
+				"props" : [
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.006145914, -9.995489E-05, 0.03275942],"ang":[0,45,0],"name":"tel_lamp","seed":333001},
+				],
+				"wire" : [
+					["door","closed","tel_lamp","off"],
+					["door","open","tel_lamp","on"],
+					["door","open","teleporter","off"],
+					["door","closed","teleporter","on"],
+					
+					["teleporter","teleport_prepare","door","close"], 
+					["teleporter","teleport_stop","door","open"], 
+				],
+			},
+			"l2_hall" : { 
+				"props" : [
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.001653643, 0.002596355, 0.01789307],"ang":[0,90,0],"name":"l2lamp1","seed":333005},
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.002346269, 0.002596355, 0.007363375],"ang":[0,-90,0],"name":"l2lamp2","seed":333006},
+					{"type":"forms/props/active/futur/button.json","pos":[-0.001653643, 0.0020, 0.01789307],"ang":[0,90,0],"name":"l2btn","seed":333007}, 
+				],
+				"wire" : [
+					["l2btn","out","l2lamp1","toggle"],
+					["l2btn","out","l2lamp2","toggle"],
+				],
+			},
+			"l2_cabin" : { 
+			},
+			"l3_bridge" : { 
+				"props" : [
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.001730114, 0.004756389, 0.02332595],"ang":[0,-90,0],"name":"l3lamp1","seed":333008},
+					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[ 0.001730114, 0.004756389, 0.02332595],"ang":[0,-90,0],"name":"l3lamp2","seed":333009},
+					{"type":"forms/props/active/futur/button.json","pos":[ 0.001730114, 0.004356389, 0.02332595],"ang":[0,-90,0],"name":"l3btn","seed":333010}, 
+				],
+				"wire" : [
+					["l3btn","out","l3lamp1","toggle"],
+					["l3btn","out","l3lamp2","toggle"],
+				],
+			},
+		},
+		"airlocks":{
+			"right": {
+				"door_out" : {"model":"space/ships/libra/gateway_door.stmd","pos":[-0.007326, -0.0009346, 0.025378],"ang":[0,0,0],"scale":0.5,"seed":2342345},
+				"door_in": {"model":"space/ships/libra/gateway_door.stmd","pos":[-0.0051886, -0.0009346, 0.025378],"ang":[0,0,0],"scale":0.5,"seed":2342346},
+			},
+		},
+		"static" : [],
+		"props" : [],
+		"wire" : [],
+	},
+}

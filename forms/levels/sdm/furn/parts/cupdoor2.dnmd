@@ -1,0 +1,103 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	input : {
+		"base" : { type : "surface", "default" : [[0.3,0,0],[-0.3,0,0],[-0.3,0,1.5],[0.3,0,1.5]],},
+	}, 
+	variables : {
+		"$frame.width" : 0.05,
+		"$frame.depth" : -0.02,
+		"$frame.depths" : -0.01,
+		"$frame.splitx" : 2, 
+		"$frame.splity" : 2, 
+		"$handle.shift" : 0.01, 
+		"$mat.primary" : "Wood07.json",
+		"$mat.secondary" : "concrete06b.json",
+	},
+	operations : [ 
+		
+		//anchors
+		  
+		{ type : "material",in : "base",
+			material : "$mat.primary", //"red.json"
+		},    
+		{ type : "uvmap", in:["base"],
+			edge : 3,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		
+		
+		
+		{ type : "split", in : ["base"],out : ["*","handle","*"],
+			stype:"constant",    
+			size:["$handle.shift",0.02,0], 
+			side:"first",
+		},   
+		{ type : "split", from : ["handle"],out : ["*","handle","*"],
+			stype:"constant",    
+			size:[0,0.2,0], 
+			side:"first",
+		},        
+		{ type : "inset", from : "handle",out : ["handle","*"], 
+			mode : "normal",
+			amount : 0, 
+			extrude : -0.01,  
+		},     
+		{ 	type : "structure", out : "legs",
+			path : "models/dyntest/sdm/furn/parts/handle.dnmd",
+			from : {"base":"handle"},   
+			"$width" : 0.02, 
+			"$extend" : 0.025,  
+		},      
+		
+		
+		{ type : "inset", from : "base",out : ["base","frame"], 
+			mode : "normal",
+			amount : "@($frame.width/2)", 
+			extrude : 0,  
+		},     
+		{ type : "split", from : "base",out : ["base"],
+			steps : "@($l*$frame.splity)", 
+			stype:"constant",   
+			side:"second", 
+		},        
+		{ type : "split", from : "base",out : ["base"],
+			steps : "@($l*$frame.splitx)", 
+			stype:"constant",   
+			side:"first", 
+		},        
+		{ type : "inset", from : "base",out : ["base","frame"], 
+			mode : "normal",
+			amount : "@($frame.width/2)", 
+			extrude : "$frame.depths",  
+		},     
+		{ type : "inset", from : "base",out : ["base","frame"], 
+			mode : "normal",
+			amount : 0.1, 
+			extrude : "@(0-$frame.depth)",  
+		},      
+		{ type : "inset", from : "base",out : ["base","frame"], 
+			mode : "normal",
+			amount : 0.01, 
+			extrude : 0,  
+		},      
+		{ type : "inset", from : "base",out : ["base","frame"], 
+			mode : "normal",
+			amount : 0.02, 
+			extrude : "$frame.depth",  
+		},      
+		 
+		{ type : "uvmap", in:["frame"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},      
+		 
+	]
+}

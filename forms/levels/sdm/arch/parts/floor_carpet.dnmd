@@ -1,0 +1,52 @@
+{
+	name : "sdm_carpet",
+	input : {
+		"base" : { type : "surface", points : [[-1,-1,0],[1,-1,0],[1,1,0],[-1,1,0]]},
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : { 
+		"$side" :0,
+		"$cross" : false,
+		"$block" : false,
+		"$offx" : 0.8,
+		"$offy" : 0.8,
+		"$mat.floor" : "fo_floor.json",
+		"$mat.carpet" : "redcarpet.json",
+	},
+	operations : [  
+		{ type : "material",in : "base",
+			material : "$mat.carpet",  
+		},    
+		{ type : "frotate",in:"base",add:"$side"},
+		{ type : "split", from : "base",out : ["base_s","base_c","base_s"],   
+			stype:"constant", 
+			size : ["$offx" ,0,"$offx" ],   
+			side:"second", 
+		},
+		{type:"branch", condition:"bool", value:"$cross",
+			ontrue:[
+				{ type : "split", from : "base_s",out : ["base_s","base_c","base_s"],   
+					stype:"constant", 
+					size : ["$offy",0,"$offy"],   
+					side:"first", 
+				},  
+			], 
+		},
+		{type:"branch", condition:"bool", value:"$block",
+			ontrue:[
+				{ type : "split", from : "base_c",out : ["base_s","base_c","base_s"],   
+					stype:"constant", 
+					size : ["$offy",0,"$offy"],   
+					side:"first", 
+				},  
+			], 
+		},
+		{ type : "material",in : "base_s",
+			material : "$mat.floor",  
+		},    
+	]   
+} 

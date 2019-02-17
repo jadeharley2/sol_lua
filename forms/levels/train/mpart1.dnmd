@@ -1,0 +1,27 @@
+{
+    "operations": [
+        {"type": "rectangle", "out": "base",
+            "w":0.1, 
+            "l":0.2 
+        }, 
+        {"type": "deform","in": "base","mode":"rotate",
+            "axis":[0,1,0],"angle":90
+        },
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0, "extrude": 0.02 
+        },  
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0.02, "extrude": 0 
+        },  
+        {"type": "inset","from": "base","out": ["base",["sidea","sideb"]],
+            "nolimits":true,
+           "amount": [0,0,0,0.1], "extrude": 0.4 
+        },   
+        {"type": "inset","from": "sideb","out": ["sideb","side"],
+           "amount": 0.02, "extrude": 0
+        },  
+        {"type": "inset","from": "sideb","out": ["*","side"],
+           "amount": 0, "extrude": -0.03
+        },  
+    ]
+} 

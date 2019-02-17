@@ -1,0 +1,621 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/rooms/foyer.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0212900005280972, -0.0020000000949949, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/rooms/entrance_room.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0.00300000002607703, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.300000011920929, 0.200000002980232, 0.100000001490116, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0199999995529652, 0.00400000018998981, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.300000011920929, 0.200000002980232, 0.100000001490116, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0.00400000018998981, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/rooms/corridors_2floor.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, -0.0020000000949949, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/rooms/corridors_1floor.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.033777579665184, 0.00597412697970867, 0.0115867098793387, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.0280000008642673, 0.0179999992251396, 0.016499999910593, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.033777579665184, 0.00597412697970867, 0.0180867090821266, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.0280000008642673, 0.0179999992251396, 0.016499999910593, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0421106405556202, 0.00609385780990124, 0.0236417688429356, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.0280000008642673, 0.0179999992251396, 0.016499999910593, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.011060300283134, 0.00581718795001507, 0.014993479475379, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.0280000008642673, 0.0179999992251396, 0.016499999910593, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.011060300283134, 0.00581718795001507, 0.0189934801310301, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.0280000008642673, 0.0179999992251396, 0.016499999910593, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0321106426417828, 0.00400000018998981, 0.0375000014901161, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.5, 0.449999988079071, 0.400000005960464, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0151106398552656, 0.00400000018998981, 0.0375000014901161, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [0.5, 0.449999988079071, 0.400000005960464, "vec3"],
+			"brightness" : 0.01,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.100000001490116, 0.400000005960464, 0.200000002980232, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"color" : [500, 500, 500, "vec3"],
+			"brightness" : 1,
+			"luaenttype" : "omnilight"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00559495715424418, 0, 0.0055228122510016, "vec3"],
+			"rotation" : [0, 0.382683455944061, 0, 0.923879504203796, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.100000001490116,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "flatgrass.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0318209789693356, -0.00192586588673294, -5.55327605979983E-05, "vec3"],
+			"rotation" : [0, 0.70710676908493, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.100000001490116,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/exterior.dnmd:sdm.main.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0288209766149521, 0.00396158918738365, -5.55327605979983E-05, "vec3"],
+			"rotation" : [0, 0.70710676908493, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.100000001490116,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/exterior.dnmd:sdm.second.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0154783995822072, 0.00401074811816216, 0.0268905200064182, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0700000002980232,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_library.dnmd:sdm.f2.corridors.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.027661994099617, 0.0040495921857655, 0.0125594176352024, "vec3"],
+			"rotation" : [0, -0.70710676908493, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0700000002980232,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_tower2.dnmd:sdm.f2.corridors.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.027661994099617, -0.0020495920907706, 0.0125594176352024, "vec3"],
+			"rotation" : [0, -0.70710676908493, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0700000002980232,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_tower2.dnmd:sdm.f1.corridors.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00346729205921292, -0.0019607599824667, 0.0269215181469917, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0799999982118607,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_library.dnmd:sdm.f1.corridors.door"
+		},
+		"flags" : ["useable", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "map/citytest/sky.json",
+			"modelscale" : 5,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"iscreated" : True,
+		"sizepower" : 1000,
+		"seed" : 120001,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 120001,
+			"abssize" : 1000,
+			"name" : "Jade Harley",
+			"position" : [0.0295942910015583, 0.00399903487414122, 0.0171439498662949, "vec3"],
+			"rotation" : [0, 0.564170062541962, 0, 0.82562917470932, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [3.34764180820457E-08, -0.000919145124498755, 1.30383448482263E-09, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.0347960442304611, 0.00507350591942668, 0.00910805910825729, "vec3"]
+		},
+		"flags" : ["actor", "player", "physsimulated"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0332169979810715, 0.00399999972432852, 0.0146954171359539, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/common/painting_base.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000011,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000011,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0343305990099907, 0.00399613194167614, 0.0131895011290908, "vec3"],
+			"rotation" : [0, 0.710353195667267, 0, 0.703845202922821, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000014,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000014,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0355074033141136, 0.00591090554371476, 0.0129660218954086, "vec3"],
+			"rotation" : [-0.499604105949402, 0.504539251327515, 0.498528301715851, 0.49729797244072, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/painting01.dnmd",
+			"modelscale" : 1,
+			"modeldata" : 
+			{
+				"$painting" : "horison2.json"
+			},
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/common/painting_base.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000023,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000023,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0355400629341602, 0.00647217407822609, 0.0133688291534781, "vec3"],
+			"rotation" : [-0.399103611707687, 0.399421453475952, 0.583368062973022, 0.583832740783691, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/painting01.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/common/painting_horison.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000024,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000024,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0355318747460842, 0.00685174204409122, 0.0125292195007205, "vec3"],
+			"rotation" : [-0.519197106361389, 0.519610464572906, 0.479621142148972, 0.480003416538239, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/furn/painting01.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/common/painting_darkness.json"
+		}
+	}
+]

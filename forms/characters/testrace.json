@@ -1,0 +1,12 @@
+{
+	"name": "Test",
+	"model" : "races/new/testrace.json",
+	"attributes" : [ "humanoid" ],
+	"movement" :
+	{
+		"walk": { "speed" : 4 },
+		"run" : { "speed" : 4 } 
+	},
+	"mass" : 10
+}
+ 

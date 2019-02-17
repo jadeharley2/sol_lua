@@ -1,0 +1,34 @@
+[ 
+	{
+		"components" : [],
+		"sizepower" : 9.46073E14,
+		"seed" : 56001,
+		"parameters" : 
+		{ 
+			"seed" : 56001,
+			"abssize" : 9.46073E14,
+			"name" : "MAIN SYSTEM TEMP NAME",
+			"position" : [0.383769154548645, -0.0003, 0.142187893390656, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"], 
+			"generator" : "com.system.empty",
+			"luaenttype" : "starsystem",
+		}
+	},
+	{
+		"components" : [],
+		"sizepower" : 9.46073E14,
+		"seed" : 254000,
+		"parameters" : 
+		{ 
+			"seed" : 254000,
+			"abssize" : 9.46073E14,
+			"name" : "Sol",
+			"position" : [-0.212763, 0, -0.166229, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"], 
+			"generator" : "com.system.empty",
+			"luaenttype" : "starsystem",
+		}
+	}
+]

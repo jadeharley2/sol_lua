@@ -1,0 +1,5 @@
+{ 
+	"type":"string",
+	"description":"path to model",
+	"default":"" 
+}

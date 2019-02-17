@@ -1,0 +1,72 @@
+
+{
+	"output" : 	[
+
+		{
+			"type" : "output",
+			"vtype" : "float",
+			"id" : 202,
+			"value" : [101, 1],
+			"name" : "b3",
+			"pos" : [760, -500]
+		},
+
+		{
+			"type" : "output",
+			"vtype" : "float",
+			"id" : 201,
+			"value" : [100, 1],
+			"name" : "b2",
+			"pos" : [760, 0],
+			"next" : [202,-1],
+		},
+
+		{
+			"type" : "output",
+			"vtype" : "float",
+			"id" : 200,
+			"value" : [102, 1],
+			"name" : "b1",
+			"pos" : [760, 500],
+			"next" : [201,-1],
+		}
+	],
+	"input" : 	[
+
+		{
+			"pos" : [-760, 500],
+			"type" : "input",
+			"vtype" : "float",
+			"name" : "a1",
+			"id" : 100
+		},
+
+		{
+			"pos" : [-760, -500],
+			"type" : "input",
+			"vtype" : "float",
+			"name" : "a3",
+			"id" : 102
+		},
+
+		{
+			"pos" : [-760, 20],
+			"type" : "input",
+			"vtype" : "float",
+			"name" : "a2",
+			"id" : 101
+		}
+	],
+	"nodes":[1,
+		
+		{
+			"pos" : [-1380, 260],
+			"event" : "entry",
+			"id" : 2,
+			"next" : [200,-1],
+			"type" : "event"
+		}
+	
+	
+	],
+}

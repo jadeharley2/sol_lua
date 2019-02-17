@@ -1,0 +1,8 @@
+{
+	"group" : "furniture",
+	"tags" : ["futur"],
+	"model" : "furniture/futur/chair_b.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],
+	"icon" : "lab/chair_b",
+}

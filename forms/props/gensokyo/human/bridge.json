@@ -1,0 +1,8 @@
+{
+	"group" : "arch",
+	"tags" : ["hvil"],
+	"model" : "forms/levels/hvil/bridge.dnmd", 
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"luatype":"dyn_road"
+}

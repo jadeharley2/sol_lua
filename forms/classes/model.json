@@ -1,0 +1,5 @@
+{ 
+	"type" : "asset", 
+	"assettype" : "model", 
+	"output":["mdl"]//,"vtx","phy","scel"] 
+}

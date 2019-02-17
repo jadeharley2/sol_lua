@@ -1,0 +1,77 @@
+{
+	"name" : "roads test",
+	"matpath" : [ 
+		"models/dyntest/mat",
+		"textures/stdif",
+		"textures/tile/mat",
+		"textures/debug"
+	],  
+	"variables" : { 
+		"$height" : 1
+	},
+	"input_operations" : [
+		 { "type" : "line", "out":"base",
+			 "points" : [[0,0,0],[10,0,0],[10,5,0],[0,2,0]]
+		 },
+	],
+	"operations" : [ 
+		{ "type" : "tesselate","from" : "base","out" : "base", 
+			"interpolation" : "cubic",
+			"mindist":4//2 ,
+		},      
+		{ "type" : "line","out" : "prof",  
+			//points : [[0,-2,0],[0,-1,1],[0,1,1],[0,2,0]],
+			"points" : [[0,-2,0],[0,-1,1],
+			[0,-0.8,1], [0,-0.8,1.2], [0,-0.7,1.2], [0,-0.7,1],
+			 [0,0.7,1],[0,0.7,1.2],[0,0.8,1.2], [0,0.8,1], 
+			
+			[0,1,1],[0,2,0]],
+			"loop" : false
+		},    
+		{"type":"deform","in":"prof",
+			"mode":"transform",
+			"world":{"ang":[-90,0,0],"pos":[0,-0.8,0]} 
+		},
+		//{"type": "extrude", "in": "base", "out": "base",
+		//"shift":[0,1,0]
+//
+		//}
+		{ "type" : "pathextrude", "in":"base", "out" : "road",   
+			"profile" : "prof",
+			"normal" : [0,0,1],
+			"basedir" : [1,0,0],
+			"width":1, 
+		},    
+
+
+		
+		{ "type" : "rectangle", "out" : "road_fd",  
+			"w" : 0.3,
+			"l" : 2,
+			"angle":0
+		},      
+		{ "type" : "inset","from" : "road_fd","out" : ["road_fd","road_fd"], 
+			"extrude":0.1, 
+			"amount":[0.05,0.1],
+		},       
+		{ "type" : "split","in" : "base","out" : "test2_fd", 
+			"steps" :"@($l*1)",      
+			"stype":"constant",     
+		},       
+		{ "type" : "uvmap", "in":["road_fd"],
+			"edge" : 1,     
+			"scale" : 4.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},        
+		{ "type" : "pathplace", "in":"test2_fd", "inform": "road_fd", "out" : "road_s",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[-90,0,90],"pos":[0,0.2,0]},  //3 -3
+			"amount" : 1,
+		},   
+        {"type": "material", "in": ["road"],
+            "material":"white",
+            "smooth":true
+        },
+	]   
+} 

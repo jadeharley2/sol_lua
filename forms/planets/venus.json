@@ -1,0 +1,16 @@
+{ 
+	"name" : "venus",
+	"class" : "planetarchetype",
+	"surface" : {  
+	},
+	"atmosphere" : 
+	{ 
+		"color" : [254,223,169],
+		"hazecolor" : [254,223,169],
+		"clouds": {
+			"texture":"textures/atmosphere/venus.jpg",
+			"color":[255,255,255],
+		},
+	}, 
+	"noHydrosphere" : 1,
+}

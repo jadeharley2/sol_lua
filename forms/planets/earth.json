@@ -1,0 +1,15 @@
+{ 
+	"name" : "earth",
+	"class" : "planetarchetype",
+	"surface" : { 
+		"data" : "earth",
+	},
+	"atmosphere" : 
+	{ 
+		"color" : [54.978, 106.998, 167],
+		"hazecolor" : [210,216,225],
+		"clouds" : {
+			"color" : [1,1,1],
+		},
+	}, 
+}

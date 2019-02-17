@@ -1,0 +1,821 @@
+[
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.0763542354106903, -0.193971455097198, -0.358223438262939, 0.91006076335907, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00235955091193318, 0, -0.000135196372866631, "vec3"],
+			"rotation" : [0, -0.717355310916901, 0, 0.696706235408783, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00239843688905239, 0, -0.00576863205060363, "vec3"],
+			"rotation" : [0, -0.958014965057373, 0, 0.2867152094841, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00147201819345355, -0.00282791396602988, 0.00465593673288822, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00014410971198231, 0, -3.86594329029322E-05, "vec3"],
+			"rotation" : [0, -0.572866439819336, 0, 0.819647252559662, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, -0.380187541246414, 0, 0.924907863140106, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0, -0.208459183573723, 0, 0.978029429912567, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.108068391680717, -0.178259491920471, -0.507028222084045, 0.836339473724365, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.170767232775688, -0.11955650895834, -0.801193356513977, 0.560919106006622, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.19970665872097, -0.0597700625658035, -0.936967492103577, 0.280415594577789, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.205823287367821, 0.0330450795590878, -0.965660870075226, -0.155049309134483, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.177258402109146, 0.109702467918396, -0.8316370844841, -0.514704167842865, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.186865031719208, 0.0923937112092972, -0.876710176467896, -0.433496356010437, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.19760000705719, 0.0664030611515045, -0.927077651023865, -0.31155526638031, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.202274575829506, 0.0503996983170509, -0.949010372161865, -0.23647166788578, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.207960084080696, 0.0144126331433654, -0.975687146186829, -0.0676294043660164, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.208359912037849, -0.00642050011083484, -0.977564215660095, 0.030114684253931, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.206539466977119, -0.0282224863767624, -0.969024002552032, 0.132404610514641, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.202444091439247, -0.0497136041522026, -0.949810147285461, 0.233236134052277, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.193911239504814, -0.0765079483389854, -0.90977668762207, 0.358949214220047, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.185304522514343, -0.0954842939972878, -0.869396269321442, 0.447982043027878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.175972670316696, -0.111752510070801, -0.825613379478455, 0.524308979511261, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.160001069307327, -0.13362130522728, -0.750678241252899, 0.626912474632263, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.145862057805061, -0.148926973342896, -0.684341073036194, 0.698723137378693, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.132692098617554, -0.160772457718849, -0.622550189495087, 0.754299342632294, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.115111477673054, -0.173793837428093, -0.540065228939056, 0.81539261341095, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0, 0, 0, "vec3"],
+			"rotation" : [0.0925460308790207, -0.18678905069828, -0.434192389249802, 0.876362919807434, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00153464823961258, -0.00258915359154344, 0.00467491941526532, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00366612756624818, -0.00170949148014188, 0.00472619011998177, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00137948454357684, -0.00315605103969574, 0.00463221408426762, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00161594920791686, -0.0023626540787518, 0.00468490784987807, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00172989862039685, -0.00200569536536932, 0.00470584537833929, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00182651774957776, -0.00158424978144467, 0.00474445754662156, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00286259222775698, -0.00163407088257372, 0.00468730926513672, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00156318210065365, -0.00131807778961957, 0.00526396185159683, "vec3"],
+			"rotation" : [0.871963977813721, -0.450446039438248, 0.115597561001778, -0.153009250760078, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00483597535640001, -0.00171745708212256, 0.00452200416475534, "vec3"],
+			"rotation" : [0.671830654144287, -0.715449213981628, 0.0579533353447914, -0.182800695300102, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	},
+
+	{
+		"components" : ["staticcollision", "model"],
+		"sizepower" : 1,
+		"seed" : 0,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 0,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00452795717865229, -0.00217956933192909, 0.00455370452255011, "vec3"],
+			"rotation" : [0.871963977813721, -0.450446039438248, 0.115597561001778, -0.153009250760078, "quat"],
+			"scale" : [1.93233060836792, 4.51864385604858, 3.64700675010681, "vec3"],
+			"model" : "tile/node.smd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_static"
+		}
+	}
+]

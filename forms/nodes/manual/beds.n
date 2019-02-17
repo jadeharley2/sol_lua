@@ -1,0 +1,170 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000001,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000001,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00734080374240875, 0, 0.00760560855269432, "vec3"],
+			"rotation" : [0, 0.644217371940613, 0, 0.764842629432678, "quat"],
+			"scale" : [3.37008762359619, 3.37008762359619, 3.37008762359619, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000002,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000002,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00700000021606684, 0, -0.00400000018998981, "vec3"],
+			"rotation" : [0, 0.159318208694458, 0, 0.987227141857147, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00377026945352554, 0, -0.000445337034761906, "vec3"],
+			"rotation" : [0, 0.543834626674652, 0, 0.839192271232605, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000005,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000005,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00221997406333685, 0, 0.0032167281024158, "vec3"],
+			"rotation" : [0, -0.0599641092121601, 0, 0.998200356960297, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000006,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000006,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00631134025752544, 0, 0.00324582541361451, "vec3"],
+			"rotation" : [0, 0.26190909743309, 0, 0.965092360973358, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000007,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000007,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00890305545181036, 0, 0.00035297404974699, "vec3"],
+			"rotation" : [0, -0.0799148082733154, 0, 0.996801614761353, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000008,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000008,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00245899613946676, 0, 0.00296418368816376, "vec3"],
+			"rotation" : [0, -0.0799148082733154, 0, 0.996801614761353, "quat"],
+			"scale" : [3.37008762359619, 3.37008762359619, 3.37008762359619, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000009,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000009,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00186209287494421, 0, -0.00887685362249613, "vec3"],
+			"rotation" : [0, 0.412320584058762, 0, 0.9110386967659, "quat"],
+			"scale" : [3.37008762359619, 3.37008762359619, 3.37008762359619, "vec3"],
+			"model" : "furniture/modern/bed.stmd",
+			"modelscale" : 0.05,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/furniture/modern/bed.json"
+		}
+	}
+]

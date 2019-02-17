@@ -1,0 +1,9 @@
+{
+ 
+	"group" : "debug",
+	"tags" : [],
+	"model" : "engine/shadertest/spheres9x9.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0]
+	
+}

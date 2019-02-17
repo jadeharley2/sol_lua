@@ -1,0 +1,137 @@
+{ 
+	
+	"emitters": [ 
+		{"type":"continuously","rate":100}
+	],
+	"initializers": [
+		{"type":"positionrandomsphere","pos":[0,0,0],"min":0.4 ,"max":0.5},
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		{"type":"attractor","dir":[0,0,0],"power":-0.1,"mode":0}, 
+		{"type":"rotationrand"}, 
+		{"type":"lifetime","time":10},
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		{"type":"movement","dir":[0,0,0],"drag":0.2},
+	//	{"type":"scale","startscale":0,"endscale":0.2,"starttime":0,"endtime":10},
+		//{"type":"scale","startscale":0.2,"endscale":0,"starttime":5,"endtime":10},
+	//	{"type":"tint","starttint":[1,1,1],"endtint":[0,0,0],"starttime":5,"endtime":10},
+		
+		//{"type":"attractor","pos":[0,-3,0],"power":10,"mode":3}, 
+		//{"type":"attractor","pos":[0,3,0],"power":10,"mode":3}, 
+		{"type":"scale","startscale":0,"endscale":0.1,"starttime":0,"endtime":0.1},
+		{"type":"scale","startscale":0.1,"endscale":10,"starttime":0.1,"endtime":20},
+		{"type":"tint","starttint":[0.1,0.1,0.1],"endtint":[0.1,0.1,0.1],"starttime":0,"endtime":5},
+		{"type":"tint","starttint":[0.1,0.1,0.1],"endtint":[0,0,0],"starttime":5,"endtime":10},
+		{"type":"movexpr","expr":"norm($p*vec(1,10,1))*0.1"},
+		{"type":"parent","power":1},
+	],
+	
+	"renderers": [ 
+		//{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/warp/warp3.png","tint":[0.3,0.3,0.3,1] },//"tint":[0.05,0.07,0.1,1] },
+		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.2,0.21,0.3,0.1] },//"tint":[0.05,0.07,0.1,1] },
+		//{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.8,0.9,1,1] },//"tint":[0.05,0.07,0.1,1] },
+		//{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.3,0.5,0.6,0.5] },//"tint":[0.05,0.07,0.1,1] },
+	],
+	
+	"forces": [
+		
+	],
+	"children" : [
+		//{ 
+		//	"name" : "sparks",
+		//	"emitters": [
+		//		{"type":"once","count":100}
+		//	],
+		//	"initializers": [
+		//		{"type":"positionrandomsphere","pos":[0,0,0],"max":10},
+		//		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		//		{"type":"attractor","dir":[0,0,0],"power":-20,"mode":0}, 
+		//		{"type":"rotationrand"},  
+		//	],
+		//	"updaters": [
+		//		{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		//		{"type":"scale","startscale":0,"endscale":0.4,"starttime":0,"endtime":0.2},
+		//		{"type":"scale","startscale":0.4,"endscale":0,"starttime":0.2,"endtime":1},
+		//	],
+		//	
+		//	"renderers": [  
+		//		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.5,0.7,1,1] },
+		//	],
+		//},
+		{
+			"name" : "flare",
+			"emitters": [
+				{"type":"once","count":1}
+		//{"type":"continuously","rate":10}
+			],
+			"initializers": [    
+				{"type":"lifetime","time":99999999999999999},
+			],
+			"updaters": [ 
+				//{"type":"scale","startscale":0,"endscale":50,"starttime":0,"endtime":0.2},
+				//{"type":"scale","startscale":50,"endscale":0,"starttime":0.2,"endtime":0.4},
+				{"type":"scale","startscale":2,"endscale":2,"starttime":0,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.08,0.09,0.1,1] },
+			],
+		},
+		{
+			"name" : "flare2",
+			"emitters": [
+				{"type":"once","count":1}
+		//{"type":"continuously","rate":10}
+			],
+			"initializers": [    
+				{"type":"lifetime","time":99999999999999999},
+			],
+			"updaters": [ 
+				//{"type":"scale","startscale":0,"endscale":50,"starttime":0,"endtime":0.2},
+				//{"type":"scale","startscale":50,"endscale":0,"starttime":0.2,"endtime":0.4},
+				{"type":"scale","startscale":20,"endscale":20,"starttime":0,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.008,0.009,0.01,0.1] },
+			],
+		},
+		{
+			"name" : "flare3",
+			"emitters": [
+				{"type":"once","count":1} 
+			],
+			"initializers": [    
+				{"type":"lifetime","time":99999999999999999},
+			],
+			"updaters": [  
+				{"type":"scale","startscale":200,"endscale":200,"starttime":0,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.0008,0.0009,0.001,0.01] },
+			],
+		},
+		//{
+		//	"name" : "dust",
+		//	"emitters": [
+		//		{"type":"once","count":100}
+		//	],
+		//	"initializers": [
+		//		{"type":"positionrandomsphere","pos":[0,0,0],"max":10}, 
+		//		{"type":"attractor","dir":[0,0,0],"power":-20,"mode":0}, 
+		//		{"type":"rotationrand"},  
+		//	],
+		//	"updaters": [
+		//		{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		//		{"type":"scale","startscale":0,"endscale":10,"starttime":0,"endtime":0.2},
+		//		{"type":"scale","startscale":10,"endscale":0,"starttime":0.2,"endtime":1},
+		//	],
+		//	
+		//	"renderers": [  
+		//		{ "type":"stars", "blend" : 2, "depth" : "read", "texture":"textures/space/spcloud1.dds","tint":[0.3,0.3,0.3,1] },
+		//	],
+		//},
+	],
+}

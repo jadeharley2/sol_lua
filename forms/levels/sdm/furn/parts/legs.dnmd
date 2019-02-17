@@ -1,0 +1,58 @@
+{ 
+	world : {sca:1},
+	matpath : [ 
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	input : {
+		"base" : { type : "surface", "default" : [[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],},
+	}, 
+	variables : {
+		"$width" : 1,
+		"$length" : 2,
+		"$leg.height" : 0.8,
+		"$leg.radius" : 0.1,
+		"$leg.inset" : 0.1,
+		"$mat.primary" : "Wood07.json",
+		"$mat.secondary" : "concrete06b.json",
+	},
+	operations : [ 
+		
+		//anchors
+		 
+		{type:"data",in:"base",normal:"$snorm"},  
+		{ type : "inset", from : "base",out : ["base","sides"], 
+			mode : "normal",
+			amount : "$leg.inset", 
+			extrude : 0,  
+		},    
+		{type:"select",in:"base",out:"leg_base",
+			mode:"points",
+		},
+		{ type : "extrude", from : "leg_base" ,out : "leg_base" ,
+			shift : "@((0-$snorm)*$leg.height)",
+			times : 1,
+		},                   
+		{ type : "column",from :"leg_base",out : "legs",outcap : "leg_caps",
+			angle : 45,   
+			r :  "$leg.radius" ,
+			sides : 4,       
+		},   
+		{ type : "material",in : ["legs","leg_caps"],
+			material : "$mat.primary",
+		},  
+		{ type : "uvmap", in:["legs","leg_caps"],
+			edge : 1,     
+			scale : 1.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},        
+		{ type : "inset", from : "table_base",out : ["table","*"], 
+			mode : "normal",
+			amount : -0.1, 
+			extrude : "$leg.height",  
+		},    
+		{ type:"remove",in:["base","sides"]},
+		 
+	]
+}

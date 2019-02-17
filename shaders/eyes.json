@@ -1,0 +1,43 @@
+{
+	"name" : "eyes",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"eyes.fx", 
+		"headers/skin.fxh",
+		"headers/lightning.fxh",
+		"headers/clip.fxh",
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VSI",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	],
+	"definition" :
+	{
+		"autoCameraMatrix" : 1,
+		"autoSkin" : 1,
+		"variables" : [
+			{ "name":"g_MeshTexture", "type":"texture"}
+		]
+	}
+}            

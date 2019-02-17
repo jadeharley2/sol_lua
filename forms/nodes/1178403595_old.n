@@ -1,0 +1,229 @@
+[
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000006,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000006,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [-0.00554168596863747, 0.00507647171616554, 0.00324780493974686, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [83.4710998535156, 83.0658416748047, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "gensokyo"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0881588757038116, 0.000985762337222695, -0.0989716574549675, "vec3"],
+			"rotation" : [0, -0.276355594396591, 0, 0.961055397987366, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/sdm/arch/building.dnmd",
+			"modelscale" : 0.5,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/architecture/test_sdm.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000007,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000007,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.088051050901413, 0.00287034315988421, -0.100188374519348, "vec3"],
+			"rotation" : [0.675524950027466, -0.208964332938194, 0.208964362740517, 0.675524950027466, "quat"],
+			"scale" : [0.52455085515976, 0.577759802341461, 0.184359565377235, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "gen_sdm_level"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000008,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000008,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.0537931099534035, -211.217254638672, -0.543504357337952, "vec3"],
+			"rotation" : [0, -0.764090716838837, 0, 0.645109415054321, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -4310.8125, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.207751631736755, 0.00731053901836276, -0.618819832801819, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000009,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000009,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.384920805692673, -193.348876953125, -0.606143891811371, "vec3"],
+			"rotation" : [0, -0.0808988437056541, 0, 0.996722280979156, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -4310.8125, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.877272069454193, -0.0490964166820049, -0.760120034217834, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000010,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000010,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.239598944783211, -152.385025024414, 0.433356165885925, "vec3"],
+			"rotation" : [0, 0.242942839860916, 0, 0.970040261745453, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -4310.8125, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.149978309869766, 0.157027453184128, 0.47866278886795, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000011,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000011,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.0900307521224022, 0.000318406178848818, -0.0985012948513031, "vec3"],
+			"rotation" : [0, 0.99862664937973, 0, 0.0524072013795376, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [1.22681212411102E-10, -0.00682456791400909, -1.9567955589217E-10, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.0892791375517845, 0.000860652595292777, -0.0985521748661995, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000012,
+		"updatespace" : 0,
+		"globalname" : "gensokyo.door",
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000012,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0886123701930046, 0.000925183529034257, -0.0986887961626053, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1.76461923122406, 1.84667575359344, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0500000007450581,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_main.dnmd:foyer.exit.door"
+		},
+		"flags" : ["useable", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000042,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000042,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.284681230783463, 0.04758620262146, -0.34816187620163, "vec3"],
+			"rotation" : [0, 0.696135222911835, 0, 0.717910706996918, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "dyntest/jp_gate.dnmd",
+			"modelscale" : 1,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/gate.json"
+		},
+		"flags" : ["editornode"]
+	}
+]

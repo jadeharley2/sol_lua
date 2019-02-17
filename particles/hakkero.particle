@@ -1,0 +1,70 @@
+{
+	"name" : "magic",
+	
+	"emitters": [ 
+		{"type":"continuously","rate":100}
+	],
+	"initializers": [
+		{"type":"positionrandomsphere","pos":[0,0,0],"max":1},
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		{"type":"attractor","dir":[0,0,0],"power":-3,"mode":0}, 
+		{"type":"rotationrand"}, 
+		
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		{"type":"movement","dir":[1000,0,0],"drag":0.1},
+		{"type":"scale","startscale":0,"endscale":100,"starttime":0,"endtime":1},
+		//{"type":"scale","startscale":10,"endscale":0,"starttime":0.2,"endtime":1},
+	],
+	
+	"renderers": [ 
+		{ "type":"stars", "blend" : 0, "depth" : "read",
+			 "texture":"textures/space/warp/warp3.png",
+			 "tint":[1,1,1,1] },
+	],    
+	 
+	"forces": [
+		
+	],
+	"children" : [
+		{ 
+			"name" : "sparks",
+			"emitters": [
+				{"type":"once","count":100}
+			],
+			"initializers": [
+				{"type":"positionrandomsphere","pos":[0,0,0],"max":10},
+				//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+				{"type":"attractor","dir":[0,0,0],"power":-20,"mode":0}, 
+				{"type":"rotationrand"},  
+			],
+			"updaters": [
+				{"type":"movement","dir":[0,-100,0],"drag":0.2},
+				{"type":"scale","startscale":0,"endscale":0.4,"starttime":0,"endtime":0.2},
+				{"type":"scale","startscale":0.4,"endscale":0,"starttime":0.2,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[0.5,0.7,1,1] },
+			],
+		},
+		{
+			"name" : "flare",
+			"emitters": [
+				{"type":"once","count":1}
+			],
+			"initializers": [    
+			],
+			"updaters": [ 
+				{"type":"scale","startscale":0,"endscale":50,"starttime":0,"endtime":0.2},
+				{"type":"scale","startscale":50,"endscale":0,"starttime":0.2,"endtime":0.4},
+				{"type":"scale","startscale":0,"endscale":0,"starttime":0.4,"endtime":1},
+			],
+			
+			"renderers": [  
+				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[1,0.4,0.2,1] },
+			],
+		}, 
+	],
+}

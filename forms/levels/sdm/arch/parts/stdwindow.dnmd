@@ -1,0 +1,53 @@
+{
+	name : "sdm.column", 
+	input : {
+		"base" : { type : "surface", "default" : [[-3,0,0],[3,0,0],[3,0,4],[-3,0,4]]},
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : {  
+		"$mat.main" : "concrete06b.json",
+		"$mat.secondary" : "fo_floor.json", 
+		"$height" : 3.5,   
+		"$width" : 1.5,   
+	},  
+	operations : [   
+		 
+		{type:"frotate", in:["base"],
+			align:[0,0,-1],		 
+		}, 
+		{ type : "split", from : "base",out : ["wswindow_s","wswindow_c","wswindow_s"],   
+			stype:"constant", 
+			size : [0,"$width",0],   
+			side:"second",  
+		},         
+		{ type : "split", from : "wswindow_c",out : ["wswindow_b","wswindow_c","wswindow_t"],   
+			stype:"constant", 
+			size : [0,"$height",0],   
+			side:"third", 
+		},         
+		{ type : "inset", from : "wswindow_c",out : ["wswindow_c","wswindow_cs"],  
+			mode : "normal",
+			amount : [0.05],   
+			extrude : -0.05, 
+		},           
+		//{ type : "inset", from : "wswindow_c",out : ["wswindow_c","wswindow_cs"],  
+		//	mode : "normal",
+		//	amount : [0],   
+		//	extrude : -0.2, 
+		//},            
+		{type:"frotate", in:["wswindow_c"],
+			align:[0,0,-1],		 
+		}, 
+		{ 	type : "structure", out : "wall_faces",
+			path : "window_a.dnmd",
+			from : {"window":"wswindow_c"}, 
+			"$framew" : 0.08 ,
+			"$framemul" : 1.6  ,
+			"$mat.window" : "sky.json",
+		},     
+	]     
+} 

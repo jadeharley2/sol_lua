@@ -1,0 +1,28 @@
+{
+    "type":"object",
+	"allOf":[{"$ref": "form.json"}],
+    "properties": {
+        "matpath":{
+            "type":"array",
+            "description": "material search directories",
+            "items": {
+                "type":"string",
+                "description": "material directory path"
+            }
+        },
+        "input_operations":{ 
+            "description": "non structure operations",
+            "type":"array",
+            "items": {
+                "$ref":"proceduraloperation.json"
+            }
+        },
+        "operations":{ 
+            "description": "object creation operations",
+            "type":"array",
+            "items": {
+                "$ref":"proceduraloperation.json"
+            }
+        }
+    }
+}

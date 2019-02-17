@@ -1,0 +1,88 @@
+{
+	name : "fence.subtest", 
+	input : {
+		"wall" : { type : "surface", "default" : [[-3,0,-5],[-3,0,5],[3,0,5],[3,0,-5]]},
+	}, 
+	matpath : [ 
+		"models/dyntest/mat",
+		//"textures/debug"
+	],
+	variables : { 
+		"$mat.wall" : "bricks11.json", 
+		"$mat.secondary" : "concrete06b.json", 
+		"$window" : true, 
+		"$window.width" : 2,
+		"$window.height" : 2,
+		
+		"$sides" : false, 
+		"$sides.width" : 0.2,
+		
+		"$bottom" : true, 
+		"$bottom.width" : 0.2,
+		"$bottom.height" : 1,
+	}, 
+	operations : [ 
+	  
+		
+		{ type : "material",in : ["wall"],
+			material : "$mat.wall"
+		},      
+		{ type : "frotate", in : "wall" ,align: [0,0,-1]},
+		{ type :"branch", condition : "bool", value : "$bottom",
+			ontrue : [
+				{ type : "split", from : "wall" ,out : ["wall","bottom"],
+					stype:"constant", 
+					size : [0,"$bottom.height"],
+					side:"third", 
+				},     
+				{ type : "material",in : ["bottom"],
+					material : "$mat.secondary"
+				},      
+				{ type : "extrude", from : "bottom",outtop :"wall_faces", out:"wall_faces",,
+					mode : "normal",
+					shift : "$bottom.width",  
+					times : 1,       
+				},    		 
+			],
+		},
+		
+		{ type : "frotate", in : "wall" ,align: [0,0,-1]},
+		 
+		{ type :"branch", condition : "bool", value : "$sides",
+			ontrue : [
+				{ type : "split", from : "wall" ,out : ["c12s","wall","c12s"],
+					stype:"constant", 
+					size : [0.2,0,0.2],
+					side:"second",  
+				},     
+				{ type : "material",in : ["c12s"],
+					material : "$mat.secondary"
+				},     
+				//{ type : "union", in : "c12s", out : "wall_faces"},
+			],
+		},
+		
+		{ type : "frotate", in : "wall" ,align: [0,0,-1]},
+		
+		{ type :"branch", condition : "bool", value : "$window",
+			ontrue : [
+				{ type : "split", from : "wall" ,out : ["wtop","wall","wbot"],
+					stype:"constant", 
+					size : [0,"$window.height",0],
+					side:"third", 
+				},     
+				{ type : "split", from : "wall" ,out : ["wleft","window_s","wright"],
+					stype:"constant", 
+					size : [0,"$window.width",0],
+					side:"first", 
+				},      
+				{ 	type : "structure", out : "wall_faces",
+					path : "window_a.dnmd",
+					from : {"window":"window_s"}, 
+				},     
+			],
+		},  
+		//{ type : "remove", in : "wall" }, 
+		{ type : "union", in : "bottom",out : "wall_faces"}, 
+	]   
+} 

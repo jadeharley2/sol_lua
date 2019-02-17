@@ -1,0 +1,289 @@
+[
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000019,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000019,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.677853107452393, 0.00387161038815975, 0.665660500526428, "vec3"],
+			"rotation" : [0.67009025812149, 0.225785419344902, -0.22578538954258, 0.67009025812149, "quat"],
+			"scale" : [6.20959663391113, 6.57492399215698, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000020,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000020,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.594577014446259, 0.00251386337913573, 0.4642733335495, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000021,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000021,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.625803112983704, 0.00691783661022782, 0.488814651966095, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000022,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000022,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.61479663848877, 0.00716874795034528, 0.561788260936737, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000023,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000023,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.562296628952026, -0.000612165895290673, 0.552041172981262, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [2.71977090835571, 2.58818769454956, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000024,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000024,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.674207746982574, 0.0107020791620016, 0.520665287971497, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [3.3842191696167, 2.89755010604858, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_level"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000025,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000025,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.672414660453796, 0.00904723256826401, 0.520957827568054, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [3.36620116233826, 2.76106357574463, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_noinstances"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000027,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000027,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.653047919273376, 0.00902548059821129, 0.522961676120758, "vec3"],
+			"rotation" : [0, 0.83049750328064, 0, 0.557022750377655, "quat"],
+			"scale" : [1.29142880439758, 1, 1.31860041618347, "vec3"],
+			"model" : "dyntest/sdm/arch/building.dnmd",
+			"modelscale" : 0.5,
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/architecture/test_sdm.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000028,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000028,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.651290893554688, 0.00905764102935791, 0.512529015541077, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [0.647697925567627, 0.689664781093597, 0.187765717506409, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_sdm_lake_test"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.652167499065399, -101.909690856934, 0.521461844444275, "vec3"],
+			"rotation" : [0, 0.518810212612152, 0, 0.854889154434204, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -142.91471862793, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.65224689245224, 0.00911803543567657, 0.521478533744812, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000008,
+		"updatespace" : 0,
+		"globalname" : "sol.door",
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000008,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.652789711952209, 0.00896685570478439, 0.522331297397614, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [2.35171818733215, 1.80485320091248, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0500000007450581,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "models/dyntest/sdm/interior_main.dnmd:foyer.sol.door"
+		},
+		"flags" : ["useable", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.651891529560089, -0.383160918951035, 0.521667540073395, "vec3"],
+			"rotation" : [0, -0.0834698230028152, 0, 0.996508777141571, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -138.59797668457, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 95.0218811035156,
+			"maxhealth" : 100,
+			"viewtarget" : [0.67045134305954, 0.014758943580091, 0.528386533260345, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000005,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000005,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [0.59565544128418, 0.00387159525416791, 0.499253004789352, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "round_crater_small"
+		},
+		"flags" : ["editornode", "editornode"]
+	}
+]

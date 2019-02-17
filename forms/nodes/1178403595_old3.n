@@ -1,0 +1,1458 @@
+[
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000006,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000006,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [-0.00554168596863747, 0.00507647171616554, 0.00324780493974686, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [83.4710998535156, 83.0658416748047, 1, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "gensokyo"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0371875092387199, 0.000949754379689693, 0.227407574653625, "vec3"],
+			"rotation" : [0, -0.276355594396591, 0, 0.961055397987366, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/arch/building.dnmd",
+			"modelscale" : 0.5,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/sdm/building.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 100,
+		"seed" : 1000007,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000007,
+			"abssize" : 100,
+			"name" : null,
+			"position" : [-0.037647757679224, 0.00287029705941677, 0.226458087563515, "vec3"],
+			"rotation" : [0.675524950027466, -0.208964332938194, 0.208964362740517, 0.675524950027466, "quat"],
+			"scale" : [0.680120289325714, 0.577759802341461, 0.184359565377235, "vec3"],
+			"luaenttype" : "planet_surface_mod",
+			"character" : "gen_sdm_level"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000012,
+		"updatespace" : 0,
+		"globalname" : "gensokyo.door",
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000012,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.036727886646986, 0.00087323400657624, 0.227698221802711, "vec3"],
+			"rotation" : [0, -0.881957828998566, 0, 0.471328467130661, "quat"],
+			"scale" : [1.76461923122406, 1.84667575359344, 1, "vec3"],
+			"mass" : 0,
+			"model" : "door/door2.stmd",
+			"modelscale" : 0.0500000007450581,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "use_door_teleport",
+			"character" : "forms/levels/sdm/interior_main.dnlv:foyer.exit.door"
+		},
+		"flags" : ["useable", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000005,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000005,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.733274638652802, 0.0575815103948116, 0.0194733683019876, "vec3"],
+			"rotation" : [0, -0.706824958324432, 0, 0.70738810300827, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/gate.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/gate.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000008,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000008,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.735621750354767, 0.0581971630454063, 0.0196683779358864, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000009,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000009,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.735621750354767, 0.0582265891134739, 0.0193029716610909, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000010,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000010,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.746992170810699, 0.0578036643564701, 0.0258948672562838, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "dyntest/test_road.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/architecture/test_rails.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000011,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000011,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.736638724803925, 0.0582557655870914, 0.0194905623793602, "vec3"],
+			"rotation" : [0, -0.713863551616669, 0, 0.700284898281097, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/house.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/shrine.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000013,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000013,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.733650386333466, 0.0577552393078804, 0.0196426156908274, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000014,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000014,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.733650386333466, 0.057784665375948, 0.0192772094160318, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000016,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000016,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.734054505825043, 0.0578395947813988, 0.0193029716610909, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000017,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000017,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.734054505825043, 0.0578101687133312, 0.0196683779358864, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000018,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000018,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.734471917152405, 0.0579420551657677, 0.0193029716610909, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000019,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000019,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.734471917152405, 0.0579126290977001, 0.0196683779358864, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000020,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000020,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.735038816928864, 0.0581329576671124, 0.0193029716610909, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000021,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000021,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.735038816928864, 0.0581035315990448, 0.0196683779358864, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/jp_shrine_lantern_stone.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"character" : "forms/props/gensokyo/shrine/lantern.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000015,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000015,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.360021740198135, 0.00496089551597834, 0.13583205640316, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/bridge.dnmd",
+			"modeldata" : 
+			{
+				"points" : 				[
+[0.361424654722214, 0.00496089551597834, 0.136437341570854],
+[0.363776385784149, 0.00496089551597834, 0.13721114397049],
+[0.365699142217636, 0.00447762105613947, 0.137675270438194],
+[0.370461821556091, 0.0019248288590461, 0.139856323599815],
+[0.376993030309677, 0.00112725351937115, 0.142040982842445],
+[0.380520313978195, 0.00120629358571023, 0.142706677317619],
+[0.383964031934738, 0.00115739763714373, 0.143283873796463],
+[0.38862743973732, 0.0009598801843822, 0.14383253455162],
+[0.394796133041382, 0.00146451289765537, 0.144343376159668],
+[0.399649977684021, 0.00340117421001196, 0.144447430968285],
+[0.40210348367691, 0.00366615573875606, 0.144447430968285]
+				],
+				"loop" : false
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/bridge.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000026,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000026,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [0.3546102643013, -0.291656255722046, 0.130589410662651, "vec3"],
+			"rotation" : [0, -0.85776674747467, 0, -0.514043509960175, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 1.08761703968048, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [0.35368812084198, 0.00526242563501, 0.128863155841827, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000035,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000035,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.356054276227951, 0.00528441788628697, 0.130959555506706, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/fence.dnmd",
+			"modeldata" : 
+			{
+				"points" : 				[
+[0.358022302389145, 0.0052257226780057, 0.130857571959496],
+[0.358128219842911, 0.00527730863541365, 0.129414722323418],
+[0.358025908470154, 0.00527038984000683, 0.128000721335411],
+[0.357502073049545, 0.00528183160349727, 0.126409754157066],
+[0.355418384075165, 0.00527994893491268, 0.126268327236176],
+[0.3553287088871, 0.00528103671967983, 0.123997285962105],
+[0.352614372968674, 0.00522677740082145, 0.123898848891258],
+[0.352567762136459, 0.00527011463418603, 0.12625727057457],
+[0.355326414108276, 0.00528103671967983, 0.130989536643028],
+[0.352844834327698, 0.00528103671967983, 0.130915656685829]
+				],
+				"loop" : false
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/fence.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000044,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000044,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.356613308191299, 0.00526088941842318, 0.1286281645298, "vec3"],
+			"rotation" : [0.00074965856038034, 0.0499735362827778, -0.0149806896224618, 0.998637616634369, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/house.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/shrine/shrine.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000045,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000045,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.356650024652481, 0.00526088941842318, 0.127354055643082, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/shr/house.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/shrine/shrine.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000027,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000027,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00750000029802322, 0.00769551936537027, 0.00975876953452826, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000029,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000029,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.7371746301651, 0.0580621026456356, 0.0205840282142162, "vec3"],
+			"rotation" : [-7.14041185120168E-13, 0.999816000461578, 3.71748534733207E-11, -0.0192024391144514, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000030,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000030,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.735925495624542, 0.0582381039857864, 0.0183347444981337, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000031,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000031,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.73608535528183, 0.0581131316721439, 0.0207685492932796, "vec3"],
+			"rotation" : [2.74575050196457E-11, 0.674288034439087, 2.5071186446346E-11, 0.738468766212463, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000022,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000022,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.353579759597778, 0.00513762794435024, 0.128517225384712, "vec3"],
+			"rotation" : [-0.0496444590389729, 0.992061614990234, -0.00577449006959796, 0.11539351195097, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000024,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000024,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.35665374994278, 0.00522710895165801, 0.12951534986496, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000025,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000025,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.355683863162994, 0.00522710895165801, 0.126939907670021, "vec3"],
+			"rotation" : [0, -0.576958477497101, 0, 0.816773355007172, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000028,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000028,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.356299340724945, 0.00522710895165801, 0.12795715034008, "vec3"],
+			"rotation" : [0, -0.85210794210434, 0, 0.523365914821625, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000032,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000032,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.356884270906448, 0.00522710895165801, 0.130467519164085, "vec3"],
+			"rotation" : [0, -0.00500001199543476, 0, 0.999987423419952, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000033,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000033,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.354097336530685, 0.00522710895165801, 0.130453079938889, "vec3"],
+			"rotation" : [0, 0.973847448825836, 0, -0.227201923727989, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000034,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000034,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.353875756263733, 0.00522710895165801, 0.126869440078735, "vec3"],
+			"rotation" : [0, 0.593177318572998, 0, 0.805071651935577, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000036,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000036,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.353485763072968, 0.00522710895165801, 0.129701673984528, "vec3"],
+			"rotation" : [0, 0.983700633049011, 0, 0.179813072085381, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000037,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000037,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.354533642530441, 0.00519589893519878, 0.128824442625046, "vec3"],
+			"rotation" : [0, 0.218229621648788, 0, 0.975897490978241, "quat"],
+			"scale" : [1.52543997764587, 1.4164354801178, 1.32196462154388, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/east_common/tree_sakura.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/sakura.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000038,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000038,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.354142636060715, 0.00519394921138883, 0.131361469626427, "vec3"],
+			"rotation" : [0, 0.452886313199997, 0, 0.891568422317505, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/east_common/tree_sakura.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/sakura.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000039,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000039,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.350560694932938, 0.00523221306502819, 0.13177278637886, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/road.dnmd",
+			"modeldata" : 
+			{
+				"loop" : false,
+				"points" : 				[
+[0.354759335517883, 0.00526119954884052, 0.131791681051254],
+[0.35646378993988, 0.00526119954884052, 0.131692096590996],
+[0.357600122690201, 0.00520777143537998, 0.132523193955421],
+[0.357779443264008, 0.00516732688993216, 0.134442433714867],
+[0.359209001064301, 0.00500489072874188, 0.135310739278793],
+[0.360149145126343, 0.00492046028375626, 0.135782301425934]
+				]
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/road.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000040,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000040,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.355664044618607, 0.00526261981576681, 0.131605997681618, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/road.dnmd",
+			"modeldata" : 
+			{
+				"loop" : false,
+				"points" : 				[
+[0.355639517307281, 0.00526261981576681, 0.130810886621475],
+[0.355553656816483, 0.00526261981576681, 0.129810556769371],
+[0.35534930229187, 0.00526261981576681, 0.129040092229843],
+[0.355152547359467, 0.00526261981576681, 0.127771526575089],
+[0.354706943035126, 0.00526261981576681, 0.12669537961483],
+[0.354514062404633, 0.00523107452318072, 0.125084191560745]
+				]
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/road.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000047,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000047,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.352293908596039, 0.0052460478618741, 0.131788298487663, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/road.dnmd",
+			"modeldata" : 
+			{
+				"loop" : false,
+				"points" : 				[
+[0.351236641407013, 0.00526285450905561, 0.131737485527992],
+[0.350651472806931, 0.00526285450905561, 0.130957946181297],
+[0.350282460451126, 0.00526285450905561, 0.128203302621841],
+[0.349819421768188, 0.00516215339303017, 0.126574590802193],
+[0.348566293716431, 0.00498801516368985, 0.125812783837318],
+[0.347127974033356, 0.00446682376787066, 0.124700397253036],
+[0.345230877399445, 0.00441577332094312, 0.120285376906395],
+[0.34340038895607, 0.00439129583537579, 0.11837837100029],
+[0.337715744972229, 0.00387416197918355, 0.118889458477497],
+[0.340833187103271, 0.00432766648009419, 0.118078380823135],
+[0.330835372209549, 0.00351760350167751, 0.113178931176662],
+[0.333737909793854, 0.00343253649771214, 0.118022277951241]
+				]
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/road.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000041,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000041,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0324232317507267, 0.000764532014727592, 0.230649068951607, "vec3"],
+			"rotation" : [0, -0.300293147563934, 0, 0.953846991062164, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/bridge.dnmd",
+			"modeldata" : 
+			{
+				"points" : 				[
+[-0.0311706960201263, 0.000805629417300224, 0.231743201613426],
+[-0.026849715039134, 0.000805629533715546, 0.23529951274395],
+[-0.0232094749808311, 0.000191880913916975, 0.237232729792595]
+				],
+				"loop" : false
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/bridge.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000046,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000046,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0368155539035797, 0.000819720327854156, 0.231513127684593, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000048,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000048,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0387440510094166, 0.000819720327854156, 0.231093540787697, "vec3"],
+			"rotation" : [0, -0.496880143880844, 0, 0.867819249629974, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000049,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000049,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.037871815264225, 0.000779906054958701, 0.231816560029984, "vec3"],
+			"rotation" : [0, -0.242556303739548, 0, 0.970137357711792, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000050,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000050,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0365571118891239, 0.000779906054958701, 0.230196997523308, "vec3"],
+			"rotation" : [0, 0.188858926296234, 0, 0.982004225254059, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000051,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000051,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.033777542412281, 0.000681990059092641, 0.22500279545784, "vec3"],
+			"rotation" : [0, 0.999942004680634, 0, 0.0107963094487786, "quat"],
+			"scale" : [1.68545007705688, 1.16807425022125, 1.88793921470642, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000052,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000052,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0349601358175278, 0.000750218634493649, 0.227324292063713, "vec3"],
+			"rotation" : [0, 0.188858926296234, 0, 0.982004225254059, "quat"],
+			"scale" : [1.68545007705688, 1.16807425022125, 1.88793921470642, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000053,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000053,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.035359114408493, 0.000719418050721288, 0.230804339051247, "vec3"],
+			"rotation" : [0, 0.960834920406342, 0, 0.277121156454086, "quat"],
+			"scale" : [1.68545007705688, 1.16807425022125, 1.88793921470642, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000054,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000054,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0338269621133804, 0.000719418050721288, 0.226538941264153, "vec3"],
+			"rotation" : [0, 0.398609131574631, 0, 0.917120933532715, "quat"],
+			"scale" : [1.68545007705688, 1.16807425022125, 1.88793921470642, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000055,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000055,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.033557552844286, 0.000719418050721288, 0.227912366390228, "vec3"],
+			"rotation" : [0, 0.792562544345856, 0, 0.609790742397308, "quat"],
+			"scale" : [1.68545007705688, 1.16807425022125, 1.88793921470642, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/hvil/tree_green.dnmd",
+			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/nature/tree_green.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000056,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000056,
+			"abssize" : 1000,
+			"name" : "C.C.",
+			"position" : [-0.0244869794696569, -0.00570934172719717, 0.23659086227417, "vec3"],
+			"rotation" : [0, 0.224158450961113, 0, -0.974553644657135, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "cc.stmd",
+			"state" : "jump_inair",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 1.08761703968048, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "cc",
+			"health" : 100,
+			"maxhealth" : 100,
+			"viewtarget" : [-0.0229843184351921, 0.0004520102229435, 0.237321794033051, "vec3"]
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000057,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000057,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0218784268945456, 0.000514884712174535, 0.236779630184174, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/hvil/bridge.dnmd",
+			"modeldata" : 
+			{
+				"points" : 				[
+[-0.0179562643170357, 0.000570898759178817, 0.235595032572746],
+[-0.0130699127912521, 0.00057089829351753, 0.235727310180664],
+[-0.00480091152712703, 0.000570896430872381, 0.235480964183807],
+[0.00305774621665478, 0.000570893636904657, 0.233587384223938],
+[0.00861369911581278, 0.000570894568227232, 0.232859656214714],
+[0.0137127013877034, 0.000570895499549806, 0.233312502503395],
+[0.0150917069986463, 0.000570895499549806, 0.233360961079597]
+				],
+				"loop" : false
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/human/bridge.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000042,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000042,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0326742567121983, 0.000845401547849178, 0.230043545365334, "vec3"],
+			"rotation" : [0, 0.403189927339554, 0, 0.915116190910339, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/wall.dnmd",
+			"modeldata" : 
+			{
+				"loop" : false,
+				"points" : 				[
+[-0.0321152061223984, 0.000784710806328803, 0.229398161172867],
+[-0.0317205935716629, 0.000704602454788983, 0.229138940572739],
+[-0.031994991004467, 0.00063488824525848, 0.228112056851387],
+[-0.0321783721446991, 0.000656238757073879, 0.227119952440262],
+[-0.0326438881456852, 0.000823277398012578, 0.226167589426041],
+[-0.03297995403409, 0.000801341840997338, 0.225335836410522],
+[-0.0326492339372635, 0.000801341840997338, 0.224837526679039]
+				]
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/sdm/wall.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000062,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000062,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0330717787146568, 0.000833682483062148, 0.230505645275116, "vec3"],
+			"rotation" : [0, -0.338196575641632, 0, 0.941075205802917, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/wall.dnmd",
+			"modeldata" : 
+			{
+				"loop" : false,
+				"points" : 				[
+[-0.0333158411085606, 0.000826443429104984, 0.230816558003426],
+[-0.0334362275898457, 0.000731323845684528, 0.231485739350319],
+[-0.0334523320198059, 0.000654497358482331, 0.23200398683548],
+[-0.0342097245156765, 0.00083368259947747, 0.232038170099258],
+[-0.03537667542696, 0.00083368259947747, 0.232046648859978],
+[-0.0362763069570065, 0.000833682541269809, 0.231990739703178],
+[-0.0370452590286732, 0.000833682541269809, 0.232058256864548]
+				]
+			},
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/gensokyo/sdm/wall.json"
+		},
+		"flags" : ["editornode"]
+	}
+]

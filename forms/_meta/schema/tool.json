@@ -1,0 +1,19 @@
+{   
+	"type": "object",
+	"description" : "tool form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+	"properties":{   
+		"type":{ 
+			"type":"string",
+			"default":"",
+			"description":"lua base type"
+		}, 
+		"appearance": {
+			"$ref":"appearance.json"
+		},
+		"projectile":{ 
+			"$ref":"projectile.json"
+		} 
+	}
+}

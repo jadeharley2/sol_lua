@@ -1,0 +1,7 @@
+{
+	"group" : "furniture",
+	"tags" : ["futur"],
+	"model" : "furniture/futur/monitor_a.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],
+}

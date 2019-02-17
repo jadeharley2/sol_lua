@@ -1,0 +1,42 @@
+{   
+	"type": "object",
+	"description" : "character form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+	"properties":{   
+		"movement":{
+			"type":"object",
+			"properties": {
+				"walk":{ "$ref":"movementtype.json" },
+				"run":{ "$ref":"movementtype.json" },
+				"fly":{ "$ref":"movementtype.json" },
+				"swim":{ "$ref":"movementtype.json" } 
+			} 
+		},
+		"species":{
+			"type":"string",
+			"description": "species form reference"
+		},
+		"directmove":{
+			"type":"boolean",
+			"description": "use fps-like movement"
+		},
+		"behaviour":{
+			"type":"object",
+			"description": "behaviour graph"
+		},
+		"materials":{
+			"type":"object"
+		},
+		"parts":{
+			"type":"object"
+		},
+		"abilities":{
+			"type":"array"
+		},
+		"mass":{
+			"type":"number",
+			"description": "physical mass"
+		}
+	}
+}

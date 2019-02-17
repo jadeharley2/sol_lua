@@ -1,0 +1,113 @@
+{
+    "matpath": [
+        "textures/tile/mat/",
+        "textures/debug/",
+        "models/dyntest/mat",
+        "textures/tile/tilt"
+    ],
+    "variables":{
+        "$height":3.1
+    },
+    "input_operations": [
+        {"type": "line", "out": "base",
+            "points": [[0,0,0],[10,0,0],[10,5,0],[5,5,0],[5,10,0]]
+        }
+    ],
+    "operations": [
+        {"type": "extrude","in": "base","out": "fbase",
+            "shift":[0,0,"$height"]
+        },    
+        {"type": "flip","in": "fbase","out": "fbase"},
+        {"type": "frotate","in": "fbase","align":[0,0,1]}, 
+
+        {"type": "split","from": "fbase","out": ["uubase","fbase"],
+            "stype":"constant",
+            "side":"first",
+            "size":[0.5,0]
+        }, 
+           
+
+        {"type": "inset","from": "fbase","out": ["segments","b2"],
+           "amount": 0, "extrude": 0.2 
+        }, 
+        //{"type": "split","from": "fbase","out": "segments",
+        //    "stype":"constant",
+        //    "steps":"@($l/8)"
+        //},
+        {"type": "select","in": "segments","out":["*","*","c2base","*"],
+            "mode":"segments" 
+        },
+        {"type": "split","from": "segments","out": ["tbase","fbase"],
+            "stype":"constant",
+            "side":"fourth",
+            "size":[0.1,0]
+        }, 
+           
+
+		{ "type" : "ngon", "out" : "colb",  
+			"r" : 0.4,
+			"sides" : 4,
+			"angle":45
+        },      
+        {"type": "flip","in": "colb","out": "colu"},
+		{ "type" : "inset","from" : "colb","out" : ["colb","colu"], 
+			"extrude":3, 
+			"amount":0,
+		},        
+		{ "type" : "inset","from" : "colb","out" : ["colb","cols"], 
+			"extrude":0, 
+			"amount":-0.03,
+		},         
+		{ "type" : "inset","from" : "colb","out" : ["colb","cols"], 
+			"extrude":0.1, 
+			"amount":0,
+		},    
+		{ "type" : "uvmap", "in":["colb","cols","colu"],
+			"edge" : 2,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["colu"],
+            "material":"brick",
+            "smooth":false
+        },
+        {"type": "material", "in": ["cols","colb"],
+            "material":"concrete",
+            "smooth":false 
+        }, 
+		{ "type" : "pathplace", "in":"base", "fromform": ["colb","cols","colu"], "out" : "columns",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[-90,0,0],"pos":[0,0,0]},  //3 -3
+            "amount" : 1,
+            "rotnormalized":true
+        },   
+        
+
+		{ "type" : "uvmap", "in":["uubase"],
+			"edge" : 2,     
+			"scale" : 0.5     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["uubase"],
+            "material":"fen",
+            "smooth":false
+        },
+
+		{ "type" : "uvmap", "in":["fbase","tbase","b2"],
+			"edge" : 2,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["ttt", "sd","fbase"],
+            "material":"brick",
+            "smooth":false
+        },   
+        {"type": "material", "in": ["tbase","b2"],
+            "material":"concrete",
+            "smooth":false
+        },  
+    ]
+}

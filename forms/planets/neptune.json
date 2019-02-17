@@ -1,0 +1,14 @@
+{ 
+	"name" : "neptune",
+	"class" : "planetarchetype", 
+	"atmosphere" : 
+	{ 
+		"color" : [65,125,211],
+		"hazecolor" : [65,125,211],
+		"clouds": {
+			"texture":"textures/atmosphere/neptune.jpg",
+			"color":[255,255,255],
+		},
+	},  
+	"noHydrosphere" : 1,
+}

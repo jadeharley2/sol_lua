@@ -1,0 +1,153 @@
+{
+	name : "fence.subtest", 
+	input : {
+		"room" : { type : "surface", "default" : [[-5,-10,0],[-5,5,0],[5,5,0],[5,-10,0]],},
+	}, 
+	matpath : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	variables : { 
+		"$mat.main" : "concrete06b.json",
+		"$mat.columns" : "concrete06b.json",
+		"$mat.floor" : "fo_floor.json",
+		"$mat.ceiling" : "ceiling31.json",
+		"$mat.carpet" : "redcarpet.json",
+		
+		"$staircase" : true, 
+		"$floor" : false, 
+		"$widewindows" : false, 
+	},  
+	operations : [   
+		  
+		{ type : "material",in : "room",
+			material : "$mat.main", //"red.json"
+		},    
+		
+		{ type : "flip",from : "room",out : "room", },     
+			 
+		{ type : "inset", in : "room",out : ["rm_ceiling",["rm_wall_multi","rm_wall","rm_sdoor","rm_wall"]], 
+			mode : "normal",
+			amount : 0,  
+			extrude : -4, 
+		},      
+		{ type : "split", from : "rm_wall_multi",out :  ["rm_window","rm_window"],   
+			size : [0,0], 
+			stype:"constant",   
+			side:"third", 
+		},         
+		{ type : "flip",from : "room",out : "room", },  
+		 
+		{ type : "uvmap", in:["room","rm_ceiling","rm_sdoor","rm_wall","rm_window"],
+			edge : 3,     
+			scale : 2.0     ,
+			shift : [0.0 ,0.0], 
+			mul : [1,1,1],
+		},            
+		
+		{type:"branch", condition:"bool", value:"$widewindows",
+			ontrue:[  
+				{ 	type : "structure", out : "room_faces",
+					path : "parts/stdwindow.dnmd",
+					from : {"base":"rm_window"}, 
+					"$width":2.5,
+					"$height" : 2.6,
+				},        
+			]
+		},
+		
+		//staircase
+		
+		{ type : "split", from : "room",out : [ "rm_floor","rm_mid","rm_staircase"],   
+			size : [0,0.3,4],  
+			stype:"constant",   
+			side:"first",  
+		},         
+		{ type : "split", from : "rm_mid",out : [ "rm_mid_l","rm_mid","rm_mid_r"],   
+			size : [2,0,2],  
+			stype:"constant",   
+			side:"first",  
+		},         
+		
+		
+		
+		{type:"branch", condition:"bool", value:"$staircase",
+			ontrue:[ 
+				{ 	type : "structure", out : "stairs",
+					path : "parts/staircase_3w.dnmd",
+					in : {"base":"rm_staircase"},  
+					"$height" : 6,
+					"$step.height" : 0.18,
+					"$path.width" : 2,
+				},        
+				{ type : "material",in : "stairs",
+					material : "$mat.main", //"red.json"
+				},     
+				{ type : "union", in : "stairs", out : "room_faces"},
+				{ type : "split", from : "rm_ceiling",out : ["*","rm_ceiling"],   
+					size : [4,0],  
+					stype:"constant",   
+					side:"third",  
+				},        
+			],
+			onfalse:[      
+				{ type : "inset", from : "rm_mid_r",out : ["rm_mid_r","rm_mid_f"], 
+					mode : "normal",
+					amount : 0,  
+					extrude : 1.2, 
+				},        
+				{ type : "uvmap", in:["rm_mid_f"],
+					edge : 3,     
+					scale : 2.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},            
+			],
+		},
+		
+		{type:"branch", condition:"bool", value:"$floor",
+			ontrue:[ 
+				{ type : "union", in : "rm_staircase", out : "rm_floor"},
+			],
+			onfalse:[
+				{ type : "inset", from : "rm_staircase",out : ["*","rm_wall"],  
+					mode : "normal",
+					amount : 0,  
+					extrude : -2, 
+				},         
+				{ type : "inset", from : "rm_mid",out : ["rm_mid","rm_mid_f"], 
+					mode : "normal",
+					amount : 0,  
+					extrude : 1.2, 
+				},       
+				{ type : "uvmap", in:["rm_mid_f"],
+					edge : 3,     
+					scale : 2.0     ,
+					shift : [0.0 ,0.0], 
+					mul : [1,1,1],
+				},            
+			],
+		},
+		
+		{ type : "material",in : "rm_wall",
+			material : "$mat.main", //"red.json"
+		},    
+		{ 	type : "structure", out : "room_faces",
+			path : "parts/stddoor.dnmd",
+			from : {"base":"rm_sdoor_custom"}, 
+			"$height" : 3.5,   
+			"$width" : 4,  
+		},        
+		{ 	type : "structure", out : "room_faces",
+			path : "corridor.dnmd",
+			from : {
+				"floor":"rm_floor",
+				"ceiling":"rm_ceiling",
+				"door":"rm_sdoor",
+				"wall":"rm_wall",   
+				"window":"rm_window",   
+			}, 
+		},   
+	]   
+} 
