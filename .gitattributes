@@ -1,0 +1,2 @@
+*.json linguist-language=jsonc
+*.dnmd linguist-language=jsonc

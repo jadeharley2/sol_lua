@@ -1,3 +1,4 @@
-# SEngine lua scripts directory
+# SEngine data directory 
+excluding heavy resources (models, sounds, textures, etc.)
 
-[Screenshots](http://snengine.tumblr.com/)
+[Media tumblr blog: snengine.tumblr.com](http://snengine.tumblr.com/)
