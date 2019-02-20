@@ -1,0 +1,188 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat",
+        "textures/tile/tilt"],
+    "variables":{
+        "$width":5,
+        "$height":5
+    },
+    "input_operations": [
+        {"type": "line", "out": "base",
+            "points": [[-20,0,0],[-10,0,0],[0,0,0],[10,0,0],[20,0,0]]
+        }
+    ],
+    "functions" :{
+        "make_beam" :{
+            "inputs":["p1","p2"],
+            "variables":{
+                "$test" : 3
+            },
+            "outputs":["result"],
+            "operations":[
+                {"type":"line","out":"fline",
+                    "points":["p1","p2"]
+                },
+            ]
+        }
+    },
+    "operations": [ 
+         
+
+
+
+		{ "type" : "ngon", "out" : "column",  
+			"r" : 0.2,
+            "sides" : 4, 
+            "angle":45
+		},   
+		{ "type" : "inset","from" : "column","out" : ["column",["ca","cb"]], 
+			"extrude":"$height", 
+			"amount":0,
+		},      
+		{ "type" : "inset","from" : "cb","out" : ["cb","cside"], 
+			"extrude":0, 
+			"amount":[0.03,0],
+		},     
+		{ "type" : "inset","from" : "cb","out" : ["cb",["*","cside"]], 
+			"extrude":-0.11, 
+			"amount":0,
+        },     
+        {"type": "union","from": ["column","cb","ca","cside"],"out": "column0"},
+
+
+
+        {"type":"deform","in":"column0","mode":"transform", 
+            "world":{"ang":[180,0,0],"pos":[0,0,0]}
+        },      
+        {"type":"clone","in":"column0","out":"column", 
+            "world":{"ang":[0,0,0],"pos":[4,0,0]}
+        }, 
+        {"type":"clone","in":"column","out":"column2", 
+            "world":{"ang":[0,0,0],"pos":[-8,0,0]}
+        },   
+
+
+        {"type":"clone","in":"column","out":"column4", 
+            "world":{"ang":[0,80,0],"pos":[4.4,0,-1.1]}
+        },  
+        {"type":"deform","in":"column4","mode":"transform", 
+            "world":{"ang":[0,0,0],"pos":[0,0,"@(5-$height)"]}
+        },    
+        
+        {"type": "mirror","in": "column4","out": "column4",
+            "pos": [0,0,0],
+            "dir":[1,0,0]
+        },
+
+
+
+        {"type":"clone","from":"column0","out":"column3", 
+            "world":{"ang":[0,90,0],"pos":["@($height/2)",0,"@(0-$height)"]}
+        },  
+        {"type":"deform","in":"column3","mode":"transform", 
+            "world":{ "sca":[2,0.7,1]}
+        },    
+        {"type": "union","from": ["column","column2","column3"],"out": "column"},
+     
+        {"type": "material", "in": ["column"],
+            "material":"shinymetal",
+            "smooth":false 
+        },
+
+		{ "type" : "pathplace", "in":"base", "fromform": "column", "out" : "columns",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[90,0,90],"pos":[0,0.2,0]},  //3 -3
+			"amount" : 1,
+        },    
+
+		{ "type" : "uvmap", "in":"columns",
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+
+
+
+
+		{ "type" : "tesselate","from" : "base","out" : "base", 
+			"interpolation" : "cubic",
+			"mindist":3//2 ,
+        },      
+         
+		{ "type" : "pathplace", "in":"base", "fromform": "column4", "out" : "column4s",    
+			"normal" : [0,0,1],  
+			"world": {"ang":[90,0,90],"pos":[0,0.2,0]},  //3 -3
+			"amount" : 1,
+        },    
+
+        {"type": "line", "out":"roof_profile",
+            "points": [[0,1,0],[0,1,-1],[0,0,3],[0,-1,-1],[0,-1,0],[0,0,4]],
+            "loop":true   
+        }, 
+        {"type":"deform","in":"roof_profile","mode":"transform", 
+            "world":{"ang":[-90,0,0],"sca":[1,5,0.2],"pos":[0,"@($height+0.6)",0]}
+        },  
+        {"type": "pathextrude","in": "base","out": ["roof","roofcap"],
+            "profile":"roof_profile","normal":[0,0,1],
+            "cap":true        
+        },    
+ 
+ 
+		{ "type" : "ngon", "out" : "beam_profile",  
+			"r" : 0.2,
+            "sides" : 4, 
+            "angle":45
+        },   
+        {"type":"deform","in":"beam_profile","mode":"transform", 
+            "world":{"ang":[0,90,0],"pos":[0,"@($height+0.4)",4] }
+        },  
+        {"type": "pathextrude","in": "base","out": [["cb","ca"],"beamcap"],
+            "profile":"beam_profile","normal":[0,0,1],
+            "cap":true        
+        },  
+        {"type":"deform","in":"beam_profile","mode":"transform", 
+            "world":{ "pos":[0,0,-8] }
+        },  
+        {"type": "pathextrude","in": "base","out": [["cb","ca"],"beamcap"],
+            "profile":"beam_profile","normal":[0,0,1],
+            "cap":true        
+        },   
+        {"type":"deform","in":"beam_profile","mode":"transform", 
+            "world":{ "pos":[0,0.7,4] }
+        },  
+        {"type": "pathextrude","in": "base","out": [["cb","ca"],"beamcap"],
+            "profile":"beam_profile","normal":[0,0,1],
+            "cap":true        
+        },   
+ 
+		{ "type" : "inset","from" : "cb","out" : ["cb","cside"], 
+			"extrude":0, 
+			"amount":[0.03,0],
+		},     
+		{ "type" : "inset","from" : "cb","out" : ["cb",["*","cside"]], 
+			"extrude":-0.11, 
+			"amount":0,
+        }, 
+        {"type": "remove","in":["roof_profile","beam_profile"]},
+        
+        
+
+		{ "type" : "uvmap", "in":["roof","roofcap","column4s","cb","ca","cside"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["roof","roofcap","column4s","cb","ca","cside"],
+            "material":"shinymetal",
+            "smooth":false 
+        },
+ 
+        {"type": "material", "in": ["roof","roofcap"],
+            "material":"roofm",
+            "smooth":false 
+        },
+        
+
+    ]    
+}   

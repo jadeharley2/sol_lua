@@ -141,9 +141,9 @@ end
 function ENT:LoadGraph(tab)
 
 	local graph = BehaviorGraph(self,tab) 
-	if tab then
-		graph.debug =true
-	end
+	--if tab then
+	--	graph.debug =true
+	--end
 	if not tab then
 		graph:NewState("idle",function(s,e) 
 			e:UpdateLean()
@@ -756,10 +756,12 @@ function ENT:SetSize(val)
 	local phys = self.phys
 	if model and phys then
 		self.scale = val
-		self.phys:SetHeight(1.7*val)
-		self.phys:SetRadius(0.6*0.6*val)
+		self.phys:SetHeight((self.data.height or 1.7)*val)
+		self.phys:SetRadius((self.data.radius or (0.6*0.6))*val) 
+		self.phys:SetMass((self.data.mass or (20))*val) 
 		self.phys:SetJumpSpeed(4.5)
-		
+		self.innerscale = val or 1
+
 		model:SetMatrix(matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val))
 	end
 end
@@ -785,7 +787,7 @@ function ENT:Turn(ang)
 	if self.model:HasAnimation("turn_l") then 
 		--MsgN(ang)
 			local graph = self.graph
-			graph.debug = true
+			--graph.debug = true
 		if graph and (ang>0) then 
 			MsgN(ang)
 			if graph:Call("turn_l") then 

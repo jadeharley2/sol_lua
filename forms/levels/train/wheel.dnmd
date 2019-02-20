@@ -1,0 +1,82 @@
+{
+    "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat",
+        "textures/tile/tilt"],
+    "variables":{ 
+        "$rwidth": 1.45
+    },
+    "operations": [
+        {"type": "ngon", "out": "base",
+            "r":0.04, 
+            "sides":12 
+        }, 
+        {"type":"deform","in":"base","mode":"transform", 
+            "world":{"ang":[90,0,0],"pos":[0,0,0]}
+        },      
+        {"type": "flip","in": "base","out": "base"},
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0, "extrude": "@($rwidth/2+0.1)"
+        },     
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0.01, "extrude": 0.01
+        }, 
+        {"type": "inset","from": "base","out": ["base","side"],
+           "amount": 0, "extrude": 0.04
+        }, 
+
+
+        {"type": "ngon", "out": "wbase",
+            "r":0.305, 
+            "sides":24
+        }, 
+        {"type":"deform","in":"wbase","mode":"transform", 
+            "world":{"ang":[90,0,0],"pos":[0,"@(0-$rwidth/2-0.03)",0]}
+        },   
+ 
+        {"type": "flip","in": "wbase","out": "wbase2"},
+        {"type": "inset","from": "wbase2","out": ["wbase2","wside"],
+           "amount": -0.03, "extrude": 0.01
+        }, 
+        {"type": "inset","from": "wbase2","out": ["wbase2","wside"],
+           "amount": -0.0, "extrude": 0.01
+        }, 
+        {"type": "inset","from": "wbase2","out": ["wbasec","wside"],
+           "amount": 0.04, "extrude": 0
+        }, 
+
+        {"type": "inset","from": "wbase","out": ["wbasec","wside"],
+            "amount": 0.01, "extrude": 0.08
+        },  
+        {"type": "inset","from": "wbasec","out": ["wbase","wside"],
+           "amount": 0.03, "extrude": 0.0
+        },  
+        {"type": "inset","from": "wbase","out": ["wbase","wside"],
+           "amount": 0.01, "extrude": -0.03
+        },  
+        {"type": "inset","from": "wbase","out": ["wbase","wside"],
+           "amount": 0.18, "extrude": -0.01
+        },  
+        {"type": "inset","from": "wbase","out": ["wbase","wside"],
+           "amount": 0.01, "extrude": 0.04
+        },  
+
+
+
+		{ "type" : "uvmap", "in":["base","side","wbase","wside"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["base","wbase2","side"],
+            "material":"blackmetal",
+            "smooth":true 
+        },
+        {"type": "material", "in": ["wbase","wbase2","wside"],
+            "material":"blackmetal",
+            "smooth":true 
+        },
+        {"type": "mirror","in": ["wbase","wbase2","wside"],"out": "%",
+            "pos":[0,0,0],"dir":[0,1,0]
+        },
+    ]
+} 

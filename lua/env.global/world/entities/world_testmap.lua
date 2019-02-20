@@ -336,28 +336,28 @@ function ENT:Spawn()
 
 
 
-	local dynamicmodel = ents.Create()
-	dynamicmodel:SetSeed(45312341)
-	local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
-	dynamicmodel.model = model 
-	dynamicmodel:SetSpaceEnabled(false) 
-	dynamicmodel:SetSizepower(1)
-	dynamicmodel:SetParent(space)
-	
-	model:SetRenderGroup(RENDERGROUP_LOCAL) 
-	model:SetBlendMode(BLEND_OPAQUE) 
-	model:SetRasterizerMode(RASTER_DETPHSOLID) 
-	model:SetDepthStencillMode(DEPTH_ENABLED)  
-	model:SetBrightness(1)
-	model:SetFadeBounds(0,9e20,0)   
-	 
-	local procgen = dynamicmodel:AddComponent(CTYPE_PROCGEN) 
-	dynamicmodel.procgen = procgen
-	procgen:SetModel("models/dyntest/test_dynamic.dnmd")
-	
-	
-	dynamicmodel:Spawn()
-	dynamicmodel:SetPos(-0.02885208, 0.007299021, 0)
+	----local dynamicmodel = ents.Create()
+	----dynamicmodel:SetSeed(45312341)
+	----local model = dynamicmodel:AddComponent(CTYPE_MODEL)  
+	----dynamicmodel.model = model 
+	----dynamicmodel:SetSpaceEnabled(false) 
+	----dynamicmodel:SetSizepower(1)
+	----dynamicmodel:SetParent(space)
+	----
+	----model:SetRenderGroup(RENDERGROUP_LOCAL) 
+	----model:SetBlendMode(BLEND_OPAQUE) 
+	----model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	----model:SetDepthStencillMode(DEPTH_ENABLED)  
+	----model:SetBrightness(1)
+	----model:SetFadeBounds(0,9e20,0)   
+	---- 
+	----local procgen = dynamicmodel:AddComponent(CTYPE_PROCGEN) 
+	----dynamicmodel.procgen = procgen
+	----procgen:SetModel("models/dyntest/test_dynamic.dnmd")
+	----
+	----
+	----dynamicmodel:Spawn()
+	----dynamicmodel:SetPos(-0.02885208, 0.007299021, 0)
 	
 	
 	
@@ -469,7 +469,16 @@ function ENT:GetSpawn()
 		cc:PutItemAsData(1, ItemPV("forms/props/clutter/clut_lab_book.json",24879,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(2,ItemPV("forms/props/furniture/futur/chair_a.json",346334,{
+		cc:PutItemAsData(2, ItemPV("forms/props/clutter/clut_lab_book.json",4352,{ 
+			parameters = { name = "The Book",  },
+		}))
+		cc:PutItemAsData(3, ItemPV("forms/props/clutter/clut_lab_book.json",4452,{ 
+			parameters = { name = "The Book",  },
+		}))
+		cc:PutItemAsData(4, ItemPV("forms/props/clutter/clut_lab_book.json",2542,{ 
+			parameters = { name = "The Book",  },
+		}))
+		cc:PutItemAsData(5,ItemPV("forms/props/furniture/futur/chair_a.json",346334,{
 			parameters = {name = "Egg chair"},
 			flags = {"storeable"},
 		}))

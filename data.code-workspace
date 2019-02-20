@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "forms"
+		},
+		{
+			"path": "models"
+		},
+		{
+			"path": "textures"
+		},
+		{
+			"path": "lua"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.json": "jsonc",
+			"*.dnmd": "jsonc",
+			"*.mat": "jsonc",
+			"*.dnlv": "jsonc",
+			"*.particle": "jsonc",
+			"*.n": "jsonc"
+		},
+		"json.schemas": [ 
+			{
+				"fileMatch": ["*.dnmd"],
+				"url": "/_meta/schema/dynamicmodel.json"
+			},
+			{
+				"fileMatch": ["/textures/*.json","*.mat"],
+				"url": "/_meta/schema/material.json"
+			}
+		]
+	}
+}

@@ -21,7 +21,6 @@ function TOOL:PGPick(ent)
 		constraint.Break(ent,nil,"weld")
 		ent.phys:SetGravity(Vector(0,-0.00001,0))
 		ent.phys:SetLinearDamping(0.99)
-		
 	
 		
 		if not self.mlight then
@@ -65,7 +64,7 @@ function TOOL:PGPick(ent)
 			self.snd = self:EmitSoundLoop("energy/loop_01_mono.ogg",1,0.5)
 		end
 		
-		hook.Add("main.update", "physgun.dropcheck", function() 
+		hook.Add(EVENT_GLOBAL_PREDRAW, "physgun.dropcheck", function() 
 			
 			local ent = self.targetEntity
 			if ent then
@@ -76,25 +75,32 @@ function TOOL:PGPick(ent)
 				
 				self.flight:SetPos(p2) 
 				--self.glight:SetPos(p2) 
+
+
+				local parentphysnode = self:GetParentWithComponent(CTYPE_PHYSSPACE) 
+				local cam = GetCamera()
+				local lw = parentphysnode:GetLocalSpace(cam) 
+				local dir = lw:Forward()
+
 				
 				local trp = ent:GetParent()
 				local user = self:GetParent()
 				local sz = user:GetParent():GetSizepower()
 				local pos_user = trp:GetLocalCoordinates(user)+Vector(0,1/sz,0)
 				local pos_current = ent:GetPos()
-				local self_dir = (self.dir  or Vector(1,0,0)):Normalized()
+				local self_dir = (dir or Vector(1,0,0)):Normalized()
 				local pos_target = pos_user+self_dir * self.offsetDir:Length()
 				local vel = pos_target-pos_current
 					--MsgN("mt: ",pos_target)
 				--ent:SetPos(pos_target)
-				ent.phys:ApplyImpulse(vel*10)
+				ent.phys:ApplyImpulse( vel*1000)
 			else
 				state = "idle"
 			end
 		
 		
 			if not input.leftMouseButton() then
-				hook.Remove("main.update", "physgun.dropcheck")
+				hook.Remove(EVENT_GLOBAL_PREDRAW, "physgun.dropcheck")
 				self:PGDrop()
 			end
 		end)
@@ -145,8 +151,10 @@ function TOOL:Fire(dir)
 			local sz = parentphysnode:GetSizepower()
 			local lwp = user:GetPos()+Vector(0,1.4/sz,0)
 			
+			MsgN("fire: ",lwp,dir)
 			local tr = self:Trace(lwp,dir)
 			if tr and tr.Hit then 
+				MsgN("hit: ",tr.Position,tr.Entity)
 				local p1 = self.model:GetAttachmentPos("muzzle")
 				local p2 = self:ToLocal(parentphysnode,tr.Position)
 				--self:CreateLaser(p1,p2,10,0.1)

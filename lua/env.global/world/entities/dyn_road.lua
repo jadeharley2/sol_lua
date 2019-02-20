@@ -155,12 +155,14 @@ function ENT:UpdateCollision()
     self.coll = coll
      
     local world = matrix.Scaling(1)  
-    coll:SetShapeFromModel(world)
-    MsgN("waf")
+    coll:SetShapeFromModel(world) 
 end
 
 hook.Add("EditorNodeCopy","dynroad",function(old,new)
     if old and old.rnod then 
+        new.rnod = true
+        new.parent = old.parent 
+
         new.prev = old.prev
         new.next = old
 
@@ -173,7 +175,7 @@ hook.Add("EditorNodeCopy","dynroad",function(old,new)
 
     end
 
-end)
+end) 
 
  
 
@@ -195,10 +197,10 @@ ENT.editor = {
             else
                 if ent.points then
                     local daf = false
-                    local fd = false
+                    local fd = false 
                     for k,v in pairs(ent.points ) do
-                        local ee = SpawnSO("primitives/sphere.stmd",spp,v,0.8)
-                        ee.rnod = true
+                        local ee = SpawnEHANDLE("primitives/sphere.stmd",spp,ent,v,0.8) 
+                        ee.rnod = true 
                         if daf then daf.next = ee ee.prev = daf end
                         if not fd then fd = ee end
                         daf = ee
@@ -220,12 +222,7 @@ ENT.editor = {
         local pts = {}
         local sz = spp:GetSizepower()
         for k=1,2 do 
-            pts[k+1] = spo+Vector(5*k/sz,0,0)
-            --local ee = SpawnSO("primitives/sphere.stmd",spp,spo+Vector(k*0.01,0,0),0.8)
-           -- ee.rnod = true
-           -- if daf then daf.next = ee ee.prev = daf end
-           -- if not fd then fd = ee end
-            --daf = ee
+            pts[k+1] = spo+Vector(5*k/sz,0,0) 
         end
         --ent.net = fd
         ent.points = pts

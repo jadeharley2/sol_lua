@@ -1,6 +1,248 @@
 {
     "matpath": ["textures/tile/mat/","textures/debug/","models/dyntest/mat"],
     "operations": [
+        //exterior
+        {"type": "rectangle", "out": "ext_base",
+            "w":3.2, 
+            "l":20.4 
+        },
+        {"type": "material", "in": "ext_base",
+            "material":"shinymetal"//"wireframe"
+        },
+        {"type": "inset","in": "ext_base","out": ["ext_top",["ext_sideA","ext_sideB"]],
+           "amount": 0,
+           "extrude": 2 
+        },
+        {"type": "inset","from": "ext_top","out": ["ext_top","ext_tsides"],
+            "amount": [0.05,0], "extrude": 0.3 
+        },
+        {"type": "inset","from": "ext_top","out": ["ext_top","ext_tsides"],
+            "amount": [0.2,0], "extrude": 0.2 
+        },
+        {"type": "inset","from": "ext_top","out": ["ext_top","ext_tsides"],
+            "amount": [0.3,0], "extrude": 0.1
+        },
+
+        {"type": "flip","from": "ext_base","out": "ext_base"},
+        {"type": "inset","from": "ext_base","out": ["ext_bot","ext_bsides"],
+            "amount": 0, "extrude": 0.1 
+        },
+        {"type": "material", "in": ["ext_bot"],
+            "material":"blackmetal",
+            "smooth":false
+        },
+        {"type": "inset","from": "ext_bot","out": ["ext_bot","ext_bsides"],
+            "amount": 0, "extrude": 0.3 
+        },
+        {"type": "inset","from": "ext_bot","out": ["ext_bot","ext_bsides"],
+            "amount": 0.2, "extrude": 0 
+        },
+        {"type": "inset","from": "ext_bot","out": ["ext_bot","ext_bsides"],
+            "amount": 0, "extrude": -0.3 
+        },
+
+        //sidea 
+        {"type": "frotate","in": "ext_sideA","add":2},
+        {"type": "split", "from": "ext_sideA","out": ["brd","ext_saw","ext_saw2","ext_saw","brd"],
+            "stype":"constant", 
+            "size":[0.1,0,0.9,0,0.1],
+            "side":"first" 
+        },
+        {"type": "inset","from": "ext_saw2","out": ["ext_saw","ext_other"],
+           "amount": 0, "extrude": -0.03 
+        },
+        {"type": "split", "from": "ext_saw","out": ["ext_saw","ext_swi"],
+            "stype":"constant", 
+            "size":[0,1.1],
+            "side":"third" 
+        },
+        {"type": "inset","from": "ext_swi","out": ["ext_swi","ext_wcs"],
+           "amount": 0.1, "extrude": 0,"chamfer": 0.1
+        },
+        {"type": "inset","from": "ext_swi","out": ["ext_swi","ext_frames"],
+           "amount": 0.03, "extrude": 0 
+        },
+        {"type": "inset","from": "ext_swi","out": ["ext_swi","ext_frames"],
+           "amount": 0, "extrude": -0.1 
+        }, 
+        {"type": "material", "in": ["ext_swi"],
+            "material":"glass",
+            "smooth":false
+        },
+
+        //sideb
+        {"type": "frotate","in": "ext_sideB","add":2},
+        {"type": "split", "from": "ext_sideB","out": 
+             ["brd","ewws","esd","esw","esd","esw","esd","esw","esd","ewws","brd"],
+            "stype":"constant", 
+            "size":[0.2,0.2,1.3,0,1.3,0,1.3,0,1.3,0.2,0.2],
+            "side":"major" 
+        },
+
+
+        {"type": "split", "from": "esd","out": ["eusc","esds"],
+            "stype":"constant", 
+            "size":[0,0.2],
+            "side":"third" 
+        },
+        {"type": "inset","from": "eusc","out": ["eusc","*"],
+           "amount": -0.04, "extrude": 0 
+        }, 
+        {"type": "inset","from": "eusc","out": ["eusc","ext_frames"],
+           "amount": 0, "extrude": 0.01 
+        }, 
+        {"type": "inset","from": "eusc","out": ["eusc","ext_frames"],
+           "amount": 0.04, "extrude": 0 
+        }, 
+        {"type": "inset","from": "eusc","out": ["*","ext_frames"],
+           "amount": 0, "extrude": -0.01 
+        }, 
+        //walls
+        {"type": "split", "from": "esw","out": ["ewws","esw","ewws"],
+            "stype":"constant", 
+            "size":[0.8,0,0.8],
+            "side":"second" 
+        }, 
+        {"type": "split", "from": "esw","out": ["ewb","ewc","ewt"],
+            "stype":"constant", 
+            "size":[0.7,0,0.3],
+            "side":"first" 
+        }, 
+        {"type": "inset","from": "ewc","out": ["wc","eframes"],
+           "amount": 0, "extrude": -0.02 
+        }, 
+        
+
+
+        //bottom
+        
+        { 	"type" : "structure", "out" : "bogie",
+            "path" : "bogie.dnmd",//"mpart1.dnmd",
+        },  
+		{"type":"deform","in":"bogie",
+			"mode":"transform",
+			"world":{"pos":[8,0,-1],"sca":[1.7,1.7,1.7]}, 
+		},
+		{"type":"clone","in":"bogie","out": "bogie2", 
+			"world":{"pos":[-16,0,0]}, 
+		},
+
+
+        
+        {"type": "rectangle", "out": "block1",
+            "w":1, 
+            "l":2 
+        },  
+		{"type":"deform","in":"block1",
+			"mode":"move",
+			"shift":[1.2,-0.8,0] 
+		}, 
+        {"type": "flip","from": "block1","out": "block1"},
+
+
+        {"type": "rectangle", "out": "block2",
+            "w":1, 
+            "l":1 
+        },  
+		{"type":"deform","in":"block2",
+			"mode":"move",
+			"shift":[3,-0.8,0] 
+		}, 
+        {"type": "flip","from": "block2","out": "block1"},
+
+
+        {"type": "inset","from": "block1","out": ["block1","block1s"],
+           "amount":0, "extrude": 1
+        },   
+        {"type": "union","from": ["block1","block1s","block1b"],"out": "part_block1"},
+		{ "type" : "uvmap", "in":["part_block1"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["part_block1"],
+            "material":"blackmetal",
+            "smooth":false 
+        },
+
+        {"type": "mirror","in": [ "part_block1"],"out": "%",
+            "pos":[0,0,0],"dir":[1,0,0]
+        },
+        {"type": "mirror","in": [ "part_block1"],"out": "%",
+            "pos":[0,0,0],"dir":[0,1,0]
+        },
+		{"type":"deform","in":"part_block1",
+			"mode":"move",
+			"shift":[2,0,0] 
+		}, 
+
+
+        {"type": "ngon", "out": "block3",
+            "r":0.4, 
+            "sides":12 
+        }, 
+		{"type":"deform","in":"block3",
+			"mode":"transform",
+            "world":{"ang":[0,90,0],"pos":[-4,-0.8,-0.7]}
+		}, 
+        {"type": "flip","in": "block3","out": "block3b"},
+        {"type": "inset","from": "block3","out": ["block3","block3s"],
+           "amount":0, "extrude": 1
+        },    
+        {"type": "inset","from": ["block3","block3b"],"out": ["block3","block3s"],
+           "amount":0.1, "extrude": 0.1
+        },    
+        {"type": "union","from": ["block3","block3s","block3b"],"out": "part_block3"},
+        { "type" : "uvmap", "in":["part_block3"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["part_block3"],
+            "material":"blackmetal",
+            "smooth":true 
+        },
+        {"type": "mirror","in": [ "part_block3"],"out": "%",
+            "pos":[0,0,0],"dir":[0,1,0]
+        },
+
+        {"type": "rectangle", "out": "block4",
+            "w":0.8, 
+            "l":0.8 
+        },  
+		{"type":"deform","in":"block4",
+			"mode":"move",
+			"shift":[-5,-0.8,0] 
+		}, 
+        {"type": "flip","from": "block4","out": "block4"}, 
+        {"type": "inset","from": "block4","out": ["block4","block4s"],
+           "amount":0, "extrude": 0.9
+        },   
+        {"type": "union","from": ["block4","block4s","block4b"],"out": "part_block4"},
+		{ "type" : "uvmap", "in":["part_block4"],
+			"edge" : 1,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},   
+        {"type": "material", "in": ["part_block4"],
+            "material":"blackmetal",
+            "smooth":false 
+        },
+        {"type": "mirror","in": [ "part_block4"],"out": "%",
+            "pos":[-3.6,0,0],"dir":[1,0,0]
+        },
+        {"type": "mirror","in": [ "part_block4"],"out": "%",
+            "pos":[0,0,0],"dir":[0,1,0]
+        },
+
+        //{"type": "stop"},
+        ///////////////////////////////
+
+
+        //interior
         {"type": "rectangle", "out": "floor",
             "w":3, 
             "l":20 
@@ -23,12 +265,12 @@
         {"type": "material", "in": ["top","sideA","sideB"],
             "material":"plastic_y",
             "smooth":false
-        },       
+        },        
         {"type": "material", "in": ["floor"],
             "material":"plastic_g",
             "smooth":false 
         },   
-
+ 
         //floor  
         {"type": "split", "from": "floor","out": ["bot","botc","bot"],
             "stype":"constant", 

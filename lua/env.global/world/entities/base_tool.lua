@@ -107,7 +107,7 @@ function ENT:OnPickup(ent)
 	--if em then
 	--	em:Attach(self,"weapon1")
 	--end
-end 
+end  
 function ENT:Trace(pos, dir) 
 	local parentphysnode = self:GetParentWithComponent(CTYPE_PHYSSPACE)
 	if parentphysnode then 
@@ -117,7 +117,8 @@ function ENT:Trace(pos, dir)
 		end
 		local sz = parentphysnode:GetSizepower() 
 		local space = parentphysnode:GetComponent(CTYPE_PHYSSPACE) 
-		local hit, hpos, hnorm, dist, ent = space:RayCast(pos,dir)
+		local parphys = self:GetParent().phys  
+		local hit, hpos, hnorm, dist, ent = space:RayCast(pos,dir,parphys)
 		return {Hit = hit,Position=hpos,Normal=hnorm,Distance = dist, Node = parentphysnode, Space = space,Entity = ent}  
 	end
 end

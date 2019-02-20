@@ -3,7 +3,7 @@ local EDITOR = {}
 
 --props: 
 --  
---funcs: 
+--funcs:  
 
 function EDITOR:Open()  
 end 

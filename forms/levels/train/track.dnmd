@@ -1,17 +1,17 @@
 {
 	"name" : "roads test",
 	"matpath" : [ 
+		"textures/tile/mat/",
+		"textures/debug/",
 		"models/dyntest/mat",
-		"textures/stdif",
-		"textures/tile/mat",
-		"textures/debug"
+        "textures/tile/tilt"
 	],  
 	"variables" : { 
 		"$height" : 1
 	},
 	"input_operations" : [
 		 { "type" : "line", "out":"base",
-			 "points" : [[0,0,0],[10,0,0],[10,5,0],[0,2,0]]
+			 "points" : [[0,0,0],[10,2,0],[20,2,0],[30,0,0]]
 		 },
 	],
 	"operations" : [ 
@@ -22,13 +22,24 @@
 		{ "type" : "line","out" : "prof",  
 			//points : [[0,-2,0],[0,-1,1],[0,1,1],[0,2,0]],
 			"points" : [[0,-2,0],[0,-1,1],
-			[0,-0.8,1], [0,-0.8,1.2], [0,-0.7,1.2], [0,-0.7,1],
-			 [0,0.7,1],[0,0.7,1.2],[0,0.8,1.2], [0,0.8,1], 
+			//[0,-0.8,1], [0,-0.8,1.2], [0,-0.7,1.2], [0,-0.7,1],
+			// [0,0.7,1],[0,0.7,1.2],[0,0.8,1.2], [0,0.8,1], 
 			
 			[0,1,1],[0,2,0]],
 			"loop" : false
+		},       
+		{ "type" : "line","out" : "prof_rail",   
+			"points" : [ 
+			[0,-0.8,1], [0,-0.8,1.2], [0,-0.7,1.2], [0,-0.7,1]//,
+			// [0,0.7,1],[0,0.7,1.2],[0,0.8,1.2], [0,0.8,1]
+			],
+			"loop" : false
 		},    
 		{"type":"deform","in":"prof",
+			"mode":"transform",
+			"world":{"ang":[-90,0,0],"pos":[0,-0.8,0]} 
+		},
+		{"type":"deform","in":"prof_rail",
 			"mode":"transform",
 			"world":{"ang":[-90,0,0],"pos":[0,-0.8,0]} 
 		},
@@ -42,6 +53,23 @@
 			"basedir" : [1,0,0],
 			"width":1, 
 		},    
+		{ "type" : "pathextrude", "in":"base", "out" : "rails",   
+			"profile" : "prof_rail",
+			"normal" : [0,0,1],
+			"basedir" : [1,0,0],
+			"width":1, 
+		},     
+		
+		{"type":"deform","in":"prof_rail",
+			"mode":"transform",
+			"world":{"ang":[0,0,0],"pos":[0,0,-1.45]} 
+		},
+		{ "type" : "pathextrude", "in":"base", "out" : "rails",   
+			"profile" : "prof_rail",
+			"normal" : [0,0,1],
+			"basedir" : [1,0,0],
+			"width":1 
+		},   
 
 
 		
@@ -63,15 +91,26 @@
 			"scale" : 4.0     ,
 			"shift" : [0.0 ,0.0], 
 			"mul" : [1,1,1],
-		},        
-		{ "type" : "pathplace", "in":"test2_fd", "inform": "road_fd", "out" : "road_s",    
+		},      
+		{ "type" : "pathplace", "in":"test2_fd", "fromform": "road_fd", "out" : "road_s",    
 			"normal" : [0,0,1],  
 			"world": {"ang":[-90,0,90],"pos":[0,0.2,0]},  //3 -3
 			"amount" : 1,
+		},    
+		{ "type" : "uvmap", "in":[ "rails","road_s", "road"],
+			"edge" : 2,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
 		},   
-        {"type": "material", "in": ["road"],
-            "material":"white",
-            "smooth":true
-        },
+        {"type": "material", "in": ["rails"],
+            "material":"metal",
+			"smooth":true
+        },   
+        {"type": "material", "in": ["road_s","road"],
+            "material":"concrete",
+            "smooth":false
+        },  
+		{"type": "remove","in": ["prof_rail","prof"]},
 	]   
 } 

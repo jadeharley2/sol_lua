@@ -49,18 +49,21 @@ function gizmometa:Shift(oldpos,newpos)
 	--MsgN(shift)
 	for k,v in pairs(worldeditor.selected) do
 		k:SetPos(k:GetPos()+shift)
+		hook.Call("EditorNodeMove",k,oldpos,newpos)
 	end
 	--if lsn then lsn:SetPos(newPos) end
 end
 function gizmometa:Rotate(axis,shift) 
 	for k,v in pairs(worldeditor.selected) do
 		k:TRotateAroundAxis(axis,shift)  
+		hook.Call("EditorNodeRotate",k,axis,shift)
 	end
 	--if lsn then lsn:SetPos(newPos) end
 end
 function gizmometa:Scale(anewscale) 
 	for k,v in pairs(worldeditor.selected) do
 		k:SetScale(anewscale)  
+		hook.Call("EditorNodeScale",k,anewscale)
 	end 
 end
 
