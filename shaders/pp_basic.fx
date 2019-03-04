@@ -369,6 +369,25 @@ float4 PS( PS_IN input ) : SV_Target
 	//step1 *=cos(length(step1));	
 	//result = saturate(step1)+saturate(result);//(sqrt(result))*10;
 	
+	if(enable_bloom)
+	{  
+		float3 ovb= 0;
+		float pw = 1;
+		//[unroll]
+		for(int i=0;i<50;i++)
+		{
+			pw = pw*0.86;
+			ovb=ovb
+			+saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(0.001*i,0))*pw)
+			+saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(-0.001*i,0))*pw);
+			
+		} 
+		
+		result =(result*0.3+ovb*0.05);
+	}
+
+
+
 	//float gamma = 0.5;
 	//float exposure = 0.01; 
     float3 mapped = 1 - exp(-result * exposure); //exposure
@@ -387,6 +406,7 @@ float4 PS( PS_IN input ) : SV_Target
 	//	if (!isfinite(cnuv.x)) return float4(1,0,0,1);
 	//result = lerp(step1,result,saturate(length(result)*10));
 	//return float4(wpos*100000*float3(1,1,1),1)/200+ float4(result,1);
+	
 	return float4(result,1);
 }
 

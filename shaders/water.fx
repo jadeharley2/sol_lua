@@ -234,7 +234,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	(saturate(saturate(-input.data.x*2)+1-saturate(1-camDot))+surfaceDistance/4)
 	-saturate(surfaceDistance*2)
 	;
-	clip(5-surfaceDistance);
+	//clip(5-surfaceDistance);
 	////clip(0.5-surfaceDistance);
 	//output.color = output.color+float4(( lightcolor-output.color.rgb)*atmosphereFogIntencity,0);  
 	 

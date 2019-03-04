@@ -4,6 +4,7 @@ float4x4 Projection;
 float4x4 View;
 float4x4 World;
    
+float4x4 EnvInverse;
 
 float3 Color = float3(1,1,1)*0.9;
 
@@ -23,10 +24,12 @@ Texture2D g_DetailTexture_n;
  
 bool TextureEnabled = true;
 bool DetailEnabled = true; 
+bool is_blackhole = false;
   
 float2 detailscale = float2(0.01,0.01);
   
 
+TextureCube g_EnvTexture; 
 
 SamplerState MeshTextureSampler
 {
@@ -115,8 +118,25 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 PS_OUT PS( PS_IN input ) : SV_Target
 { 
 	PS_OUT output = (PS_OUT)0;
+	if(is_blackhole) 
+	{
+		float4x4 VP =mul(transpose(View),transpose(Projection));
+		//float3 localnorm = mul(float4(input.norm,1),VP);
+		//if below surface => normal from world pos
+		//input.norm = -normalize(transpose(World)._m30_m31_m32); 
+		float dotP3 = pow( saturate(-dot(normalize(input.wpos),input.norm)),10);
+		float3 envdir = mul(lerp( normalize(input.wpos.xyz),-input.norm,
+			dotP3 ),EnvInverse) ;
+		float4 envmap = g_EnvTexture.Sample(MeshTextureSampler,envdir);
+		float4 dilationColorShift = float4(1,0,-1,0)*2;
+		float lightMul = saturate(1-dotP3-dotP3*dotP3*dotP3); 
+		output.color =
+		// float4(input.norm.xyz,1);// 
+		(envmap*1+dilationColorShift*saturate(envmap)*dotP3*dotP3*2)*lightMul;
+		//float4(1,1,1,1);
+		return output;
+	}
 
-	 
 	float TBrightness = brightness * hdrMultiplier;
 	//float realDepth = length(input.wpos)/global_scale;  
 	

@@ -238,6 +238,15 @@ struct PS_IN
     float3 LPOS : TEXCOORD2;
 	float2 tcrd : TEXCOORD3;  // local position
 };
+struct PS_OUT
+{
+    float4 color: SV_Target0;
+    float4 normal: SV_Target1;
+    //float4 position: SV_Target2;
+    float depth: SV_Target2;
+    float4 mask: SV_Target3;
+    //float4 light: SV_Target4;
+};
 
 PS_IN VS(VSS_IN input)
 {
@@ -255,14 +264,17 @@ PS_IN VS(VSS_IN input)
 }
  
 
-float4 PS(PS_IN input) : SV_Target
+PS_OUT PS(PS_IN input) : SV_Target
 {   
+	PS_OUT ou = (PS_OUT)0;
+	
 	//return float4(0.5,0,1,0.5);
 	float2 screenPosition = ((float2)input.Position.xy)/screenSize;
 	
 	if (mode==1)
 	{
-		float density = saturate((rheight-1.01)*100);
+		float density = saturate((rheight-1.001)*100);
+		//float density = saturate((rheight-1.01)*100);
 		
 		float dotpd = saturate(pow(saturate(dot(input.Normal,normalize(input.Pos))),1.0/4));//6
 		//return dotpd; 
@@ -313,7 +325,17 @@ float4 PS(PS_IN input) : SV_Target
 		)/9;
   		//bc2 = float3(1,0,0);
 		//bc1 = float3(0,1,0);  
-		float4 clouds = tClouds.Sample(sCL, input.tcrd);
+
+		float2 noise = float2(
+			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,1)*150).r-0.5, 
+			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,-1)*150+float2(0.3,-0.6)).r-0.5
+			 )+float2(
+			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,1)*450).r-0.5, 
+			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,-1)*450+float2(0.3,-0.6)).r-0.5
+			 )*0.5
+		 ;
+		float4 clouds = tClouds.Sample(sCL, input.tcrd+noise*0.001);
+		//clouds =float4(noise.x,noise.y,1,1);
 		//float4 cloudNoise = 
 		//	(
 		//		tCloudNoise.Sample(sCL, input.tcrd*float2(60,30))
@@ -323,6 +345,7 @@ float4 PS(PS_IN input) : SV_Target
 		////clouds =  lerp(clouds,cloudNoise,clouds.a/4);
 		//clouds.a = clouds.a + clouds.a*(cloudNoise-0.5);
 		//clouds.a = saturate(clouds.a +0.9); 
+		 
 		float3 tBackColor =lerp(bc1,bc2*0.4,saturate(clouds.a*4+0.2)*density); 
 		 
 		tBackColor = lerp(tBackColor,clouds*sunTotal*0.6*cloudColor,clouds.a*density);
@@ -338,8 +361,9 @@ float4 PS(PS_IN input) : SV_Target
 			*density
 			+tBackColor
 		;
-		
-		return  float4(result,1); 
+		ou.color = float4(result,1);
+
+		return ou;//float4(result,1); 
 	}
 	else 
 	{// 
@@ -482,8 +506,10 @@ float4 PS(PS_IN input) : SV_Target
 		//tBackColor =lerp(tBackColor,0, saturate(pow(horison,5)*density*10));
 //return float4(result.a,result.a,result.a,1);
 		//result = float4(lerp(tBackColor,result,result.a*0).rgb,1); 
-
-		return result;
+		//ou.normal.r = 1;
+		ou.mask.a = density*angleDensity;
+		ou.color = result;
+		return ou;//return result;
 		//return lerp(tBackColor,float4(
 		//		((saturate(horison)+saturate(-topDot))*horisonColor
 		//		+saturate(topDot)*(tBackColor.rgb+topColor)

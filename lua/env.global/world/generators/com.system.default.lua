@@ -43,9 +43,9 @@ function generator:GenerateUnarySystem(system, seed)
 	--star:SetParameter("color",system.color)
 	star:SetSizepower(r * 20000)
 	if(rnd:NextFloat( 0, 1)>0.999) then
-		star:SetParameter("typename","blackhole")
+		star:SetParameter(VARTYPE_TYPE,NTYPE_BLACKHOLE)
 	else
-		star:SetParameter("typename","star")
+		star:SetParameter(VARTYPE_TYPE,NTYPE_STAR)
 	end
 	star:SetParent(system)
 	star:Spawn() 

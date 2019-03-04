@@ -29,7 +29,7 @@ function ENT:Enter()
 			self.cubemap = cubemap
 			skybox:SetRenderGroup(RENDERGROUP_STARSYSTEM) 
 			skybox:SetBrightness(1)
-			cubemap:SetTarget(skybox)
+			cubemap:SetTarget(skybox,self)
 			--cubemap:RequestDraw(skybox,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
 			--skybox:SetTexture("data/textures/test/sky_day02.png")
 			--render.DisableGroup(RENDERGROUP_DEEPSPACE)

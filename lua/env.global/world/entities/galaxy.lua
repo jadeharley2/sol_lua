@@ -33,6 +33,16 @@ function ENT:Spawn()
 		particlesys:SetMaxRenderDistance(100000)
 		self.psys = particlesys
 	end
+
+	local supermassiveCenter = ents.Create("starsystem")
+	supermassiveCenter:SetSizepower(9.46073E16 / 5 * 0.1)
+	supermassiveCenter:SetParent(self)
+	supermassiveCenter:SetPos(Vector(0,0,0)) 
+	supermassiveCenter.color = Vector(1,1,1)
+	supermassiveCenter:SetSeed(seed+4820)
+	supermassiveCenter:SetParameter(VARTYPE_GENERATOR,"com.system.galaxycenter")
+	supermassiveCenter:SetName("Galactic center")
+
 end
 
 function ENT:Enter()  

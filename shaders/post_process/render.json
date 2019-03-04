@@ -1,0 +1,42 @@
+{
+    "name":"post process layers",
+    "channels":[
+        {"id":-1,"name":"back_buffer"},
+        {"id": 0,"name":"diffuse_luminance"},
+        {"id": 1,"name":"normals"},
+        {"id": 2,"name":"depth"},
+        {"id": 3,"name":"mask"},
+
+        {"id": 10,"name":"diffuse_luminance_copy"},
+    ],
+    "layers":[
+        {
+            "type":"resolve",
+            "from": 0,
+            "to" : 10, 
+        },
+        {
+            "type":"draw", 
+            "shader":"pp_sseffects",
+            "input":{
+                "tDiffuseView" : {"channel":10},
+                "tNormalView"  : {"channel":1},
+                "tDepthView"   : {"channel":2},
+                "tMaskView"    : {"channel":3}
+            },
+            "output":0
+        },
+        {
+            "type":"draw", 
+            "shader":"pp_gamma",
+            "input":{
+                "tDiffuseView" : {"channel":0}, 
+            },
+            "output":-1,
+        },
+        {
+            "type":"calcexposure",
+            "from": 0,
+        },
+    ]
+}

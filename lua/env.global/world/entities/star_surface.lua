@@ -10,8 +10,7 @@ function ENT:Spawn()
 	
 	local model = self:AddComponent(CTYPE_MODEL)  
 	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	model:SetModel("engine/csphere_36.stmd") 
-	model:SetMaterial("textures/space/star/teststar.json") 
+	model:SetModel("engine/csphere_36.stmd")
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED) 
@@ -22,16 +21,21 @@ function ENT:Spawn()
 	model:SetColor(scolor)
 	model:SetMaxRenderDistance(100000)
 	model:SetFlare(true)
- 
-	local particlesys2 = self:AddComponent(CTYPE_PARTICLESYSTEM2) 
-	particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	particlesys2:SetBlendMode(BLEND_ADD) 
-	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
-	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	particlesys2:Set("particles/star.particle")
-	particlesys2:SetSpeed(0.1)--0.1)
-	particlesys2:SetColor(scolor)
-	self.particlesys2 = particlesys2 
+  
+	if star:GetParameter(VARTYPE_TYPE)==NTYPE_BLACKHOLE then
+		model:SetMaterial("textures/space/star/blackhole.json") 
+	else
+		model:SetMaterial("textures/space/star/teststar.json") 
+		local particlesys2 = self:AddComponent(CTYPE_PARTICLESYSTEM2) 
+		particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+		particlesys2:SetBlendMode(BLEND_ADD) 
+		particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
+		particlesys2:SetDepthStencillMode(DEPTH_READ)  
+		particlesys2:Set("particles/star.particle")
+		particlesys2:SetSpeed(0.1)--0.1)
+		particlesys2:SetColor(scolor)
+		self.particlesys2 = particlesys2 
+	end
 	
 	--local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
 	--particlesys:SetRenderGroup(RENDERGROUP_STARSYSTEM)
@@ -57,15 +61,19 @@ end
 --end
 
 function ENT:Enter() 
-	self.model:SetRenderGroup(RENDERGROUP_PLANET)
-	self.particlesys2:SetRenderGroup(RENDERGROUP_PLANET)
-	
+	if self:GetSizepower()<1000000000 then 
+		self.model:SetRenderGroup(RENDERGROUP_PLANET)
+		if self.particlesys2 then
+			self.particlesys2:SetRenderGroup(RENDERGROUP_PLANET)
+		end
+	end
 	
 end
 
 function ENT:Leave()    
 	self.model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	self.particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
-	
+	if self.particlesys2 then
+		self.particlesys2:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	end
 	--self:RemoveComponents(CTYPE_PARTICLESYSTEM2)
 end

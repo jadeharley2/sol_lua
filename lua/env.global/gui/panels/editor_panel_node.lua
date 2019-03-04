@@ -68,6 +68,11 @@ function PANEL:UpdateCnodes()
 end
 
  
+function PANEL:RefreshPanel() 
+	if self.cnode then
+		self:SelectNode(self.cnode)
+	end  
+end
 function PANEL:SelectNode(node) 
 	self.cnode = node
 	
@@ -116,12 +121,14 @@ function PANEL:SelectNode(node)
 			else
 				type = tostring(v)
 			end
+
 			
 			local np = panel.Create() 
 			np:SetSize(100,200)
-			np.ty = 200
+			--np.ty = 200
 			np:SetColor(Vector(0.2,0.2,0.2)) 
 			np:Dock(DOCK_TOP)
+			np:SetAutoSize(false,true)
 			
 			local nph = panel.Create()
 			nph:SetSize(100,20)
@@ -133,6 +140,7 @@ function PANEL:SelectNode(node)
 			npb:SetSize(100,20)
 			npb:SetColor(Vector(20,20,0))
 			npb:Dock(DOCK_TOP) 
+			npb:SetAutoSize(false,true)
 			
 			function np:RezToggle(b)
 				if np.minimized then
@@ -158,7 +166,7 @@ function PANEL:SelectNode(node)
 			delcom:Dock(DOCK_RIGHT)
 			delcom:SetText("x")
 			delcom:SetTextAlignment(ALIGN_CENTER)
-			delcom.OnClick = function()  end
+			delcom.OnClick = function() node:RemoveComponent(v) self:RefreshPanel() end
 			nph:Add(delcom)
 			
 			local rezcom = panel.Create("button") 
@@ -178,16 +186,32 @@ function PANEL:SelectNode(node)
 			local meta = components:GetType(type)
 			if meta then
 				local totalY = self:ConstructParams(node,meta,npb,v) 
-				np:SetSize(100,20+totalY) 
-				npb:SetSize(100,totalY) 
-				np.ty = 20+totalY
-				nph:Add(rezcom)
+				--np:SetSize(100,20+totalY) 
+				--npb:SetSize(100,totalY) 
+				--np.ty = 20+totalY
+				--nph:Add(rezcom)
 			else
-				np:SetSize(100,20) 
-				npb:SetSize(100,0) 
-				np.ty = 20
+				--np:SetSize(100,20) 
+				--npb:SetSize(100,0) 
+				--np.ty = 20
 			end
 			
+			local type_metaname = v.__metaname
+
+			if type_metaname then
+				local metainfo = debug.GetAPIInfo(type_metaname)
+				if metainfo then
+					--for k,v in pairs(metainfo) do 
+					--	local pva = panel.Create("button") 
+					--	pva:SetColorAuto(Vector(0.6,0.6,0.6))
+					--	pva:SetSize(20,20)
+					--	pva:Dock(DOCK_TOP)
+					--	pva:SetTextAlignment(ALIGN_LEFT)
+					--	pva:SetText(v.text..":")
+					--	node:Add(pva)
+					--end
+				end
+			end
 			--MsgN(k," - ",v)
 		end
 		local addcom = panel.Create("button") 

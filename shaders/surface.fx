@@ -332,19 +332,29 @@ PS_IN VSPGS( VS_IN input)//, IS_IN input2 )
 	float4 pos = input.pos; 
 	float4 wpos = mul( pos,transpose(World));
 	output.normal = normalize(mul(input.normal,transpose(World))); 
-	output.pos =  float4(wpos.xyz,1);  
-	output.bnormal = input.bnormal;
-	output.tnormal = input.tnormal;
-	output.data = input.data;
-	output.color = input.color;
 	if(nearMode)
 	{
 		output.lpos = normalize(mul(input.bnormal,transpose(World))); 
+		//if(input.data.x<0)
+		//{
+		//	float surfaceDistance = length(wpos) * distanceMultiplier;
+		//	wpos +=float4(output.lpos*input.data.x*-1000,0)*saturate(surfaceDistance*10-50);
+		//}
 	}
 	else
 	{
 		output.lpos = normalize(mul(pos.xyz,transpose(World))); 
 	}
+		if(input.data.x<0)
+		{
+			float surfaceDistance = length(wpos) * distanceMultiplier;
+			wpos +=float4(output.lpos*input.data.x*-(1672.36621/distanceMultiplier),0)*saturate(surfaceDistance*10-50);
+		}
+	output.pos =  float4(wpos.xyz,1);  
+	output.bnormal = input.bnormal;
+	output.tnormal = input.tnormal;
+	output.data = input.data;
+	output.color = input.color;
 	output.wpos = wpos.xyz; 
 	output.color  = input.color; 
 	
