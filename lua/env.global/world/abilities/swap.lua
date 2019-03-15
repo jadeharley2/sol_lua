@@ -11,6 +11,8 @@ function ability:Begin(caster)
 			local pr = tr.Node
 			local sz = pr:GetSizepower() 
 			local nearest,dist = GetNearestNode(tr.Node,tr.Position,FLAG_ACTOR)
+			MsgN("nearest: ",nearest,pr)
+			--SpawnExplosion(pr,tr.Position)
 			if nearest and dist*sz<1 and nearest ~= caster then
 				self:CastAnimation(caster)
 				self.spelltarget = nearest

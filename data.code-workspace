@@ -23,7 +23,8 @@
 			"*.mat": "jsonc",
 			"*.dnlv": "jsonc",
 			"*.particle": "jsonc",
-			"*.n": "jsonc"
+			"*.n": "jsonc",
+			"*.jssc": "jsonc"
 		},
 		"json.schemas": [ 
 			{

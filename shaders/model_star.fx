@@ -76,7 +76,7 @@ struct PS_IN
 	float3 tnorm : TEXCOORD4;
 	
 	float3 color : TEXCOORD5;
-	//float3 spos : TEXCOORD6;
+	float3 spos : TEXCOORD6;
 	
 	//float z_depth : TEXCOORD2;
 };
@@ -111,7 +111,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color;//((float3)input.inds.xyz);
-	//output.spos = mul(wpos,transpose(View));
+	output.spos = mul(float4(0,0,0,1),InstWorld);
 	return output;
 }
 
@@ -124,7 +124,13 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		//float3 localnorm = mul(float4(input.norm,1),VP);
 		//if below surface => normal from world pos
 		//input.norm = -normalize(transpose(World)._m30_m31_m32); 
-		float dotP3 = pow( saturate(-dot(normalize(input.wpos),input.norm)),10);
+
+		//normalize(input.wpos)
+		float dpb = dot(normalize(input.spos),normalize(input.wpos));
+		float spbd = 
+		1//saturate(-dot(normalize(input.spos),-input.norm)+1.5)
+		*saturate(-dot(normalize(input.wpos),-input.norm));
+		float dotP3 = pow(spbd ,10);
 		float3 envdir = mul(lerp( normalize(input.wpos.xyz),-input.norm,
 			dotP3 ),EnvInverse) ;
 		float4 envmap = g_EnvTexture.Sample(MeshTextureSampler,envdir);
@@ -134,6 +140,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		// float4(input.norm.xyz,1);// 
 		(envmap*1+dilationColorShift*saturate(envmap)*dotP3*dotP3*2)*lightMul;
 		//float4(1,1,1,1);
+		//float4(dotP3,dotP3,dotP3,1);
 		return output;
 	}
 

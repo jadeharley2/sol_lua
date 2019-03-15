@@ -377,13 +377,13 @@ float4 PS( PS_IN input ) : SV_Target
 		for(int i=0;i<50;i++)
 		{
 			pw = pw*0.86;
-			ovb=ovb
-			+saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(0.001*i,0))*pw)
-			+saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(-0.001*i,0))*pw);
+			float3 a = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(0.001*i,0))*pw);
+			float3 b = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(-0.001*i,0))*pw);
+			ovb=ovb+a*a+b*b; 
 			
 		} 
 		
-		result =(result*0.3+ovb*0.05);
+		result =(result+ovb*0.1);
 	}
 
 

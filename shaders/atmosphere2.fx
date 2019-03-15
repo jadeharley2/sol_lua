@@ -262,7 +262,40 @@ PS_IN VS(VSS_IN input)
 
     return output;
 }
- 
+  
+float2 CloudNoiseLow(float2 tcrd)
+{ 
+	float2 NA = float2(
+			tCloudNoise.Sample(sCL, tcrd*float2(2,1)*150
+			+float2(1,1)*time*0.01).r-0.5, 
+			tCloudNoise.Sample(sCL, tcrd*float2(2,-1)*150+float2(0.3,-0.6)
+			+float2(1,-1)*time*0.01).r-0.5
+			);
+	float NB = float2(
+			tCloudNoise.Sample(sCL, tcrd*float2(2,1)*450
+			+float2(1,1)*time*0.005).r-0.5, 
+			tCloudNoise.Sample(sCL, tcrd*float2(2,-1)*450+float2(0.3,-0.6)
+			+float2(1,-1)*time*0.005).r-0.5
+			);
+	return NA+NB*0.5;
+}
+float2 CloudNoise(float2 tcrd)
+{ 
+	float NC = float2(
+			tCloudNoise.Sample(sCL, tcrd*float2(2,1)*850
+			+float2(1,1)*time*0.005).r-0.5, 
+			tCloudNoise.Sample(sCL, tcrd*float2(2,-1)*850+float2(0.8,0.6)
+			+float2(1,-1)*time*0.005).r-0.5
+			);
+	float ND = float2(
+			tCloudNoise.Sample(sCL, tcrd*float2(2,1)*950+NC
+			+float2(1,1)*time*0.005).r-0.5, 
+			tCloudNoise.Sample(sCL, tcrd*float2(2,-1)*950+float2(0.3,-0.6)
+			+float2(1,1)*time*0.005).r-0.5
+			);  
+	float2 noise = CloudNoiseLow(tcrd)+NC*0.5+ND*0.15;
+	return noise;
+}
 
 PS_OUT PS(PS_IN input) : SV_Target
 {   
@@ -273,7 +306,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 	
 	if (mode==1)
 	{
-		float density = saturate((rheight-1.001)*100);
+		float density =1;// saturate((rheight-1.001)*100);
 		//float density = saturate((rheight-1.01)*100);
 		
 		float dotpd = saturate(pow(saturate(dot(input.Normal,normalize(input.Pos))),1.0/4));//6
@@ -326,15 +359,12 @@ PS_OUT PS(PS_IN input) : SV_Target
   		//bc2 = float3(1,0,0);
 		//bc1 = float3(0,1,0);  
 
-		float2 noise = float2(
-			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,1)*150).r-0.5, 
-			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,-1)*150+float2(0.3,-0.6)).r-0.5
-			 )+float2(
-			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,1)*450).r-0.5, 
-			 tCloudNoise.Sample(sCL, input.tcrd*float2(2,-1)*450+float2(0.3,-0.6)).r-0.5
-			 )*0.5
-		 ;
-		float4 clouds = tClouds.Sample(sCL, input.tcrd+noise*0.001);
+		float2 noise = CloudNoiseLow(input.tcrd);
+		float4 clouds = tClouds.Sample(sCL, 
+			input.tcrd
+			+noise*0.001
+			+float2(1,0)*time*0.00001
+			)*float4(1,1,1,1); 
 		//clouds =float4(noise.x,noise.y,1,1);
 		//float4 cloudNoise = 
 		//	(
@@ -361,9 +391,84 @@ PS_OUT PS(PS_IN input) : SV_Target
 			*density
 			+tBackColor
 		;
-		ou.color = float4(result,1);
+		ou.color = float4(result,1); 
 
 		return ou;//float4(result,1); 
+	}
+	else if(mode==10)
+	{
+		
+		//float density = saturate((rheight-1.01)*100);
+		
+		float dotpd = saturate(pow(saturate(dot(input.Normal,normalize(input.Pos))),1.0/4));//6
+		//return dotpd; 
+		float dpdepth =input.Position.z/ input.Position.w; 
+		float atmodepth =0.4; 
+
+		float density = 1;// saturate(0.0001/(dpdepth/distanceMultiplier));
+ 
+		float3 lposn = normalize(-input.LPOS);
+
+		float3 sunTotal = float3(0,0,0);
+		[unroll]
+		for(int i=0;i<3;i++)
+		{
+			float3 ldir =-pointlightPosition[i];
+			float3 lcol = pointlightColor[i]; 
+			float llen = length(ldir);
+			if(llen>0) 
+			{
+				ldir/=llen;//-normalize(ldir);
+				lcol/=llen*llen;
+				float lum =   saturate(dot(ldir,lposn)) ;  
+
+				sunTotal+= lum*lcol;
+			}
+		}
+
+
+		///float rm = 0.002;
+		///float rm2 = rm*0.76*4;
+		///float3 bc1 = tDiffuseView.Sample(sCC, screenPosition);
+		///float3 bc2 = ( bc1
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(rm,rm))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(-rm,rm))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(-rm,-rm))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(rm,-rm))
+
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(0,rm2))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(0,-rm2))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(-rm2,0))
+		/// +tDiffuseView.Sample(sCC, screenPosition+float2(rm2,0))
+
+		///)/9;
+		
+  		//bc2 = float3(1,0,0);
+		//bc1 = float3(0,1,0);   
+		float2 noise = CloudNoise(input.tcrd);
+		float4 clouds = tClouds.Sample(sCL, 
+			input.tcrd
+			+noise*0.001
+			+float2(1,0)*time*0.00001
+			)*float4(1,1,1,1); 
+		   
+	    
+		float horisonangle = horisonDistanceLocal/length(planetpos);
+		float topDot =saturate(dot(normalize(input.Pos),-normalize(planetpos))+horisonangle+0.05);
+		float3 tBackColor =0;//lerp(bc1,bc2*0.4,saturate(clouds.a*4+0.2)*density*topDot)*0;  
+		tBackColor = lerp(tBackColor,clouds*0.6*cloudColor,saturate(clouds.a*density));
+ 
+
+		//float3 result = 
+		//	saturate(dotpd*2)
+		//	*(saturate(1-dotpd)+0.15)
+		//	*sunTotal
+		//	*atmosphereColor
+		//	*density
+		//	*topDot
+		//;	
+		ou.color = float4(saturate(tBackColor.xyz*0.5*sunTotal),saturate(tBackColor.x*5*topDot)*0.7);  
+		return ou;//float4(result,1);  
 	}
 	else 
 	{// 

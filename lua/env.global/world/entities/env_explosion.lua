@@ -3,7 +3,18 @@ local rdtex = LoadTexture("space/star_sprites.png")
 
 ENT.magnitude = 100 -- default
 
+function SpawnExplosion(node,pos,magn)
+	local e = ents.Create("env_explosion")
+	e:SetParent(node)
+	e:SetSizepower(0.1) 
+	e.magnitude = magn 
+	e:SetPos(pos) 
+	e:Spawn() 
+	return e
+end
+
 function ENT:Init()  
+	self:SetSpaceEnabled(false)
 end
 
 function ENT:Spawn(c) 

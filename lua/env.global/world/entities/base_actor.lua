@@ -27,6 +27,8 @@ DeclareEnumValue("event","EFFECT_APPLY",			83002)
 DeclareEnumValue("event","GIVE_ABILITY",			83003) 
 DeclareEnumValue("event","TAKE_ABILITY",			83004) 
 
+DeclareEnumValue("event","GESTURE_START",			83012) 
+DeclareEnumValue("event","GESTURE_END",				83013) 
 
 DeclareEnumValue("event","TASK_BEGIN",				84001) 
 DeclareEnumValue("event","TASK_RESET",				84009) 
@@ -488,6 +490,8 @@ function ENT:SetCharacter(id)
 			if data then 
 				self.data = data
 				self.directmove=false
+				self.directflight=false
+				self.eyemul = {1,1}
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
 				 
@@ -696,6 +700,7 @@ function ENT:Config(data,species,variation)
 		self.walkspeed =nil
 		self.runspeed =nil
 		self.flyspeed =nil
+		self.flyfastspeed =nil
 		self:SetParameter(VARTYPE_MAXHEALTH,100)
 		self:SetParameter(VARTYPE_HEALTH,100)
 	end
@@ -703,6 +708,7 @@ function ENT:Config(data,species,variation)
 		if data.movement.walk then self.walkspeed = data.movement.walk.speed or self.walkspeed end
 		if data.movement.run then self.runspeed = data.movement.run.speed or self.runspeed end 
 		if data.movement.fly then self.flyspeed = data.movement.fly.speed or self.flyspeed end 
+		if data.movement.flyfast then self.flyfastspeed = data.movement.flyfast.speed or self.flyfastspeed end 
 		 
 		if data.movement.rotspeed then self.rotspeed = data.movement.rotspeed or self.rotspeed end 
 	end
@@ -842,9 +848,9 @@ function ENT:Move(dir,run,updatespeed)
 	if dir then
 		if self:IsFlying() then 
 			if run then
-				phys:SetAirSpeed(self.flyspeed*spscale) 
+				phys:SetAirSpeed(self.flyfastspeed*spscale) 
 			else
-				phys:SetAirSpeed(self.flyspeed*0.1*spscale) 
+				phys:SetAirSpeed(self.flyspeed*spscale) 
 			end 
 			graph:Call("flight_move")   
 		else 
@@ -868,12 +874,17 @@ function ENT:Move(dir,run,updatespeed)
 			local sForward = self:Right():Normalized()
 			phys:SetViewDirection(sForward)
 			--phys:SetMovementDirection(dir) 
-			if run then
-				self:ApplyFlightImpulse(self:Right():Normalized()*10) 
+			if self.directflight then
+
 			else
-				self:ApplyFlightImpulse(self:Right():Normalized()) 
+				if run then
+					self:ApplyFlightImpulse(self:Right():Normalized()*10) 
+				else
+					self:ApplyFlightImpulse(self:Right():Normalized()) 
+				end
 			end
-			phys:SetLinearDamping(0.3) 
+			phys:SetLinearDamping(self.airdamping or 0.3) 
+			phys:SetMovementDirection(dir)  
 		--	phys:SetGravity(self.flightUp or Vector(0,-0.0001,0))
 		elseif self:IsMoving() then 
 			local sForward = self:Right():Normalized()
@@ -956,10 +967,16 @@ end
 function ENT:IsMoving() 
 	if self.phys and  self.phys.GetMovementDirection then
 		local mv = self.phys:GetMovementDirection()
-		return mv ~= Vector(0,0,0)
+		return true --mv:LengthSquared()>0.00001
 	end
 	--local cs = self.graph:CurrentState()
 	--return cs =="walk" or cs == "cwalk" or cs == "run" or cs == "flight_move"
+end
+function ENT:IsReallyMoving()--actual movement 
+	if self.phys and  self.phys.GetMovementDirection then
+		local mv = self.phys:GetMovementDirection()
+		return mv:LengthSquared() > 0.00001
+	end 
 end
 function ENT:IsRunning() 
 	return self:IsMoving() and self.lastrun
@@ -1009,8 +1026,8 @@ function ENT:StartFlight()
 		end
 	end
 end
-function ENT:Land()
-	self.graph:SetState("flight_end")
+function ENT:Land(nostate)
+	if not nostate then self.graph:SetState("flight_end") end
 	local phys = self.phys
 	phys:SetGravity() 
 	phys:SetAirSpeed(0)
@@ -1032,7 +1049,7 @@ function ENT:Crouching()
 end
 function ENT:SetCrouching(value)
 	--self.duckmode = value
-	if value then
+	if value and not self:IsFlying() then
 		self.phys:SetStance(1)
 		if self.graph then
 			return self.graph:Call("duck")
@@ -1100,6 +1117,47 @@ function ENT:EyeLookAt(dir)
 	self.model:SetPoseParameter("head_pitch",elev/ 3.1415926 * 180)
 	
 end
+function ENT:GestureToggle(layer, name)  
+	local g = self.gestures
+	if g then
+		local ge = g[name]
+		if ge then
+			if ge.active then
+				self:SendEvent(EVENT_GESTURE_END,layer,name)
+			else
+				self:SendEvent(EVENT_GESTURE_START ,layer,name)
+			end
+		end
+	end
+end
+function ENT:GestureStart(layer, name) 
+	local g = self.gestures
+	if g and g[name] then
+		local m = self.model
+		m:PlayLayeredSequence(layer,name,0)
+		g[name].active = true
+		local t = 0 
+		self:Timer("gesture",0,10,15,function()
+			t = t + 1/15 
+			m:SetLayerBlend(layer,t)
+		end)
+	end
+end
+function ENT:GestureEnd(layer, name) 
+	local g = self.gestures
+	if g and g[name] then
+		local m = self.model
+		local t = 1 
+		self:Timer("gesture",0,10,16,function()
+			t = t - 1/15 
+			m:SetLayerBlend(layer,t)
+			if(t<0)then
+				m:StopLayeredSequence(layer)
+				g[name].active = false
+			end
+		end)
+	end
+end
 function ENT:EyeLookAtLerped(dir) 
 	if not dir then return nil end
 	if self.lad then
@@ -1151,13 +1209,14 @@ function ENT:SetEyeAngles(pitch,yaw)
 	self.eyeangles = {pitch,yaw}
 	local lms = self.lastheadmove or 0
 	local ha = self.headangles or {0,0}
+	local amul = self.eyemul or {0,0}
 	
-	m:SetPoseParameter("eyes_x",yaw)
-	m:SetPoseParameter("eyes_y",pitch) 
+	m:SetPoseParameter("eyes_x",yaw*amul[2])
+	m:SetPoseParameter("eyes_y",pitch*amul[1]) 
 	--m:SetPoseParameter("head_yaw",yaw)
 	--m:SetPoseParameter("head_pitch",pitch) 
 	
-	if noeyedelay or (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
+	if self:IsReallyMoving() or noeyedelay or (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
 		self.headangles = {yaw,pitch}
 		self.lastheadmove = CurTime()
 	end
@@ -1698,6 +1757,41 @@ function ENT:SetSkin(str)
 end
 
 
+function ENT:PickupNearest()
+	local inv = self:GetComponent(CTYPE_STORAGE)
+	if inv then 
+		local freeslot = inv:GetFreeSlot()
+		if freeslot then
+			local maxPickupDistance = 2
+			local pos = self:GetPos()
+			local par = self:GetParent()
+			local sz = par:GetSizepower()
+			local entsc = par:GetChildren()
+			local nearestent = false
+			local ndist = maxPickupDistance*maxPickupDistance
+			for k,v in pairs(entsc) do
+				if v~=self and v:HasFlag(FLAG_STOREABLE) then 
+					local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
+					if edist<ndist and edist>0 then
+						nearestent = v
+						ndist = edist
+					end 
+				end
+			end
+			if nearestent then
+				nearestent:SendEvent(EVENT_PICKUP,self)
+				if inv:PutItem(freeslot,nearestent) then
+					if CLIENT then
+						self:EmitSound("events/lamp-switch.ogg",1)
+					end
+					return freeslot
+				end
+			end 
+		end
+	end
+	return false
+end
+
 
 
 function ENT:GetEyeTrace()
@@ -1842,6 +1936,9 @@ ENT._typeevents = {
 	[EVENT_TASK_BEGIN] = {networked = true, f = ENT.BeginTask}, 
 	[EVENT_TASK_RESET] = {networked = true, f = ENT.ResetTM}, 
 	
+	[EVENT_GESTURE_START] = {networked = true, f = ENT.GestureStart}, 
+	[EVENT_GESTURE_END] = {networked = true, f = ENT.GestureEnd}, 
+	
 	[EVENT_LERP_HEAD] = {networked = true, f = ENT.EyeLookAtLerped}, 
 	[EVENT_SET_AI] = {networked = true, f = ENT.SetAi}, 
 	
@@ -1862,6 +1959,14 @@ ENT.editor = {
 			SetLocalPlayer(ent)
 			SetController("actor") 
 		end},
+		ai = {text="ai",type="parameter",valtype="string",reload=false,
+		apply = function(n,u,k,v) MsgN(n,u,k,v) n:SendEvent(EVENT_SET_AI,v) end,
+		get = function(n,u,k) 
+			if n.controller then return n.controller.typename or "" else 
+				return ""
+			end
+		end,
+	}
 	},  
 	
 }

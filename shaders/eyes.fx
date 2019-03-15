@@ -118,18 +118,18 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//} 
 	
 	
-	result = lerp(result,irisDiffuse,irisDiffuse.a);
+	result = lerp(result,irisDiffuse,irisDiffuse.a>0.95?1:0);
 	
 	float3 camdir = normalize(input.wpos);
 	float3 brightness3 = ApplyPointLights(input.wpos,input.norm,camdir,0,0,true);
 	float3 reflectcam = reflect(camdir,input.norm);
 	float3 ambmap =  EnvSampleLevel(input.norm,0);
-	float3 envmap =  EnvSampleLevel(reflectcam,0.99);//
-		
-	output.color = result*float4((brightness3*0.3+envmap*0.4+ambmap*0.5)*TBrightness,1);// + float4(0,0,eyeId,0);
+	//float3 envmap =  EnvSampleLevel(reflectcam,0.99);//
+		//+envmap*0.4
+	output.color = result*float4((brightness3+ambmap*0.5)*TBrightness*4,1);// + float4(0,0,eyeId,0);
 	output.normal = float4(input.norm*0.5+0.5,1);
 	output.depth = input.pos.z/input.pos.w; 
-	output.mask = float4(1,1,0,1);
+	output.mask = float4(0,0,0,1);
 	
 	return output;
 }

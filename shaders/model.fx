@@ -227,13 +227,13 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 PS_IN VSIM( VSS_IN input, MORPH_IN morph ) 
 { 
 	PS_IN output = (PS_IN)0;
-	input.pos = morph.pos;
-	input.norm = morph.norm;
-	input.bnorm = morph.bnorm;
-	input.tnorm = morph.tnorm;
+	input.pos = float4(input.pos.xyz+ morph.pos.xyz,input.pos.w);
+	input.norm = normalize(input.norm+morph.norm);
+	//input.bnorm = morph.bnorm;
+	//input.tnorm = morph.tnorm;
 	
 	if(SkinningEnabled)
-	{
+	{ 
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	} 
 	float4 wpos = mul(input.pos,transpose(World));

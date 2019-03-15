@@ -86,7 +86,7 @@ function meta_recorder:Stop()
 		RemoveHook(self.ent,v)
 	end  
 	self.ent["SetVehicle"] = nil
-	hook.Remove("main.predraw", "recorder.play")
+	hook.Remove(EVENT_GLOBAL_PREDRAW, "recorder.play")
 	hook.Remove("event.use","asd")
 	self.lastevent = self.events[1]
 	self.ent.controller = self.aicon or self.ent.controller 
@@ -101,14 +101,14 @@ function meta_recorder:Play()
 	self.lastevent = self.events[1]
 	MsgN("recorder.trackstart")
 	local cid = 1
-	hook.Add("main.predraw", "recorder.play", function() 
+	hook.Add(EVENT_GLOBAL_PREDRAW, "recorder.play", function() 
 		local time = CurTime() -  self.starttime
-		--MsgN("recorder.time ",time)
-		local ct=true
+		MsgN("recorder.time ",time) 
+		local ct=true 
 		while ct do
 			ct = false
 			local nextevent = self.events[cid] 
-			if nextevent then
+			if nextevent then        
 				if nextevent.t<=time then
 					self:DoEvent(nextevent)
 					self.lastevent = nextevent

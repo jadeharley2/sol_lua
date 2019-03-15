@@ -125,6 +125,39 @@ function PANEL:ReloadTabs()
 		tabs:AddTab("ABL",grid2) 
 	end
 	
+	--local abilities = ply.gestures  
+	--if abilities then
+		--local grid2 = panel.Create("grid")  
+		--for k,v in pairs(abilities) do 
+		--	local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
+		--	--slot.storage = storage
+		--	--slot.storeslot = k
+		--	local item  = abilities[k]
+		--	if item then
+		--		slot:Add(Item(storage,k,item))
+		--	end
+		--	grid2:AddPanel(slot)
+		--end    
+	local gestures = ply.gestures    
+	if gestures then
+		local grid3 = panel.Create("panel")
+		grid3:SetColor(Vector(0,0,0))   
+		tabs:AddTab("GESTURES",grid3) 
+
+		for k,v in pairs(gestures) do
+			local testgesture = panel.Create("button")
+			testgesture:SetSize(100,20)     
+			testgesture:SetText(k)  
+			testgesture:Dock(DOCK_TOP)
+			local isOn = false
+			testgesture.OnClick = function()
+				LocalPlayer():GestureToggle(1,k)   
+			end
+
+			grid3:Add(testgesture)
+		end
+	end
+
 	--local ff_grid_floater = panel.Create("graph_grid")  
 	--ff_grid_floater:SetSize(4000,4000)
 	--ff_grid_floater:SetTextureScale(Point(4000/256,4000/256)) 

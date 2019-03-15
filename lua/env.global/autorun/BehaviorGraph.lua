@@ -122,6 +122,35 @@ end)
 behaviour.AddFunction("vehicle_exit",function(state,ent,to,tag) 
 	ent:SetVehicle() 
 end)
+behaviour.AddFunction("ecall",function(state,ent,to,tag) 
+	--MsgN("aaa",state,ent,to,unpack(tag))
+	local f = ent[tag[1]] 
+	if f then  
+		local args = {}     
+		for k,v in ipairs(tag) do
+			args[k] = v  
+		end
+		args[1] = ent  
+		f(unpack(args))
+	end 
+end) 
+behaviour.AddFunction("call",function(state,ent,to,tag)  
+	--MsgN("aaa",state,ent,to,unpack(tag))            
+	local f = _G[tag[1]]                
+	if f then  
+		local args = {}     
+		for k,v in ipairs(tag) do
+			args[k-1] = v  
+		end
+		args[0] = nil 
+		f(unpack(args))   
+	end 
+end) 
+behaviour.AddFunction("setvar",function(state,ent,to,tag)  
+	local key = tag[1]
+	local value = tag[2]
+	ent[key] = value  
+end)  
 	
 function BehaviorGraphMeta:Run() 
 	for k,v in pairs(self._cstate.transitions) do  

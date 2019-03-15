@@ -78,12 +78,14 @@ function PANEL:InputKeyDown(n,key)
 			debugp:SetTitle("Debug") 
 			debugp:UpdateLayout() 
 			debugp:SetPos(-800,0)
-			self:GetParent():Add(debugp) 
+			debugp:Show()                
+			--self:GetParent():Add(debugp) 
 		elseif text == "testgui" then  
 			local debugp = panel.Create("tree")
 			debugp:SetPos(-800,0)
 			debugp:SetSize(400,800)
-			self:GetParent():Add(debugp)    
+			debugp:Show()   
+			--self:GetParent():Add(debugp)    
 			debugp:UpdateLayout() 
 		end
 		n.text = ""

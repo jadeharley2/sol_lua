@@ -66,6 +66,7 @@ local ai_class = DefineClass("Ai","ai","lua/env.global/world/aitypes/",AI_META)
     
 function Ai(type,ent) 
 	local ai = ai_class:Create(type)
+	ai.typename = type
 	ai.ent = ent
 	ai:Init()
 	return ai 

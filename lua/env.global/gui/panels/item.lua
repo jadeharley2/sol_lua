@@ -141,6 +141,7 @@ function PANEL:TrySetTexture(name)
 	if not isstring(name) then return false end
 	local basedir = "textures/gui/icons/"
 	local tfn = basedir..name..".png"
+	MsgN("iconsearch: ",tfn)       
 	if file.Exists(tfn) then
 		local tex = LoadTexture(tfn)
 		self:SetTexture(tex)
@@ -152,7 +153,8 @@ end
 
 function PANEL:Set(slot,item)
 	--hook.Remove("ability.cast","item."..tostring(3))
-	
+	 
+	if not item then return false end
 	
 	self.base.SetColorAuto(self,Vector(0.9,0.9,0.9),0.1)
 	self.storeslot = slot
@@ -161,13 +163,14 @@ function PANEL:Set(slot,item)
 	local data = item.data
 	if data then
 		local title =   data:Read("/parameters/name")
-		local luatype = data:Read("/parameters/luaenttype")
+		local luatype = data:Read("/parameters/luaenttype") 
 		local class =   data:Read("/parameters/form") or data:Read("/parameters/character")
 		local amount =  data:Read("/parameters/amount")
 		local icon =    data:Read("/parameters/icon")
 		--MsgN(icon)
 		self.title:SetText(title or class or luatype or "???")
-		
+		MsgN(title,luatype,class,amount,icon)
+		--PrintTable(class)   
 		if not ( self:TrySetTexture(icon) or self:TrySetTexture(class) or self:TrySetTexture(luatype) ) then 
 			if class then
 				

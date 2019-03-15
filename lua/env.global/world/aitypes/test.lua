@@ -37,7 +37,9 @@ end
 ACT_SAY = function(s,e,t) e:Say(t.say) end
 ACT_JUMP = function(s,e,t) e:Jump() end
 ACT_LOOKAT = function(s,e,t) e:EyeLookAtLerped(t.ent or s.target) end
-
+ACT_PICKUPA = function(s,e,t)	
+	e:PickupNearest() 
+end
 ACT_LOOKAT_RNDTRG = function(s,e,t) 
 	local par = e:GetParent()
 	local ted = false;
@@ -234,8 +236,18 @@ function ai:OpenMenu(ply)
 						dialog:Open(table.Random(phrases.agreement))
 						return false
 					end}
+					
 				end
 				
+				main[#main+1] =
+				{t="подбери",f=function(ai,dialog)   
+					dialog:Close()
+					
+					if e:PickupNearest() and CLIENT then
+						GetCamera():SetParent(e) 
+					end
+					return false
+				end}  
 				if e:HasTool("bow_kindred_gal") then
 					if self.atask then
 						main[#main+1] =

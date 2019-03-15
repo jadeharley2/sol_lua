@@ -42,7 +42,7 @@ function PANEL:Init()
 		self:UpdatePos()
 	end)
 	
-	hook.Add( "main.update","gui.health.update",function() self:Think() end)
+	hook.Add( EVENT_GLOBAL_UPDATE,"gui.health.update",function() self:Think() end)
 	
 	local vsize = GetViewportSize()
 	local csize = self:GetSize() 
@@ -56,7 +56,7 @@ function PANEL:UpdatePos()
 end
 
 function PANEL:UpdateHealth(val,maxval) 
-	if val then  
+	if val then   
 		maxval = maxval or 100
 		local insize = self:GetSize()
 		self.bar:SetSize(val/maxval * insize.x,insize.y)
@@ -99,7 +99,7 @@ function PANEL:UpdateHealth(val,maxval)
 		self:SetVisible(false)
 	end
 end
-function PANEL:Think() 
+function PANEL:Think()  
 	local curthink = CurTime()
 	local lastthink = self.lastthink or curthink
 	self.lastthink = curthink
