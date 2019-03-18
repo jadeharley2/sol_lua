@@ -474,7 +474,7 @@ function ENT:GetSpawn()
 		}))
 		cc:PutItemAsData(3, ItemPV("forms/props/clutter/clut_lab_book.json",4452,{ 
 			parameters = { name = "The Book",  },
-		}))
+		})) 
 		cc:PutItemAsData(4, ItemPV("forms/props/clutter/clut_lab_book.json",2542,{ 
 			parameters = { name = "The Book",  },
 		}))
@@ -482,7 +482,11 @@ function ENT:GetSpawn()
 			parameters = {name = "Egg chair"},
 			flags = {"storeable"},
 		}))
-	end
+		cc:PutItemAsData(6,ItemPV("forms/props/furniture/space/chair.json",349820,{
+			parameters = {name = "O chair"},
+			flags = {"storeable"},
+		})) 
+	end 
 	
 	--[[
 	{

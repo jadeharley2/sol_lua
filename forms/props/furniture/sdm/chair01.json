@@ -6,4 +6,10 @@
 	"rotation" : [0,0,0], 
 	//"phys" : true,
 	//"mass" : 10, 
+	"luatype":"use_chair",  
+	"variables":{
+		"mountpoints" : [
+			{"pos":[0,0.45,0,"vec3"],"ang":[0,180,0,"vec3"],"state":"sit"}
+		]
+	}
 }

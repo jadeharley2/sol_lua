@@ -21,6 +21,7 @@ DeclareEnumValue("event","STATE_CHANGED",			82034)
 DeclareEnumValue("event","GIVE_ITEM",				82066) 
 DeclareEnumValue("event","PICKUP_ITEM",				82067) 
 DeclareEnumValue("event","PICKUP_TOOL",				82068) 
+DeclareEnumValue("event","PICKUP",					82069) 
 
 DeclareEnumValue("event","ABILITY_CAST",			83001) 
 DeclareEnumValue("event","EFFECT_APPLY",			83002) 
@@ -62,8 +63,10 @@ function ENT:Init()
 	self:AddFlag(FLAG_ACTOR)
 	local phys = self:AddComponent(CTYPE_PHYSACTOR)  
 	local model = self:AddComponent(CTYPE_MODEL)  
+	local storage = self:AddComponent(CTYPE_STORAGE)  
 	self.model = model
 	self.phys = phys
+	self.storage = storage
 	self:SetSpaceEnabled(false)
 	
 	self.speedmul = 1
@@ -1315,16 +1318,20 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			local vparent = self.vehicle:GetParent()
 			if SERVER or not network.IsConnected() then 
 				--self:SetPos(Vector(1.321081, 0.5610389, 0.01457999))--Vector(0,0,0))
-				self:Eject()
+				--self:Eject()
 				self:SetParent(vparent)
+				self:SetPos(v:GetPos()+Vector(0,0.5/vparent:GetSizepower(),0))
 				--self:SendEvent(EVENT_RESPAWN_AT,self.vehicle:GetPos()+Vector(0,2,0)/vparent:GetSizepower())
 				if self.player and self.assignnode then
-					v.player:UnassignNode(self.assignnode)
+					self.player:UnassignNode(self.assignnode)
 					self.assignnode = nil
 				end
 				if v.player then
 					v.player:AssignNode(v)
 				end
+			else
+				self:SetParent(vparent)
+				self:SetPos(v:GetPos()+Vector(0,0.5/vparent:GetSizepower(),0))
 			end 
 			self.vehicle = nil
 			self.graph:SetState("idle")
@@ -1779,6 +1786,7 @@ function ENT:PickupNearest()
 				end
 			end
 			if nearestent then
+				MsgN("pickup",self, nearestent)
 				nearestent:SendEvent(EVENT_PICKUP,self)
 				if inv:PutItem(freeslot,nearestent) then
 					if CLIENT then
@@ -1917,6 +1925,9 @@ ENT._typeevents = {
 	[EVENT_PICKUP_TOOL] = {networked = true, f = function(self,tool) 
 		self:PickupWeapon(tool)
 	end,log = true},
+	[EVENT_PICKUP] = {networked = true, f = function(self) 
+		self:PickupNearest()
+	end,log = false},
 	
 	[EVENT_ABILITY_CAST] = {networked = true, f = ENT.Cast},  
 	[EVENT_EFFECT_APPLY] = {networked = true, f = function(self,abname,source,pos) 
@@ -1942,8 +1953,12 @@ ENT._typeevents = {
 	[EVENT_LERP_HEAD] = {networked = true, f = ENT.EyeLookAtLerped}, 
 	[EVENT_SET_AI] = {networked = true, f = ENT.SetAi}, 
 	
-	[EVENT_ITEM_ADDED] = {networked = true, f = function(e,index) MsgN("new item at: "..tostring(index or '?')) end}, 
-	[EVENT_ITEM_TAKEN] = {networked = true, f = function(e,index) MsgN("taken item from: "..tostring(index or '?')) end}, 
+	[EVENT_ITEM_ADDED] = {networked = true, f = function(e,index) 
+		MsgN("new item at: "..tostring(index or '?')) 
+	end}, 
+	[EVENT_ITEM_TAKEN] = {networked = true, f = function(e,index) 
+		MsgN("taken item from: "..tostring(index or '?')) 
+	end}, 
 	
 }
  

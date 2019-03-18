@@ -69,11 +69,12 @@ function PANEL:Drop(item)
 		local slot_from = item.storeslot
 		local storage_to = self.storage
 		local slot_to = self.storeslot
-		if storage_from and slot_from and storage_to then 
+		if storage_from and slot_from and storage_to and slot_to then 
 			--local slot_to = storage_to:GetFreeSlot()
-			if slot_to and not storage_to:HasItemAt(slot_to) then
-				storage_from:MoveItem(slot_from,storage_to,slot_to,1)
-			end
+			--if slot_to and not storage_to:HasItemAt(slot_to) then
+			--	storage_from:MoveItem(slot_from,storage_to,slot_to,1)
+			--end
+			storage_from:TransferItem(slot_from,storage_to,slot_to,1)
 		end
 		
 		

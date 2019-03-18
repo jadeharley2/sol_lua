@@ -1,6 +1,11 @@
 PANEL.basetype = "window"
 
 temp_allinvwindows = temp_allinvwindows or {}
+function InvRefreshAll()
+	for k,v in pairs(temp_allinvwindows) do
+		v:RefreshINV()
+	end
+end
 
 function InventoryWindow(container)
 	if container then
@@ -60,9 +65,13 @@ function PANEL:Init()
 	self.base.Init(self)
 	self:SetSize(500,200)
 	self:SetColor(Vector(0.6,0.6,0.6))
-	self:ReloadTabs() 
+	--self:ReloadTabs() 
 end
 function PANEL:ReloadTabs()
+	 
+	local seed = (self.node or LocalPlayer()):GetSeed()
+	temp_allinvwindows[seed] = self
+	 
 	self.inner:Clear()
 	
 	local tabs = panel.Create("tabmenu")
@@ -94,19 +103,10 @@ function PANEL:ReloadTabs()
 	local storage = self.storage or ply:GetComponent(CTYPE_STORAGE)
 	if storage then
 		local grid2 = panel.Create("grid") 
-		
-		local items = storage:GetItems() 
-		for k=1,10*3 do
-			local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
-			slot.storage = storage
-			slot.storeslot = k
-			local item  = items[k]
-			if item then
-				slot:Add(Item(storage,k,item))
-			end
-			grid2:AddPanel(slot)
-		end 
 		tabs:AddTab("INV",grid2)
+		self.grid2 = grid2
+		self.storage = storage
+		self:RefreshINV()
 	end
 	
 	local abilities = ply.abilities  
@@ -203,6 +203,29 @@ function PANEL:Open()
 	self:ReloadTabs() 
 	self:UpdateLayout()
 	self:Show()
+end
+function PANEL:RefreshINV() 
+	local storage = self.storage 
+	local grid2 = self.grid2
+	if storage and grid2 then
+		storage:Synchronize(function(s)
+			MsgN("sync",storage,storage:GetNode())
+			--MsgN(debug.traceback())
+			grid2:Clear()
+			local items = storage:GetItems() 
+			for k=1,10*3 do
+				local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
+				slot.storage = storage
+				slot.storeslot = k
+				local item  = items[k]
+				if item then
+					slot:Add(Item(storage,k,item))
+				end
+				grid2:AddPanel(slot)
+			end 
+			self:UpdateLayout() 
+		end) 
+	end
 end
 
 function PANEL:MouseDown() 

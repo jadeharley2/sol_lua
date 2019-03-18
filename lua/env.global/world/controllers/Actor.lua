@@ -959,65 +959,8 @@ end
 function OBJ:HandleUse(actor)
 	USE(actor) 
 end
-function OBJ:HandlePickup(actor)
-	--local inv = actor.inventory
-	--if inv then
-	--	local maxPickupDistance = 2
-	--	local pos = actor:GetPos()
-	--	local par = actor:GetParent()
-	--	local sz = par:GetSizepower()
-	--	local entsc = par:GetChildren()
-	--	local nearestent = false
-	--	local ndist = maxPickupDistance*maxPickupDistance
-	--	for k,v in pairs(entsc) do
-	--		if v~=actor and v:HasFlag(FLAG_STOREABLE) then 
-	--			local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
-	--			if edist<ndist and edist>0 then
-	--				nearestent = v
-	--				ndist = edist
-	--			end
-	--		end
-	--	end
-	--	if nearestent then
-	--		nearestent:SendEvent(EVENT_PICKUP,actor)
-	--		inv:AddItem(actor, nearestent)
-	--		if CLIENT then
-	--			actor:EmitSound("events/lamp-switch.ogg",1)
-	--		end
-	--	end 
-	--end
-
-	actor:PickupNearest()       
-	------local inv = actor:GetComponent(CTYPE_STORAGE)
-	------if inv then
-	------	local freeslot = inv:GetFreeSlot()
-	------	if freeslot then
-	------		local maxPickupDistance = 2
-	------		local pos = actor:GetPos()
-	------		local par = actor:GetParent()
-	------		local sz = par:GetSizepower()
-	------		local entsc = par:GetChildren()
-	------		local nearestent = false
-	------		local ndist = maxPickupDistance*maxPickupDistance
-	------		for k,v in pairs(entsc) do
-	------			if v~=actor and v:HasFlag(FLAG_STOREABLE) then 
-	------				local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
-	------				if edist<ndist and edist>0 then
-	------					nearestent = v
-	------					ndist = edist
-	------				end 
-	------			end
-	------		end
-	------		if nearestent then
-	------			nearestent:SendEvent(EVENT_PICKUP,actor)
-	------			if inv:PutItem(freeslot,nearestent) then
-	------				if CLIENT then
-	------					actor:EmitSound("events/lamp-switch.ogg",1)
-	------				end
-	------			end
-	------		end 
-	------	end
-	------end
+function OBJ:HandlePickup(actor) 
+	actor:SendEvent(EVENT_PICKUP)-- PickupNearest()    
 end
 function OBJ:HandleDrop(actor,c)
 	--	MsgN("C da ",CURRENT_DRAG)

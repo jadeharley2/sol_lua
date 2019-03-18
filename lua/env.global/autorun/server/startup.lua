@@ -64,7 +64,7 @@ local function OnPlayerSetModel(ply)
 	local tagmodel = ply.player:GetTag(VARTYPE_MODEL)
 	MsgN("ply",ply," => ",tagmodel)
 	if tagmodel then
-		ply:SetCharacter(tagmodel) 
+		ply:SetCharacter(tagmodel)  
 	end
 end
 
@@ -115,6 +115,7 @@ local function OnPlayerSpawn(ply)
 		e:SendEvent(EVENT_RESPAWN_AT,SPAWNPOS)
 	end
 	
+
 	--ply:Give("tool_propspawner")
 	debug.Delayed(1,function()  ply:Recall() end)
 	--for k=1,20 do

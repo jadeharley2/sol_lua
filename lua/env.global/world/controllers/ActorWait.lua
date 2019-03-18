@@ -1,4 +1,5 @@
  
+global_player_await_id = false
 
 function OBJ:Init()  
 	local cam = GetCamera()
@@ -10,9 +11,19 @@ function OBJ:UnInit()
 end
  
 function OBJ:Update()   
-	local p = LocalPlayer(true)
-	if p and IsValidEnt(p) then
-		SetController("actor")
+	if global_player_await_id then
+		local awp = Entity(global_player_await_id)
+		if p and IsValidEnt(p) then
+			SetLocalPlayer(p)
+			SetController("actor")
+			global_player_await_id=false
+
+		end
+	else
+		local p = LocalPlayer(true)
+		if p and IsValidEnt(p) then
+			SetController("actor")
+		end
 	end
 end
 

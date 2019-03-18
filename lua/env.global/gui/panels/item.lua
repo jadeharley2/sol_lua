@@ -108,13 +108,41 @@ function PANEL:MouseDown(fid)
 	end  
 end
 function PANEL:MouseClick(fid) 
+	if not panel.current_drag and fid==1 then
+		if input.KeyPressed(KEYS_SHIFTKEY) then
+			local source = self.storage
+			local node = source:GetNode()
+			local ply = LocalPlayer()
+			local target = false
+			if(node==ply) then
+				for k,v in pairs(temp_allinvwindows) do
+					if v and v.storage and v.storage~=source then
+						target = v.storage
+						break
+					end
+				end
+			else
+				target = ply.storage
+			end
+
+			if target then
+				local fs = target:GetFreeSlot()
+				if fs then
+					source:TransferItem(self.storeslot,target,fs,1)
+					MsgN("sclick!")  
+					InvRefreshAll()
+				end
+			end
+		end
+	end
 	if not panel.current_drag and fid==2 then 
 		local itemi = self.item
 		--local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
 		local context = {
 			{text = ""..self.title:GetText()},
 			--{text = "use",action = ACT_USE},
-			{text = "drop",action = function(item) item.storage:TakeItem(item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "drop",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "destroy",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
 			--{text = "CCC",sub={
 			--	{text = "lel"},
@@ -126,9 +154,9 @@ function PANEL:MouseClick(fid)
 		
 		if itemi and itemi.IsEquipped then
 			if itemi:IsEquipped() then
-				context[2] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
+				context[#context+1] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
 			else
-				context[2] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
+				context[#context+1] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
 			end
 		end
 		
@@ -141,7 +169,7 @@ function PANEL:TrySetTexture(name)
 	if not isstring(name) then return false end
 	local basedir = "textures/gui/icons/"
 	local tfn = basedir..name..".png"
-	MsgN("iconsearch: ",tfn)       
+	--MsgN("iconsearch: ",tfn)       
 	if file.Exists(tfn) then
 		local tex = LoadTexture(tfn)
 		self:SetTexture(tex)
@@ -169,7 +197,7 @@ function PANEL:Set(slot,item)
 		local icon =    data:Read("/parameters/icon")
 		--MsgN(icon)
 		self.title:SetText(title or class or luatype or "???")
-		MsgN(title,luatype,class,amount,icon)
+		--MsgN(title,luatype,class,amount,icon)
 		--PrintTable(class)   
 		if not ( self:TrySetTexture(icon) or self:TrySetTexture(class) or self:TrySetTexture(luatype) ) then 
 			if class then

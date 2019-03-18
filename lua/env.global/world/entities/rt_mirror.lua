@@ -92,7 +92,7 @@ function ENT:Spawn()
 	
 	local light = self:AddComponent(CTYPE_LIGHT)  
 	light:SetColor(Vector(1,1,1))
-	light:SetBrightness(1) 
+	light:SetBrightness(0.1) 
 	self.light = light
 end
 function ENT:Despawn() 

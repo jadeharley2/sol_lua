@@ -94,6 +94,7 @@ if CLIENT then
 			player_list[k] = nil
 		end  
 	end)
+ 
 end
 
 if SERVER then
@@ -148,7 +149,8 @@ if SERVER then
 		}
 		--network.BroadcastLua("local l =  ents.GetById("..tostring(120000+id)..") if l then l:Load() end")
 		client:SendLua("local p = ents.GetById("..tostring(120000+id)..") SetLocalPlayer(p) p:SetGlobalName('player') SetController('actor') p:SetPos(GLOBAL_SPAWN_pos)")
-		 
+		--client:SendLua("global_player_await_id = "..tostring(120000+id).." SetController('actorwait')")
+
 		hook.Call("player.firstspawn", actor) 
 		network.BroadcastCall("player.connected",id,actor)
 		

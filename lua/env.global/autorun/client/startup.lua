@@ -309,7 +309,7 @@ function SpawnPlayerChar(posoverride)
 		playeractor:SetName(name)
 		playeractor:AddFlag(FLAG_PLAYER)
 	
-		local inventory = playeractor:AddComponent(CTYPE_STORAGE)  
+		--local inventory = playeractor:AddComponent(CTYPE_STORAGE)  
 		
 		
 		-- local pp = SpawnWeapon("testgun",ship,targetpos+Vector(-0.001,0.001,0))--0.006

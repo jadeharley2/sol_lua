@@ -26,16 +26,33 @@ function ENT:Init()
 	self.coll = coll 
 	
 end
-
+function ENT:Load() 
+	local modelval = self:GetParameter(VARTYPE_MODEL)
+	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+	if modelval then 
+		self:SetModel(modelval,modelscale)
+	else
+		MsgN("no model specified for static model at spawn time")
+	end
+	self:AddFlag(FLAG_USEABLE)
+end
 function ENT:Spawn(c)  
   
 	local world = matrix.Scaling(0.03*0.1) * matrix.Rotation(Vector(-90,90,0))
 	   
 	self:SetSpaceEnabled(false) 
-	 
+	
+	local modelval = self:GetParameter(VARTYPE_MODEL)
+	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+	if modelval then 
+		self:SetModel(modelval,modelscale)
+	else
+		MsgN("no model specified for static model at spawn time")
+	end
+	self:AddFlag(FLAG_USEABLE)
 	
 end
-
+ 
 
 function ENT:SetModel(mdl,scale) 
 	scale = scale or 1

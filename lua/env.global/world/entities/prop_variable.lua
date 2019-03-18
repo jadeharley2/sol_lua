@@ -124,6 +124,34 @@ local function ButtonUse(s,user)
 		s:EmitSound("events/lamp-switch.ogg",1)
 	end
 end
+
+function AutoConvert(table,level) 
+	level=level or 0
+	local tcount = 0
+	local lastval = nil
+	local isnumbers = true
+	for k,v in SortedPairs(table) do
+		if(istable(v)) then
+			local rep,vv = AutoConvert(v,level+1)
+			if rep then table[k] = vv end
+		end
+		MsgN(level,"=",k,v)
+		lastval = v
+		tcount = tcount + 1
+		if isnumbers and not isnumber(k) then
+			isnumbers = false
+		end
+	end
+	MsgN(level,"-",tcount,lastval,isnumbers)
+	if isnumbers and tcount>1 and isstring(lastval) then
+		if lastval=="vec3" and tcount>3 then
+			MsgN("tcount,lastval,isnumbers")
+			return true, Vector(table[1],table[2],table[3])
+		end 
+	end
+	return false, table
+end
+
 function ENT:PreLoadData(isLoad) 
 	if not self.data then
 		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
@@ -143,9 +171,19 @@ function ENT:PreLoadData(isLoad)
 	if data and data.model then
 		self:SetParameter(VARTYPE_MODEL,data.model)
 	end
+	if data and data.scale then
+		self:SetParameter(VARTYPE_MODELSCALE,data.scale)
+	end
+
+	if data and data.variables then
+		local b, rlv = AutoConvert(data.variables)
+		for k,v in pairs(rlv) do 
+			self[k] = v
+		end
+	end
 
 	local lt = data.luatype
-	if lt and isstring(lt) then
+	if lt and isstring(lt) then  
 		local meta = ents.GetType(lt)
 		if meta then
 			--for k,v in pairs(meta) do

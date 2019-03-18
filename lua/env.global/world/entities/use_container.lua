@@ -1,4 +1,4 @@
-
+ 
 
 function SpawnCONT(model,parent,pos)
 	local e = ents.Create("use_container")
@@ -21,6 +21,7 @@ function ENT:Init()
 	self.model = model
 	self.phys = phys
 	self.storage = storage
+	self.isopened = false
 	self:SetSpaceEnabled(false)
 	self:AddFlag(FLAG_PHYSSIMULATED)
 	 
@@ -86,16 +87,37 @@ end
 --	--	self.phys:SetMovementDirection(Vector(0,0,0))
 --	--end
 --end
- 
+
+function ENT:Synchronize(onCompleted)
+	self.storage:SetSynchroEvent(onCompleted)
+	self:SendEvent(EVENT_CONTAINER_SYNC)
+end
+
+
+
 ENT._typeevents = { 
 	[EVENT_USE] = {networked = true, f = function(self,user)   
-		self.isopened = not self.isopened 
-		if self.isopened then
+		if not self.isopened then
+			self.user = user
 			self:EmitSound("events/storage-open.ogg",1)
-			if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
+			--if(CLIENT and network.IsConnected()) then
+			--	MsgN("a?")
+			--	self:Synchronize(function(s)
+			--		if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
+			--	end)
+			--else
+				if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
+			--end
+			self.isopened = not self.isopened 
 		else
-			self:EmitSound("events/storage-close.ogg",1)
-			if CLIENT and LocalPlayer() == user then CloseInventoryWindow(self) end
+			if self.user == user then
+				self.user = nil
+				self:EmitSound("events/storage-close.ogg",1)
+				if CLIENT and LocalPlayer() == user then CloseInventoryWindow(self) end
+				self.isopened = not self.isopened 
+			end
 		end
-	end},
+	end}, 
 }  
+--DeclareEnumValue("event","ITEM_ADDED",		8267) 
+--DeclareEnumValue("event","ITEM_TAKEN",		8268) 
