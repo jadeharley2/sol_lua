@@ -1,0 +1,69 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00589496782049537, 0.0388741195201874, -0.0846174210309982, "vec3"],
+			"rotation" : [0, 0.281157582998276, 0, 0.959662079811096, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/space/chair.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/space/chair.json"
+		},
+		"flags" : ["useable", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000006,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000006,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00705525651574135, 0.0388741195201874, -0.085775300860405, "vec3"],
+			"rotation" : [0, -0.674288034439087, 0, 0.738468766212463, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/space/chair.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/space/chair.json"
+		},
+		"flags" : ["useable", "editornode", "useable", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000007,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000007,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00333929574117064, 0.0388741195201874, -0.0865257754921913, "vec3"],
+			"rotation" : [0, 1.65028204435203E-08, 0, 1.00000023841858, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "furniture/space/chair.stmd",
+			"modelscale" : 0.03,
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/space/chair.json"
+		},
+		"flags" : ["useable", "editornode", "useable", "editornode", "useable", "editornode", "useable", "editornode"]
+	},
+ 
+]

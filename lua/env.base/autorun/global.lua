@@ -49,24 +49,28 @@ function stdcomp(a,b)
 end
 
 function TableToString (tbl, indent, maxlevel)
-	if not indent then indent = 0 end
-	if not maxlevel then maxlevel = 2 end
-	if indent > maxlevel then return end
-	local st = ""
-	for k, v in SortedPairs(tbl,stdcomp) do
-		formatting = srep("  ", indent) ..  tostring(k) .. ": "
-		if type(v) == "table" then
-			if v ~= tbl then
-				st = st .. formatting .. "\r\n"
-				st = st .. (TableToString(v, indent+1,maxlevel) or "")
+	if tbl then
+		if not indent then indent = 0 end
+		if not maxlevel then maxlevel = 2 end
+		if indent > maxlevel then return end
+		local st = ""
+		for k, v in SortedPairs(tbl,stdcomp) do
+			formatting = srep("  ", indent) ..  tostring(k) .. ": "
+			if type(v) == "table" then
+				if v ~= tbl then
+					st = st .. formatting .. "\r\n"
+					st = st .. (TableToString(v, indent+1,maxlevel) or "")
+				else
+					st = st .. formatting .. tostring(v) .. "\r\n"
+				end
 			else
 				st = st .. formatting .. tostring(v) .. "\r\n"
 			end
-		else
-			st = st .. formatting .. tostring(v) .. "\r\n"
 		end
+		return st
+	else
+		return "nil"
 	end
-	return st
 end
 
 function PrintTable(tbl, maxlevel)

@@ -163,6 +163,17 @@ if CLIENT then
 			render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
 			render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 		end)
-	end
+	end 
 end
 
+--Entity(1712504553).ReloadSkybox = function(self)
+--	MsgN("reload star sky")
+--	render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED)
+--	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_DISABLED)
+--	--self.skybox
+--	self.cubemap:RequestDraw(nil,function() 
+--		render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
+--		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
+--		render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
+--	end)
+--end

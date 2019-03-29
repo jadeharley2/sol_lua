@@ -68,6 +68,7 @@ function ENT:Enter()
 		end
 	end
 	
+	--self.model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
 end
 
 function ENT:Leave()    

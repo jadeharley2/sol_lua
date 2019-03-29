@@ -101,3 +101,50 @@ function ENTITY:DDFreeAll()
 	self._ddtasks = nil
 	self._ddhooks = nil
 end
+
+function ENTITY:PrintEventHandlers()
+	local eventinfo = debug.GetAPIInfo("EVENT_")
+	local eventdict = {}
+	for k,v in pairs(eventinfo) do if not string.starts(k,'_') then eventdict[tonumber(v)] = k end end 
+
+	if self._events then 
+		for k,v in SortedPairs(self._events) do
+			MsgN("S",k,eventdict[k],v.networked)
+		end
+	end
+	if self._comevents then 
+		local cominfo = debug.GetAPIInfo("CTYPE_")
+		local comdict = {}
+		for k,v in pairs(cominfo) do if not string.starts(k,'_') then comdict[tonumber(v)] = k end end 
+
+		for k,v in SortedPairs(self._comevents) do
+			if v._typeevents then 
+				for k2,v2 in SortedPairs(v._typeevents) do
+					MsgN("C",'['..k..']'..comdict[k],'['..k2..']'..eventdict[k2],v2.networked)
+				end
+			end
+		end
+	end
+	if self._typeevents then 
+		for k,v in SortedPairs(self._typeevents) do
+			MsgN("T",'['..k..']'..eventdict[k],v.networked)
+		end
+	end
+	if self._metaevents then 
+		for k,v in SortedPairs(self._metaevents) do
+			MsgN("M",'['..k..']'..eventdict[k],v.networked)
+		end
+	end
+end
+
+DeclareEnumValue("event","PROP_ED_MOVE",				224980)
+DeclareEnumValue("event","PROP_ED_ROTATE",				224981)
+DeclareEnumValue("event","PROP_ED_SCALE",				224982)
+
+local _metaevents = ENTITY._metaevents 
+
+_metaevents[EVENT_PROP_ED_MOVE]   = {networked = true, f = function(self,pos)  self:SetPos(pos) end}
+_metaevents[EVENT_PROP_ED_ROTATE] = {networked = true, f = function(self,axis,ang)  self:TRotateAroundAxis(axis,ang) end}
+_metaevents[EVENT_PROP_ED_SCALE]  = {networked = true, f = function(self,sca)  self:SetScale(sca) end}
+
+ 

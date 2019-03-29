@@ -1,6 +1,7 @@
 --Component?
 DeclareEnumValue("event","WIRE_SIGNAL",	111234) --EVENT_WIRE_SIGNAL
 
+component.uid = DeclareEnumValue("CTYPE","WIREIO", 1315)
 component.editor = {
 	name = "WireIO",
 	properties = { 
@@ -8,23 +9,39 @@ component.editor = {
 	
 }
 
-function component:OnInit()
+component._typeevents = { 
+	[EVENT_WIRE_SIGNAL]={networked=true,f = function(self,from,key,value)
+		local node = self:GetNode()
+		inp = self.inputs[key]
+		if inp and inp.f then
+			inp.f(node,from,key,value)
+		end   
+	end}, 
+} 
+
+function component:Init()
 	self.inputs = {}
 	self.outputs = {}
 end
-function component.ReceiveEvent(node,from,key,value)
-	inp = node.wireio.inputs[key]
-	if inp and inp.f then
-		inp.f(node,from,key,value)
-	end
-end
-
+--function component.ReceiveEvent(self,from,key,value)
+--	local node = self:GetNode()
+--	inp = self.inputs[key]
+--	if inp and inp.f then
+--		inp.f(node,from,key,value)
+--	end 
+--end
 function component:OnAttach(node)
+	self.inputs = {}
+	self.outputs = {}
 	node.wireio = self
-	node:AddEventListener(EVENT_WIRE_SIGNAL,"a",self.ReceiveEvent)
+	node._comevents = node._comevents or {}
+	node._comevents[self.uid] = self 
+	--node:AddEventListener(EVENT_WIRE_SIGNAL,"a",self.ReceiveEvent)
 end
 function component:OnDetach(node)
 	node.wireio = nil
+	node._comevents = node._comevents or {}
+	node._comevents[self.uid] = nil
 end
  
 --function component:LinkOutputTo(node,outname,inname)
@@ -45,11 +62,13 @@ function component:AddOutput(name)
 	self.outputs[name] = {targets={}}
 end 
 function component:SetOutput(name,value)
-	local out = self.outputs[name]
-	if out then
-		out.v = value
-		for k,v in pairs(out.targets) do
-			v[1]:SendEvent(EVENT_WIRE_SIGNAL,nil,v[2],value)
+	if self.outputs then
+		local out = self.outputs[name]
+		if out then
+			out.v = value
+			for k,v in pairs(out.targets) do
+				v[1]:SendEvent(EVENT_WIRE_SIGNAL,nil,v[2],value)
+			end
 		end
 	end
 end

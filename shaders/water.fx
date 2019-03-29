@@ -256,7 +256,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	output.color.a =
 	(saturate(saturate(-input.data.x*2)+1-saturate(1-camDot))  )//+surfaceDistance/4
 	-saturate(surfaceDistance/5)
-	;
+	; 
 	 
 	//output.color.a *=waterA*0;
 	//output.color.a = length(output.color.rgb);

@@ -34,7 +34,7 @@ function ENT:Load()
 	self:InitWire()
 end
 function ENT:InitWire()
-	local wio = Component("wireio",self)
+	local wio = self:AddComponent(CTYPE_WIREIO)--Component("wireio",self)
 	wio:AddInput("toggle",self.WInputs)
 	wio:AddInput("on",self.WInputs)
 	wio:AddInput("off",self.WInputs)

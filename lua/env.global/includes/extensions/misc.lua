@@ -34,3 +34,13 @@ function Multicall(tab_obj,func,...)
 		end
 	end
 end 
+
+
+if SERVER then
+
+--function CCCAA(e,pos)
+--	dostring(str)
+--	network.BroadcastLua('Entity('..tostring(e)..'):SetPos('..)
+--end
+--
+end

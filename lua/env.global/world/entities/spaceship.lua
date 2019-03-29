@@ -69,6 +69,7 @@ function ENT:Init()
 	model:SetMatrix(world) 
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,99999,0)  
+	model:SetMaxRenderDistance(1000000)
 	self.model = model
 	
 	local collsmd = "shiptest/outer_coll.SMD"--"shiptest/bridge_floor.SMD"
@@ -94,7 +95,10 @@ function ENT:Spawn()
 	if shipdata then
 		self.shipdata = shipdata
 		if shipdata.hull then
-			SpawnSO(shipdata.hull.model,self,Vector(0,0,0),shipdata.hull.scale) 
+			local hso = SpawnSO(shipdata.hull.model,self,Vector(0,0,0),shipdata.hull.scale) 
+			if hso and hso.model then
+				hso.model:SetMaxRenderDistance(1000000)
+			end
 		end
 	end
 	
@@ -134,6 +138,9 @@ function ENT:Load()
 end
 function ENT:Despawn()  
 	self:DDFreeAll() 
+	MsgN("ship despawn!")
+	MsgN(debug.traceback())
+	brk()
 end
 function ENT:SEnter()  
 	TSHIP = self
@@ -159,13 +166,24 @@ function ENT:SEnter()
 		local shipdata = self.shipdata
 		local namedEnts = {}
 		if shipdata then   
+			if shipdata.load then
+				for k,v in pairs(shipdata.load) do
+					engine.LoadNode(self,v)
+				end
+			end
 			if shipdata.interior then  
-				local posmul = (shipdata.interior.posmul or 1)*0.75
+				local posmul = (shipdata.posmul or 1)
 				
 				local cc = shipdata.commandchair
 				if cc then
 					local chair = SpawnSPCH(cc.model,self,JVector(cc.pos)*posmul,cc.scale)  
-					chair:SetSeed(self:GetSeed()+38012)
+					chair:SetSeed(cc.seed or (self:GetSeed()+38012))
+					if cc.variables then 
+						local b, rlv = AutoConvert(cc.variables)
+						for k,v in pairs(rlv) do
+							chair[k] = v
+						end 
+					end
 				end
 				local tp = shipdata.teleporter
 				if tp then 
@@ -176,8 +194,20 @@ function ENT:SEnter()
 					end
 					e:SetSeed(tp.seed)
 					self.teleporter = e
+				end 
+				local exh = shipdata.exhaust
+				if exh then
+					local engines = SpawnSO(exh.model,self,JVector(exh.pos)*posmul,exh.scale) 
+					local em = engines.model 
+					em:SetMaterial("models/space/ships/midnight/tex/engine.json") 
+					em:SetBlendMode(BLEND_ADD) 
+					em:SetRasterizerMode(RASTER_DETPHSOLID) 
+					em:SetDepthStencillMode(DEPTH_ENABLED)  
+					em:SetMatrix( matrix.Scaling(0.75)* matrix.Rotation(-90,0,0))    
+					em:SetBrightness(1)
+					self.enginem = em
 				end
-				
+ 
 				for k,v in pairs(shipdata.interior.static) do  
 					local sm = SpawnSO(v.model,self,JVector(v.pos)*posmul,v.scale)  
 					nav:AddStaticMesh(sm)
@@ -243,6 +273,7 @@ function ENT:SEnter()
 					end
 				end
 				
+
 				for k,v in pairs(shipdata.interior.wire or {}) do
 					local from = namedEnts[v[1]]
 					local to = namedEnts[v[3]]
@@ -439,15 +470,17 @@ function ENT:SEnter()
 		em:SetBrightness(1)
 		self.enginem = em
 		]]
-		local warps = SpawnSO("engine/gsphere_24_inv.SMD",self,Vector(0,20,254.5)*shipmodelmul,1) 
+		--0,20,254.5
+		local warps = SpawnSO("engine/gsphere_24_inv.stmd",self,Vector(0,0,0)*shipmodelmul,1) 
 		local wm = warps.model
 		wm:SetMaterial("textures/space/warp/warp.json") 
 		wm:SetBlendMode(BLEND_ADD) 
 		wm:SetRasterizerMode(RASTER_NODETPHSOLID) 
 		wm:SetDepthStencillMode(DEPTH_ENABLED)     
 		wm:SetDrawShadow(false)     
-		wm:SetMatrix( matrix.Scaling(Vector(1000,1000,10000)) * matrix.Rotation(0,0,0)) 
+		wm:SetMatrix( matrix.Scaling(Vector(10000,10000,100000)) * matrix.Rotation(0,0,0)) 
 		wm:SetBrightness(0)
+		wm:SetMaxRenderDistance(100000)
 		wm:Enable(false)
 		self.warpm = wm
 		--[[
@@ -546,9 +579,15 @@ function ENT:SEnter()
 		
 		--self.shadow = CreateTestShadowMapRenderer(self,Vector(0,0,0))
 		
-		--self.cubemap = SpawnCubemap(self,Vector(0,0.9,0),512)
-		--self.cubemap:SetAng(Vector(0,180,0))
-		--self.cubemap:RequestDraw() 
+		self.cubemap = SpawnCubemap(self,Vector(0,0.9,0),512,self)
+		self.cubemap:SetAng(Vector(0,180,0))
+		self.cubemap:RequestDraw() 
+
+		self:Timer("cubemap_refresh",1100,1100,-1,function()
+			if self and self.cubemap then
+				self.cubemap:RequestDraw() 
+			end
+		end)
 	end 
 end
 
@@ -600,10 +639,28 @@ function ENT:Think()
 	--	MsgN((uup[1000]-uup[1])/1000)
 	--	uup = {}
 	--end
+
+	local wpm = self.warpm
+	--if wpm then
+	----	--MsgN("aa")
+	--	wpm:SetMaterial("textures/space/warp/warp.json") 
+	--	wpm:SetBlendMode(BLEND_ADD) 
+	----	wpm:SetRasterizerMode(RASTER_NODETPHSOLID) 
+	----	wpm:SetDepthStencillMode(DEPTH_ENABLED)     
+	----	wpm:SetDrawShadow(false)  
+	--  
+	--	wpm:SetMatrix( matrix.Scaling(Vector(100,100,100))) --* matrix.Rotation(0,0,0)) 
+	----	
+	--	wpm:SetBrightness(1)
+	--	wpm:Enable(true) 
+	--end
+
 	local tpv = self.throttlepow or 0
 	local engm = self.enginem
-	if engm then
+	if engm then 
 		engm:SetBrightness(tpv)
+		engm:Enable( tpv>0.001)
+
 	end
 	if tpv > 0 then tpv = tpv - 0.02 end
 	self.throttlepow = tpv
@@ -625,7 +682,8 @@ function ENT:Think()
 		
 		
 		if lastparent ~= parent then
-			if lastparent ~= nil then
+			if lastparent ~= nil and IsValidEnt(lastparent) then
+				MsgN(parent,lastparent)
 				local transform =parent :GetLocalSpace(lastparent)
 				local sizediff =parent:GetSizepower()/ lastparent:GetSizepower()
 				local newVel = vel:TransformN(transform)*sizediff
@@ -680,6 +738,7 @@ function ENT:Think()
 		self:SetNWVector("velocity",self.velocity) 
 		--end
 		
+		self:BendSpacetime(vel:Length()*0.00000001)
 		 
 	end
 	
@@ -706,7 +765,7 @@ function ENT:EnteredNewSystem()
 	local system = self:GetParentWith(NTYPE_STARSYSTEM)
 	if system then 
 		if system.ReloadSkybox then system:ReloadSkybox() end
-		self.starmap:AddVisitedSystem(system)
+		if self.starmap then self.starmap:AddVisitedSystem(system) end
 	end 
 end
 if CLIENT then
@@ -850,6 +909,12 @@ function ENT:AddTask(task,name)
 	local q = self.taskqueue or List()
 	self.taskqueue = q
 	q:Add({t =task,n = name or "[unknown]"})
+	if CLIENT and name then
+		local ply = LocalPlayer()
+		if ply and ply:GetParent()==self then
+			MsgInfo("ship status: "..name)
+		end
+	end
 end
 function ENT:AbortAllTasks()
 	self.taskqueue = nil
@@ -909,10 +974,20 @@ function ENT:TaskRotateLookAt(target)
 end
 function ENT:BendSpacetime(power)
 	local wm = self.warpm
-	wm:SetBrightness(math.min(2,power*4)*0.5)
-	wm:SetMatrix(matrix.Scaling(Vector(1000,1000,10000+1000000*power*power)))
-	if power > 0 then wm:Enable(true) else wm:Enable(false) end
-	self:SetScale(Vector(1,1,math.max(0.00001,1-power)))
+	if wm then
+		wm:SetBrightness(math.min(2,power*4)*0.5)
+		--wm:SetBrightness(1)
+		--wm:Enable(true)
+		local maxbnd = math.min(1000000,1000000)--10000+1000000*power*power)
+		wm:SetMatrix(matrix.Scaling(Vector(1000,1000,maxbnd)))
+		--wm:SetMatrix(matrix.Scaling(Vector(1000,1000,1000)))
+		if power > 0 then wm:Enable(true) else wm:Enable(false) end
+		if self.warpmode then
+			self:SetScale(Vector(1,1,math.max(0.00001,1-power)))
+		else
+			self:SetScale(Vector(1,1,1))
+		end
+	end
 end
 function ENT:TaskWarpTo(coord)   
 	--if not self.task then 

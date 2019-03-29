@@ -1,6 +1,7 @@
 {
 	"name" : "Midnight",
 	"sizepower" : 750,
+	"posmul":0.75,
 	"hull" : {"model":"space/ships/midnight/ship_surface.stmd",	"scale":0.75,},
 	"fallbackpos" : [0.003537618,0.01925059,0.2446546],
 	"fallbackdistance" : 1,

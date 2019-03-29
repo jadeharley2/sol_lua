@@ -50,7 +50,7 @@ SPAWNPOS = targetpos
 ]]
 
 function ServerStartup()
-	U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
+	U = ents.Create("world_solverse")--"world_solverse")--"world_flatcity")--"world_testmap") 
 	network.AddNodeImmediate(U)
 	U:Create() 
 	SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
@@ -117,7 +117,7 @@ local function OnPlayerSpawn(ply)
 	
 
 	--ply:Give("tool_propspawner")
-	debug.Delayed(1,function()  ply:Recall() end)
+	--debug.Delayed(1,function()  ply:Recall() end)
 	--for k=1,20 do
 	--	ply.player:SendLua('TACTOR:SetPos(Vector('..tostring(SPAWNPOS.x)..','..tostring(SPAWNPOS.y)..','..tostring(SPAWNPOS.z)..'))  TACTOR.phys:SetGravity(Vector(0,-4,0))')
 	--end

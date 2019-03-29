@@ -31,8 +31,13 @@ function ENT:LoadSpawnpoint()
 	--origin_loader:SetParent(universe)
 	--origin_loader:Spawn()
 
-	origin_loader = GetCamera()
-	
+	if CLIENT then
+		origin_loader = GetCamera()
+	else
+		origin_loader = ents.Create()
+		origin_loader:SetSpaceEnabled(false)
+	end
+
 	AddOrigin(origin_loader)
 	origin_loader:SetUpdateSpace(true)
 	OL = origin_loader
@@ -48,7 +53,7 @@ function ENT:LoadSpawnpoint()
 		ship:SetName("The ship")
 		ship:SetParent(origin_loader:GetParent())
 		ship:SetPos(Vector(0.0129999995529652, 0, 0))
-		ship:SetParameter(VARTYPE_CHARACTER,"libra")
+		ship:SetParameter(VARTYPE_CHARACTER,"sevneka")--,"libra")
 		ship:Create()
 		ship:Enter()
 		ship:SetUpdateSpace(true)
@@ -81,12 +86,52 @@ function ENT:LoadSpawnpoint()
 	--return ship, targetpos
 end
 
---function ENT:GetSpawn() 
---	if not self.loaded then 
---		self:LoadSpawnpoint()
---	end
---	return self.spawnnode, self.spawnpos
---end
+if SERVER then
+	function ENT:GetSpawn() 
+		if not self.loaded then 
+			--self:LoadSpawnpoint()
+
+			--network.AddNodeImmediate(ship)
+			
+			local ship = ents.Create("spaceship")
+			ship:SetSeed(2397131)
+			ship:SetSizepower(1000)
+			ship:SetName("The ship")
+			ship:SetParent(LOBBY)
+
+			local targetpos = Vector(0.003537618,0.01925059,0.2446546) 
+			self.spawnnode = ship
+			self.spawnpos = targetpos
+			self.loaded = true
+
+			
+			origin_loader = ents.Create()
+			origin_loader:SetSpaceEnabled(false) 
+
+			AddOrigin(origin_loader)
+			origin_loader:SetUpdateSpace(true)
+			OL = origin_loader
+			engine.SendTo(origin_loader,"@u1.mc;-0.002718567,0.0005680526,0.004285494,1712499733;0.3089897,0.02846826,0.06682603,1062413718;s1065632697;s2008649333", function(e)
+				--s2397131
+				--ship:SetParent(LOBBY)
+				ship:SetParent(origin_loader:GetParent())
+				ship:SetPos(Vector(0.0129999995529652, 0, 0))
+				ship:SetParameter(VARTYPE_CHARACTER,"sevneka")
+				ship:Create()
+				ship:Enter()
+				ship:SetUpdateSpace(true)
+				AddOrigin(ship)
+
+
+				--network.AddNodeImmediate(ship)
+				--origin_loader:Despawn() 
+			end,function()
+				--hook.Call("world.load.error")
+			end)
+		end
+		return self.spawnnode, self.spawnpos
+	end
+end
 
 ENT.modes = {
 	free = {

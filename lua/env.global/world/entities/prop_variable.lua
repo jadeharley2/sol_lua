@@ -1,5 +1,6 @@
 local NO_COLLISION = NO_COLLISION or 2
 local COLLISION_ONLY = COLLISION_ONLY or 1 
+ 
 
 function ItemPV(type,seed,modtable)
 	local j = json.Read(type) 
@@ -71,7 +72,7 @@ function ENT:Load()
 		if modelval then 
 			self:SetModel(modelval,modelscale)
 		else
-			MsgN("no model specified for static model at spawn time")
+			--MsgN("no model specified for static model at spawn time")
 		end 
 	end
 	self:LoadData()
@@ -93,7 +94,7 @@ function ENT:Spawn()
 			if modelval then 
 				self:SetModel(modelval,modelscale)
 			else
-				error("no model specified for static model at spawn time")
+				--error("no model specified for static model at spawn time")
 			end
 		end
 	end
@@ -116,9 +117,12 @@ local function LampInputs(self,f,k,v)
 	end
 end
 local function ButtonUse(s,user)
-	local wio = TryGetComponent("wireio",s)
-	if wio then 
-		wio:SetOutput("out")
+	--local wio = TryGetComponent("wireio",s)
+	--if wio then 
+	--	wio:SetOutput("out")
+	--end
+	if s.wireio then
+		s.wireio:SetOutput("out")
 	end
 	if CLIENT then
 		s:EmitSound("events/lamp-switch.ogg",1)
@@ -243,7 +247,7 @@ function ENT:LoadData()
 		self.light = light
 		 
 		if tags.lamp then
-			local wio = Component("wireio",self)
+			local wio = self:AddComponent(CTYPE_WIREIO)-- Component("wireio",self)
 			wio:AddInput("toggle",LampInputs)
 			wio:AddInput("on",LampInputs)
 			wio:AddInput("off",LampInputs)
@@ -253,7 +257,7 @@ function ENT:LoadData()
 		self:AddFlag(FLAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ButtonUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
-		local wio = Component("wireio",self)
+		local wio = self:AddComponent(CTYPE_WIREIO)
 		wio:AddOutput("out")
 	end
 	if tags.item then
@@ -349,3 +353,4 @@ ENT.editor = {
 	},  
 	
 }
+ 

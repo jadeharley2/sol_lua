@@ -8,6 +8,7 @@ DeclareEnumValue("event","ITEM_DESTROY",    8270)
 DeclareEnumValue("event","CONTAINER_SYNC",		8271) 
 DeclareEnumValue("event","CONTAINER_SYNC_DATA",	8272) 
 
+DeclareEnumValue("vartype","STORAGE",		88010)
 
 component.uid = DeclareEnumValue("CTYPE","STORAGE", 1314)
 component.editor = {
@@ -37,6 +38,7 @@ component._typeevents = {
 						local data = item.data
 						
 						to.list[to_id] = {data = data, count = 1}  
+						self:GetNode()[VARTYPE_STORAGE] = self:ToData() 
 						MsgN("item transfer: valid")
 					else 
 						MsgN("item transfer: invalid - item nonexistent")
@@ -50,10 +52,12 @@ component._typeevents = {
 	[EVENT_ITEM_ADDED]={networked=true,f = function(self,id,data,count)  
 		MsgN(self:GetNode(),"item added at",id) 
 		self.list[id] = {data = data,count = 1}   
+		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end},
 	[EVENT_ITEM_TAKEN]={networked=true,f = function(self,id)
 		MsgN(self:GetNode(),"item taken at",id)
 		self.list[id] = nil
+		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end},
 	[EVENT_ITEM_DROP] = {networked = true, f = function(self,id) 
 		local e = self:TakeItem(id)
@@ -64,10 +68,12 @@ component._typeevents = {
 				network.AddNodeImmediate(e)
 			end
 		end
+		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end}, 
 	[EVENT_ITEM_DESTROY] = {networked = true, f = function(self,id) 
 		MsgN(self:GetNode(),"item destroyed at",id)
 		self:DestroyItem(id) 
+		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end},  
 	--client->server - request
 	--server->client - data
@@ -84,25 +90,35 @@ component._typeevents = {
 				self:pending_event()
 				self.pending_event = nil
 			end
+			self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 		end
-	end},
+	end} 
 }
  
-
+function component:OnLoad()
+	local itms = self:GetNode()[VARTYPE_STORAGE]
+	if itms then
+		self:FromData(itms)
+	end
+end
 
 function component:Init()
 	self.list = {}
 end
-  
+   
 function component:OnAttach(node)
 	node._comevents = node._comevents or {}
 	node._comevents[self.uid] = self
 	MsgN('new storage at: ',node,self:GetNode())
+	
+	node:AddNativeEventListener(EVENT_LOAD,"storage",function(s) component.OnLoad(self) end)
 end
 function component:OnDetach(node)
 	node._comevents = node._comevents or {}
 	node._comevents[self.uid] = nil
 	MsgN('ded storage at: ',node)
+
+	node:RemoveNativeEventListener(EVENT_LOAD,"storage")
 end
       
 function component:SetSynchroEvent(func)
@@ -111,7 +127,10 @@ end
 function component:Synchronize(onCompleted)
 	if CLIENT and network.IsConnected() then
 		self.pending_event = onCompleted
-		self:GetNode():SendEvent(EVENT_CONTAINER_SYNC)
+		local node = self:GetNode()
+		if node then
+			node:SendEvent(EVENT_CONTAINER_SYNC)
+		end
 	else
 		onCompleted(self)
 	end
@@ -189,6 +208,13 @@ function component:TakeItemAsData(index)
 			self.list[index] = nil
 		end
 		self:GetNode():SendEvent(EVENT_ITEM_TAKEN,index) 
+		return item.data
+	end 
+	return false
+end
+function component:GetItemData(index) 
+	local item = self.list[index]
+	if item then  
 		return item.data
 	end 
 	return false

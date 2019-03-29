@@ -13,7 +13,7 @@ function PANEL:Init()
 	tabs:Dock(DOCK_FILL)
 	self:Add(tabs)  
 	self.stats = panel.Create("panel_stats")
-	self.equip = panel.Create("tabmenu")
+	self.equip = panel.Create("panel_equipment")
 	tabs:AddTab("Stats",self.stats)
 	tabs:AddTab("Equipment",self.equip)
 	self:UpdateLayout()  
@@ -26,6 +26,7 @@ function PANEL:Open()
 end
 function PANEL:Set(actor) 
 	self.stats:Set(actor) 
+	self.equip:Set(actor)
 end
 
 function PANEL:MouseDown() 

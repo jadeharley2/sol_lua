@@ -37,6 +37,10 @@ function PANEL:CanDrop(item)
 end
 
 function PANEL:Drop(item)
+	if self.OnDrop then
+		self:OnDrop(item)
+		return 
+	end
 	if self.slottype == "reference" then
 		local cpy = item:MakeCopy()
 		item.lastSlot:Drop(item)

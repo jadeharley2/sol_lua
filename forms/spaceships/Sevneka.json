@@ -1,0 +1,81 @@
+{
+	"name" : "Libra",
+	"sizepower" : 1000,
+	"posmul":1,
+	"hull" : {"model":"space/ships/sevneka/hull_all.stmd",	"scale":40},
+	"fallbackpos" : [-0.005031675, -0.0004091228, 0.03210592],
+	"fallbackdistance" : 0.1,
+	"commandchair" : {"model":"models/furniture/space/chair.stmd","pos":[-0.00132261379621923, 0.0388741195201874, -0.0843675583600998],"scale":0.03,
+		"variables":{
+			"mountpoints":[
+				{"pos":[0,0.5,0,"vec3"],"ang":[0,-90,0,"vec3"],"state":"sit"}
+			]
+		}
+	},
+	"exhaust" : {"model":"space/ships/libra/exhaust.stmd","pos":[0,0,0],"scale":0.75}, 
+	"teleporter" : {"pos":[-0.001814202, 0.03981012, -0.08625773],"ang":[0,0,0],"scale":0.5,"name":"teleporter","seed":333004},
+	"load" : ["manual/l_bridge"],
+	"interior": {
+		"rooms" : { 
+			"bridge" : { 
+				"props" : [
+					{
+						"name":"brlamp1",
+						"type":"forms/props/other/light.json",
+						"pos":[-0.004412584, 0.04171823, -0.08625773],
+						"ang":[0,-90,0],
+						"seed":333008
+					},
+					{
+						"name":"brlamp2",
+						"type":"forms/props/other/light.json",
+						"pos":[0.004412584, 0.04171823, -0.08625773],
+						"ang":[0,-90,0],
+						"seed":333009
+					},
+					{
+						"name":"brlamp3",
+						"type":"forms/props/other/light.json",
+						"pos":[0, 0.04171823, -0.08625773],
+						"ang":[0,-90,0],
+						"seed":333009
+					},
+					//{
+					//	"name":"brlbtn",
+					//	"type":"forms/props/active/futur/button.json",
+					//	"pos":[0, 0.03949907, -0.08716428],
+					//	"ang":[0,-90,0],
+					//	"seed":333010
+					//}, 
+					{
+						"name":"brlbtn",
+						"type":"forms/props/active/vendor_character.json",
+						"pos":[0, 0.03949907, -0.08716428],
+						"ang":[0,-90,0],
+						"seed":333010
+					},  
+				],
+				"wire" : [
+					["brlbtn","out","brlamp1","toggle"],
+					["brlbtn","out","brlamp2","toggle"],
+					["brlbtn","out","brlamp3","toggle"],
+				],
+			},
+		},
+		"airlocks":{
+			"right": {
+				"door_out" : {
+					"model":"space/ships/libra/gateway_door.stmd",
+					"pos":[-0.007326, -0.0009346, 0.025378],"ang":[0,0,0],"scale":0.5,"seed":2342345
+				},
+				"door_in": {
+					"model":"space/ships/libra/gateway_door.stmd",
+					"pos":[-0.0051886, -0.0009346, 0.025378],"ang":[0,0,0],"scale":0.5,"seed":2342346
+				},
+			},
+		},
+		"static" : [],
+		"props" : [],
+		"wire" : [],
+	},
+}

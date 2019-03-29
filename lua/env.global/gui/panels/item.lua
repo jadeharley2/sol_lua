@@ -143,6 +143,7 @@ function PANEL:MouseClick(fid)
 			--{text = "use",action = ACT_USE},
 			{text = "drop",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "destroy",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data))  end},--hook.Call("event.item.droprequest",item) return false end},
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
 			--{text = "CCC",sub={
 			--	{text = "lel"},
@@ -151,14 +152,16 @@ function PANEL:MouseClick(fid)
 			--	{text = "3",action = function(item,context) MsgN("JA!") end},
 			--}},
 		}
-		
-		if itemi and itemi.IsEquipped then
-			if itemi:IsEquipped() then
-				context[#context+1] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
-			else
-				context[#context+1] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
-			end
+		if itemi then
+			hook.Call("item_properties",itemi,context,self.storage,self)
 		end
+		--if itemi and itemi.IsEquipped then
+		--	if itemi:IsEquipped() then
+		--		context[#context+1] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}
+		--	else
+		--		context[#context+1] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
+		--	end
+		--end
 		
 		ContextMenu(self,context)
 	end 

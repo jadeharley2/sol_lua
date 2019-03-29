@@ -44,7 +44,7 @@ end
 function ENT:LoadGraph()
 	local graph = BehaviorGraph(self) 
 	
-	local w = Component("wireio",self)
+	local w = self:AddComponent(CTYPE_WIREIO)--Component("wireio",self)
 	w:AddInput("toggle",self.Toggle)
 	w:AddInput("open",self.Open)
 	w:AddInput("close",self.Close)

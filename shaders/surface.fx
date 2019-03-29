@@ -478,8 +478,8 @@ float  SampleForShadowC(float4 worldposition,float dotNL)
 		//float cam_angle = saturate(dot(-normalize(position),normal)); 
 		 
 		float light_power = 1/(light_dist*light_dist);
-		float specular_intencity = pow(saturate(dot(light_reflection,camdir)),smoothness*smoothness*500);
 		float diffuse_intencity = saturate(dot(normal,light_direction));
+		float specular_intencity = diffuse_intencity*pow(saturate(dot(light_reflection,camdir)),smoothness*smoothness*500);
 		
 		//shadowmap_mul=1;
 		

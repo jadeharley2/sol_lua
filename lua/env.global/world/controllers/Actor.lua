@@ -306,6 +306,7 @@ function OBJ:CreateCharacterPanels(actor)
 		cpanels.char:Set(actor)
 	end
 	function cpanels:Open()
+		cpanels.char:Set(actor)--refresh
 		for k,v in pairs(cpanels) do
 			if not isfunction(v) and v.Open then v:Open() end
 		end
@@ -1041,13 +1042,13 @@ function OBJ:SwitchToThirdperson(actor)
 				v.model:Enable(true)
 			end
 		end
-		if actor.equipment then
-			for k,v in pairs(actor.equipment) do
-				if v.ent then
-					v.ent.model:Enable(true)
-				end
-			end
-		end
+		--if actor.equipment then
+		--	for k,v in pairs(actor.equipment) do
+		--		if v.ent then
+		--			v.ent.model:Enable(true)
+		--		end
+		--	end
+		--end
 	--end
 	
 	local cam = GetCamera()

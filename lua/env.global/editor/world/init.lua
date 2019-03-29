@@ -357,6 +357,8 @@ function editor:Update()
 	end 
 end
 
+SELECTION = {}
+
 function editor:SelectMany(nodes)
 	if istable(nodes) then
 		local selected = self.selected
@@ -380,6 +382,7 @@ function editor:SelectMany(nodes)
 			gizmo.mnode = last
 			self.gizmo = gizmo 
 		end
+		SELECTION = self.selected:ToTable()
 	end
 end
 function editor:Select(node,multiselect)
@@ -394,6 +397,7 @@ function editor:Select(node,multiselect)
 		if gizmo then
 			gizmo:SetPos(Vector(0,0,99999999999))
 		end
+		SELECTION = {}
 		return nil
 	end
 	
@@ -432,6 +436,7 @@ function editor:Select(node,multiselect)
 	--	MsgN(k,v)
 	--end
 	self.node:SelectNode(node)
+	SELECTION = self.selected:ToTable()
 end
 
 function editor:AddSelectionModel(ent) 
@@ -549,10 +554,10 @@ function WireEditorOpen()
 			MsgN("asd!")
 		end
 	end 
-	hook.Add("main.predraw","editor_wire",function() WireEditorUpdate() end)
+	hook.Add(EVENT_GLOBAL_PREDRAW,"editor_wire",function() WireEditorUpdate() end)
 end
 function WireEditorClose()
-	hook.Remove("main.predraw","editor_wire")
+	hook.Remove(EVENT_GLOBAL_PREDRAW,"editor_wire")
 	pnls = W.wireeditor.panels
 	if pnls then
 		for k,v in pairs(pnls) do

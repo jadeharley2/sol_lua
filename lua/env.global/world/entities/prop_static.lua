@@ -1,5 +1,7 @@
 local NO_COLLISION = NO_COLLISION or 2
 local COLLISION_ONLY = COLLISION_ONLY or 1 
+ 
+
 
 function SpawnSO(model,ent,pos,scale,collonly,norotation)
 	local e = ents.Create("prop_static") 

@@ -140,13 +140,13 @@ function ENT:UpdatePos()
 				rc:AddForceEnabled(v.model)
 			end
 		end
-		if equipment then
-			for k,v in pairs(equipment) do
-				if v.ent then 
-					rc:AddForceEnabled(v.ent.model)
-				end
-			end
-		end
+		--if equipment then
+		--	for k,v in pairs(equipment) do
+		--		if v.ent then 
+		--			rc:AddForceEnabled(v.ent.model)
+		--		end
+		--	end
+		--end
 	end
 	
 	rc:RequestDraw(self.model)

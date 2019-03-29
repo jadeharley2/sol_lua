@@ -486,6 +486,14 @@ function ENT:GetSpawn()
 			parameters = {name = "O chair"},
 			flags = {"storeable"},
 		})) 
+		cc:PutItemAsData(7,ItemIA("forms/apparel/uniform_0.json",3498224)) 
+		cc:PutItemAsData(8,ItemIA("forms/apparel/cape_0.json",3498225)) 
+		cc:PutItemAsData(9,ItemIA("forms/apparel/scarf_0.json",3498226)) 
+		--cc:PutItemAsData(10,ItemIA("forms/apparel/socks_0.json",3498227)) 
+		cc:PutItemAsData(11,ItemIA("forms/apparel/uniform_1.json",3498228)) 
+		cc:PutItemAsData(12,ItemIA("forms/apparel/armw.json",3498229)) 
+		cc:PutItemAsData(13,ItemIA("forms/apparel/legw.json",3498230)) 
+		cc:PutItemAsData(14,ItemIA("forms/apparel/collar.json",3498231)) 
 	end 
 	
 	--[[

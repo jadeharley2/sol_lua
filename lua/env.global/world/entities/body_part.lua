@@ -1,11 +1,13 @@
 --lua_run SpawnBP("mlppony/base_l3_wings.json",LocalPlayer(),0.03)
-function SpawnBP(model,ent,scale)
+--lua_run l = LocalPlayer() a = SpawnBP("models/apparel/uniform.stmd",l,1,110101) b = SpawnBP("models/apparel/cape.stmd",l,1,110102) c = SpawnBP("models/apparel/scarf.stmd",l,1,110103) d = SpawnBP("models/apparel/skl.stmd",l,1,110104)
+function SpawnBP(model,ent,scale,seed)
 	local e = ents.Create("body_part")  
 	e:SetSizepower(1000)
 	e:SetParent(ent) 
 	e:SetModel(model,scale)
-	e:Spawn()
-	return e
+	if seed then e:SetSeed(seed) end
+	e:Create()
+	return e 
 end
 
 function ENT:Init()   

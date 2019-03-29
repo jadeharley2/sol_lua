@@ -64,9 +64,11 @@ function ENT:Init()
 	local phys = self:AddComponent(CTYPE_PHYSACTOR)  
 	local model = self:AddComponent(CTYPE_MODEL)  
 	local storage = self:AddComponent(CTYPE_STORAGE)  
+	local equipment = self:AddComponent(CTYPE_EQUIPMENT)  
 	self.model = model
 	self.phys = phys
 	self.storage = storage
+	self.equipment = equipment
 	self:SetSpaceEnabled(false)
 	
 	self.speedmul = 1
@@ -99,6 +101,12 @@ function ENT:Spawn()
 	local graph = self.graph
 	if graph then
 		graph:SetState(self:GetParameter(VARTYPE_STATE) or "idle")
+	end
+	local par = self:GetParent()
+	if par and par.mountpoints then
+		self:Delayed("svh",1000,function()
+			self:SetVehicle(par,1)
+		end)
 	end
 end
 function ENT:Load()
@@ -199,18 +207,34 @@ function ENT:LoadGraph(tab)
 		graph:NewState("jump_inair",function(s,e) return e.model:SetAnimation("jump_inair") end)
 		graph:NewState("land",function(s,e)  MsgN("MVD: ", e.phys:GetMovementDirection()) return e.model:SetAnimation("land") end)
 		
-		graph:NewState("sit",function(s,e) e.model:SetAnimation("sit")  
+		graph:NewState("sit",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			e.model:SetAnimation("sit")  
 		end)
 		
-		graph:NewState("sit.chair",function(s,e) e.model:SetAnimation("sit.chair")  
+		graph:NewState("sit.chair",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			if e.model:HasAnimation("sit.chair") then
+				e.model:SetAnimation("sit.chair")  
+			else
+				e.model:SetAnimation("sit")  
+			end
 		end)
-		graph:NewState("sit.capchair",function(s,e) e.model:SetAnimation("sit.capchair")   
+		graph:NewState("sit.capchair",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			if e.model:HasAnimation("sit.capchair") then
+				e.model:SetAnimation("sit.capchair")  
+			else
+				e.model:SetAnimation("sit")  
+			end  
 		end)
-		graph:NewState("sit.saddle",function(s,e) e.model:SetAnimation("sit.saddle")  
+		graph:NewState("sit.saddle",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			if e.model:HasAnimation("sit.saddle") then
+				e.model:SetAnimation("sit.saddle")  
+			else
+				e.model:SetAnimation("sit")  
+			end   
 		end)
 		graph:NewState("vehicle_exit_start",function(s,e) return e.model:SetAnimation("capchair.exit")end)
 		graph:NewState("vehicle_exit_end",function(s,e) e.model:SetAnimation("idle",true)   e:SetVehicle() return 0 end)
@@ -484,6 +508,8 @@ function ENT:ResetTM()
 end
 
 function ENT:SetCharacter(id)
+ 
+
 	id = id or "kindred"
 	
 	if id then 
@@ -622,7 +648,20 @@ function ENT:SetCharacter(id)
 				--		end
 				--	end
 				--end
-				
+				if SERVER then
+					local slfEquipment = self.equipment
+					if slfEquipment and data.equipment and data.equipment.items then
+						local slfseed = self:GetSeed()
+						for k,v in pairs(data.equipment.items) do
+							local ei = ItemIA("forms/apparel/"..v..".json",slfseed+2492*k,{
+								--parameters = {name = "Cape"},
+								flags = {"storeable"},
+							})
+							slfEquipment:Equip(ei)
+						end 
+					end 
+				end
+
 				local phys = self.phys   
 				if phys then
 					if data.height then phys:SetHeight(data.height) end
@@ -675,15 +714,22 @@ function ENT:Config(data,species,variation)
 		
 		
 		end 
-		if data.equipment then
-			local equipment = {}
-			for k,v in pairs(data.equipment.slots) do
-				equipment[v] = {}
-			end
-			self.equipment = equipment
-		
+	end
+
+	local slfEquipment = self.equipment
+	if slfEquipment then
+		if SERVER then
+			slfEquipment:Clear()
+		end
+		if data.equipment and slfEquipment then
+			if data.equipment.slots then
+				for k,v in pairs(data.equipment.slots) do
+					slfEquipment:AddSlot(v)
+				end 
+			end 
 		end
 	end
+
 	if data.model then
 		if isstring(data.model) then
 			self:SetModel(data.model) 
@@ -735,6 +781,7 @@ function ENT:Config(data,species,variation)
 		self:SetParameter(VARTYPE_MAXHEALTH,data.health)
 		self:SetParameter(VARTYPE_HEALTH,data.health)
 	end
+
 end
 
 function ENT:SetAi(id)
@@ -1369,40 +1416,67 @@ function ENT:HandleDriving(driver)
 end
 
 
+console.AddCmd("give",function(a,b) 
+	if CLIENT then
+		if not network.IsConnected() then
+			LocalPlayer():Give(a)
+		else
+			LocalPlayer():SendEvent(EVENT_GIVE_ITEM,a)
+		end
+	else
+		local ply = Player(a)
+		if ply then
+			ply:Give(b)
+		end
+	end
+end)
 --[[ ######## ITEMS ######## ]]--
 
 function ENT:Give(type)
 
 	if SERVER or not network.IsConnected() then
-		local inv = self.inventory
-		if not inv then
-			self.inventory = Inventory(4*8,self:GetSeed()+3000) 
-		end  
-		local tool = forms.GetPath("tool",type)
-		if tool then  
-		MsgN("TOOL!",tool)
-			local hasitem = self:HasTool(type)
-			if not hasitem then
-				local tool = CreateWeapon(type,self:GetParent(),Vector(0,0,0),GetFreeUID())
-				if tool then
-					if SERVER then
-						network.AddNodeImmediate(tool)
-					end 
-					self:SendEvent(EVENT_PICKUP_TOOL,tool)
+		local s = self.storage
+		if s then
+			local p = forms.GetForm("apparel",type)
+			if p  then
+				local item = ItemIA(p,GetFreeUID())
+				local eq = self.equipment 
+				if eq then
+					eq:Equip(item)
+				else
+					s:PutItemAsData(s:GetFreeSlot(),item) 
 				end
-			end 
-		else 
-			local app = CreateIA(type,self:GetParent(),Vector(0,0,0),GetFreeUID()) 
-			if app then  
-				network.AddNodeImmediate(app)
-				local inv = self.inventory
-				if not inv then
-					self.inventory = Inventory(4*8,self:GetSeed()+3000) 
-				end
-				self:SendEvent(EVENT_PICKUP_ITEM,app)
-				--inv:AddItem(self, app)
-			end 
-		end 
+			end
+		end
+		---local inv = self.inventory
+		---if not inv then
+		---	self.inventory = Inventory(4*8,self:GetSeed()+3000) 
+		---end  
+		---local tool = forms.GetPath("tool",type)
+		---if tool then  
+		---MsgN("TOOL!",tool)
+		---	local hasitem = self:HasTool(type)
+		---	if not hasitem then
+		---		local tool = CreateWeapon(type,self:GetParent(),Vector(0,0,0),GetFreeUID())
+		---		if tool then
+		---			if SERVER then
+		---				network.AddNodeImmediate(tool)
+		---			end 
+		---			self:SendEvent(EVENT_PICKUP_TOOL,tool)
+		---		end
+		---	end 
+		---else 
+		---	local app = CreateIA(type,self:GetParent(),Vector(0,0,0),GetFreeUID()) 
+		---	if app then  
+		---		network.AddNodeImmediate(app)
+		---		local inv = self.inventory
+		---		if not inv then
+		---			self.inventory = Inventory(4*8,self:GetSeed()+3000) 
+		---		end
+		---		self:SendEvent(EVENT_PICKUP_ITEM,app)
+		---		--inv:AddItem(self, app)
+		---	end 
+		---end 
 		--if SERVER then
 		--	self:SendEvent(EVENT_GIVE_ITEM,type)
 		--end  

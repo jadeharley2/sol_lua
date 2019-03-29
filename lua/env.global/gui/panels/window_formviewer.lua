@@ -24,7 +24,7 @@ function PANEL:Setup(form_type,spawn_function)
 			spawn_function(LP,s.item)
 		end
 	end
-	for k,v in pairs(flist) do    
+	for k,v in SortedPairs(flist) do    
 		
 		local sp_new = panel.Create("button")
 		sp_new:SetText(v) 

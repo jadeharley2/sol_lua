@@ -1,0 +1,12 @@
+{
+	"group" : "active",
+	"tags" : ["futur","vendor"],
+	"model" : "active/button.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+	"luatype":"use_vendor",  
+	"variables":{
+		"mode":"ability"
+	}
+	
+}
