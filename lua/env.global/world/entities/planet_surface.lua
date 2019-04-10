@@ -159,6 +159,6 @@ function ENT:Leave()
 end
 function ENT:Think()
 --	--MsgN("d") 
-	self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
+	--self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
 --	--cr:SetPostOffset()
 end

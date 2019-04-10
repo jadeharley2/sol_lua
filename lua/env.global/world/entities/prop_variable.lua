@@ -128,6 +128,25 @@ local function ButtonUse(s,user)
 		s:EmitSound("events/lamp-switch.ogg",1)
 	end
 end
+local function ContainerUse(self,user)
+	if not self.isopened then
+		self.user = user
+		self:EmitSound("events/storage-open.ogg",1)
+		if CLIENT and LocalPlayer() == user then 
+			OpenInventoryWindow(self) 
+		end 
+		self.isopened = not self.isopened 
+	else
+		if self.user == user then
+			self.user = nil
+			self:EmitSound("events/storage-close.ogg",1)
+			if CLIENT and LocalPlayer() == user then 
+				CloseInventoryWindow(self) 
+			end
+			self.isopened = not self.isopened 
+		end
+	end
+end
 
 function AutoConvert(table,level) 
 	level=level or 0
@@ -233,7 +252,13 @@ function ENT:LoadData()
 	end 
 	 
 	if j.container then
-		
+		local storage = self:AddComponent(CTYPE_STORAGE)  
+		self.storage = storage
+		self.isopened = false 
+		self.usetype = "open container"
+		self:AddFlag(FLAG_USEABLE)
+		self:AddEventListener(EVENT_USE,"a",ContainerUse)
+		self:SetNetworkedEvent(EVENT_USE,true)
 	end
 	if j.light then 
 		local color = JVector(j.light.color,Vector(1,1,1))
@@ -254,6 +279,7 @@ function ENT:LoadData()
 		end
 	end 
 	if j.button then
+		self.usetype = "press button"
 		self:AddFlag(FLAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ButtonUse)
 		self:SetNetworkedEvent(EVENT_USE,true)

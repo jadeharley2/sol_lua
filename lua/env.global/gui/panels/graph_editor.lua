@@ -21,7 +21,7 @@ function GUI_CURVE_UPDATE()
 	end
 end
 
-hook.Add("main.predraw", "gui.curve.update", GUI_CURVE_UPDATE)
+hook.Add(EVENT_GLOBAL_PREDRAW, "gui.curve.update", GUI_CURVE_UPDATE)
 
 
 function PANEL:Init()  

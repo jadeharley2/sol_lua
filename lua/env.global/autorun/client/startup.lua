@@ -75,6 +75,8 @@ function LoadMenu()
 		debugmenu = panel.Create("debug_panel_menu")   
 		debugmenu:Show()
 	end
+
+	contextinfo = panel.Create('context_info')
 	
 	MsgN("Menu Load finished in:",CurTime()-t_start,"seconds. Total load time:",CurTime())
 end

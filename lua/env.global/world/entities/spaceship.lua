@@ -51,10 +51,18 @@ function ENT:Init()
 	self:SetSizepower(1000)--750)
 	self:SetState("flight")
 	local space = self:AddComponent(CTYPE_PHYSSPACE) 
+	local velocity = self:AddComponent(CTYPE_VELOCITY) 
 	
 	space:SetGravity(Vector(0,-9.5,0))
+
+	velocity:SetLinearDamping(0.1)
+	velocity:SetAngularDamping(0.1)
+
 	self.space = space
-	 
+	self.velocity_c = velocity
+	
+
+	
 	
 	local smd = "shiptest/ship_all.SMD"
 	local world = matrix.Scaling(0.001) * matrix.Rotation(-90,0,0)
@@ -98,6 +106,12 @@ function ENT:Spawn()
 			local hso = SpawnSO(shipdata.hull.model,self,Vector(0,0,0),shipdata.hull.scale) 
 			if hso and hso.model then
 				hso.model:SetMaxRenderDistance(1000000)
+
+				if CLIENT then
+					local nav = self:AddComponent(CTYPE_NAVIGATION)   
+					nav:AddStaticMesh(hso)
+					self.nav = nav
+				end
 			end
 		end
 	end
@@ -110,6 +124,14 @@ function ENT:Spawn()
 	self:SetSpaceEnabled(false)
 	--self:SEnter()
 	self:SetUpdating(true,15)
+
+	
+	self.ambientsnd = sound.Start("ambient/space/deepspace.ogg",0.8) 
+	self.thrustersnd = sound.Start("ambient/space/thruster_loop.ogg",1) 
+	self.warpsnd = sound.Start("ambient/space/warp_loop.ogg",1) 
+	self.thrustersnd:SetVolume(-10)
+	self.warpsnd:SetVolume(-10)
+	--self:EmitSoundLoop("ambient/space/deepspace.ogg",0.8)
 end
 function ENT:Load()
 	local char = self:GetParameter(VARTYPE_CHARACTER)
@@ -138,9 +160,12 @@ function ENT:Load()
 end
 function ENT:Despawn()  
 	self:DDFreeAll() 
-	MsgN("ship despawn!")
-	MsgN(debug.traceback())
-	brk()
+	--MsgN("ship despawn!")
+	--MsgN(debug.traceback())
+	--brk()
+	self.ambientsnd:Stop()
+	self.thrustersnd:Stop()
+	self.warpsnd:Stop()
 end
 function ENT:SEnter()  
 	TSHIP = self
@@ -594,9 +619,11 @@ end
 function ENT:Enter()
 	
 	self:SEnter()
-	--local starmap = TEST_CGM(self,Vector(0,23.182+1,199.078)*0.001)
-	--starmap:SetSeed(1010011)
-	--self.starmap = starmap
+
+	local starmap = TEST_CGM(self,Vector(0,0,0))--Vector(0,23.182+1,199.078)*0.001
+	starmap:SetSeed(1010011)
+	self.starmap = starmap
+
 	if CLIENT then
 		render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
@@ -627,6 +654,9 @@ function ENT:Leave()
 end
 --local uup = {}
 function ENT:Think()   
+	if not self.tmtest then
+		self.tmtest = TaskManager(self)
+	end
 	local curthink = CurTime()
 	local lastthink = self.lastthink or curthink
 	local dt = curthink - lastthink
@@ -666,7 +696,13 @@ function ENT:Think()
 	self.throttlepow = tpv
 	
 	self:RunTaskStep()
+
+
+	if self.tmtest then self.tmtest:Update()  end
+
 	--if CLIENT then
+
+	--[[]
 	local lastparent =  self.last_parent 
 	
 	local parent = self:GetParent()
@@ -741,7 +777,14 @@ function ENT:Think()
 		self:BendSpacetime(vel:Length()*0.00000001)
 		 
 	end
-	
+	]]
+	if CLIENT then
+		local vel = self.velocity_c:GetVelocity()
+		self:BendSpacetime(vel:Length()*0.00000001)
+		
+		local mvl = math.Clamp((self.speed or 0)*1000,0,1)*0.85--*5-5  
+		self.thrustersnd:SetVolume(mvl)
+	end
 	
 	if CLIENT then
 		local lp = LocalPlayer()
@@ -756,7 +799,14 @@ function ENT:Think()
 			end
 		end
 	end
-	 
+	if self.throttled then
+		self.speed = math.Clamp((self.speed or 0)+0.1,0,1)
+	else
+		self.speed = math.Clamp((self.speed or 0)-0.1,0,1)
+	end
+	
+	
+	self.throttled=false 
 	return true
 end
 
@@ -777,7 +827,10 @@ if CLIENT then
 	end 
 end
 
-function ENT:Throttle(dir,warp_mode)  
+function ENT:Throttle(dir,warp_mode,ovrFwd)  
+	self.throttled = true
+
+
 	warp_mode = warp_mode or false
 	
 	local parent = self:GetParent()
@@ -786,7 +839,7 @@ function ENT:Throttle(dir,warp_mode)
 	local maxspeed = 500000000 
 	local planet = self:GetParentWithFlag(FLAG_PLANET) 
 	
-	local vel = self.velocity
+	--local vel = self.velocity_c:GetVelocity()--self.velocity
 	
 	if not self.warpmode then
 		if planet then
@@ -808,11 +861,14 @@ function ENT:Throttle(dir,warp_mode)
 		end
 	end
 	
-	--local Forward = Vector(1,0,0)---self:Forward():Normalized()
-	local Forward = -self:Forward():Normalized()
-	local fd = Forward*dir* maxspeed *self:GetScale()  --5000*
-	self.velocity = vel + fd
+	local speed = self.speed or 0
+
 	
+	--local Forward = Vector(1,0,0)---self:Forward():Normalized()
+	local Forward = ovrFwd or -self:Forward():Normalized()
+	local fd = Forward*dir* maxspeed*speed-- *self:GetScale()  --5000*
+	--self.velocity = vel + fd
+	self.velocity_c:ApplyVelocity(fd*1)
 	--for k,v in pairs(self:GetChildren()) do
 	--	local phys = v:GetComponent(CTYPE_PHYSOBJ) 
 	--	if phys then
@@ -820,24 +876,29 @@ function ENT:Throttle(dir,warp_mode)
 	--		phys:ApplyImpulse(nv)
 	--	end
 	--end
+	 
 	
 	local tpw = (self.throttlepow or 0)
 	self.throttlepow = tpw + (2 - tpw)/20
 	
 	
-	self:SetNWVector("velocity",self.velocity)
+	--self:SetNWVector("velocity",self.velocity)
 end
 function ENT:Turn(dir) 
-	local angvel = self.angvelocity
-	self.angvelocity = angvel + Vector(0,1,0) * dir
+	--local angvel = self.angvelocity
+	--self.angvelocity = angvel + Vector(0,1,0) * dir
+	self.velocity_c:SetAngularDamping(0.04) 
+	self.velocity_c:ApplyAngVelocity( Vector(0,1,0) , dir*0.001)
 end
 function ENT:Turn2(dir)   
-	local angvel = self.angvelocity 
-	self.angvelocity = angvel + Vector(0,0,1) * -dir
+	--local angvel = self.angvelocity 
+	--self.angvelocity = angvel + Vector(0,0,1) * -dir
+	self.velocity_c:ApplyAngVelocity( Vector(0,0,1) , -dir*0.001)
 end
 function ENT:Turn3(dir)   
-	local angvel = self.angvelocity 
-	self.angvelocity = angvel + Vector(1,0,0) * -dir
+	--local angvel = self.angvelocity 
+	--self.angvelocity = angvel + Vector(1,0,0) * -dir
+	self.velocity_c:ApplyAngVelocity( Vector(1,0,0) , -dir*0.001)
 end
 function ENT:HandleDriving(actor)  
 	local R,F= input.KeyPressed(KEYS_R),input.KeyPressed(KEYS_F)
@@ -890,11 +951,18 @@ function ENT:RunTaskStep()
 			return 
 		end
 		if (status=="suspended") then
-			local ok, message = coroutine.resume(thread, self )
-			if ( ok == false ) then 
-				ErrorNoHalt( self, " Error: ", message, "\n" ) 
-				self.thread = nil 
-			end  
+			self.thread = nil
+			if IsValidEnt(self) then
+				local ok, message = coroutine.resume(thread, self )
+				if ( ok == false ) then 
+					ErrorNoHalt( self, " Error: ", message, "\n" ) 
+					self.thread = nil
+					self.taskqueue = nil
+					self.task = nil
+				else
+					self.thread = thread
+				end  
+			end
 		end
 	end
 end
@@ -937,7 +1005,7 @@ function ENT:DisableWarpMode()
 end
 
 function ENT:RotateLookAtStep(coord,speedmul) 
-	speedmul = speedmul or 1
+	speedmul = speedmul or 4--1
 	local origin = coord[1]
 	local pos = coord[2]
 	
@@ -982,10 +1050,15 @@ function ENT:BendSpacetime(power)
 		wm:SetMatrix(matrix.Scaling(Vector(1000,1000,maxbnd)))
 		--wm:SetMatrix(matrix.Scaling(Vector(1000,1000,1000)))
 		if power > 0 then wm:Enable(true) else wm:Enable(false) end
-		if self.warpmode then
+		if self.bendSpace then --self.warpmode then
 			self:SetScale(Vector(1,1,math.max(0.00001,1-power)))
 		else
 			self:SetScale(Vector(1,1,1))
+		end
+		
+		if self.warpsnd then
+			local wvbb = math.min(2,power*4)*0.5
+			self.warpsnd:SetVolume(math.Clamp(wvbb*5,0,1))--*5-4)
 		end
 	end
 end
@@ -994,92 +1067,104 @@ function ENT:TaskWarpTo(coord)
 	if SERVER then
 		--network.AddNode(self)
 	end
-	local dtt = 100
 	 
 	return function(ship)
-		
-		local origin = coord[1]
-		local pos = coord[2]
-		
-		local shipparent = ship:GetParent()
-		
-		local start_sz = shipparent:GetSizepower()
-		local start_scpos = shipparent:GetLocalCoordinates(ship) 
-		local start_pcpos = shipparent:GetLocalCoordinates(origin)--pos
-		local start_dir = start_pcpos-start_scpos
-	--MsgN("CO: ",sz)
-		local start_ldist =start_scpos:Distance(start_pcpos) *start_sz 
-		local warp_meanspeed = 5000--1 * CONST_AstronomicalUnit --1000
-		--0.1 * CONST_AstronomicalUnit -- 0.1 au per second
-		local warp_eda = CurTime()
-		local warp_eft = start_ldist / warp_meanspeed
-		local warp_eta = warp_eda + warp_eft
-		MsgN("warp target asquired")
-		MsgN("warp total distance: ",start_ldist/CONST_AstronomicalUnit, " au")
-		MsgN("warp estimated total time: ",warp_eft, " seconds")
-		MsgN("warp mode enabled")
-		self.warpmode = true
-		--BP(1,1,2,"sas")
-		--BP(2,1,2,"sas",Vector(1,1,2))
-		--BP(3,1,2,"sas",Vector(1,1,2),STARMAP==nil)
-		--BP(4,1,2,"sas",Vector(1,1,2),STARMAP==nil,STARMAP)
-		--BP(2,STARMAP)
-		--MsgN("hm ",STARMAP)
-		local warpspeed = 0
-		local warpspeed_max =-1
-		while true do
-			local cshipparent = ship:GetParent()
-			local sz = cshipparent:GetSizepower()
-			local scpos = cshipparent:GetLocalCoordinates(ship) 
-			local pcpos = cshipparent:GetLocalCoordinates(origin)--pos
-			local dir = pcpos-scpos
-			DrawPoint(1000,self,dir:Normalized()*100,10000)
-		--MsgN("CO: ",sz)
-			local ldist =scpos:Distance(pcpos) 
-			local realdist = ldist*sz 
-			--ship:LookAt(-dir:Normalized())
-			ship:TaskRotateLookAt(coord,100)
-			
-			local percent_completed = --(CurTime() - warp_eda)/warp_eft 
-			math.max(0.0001,math.min(1, 1-realdist/start_ldist))
-			if realdist > start_ldist/2 then
-				warpspeed = warpspeed + 0.01
-			else
-				if warpspeed_max<0 then warpspeed_max = warpspeed end
-				--xnwarpspeed = math.max(0,warpspeed - 0.01)
-				warpspeed = math.max(0,realdist/start_ldist*2)*warpspeed_max*20
-			end
-			if realdist > 4*UNIT_MM then
-				local maxedwarpspeed = math.min(20,warpspeed)
-				--local warpspeed = math.sin(percent_completed*3.1415926)
-				ship:Throttle(maxedwarpspeed*maxedwarpspeed*warp_meanspeed,true) --*1000*4 --*maxedwarpspeed
-				ship:BendSpacetime(maxedwarpspeed/8)
-				--self.warpm:SetBrightness(math.min(1,warpspeed*4)*0.5)
-				--self:SetScale(Vector(1,1,math.max(0.01,1-warpspeed/2)))
-			else
-				MsgN("warp destination reached") 
-				self:DisableWarpMode() 
-				break
-			end
-			if dtt <0 then
-				local td,un = DistanceNormalize(realdist)
-				MsgN(ship:GetParent()," - ",ship," - ",origin)
-				MsgN("d: ",td," ",un," v: ",self.velocity:Length()," p: ",percent_completed)
-				dtt = 100
-			else
-				dtt = dtt - 1
-			end
-			if percent_completed>0.5 then
-				self.velocity = self.velocity*0.1
-				ship:LookAt(-dir:Normalized())
-				--MsgN("??? ",self.velocity:Length())
-			end
-			coroutine.yield("wot")
-		end
-		coroutine.yield( "what" )
+		local c = coord
+		ship:_WarpTo(c)
 	end
 	--end
 end
+function ENT:_WarpTo(coord)
+	local ship = self
+	local dtt = 100
+	MsgN(coord,coord[1],coord[2])
+
+	local origin = coord[1]
+	local pos = coord[2]
+	
+	local shipparent = ship:GetParent()
+	
+	local start_sz = shipparent:GetSizepower()
+	local start_scpos = shipparent:GetLocalCoordinates(ship) 
+	local start_pcpos = shipparent:GetLocalCoordinates(origin)--pos
+	local start_dir = start_pcpos-start_scpos
+--MsgN("CO: ",sz)
+	local start_ldist =start_scpos:Distance(start_pcpos) *start_sz 
+	local warp_meanspeed = 5000--1 * CONST_AstronomicalUnit --1000
+	--0.1 * CONST_AstronomicalUnit -- 0.1 au per second
+	local warp_eda = CurTime()
+	local warp_eft = start_ldist / warp_meanspeed
+	local warp_eta = warp_eda + warp_eft
+	MsgN("warp target asquired")
+	MsgN("warp total distance: ",start_ldist/CONST_AstronomicalUnit, " au")
+	MsgN("warp estimated total time: ",warp_eft, " seconds")
+	MsgN("warp mode enabled")
+	self.warpmode = true
+	--BP(1,1,2,"sas")
+	--BP(2,1,2,"sas",Vector(1,1,2))
+	--BP(3,1,2,"sas",Vector(1,1,2),STARMAP==nil)
+	--BP(4,1,2,"sas",Vector(1,1,2),STARMAP==nil,STARMAP)
+	--BP(2,STARMAP)
+	--MsgN("hm ",STARMAP)
+	local warpspeed = 0
+	local warpspeed_max =-1
+	while true do
+		local cshipparent = ship:GetParent()
+		local sz = cshipparent:GetSizepower()
+		local scpos = cshipparent:GetLocalCoordinates(ship) 
+		local pcpos = cshipparent:GetLocalCoordinates(origin)--pos
+		local dir = pcpos-scpos
+		DrawPoint(1000,self,dir:Normalized()*100,10000)
+	--MsgN("CO: ",sz)
+		local ldist =scpos:Distance(pcpos) 
+		local realdist = ldist*sz 
+		--ship:LookAt(-dir:Normalized())
+		--MsgN(-dir:Normalized())
+		--ship:RotateLookAtStep(coord,100)
+		
+		local percent_completed = --(CurTime() - warp_eda)/warp_eft 
+		math.max(0.0001,math.min(1, 1-realdist/start_ldist))
+		if realdist > start_ldist/2 then
+			warpspeed = warpspeed + 0.01
+			if warpspeed_max<warpspeed then warpspeed_max = warpspeed end
+		else
+			--xnwarpspeed = math.max(0,warpspeed - 0.01)
+			warpspeed = --warpspeed - 0.01, 
+			 math.min(1,math.max(0,realdist/start_ldist*2*13))*warpspeed_max
+		end
+		if realdist > 4*UNIT_MM then
+			local maxedwarpspeed = math.min(20,warpspeed)
+			--local warpspeed = math.sin(percent_completed*3.1415926)
+			ship:Throttle(maxedwarpspeed*maxedwarpspeed*warp_meanspeed*0.01,true,dir:Normalized()) --*1000*4 --*maxedwarpspeed
+			ship:BendSpacetime(maxedwarpspeed/8)
+			--self.warpm:SetBrightness(math.min(1,warpspeed*4)*0.5)
+			--self:SetScale(Vector(1,1,math.max(0.01,1-warpspeed/2)))
+		else
+			MsgN("warp destination reached") 
+			self:DisableWarpMode() 
+			break
+		end
+		if dtt <0 then
+			local td,un = DistanceNormalize(realdist)
+			MsgN(ship:GetParent()," - ",ship," - ",origin)
+			MsgN("d: ",td," ",un," v: ",self.velocity:Length()," p: ",percent_completed)
+			dtt = 100
+		else
+			dtt = dtt - 1
+		end
+		if percent_completed>0.5 then
+			self.velocity = self.velocity*0.1
+			--ship:LookAt(-dir:Normalized())
+			--MsgN("??? ",self.velocity:Length())
+		end
+		coroutine.yield("wot")
+	end
+	coroutine.yield( "what" )
+end
+
+ 
+
+
 function ENT:TaskMoveTo(coord,precision)  
 	precision = precision or 10
 	return function(ship)
@@ -1103,106 +1188,142 @@ function ENT:TaskMoveTo(coord,precision)
 	end
 end
 
-function ENT:TaskHyperjumpTo(coord)
-	
+function ENT:TaskHyperjumpTo(coord) 
 	return function(ship)
+		self:_HyperjumpTo(ship,coord)
+	end
+end
+
+function ENT:_HyperjumpTo(ship,coord)
+
+	local origin = coord[1]
+	local pos = coord[2]
+	
+	local shipparent = ship:GetParent()
+	
+	local start_sz = shipparent:GetSizepower()
+	local start_scpos = shipparent:GetLocalCoordinates(ship) 
+	local start_pcpos = shipparent:GetLocalCoordinates(origin)--pos
+	local end_ppos = origin:GetLocalCoordinates(ship):Normalized()--pos
+	local start_dir = start_pcpos-start_scpos
+	
+	local start_ldist =start_scpos:Distance(start_pcpos) *start_sz 
+	local warp_meanspeed = 10000 * CONST_AstronomicalUnit
+	
+	local warp_eda = CurTime()
+	local warp_eft = 2--start_ldist / warp_meanspeed
+	local warp_eta = warp_eda + warp_eft
+	MsgN("jump target asquired")
+	MsgN("jump total distance: ",start_ldist/CONST_LightYear, " ly")
+	MsgN("jump estimated total time: ",warp_eft, " seconds")
+	MsgN("jump mode enabled")
+	
+	local stage = 1
+	local timerend = 0
+	local warpspeed = 0
+	MsgN("STAGE ",stage)
+	self.bendSpace = true
+	while true do
+		local cshipparent = ship:GetParent()
+		local sz = cshipparent:GetSizepower()
+		local scpos = cshipparent:GetLocalCoordinates(ship) 
+		local pcpos = cshipparent:GetLocalCoordinates(origin)--pos
+		local dir = pcpos-scpos
+		DrawPoint(1000,self,dir:Normalized()*100,10000)
+	--MsgN("CO: ",sz)
+		local ldist =scpos:Distance(pcpos) 
+		local realdist = ldist*sz 
+		--ship:LookAt(-dir:Normalized())
+		ship:TaskRotateLookAt(coord,100)
 		
-		local origin = coord[1]
-		local pos = coord[2]
+		local percent_completed = --(CurTime() - warp_eda)/warp_eft 
+		math.max(0.0001,math.min(1, 1-realdist/start_ldist))
 		
-		local shipparent = ship:GetParent()
-		
-		local start_sz = shipparent:GetSizepower()
-		local start_scpos = shipparent:GetLocalCoordinates(ship) 
-		local start_pcpos = shipparent:GetLocalCoordinates(origin)--pos
-		local end_ppos = origin:GetLocalCoordinates(ship):Normalized()--pos
-		local start_dir = start_pcpos-start_scpos
-		
-		local start_ldist =start_scpos:Distance(start_pcpos) *start_sz 
-		local warp_meanspeed = 10000 * CONST_AstronomicalUnit
-		
-		local warp_eda = CurTime()
-		local warp_eft = start_ldist / warp_meanspeed
-		local warp_eta = warp_eda + warp_eft
-		MsgN("jump target asquired")
-		MsgN("jump total distance: ",start_ldist/CONST_LightYear, " ly")
-		MsgN("jump estimated total time: ",warp_eft, " seconds")
-		MsgN("jump mode enabled")
-		
-		local stage = 1
-		local timerend = 0
-		local warpspeed = 0
-		MsgN("STAGE ",stage)
-		while true do
-			local cshipparent = ship:GetParent()
-			local sz = cshipparent:GetSizepower()
-			local scpos = cshipparent:GetLocalCoordinates(ship) 
-			local pcpos = cshipparent:GetLocalCoordinates(origin)--pos
-			local dir = pcpos-scpos
-			DrawPoint(1000,self,dir:Normalized()*100,10000)
-		--MsgN("CO: ",sz)
-			local ldist =scpos:Distance(pcpos) 
-			local realdist = ldist*sz 
-			--ship:LookAt(-dir:Normalized())
-			ship:TaskRotateLookAt(coord,100)
-			
-			local percent_completed = --(CurTime() - warp_eda)/warp_eft 
-			math.max(0.0001,math.min(1, 1-realdist/start_ldist))
-			
-			if stage==1 then
-				warpspeed = math.min(1, warpspeed + 0.002) 
-				if warpspeed>=1 then
-					local oldparent = self:GetParent()
-					self:SetParent(origin)
-					if (olparent~=origin) then
-						oldparent:Leave()
-						origin:Enter()
+		if stage==1 then
+			warpspeed = math.min(1, warpspeed + 0.002) 
+			if warpspeed>=1 then
+				local oldparent = self:GetParent()
+				self:SetParent(origin)
+				local oldsystem = ship:GetParentWithFlag(FLAG_STARSYSTEM)
+				if IsValidEnt(oldsystem) then
+					if (oldsystem:GetSeed()~=origin:GetSeed()) then  
+						oldsystem:Leave()
+					end 
+				end
+				origin:Enter()
+
+
+				local star = false
+				for k,v in pairs(origin:GetChildren()) do
+					if v:HasFlag(FLAG_STAR) then
+						star = v
 					end
+				end
+				if star then
+					MsgN("star found ",star,star.radius)
+					local r = star.radius
+					local sz = star:GetSizepower()
+
+					self:SetParent(star)
+					self:SetPos(end_ppos*(8*r/sz))--Vector(0.00001,0,0))--end_ppos/100000)
+				else
+					MsgN("star not found ",origin)
 					self:SetParent(origin)
-					self:SetPos(end_ppos/100000000)--Vector(0.00001,0,0))--end_ppos/100000)
-					self:EnteredNewSystem()
-					stage = 2
-					MsgN("STAGE ",stage)
-					timerend = CurTime()+math.min(60, warp_eft)
+					self:SetPos(end_ppos/100000000000)--Vector(0.00001,0,0))--end_ppos/100000)
 				end
-			elseif stage==2 then
-				MsgN("eta ",timerend-CurTime())
-				if timerend<=CurTime() then
-					stage = 3 
-					MsgN("STAGE ",stage)
-				end
-			elseif stage==3 then
-				warpspeed = math.max(0, warpspeed - 0.002)
-				
-				if warpspeed<=0 then 
-					stage = 4
-					MsgN("STAGE ",stage)
-					MsgN("jump destination reached") 
-					self:DisableWarpMode() 
-					break
-				end
-			
+
+				self:EnteredNewSystem()
+				stage = 2
+				MsgN("STAGE ",stage)
+				timerend = CurTime()+math.min(60, warp_eft)
+
+
 			end
-			ship:Throttle(1000,true) --*1000*4
-			ship:BendSpacetime(warpspeed)
-			--self.warpm:SetBrightness(math.min(2,warpspeed*4)*0.5) 
-			--self.warpm:SetMatrix(matrix.Scaling(Vector(1000,1000,10000+
-			--1000000*warpspeed*warpspeed)))
-			--self:SetScale(Vector(1,1,math.max(0.00001,1-warpspeed)))
-			 
+		elseif stage==2 then
+			MsgN("eta ",timerend-CurTime())
+			if timerend<=CurTime() then
+				stage = 3 
+				MsgN("STAGE ",stage)
+			end
+		elseif stage==3 then
+			warpspeed = math.max(0, warpspeed - 0.002)
 			
-			coroutine.yield()
+			if warpspeed<=0 then 
+				stage = 4
+				MsgN("STAGE ",stage)
+				MsgN("jump destination reached") 
+				self:DisableWarpMode() 
+				self.bendSpace = false
+				break
+			end
+		
 		end
+		ship:Throttle(warpspeed,true) --*1000*4
+		ship:BendSpacetime(warpspeed)
+		--self.warpm:SetBrightness(math.min(2,warpspeed*4)*0.5) 
+		--self.warpm:SetMatrix(matrix.Scaling(Vector(1000,1000,10000+
+		--1000000*warpspeed*warpspeed)))
+		--self:SetScale(Vector(1,1,math.max(0.00001,1-warpspeed)))
+		 
+		
+		coroutine.yield()
 	end
 end
 
 function ENT:WarpSequence(coord)--origin,pos
+	if	self.tmtest then 
+		--self.tmtest:Begin(Task('ship_warp',coord)) 
+		local t = Task('ship_centering',coord)
+		t:Next(Task('ship_warp',coord)) 
+		self.tmtest:Begin(t)
+	else
 	--self:AbortAllTasks()
-	if self:IsDocked() then
-		self:UndockSequence()
+		if self:IsDocked() then
+			self:UndockSequence()
+		end
+		self:AddTask(self:TaskRotateLookAt(coord),"warp target centering")
+		self:AddTask(self:TaskWarpTo(coord),"warp jump")
 	end
-	self:AddTask(self:TaskRotateLookAt(coord),"warp target centering")
-	self:AddTask(self:TaskWarpTo(coord),"warp jump")
 end
 function ENT:InstaDock(station)
 	local dock_coord  = station.dock_coord

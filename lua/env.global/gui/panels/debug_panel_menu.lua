@@ -87,6 +87,7 @@ function PANEL:AddControl(id,type,text,color,func,tggl)
 	btnEditor:SetSize(15,15)
 	btnEditor:SetText(text)
 	btnEditor:SetColorAuto(color)
+	btnEditor.contextinfo = id
 	if tggl then
 		local sub = panel.Create()
 		sub:SetColor(Vector(0,0,0))

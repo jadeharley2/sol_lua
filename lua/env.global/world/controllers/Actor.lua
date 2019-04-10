@@ -87,9 +87,9 @@ function OBJ:Init()
 	end)
 
 	--TEMP
-	if not actor.inventory then
-		actor.inventory = Inventory(4*8,actor:GetSeed()+3000) 
-	end
+	--if not actor.inventory then
+	--	actor.inventory = Inventory(4*8,actor:GetSeed()+3000) 
+	--end
 	
 	
 	self.healthbar = healthbar
@@ -98,7 +98,7 @@ function OBJ:Init()
 	
 	self:CreateCharacterPanels(actor)
 	 
-	quickmenu:SetData(actor.qdata,actor.inventory)
+	quickmenu:SetData(actor.qdata,actor.storage)
 	self.rmode = true
 end
 
@@ -248,6 +248,12 @@ function OBJ:KeyDown(key)
 	if input.KeyPressed(KEYS_Z) then
 		swap()
 	end
+
+	local actor_parent = actor:GetParent()
+	if actor_parent and actor_parent.OnActorKeyDown then
+		actor_parent:OnActorKeyDown(actor,key)
+	end
+
 end
 function OBJ:MouseDown()
 	--MsgN("MOUSE IS DED")
@@ -1092,7 +1098,7 @@ function OBJ:HandleCameraMovement(actor)
 		self.totalCamRotationY = sy
 	end
 	if not SHOWINV then
-		if not mhag and (controlled or not is_first_person) and (lmb or (actor.IsInVehicle and not actor.vehicle:HasFlag(FLAG_ACTOR) and rmb)) then  
+		if not mhag and (controlled or not is_first_person) and (lmb or (actor.IsInVehicle and IsValidEnt(actor.vehicle) and not actor.vehicle:HasFlag(FLAG_ACTOR) and rmb)) then  
 			if not self.lms_active then
 				input.SetCursorHidden(true)
 				self.lms_active = true

@@ -139,7 +139,7 @@ end
 function component:FromData(data) 
 	local node = self:GetNode()
 	for k,v in pairs(node:GetChildren()) do
-		if v:GetClass() == "body_part" then
+		if v:GetClass() == "body_part" and v.iscloth then
 			v:Despawn()
 		end
 	end
@@ -209,6 +209,8 @@ function component:_equip(data,nosave)
 					local e = SpawnBP(model,node,scale,seed)
 					eqslt.data = data 
 					eqslt.entity = e
+					e:SetName(slot)
+					e.iscloth = true
 					MsgN(slot,e)
 					if not nosave then
 						node[VARTYPE_EQUIPMENT] = self:ToData()
@@ -242,7 +244,7 @@ component._typeevents = {
 				self:_unequipslot(k)
 			end
 			for k,v in pairs(node:GetChildren()) do
-				if v:GetClass() == "body_part" then
+				if v:GetClass() == "body_part" and v.iscloth then
 					v:Despawn()
 				end
 			end

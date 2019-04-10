@@ -201,7 +201,7 @@ function PANEL:InitTabAssets()
 	local rtb = {"types"}
 	 
 	local linkt = {}
-	for k,v in pairs(self.assettypes) do
+	for k,v in SortedPairs(self.assettypes) do
 		linkt[k] = {}
 		local spt = v
 		local onclick = function(b)

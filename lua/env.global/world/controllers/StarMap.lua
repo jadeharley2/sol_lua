@@ -41,34 +41,37 @@ function OBJ:KeyDown(key)
 	if (input.KeyPressed(KEYS_D0)) then 
 		SetController("actor")
 	end
-	if input.KeyPressed(KEYS_E) then
-		local selected = TESTSELECTOR:GetParent()
-		local target = selected.ref
-		if target then
-			local ship = STARMAP:GetParent()
-			
-			local type = selected.type
-			if type == "system" then
-				--ship:HyperjumpSequence(Coordinate(target))
-			elseif type == "station" then
-				--ship:SendEvent(EVENT_DOCK,target)
-				--ship:DockSequence(target) -- InstaDock -- cheats
-			else
-				self:MoveTo(50,selected:GetPos()/2,-5000,function()
-					self.selectedcelestial = selected
-					STARMAP:LoadCelestialMap(selected)
-					STARMAP.holo_center = Vector(0,0,0)
-					self:SetScale(10000)
-					self:MoveTo(50,Vector(0,0,0),-5000,function() end)
-				end)
-				--ship:SendEvent(EVENT_WARPJUMP,target)
-				--if network.IsConnected() then
-				--	network.CallServer("ship_jump",ship,target)
-				--else
-				--	ship:WarpSequence(Coordinate(target))
-				--end
-			end
-		end
+	--if input.KeyPressed(KEYS_E) then
+	--	local selected = TESTSELECTOR:GetParent()
+	--	local target = selected.ref
+	--	if target then
+	--		local ship = STARMAP:GetParent()
+	--		
+	--		local type = selected.type
+	--		if type == "system" then
+	--			--ship:HyperjumpSequence(Coordinate(target))
+	--		elseif type == "station" then
+	--			--ship:SendEvent(EVENT_DOCK,target)
+	--			--ship:DockSequence(target) -- InstaDock -- cheats
+	--		else
+	--			self:MoveTo(50,selected:GetPos()/2,-5000,function()
+	--				self.selectedcelestial = selected
+	--				STARMAP:LoadCelestialMap(selected)
+	--				STARMAP.holo_center = Vector(0,0,0)
+	--				self:SetScale(10000)
+	--				self:MoveTo(50,Vector(0,0,0),-5000,function() end)
+	--			end)
+	--			--ship:SendEvent(EVENT_WARPJUMP,target)
+	--			--if network.IsConnected() then
+	--			--	network.CallServer("ship_jump",ship,target)
+	--			--else
+	--			--	ship:WarpSequence(Coordinate(target))
+	--			--end
+	--		end
+	--	end
+	--end
+	if input.KeyPressed(KEYS_M) then
+		STARMAP:CloseMap(LocalPlayer())
 	end
 	if input.KeyPressed(KEYS_F) then
 		local selected = TESTSELECTOR:GetParent()
@@ -87,34 +90,34 @@ function OBJ:KeyDown(key)
 			end
 		end
 	end
-	if input.KeyPressed(KEYS_R) then
-		local state = STARMAP.state
-		if state == "starsystem" then
-			self:MoveTo(50,Vector(0,0,0),10000,function()
-				STARMAP:LoadGalaxyMap()
-				--STARMAP.holo_center = Vector(0,0,0)
-				self:SetScale(-10000) 
-				self:MoveTo(15,Vector(0,0,0),-3000,function() end)
-			end)
-		elseif state == "galaxy" then
-			self:MoveTo(15,Vector(0,0,0),-5000,function()
-				STARMAP:LoadSystemMap()
-				--STARMAP.holo_center = Vector(0,0,0)
-				self:SetScale(10000)
-				self:MoveTo(50,Vector(0,0,0),-500,function() end)
-			end)
-		else
-			self:MoveTo(50,Vector(0,0,0),10000,function()
-				STARMAP:LoadSystemMap()
-				local scel = self.selectedcelestial
-				if scel then
-					STARMAP.holo_center = scel:GetPos()/2
-				end
-				self:SetScale(-10000) 
-				self:MoveTo(50,STARMAP.holo_center,-1000,function() end)
-			end)
-		end
-	end
+	--if input.KeyPressed(KEYS_R) then
+	--	local state = STARMAP.state
+	--	if state == "starsystem" then
+	--		self:MoveTo(50,Vector(0,0,0),10000,function()
+	--			STARMAP:LoadGalaxyMap()
+	--			--STARMAP.holo_center = Vector(0,0,0)
+	--			self:SetScale(-10000) 
+	--			self:MoveTo(15,Vector(0,0,0),-3000,function() end)
+	--		end)
+	--	elseif state == "galaxy" then
+	--		self:MoveTo(15,Vector(0,0,0),-5000,function()
+	--			STARMAP:LoadSystemMap()
+	--			--STARMAP.holo_center = Vector(0,0,0)
+	--			self:SetScale(10000)
+	--			self:MoveTo(50,Vector(0,0,0),-500,function() end)
+	--		end)
+	--	else
+	--		self:MoveTo(50,Vector(0,0,0),10000,function()
+	--			STARMAP:LoadSystemMap()
+	--			local scel = self.selectedcelestial
+	--			if scel then
+	--				STARMAP.holo_center = scel:GetPos()/2
+	--			end
+	--			self:SetScale(-10000) 
+	--			self:MoveTo(50,STARMAP.holo_center,-1000,function() end)
+	--		end)
+	--	end
+	--end
 end
 function OBJ:MoveTo(time,pos,zoom,on_end)
 	local start = STARMAP.holo_center
@@ -158,10 +161,10 @@ function OBJ:Update()
 	end
 	
 	if input.KeyPressed(KEYS_Q) then 
-		--cam:RotateAroundAxis(VEC_FORWARD, -0.01)
+		cam:RotateAroundAxis(VEC_FORWARD, -0.01)
 	end
 	if input.KeyPressed(KEYS_E) then 
-		--cam:RotateAroundAxis(VEC_FORWARD, 0.01)
+		cam:RotateAroundAxis(VEC_FORWARD, 0.01)
 	end
 	if input.rightMouseButton() then
 		local mousePos = input.getMousePosition()
@@ -171,8 +174,10 @@ function OBJ:Update()
 		local offset = mousePos - center
 		self.mouse_lastpos = mousePos
 		input.setMousePosition(center)
-		STARMAP:RotateAroundAxis(Right, (offset.y / -1000))
-		STARMAP:RotateAroundAxis(VEC_UP, (offset.x / 1000))
+		--STARMAP:RotateAroundAxis(Right, (offset.y / -1000))
+		--STARMAP:RotateAroundAxis(VEC_UP, (offset.x / 1000))
+		cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
+		cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
 	end 
 	
 	if input.KeyPressed(KEYS_SHIFTKEY) then 
@@ -182,29 +187,41 @@ function OBJ:Update()
 		result = result/4
 	end 
 	
-	STARMAP.holo_center = STARMAP.holo_center - result / parent_sz * STARMAP.holo_scale *0.1
+	--STARMAP.holo_center = STARMAP.holo_center - result / parent_sz * STARMAP.holo_scale *0.1
 	
-	
+	cam:SetPos( cam:GetPos() - result / parent_sz * STARMAP.holo_scale *0.1)
 	
 	local mo = STARMAP.origin 
 	local mopp = mo:GetParent()
 	local mop = mo:GetPos()
 	if input.leftMouseButton() then
-		if TESTSELECTOR then
-			local he = false
-			local mdist = 1e10
-			for k,v in pairs(STARMAP.objects) do
-				local vdist =mopp:GetLocalCoordinates(v):DistanceSquared(mop) -- v:GetPos()
-				if vdist<mdist then
-					mdist = vdist
-					he = v
+		render.DCIRequestRedraw()
+		local drw = render.DCIGetDrawable() 
+		if drw then
+			local n = drw:GetNode()
+			if IsValidEnt(n) and n.selectable then
+				if TESTSELECTOR:GetParent()~=n then
+					--MsgInfo("SELECT:"..tostring(n))
+					TESTSELECTOR:SetParent(n)
 				end
 			end
-			
-			if he and TESTSELECTOR:GetParent() ~= he then
-				TESTSELECTOR:SetParent(he)
-			end
-		end
+		end 
+
+		--if TESTSELECTOR then
+		--	local he = false
+		--	local mdist = 1e10
+		--	for k,v in pairs(STARMAP.objects) do
+		--		local vdist =mopp:GetLocalCoordinates(v):DistanceSquared(mop) -- v:GetPos()
+		--		if vdist<mdist then
+		--			mdist = vdist
+		--			he = v
+		--		end
+		--	end
+		--	
+		--	if he and TESTSELECTOR:GetParent() ~= he then
+		--		TESTSELECTOR:SetParent(he)
+		--	end
+		--end
 	end
 	
 	--if CAMTESTPR then

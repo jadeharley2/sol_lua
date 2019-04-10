@@ -114,6 +114,20 @@ end
 function ENT:Think()  
 end
 
+if CLIENT then
+	function ENT:OnActorKeyDown(actor,key)
+		if input.KeyPressed(KEYS_M) then
+			if self.ship and self.ship.starmap then
+				self.ship.starmap:OpenMap(actor,"system")
+			end 
+		elseif input.KeyPressed(KEYS_N) then
+			if self.ship and self.ship.starmap then
+				self.ship.starmap:OpenMap(actor,"galaxy")
+			end
+		end
+	end
+end
+
 ENT._typeevents = {
 	[EVENT_USE] = {networked = true, f = function(self,user)
 		MsgN(self," is used by aaa: ",user," for ",self.ship) 

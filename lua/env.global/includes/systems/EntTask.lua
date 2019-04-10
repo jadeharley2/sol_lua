@@ -45,7 +45,7 @@ function Task(type,...)
 		local t = task_class:Create(type)
 		t:Setup(...)
 		return t 
-	end
+	end 
 end 
 
 local TASKMANAGER_META = DEFINE_METATABLE("TaskManager")
@@ -118,6 +118,7 @@ function TASKMANAGER_META:RunLoop()
 			if result ~=nil then
 				if task.OnEnd then task:OnEnd(result,rtype) end
 				task._finished = true
+				self.current[k] = nil
 				if result then 
 					if task.success then 
 						if rtype and task.success[rtype] then
@@ -142,7 +143,6 @@ function TASKMANAGER_META:RunLoop()
 						self:Begin(task.next)
 					end 
 				end
-				self.current[k] = nil
 			end
 		end
 	end

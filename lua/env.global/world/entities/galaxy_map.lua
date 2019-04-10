@@ -21,6 +21,62 @@ function ENT:Init()
 	self.holo_scale = 30 
 end
 
+function ENT:CreateRingModel(output,radius,radius2) 
+	local mb = procedural.Builder() 
+	local pts = {}
+	if istable(radius) then
+		for k,v in pairs(radius) do
+			pts[k] = VectorJ(v) 
+		end
+	else
+		for k=1,36*2+1 do
+			local val = Vector(radius,0,0):Rotate(Vector(0,k*5,0))
+			pts[k] = VectorJ(val) 
+		end 
+	end
+	local mbp = json.ToJson(
+		{
+			operations = {
+				{ type = "line", out="circle",
+					points = pts
+				},
+				{type = "column",from="circle",out="result",
+					r = radius2
+				}
+			}
+		}
+	)
+	if isstring(output) then
+		mb:BuildModel(output,mbp)
+	else
+		mb:BuildModelAsync(output,mbp)
+	end
+end
+function ENT:CreatePathModel(output,points,radius) 
+	local mb = procedural.Builder() 
+	local pts = {} 
+	for k,v in pairs(points) do
+		pts[k] =  VectorJ(v) 
+	end
+	local mbp = json.ToJson(
+		{
+			operations = {
+				{ type = "line", out="circle",
+					points = pts
+				},
+				{type = "column",from="circle",out="result",
+					r = radius
+				}
+			}
+		}
+	)
+	if isstring(output) then
+		mb:BuildModel(output,mbp)
+	else
+		mb:BuildModelAsync(output,mbp)
+	end
+end
+
 function ENT:Spawn()
 	local system = self:GetParentWith(NTYPE_STARSYSTEM)
 	
@@ -33,14 +89,14 @@ function ENT:Spawn()
 	--root:SetScale(Vector(1,1,1)/20000)
 	self.root = root
 	
-	local cam =  ents.CreateCamera()
-	self.cam = cam
-	cam:SetParent(root)
-	cam:SetSeed(13113)
-	if CLIENT then
-		cam:SetAspectRatio(GetCamera():GetAspectRatio()) 
-	end
-	cam:Spawn()
+	--local cam =  ents.CreateCamera()
+	--self.cam = cam
+	--cam:SetParent(root)
+	--cam:SetSeed(13113)
+	--if CLIENT then
+	--	cam:SetAspectRatio(GetCamera():GetAspectRatio()) 
+	--end
+	--cam:Spawn()
 	
 	local testdata = {
 		objects = { 
@@ -52,24 +108,39 @@ function ENT:Spawn()
 	}
 	
 	if CLIENT then
-		local vsize = GetViewportSize()  
-		local rt = CreateRenderTarget(vsize.x,vsize.y,"@maprt:Texture2D")
-		self.rt = rt
-		hook.Add("window.resize","updatert",function() 
-			local cm = GetCamera()
-			local vsize = GetViewportSize()  
-			ResizeRenderTarget(rt, vsize.x,vsize.y) 
-			self.cam:SetAspectRatio(cm:GetAspectRatio()) 
-		end)
+		--local vsize = GetViewportSize()  
+		--local rt = CreateRenderTarget(vsize.x,vsize.y,"@maprt:Texture2D")
+		--self.rt = rt
+		--hook.Add("window.resize","updatert",function() 
+		--	local cm = GetCamera()
+		--	local vsize = GetViewportSize()  
+		--	ResizeRenderTarget(rt, vsize.x,vsize.y) 
+		--	self.cam:SetAspectRatio(cm:GetAspectRatio()) 
+		--end)
 		
 		
 		local skybox = root:AddComponent(CTYPE_SKYBOX) 
 		skybox:SetRenderGroup(RENDERGROUP_LOCAL) 
-		skybox:SetTexture("data/textures/skybox/spacedefault/space.png")
+		skybox:SetTexture("textures/cubemap/bluespace.dds")
 		self.skybox = skybox
+
+		local root_skyb =  ents.Create()
+		root_skyb:SetSizepower(2000)
+		root_skyb:SetParent(root)
+		root_skyb:SetPos(Vector(0,100,0))
+		root_skyb:Spawn()
+
+		local cubemap = root_skyb:AddComponent(CTYPE_CUBEMAP)  
+		self.cubemap = cubemap 
+		cubemap:SetTarget(nil,root) 
+		
 	end
-	
-	
+
+
+
+	self:CreateRingModel("@selector_ring",1,0.05)
+	self:CreateRingModel("@planet_ring",1,0.05)
+	--[[
 	local mb = MeshBuilder() 
 	local pts = {}
 	for k=1,36*2+1 do
@@ -111,6 +182,7 @@ function ENT:Spawn()
 	mb3:AddLine(0.002,4,pts3) 
 	mb3:AddLine(0.002,4,pts4) 
 	mb3:ToModel("@gal_ring")
+	]]
 	
 	local selector =  ents.Create()
 	selector:SetSizepower(5)
@@ -132,11 +204,12 @@ function ENT:Spawn()
 	
 	TESTSELECTOR = selector
 	
-	--self:LoadMap(self.dataaa)--testdata)
-	
+	self:LoadMap(self.dataaa)--testdata)
+	self.cubemap:RequestDraw()
+	 
 	local holoBack = self:AddComponent(CTYPE_MODEL) 
 	holoBack:SetRenderGroup(RENDERGROUP_LOCAL)
-	holoBack:SetModel("engine/gsphere_24_inv.SMD") 
+	holoBack:SetModel("engine/gsphere_24_inv.stmd") 
 	holoBack:SetMaterial("textures/debug/brightrim.json") 
 	holoBack:SetBlendMode(BLEND_SUBTRACT) 
 	holoBack:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -148,7 +221,7 @@ function ENT:Spawn()
 	 
 	local holo = self:AddComponent(CTYPE_MODEL) 
 	holo:SetRenderGroup(RENDERGROUP_LOCAL)
-	holo:SetModel("engine/gsphere_24_inv.SMD") 
+	holo:SetModel("engine/gsphere_24_inv.stmd") 
 	holo:SetMaterial("textures/target/maprt.json") 
 	holo:SetBlendMode(BLEND_ADD) 
 	holo:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -166,7 +239,7 @@ function ENT:Spawn()
 	self.origin = origin
 	local originmodel = origin:AddComponent(CTYPE_MODEL) 
 	originmodel:SetRenderGroup(RENDERGROUP_LOCAL)
-	originmodel:SetModel("engine/origin2.SMD") 
+	originmodel:SetModel("engine/origin2.stmd") 
 	originmodel:SetMaterial("textures/debug/fullbright.json") 
 	originmodel:SetBlendMode(BLEND_OPAQUE) 
 	originmodel:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -186,20 +259,19 @@ function ENT:Spawn()
 	self.spawned = true
 	
 	if CLIENT then
-		--self:SetUpdating(true,16)
 		
-		hook.Add("main.postcontroller", "galaxymap"..tostring(seed), function() self:UpdateMap() end)
-		
-		local renderer = self:AddComponent(CTYPE_CAMERA) 
-		self.renderer = renderer
-		renderer:SetCamera(cam)
-		renderer:SetRenderTarget(1,self.rt)
-		renderer:RequestDraw(holo)
-		
-		self:AddEventListener(EVENT_USE,"use_event",function(self,user)
-			self:Convert(user)
-		end)
-		self:AddFlag(FLAG_USEABLE) 
+		--hook.Add("main.postcontroller", "galaxymap"..tostring(seed), function() self:UpdateMap() end)
+		--
+		--local renderer = self:AddComponent(CTYPE_CAMERA) 
+		--self.renderer = renderer
+		--renderer:SetCamera(cam)
+		--renderer:SetRenderTarget(1,self.rt)
+		--renderer:RequestDraw(holo)
+		--
+		--self:AddEventListener(EVENT_USE,"use_event",function(self,user)
+		--	self:Convert(user)
+		--end)
+		--self:AddFlag(FLAG_USEABLE) 
 	end
 	
 	if system then self:AddVisitedSystem(system) end
@@ -212,6 +284,45 @@ function ENT:Despawn()
 	end
 	hook.Remove("main.postcontroller", "galaxymap"..tostring(seed))
 end
+function ENT:Think()
+	self:UpdateShipPosition()
+end
+
+function ENT:OpenMap(user,mode)
+	if(CLIENT and user==LocalPlayer()) then
+ 
+		if mode == 'galaxy' then
+			self.state = 'galaxy'
+			self:LoadGalaxyMap()
+		else
+			self.state = 'starsystem'
+			self:LoadSystemMap()
+		end
+
+		if IsValidEnt(self.system)  then
+			local camera = GetCamera()
+			camera:SetParent(self.system)
+			local p = self:UpdateShipPosition()
+			if p then
+				camera:SetPos(p)
+			end
+			self:SetUpdating(true,30)
+
+			SetController("starmap")
+			STARMAP.cam = camera
+			render.DCISetEnabled(true)
+		end
+	end
+end
+function ENT:CloseMap(user)
+	if(CLIENT and user==LocalPlayer()) then 
+		local camera = GetCamera()
+		camera:SetParent(user)
+		SetController("actor") 
+		self:SetUpdating(false)
+		render.DCISetEnabled(false)
+	end
+end
 
 function ENT:Convert(user)
 	local s = self.root
@@ -221,7 +332,7 @@ function ENT:Convert(user)
 		space:SetGravity(Vector(0,-2.5,0))
 		s.space = space 
 		local coll = s:AddComponent(CTYPE_STATICCOLLISION) 
-		coll:SetShape("engine/zplane.SMD", matrix.Scaling(1000) * matrix.Rotation(-90,0,0) ) 
+		coll:SetShape("engine/zplane.stmd", matrix.Scaling(1000) * matrix.Rotation(-90,0,0) ) 
 		s.coll = coll
 	end
 	
@@ -255,6 +366,7 @@ function ENT:Convert(user)
 	local sptext = user:AddComponent(CTYPE_SPRITETEXT)  
 	sptext:SetRenderGroup(RENDERGROUP_LOCAL)
 	sptext:SetText(user:GetName() or "")
+	sptext:SetMaxRenderDistance(1000000)
 	user.sptext = sptext 
 	
 	self.objects[#self.objects+1] = user
@@ -284,7 +396,30 @@ function ENT:Convert(user)
 		end
 	end)
 end
-
+function ENT:UpdateShipPosition() 
+	local shipm = self.shipmodel
+	if shipm then
+		local system = self:GetParentWith(NTYPE_STARSYSTEM)
+		local ship = self.ship
+		if system then
+			local star = system:GetChildren()[1]
+			local sz = star:GetSizepower()
+			local lp = star:GetLocalCoordinates(ship)--/100*5--sz/UNIT_AU*50*1000 --*sz--/UNIT_AU*50*10000000
+			local rpd = lp*(sz/UNIT_AU*50 /1000)
+			shipm:SetPos(rpd)
+			return rpd
+			--MsgN(rpd)
+			--*(sz/CONST_AstronomicalUnit*50)
+			--for k,v in pairs(self.objects) do
+			--	local sv = v.ref
+			--	if sv then
+			--		local ccc = star:GetLocalCoordinates(sv)
+			--		v:SetPos(ccc/10)
+			--	end
+			--end
+		end
+	end
+end
 function ENT:UpdateMap()
 	 
 	local enstate = self.ens or false
@@ -306,27 +441,6 @@ function ENT:UpdateMap()
 	local visible = s.x>0.1
 	
 	if visible then
-		local shipm = self.shipmodel
-		if shipm then
-			local system = self:GetParentWith(NTYPE_STARSYSTEM)
-			local ship = self.ship
-			if system then
-				local star = system:GetChildren()[1]
-				local sz = star:GetSizepower()
-				local lp = star:GetLocalCoordinates(ship)--/100*5--sz/UNIT_AU*50*1000 --*sz--/UNIT_AU*50*10000000
-				local rpd = lp*(sz/UNIT_AU*50 /1000)
-				shipm:SetPos(rpd)
-				--MsgN(rpd)
-				--*(sz/CONST_AstronomicalUnit*50)
-				--for k,v in pairs(self.objects) do
-				--	local sv = v.ref
-				--	if sv then
-				--		local ccc = star:GetLocalCoordinates(sv)
-				--		v:SetPos(ccc/10)
-				--	end
-				--end
-			end
-		end
 		
 		
 		STARMAP.holo_center = STARMAP:GetNWVector("holo_center",STARMAP.holo_center) 
@@ -403,18 +517,25 @@ function ENT:GetCelestialData(planet)
 end
 
 function ENT:DataFromRealSystem(ship,system)
+	MsgN("### MAP DATA SCAN: ",ship,system)
 	if not ship or not system then return nil end
 	local data = { objects = {} }
 	local star = system:GetChildren()[1]
+	for k,v in pairs(system:GetChildren()) do
+		if v:HasFlag(FLAG_STAR) then
+			star = v
+		end
+	end
+
 	local plst = star:GetChildren()
 	data.objects[1] =
-	{ id = 1, type = "star", radius = math.log( star.radius/6371000) , 
+	{ id = 1, type = "star", radius = math.log( math.abs(star.radius or 1)/6371000)/10 , 
 		color = star.color, name = star:GetName() } --or Vector(0.8,0.4,0.2)
 	for k,v in pairs(plst) do
 		if v.iscelestialbody then
 			local pid = (#data.objects+1)
 			local newplanet = {type = "planet", parent = 1, id = pid}
-			newplanet.radius = math.log(v.radius/6371000) 
+			newplanet.radius = math.log(math.abs(v.radius or 1)/6371000)/10
 			newplanet.pos = v:GetPos() 
 			newplanet.name = v:GetName()
 			newplanet.isp = entHasParent(ship,v)
@@ -451,20 +572,21 @@ function ENT:GetGalaxyMapData(ship)
 	local galaxy = ship:GetParentWith(NTYPE_GALAXY)
 	local cursystem = ship:GetParentWith(NTYPE_STARSYSTEM)
 	local data = { objects = {} }
-	if galaxy and cursystem then
+
+	if galaxy then -- and cursystem then
 		data.objects[1] ={ id = 1, type = "galaxy", } 
 		
-		local syspos = cursystem:GetPos()
+		local syspos= galaxy:GetLocalCoordinates(ship)
+		--local syspos = cursystem:GetPos()
 		for k,v in pairs(galaxy:GetChildren()) do
-			local offpos = (v:GetPos()-syspos)*10000
-			local gen = v:GetParameter(VARTYPE_GENERATOR)
-			local isgen = gen == "masseffect.system"
+			local offpos = (v:GetPos()-syspos)*10000 
+			local isgen =false-- v[VARTYPE_GENERATOR] ~= "com.system.default"
 			--if isgen then
 			--	MsgN(v)
 			--end
 			if offpos:LengthSquared() < 1 or isgen then
 				local newstarsystem = {type = "system", parent = 1, id = (#data.objects+1)}
-				newstarsystem.pos = offpos
+				newstarsystem.pos =  offpos
 				newstarsystem.ref = v
 				newstarsystem.name = v:GetName()
 				newstarsystem.color = v:GetParameter(VARTYPE_COLOR)
@@ -476,9 +598,9 @@ function ENT:GetGalaxyMapData(ship)
 end
 
 function ENT:AddVisitedSystem(system)
-	--local vs = self.visitedsystems or List()
-	--vs:Add(system:GetPos() )
-	--self.visitedsystems = vs
+	local vs = self.visitedsystems or List()
+	vs:Add(system:GetPos() )
+	self.visitedsystems = vs
 	
 	debug.Delayed(1,function()
 		self:ReloadCurrentMap()
@@ -487,7 +609,7 @@ function ENT:AddVisitedSystem(system)
 end
 function ENT:UnloadMap()
 	local system = self.system 
-	if TESTSELECTOR ~= nil then TESTSELECTOR:SetParent(self.root) end
+	if IsValidEnt(TESTSELECTOR) and IsValidEnt(self.root) then TESTSELECTOR:SetParent(self.root) end
 	if system then
 		self.objects = nil
 		self.system = nil
@@ -496,6 +618,9 @@ function ENT:UnloadMap()
 end
 
 function ENT:LoadMap(data)
+	--MsgN("####### MAP DATA #######")
+	--PrintTable(data)
+	--MsgN("####### END DATA #######")
 	if not self.spawned then return false end
 	local system =  ents.Create()
 	system:SetSizepower(1000) 
@@ -521,25 +646,27 @@ function ENT:LoadMap(data)
 	
 	self.shipmodel = nil
 	self.shippath = nil
+	local curshipPos = self:GetParentWith(NTYPE_GALAXY):GetLocalCoordinates(self.ship)
 	
 	if self.state == "galaxy" then
 		local vs = self.visitedsystems
 		if vs and vs:Count()>1 then
-			if false then
+			--if false then
 				local cursystem = self:GetParentWith(NTYPE_STARSYSTEM)
 				local syspos = cursystem:GetPos()
 				local mb = MeshBuilder() 
 				local pts = {}
 			
 				for k,v in list(self.visitedsystems) do 
-					pts[#pts+1] = (v-syspos)*10000
+					pts[#pts+1] = (v-curshipPos)*10000
 				end
 				if #pts >= 3 then
-					mb:AddLine(0.0005,4,pts) 
-					mb:ToModel("@shippath")
+					--mb:AddLine(0.0005,4,pts) 
+					--mb:ToModel("@shippath")
 					local shippath = system:AddComponent(CTYPE_MODEL) 
 					shippath:SetRenderGroup(RENDERGROUP_LOCAL)
-					shippath:SetModel("@shippath") 
+					self:CreatePathModel(shippath,pts,0.0002)
+					--shippath:SetModel("@shippath") 
 					shippath:SetMaterial("textures/debug/fullbright.json") 
 					shippath:SetBlendMode(BLEND_OPAQUE) 
 					shippath:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -549,8 +676,9 @@ function ENT:LoadMap(data)
 					shippath:SetFadeBounds(0.000001,99999,0.0000005)  
 					shippath:SetColor(Vector(0.1,1,0.1)*3)
 					self.shippath = shippath
+					MsgN('uu')
 				end
-			end
+			--end
 		end
 		 
 		
@@ -563,50 +691,54 @@ function ENT:LoadMap(data)
 		
 		local shipmodel = shipm:AddComponent(CTYPE_MODEL) 
 		shipmodel:SetRenderGroup(RENDERGROUP_LOCAL)
-		shipmodel:SetModel("engine/csphere_36_cylproj.SMD") 
+		shipmodel:SetModel("engine/csphere_36_cylproj.stmd") 
 		shipmodel:SetMaterial("textures/debug/fullbright.json") 
 		shipmodel:SetBlendMode(BLEND_OPAQUE) 
 		shipmodel:SetRasterizerMode(RASTER_DETPHSOLID) 
 		shipmodel:SetDepthStencillMode(DEPTH_ENABLED)  
-		shipmodel:SetMatrix(matrix.Scaling(1))
+		shipmodel:SetMatrix(matrix.Scaling(0.01))
 		shipmodel:SetBrightness(1)
 		shipmodel:SetFadeBounds(0.000001,99999,0.0000005)  
 		shipmodel:SetColor(Vector(0.1,1,0.1)*3)
+		shipmodel:SetMaxRenderDistance(1000000)
 		
 		self.shipmodel = shipm
 		
 		local sptext = shipm:AddComponent(CTYPE_SPRITETEXT)  
 		sptext:SetRenderGroup(RENDERGROUP_LOCAL)
 		sptext:SetText("Ship")
+		sptext:SetMaxRenderDistance(1000000)
 		shipm.sptext = sptext 
 	end
 	 
 	
 	local skybox = self.skybox
-	local cursystem = self:GetParentWith(NTYPE_STARSYSTEM)
+	
 	if self.state == "galaxy" then
 		local galmodel = system:AddComponent(CTYPE_MODEL) 
 		galmodel:SetRenderGroup(RENDERGROUP_LOCAL)
-		galmodel:SetModel("galaxy_add.SMD")
+		galmodel:SetModel("space/galaxy_add.stmd") 
 		galmodel:SetMaterial("textures/space/galaxies/01.json")--eso1339g.jpg")-- eso1339gc.jpg")
 	    galmodel:SetBlendMode(BLEND_ADD) 
 		galmodel:SetRasterizerMode(RASTER_NODETPHSOLID) 
 		galmodel:SetDepthStencillMode(DEPTH_DISABLED)    
-		galmodel:SetMatrix(matrix.Scaling(15000)* matrix.Rotation(90,50,0)*matrix.Translation(-cursystem:GetPos()*10000))
+		galmodel:SetMatrix(matrix.Scaling(15000)* matrix.Rotation(90,50,0)*matrix.Translation(-curshipPos*10000))
 		galmodel:SetBrightness(1)
 		galmodel:SetFadeBounds(500,99999,500) 
-		
-		local gring = system:AddComponent(CTYPE_MODEL) 
-		gring:SetRenderGroup(RENDERGROUP_LOCAL)
-		gring:SetModel("@gal_ring") 
-		gring:SetMaterial("textures/debug/fullbright.json") 
-		gring:SetBlendMode(BLEND_ADD) 
-		gring:SetRasterizerMode(RASTER_NODETPHSOLID) 
-		gring:SetDepthStencillMode(DEPTH_DISABLED)    
-		gring:SetMatrix(matrix.Scaling(1000)*matrix.Translation(-cursystem:GetPos()*10000))
-		gring:SetBrightness(1)
-		gring:SetFadeBounds(0.000001,999999999,0.0000005)  
-		gring:SetColor(Vector(0.1,0.3,1)*0.5)
+		galmodel:SetMaxRenderDistance(1000000)
+	
+	--local gring = system:AddComponent(CTYPE_MODEL) 
+	--gring:SetRenderGroup(RENDERGROUP_LOCAL)
+	--gring:SetModel("@gal_ring") 
+	--gring:SetMaterial("textures/debug/fullbright.json") 
+	--gring:SetBlendMode(BLEND_ADD) 
+	--gring:SetRasterizerMode(RASTER_NODETPHSOLID) 
+	--gring:SetDepthStencillMode(DEPTH_DISABLED)    
+	--gring:SetMatrix(matrix.Scaling(1000)*matrix.Translation(-cursystem:GetPos()*10000))
+	--gring:SetBrightness(1)
+	--gring:SetFadeBounds(0.000001,999999999,0.0000005)  
+	--gring:SetColor(Vector(0.1,0.3,1)*0.5)
+	--gring:SetMaxRenderDistance(1000000)
 		 
 		
 		if skybox then 
@@ -614,16 +746,16 @@ function ENT:LoadMap(data)
 		end
 	else
 		--gring:SetMatrix(matrix.Scaling(1000)*cursystem:GetWorld():Inversed())--matrix.Scaling(1000)*matrix.Translation(-cursystem:GetPos()*10000)*matrix.Rotation(-cursystem:GetAng()))
-		if skybox then 
-			local ssystem = self:GetParentWith(NTYPE_STARSYSTEM)
-			if ssystem then
-				local syssky = ssystem.skybox
-				if syssky then
-					syssky:CopyTexture(skybox)
-				end
-			end
+		--if skybox then 
+		--	local ssystem = self:GetParentWith(NTYPE_STARSYSTEM)
+		--	if ssystem then
+		--		local syssky = ssystem.skybox
+		--		if syssky then
+		--			syssky:CopyTexture(skybox)
+		--		end
+		--	end
 			skybox:SetBrightness(1)
-		end
+		--end
 	end
 	
 end
@@ -637,6 +769,7 @@ function ENT:CreateCelestialBody(data,objects,root)
 	if data.name then body:SetName(data.name) end
 	body:SetSpaceEnabled(false) 
 	body:Spawn()
+	body.selectable = true
 	body.ref = data.ref
 	objects[data.id or k] = body
 	
@@ -670,72 +803,79 @@ function ENT:CreateCelestialBody(data,objects,root)
 			end
 		end
 		
-		local mb = MeshBuilder()
-		for f=1, 3 do
+		--local mb = MeshBuilder()
+		--for f=1, 3 do
 			local pts = {}
 			for k=1,36*2+1 do
 				local val = orbit:GetPosition(k*5) 
 				pts[k] = val 
 			end
-			mb:AddLine(0.00004,4,pts)
-			mb:AddLine(0.0001,4,pts)
-		end
-		mb:ToModel("@testmodel_"..tostring(data.id))
+		--	mb:AddLine(0.00004,4,pts)
+		--	mb:AddLine(0.0001,4,pts)
+		--end
+		--mb:ToModel("@testmodel_"..tostring(data.id))
 		
 		local model3 = root:AddComponent(CTYPE_MODEL) 
 		model3:SetRenderGroup(RENDERGROUP_LOCAL)
-		model3:SetModel("@testmodel_"..tostring(data.id)) 
+		--model3:SetModel("@testmodel_"..tostring(data.id)) 
+		
+		self:CreateRingModel(model3,pts,0.0001)
 		model3:SetMaterial("textures/debug/fullbright.json") 
 		model3:SetBlendMode(BLEND_ADD) 
 		model3:SetRasterizerMode(RASTER_DETPHSOLID) 
-		model3:SetDepthStencillMode(DEPTH_ENABLED)   
+		model3:SetDepthStencillMode(DEPTH_READ)   
 		model3:SetBrightness(1)
 		model3:SetFadeBounds(0.000001,99999,0.0000005)  
 		model3:SetColor(Vector(0.1,0.3,1)*0.5)
+		model3:SetMaxRenderDistance(1000000)
 		--]]
 	end
 	
 	
 	local model = body:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel("engine/csphere_36_cylproj.SMD") 
-	model:SetMaterial("textures/debug/white.json") 
+	model:SetModel("engine/csphere_36_cylproj.stmd") 
+	model:SetMaterial("textures/debug/fullbright.json") --"textures/debug/white.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED) 
+	model:SetMaxRenderDistance(1000000)
 	
 	model:SetMatrix(matrix.Scaling(2))
 	model:SetBrightness(0.8)
 	model:SetFadeBounds(0.000001,99999,0.0000005)  
+	--model:SetMatrix(matrix.Scaling(-1))
+	--model:SetMaterial("textures/space/star/blackhole.json") 
 	
 
 	
-	local model4 = body:AddComponent(CTYPE_MODEL) 
-	model4:SetRenderGroup(RENDERGROUP_LOCAL)
-	model4:SetModel("@planet_ring") 
-	model4:SetMaterial("textures/debug/fullbright.json") 
-	model4:SetBlendMode(BLEND_ADD) 
-	model4:SetRasterizerMode(RASTER_DETPHSOLID) 
-	model4:SetDepthStencillMode(DEPTH_ENABLED)    
-	model4:SetMatrix(matrix.Scaling(3))
-	model4:SetBrightness(1)
-	model4:SetFadeBounds(0.000001,99999,0.0000005)  
-	model4:SetColor(Vector(0.1,1,0.3)*3)
-	if data.isp then 
-		model4:SetColor(Vector(1,0,0))
-	end
+	-- -- local model4 = body:AddComponent(CTYPE_MODEL) 
+	-- -- model4:SetRenderGroup(RENDERGROUP_LOCAL)
+	-- -- model4:SetModel("@planet_ring") 
+	-- -- model4:SetMaterial("textures/debug/fullbright.json") 
+	-- -- model4:SetBlendMode(BLEND_ADD) 
+	-- -- model4:SetRasterizerMode(RASTER_DETPHSOLID) 
+	-- -- model4:SetDepthStencillMode(DEPTH_ENABLED)    
+	-- -- model4:SetMatrix(matrix.Scaling(3))
+	-- -- model4:SetBrightness(1)
+	-- -- model4:SetFadeBounds(0.000001,99999,0.0000005)  
+	-- -- model4:SetColor(Vector(0.1,1,0.3)*3)
+	-- -- model4:SetMaxRenderDistance(1000000)
+	-- -- if data.isp then 
+	-- -- 	model4:SetColor(Vector(1,0,0))
+	-- -- end
 	
 	if data.type == "star" then
 		local light = body:AddComponent(CTYPE_LIGHT)  
-		light:SetColor(data.color)
+		light:SetColor(data.color or Vector(1,1,1))
 		light:SetBrightness(2000) 
 		body.light = light
 		
-		model:SetColor(data.color)
+		model:SetColor(data.color or Vector(1,1,1))
 		model:SetFullbright(true)
 		model:SetBrightness(1)
 		
-		self.light:SetColor(data.color)--Vector(0.1,0.2,0.9))
+		self.light:SetColor(data.color or Vector(1,1,1))--Vector(0.1,0.2,0.9))
 		
 		
 	elseif data.type == "planet" and data.id == 3 then
@@ -743,14 +883,15 @@ function ENT:CreateCelestialBody(data,objects,root)
 	
 		local model2 = body:AddComponent(CTYPE_MODEL) 
 		model2:SetRenderGroup(RENDERGROUP_LOCAL)
-		model2:SetModel("space/rings.SMD") 
+		model2:SetModel("space/rings.stmd") 
 		model2:SetMaterial("textures/space/rings_test.json") 
 		model2:SetBlendMode(BLEND_OPAQUE) 
 		model2:SetRasterizerMode(RASTER_DETPHSOLID) 
 		model2:SetDepthStencillMode(DEPTH_ENABLED)  
 		model2:SetMatrix(matrix.Scaling(1.5)*matrix.Rotation(90+10,0,20))
 		model2:SetBrightness(0.8)
-		model2:SetFadeBounds(0.000001,99999,0.0000005)  
+		model2:SetFadeBounds(0.000001,99999,0.0000005) 
+		model2:SetMaxRenderDistance(1000000) 
 		
 	
 	end
@@ -759,6 +900,7 @@ function ENT:CreateCelestialBody(data,objects,root)
 	local sptext = body:AddComponent(CTYPE_SPRITETEXT)  
 	sptext:SetRenderGroup(RENDERGROUP_LOCAL)
 	sptext:SetText(body:GetName() or "")
+	sptext:SetMaxRenderDistance(1000000)
 	body.sptext = sptext 
 	
 	body.model = model
@@ -800,6 +942,7 @@ function ENT:CreateStarsystem(data,objects,root)
 	body.type = "system"
 	body:Spawn()
 	body:SetName(data.name or "")
+	body.selectable = true
 	body.ref = data.ref
 	objects[data.id or k] = body 
 	
@@ -807,17 +950,18 @@ function ENT:CreateStarsystem(data,objects,root)
 	--if not ri then 
 		local model = body:AddComponent(CTYPE_MODEL) 
 		model:SetRenderGroup(RENDERGROUP_LOCAL)
-		model:SetModel("engine/gsphere_2.SMD") 
+		model:SetModel("engine/gsphere_2.stmd") 
 		model:SetMaterial("textures/debug/white.json") 
 		model:SetBlendMode(BLEND_OPAQUE) 
 		model:SetRasterizerMode(RASTER_DETPHSOLID) 
-		model:SetDepthStencillMode(DEPTH_ENABLED) 
+		model:SetDepthStencillMode(DEPTH_READ) 
 		
 		model:SetMatrix(matrix.Scaling(2)) 
 		model:SetFadeBounds(0.000001,99999,0.0000005) 
 		
 		model:SetFullbright(true) 
 		model:SetBrightness(1)
+		model:SetMaxRenderDistance(1000000)
 		if data.color then model:SetColor(data.color) end
 		 
 		body.model = model  
@@ -826,13 +970,14 @@ function ENT:CreateStarsystem(data,objects,root)
 	--else
 		--ri:AddInstance(body)
 	--end
-	local stn = body:GetName()
-	if stn then 
-		local sptext = body:AddComponent(CTYPE_SPRITETEXT)  
-		sptext:SetRenderGroup(RENDERGROUP_LOCAL)
-		sptext:SetText(stn or "")
-		body.sptext = sptext 
-	end
+	---local stn = body:GetName()
+	---if stn then 
+	---	local sptext = body:AddComponent(CTYPE_SPRITETEXT)  
+	---	sptext:SetRenderGroup(RENDERGROUP_LOCAL)
+	---	sptext:SetText(stn or "")
+	---	sptext:SetMaxRenderDistance(1000000000)
+	---	body.sptext = sptext 
+	---end
 end
 function ENT:CreateStation(data,objects,root)
 	local body =  ents.Create() 
@@ -847,7 +992,7 @@ function ENT:CreateStation(data,objects,root)
 	
 	local model = body:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel("station/ring_ref.SMD") 
+	model:SetModel("station/ring_ref.stmd") 
 	model:SetMaterial("textures/debug/white.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -855,6 +1000,7 @@ function ENT:CreateStation(data,objects,root)
 	
 	model:SetMatrix(matrix.Scaling(0.00001)*matrix.Rotation(Vector(90,0,0))) 
 	model:SetFadeBounds(0.000001,99999,0.0000005) 
+	model:SetMaxRenderDistance(1000000)
 	 
 	if data.color then model:SetColor(data.color) end
 	 
@@ -894,6 +1040,7 @@ function ENT:CreateStation(data,objects,root)
 	model4:SetBrightness(1)
 	model4:SetFadeBounds(0.000001,99999,0.0000005)  
 	model4:SetColor(Vector(0.1,1,0.3)*3)
+	model4:SetMaxRenderDistance(1000000)
 	if data.isp then 
 		model4:SetColor(Vector(1,0,0))
 	end

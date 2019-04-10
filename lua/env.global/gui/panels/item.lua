@@ -192,12 +192,12 @@ function PANEL:Set(slot,item)
 	self.item = item
 	 
 	local data = item.data
-	if data then
-		local title =   data:Read("/parameters/name")
+	if data then --item
+		local title =  data:Read("/parameters/name")
 		local luatype = data:Read("/parameters/luaenttype") 
 		local class =   data:Read("/parameters/form") or data:Read("/parameters/character")
 		local amount =  data:Read("/parameters/amount")
-		local icon =    data:Read("/parameters/icon")
+		local icon =   data:Read("/parameters/icon")
 		--MsgN(icon)
 		self.title:SetText(title or class or luatype or "???")
 		--MsgN(title,luatype,class,amount,icon)
@@ -214,6 +214,14 @@ function PANEL:Set(slot,item)
 		else
 			self.amount:SetText("")
 		end 
+	else -- ability 
+		local title =  item.name 
+		local icon =  item.icon
+		self.title:SetText(title or "???")
+		if not (self:TrySetTexture(icon)) then
+			self:SetTexture(unknowntex)
+		end
+		self.amount:SetText("")
 	end
 	
 	if true then return nil end
@@ -287,7 +295,11 @@ end
 
 function PANEL:Select(actor)
 	local ent = self.item 
+		MsgN("select",self,ent)
 	if ent then
+		if istable(ent) then
+			PrintTable(ent)
+		end
 		--if ent.HasFlag then
 		--	if ent:HasFlag(FLAG_USEABLE) then
 		--		USE_ITEM(actor,ent)
@@ -297,7 +309,8 @@ function PANEL:Select(actor)
 				ent:Activate(actor)
 			elseif ent.Cast then
 			--	ent:Cast(actor)
-				actor:SetActiveAbility(ent.id)
+				--MsgN("select abl",self,ent,ent._name)
+				actor:SetActiveAbility(ent._name)
 			end
 		--end
 	else

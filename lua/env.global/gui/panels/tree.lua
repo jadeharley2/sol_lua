@@ -20,7 +20,8 @@ function PANEL:Init()
 	
 	local ff_grid_floater = panel.Create() 
 	
-	ff_grid_floater:SetSize(400,800)   
+	ff_grid_floater:SetSize(400,800)  
+	--ff_grid_floater:SetAutoSize(false,true) 
 	ff_grid_floater:SetColor(Vector(0.2,0.2,0.2))
 	
 	
@@ -43,6 +44,9 @@ function PANEL:SetTableType(type)
 end
 --PANEL:Clear() - clear all elements
 function PANEL:FromTable(tbl,parent,clickfn) 
+	--PrintTable(tbl)
+	local isrootupdate = parent==nil
+
 	parent = parent or self.root
 	local clevel = parent.level + 1
 	local tabletype = self.tabletype or 1
@@ -80,8 +84,14 @@ function PANEL:FromTable(tbl,parent,clickfn)
 			end
 		end
 	end
-	parent.subs = subs
+	parent.subs = subs 
 	self:UpdateLayout() 
+
+	if isrootupdate then
+		local sz = self.root:GetSize()
+		local sz2 = self:GetSize()
+		self.root:SetPos(0,-sz.y+sz2.y) 
+	end
 end 
 function PANEL:Collapse(node) 
 	if node.level and node.level>0 then
@@ -135,7 +145,7 @@ function PANEL:AddItem(text,parent,value,clickfn)
 		new_text.OnClick = clickfn
 	end
 	
-	if vistbl and (tabletype~=1 or #value>1) then 
+	if vistbl and (tabletype~=1 or #value>1) and (tabletype ~= 2 or #value>1) then  
 		expand = panel.Create("button")
 		--
 		
@@ -169,7 +179,7 @@ function PANEL:AddItem(text,parent,value,clickfn)
 		
 		new_item:Add(expand)
 		new_item:Add(new_text)
-		new_item:Add(new_indent)
+		new_item:Add(new_indent) 
 	else 
 		new_item:Add(new_text)
 	end

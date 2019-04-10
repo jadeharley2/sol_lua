@@ -6,4 +6,7 @@
 	"rotation" : [0,0,0], 
 	//"phys" : true,
 	//"mass" : 40, 
+	"container":{ 
+		"size":40
+	}
 }

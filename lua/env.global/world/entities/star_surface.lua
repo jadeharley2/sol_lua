@@ -14,7 +14,6 @@ function ENT:Spawn()
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED) 
-	model:SetMatrix(matrix.Scaling(-1))
 	model:SetFullbright(true)
 	model:SetBrightness(10)
 	model:SetFadeBounds(0,99999,0)  
@@ -23,6 +22,7 @@ function ENT:Spawn()
 	model:SetFlare(true)
   
 	if star:GetParameter(VARTYPE_TYPE)==NTYPE_BLACKHOLE then
+		model:SetMatrix(matrix.Scaling(-1))
 		model:SetMaterial("textures/space/star/blackhole.json") 
 	else
 		model:SetMaterial("textures/space/star/teststar.json") 

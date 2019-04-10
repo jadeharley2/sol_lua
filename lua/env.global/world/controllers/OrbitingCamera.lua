@@ -13,7 +13,9 @@ OBJ.mouseWheelDelta = 0
 function OBJ:Init() 
 	self.mouseWheelValue = input.MouseWheel() 
 	local cam = GetCamera()
-	self.center = cam:GetPos()
+	cam:SetAng(Vector(0,0,0))
+	self.center = cam:GetPos() 
+	self.mode = "unrestricted"
 end
 function OBJ:UnInit()  
 end
@@ -62,8 +64,13 @@ function OBJ:Update()
 		local offset = mousePos - center
 		self.mouse_lastpos = mousePos
 		input.setMousePosition(center)
-		cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
-		cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+		if self.mode == "unrestricted" then
+			cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
+			cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+		else
+			cam:TRotateAroundAxis(Right, (offset.y / -1000))
+			cam:TRotateAroundAxis(VEC_UP, (offset.x / -1000))
+		end
 	end 
 	if self.lms_active and (not rmb or mhag) then
 		input.SetCursorHidden(false)

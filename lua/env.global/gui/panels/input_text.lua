@@ -62,8 +62,13 @@ static.cwinput = function(key)
 				return
 			end
 		end
-		CI.text = text
-		CI:SetText(text)
+		if text then
+			CI.text = text
+			CI:SetText(text)
+		else
+			CI.text = ""
+			CI:SetText("")
+		end
 		  
 		local kd = CI.OnKeyDown 
 		if(kd) then
@@ -163,7 +168,7 @@ function PANEL:CaretUpdate(lenchange,nocollapse)
 		local lsp = CStringLen(self:GetText())
 		if cp > lsp then
 			cp = lsp
-		end
+		end 
 	end
 	self.caretpos = cp
 	self.caretoverlay:SetText(string.rep(" ", cp)..self.caret or "")

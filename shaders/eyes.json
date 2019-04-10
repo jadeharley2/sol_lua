@@ -37,7 +37,8 @@
 		"autoCameraMatrix" : 1,
 		"autoSkin" : 1,
 		"variables" : [
-			{ "name":"g_MeshTexture", "type":"texture"}
+			{ "name":"g_MeshTexture", "type":"texture"},
+			{"name":"eyeScale","type":"float"}
 		]
 	}
 }            

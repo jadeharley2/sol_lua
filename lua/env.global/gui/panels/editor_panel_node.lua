@@ -42,19 +42,38 @@ function PANEL:Init()
 	self:UpdateCnodes() 
 	
 end 
-function PANEL:UpdateCnodes() 
+function PANEL:UpdateCnodes(root) 
 	local nodetree = self.nodetree
 	local rtb = {"types"}
-	local cam = GetCamera()
-	local camp = cam:GetParent()
-	local chp = camp:GetChildren()
+	
+	root = root or GetCamera():GetParent()
+	local chp = root:GetChildren()
 	  
-	for k,v in pairs(chp) do 
+	local tb2 = {"<<parent>>",OnClick=function(b) 
+		local ct = CurTime()
+		if b.lastclc and b.lastclc>(ct-0.5) then
+			if root:GetParent() then
+				self:UpdateCnodes(root:GetParent())
+			end
+		else
+			b.lastclc = ct 
+			worldeditor:Select(root)
+		end
+	end}  
+	rtb[#rtb+1] = tb2
+
+	for k,v in SortedPairs(chp) do 
 		if v then
 			local hide = v.editor and v.editor.hide
 			if not hide then
-				local onclick = function(b)  
-					worldeditor:Select(v)
+				local onclick = function(b) 
+					local ct = CurTime()
+					if b.lastclc and b.lastclc>(ct-0.5) then
+						self:UpdateCnodes(v)
+					else
+						b.lastclc = ct 
+						worldeditor:Select(v)
+					end
 				end 
 				local tb2 = {tostring(v),OnClick=onclick}  
 				rtb[#rtb+1] = tb2
@@ -64,7 +83,8 @@ function PANEL:UpdateCnodes()
 	nodetree:SetTableType(2)
 	
 	nodetree:FromTable(rtb)
-	nodetree:SetSize(430,400)
+	nodetree:SetSize(430,400) 
+	nodetree:UpdateLayout()
 end
 
  

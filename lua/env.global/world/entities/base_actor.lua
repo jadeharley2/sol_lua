@@ -448,17 +448,37 @@ function ENT:Think()
 	local ct = CurTime()
 	local srb = self.resetblink
 	local snb = self.nextblink
+
+	local headsub = self:GetByName('head')
+	local hsm = false
+	local flexid =-1
+	if headsub then 
+		hsm = headsub.model 
+		flexid = hsm:GetFlex('blink') 
+	end
+
 	if srb then
 		if ct>srb then
 			m:StopLayeredSequence(10)
 			self.nextblink = ct+1+math.random(1,8)
 			self.resetblink = nil
+			 
+			if flexid>=0 then  
+				hsm:SetFlexSpeed(flexid,3)
+				hsm:SetFlexValue(flexid,0) 
+			end 
 		end
 	elseif not srb  and (not snb or ( snb and ct>snb )) then
 		m:PlayLayeredSequence(10,"_blink_auto")
-		self.resetblink = ct+1
-		
+		self.resetblink = ct+0.1 
+		if flexid>=0 then  
+			hsm:SetFlexSpeed(flexid,2)
+			hsm:SetFlexValue(flexid,1) 
+		end 
 	end
+
+
+
 	if self:GetParameter(VARTYPE_STATE) == "sit.capchair" then
 		if self.acd then
 			if ct>self.acd then
@@ -569,7 +589,9 @@ function ENT:SetCharacter(id)
 					local bpath = self.species.model.basedir
 					local bpr = self.spparts or {}
 					for k,v in pairs(data.parts) do 
-						bpr[k] = SpawnBP(bpath..v..".json",self,0.03)
+						local bp = SpawnBP(bpath..v..".stmd",self,0.03)
+						bp:SetName(k)
+						bpr[k] = bp
 					end
 					self.spparts = bpr
 					
@@ -691,6 +713,7 @@ function ENT:SetSpecies(spstr)
 		
 		local data = json.Read("forms/species/"..species..".json")
 		if data then 
+			MsgN("species",species,variation)
 			self:Config(data,species,variation)
 			
 			local nvariation =  data.model.variations[variation] 
@@ -736,7 +759,7 @@ function ENT:Config(data,species,variation)
 		else
 			local varbase = data.model.variations[variation]
 			local skel = varbase.skeleton
-			self:SetModel(data.model.basedir..skel..".json") 
+			self:SetModel(data.model.basedir..skel..".stmd") 
 		end
 	end 
 	if data.mass then phys:SetMass(data.mass) end

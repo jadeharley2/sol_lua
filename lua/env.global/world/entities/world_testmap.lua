@@ -139,9 +139,14 @@ function ENT:Spawn()
 				SHOWINV = true
 			end
 		end
+		button.velocity:ApplyAngVelocity(Vector(1,0,0),1)
 	end
 	local char_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,23521234,0.8)
 	char_b.usetype = "character morpher"
+	char_b.velocity = char_b:AddComponent(CTYPE_VELOCITY)
+	char_b.velocity:SetAngularDamping(0.1)
+	char_b:SetUpdating(true)
+
 	------
 	-- ability dispenser
 	local dpos = Vector(0.007491949, 0.000883143, -0.000687628)

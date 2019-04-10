@@ -467,7 +467,7 @@ float  SampleForShadowC(float4 worldposition,float dotNL)
 	
 	float3 result = float3(0,0,0);
 	[unroll]
-	for(int i=0;i<12;i++)
+	for(int i=0;i<4;i++)
 	{
 		float3 light_pos = pointlightPosition[i];
 		float3 light_col = pointlightColor[i];

@@ -62,3 +62,11 @@ function ENT:SetModel(mdl,scale)
 	  
 	self.modelcom = true
 end 
+ENT.editor = {
+	name = "Body part",
+	properties = {
+		selectParent = {text = "select parent",type="action",action = function(ent) 
+			worldeditor:Select(ent:GetParent(),false)
+		end}
+	}
+}

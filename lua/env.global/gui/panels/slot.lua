@@ -97,6 +97,7 @@ function PANEL:DragExit(node)
 end
 function PANEL:Select(actor)
 	local item = self.item 
+	MsgN("slot select",item)
 	if item then
 		item:Select(actor)
 	else

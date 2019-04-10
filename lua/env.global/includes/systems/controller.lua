@@ -46,7 +46,7 @@ end
 --	end
 --	OBJ = tempobj      
 --end                        
-                               
+              
 function SetController(name)   
 	if name then                
 		local ts = Controller(name)--controllers[name]

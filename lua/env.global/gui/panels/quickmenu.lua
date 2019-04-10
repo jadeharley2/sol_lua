@@ -89,7 +89,7 @@ function PANEL:SetData(slotdata,inventory)
 		data = self.slot_data[k]
 		slot:Clear()
 		if data then
-			local item = Item(data,inventory) 
+			local item = Item(inventory,k,data) 
 			item.original = true
 			slot:Add(item)
 			slot:UpdateLayout()
