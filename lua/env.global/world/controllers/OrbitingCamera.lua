@@ -21,11 +21,13 @@ function OBJ:UnInit()
 end
 
 function OBJ:MouseWheel()
-	local mWVal = input.MouseWheel()  
-	
-	self.zoom = math.Clamp( self.zoom + (mWVal-self.mouseWheelValue)/1000,0,10)
-	
-	self.mouseWheelValue = mWVal 
+	if not input.MouseIsHoveringAboveGui() then
+		local mWVal = input.MouseWheel()  
+		
+		self.zoom = math.Clamp( self.zoom + (mWVal-self.mouseWheelValue)/1000,0,10)
+		
+		self.mouseWheelValue = mWVal 
+	end
 end
 
 function OBJ:KeyDown(key)  

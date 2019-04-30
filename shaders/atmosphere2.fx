@@ -171,12 +171,20 @@ float3 scatter(float3 o, float3 d, float L, float3 Lo,float3 C) {
 
 
 
+float camera_near=0.1;
+float camera_far=100;
 
 
+float linearDepth(float depth)
+{
+    return 2.0 * camera_near * camera_far /
+             (camera_far + camera_near -
+             (depth * 2.0 - 1.0) * (camera_far - camera_near));
+}
 
 float SS_GetDepth(float2 position)
 { 
-	 return tDepthView.Sample(sCC, position).r;
+	 return linearDepth(tDepthView.Sample(sCC, position).r);
 }
 float3 SS_GetPosition(float2 UV, float depth)
 {
@@ -245,7 +253,7 @@ struct PS_OUT
     //float4 position: SV_Target2;
     float depth: SV_Target2;
     float4 mask: SV_Target3;
-    //float4 light: SV_Target4;
+    float4 diffuse: SV_Target4;
 };
 
 PS_IN VS(VSS_IN input)
@@ -613,7 +621,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		//result = float4(lerp(tBackColor,result,result.a*0).rgb,1); 
 		//ou.normal.r = 1;
 		ou.mask.a = density*angleDensity;
-		ou.color = result;
+		ou.color = result*0.5;
 		return ou;//return result;
 		//return lerp(tBackColor,float4(
 		//		((saturate(horison)+saturate(-topDot))*horisonColor

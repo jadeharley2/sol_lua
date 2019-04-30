@@ -11,15 +11,21 @@ float4x4 World;
 float4x4 EyeWorld;
 
 Texture2D g_MeshTexture;  
+Texture2D g_MeshTexture_e;  
 Texture2D g_IrisTexture;   
+Texture2D g_IrisTexture_e;  
  
 
 float hdrMultiplier=1;
 float brightness=1;
+float emissive_mul=1;
 
 float2 flipuv = float2(1,1);
 float2 texShift = float2(0,0);
 float eyeScale = 1;
+
+
+bool FullbrightMode=!true;
 
 int eyeId;
 
@@ -66,11 +72,12 @@ struct DCI_PS_IN
 };
 struct PS_OUT
 {
-    float4 color: SV_Target0;
+    float4 emission: SV_Target0;
     float4 normal: SV_Target1;
     //float4 position: SV_Target2;
     float depth: SV_Target2;
     float4 mask: SV_Target3;
+    float4 color : SV_Target4;
 };
 
 PS_IN VSI( VSS_IN input, I_IN inst ) 
@@ -106,6 +113,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float4 wmpos = mul(float4(input.wpos,1),transpose(EyeWorld));
 	//float2 wmTexCoord = float2(0.5,-0.5) *(wmpos.xy/  wmpos.w  + float2( 1, -1 )) ;// /  wmpos.w
 	float4 result =  g_MeshTexture.Sample(MeshTextureSampler, input.tcrd  );
+	float4 emission =  g_MeshTexture_e.Sample(MeshTextureSampler, input.tcrd  );
 	
 	//float4 irisDiffuse  = float4(0,0,0,1);
 	//if(wmpos.z<1&&wmpos.z>0)
@@ -115,23 +123,34 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		
 		//(wmTexCoord - float2(0.5,0.5))/10+float2(0.5,0.5);
 		float4 irisDiffuse = g_IrisTexture.Sample(MeshTextureSampler, wmTexCoord ); // +float4((wmpos.xyz*1)%1,0)*0.8; 
+		float4 irisEmissive = g_IrisTexture_e.Sample(MeshTextureSampler, wmTexCoord ); 
 	//} 
 	
-	
-	result = lerp(result,irisDiffuse,irisDiffuse.a>0.95?1:0);
+	float blendstep = 1-step(irisDiffuse.a,0.95);
+	result = lerp(result,irisDiffuse,blendstep);
+	emission = lerp(emission,irisEmissive,blendstep);
+
 	
 	float3 camdir = normalize(input.wpos);
-	float3 brightness3 = ApplyPointLights2(input.wpos,input.norm,camdir,irisDiffuse.rgb,0.1,0.01,0.1,true);
+	//float3 brightness3 = ApplyPointLights2(input.wpos,input.norm,camdir,irisDiffuse.rgb,0.1,0.01,0.1,true);
 	float3 reflectcam = reflect(camdir,input.norm);
 	float3 ambmap =  EnvSampleLevel(input.norm,0);
 	//float3 envmap =  EnvSampleLevel(reflectcam,0.99);//
 		//+envmap*0.4
-	float3 fbr = ambmap+brightness3*TBrightness;
-	output.color = result*float4(fbr,1);//float4((brightness3+ambmap*0.5)*TBrightness*4,1);// + float4(0,0,eyeId,0);
+	float3 fbr = ambmap;//+brightness3*TBrightness;
+	output.emission = emission*emissive_mul;
+	output.color = result;//*float4(fbr,1);//float4((brightness3+ambmap*0.5)*TBrightness*4,1);// + float4(0,0,eyeId,0);
 	output.normal = float4(input.norm*0.5+0.5,1);
-	output.depth = input.pos.z/input.pos.w; 
-	output.mask = float4(0,0,0,1);
-	
+	output.depth = input.pos.z;///input.pos.w; 
+	if(FullbrightMode)
+	{
+		output.mask = float4(0,0,0,1);
+		output.emission = result*brightness*0.2;
+	}
+	else
+	{
+		output.mask = float4(1,1,0,1);
+	}
 	return output;
 }
 

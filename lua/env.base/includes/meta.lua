@@ -5,3 +5,12 @@ function DEFINE_METATABLE(key)
 	metaroot.__index = nil
 	return metaroot
 end 
+
+
+function Collect(times,func,...) 
+	local r = {}
+	for k=1,times do
+		r[k] = func(...)
+	end
+	return r
+end

@@ -1,0 +1,6 @@
+{
+	"group" : "misc",
+	"tags" : [], 
+	"scale" : 1, 
+	"luatype":"dyn_flashlight" 
+}

@@ -36,6 +36,14 @@ struct PS_IN
 	float2 tcrd : TEXCOORD1;
 	float4 cpos : TEXCOORD2;
 };
+struct PS_OUT
+{
+    float4 color: SV_Target0;//light
+    float4 normal: SV_Target1; 
+    float depth: SV_Target2;
+    float4 mask: SV_Target3;
+    float4 diffuse: SV_Target4;
+};
 
 PS_IN VS( VS_IN input ) 
 {
@@ -49,7 +57,7 @@ PS_IN VS( VS_IN input )
 	return output;
 }
 
-float4 PS( PS_IN input ) : SV_Target
+PS_OUT PS( PS_IN input ) : SV_Target
 {
 	/*
 	float4 result;
@@ -93,6 +101,7 @@ float4 PS( PS_IN input ) : SV_Target
 		}
 	}
 	*/
+	PS_OUT output = (PS_OUT)0;
 	float3 cameraDirection = normalize(input.cpos.xyz);
 	float4 result = g_EnvTexture.Sample(MeshTextureSampler, -cameraDirection);
 	//result = float4(1,1,1,1); 
@@ -104,7 +113,8 @@ float4 PS( PS_IN input ) : SV_Target
 	result = result *Tint;//* (flash+flashcor) + flashcor*float4(0,0.3f,0.04f,1); 
 	//result = float4(1,1,1,1);
 	//result.a = 1;
-	return result;
+	output.color = result;
+	return output;
 }
 
 technique10 Render

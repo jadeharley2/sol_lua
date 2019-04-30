@@ -43,11 +43,14 @@ function _CLASS_META:AddType(type)
 	--newtype.__index = nil
 	_G[self.varn] = newtype
 	
+	--MsgN("add type",type)
 	local sfile = self.dir .. type .. ".lua"
+	--MsgN("class reload",sfile)
 	if file.Exists(sfile) then
 		include(sfile,self.ReloadType) 
 	else
 		local sfile2 = self.dir .. type .. "/init.lua"
+		--MsgN("class reload2",sfile2)
 		if file.Exists(sfile2) then
 			include(sfile2,self.ReloadType) 
 		end 
@@ -117,9 +120,14 @@ function DefineClass(Name,Varname,Directory,Metatable)
 	
 	local luabasedDir = string.sub(Directory,5)
 	hook.Add("script.reload","class."..Name, function(filename)
-		MsgN("check ","class."..Name," : ",filename,luabasedDir,string.starts(filename,luabasedDir))
+		--MsgN("check ","class."..Name," : ",filename,luabasedDir,string.starts(filename,luabasedDir))
 		if string.starts(filename,luabasedDir) then 
 			local type = string.lower( file.GetFileNameWE(filename))
+			if type=="init" then
+				type = file.GetFileName(string.sub(filename,0,#filename-#file.GetFileName(filename)-1))
+				--MsgN("NEWTYPE",type)
+			end
+			MsgN("reloading class type",Name.."."..type)
 			nc:AddType(type)
 			return true
 		end

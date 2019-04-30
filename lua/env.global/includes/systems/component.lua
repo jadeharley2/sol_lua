@@ -36,4 +36,4 @@ function TryGetComponent(type,node)
 		end
 	end
 	return nil
-end
+end 

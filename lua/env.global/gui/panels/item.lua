@@ -132,6 +132,13 @@ function PANEL:MouseClick(fid)
 					MsgN("sclick!")  
 					InvRefreshAll()
 				end
+			elseif GLOBAL_CEQPANEL then
+				local data = self.item.data
+				if data.parameters.luaenttype == "item_apparel" then
+					MsgN("uu", self.slot,self.item) 
+					if GLOBAL_CEQPANEL:EquipItem(self) then 
+					end
+				end 
 			end
 		end
 	end

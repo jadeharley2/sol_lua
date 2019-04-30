@@ -131,7 +131,7 @@ function PANEL:MouseEnter()
 	---####---self:SetColor( self.hovercolor) 
 	if self.flashtext then self:SetTextColor( self.texthovercolor) end
 	
-	if(not self.toggleable) then
+	if(not self.toggleable or not self:IsPressed()) then
 		self:SetState("hover")
 	end
 	
@@ -159,21 +159,3 @@ end
 function PANEL:IsPressed()
 	return self:GetState() == "pressed"
 end 
-
-function PANEL:Test() 
-	-- при вызове через панель:Test()
-		MsgN(self) -- >> панель
-	-- при вызове через панель.Test()
-		MsgN(self) -- >> ПУСТО
-end
-
-function PANEL.Test() 
-	MsgN(self) -- >> ПУСТО
-end
-
-function PANEL.Test(self) 
-	-- при вызове через панель:Test()
-		MsgN(self) -- >> панель
-	-- при вызове через панель.Test()
-		MsgN(self) -- >> ПУСТО
-end

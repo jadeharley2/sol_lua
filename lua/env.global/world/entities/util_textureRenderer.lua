@@ -27,7 +27,7 @@ function ENT:Spawn()
 		--end
 	end)
 	self.cooldowntime = CurTime() 
-	
+	 
 	hook.Add("main.postcontroller","textureRenderer", function() self:Update() end)
 end 
 function ENT:Draw(target,root,callback) 

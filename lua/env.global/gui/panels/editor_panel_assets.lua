@@ -10,10 +10,10 @@ PANEL.assettypes = {
 			pos = wtr.Position
 		end
 		 
-		local p = SpawnPV(fulltype,node,wtr.Position)--,j.scale,false,false)
+		local p = SpawnPV(fulltype,node,wtr.Position,nil,GetFreeUID())--,j.scale,false,false)
 		if p then
 			p:AddFlag(FLAG_EDITORNODE)
-			p:SetSeed(GetFreeUID())
+			--p:SetSeed(GetFreeUID())
 		end
 		--if p then
 		--	local random_ry = false

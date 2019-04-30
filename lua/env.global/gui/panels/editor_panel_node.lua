@@ -30,14 +30,35 @@ function PANEL:Init()
 	nodetree:Dock(DOCK_TOP)
 	self:Add(nodetree)
 	
-	local peditor = panel.Create()
+
+	local sep = panel.Create()
+	sep:Dock(DOCK_TOP)
+	sep:SetColor(Vector(0.5,0.5,0.5))
+	sep:SetSize(200,5)
+	self:Add(sep)
+
+
+	local ff_grid_floater = panel.Create()  
+	ff_grid_floater:SetSize(400,800)  
+	--ff_grid_floater:SetAutoSize(false,true) 
+	ff_grid_floater:SetColor(Vector(0.2,0.2,0.2))
+	 
+
+
+	local peditor = panel.Create("floatcontainer")
 	peditor:SetSize(200,400)
-	peditor:Dock(DOCK_TOP)
-	peditor:SetColor(Vector(0,0,0))
+	peditor:Dock(DOCK_FILL)
+	peditor:SetScrollbars(1) 
+	peditor:SetFloater(ff_grid_floater) 
+	peditor:SetColor(Vector(0,0,0)) 
+	peditor:UpdateLayout()
+	ff_grid_floater.level = 0
 	self:Add(peditor)
 	
 	self.nodetree = nodetree
 	self.peditor = peditor
+
+	self.pe_in = ff_grid_floater
 	
 	self:UpdateCnodes() 
 	
@@ -96,7 +117,7 @@ end
 function PANEL:SelectNode(node) 
 	self.cnode = node
 	
-	local peditor = self.peditor
+	local peditor = self.pe_in--self.peditor
 	peditor:Clear()
 	
 	
@@ -120,6 +141,7 @@ function PANEL:SelectNode(node)
 				metacom:SetText("Lua BaseType: ".. (meta.editor.name or "Entity"))
 				self:ConstructParams(node,meta,peditor,node)
 			end
+			self:ConstructParams(node,self.ent_meta_base,peditor,node)
 		end
 		
 		
@@ -148,31 +170,32 @@ function PANEL:SelectNode(node)
 			--np.ty = 200
 			np:SetColor(Vector(0.2,0.2,0.2)) 
 			np:Dock(DOCK_TOP)
+			np:SetMargin(0,2,0,0)
 			np:SetAutoSize(false,true)
 			
 			local nph = panel.Create()
 			nph:SetSize(100,20)
-			nph:SetColor(Vector(20,20,0))
+			nph:SetColor(Vector(1,1,0))
 			nph:Dock(DOCK_TOP)
 			nph:SetText(type)
 			
 			local npb = panel.Create()
-			npb:SetSize(100,20)
-			npb:SetColor(Vector(20,20,0))
+			npb:SetSize(100,0)
+			npb:SetColor(Vector(0.3,0.3,0.3))
 			npb:Dock(DOCK_TOP) 
 			npb:SetAutoSize(false,true)
 			
 			function np:RezToggle(b)
 				if np.minimized then
 					np.minimized = false
-					np:SetSize(100,np.ty)
-					npb:SetSize(100,np.ty-20)
+					--np:SetSize(100,np.ty)
+					--npb:SetSize(100,np.ty-20)
 					npb:SetVisible(true)
 					b:SetText("-")
 				else
 					np.minimized = true
-					np:SetSize(100,20)
-					npb:SetSize(100,0)
+					--np:SetSize(100,20)
+					--npb:SetSize(100,0)
 					npb:SetVisible(false)
 					b:SetText("+")
 				end
@@ -186,6 +209,7 @@ function PANEL:SelectNode(node)
 			delcom:Dock(DOCK_RIGHT)
 			delcom:SetText("x")
 			delcom:SetTextAlignment(ALIGN_CENTER)
+			delcom:SetMargin(1,1,1,1)
 			delcom.OnClick = function() node:RemoveComponent(v) self:RefreshPanel() end
 			nph:Add(delcom)
 			
@@ -194,9 +218,10 @@ function PANEL:SelectNode(node)
 			rezcom:SetSize(20,20)
 			rezcom:Dock(DOCK_RIGHT)
 			rezcom:SetText("-")
+			rezcom:SetMargin(1,1,1,1)
 			rezcom:SetTextAlignment(ALIGN_CENTER)
 			rezcom.OnClick = function(b) np:RezToggle(b) peditor:UpdateLayout() end
-			
+			nph:Add(rezcom)
 			
 			np:Add(nph)
 			np:Add(npb)
@@ -256,6 +281,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 			pva:SetColorAuto(Vector(0.6,0.6,0.6))
 			pva:SetSize(20,20)
 			pva:Dock(DOCK_TOP)
+			pva:SetMargin(5,2,0,0)
 			pva:SetTextAlignment(ALIGN_LEFT)
 			pva:SetText(v.text..":")
 			pva.OnClick = function() end
@@ -305,6 +331,42 @@ function PANEL:ConstructParams(node,meta,parent,com)
 							end
 						end
 					end
+				elseif v.valtype == "vector" then 
+					inp = panel.Create("input_text")  
+					inp:SetSize(220,20)
+					if(v.get) then
+						inp:SetText(tostring(v.get(node,com,v))) 
+					else
+						inp:SetText(tostring(value or "")) 
+					end
+					--inp.evalfunction = v2.proc 
+					inp.OnKeyDown = function(n,key) 
+						if key== KEYS_ENTER then
+							--
+						end
+					end
+				elseif v.valtype == "color" then 
+
+				--	MsgN(v.name,value)
+					inp = panel.Create()   
+					inp:SetSize(220,20) 
+					if(v.get) then 
+						inp:SetColor(v.get(node,com,v))  
+					else
+						inp:SetColor(value or Vector(0,0,0))  
+					end
+					inp:SetCanRaiseMouseEvents(false)
+					pva.OnClick = function(s) 
+						ColorPicker(inp:GetColor(),
+						function(ee,cc) 
+							local n = inp
+							inp:SetColor(cc) 
+							if v.apply then
+								v.apply(n.node,n.m,n.v,cc)
+							else
+								self:SetParam(n.node,n.v,cc)
+							end
+						end) end
 				end
 				inp.m = com
 				inp.v = v 
@@ -333,3 +395,28 @@ function PANEL:SetParam(node,metaparam,value)
 		node:Load()
 	end
 end
+
+PANEL.ent_meta_base = {
+	editor = {
+		properties = {
+			position = {text = "position",valtype="vector",
+				apply = function(n,u,k,v) n:SetPos(v) end,
+				get = function(n,u,k) 
+					return n:GetPos()
+				end 
+			},
+			rotation = {text = "rotation",valtype="vector",
+				--apply = function(n,u,k,v) n:SetPos(v) end,
+				--get = function(n,u,k) 
+				--	return n:GetPos()
+				--end
+			},
+			scale = {text = "scale",valtype="vector",
+				apply = function(n,u,k,v) n:SetPos(v) end,
+				get = function(n,u,k) 
+					return n:GetPos()
+				end 
+			},
+		}
+	}
+}

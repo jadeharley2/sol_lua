@@ -48,7 +48,7 @@
 			extrude : -0.01,  
 		},       
 		{ 	type : "structure", out : "legs",
-			path : "models/dyntest/sdm/furn/parts/handle.dnmd",
+			path : "handle.dnmd",
 			from : {"base":"handle"},   
 			"$width" : 0.02, 
 			"$extend" : 0.025,  

@@ -271,7 +271,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	}  
 	output.normal = float4(worldNormal*0.5+0.5,1);
 	output.depth =// input.pos.w;//
-	input.pos.z/input.pos.w;
+	input.pos.z;///input.pos.w;
 	 
 	return output; 
 }

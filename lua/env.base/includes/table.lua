@@ -27,6 +27,27 @@ table.Random = function(t,rnd)
 		return t[id]
 	end
 end
+table.RandomKey = function(t,rnd)
+	local nt = {}
+	for k,v in pairs(t) do
+		nt[#nt+1] = k
+	end
+	return table.Random(nt,rnd)
+end
+table.Keys = function(t)
+	local nt = {}
+	for k,v in pairs(t) do
+		nt[#nt+1] = k
+	end
+	return nt
+end
+table.Values = function(t)
+	local nt = {}
+	for k,v in pairs(t) do
+		nt[#nt+1] = v
+	end
+	return nt
+end
 table.Select = function(t,func,...)
 	local t2 ={}
 	

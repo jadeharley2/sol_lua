@@ -61,7 +61,7 @@ function gui.ApplyParameters(node,t)
 				node:SetAlpha(v[4])
 			end
 		elseif k == 'visible' then node:SetVisible(v)
-		elseif k == 'texture' then node:SetTexture(LoadTexture(v))
+		elseif k == 'texture' then node:SetTexture(v)--LoadTexture(v))
 		
 		elseif k == 'text' then node:SetText(v)
 		elseif k == 'textonly' then node:SetTextOnly(v)
@@ -94,7 +94,7 @@ function gui.ApplyParameters(node,t)
 end
 
 function gui.FromTable(t,node,style,namedtable,tablekey)
-	node = node or panel.Create(t.type)
+	node = node or panel.Create(t.type or "panel")
 	
 	if style and t.class then
 		local v = style[t.class]

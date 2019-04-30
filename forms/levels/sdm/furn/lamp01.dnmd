@@ -6,7 +6,7 @@
 	],
 	variables : {  
 		"$mat.primary" : "metal.json",
-		"$mat.secondary" : "glass.json",
+		"$mat.secondary" : "glass_lum.json",
 	},
 	operations : [ 
 		

@@ -19,12 +19,12 @@ local style = {
 }
 local layout = {
 	name = "self",
-	texture="gui/menu/bkg1.png",
+	texture="textures/gui/menu/bkg1.png",
 	pvsize = {2,2},
 	subs = { 
 		{name = "main"    ,type="panel",   class = "submenu",
 			visible = true,
-			texture="gui/menu/sn_1024.dds", 
+			texture="textures/gui/menu/sn_1024.dds", 
 			size = {800,800},
 			color = {0.001,0.001,0.001},
 			subs = {

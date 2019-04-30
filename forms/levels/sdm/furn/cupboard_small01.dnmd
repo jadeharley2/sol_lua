@@ -23,7 +23,7 @@
 		{ type : "material",in : "base",
 			material : "$mat.primary",
 		},  
-		{ type : "uvmap", in:["base"],
+		{ type : "uvmap", in:["base"], 
 			edge : 1,     
 			scale : 1.0     ,
 			shift : [0.0 ,0.0], 

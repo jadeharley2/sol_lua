@@ -18,10 +18,8 @@ function component:Init()
 end
 
 function component:OnAttach(node)
-	MsgN('new storage at: ',node,self:GetNode())
 end
 function component:OnDetach(node)
-	MsgN('ded storage at: ',node)
 end
  
 function component:Test()

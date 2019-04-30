@@ -278,11 +278,12 @@ struct DCI_PS_IN
 
 struct PS_OUT
 {
-    float4 color: SV_Target0;
+    float4 color: SV_Target0;//light
     float4 normal: SV_Target1;
     //float4 position: SV_Target3;
     float depth: SV_Target2;
     float4 mask: SV_Target3;
+    float4 diffuse: SV_Target4;
 };
 
 PS_IN VS( VS_IN input)//, IS_IN input2 ) 
@@ -632,7 +633,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance)
 	 
 	float3 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0.9);
 	float3 brightness3 =//ApplyPointLights(input.wpos,input.normal,cameraDirection,specular_intensity,100);//
-	ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,specular_intensity,0,true,globalLightIntencity,saturate(1));
+ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,specular_intensity,0,true,globalLightIntencity,saturate(1));
 	 
 	//float3 brightness4 = 
 	//ApplyPointLights3(float3(1,1,1),input.wpos,globalNormal,cameraDirection,0,0);
@@ -662,7 +663,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance)
 	//end
 	
 	
-	float3 finalColor = total_brightness+atmoLight*0.02;//+total_brightness*atmoLight;// input.color*surface_rampcolor*total_brightness;
+	float3 finalColor =surface_rampcolor;// total_brightness+atmoLight*0.02;//+total_brightness*atmoLight;// input.color*surface_rampcolor*total_brightness;
 	
 	
 	float blend_medium = saturate(1 - surfaceDistance*2); 
@@ -675,7 +676,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance)
 	{
 		//tilecolor *= float4(input.color,1);
 	}
-	finalColor = finalColor*tilecolor*2+tilecolor.rgb*ambient*2;//0.125;
+	finalColor = finalColor*tilecolor*2+tilecolor.rgb;//*ambient*2;//0.125;
 	
 	
 	////if(hasAtmoshphere)
@@ -787,19 +788,19 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float blend = lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
 	output.normal = float4(lerp(input.normal,normalize(input.lpos),blend)*0.5+0.5,1);
 	output.depth = //input.pos.w;//
-	input.pos.z/input.pos.w;
+	input.pos.z;///input.pos.w;
 	//output.depth = 1000-wposLen;//input.pos.z;///input.pos.w; 
-	output.mask = float4(0,0,0,1);// float4(blend,blend,0,1);
+	output.mask = float4(1,0,0,1);// float4(blend,blend,0,1);
 	
 	if(isCameraUnderWater)
 	{  
 		float depth = max(1,-input.data.x*1000000.0); 
-		output.color =float4( NearbyColor(input,wposLen,surfaceDistance)/depth,1);; ;//float4(color_nearby*hdrMultiplier,1);
+		output.diffuse =float4( NearbyColor(input,wposLen,surfaceDistance)/depth,1);; ;//float4(color_nearby*hdrMultiplier,1);
 		output.mask = float4(1-saturate(surfaceDistance*20),0.2,1,1);
 	}
 	else
 	{
-		output.color = color_space;//float4(lerp(color_nearby,color_space.rgb,blend_space)*hdrMultiplier,1);
+		output.diffuse = color_space;//float4(lerp(color_nearby,color_space.rgb,blend_space)*hdrMultiplier,1);
 	}
 	return output; 
 }

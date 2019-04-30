@@ -4,8 +4,9 @@
 	"model" : "clutter/lab/mug_a.stmd",
 	"scale" : 0.03,
 	"rotation" : [0,0,0],
-	"modmaterial" :  [{"tint":[1,0.1,0.03]}]
+	"modmaterial" :  [{"tint":[1,0.1,0.03]}],
 	
 	"phys" : true,
 	"mass" : 1,
+	"icon" : "lab/mug",
 }

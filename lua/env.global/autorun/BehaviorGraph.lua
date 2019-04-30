@@ -153,25 +153,27 @@ behaviour.AddFunction("setvar",function(state,ent,to,tag)
 end)  
 	
 function BehaviorGraphMeta:Run() 
-	for k,v in pairs(self._cstate.transitions) do  
-		if v[2] then
-			if v[2](self,self._ent,v[3]) then   
-				if istable(v[1]) then
-					local rnd = (math.random(0,10000000)/10000000) 
-					local cu = 0
-					for kk,vv in pairs(v[1]) do
-						cu = cu + vv
-						--MsgN(cu,rnd)
-						if(cu>rnd) then return self:SetState(kk) end
+	if self.disabled~=true then
+		for k,v in pairs(self._cstate.transitions) do  
+			if v[2] then
+				if v[2](self,self._ent,v[3]) then   
+					if istable(v[1]) then
+						local rnd = (math.random(0,10000000)/10000000) 
+						local cu = 0
+						for kk,vv in pairs(v[1]) do
+							cu = cu + vv
+							--MsgN(cu,rnd)
+							if(cu>rnd) then return self:SetState(kk) end
+						end
+					else
+						return self:SetState(v[1]) 
 					end
-				else
-					return self:SetState(v[1]) 
 				end
-			end
-		else
-			self.anim_end = 0
-			return self:SetState(v[1])  
-		end 
+			else
+				self.anim_end = 0
+				return self:SetState(v[1])  
+			end 
+		end
 	end
 end
 

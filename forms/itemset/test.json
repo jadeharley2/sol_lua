@@ -1,0 +1,9 @@
+{
+    "itemtype":"apparel",
+    "subsets" :{
+        "uniform0":[ "uniform_0","cape_0","scarf_0"],
+        "uniform1":[ "uniform_1","collar","armw","legw"],
+        "uniform2":[ "uniform_2","boots","hat_0"],
+        "underw":[ "ud_bot","ud_top"]
+    } 
+}

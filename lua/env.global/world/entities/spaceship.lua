@@ -1048,8 +1048,8 @@ function ENT:BendSpacetime(power)
 		--wm:Enable(true)
 		local maxbnd = math.min(1000000,1000000)--10000+1000000*power*power)
 		wm:SetMatrix(matrix.Scaling(Vector(1000,1000,maxbnd)))
-		--wm:SetMatrix(matrix.Scaling(Vector(1000,1000,1000)))
-		if power > 0 then wm:Enable(true) else wm:Enable(false) end
+		--wm:SetMatrix(matrix.Scaling(Vector(1000,1000,1000))) 
+		if power > 0.01 then wm:Enable(true) else wm:Enable(false) end
 		if self.bendSpace then --self.warpmode then
 			self:SetScale(Vector(1,1,math.max(0.00001,1-power)))
 		else

@@ -227,12 +227,22 @@ function ENT:Spawn()
 		 
 		 
 		 
-		local cbm =  space:AddComponent(CTYPE_CUBEMAP)
-		cbm:SetSize(512)
-		cbm:SetTarget() 
-		self.cubemap = cbm
+	--	local cbm =  space:AddComponent(CTYPE_CUBEMAP)
+	--	cbm:SetSize(512)
+	--	cbm:SetTarget() 
+	--	self.cubemap = cbm
 		
 		 
+		local root_skyb =  ents.Create()
+		root_skyb:SetSizepower(2000)
+		root_skyb:SetParent(space)
+		root_skyb:SetPos(Vector(0,0.5,0))
+		root_skyb:Spawn()
+
+		local cubemap = root_skyb:AddComponent(CTYPE_CUBEMAP)  
+		self.cubemap = cubemap 
+		cubemap:SetTarget(nil,space) 
+		local cbm =cubemap
 		
 		--local cbm = SpawnCubemap(space,Vector(0,0.0013627,0),512)
 		--self.cubemap = cbm
@@ -401,6 +411,15 @@ function ENT:Spawn()
 
 
 
+	local test13 = ents.Create("bspmap")
+	test13[VARTYPE_FORM] = "rp_evocity_dbg"--"gm_construct"
+	test13:SetSizepower(1000)
+	test13:SetParent(space)
+	test13:SetPos(Vector(0, 0.05, 0)) 
+	test13:SetSeed(333333)
+	test13:SetSpaceEnabled(false)
+	test13:Spawn()
+	testA = test13
 	
 	local pn = {}
 	-- x, z, -y
@@ -417,56 +436,64 @@ function ENT:Spawn()
 end 
 function ENT:CTO(user,ss)
 	user:SetParent(ss)
-	user:SetAbsPos(Vector(0,1,0))
+	user:SetAbsPos(Vector(0,0.1,0))
 	--if user.model then user.model:SetUpdateRate(10) end
 	--ModNodeMaterials(user,{FullbrightMode=true},false,true)
 	ModNodeMaterials(user,{
-		ssao_mul=0, 
-		LightwarpEnabled =1,
-		g_LightwarpTexture="textures/warp/lw_soft.dds"
+		FullbrightMode=true,
+		outline=1,
+		brightness=0.2
+		--ssao_mul=0, 
+		--LightwarpEnabled =1,
+		--g_LightwarpTexture="textures/warp/lw_soft.dds"
 	},false,true)--,g_LightwarpTexture="models/renamon/tex/lw.dds",LightwarpEnabled=1},false,true)
 end 
 function ENT:CFR(user,ss)
 	user:SetParent(ss:GetParent())
-	user:SetAbsPos(ss:GetAbsPos()+Vector(0,1,0))
-	if user.model then user.model:SetUpdateRate(60) end
+	user:SetAbsPos(ss:GetAbsPos()+Vector(0,0.1,0))
+	--if user.model then user.model:SetUpdateRate(60) end
 	ModNodeMaterials(user,{
-		ssao_mul=1,
-		g_LightwarpTexture="",
-		LightwarpEnabled =0,
+		ssao_mul=1, 
 		FullbrightMode=false,
+		outline=0,
+		brightness=1
 	
 	},true,true)
 end 
 function ENT:GetSpawn() 
 	local space = self.space
  
-	--local space2 = ents.Create()
-	--space2:SetLoadMode(1)
-	--space2:SetSeed(9900033)
-	--space2:SetPos(Vector(0.00748269, 0.0012758673, 0.003352003))
-	--space2:SetParent(space) 
-	--space2:SetSizepower(1000)
-	--space2:SetGlobalName("u1_room.space2")
-	--space2:SetScale(Vector(0.0005, 0.1, 0.1))
-	--space2:SetSpaceEnabled(false)
-	--space2:Spawn()  
-	--local sspace = space2:AddComponent(CTYPE_PHYSSPACE)  
-	--sspace:SetGravity(Vector(0,-2,0))
-	--space2.space = sspace
-	--self.space2 = space2
-	--
-	--local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75) 
-	--
-	--instr:AddEventListener(EVENT_USE,"use_event",function(s,user) 
-	--	self:CFR(user,space2)
-	--end)
-	--instr:AddFlag(FLAG_USEABLE) 
-	--
-	--space2:AddEventListener(EVENT_USE,"use_event",function(s,user)
-	--	self:CTO(user,space2)
-	--end)
-	--space2:AddFlag(FLAG_USEABLE) 
+	
+	local space2 = ents.Create()
+	space2:SetLoadMode(1)
+	space2:SetSeed(9900033)
+	space2:SetPos(Vector(0.00748269, 0.0012758673, 0.003352003))
+	space2:SetParent(space) 
+	space2:SetSizepower(1000)
+	space2:SetGlobalName("u1_room.space2")
+	space2:SetScale(Vector(0.0005, 0.4, 0.4))
+	space2:SetSpaceEnabled(false)
+	space2:Spawn()  
+	local sspace = space2:AddComponent(CTYPE_PHYSSPACE)  
+	sspace:SetGravity(Vector(0,-2,0))
+	space2.space = sspace
+	self.space2 = space2
+	
+	local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75/4) 
+	instr.model:SetMaterial("textures/gui/test.json")
+	
+	instr:AddEventListener(EVENT_USE,"use_event",function(s,user) 
+		self:CFR(user,space2)
+	end)
+	instr:AddFlag(FLAG_USEABLE) 
+	
+	space2:AddEventListener(EVENT_USE,"use_event",function(s,user)
+		self:CTO(user,space2)
+	end)
+	space2:AddFlag(FLAG_USEABLE) 
+
+
+
 
 	local c = SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
 	local cc = c:GetComponent(CTYPE_STORAGE)

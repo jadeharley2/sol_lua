@@ -1,5 +1,8 @@
 PANEL.basetype = "window"
 
+GLOBAL_CEQPANEL = false 
+
+
 function PANEL:Init()
 	--PrintTable(self)
 	self.fixedsize = true
@@ -27,6 +30,7 @@ end
 function PANEL:Set(actor) 
 	self.stats:Set(actor) 
 	self.equip:Set(actor)
+	GLOBAL_CEQPANEL = self.equip
 end
 
 function PANEL:MouseDown() 

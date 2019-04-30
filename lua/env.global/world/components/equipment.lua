@@ -122,6 +122,15 @@ function component:TransferItem(from_slot,to,to_id,count)
 		end
 	end
 end
+function component:GetParts()
+	local el = {}
+	for k,v in pairs(self.list) do
+		if v and v.entity and IsValidEnt(v.entity) then 
+			el[#el+1] = v.entity
+		end
+	end
+	return el
+end 
 
 function component:ToData()
 	local list = self.list
@@ -179,9 +188,26 @@ function component:_clear()
 	end
 	self.list = {}
 end
-function component:_unequipslot(slot) 
+function component:_unequipslot(slot)   
+	local node = self:GetNode()
 	local eqslt = self.list[slot] 
 	if eqslt and eqslt.entity and IsValidEnt(eqslt.entity) then 
+		local e = eqslt.entity
+
+		local unhideray = e.hideby
+		if unhideray then
+			local spp = node.spparts
+			if spp then
+				for k,v in pairs(unhideray) do
+					local nn = spp[v]
+					if nn then
+						nn:UnhideBy(e) 
+					end
+				end
+			end
+		end
+
+
 		eqslt.entity:Despawn()
 		eqslt.entity = nil
 		eqslt.data = nil
@@ -218,6 +244,23 @@ function component:_equip(data,nosave)
 					if CLIENT then
 						node:EmitSound("physics/cloth/rustle_0"..table.Random({1,2,3,4,5,6})..".ogg",1)
 					end 
+ 
+
+					local hide = formdata.hide
+					if hide then
+						self.hideray = self.hideray or {}
+
+						local spp = node.spparts
+						if spp then
+							for k,v in pairs(hide) do 
+								local nn = spp[v]
+								if nn then
+									nn:HideBy(e) 
+								end
+							end
+							e.hideby = hide
+						end
+					end
 				end
 			end
 		end

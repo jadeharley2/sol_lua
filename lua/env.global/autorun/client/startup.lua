@@ -140,6 +140,7 @@ function LoadWorld(id,savedgamestate,onComplete,onFail)
 					MsgN("[WORLD] load complete")
 					if onComplete then onComplete(U,origin,pos) end
 					hook.Call("engine.location.loaded", cam,"local")
+					
 				end) 
 				hook.Add("world.load.error","spawner",function() 
 					hook.Remove("world.load.error","spawner") 
@@ -336,6 +337,7 @@ function SpawnPlayerChar(posoverride)
 			ship = playeractor:GetParent()
 			--SHADOW = CreateTestShadowMapRenderer(ship,Vector(0.002456535,0.02487438,0.3199512))
 		--end
+		hook.Call("player.onspawn",playeractor)
 	else
 		MsgN("ERROR: PLAYER ACTOR NOT FOUND!")
 	end

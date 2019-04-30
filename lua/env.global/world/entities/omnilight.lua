@@ -11,7 +11,7 @@ function ENT:Spawn(c)
 
 	local light = self:AddComponent(CTYPE_LIGHT)  
 	light:SetColor(scolor)
-	light:SetBrightness(10) 
+	light:SetBrightness(brightness) 
 	self.light = light
 	
 	
@@ -41,7 +41,7 @@ function ENT:Spawn(c)
 	particlesys:AddNode(1) 
 	particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
 	particlesys:SetTexture(1,rdtex)
-	particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness,10,0) 
+	particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.01,10,0) 
 	particlesys:SetMaxRenderDistance(1000)
 	
 	self.particlesys = particlesys 
@@ -52,13 +52,22 @@ function ENT:Spawn(c)
 	--end)
 	--self:AddFlag(FLAG_USEABLE)
 end
+function ENT:Load()
+	local scolor = self[VARTYPE_COLOR] or Vector(1,1,1)
+	local brightness = self:GetParameter(VARTYPE_BRIGHTNESS) or 1
+	local light = self.light or self:AddComponent(CTYPE_LIGHT)  
+	light:SetColor(scolor)
+	light:SetBrightness(brightness) 
+	self.light = light
+	
+end
 
 
 function ENT:SetColor(c) 
 	self:SetParameter(VARTYPE_COLOR,c)
 	self.light:SetColor(c) 
 	local brightness = self:GetParameter(VARTYPE_BRIGHTNESS) or 1
-	self.particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness,10,0) 
+	self.particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.1,10,0) 
 end
 function ENT:SetBrightness(c) 
 	self:SetParameter(VARTYPE_BRIGHTNESS,c)

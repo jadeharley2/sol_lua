@@ -13,8 +13,13 @@
 			"name" : null,
 			"position" : [0.00737584196031094, 0.00178500567562878, -0.00196496467106044, "vec3"],
 			"rotation" : [-0.50987046957016, 0.473586142063141, 0.520513534545898, 0.4947869181633, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "ERROR",
 			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/common/painting_darkness.json"
 		},
@@ -34,8 +39,13 @@
 			"name" : null,
 			"position" : [0.0072858021594584, 0.0032626788597554, -0.00209194095805287, "vec3"],
 			"rotation" : [-0.522722721099854, 0.485806286334991, 0.507605195045471, 0.482793658971787, "quat"],
-			"scale" : [1.13940536975861, 0.932498395442963, 1.54532968997955, "vec3"], 
+			"scale" : [1.13940536975861, 0.932498395442963, 1.54532968997955, "vec3"],
+			"mass" : 0,
+			"model" : "ERROR",
 			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/common/painting_darkness.json"
 		},
@@ -55,8 +65,13 @@
 			"name" : null,
 			"position" : [0.0340233445167542, 0.00634395144879818, 0.0220993962138891, "vec3"],
 			"rotation" : [-0.494371712207794, -0.504777729511261, 0.505565524101257, 0.495176374912262, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "dyntest/sdm/furn/painting01_square.dnmd",
 			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/common/painting_orb.json"
 		},
@@ -76,12 +91,13 @@
 			"name" : null,
 			"position" : [0.0346507951617241, 0.00399999925866723, 0.0205170977860689, "vec3"],
 			"rotation" : [0, -0.227977529168129, 0, 0.973666369915009, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/furn/chair01.dnmd",
 			"modelscale" : 0.75,
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/chair01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -97,12 +113,13 @@
 			"name" : null,
 			"position" : [0.0335773341357708, 0.00399999925866723, 0.0212031472474337, "vec3"],
 			"rotation" : [0, -0.677971959114075, 0, 0.735087931156158, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/furn/chair01.dnmd",
 			"modelscale" : 0.75,
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/chair01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -118,8 +135,13 @@
 			"name" : null,
 			"position" : [0.0349817983806133, 0.00399999832734466, 0.0146272145211697, "vec3"],
 			"rotation" : [0, 0.706824958324432, 0, 0.70738822221756, "quat"],
-			"scale" : [1.64902198314667, 1, 1, "vec3"], 
+			"scale" : [1.64902198314667, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/table01.json"
 		},
@@ -139,12 +161,13 @@
 			"name" : null,
 			"position" : [0.0346507951617241, 0.00399999925866723, 0.0190482884645462, "vec3"],
 			"rotation" : [0, 0, 0, 1, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/furn/chair01.dnmd",
 			"modelscale" : 0.75,
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/chair01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -160,12 +183,13 @@
 			"name" : null,
 			"position" : [0.0326813794672489, 0.00399999925866723, 0.0201019681990147, "vec3"],
 			"rotation" : [0, -0.942488789558411, 0, 0.334237664937973, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"model" : "forms/levels/sdm/furn/chair01.dnmd",
 			"modelscale" : 0.75,
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/chair01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -179,10 +203,15 @@
 			"seed" : 11000016,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0335430838167667, 0.00399999925866723, 0.0196319073438644, "vec3"],
-			"rotation" : [0, 0.685288608074188, 0, 0.728271543979645, "quat"],
-			"scale" : [1, 1, 1, "vec3"],  
+			"position" : [0.0286903530359268, 0.00399999972432852, -0.00452085258439183, "vec3"],
+			"rotation" : [0, 0.706825017929077, 0, 0.70738822221756, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/table01.json"
 		},
@@ -200,14 +229,19 @@
 			"seed" : 11000018,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0349205732345581, 0.00484181893989444, 0.0151318190619349, "vec3"],
-			"rotation" : [0, -0.539631962776184, 0, 0.841900885105133, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0195610672235489, -221.746856689453, 0.00852352846413851, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -130.490814208984, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_book.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -221,14 +255,19 @@
 			"seed" : 11000008,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0352498590946198, 0.00475048460066319, 0.0140488054603338, "vec3"],
-			"rotation" : [0, -0.713864088058472, 0, 0.700284898281097, "quat"],
-			"scale" : [1.02095806598663, 1, 1.06867730617523, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0189945697784424, -221.760406494141, 0.00821854546666145, "vec3"],
+			"rotation" : [-0.260413706302643, -0.0518188960850239, 0.760070562362671, 0.593120694160461, "quat"],
+			"scale" : [1.02095806598663, 1, 1.06867730617523, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [-0.000537724350579083, -130.489929199219, -0.00019719717965927, "vec3"],
+			"angvelocity" : [-2.38797065454932E-10, -4.75624782614315E-11, 6.96939117528217E-10, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_book_red.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -242,14 +281,19 @@
 			"seed" : 11000009,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0351666249334812, 0.00475048460066319, 0.0142935980111361, "vec3"],
-			"rotation" : [0, -0.841471374034882, 0, 0.540302455425262, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0200844947248697, -221.764953613281, 0.00752818211913109, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -130.488006591797, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_book_red.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -263,14 +307,19 @@
 			"seed" : 11000010,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0349205732345581, 0.00475087994709611, 0.0151318190619349, "vec3"],
-			"rotation" : [0, -0.526943266391754, 0, 0.849900364875793, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0196575224399567, -221.774078369141, 0.00848384201526642, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -130.487594604492, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_book.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -284,14 +333,19 @@
 			"seed" : 11000017,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0349205732345581, 0.00479773711413145, 0.0151318190619349, "vec3"],
-			"rotation" : [0, -0.543834745883942, 0, 0.83919221162796, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0202509872615337, -221.759078979492, 0.00872117094695568, "vec3"],
+			"rotation" : [-0.23080413043499, -0.0397539362311363, 0.750352740287781, 0.618158340454102, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/book.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0.000537724350579083, -130.488525390625, 0.00019719717965927, "vec3"],
+			"angvelocity" : [-2.09463016376255E-10, -3.60468668803016E-11, 6.81016132375589E-10, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_book.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -307,12 +361,17 @@
 			"name" : null,
 			"position" : [0.0313527174293995, 0.00399999972432852, 0.0216226205229759, "vec3"],
 			"rotation" : [0, -0.99999988079071, 0, 0.000796411477494985, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -328,12 +387,17 @@
 			"name" : null,
 			"position" : [0.030186016112566, 0.00399999925866723, 0.0216865744441748, "vec3"],
 			"rotation" : [0, -0.999957621097565, 0, -0.00920365378260612, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard_small01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard_small01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -349,12 +413,17 @@
 			"name" : null,
 			"position" : [0.0352270528674126, 0.00399999972432852, 0.0165665969252586, "vec3"],
 			"rotation" : [0, -0.706825196743011, 0, 0.707388460636139, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard_small01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard_small01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -370,12 +439,17 @@
 			"name" : null,
 			"position" : [0.0352415554225445, 0.00399999972432852, 0.0126847997307777, "vec3"],
 			"rotation" : [0, -0.706825137138367, 0, 0.70738822221756, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard_small01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard_small01.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -391,12 +465,17 @@
 			"name" : null,
 			"position" : [0.0314320884644985, 0.00399999972432852, 0.00662732264026999, "vec3"],
 			"rotation" : [0, 0, 0, 1, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard03.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard03.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -412,12 +491,17 @@
 			"name" : null,
 			"position" : [0.0300660505890846, 0.00399999972432852, 0.00873604323714972, "vec3"],
 			"rotation" : [0, 0.696134865283966, 0, 0.717910468578339, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard02.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/cupboard02.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["useable", "editornode"]
 	},
 
 	{
@@ -433,8 +517,13 @@
 			"name" : null,
 			"position" : [0.0300952047109604, 0.00399999972432852, 0.0110866595059633, "vec3"],
 			"rotation" : [0, -0.713863372802734, 0, 0.700284838676453, "quat"],
-			"scale" : [0.790267586708069, 1, 0.827664375305176, "vec3"], 
+			"scale" : [0.790267586708069, 1, 0.827664375305176, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
 			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/table01.json"
 		},
@@ -454,8 +543,13 @@
 			"name" : null,
 			"position" : [0.0355399996042252, 0.00623403349891305, 0.0204534810036421, "vec3"],
 			"rotation" : [-0.50189882516861, 0.507247388362885, 0.498093634843826, 0.492645829916, "quat"],
-			"scale" : [1.35138928890228, 1, 1.50460433959961, "vec3"], 
+			"scale" : [1.35138928890228, 1, 1.50460433959961, "vec3"],
+			"mass" : 0,
+			"model" : "ERROR",
 			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/common/painting_lake.json"
 		},
@@ -475,8 +569,13 @@
 			"name" : null,
 			"position" : [0.0341349914669991, 0.00617942959070206, 0.00822582934051752, "vec3"],
 			"rotation" : [-0.313378095626831, 0.630252122879028, 0.633780658245087, 0.32077693939209, "quat"],
-			"scale" : [1.81970632076263, 1, 1.57015311717987, "vec3"], 
+			"scale" : [1.81970632076263, 1, 1.57015311717987, "vec3"],
+			"mass" : 0,
+			"model" : "ERROR",
 			"modelscale" : 1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/common/painting_mountainside2.json"
 		},
@@ -494,14 +593,19 @@
 			"seed" : 11000026,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0298337526619434, 0.00471502263098955, 0.0115238055586815, "vec3"],
+			"position" : [0.0167814865708351, -221.636413574219, 0.00648214062675834, "vec3"],
 			"rotation" : [0, 0, 0, 1, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/bowl_c.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -130.467819213867, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_bowl_c.json"
 		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -515,35 +619,19 @@
 			"seed" : 11000027,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.029787689447403, 0.0051208883523941, 0.0088485162705183, "vec3"],
-			"rotation" : [0, 0.807558059692383, 0, 0.589788138866425, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 0.0299999993294477,
+			"position" : [0.0167949609458447, -13.2053699493408, 0.00470558041706681, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 1,
+			"model" : "clutter/lab/mug_a.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, -130.467407226563, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/clutter/clut_lab_mug_a.json"
 		},
-		"flags" : ["editornode"]
-	},
-
-	{
-		"sizepower" : 1,
-		"seed" : 11000029,
-		"updatespace" : 0,
-		"parameters" : 
-		{
-			"type" : 0,
-			"typename" : "none",
-			"seed" : 11000029,
-			"abssize" : 1,
-			"name" : null,
-			"position" : [0.0297572016716003, 0.00644530076533556, 0.0101137850433588, "vec3"],
-			"rotation" : [0, 0.0165915917605162, 0, -0.999862253665924, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
-			"modelscale" : 1.2,
-			"luaenttype" : "prop_variable",
-			"form" : "forms/props/furniture/sdm/lamp01.json"
-		},
-		"flags" : ["editornode"]
+		"flags" : ["storeable", "editornode"]
 	},
 
 	{
@@ -557,14 +645,19 @@
 			"seed" : 11000030,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0353281684219837, 0.00644530076533556, 0.0191053599119186, "vec3"],
+			"position" : [-0.0236556921154261, 0.00644530076533556, -0.031340703368187, "vec3"],
 			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -578,14 +671,19 @@
 			"seed" : 11000031,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0295530706644058, 0.00644530076533556, 0.0208855196833611, "vec3"],
+			"position" : [-0.0274421740323305, 0.00635441765189171, -0.0229114051908255, "vec3"],
 			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -599,14 +697,19 @@
 			"seed" : 11000032,
 			"abssize" : 1,
 			"name" : null,
-			"position" : [0.0295443721115589, 0.00644530076533556, 0.0133148739114404, "vec3"],
-			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"position" : [0.035523347556591, 0.00644530076533556, -0.0171422511339188, "vec3"],
+			"rotation" : [0, 0.999898552894592, 0, -0.0142033156007528, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -622,8 +725,13 @@
 			"name" : null,
 			"position" : [-0.00294627645052969, 0.00402781181037426, 0.00712104141712189, "vec3"],
 			"rotation" : [0, -0.553526401519775, 0, -0.832831025123596, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
@@ -643,12 +751,17 @@
 			"name" : null,
 			"position" : [-0.00711845746263862, 0.00402781181037426, 0.00295479013584554, "vec3"],
 			"rotation" : [0, 0.208459839224815, 0, 0.978030622005463, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -664,12 +777,17 @@
 			"name" : null,
 			"position" : [-0.00711590191349387, 0.00402781181037426, -0.00295338593423367, "vec3"],
 			"rotation" : [0, -0.198669239878654, 0, 0.980066001415253, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -685,12 +803,17 @@
 			"name" : null,
 			"position" : [-0.00294153857976198, 0.00402781181037426, -0.00711800251156092, "vec3"],
 			"rotation" : [0, -0.552199065685272, 0, 0.833711862564087, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -706,12 +829,17 @@
 			"name" : null,
 			"position" : [0.00295395031571388, 0.00402781181037426, -0.00711934315040708, "vec3"],
 			"rotation" : [0, -0.830496728420258, 0, 0.557022333145142, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -727,12 +855,17 @@
 			"name" : null,
 			"position" : [0.00712421676144004, 0.00402781181037426, -0.00294453324750066, "vec3"],
 			"rotation" : [0, -0.979907274246216, 0, 0.199449762701988, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -748,12 +881,17 @@
 			"name" : null,
 			"position" : [0.0071167778223753, 0.00402781181037426, 0.0029504899866879, "vec3"],
 			"rotation" : [0, -0.980223715305328, 0, -0.19788846373558, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
 	},
 
 	{
@@ -769,11 +907,874 @@
 			"name" : null,
 			"position" : [0.00294766458682716, 0.00402781181037426, 0.00711958762258291, "vec3"],
 			"rotation" : [0, -0.834150969982147, 0, -0.551534712314606, "quat"],
-			"scale" : [1, 1, 1, "vec3"], 
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
 			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
 			"luaenttype" : "prop_variable",
 			"form" : "forms/props/furniture/sdm/lamp01.json"
 		},
-		"flags" : ["editornode", "editornode"]
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000004,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000004,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0400383919477463, 0.00644530169665813, 0.0228372775018215, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000005,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000005,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0287837814539671, 0.00644530076533556, -0.00152076850645244, "vec3"],
+			"rotation" : [0, 0.999898552894592, 0, -0.0142033156007528, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000006,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000006,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0287873987108469, 0.00644530076533556, 0.00155040377285331, "vec3"],
+			"rotation" : [0, 0.999898552894592, 0, -0.0142033156007528, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000007,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000007,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0295443721115589, 0.00644530076533556, 0.0133148739114404, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000008,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000008,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.019428052008152, 0.00644530169665813, 0.0123148765414953, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000009,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000009,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0274464637041092, 0.00644530169665813, 0.0229119174182415, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000010,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000010,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0245318599045277, 0.00644530169665813, 0.0229103323072195, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000011,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000011,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0323778726160526, 0.00644530169665813, 0.0229160524904728, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000012,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000012,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0175325889140368, 0.00644530169665813, 0.0229168478399515, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000013,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000013,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00499928276985884, 0.00644530169665813, 0.022913035005331, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000014,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000014,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00470869336277246, 0.00644530169665813, 0.0229119919240475, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000015,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000015,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0122111281380057, 0.00644530169665813, 0.0229198522865772, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000016,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000016,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0196867231279612, 0.00644530169665813, 0.0229130890220404, "vec3"],
+			"rotation" : [0, 0.714977920055389, 0, -0.699147284030914, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000017,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000017,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0297572016716003, 0.00644530076533556, 0.0101137850433588, "vec3"],
+			"rotation" : [0, 0.0165915917605162, 0, -0.999862253665924, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000018,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000018,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0353281684219837, 0.00644530076533556, 0.0191053599119186, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000019,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000019,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236565191298723, 0.00644530076533556, 0.0185768157243729, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000020,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000020,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236471071839333, 0.00644530076533556, 0.0115294549614191, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000021,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000021,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236437749117613, 0.00644530076533556, 0.00402635987848043, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000022,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000022,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236441772431135, 0.00644530076533556, -0.00198930688202381, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000023,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000023,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236533395946026, 0.00644530076533556, -0.00801417138427496, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000024,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000024,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0236538890749216, 0.00644530076533556, -0.0150161692872643, "vec3"],
+			"rotation" : [0, 0.999983191490173, 0, 0.00579618709161878, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000025,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000025,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0295696873217821, 0.00635441765189171, 0.0208889860659838, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000026,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000026,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0285459104925394, 0.00635441765189171, -0.0229025036096573, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000027,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000027,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0361955687403679, 0.00635441765189171, -0.0229157470166683, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000028,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000028,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0245654918253422, 0.00635441765189171, -0.0229174457490444, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000029,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000029,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0175425820052624, 0.00635441765189171, -0.0229108557105064, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000030,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000030,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.00498423120006919, 0.00635441765189171, -0.0229131318628788, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000031,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000031,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.00474610738456249, 0.00635441765189171, -0.0229151286184788, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000032,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000032,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0122359888628125, 0.00635441765189171, -0.0229125116020441, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000033,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000033,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0196943543851376, 0.00635441765189171, -0.0229126382619143, "vec3"],
+			"rotation" : [0, 0.713863670825958, 0, 0.700284779071808, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/lamp01.dnmd",
+			"modelscale" : 1.2,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/lamp01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000037,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000037,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0335430838167667, 0.00399999925866723, 0.0196319073438644, "vec3"],
+			"rotation" : [0, 0.685288608074188, 0, 0.728271543979645, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/table01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000038,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000038,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.0284962505102158, 0.00399999972432852, 0.0047521167434752, "vec3"],
+			"rotation" : [0, 0.706825017929077, 0, 0.70738822221756, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/table01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000034,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000034,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [0.028424670919776, 0.00399999879300594, 0.00929257180541754, "vec3"],
+			"rotation" : [0, -0.710353493690491, 0, 0.7038454413414, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard02.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/cupboard02.json"
+		},
+		"flags" : ["useable", "editornode"]
 	}
 ]

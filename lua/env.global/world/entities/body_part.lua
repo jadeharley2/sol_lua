@@ -39,6 +39,56 @@ function ENT:Spawn()
 		end
 	end
 end
+function ENT:SetVisible(v)
+	self.model:Enable(v or false)
+end
+
+function ENT:ForceVisible(v)
+	if v then
+		self.model:Enable(true)
+	else
+		self:UpdateVisibility()
+	end
+end
+function ENT:ForceInvisible(v)
+	if v then
+		self.model:Enable(false)
+	else
+		self:UpdateVisibility()
+	end
+end
+function ENT:UpdateVisibility()
+	local hideray = self.hideray
+	if hideray then  
+		if hideray:Count()==0 then
+			self.model:Enable(true) 
+		else
+			self.model:Enable(false)
+		end 
+	else
+		self.model:Enable(true)
+	end
+end
+
+function ENT:HideBy(v)
+	local hideray = self.hideray or Set()
+	self.hideray = hideray
+	hideray:Add(v) 
+	self.model:Enable(false)
+end
+function ENT:UnhideBy(v)
+	local hideray = self.hideray
+	if hideray then
+		hideray:Remove(v) 
+		if hideray:Count()==0 then
+			self.model:Enable(true)
+		end
+	else
+		hideray = Set()
+		self.hideray = hideray
+		self.model:Enable(true)
+	end
+end
 
 function ENT:SetModel(mdl,scale) 
 	scale = scale or 1 

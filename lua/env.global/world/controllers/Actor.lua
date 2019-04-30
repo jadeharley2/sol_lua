@@ -1026,11 +1026,11 @@ function OBJ:SwitchToFirstperson(actor)
 			end
 		end
 	else
-		if actor.spparts then
-			if actor.spparts.hair then
-				actor.spparts.hair.model:Enable(false)
-			end
-		end
+		--if actor.spparts then
+		--	if actor.spparts.hair then
+		--		actor.spparts.hair.model:Enable(false)
+		--	end
+		--end
 	end
 	actor.model:SetHideHead(true)
 	
@@ -1043,11 +1043,11 @@ function OBJ:SwitchToThirdperson(actor)
 		actor.model:Enable(true)
 		actor.model:SetHideHead(false)
 		
-		if actor.spparts then
-			for k,v in pairs(actor.spparts) do
-				v.model:Enable(true)
-			end
-		end
+	--	if actor.spparts then
+	--		for k,v in pairs(actor.spparts) do
+	--			v.model:Enable(true)
+	--		end
+	--	end
 		--if actor.equipment then
 		--	for k,v in pairs(actor.equipment) do
 		--		if v.ent then

@@ -1,4 +1,3 @@
- 
 
 function PANEL:Init() 
 	self:SetColor(Vector(0,0,0))
@@ -29,6 +28,7 @@ function PANEL:Set(actor)
 	local xgrid = self.xgrid
 
 	xfloater:Clear()
+	self.slots = {}
 
 	--local asp = actor.species 
 	self:AddGroup("ALL")
@@ -56,54 +56,68 @@ function PANEL:AddGroup(text)
 	self.inner:Add(r)
 end
 
+function PANEL:EquipItem(itempanel) 
+	local item = itempanel.item
+	local sourceslot = itempanel.storeslot
+	local node = self.actor  
+	local data = item.data 
+	--local self_slot = self.slotkey 
+	local item_slot = data:Read("/parameters/slot") or 0
+	local slotpanel = self.slots[item_slot]
+	if slotpanel then
+		MsgN("ee")
+		node:SendEvent(EVENT_EQUIP,data) 
+		if sourceslot then
+			MsgN("UUUUU",sourceslot)
+			node:SendEvent(EVENT_ITEM_TAKEN,sourceslot) 
+		end
+		if itempanel then
+			local iprt = itempanel:GetParent()
+			if iprt then
+				iprt:Remove(itempanel)
+			end
+			itempanel:Close() 
+			if slotpanel.item then
+				local II = slotpanel.item
+				local ls = itempanel.lastSlot
+				ls.item = II 
+				II.currentSlot = ls
+				ls:Add(II)
+				II:Dock(DOCK_FILL)
+				ls:UpdateLayout()
+				II:SetPos(0,0)
+			end
+			slotpanel.item = item 
+			itempanel.currentSlot = slotpanel
+			itempanel.storeslot = slotpanel
+			slotpanel:Add(itempanel)
+			itempanel:Dock(DOCK_FILL)
+			slotpanel:UpdateLayout()
+			itempanel:SetPos(0,0) 
+
+	
+			itempanel.storage = node.equipment
+			itempanel.storeslot = item_slot 
+
+			return true
+		end 
+	end
+end
+
 local slotOnDrop = function(self,item)
-	local equipment = self.parenteq
-	local node = equipment.actor
-	local equipment = node.equipment
+	local equipment = self.parenteq 
 	local storage = item.storage
 	local slot = item.storeslot
 	local data = storage:GetItemData(slot)
 	if data then
-		local self_slot = self.slotkey 
-		local item_slot = data:Read("/parameters/slot") or 0
-		if self_slot==item_slot then
-			MsgN("ee")
-			node:SendEvent(EVENT_EQUIP,data) 
-			node:SendEvent(EVENT_ITEM_TAKEN,slot) 
-			if item then
-				item:Close() 
-				if self.item then
-					local II = self.item
-					local ls = item.lastSlot
-					ls.item = II 
-					II.currentSlot = ls
-					ls:Add(II)
-					II:Dock(DOCK_FILL)
-					ls:UpdateLayout()
-					II:SetPos(0,0)
-				end
-				self.item = item 
-				item.currentSlot = self
-				self:Add(item)
-				item:Dock(DOCK_FILL)
-				self:UpdateLayout()
-				item:SetPos(0,0) 
-
-		
-				item.storage = equipment
-				item.storeslot = item_slot 
-
-				return true
-			end 
-		end
-	end
-	MsgN("nn")
-	if item then
-		item:Close() 
-		local ls = item.lastSlot
-		ls:Add(item)
-		ls:UpdateLayout()
-	end
+		equipment:EquipItem(item)
+	end 
+	--if item then
+	--	item:Close() 
+	--	local ls = item.lastSlot
+	--	ls:Add(item)
+	--	ls:UpdateLayout()
+	--end
 	return false
 end
 
@@ -126,6 +140,7 @@ function PANEL:AddSlot(text,slotkey)
 	slot.parenteq = self
 	slot.slotkey = slotkey
 	r:Add(slot)
+	self.slots[slotkey] = slot
 
 	if equipped then
 		--MsgN(slotkey,equipped)

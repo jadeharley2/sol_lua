@@ -10,7 +10,7 @@
 		"$leg.height" : 0.1,
 		"$mat.primary" : "Wood07.json",
 		"$mat.secondary" : "concrete06b.json",
-	},
+	}, 
 	operations : [ 
 		
 		//anchors

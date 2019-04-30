@@ -492,7 +492,7 @@ function editor:Copy(ent)
 	ent:CopyFlags(ne)
 	ent:CopyParameters(ne)
 	ne:SetSeed(uid) 
-MsgN("asasd?")
+	--MsgN("asasd?")
 	hook.Call("EditorNodeCopy",ent,ne)
 	return ne
 end

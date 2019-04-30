@@ -31,14 +31,23 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []
 		}
-	],
+	], 
+	
 	"definition" :
 	{
 		"autoCameraMatrix" : 1,
-		"autoSkin" : 1,
+		"autoSkin" : 1, 
+		"description":"eye shader",
 		"variables" : [
-			{ "name":"g_MeshTexture", "type":"texture"},
-			{"name":"eyeScale","type":"float"}
-		]
+			{"name":"g_MeshTexture",   "type":"texture", 					"description":"diffuse texture path"}, 
+			{"name":"g_IrisTexture",   "type":"texture", 					"description":"iris texture path"}, 
+			{"name":"g_MeshTexture_e", "type":"texture", "default":"", 		"description":"emissive texture path"}, 
+			{"name":"g_IrisTexture_e", "type":"texture", "default":"", 		"description":"iris emissive texture path"}, 
+			{"name":"emissive_mul",    "type":"float", 	 "default":1, 		"description":"emissive power"}, 
+			{"name":"eyeId",    	   "type":"int",    					"description":"eye index"}, 
+			{"name":"eyeScale",    	   "type":"float",   "default":1, 		"description":"eye scale"}, 
+			{"name":"flipuv",    	   "type":"vector2", "default":[1,1], 	"description":"texture coords multiplier"}, 
+			
+		],
 	}
 }            

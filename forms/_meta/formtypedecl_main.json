@@ -55,6 +55,12 @@
 			"name":"anchor", 		
 			"shortname":"ANCH", 	
 			"directory":"anchors"
+		}, 
+		{
+			"name":"itemset", 		
+			"shortname":"ISET", 	
+			"directory":"itemset", 
+			"recursive":true
 		}
 	]
 }

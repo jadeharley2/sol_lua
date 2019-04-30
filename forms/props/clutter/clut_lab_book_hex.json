@@ -11,5 +11,6 @@
 	],
 	"phys" : true,
 	"mass" : 1,
+	"icon" : "lab/book",
 	
 }

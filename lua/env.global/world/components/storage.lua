@@ -143,6 +143,30 @@ end
 				hook.Call("event.inventory.update",self,actor)
 ]]
 
+function component:AddFormItem(ftype,fname) -- local function
+	local index = self:GetFreeSlot();
+	if not self.list[index] then
+		local p = false
+		if fname then
+			p = forms.GetForm(ftype,fname)
+		else
+			p = forms.GetForm(ftype)
+		end 
+		if p then
+			local data = false
+			if(string.starts(ftype,"apparel"))then
+				data = ItemIA(p,GetFreeUID())--apparel
+			else
+				data = ItemPV(p,GetFreeUID())--prop
+			end
+			if data then
+				self.list[index] = {data = data, count = 1} 
+				return true 
+			end
+		end
+	end
+	return false
+end
 function component:PutItem(index,item) -- local function
 	if not self.list[index] then
 		if item and IsValidEnt(item) then

@@ -99,7 +99,7 @@
 			amount : 0.001, 
 			extrude : -0.02,  
 		},     
-		
+		 
 		{type:"frotate",in:"s2f_doors",add:"@($i*2+1)"},
 		{ 	type : "structure", out : "cupdoors",
 			path : "parts/cupdoor.dnmd",

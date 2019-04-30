@@ -7,6 +7,9 @@
 	//"phys" : true,
 	//"mass" : 20,  
 	"container":{ 
-		"size":20
+		"size":20,
+		"itemsets" :{
+			"sdm_clutter" : { "mode":"oneof", "chance":50 }
+		},
 	}
 }

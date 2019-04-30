@@ -33,3 +33,26 @@ function math.fix(num,def)
 		return def
 	end 
 end  
+
+function math.mean(a,...) 
+  local r = a
+  if(type(a)~='table') then
+    r = {a,...} 
+  end
+  local m = 0
+  local c = 0
+  for k,v in pairs(r) do
+    m=m+v
+    c=c+1
+  end
+  return m/c
+end
+ 
+function math.counts(r)  
+  local rez = {}
+  for k,v in pairs(r) do
+    rez[v] = (rez[v] or 0) + 1
+  end
+  return rez
+end
+ 

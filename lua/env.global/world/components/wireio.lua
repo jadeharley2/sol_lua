@@ -2,12 +2,6 @@
 DeclareEnumValue("event","WIRE_SIGNAL",	111234) --EVENT_WIRE_SIGNAL
 
 component.uid = DeclareEnumValue("CTYPE","WIREIO", 1315)
-component.editor = {
-	name = "WireIO",
-	properties = { 
-	},
-	
-}
 
 component._typeevents = { 
 	[EVENT_WIRE_SIGNAL]={networked=true,f = function(self,from,key,value)
@@ -104,3 +98,12 @@ function WireUnLink(to,tname)
 		end
 	end
 end
+
+component.editor = {
+	name = "WireIO",
+	properties = { 
+		inputs = {text = "inputs",type="parameter",valtype="string"},
+		outputs = {text = "outputs",type="parameter",valtype="string"},
+	},
+	
+}

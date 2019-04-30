@@ -107,7 +107,7 @@ function ENT:Spawn()
 		self:Delayed("svh",1000,function()
 			self:SetVehicle(par,1)
 		end)
-	end
+	end 
 end
 function ENT:Load()
 	self:SetPos(self:GetPos())
@@ -599,14 +599,25 @@ function ENT:SetCharacter(id)
 						local bmatdir = data.basematdir
 						for k,v in pairs(data.materials) do
 							local keys = k:split(':') 
-							local bpart = keys[1]
+							local bpart = keys[1] 
 							local id = tonumber( keys[2])
-							
-							local part = self.spparts[bpart]
-							if bpart == "root" then part = self end 
-							if part then  
-								local mat = dynmateial.LoadDynMaterial(v,bmatdir)
-								part.model:SetMaterial(mat,id)
+							if id==nil and bpart == 'mat' then
+								local newmat = dynmateial.LoadDynMaterial(v,bmatdir)
+								for partname,part in pairs(self.spparts) do
+									for matid,matname in pairs(part.model:GetMaterials()) do
+										if string.find(matname,keys[2]) then
+											part.model:SetMaterial(newmat,matid-1)
+										end
+									end
+								end
+
+							else
+								local part = self.spparts[bpart]
+								if bpart == "root" then part = self end 
+								if part then  
+									local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+									part.model:SetMaterial(mat,id)
+								end
 							end
 							
 							--
@@ -1083,6 +1094,12 @@ function ENT:Recall()
 	if self.graph:Call("recall") then 
 	end
 end
+function ENT:EnableGraphUpdate() 
+	self.graph.disabled = nil
+end
+function ENT:DisableGraphUpdate() 
+	self.graph.disabled = true
+end
 function ENT:StartFlight()
 	if self:CanFly() then
 		self.graph:SetState("flight_start")
@@ -1274,7 +1291,7 @@ function ENT:EyeLookAtLerped(dir)
 	end)
 	
 end
-function ENT:SetEyeAngles(pitch,yaw) 
+function ENT:SetEyeAngles(pitch,yaw,forced) 
 	if not math.bad(pitch) then pitch = 0 end
 	if not math.bad(yaw) then yaw = 0 end
 	local m = self.model
@@ -1289,9 +1306,9 @@ function ENT:SetEyeAngles(pitch,yaw)
 	--m:SetPoseParameter("head_yaw",yaw)
 	--m:SetPoseParameter("head_pitch",pitch) 
 	
-	if self:IsReallyMoving() or noeyedelay or (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
+	if forced or self:IsReallyMoving() or noeyedelay or (Point(ha[1],ha[2]):Distance(Point(yaw,pitch))>30) or CurTime()-lms>3 then
 		self.headangles = {yaw,pitch}
-		self.lastheadmove = CurTime()
+		self.lastheadmove = CurTime() 
 	end
 	m:SetPoseParameter("head_yaw",ha[1])
 	m:SetPoseParameter("head_pitch",ha[2]) 

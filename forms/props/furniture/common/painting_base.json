@@ -1,7 +1,7 @@
 {
 	"group" : "furniture",
 	"tags" : ["common","painting"],
-	"model" : "dyntest/sdm/furn/painting01.dnmd", 
+	"model" : "ERROR",//forms/levels/sdm/furn/painting01.dnmd", 
 	"scale" : 1,
 	"rotation" : [90,0,0], 
 }

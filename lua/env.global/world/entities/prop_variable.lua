@@ -19,7 +19,7 @@ function ItemPV(type,seed,modtable)
 	if modtable then table.Merge(modtable,t,true) end
 	return json.ToJson(t)
 end
-function SpawnPV(type,ent,pos,ang)
+function SpawnPV(type,ent,pos,ang,seed)
 	local j = json.Read(type) 
 	if not j then return nil end
 	
@@ -42,6 +42,9 @@ function SpawnPV(type,ent,pos,ang)
 	e:SetSizepower(1)
 	e:SetParent(ent)
 	e:SetPos(pos) 
+	if seed then
+		e:SetSeed(seed)
+	end
 	--if j.modeldata then
 	--	e:SetParameter(VARTYPE_MODELDATA, json.ToJson(j.modeldata))
 	--end
@@ -58,6 +61,11 @@ function ENT:Init()
 	
 end
 function ENT:Load()
+	local compo = self:GetComponents()
+	for k,v in pairs(compo) do
+		self:RemoveComponent(v)
+	end
+
 	self:PreLoadData(true)
 	if not self.data.luatype then
 		local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
@@ -239,6 +247,26 @@ function ENT:PreLoadData(isLoad)
 	end
 end
 
+function ItemsetSpawn(storage,k,v,rnd) 
+	local its = forms.ReadForm('itemset.'..k) 
+	if its then
+		if not v.mode or v.mode == "all" then
+			for kk,vv in pairs(its.subsets) do -- groups 
+				for k3,v3 in pairs(vv) do -- items
+					storage:AddFormItem(v3)
+				end
+			end
+		elseif v.mode == "oneof" then
+			local key = table.RandomKey(its.subsets,rnd)
+			local group = its.subsets[key]   
+			if group then 
+				for k3,v3 in pairs(group) do -- items
+					storage:AddFormItem(v3)
+				end
+			end
+		end
+	end
+end
 function ENT:LoadData()
 	
 	local j = self.data
@@ -259,9 +287,37 @@ function ENT:LoadData()
 		self:AddFlag(FLAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ContainerUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
+
+		--local itemc = r:NextInt(0,3)
+		--local items = table.Keys(forms.GetList("apparel"))
+		--for k=1,itemc do
+		--	local st = table.Random(items)
+		--	storage:AddFormItem("apparel",st)
+		--end
+
+		MsgN("eeeeee",self:GetSeed())
+		local its = j.container.itemsets
+		if its then
+			local r = Random(self:GetSeed()) 
+			for k,v in pairs(its) do 
+				if v.chance then
+					if r:NextInt(0,100)<v.chance then
+						ItemsetSpawn(storage,k,v,r)
+					end
+				else
+					ItemsetSpawn(storage,k,v,r)
+				end
+			end
+		end
+		local its = j.container.items
+		if its then
+			for k,v in pairs(its) do
+				
+			end
+		end
 	end
 	if j.light then 
-		local color = JVector(j.light.color,Vector(1,1,1))
+		local color = self[VARTYPE_COLOR] or JVector(j.light.color,Vector(1,1,1))
 		local brightness = j.light.brightness or 1
 		local light = self:AddComponent(CTYPE_LIGHT)  
 		light:SetColor(color)
@@ -301,7 +357,7 @@ function ENT:LoadData()
 		local rmodel = self.model
 		for k,v in pairs(j.modmaterial) do  
 			local mat = rmodel:GetMaterial(k-1)
-			if not nocopy then
+			if not nocopy and mat then
 				mat = CopyMaterial(mat)
 				rmodel:SetMaterial(mat,k-1)
 			end
