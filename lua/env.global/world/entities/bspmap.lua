@@ -5,21 +5,44 @@ function ENT:Init()
 	self.model = model 
 	local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
 	self.coll = coll 
+
+	local sspace = self:AddComponent(CTYPE_PHYSSPACE)  
+	sspace:SetGravity(Vector(0,-4,0))
+	self.space = sspace
+
+	self:SetSpaceEnabled(false)
 end
 function ENT:Spawn()
 	self:LoadBSP() 
 	self:LoadModel()
+	if CLIENT then
+		self:GenerateNavmesh()
+	end
 	self:LoadEnts()   
+end
+function ENT:GenerateNavmesh()
+	MsgN("[BSP] Nav generation")
+	self:RemoveComponents(CTYPE_NAVIGATION)
+	local nav = self:AddComponent(CTYPE_NAVIGATION) 
+	for k,v in pairs(self:GetChildren()) do  
+		nav:AddStaticMesh(v)
+	end
+	self.nav = nav
 end
 
 function ENT:LoadBSP()
-	local path = "maps/"..self[VARTYPE_FORM]..".bsp"
-	self.bsp = bsp.Load(path,"textures/debug/") 
+	local path = "gmod/maps/"..self[VARTYPE_FORM]..".bsp"
+	MsgN("[BSP] Loading",path)
+	self.bsp = bsp.Load(path,"gmod/materials")--"textures/debug/") 
 end
 
 function ENT:LoadModel() 
 	if not self.bsp then return end
-	self.bsp:GenerateModel("tempbspmap.stmd",false)
+	--self.bsp:GenerateModel("tempbspmap.stmd",false)
+	MsgN("[BSP] Loading resources")
+	self.bsp:MountResources("gmod/")
+	MsgN("[BSP] Map model generation")
+	local mcou = self.bsp:GenerateModels("tempbspmap_",".stmd",false)
 
 	local scale = 0.01905 -- 0.75 * (metres per inch)
 	
@@ -29,25 +52,30 @@ function ENT:LoadModel()
 	self:SetParameter(VARTYPE_MODEL,mdl)
 	self:SetParameter(VARTYPE_MODELSCALE,scale)
 	
-	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel("tempbspmap.stmd")   
-	model:SetBlendMode(BLEND_OPAQUE) 
-	model:SetRasterizerMode(RASTER_DETPHSOLID) 
-	model:SetDepthStencillMode(DEPTH_ENABLED)  
-	model:SetBrightness(1)
-	model:SetFadeBounds(0,9e20,0)  
-	model:SetMatrix(world) 
-	local coll =  self.coll 
-	if(model:HasCollision()) then
-		coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0)) 
-	end 
+	--model:SetRenderGroup(RENDERGROUP_LOCAL)
+	--model:SetModel("tempbspmap.stmd")   
+	--model:SetBlendMode(BLEND_OPAQUE) 
+	--model:SetRasterizerMode(RASTER_DETPHSOLID) 
+	--model:SetDepthStencillMode(DEPTH_ENABLED)  
+	--model:SetBrightness(1)
+	--model:SetFadeBounds(0,9e20,0)  
+	--model:SetMatrix(world) 
+	--local coll =  self.coll 
+	--if(model:HasCollision()) then
+	--	coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0)) 
+	--end 
 	self.modelcom = true
-	self.incol = SpawnSO("tempbspmap.stmd",self,Vector(0,0,0),0.01905)
+	--self.incol = SpawnSO("tempbspmap.stmd",self,Vector(0,0,0),0.01905)
+	MsgN("[BSP] Map model spawn. Total part count:",mcou)
+	for k=0,mcou do
+		SpawnSO("tempbspmap_"..k..".stmd",self,Vector(0,0,0),0.01905)
+	end
 end 
 
 
 function ENT:LoadEnts()
 	if not self.bsp then return end
+	MsgN("[BSP] Entity spawn")
 	local entlist = json.FromJson(self.bsp:GetEntList())
 	for k,v in pairs(entlist) do
 		--Msg(v.classname)
@@ -64,7 +92,20 @@ function ENT:LoadEnts()
 			local clrb = self:GetNumberTable(v._light)
 			local e = self:CreateStaticLight(pos,Vector(clrb[1]/255,clrb[2]/255,clrb[3]/255), clrb[4]/100)
 			e:AddFlag(77723)
-			--SpawnSO("primitives/sphere.stmd",self,pos,0.75) 
+			--SpawnSO("primitives/sphere.stmd",self,pos,0.75)
+		elseif v.classname == "info_node" and false then 
+			local pos = self:GetEntOrigin(v.origin)
+			local e = ents.Create()
+			e:SetPos(pos)-- SpawnSO("primitives/sphere.stmd",self,pos,0.75)
+			e:AddFlag(77723)
+			e:SetSizepower(2)
+			e:SetParent(self)
+			e:SetSpaceEnabled(false)
+			e:Spawn()
+			--debug.ShapeBoxCreate(30300+tonumber(v.nodeid),self,
+			--	matrix.Translation(Vector(-0.5,-0.5,-0.5)) 
+			--	*matrix.Scaling(0.2/self:GetSizepower())
+			--	*matrix.Translation(pos))
 		end
 	end
 	

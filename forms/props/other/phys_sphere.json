@@ -1,0 +1,11 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "primitives/sphere.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 10, 
+	"physmaterial" : "metal"
+	
+}

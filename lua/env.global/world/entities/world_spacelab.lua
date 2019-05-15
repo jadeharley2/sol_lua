@@ -1,6 +1,7 @@
 module.Require("procedural")
 
 ENT.name = "Space Lab"
+ENT.hidden = true
 
 cursst = false
 

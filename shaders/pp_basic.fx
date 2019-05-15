@@ -3,6 +3,8 @@ bool enable_sslr = true;
 bool enable_ssao = true;
 bool enable_bloom = true;
 
+bool debug_channels=false;
+
 float time = 0;
 float hdrMultiplier = 1;
 float exposure = 0.1;
@@ -159,6 +161,7 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 
 	float3 newPosition = texelPosition;
 	
+	[unroll]
 	for(int i = 0; i < 10; i++)
 	{
 		currentRay = texelPosition + -reflectDir * L;
@@ -179,7 +182,9 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 
 	if(texelDepth>endDepth) return texelDiffuse;//+cnuv2*reflectiveness;
 	//L = saturate(L * LDelimiter);
-	float error = (1 - L);
+	float error = saturate(1 - L);
+	//if(error!=error) error =0;
+	//error = saturate(error);
 	
 	float cdot = saturate(pow(1-dot(viewDir,-texelNormal),5));
 	float blur = 0;//(int)min(9,saturate(L*10000000)+roughness*roughness*10);//+cdot*10;
@@ -314,7 +319,7 @@ float3 Temperature(float nit)
 	else return CBlend(float3(0,0,0),float3(0,0,1),0,0.08,lognit);
 }
 float4 CHANNELS(PS_IN input ) : SV_Target
-{ 
+{  
 	if(input.tcrd.y<0.5 )
 	{
 		if (input.tcrd.x<0.5)
@@ -332,7 +337,7 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 		{
 			float d = linearDepth(tDepthView.Sample(sView, input.tcrd));
 			//d = ((d)*100)%1;
-			d =(d*10)%1;
+			//d =(d*10)%1;
 			return d;
 		}
 		else
@@ -344,8 +349,9 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 }
 float4 PS( PS_IN input ) : SV_Target
 {  
+	//return 1; 
+	if (debug_channels){return CHANNELS(input);}
 	//return 1;
-	//return CHANNELS(input);
 	float4 pDiffuse = tDiffuseView.Sample(sView, input.tcrd);
 	float4 pNormal = tNormalView.Sample(sView, input.tcrd);//float4((tNormalView.Sample(sView, input.tcrd).xyz-float3(0.5,0.5,0.5))*2,1);
 	float pDepth = tDepthView.Sample(sView, input.tcrd);
@@ -360,8 +366,8 @@ float4 PS( PS_IN input ) : SV_Target
 	float3 shcolor = pDiffuse;
 	//return pNormal.a;
 	//return float4(wpos*200000,1); 
-	if(enable_sslr)
-	{
+	if(enable_sslr&&pMask.y>0.01)
+	{ 
 		shcolor = SSLR(input,pMask.y,1-pMask.y,pMask.z);
 		
 	//	return float4(shcolor,1);
@@ -426,7 +432,7 @@ float4 PS( PS_IN input ) : SV_Target
 			
 		} 
 		
-		result =(result+ovb*0.1)*0.9;
+		result =(max(0,result)+ovb*0.1)*0.9;
 	}
 
 

@@ -304,6 +304,10 @@ float2 CloudNoise(float2 tcrd)
 	float2 noise = CloudNoiseLow(tcrd)+NC*0.5+ND*0.15;
 	return noise;
 }
+bool IsNAN(float n)
+{
+    return (n < 0.0f || n > 0.0f || n == 0.0f) ? false : true;
+}
 
 PS_OUT PS(PS_IN input) : SV_Target
 {   
@@ -386,7 +390,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		 
 		float3 tBackColor =lerp(bc1,bc2*0.4,saturate(clouds.a*4+0.2)*density); 
 		 
-		tBackColor = lerp(tBackColor,clouds*sunTotal*0.6*cloudColor,clouds.a*density);
+		tBackColor = lerp(tBackColor,clouds*sunTotal*1.6*cloudColor,clouds.a*density);
 
 		//return float4(clouds.a*sunTotal,1);
 
@@ -399,7 +403,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 			*density
 			+tBackColor
 		;
-		ou.color = float4(result,1); 
+		ou.color = float4(result*1,1); 
 
 		return ou;//float4(result,1); 
 	}
@@ -482,9 +486,13 @@ PS_OUT PS(PS_IN input) : SV_Target
 	{// 
 
 		float dpdepth = input.Position.z/input.Position.w;
-		float rpdepth = tDepthView.Sample(sCC, screenPosition).r;
-		
-		float density = 1-saturate(horisonDistance * rpdepth/distanceMultiplier/100);
+		float rpdepth =SS_GetDepth(screenPosition) 
+			*sqrt(distanceMultiplier)/1000;// tDepthView.Sample(sCC, screenPosition).r;
+		//if(rpdepth<0.0001) rpdepth = 1;
+		//rpdepth = tDepthView.Sample(sCC, screenPosition).r/10;
+	//	ou.color = float4(rpdepth*100,0,0,1);
+	//	return ou;
+		float density =saturate(rpdepth/horisonDistance*300000*1);///distanceMultiplier/100);
 		// + (absheight/80000)
 		float planetDist = length(planetpos)*distanceMultiplier;
 		//density = density / max(1,absheight/80000);
@@ -498,7 +506,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		float topDot =1;
 		
 		float liquidDepth = -absheight/100;
-		float terrainLightDivider = max(1,rpdepth/distanceMultiplier*40000);
+		float terrainLightDivider = max(1,(10-rpdepth));
 		if(isCameraUnderWater) 
 		{
 			horisonangle = (absheight/300);
@@ -528,7 +536,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		float3 sunTotal = float3(0,0,0);
 		float3 totalLightColor = float3(0,0,0);
 		[unroll]
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
 			float3 ldir =-pointlightPosition[i];
 			float3 lcol = pointlightColor[i]; 
@@ -537,11 +545,13 @@ PS_OUT PS(PS_IN input) : SV_Target
 			{
 				ldir/=llen;//-normalize(ldir);
 				lcol/=llen*llen;
+				if(i==0)
+				{
 				lcol -=(1-saturate(dot(-normalAtHorison,ldir)*5))*atmosphereColor*lcol*1.9
 				//	*saturate(horison)*saturate(horison)*2
 					;
-				totalLightColor +=max(0,lcol);
-				//float ldsq = ldir.x*ldir.x+ldir.y*ldir.y+ldir.z*ldir.z;
+					totalLightColor +=max(0,lcol);
+				}//float ldsq = ldir.x*ldir.x+ldir.y*ldir.y+ldir.z*ldir.z;
 				//ldir/=sqrt(ldsq);
 				//lcol/=
 
@@ -556,7 +566,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 					pow(sunDot1,1000)*sunPowerh4
 					)/terrainLightDivider
 					;
-				sunTotal += sunDotC * lcol;
+				sunTotal += sunDotC * lcol*2;
 				lightIntencity +=saturate(dot(-normalAtHorison,ldir)*5+0.5);
 			}
 		}
@@ -568,7 +578,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		float starLumAmount =  density = density * lightIntencity;
 		//return float4(totalLightColor,1);
 		 
-		float3 topColor = atmosphereColor/ atmdencityByDist;//*totalLightColor;
+		float3 topColor = atmosphereColor*sunTotal/ atmdencityByDist;//*totalLightColor;
 		float3 horisonColor = lerp(
 			hazeColor*lerp(lcol0,totalLightColor,0.5)*0.5,
 			hazeColor*totalLightColor,
@@ -598,14 +608,27 @@ PS_OUT PS(PS_IN input) : SV_Target
 			+saturate(topDot)/ atmdencityByDist;// saturate(horison) +saturate(topDot)
 			;
 			
-		//return float4(density,density,density,1); 
-		float4 result =  density*angleDensity*float4(
-				(
+		//return float4(density,density,density,1);
+		float notTop =  1-saturate(topDot);
+
+		if (IsNAN(tBackColor.r)) tBackColor.rgb  = 0;
+
+		float3 additive = tBackColor.rgb 
+		+ (topColor+sunTotal)*density*angleDensity*4;
+//ou.color.rgb = additive;
+//ou.color.a =1;
+//return ou; 
+
+		float4 result =  float4(
+				lerp(additive,(
+				 
 					(saturate(horison)+saturate(-topDot))*horisonColor
-					+saturate(topDot)*(tBackColor.rgb+topColor)
+					//+ saturate(topDot)*(tBackColor.rgb+topColor)
 					//+saturate(topDot)*(topColor)
-					+sunTotal
-				)*0.5
+					//+sunTotal
+				),
+				saturate(saturate(horison)+saturate(-topDot)+saturate(topDot)*0.9)*saturate(density*angleDensity*3)
+				)//density*angleDensity
 				,1)// + float4(-tBackColor.rgb*5*(1-saturate(topDot)),0)
 				;
 //result.a = saturate(1*density);
@@ -621,7 +644,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		//result = float4(lerp(tBackColor,result,result.a*0).rgb,1); 
 		//ou.normal.r = 1;
 		ou.mask.a = density*angleDensity;
-		ou.color = result*0.5;
+		ou.color = result;//*0.5;
 		return ou;//return result;
 		//return lerp(tBackColor,float4(
 		//		((saturate(horison)+saturate(-topDot))*horisonColor

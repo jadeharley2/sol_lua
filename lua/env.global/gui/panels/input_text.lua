@@ -139,6 +139,7 @@ end
 function PANEL:SetText2(text)
 	self:SetText(text)
 	self:CaretUpdate(CStringLen(text))
+	self.text = text
 end
 
 function PANEL:OnClick() 

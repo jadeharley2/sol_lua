@@ -52,8 +52,8 @@ function editor:Open()
 	
 	self.assets = panel.Create("editor_panel_assets")
 	self.assets:Dock(DOCK_LEFT)
-	self.assets:SetSize(nsi-2,vsize.y-2-20)--SetSize(vsize.x-2-nsi,nsi-2)
-	self.assets:SetPos(-vsize.x+nsi,-10)--SetPos(0-nsi,-vsize.y+nsi)
+	self.assets:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
+	self.assets:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
 	self.assets:Show()
 	self.node = self.assets.pnode
 	

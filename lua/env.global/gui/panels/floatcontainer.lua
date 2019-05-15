@@ -70,7 +70,7 @@ end
  
 function PANEL:Scroll(delta)
 	local bar = self.vbar
-	if bar then bar:Scroll(delta) end 
+	if bar then bar:Scroll(delta)  end 
 end
 function PANEL:HScroll(delta)
 	local bar = self.hbar

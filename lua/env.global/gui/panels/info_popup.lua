@@ -3,6 +3,7 @@ PANEL.msglist =PANEL.msglist or {}
 local _P = PANEL.msglist
 
 function MsgInfo(text,color)
+	text = tostring(text)
 	local m = panel.Create("info_popup") 
 	if m and not isfunction(m) and m.ShowMsg then
 		local vsize = GetViewportSize()

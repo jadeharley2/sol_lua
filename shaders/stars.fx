@@ -161,6 +161,7 @@ PS_OUT star_PS( PS_IN input ) : SV_Target
 	result *=input.color.a; 
 	output.color = result*Tint;
 	output.mask.a = length(result);
+	output.mask=0;
 	return output;//10
 	//return float4(gTexture.Sample(TextureSampler,input.tex).xyz*input.color.xyz,1);
 	;//*saturate(50/input.z_depth)+Color2*saturate(1-50/input.z_depth);
@@ -246,6 +247,7 @@ PS_IN VSI( VS_IN input, I_IN inst )
 }
 float4 PS( PS_IN input ) : SV_Target
 { 
+	
 	if(star_mode) return star_PS(input).color;
 	else return particle_PS(input).color;
 }

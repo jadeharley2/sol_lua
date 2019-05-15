@@ -71,7 +71,7 @@ function AB:Ready()
 end
 function AB:CastAnimation(ent) 
 	ent.abilityanim = self.animation
-	ent.graph:SetState("ability") 
+	--ent.graph:SetState("ability") 
 end
  
 local ab_class = DefineClass("Ability","ability","lua/env.global/world/abilities/",AB)

@@ -295,7 +295,7 @@ function ENT:LoadData()
 		--	storage:AddFormItem("apparel",st)
 		--end
 
-		MsgN("eeeeee",self:GetSeed())
+		--MsgN("eeeeee",self:GetSeed())
 		local its = j.container.itemsets
 		if its then
 			local r = Random(self:GetSeed()) 
@@ -318,7 +318,7 @@ function ENT:LoadData()
 	end
 	if j.light then 
 		local color = self[VARTYPE_COLOR] or JVector(j.light.color,Vector(1,1,1))
-		local brightness = j.light.brightness or 1
+		local brightness = self[VARTYPE_BRIGHTNESS] or j.light.brightness or 1
 		local light = self:AddComponent(CTYPE_LIGHT)  
 		light:SetColor(color)
 		light:SetBrightness(brightness) 
@@ -406,7 +406,7 @@ function ENT:SetModel(mdl,scale,norotation)
 			end 
 			phys:SetMass(data.mass or 10)  
 			phys:SoundCallbacks()
-			phys:SetMaterial("wood")
+			phys:SetMaterial(data.physmaterial or "wood")
 		else 
 			local coll =  self.coll 
 			if norotation then

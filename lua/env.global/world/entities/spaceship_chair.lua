@@ -130,7 +130,7 @@ end
 
 ENT._typeevents = {
 	[EVENT_USE] = {networked = true, f = function(self,user)
-		MsgN(self," is used by aaa: ",user," for ",self.ship) 
+		MsgN(self," is used by: ",user," for ",self.ship) 
 		user:SendEvent(EVENT_SET_VEHICLE,self,1,self.ship)--SetVehicle(self,1,self.ship) 
 	end},
-} 
+}  

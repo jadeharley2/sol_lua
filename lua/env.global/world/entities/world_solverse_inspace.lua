@@ -1,4 +1,5 @@
 ENT.name = "Sol universe space"
+ENT.hidden = true
 
 
 function ENT:Init()

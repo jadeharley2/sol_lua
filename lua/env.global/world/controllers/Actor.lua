@@ -347,7 +347,7 @@ end
 
 function OBJ:ActorIsBusy()
 	local actor = LocalPlayer()  
-	if actor.controller.pai then return false end
+	if actor.controller and actor.controller.pai then return false end
 	return actor.controller ~= self or (not actor:GetUpdating()) or ( actor.Dead and actor:Dead())
 end
 
@@ -365,7 +365,7 @@ function OBJ:Update()
 	local dt = 1
 	
 	if actor:HasFlag(FLAG_ACTOR) then
-		if actor:GetUpdating() and actor.controller == self and actor:Alive() then 
+		if actor:GetUpdating() and not self:ActorIsBusy() and actor:Alive() then 
 			if actor.IsInVehicle then
 				if not input.GetKeyboardBusy() then  
 					self:HandleDriving(actor)
@@ -935,13 +935,25 @@ function OBJ:HandleDriving(actor)
 		vehHandleDriving(vehicle,actor)
 	end
 end
-function USE(actor) 
+function USE(actor,entity) 
+	local nearestent = false
+	if entity then
+		nearestent = entity
+	else 
+		nearestent = NEARESTUSEABLE(actor)
+	end
+	if nearestent then
+		nearestent:SendEvent(EVENT_USE,actor)
+		hook.Call("event.use",actor,nearestent)
+	end 
+end
+function NEARESTUSEABLE(actor) 
+	local nearestent = false
 	local maxUseDistance = 2
 	local pos = actor:GetPos()
 	local par = actor:GetParent()
 	local sz = par:GetSizepower()
 	local ents = par:GetChildren()
-	local nearestent = false
 	local ndist = maxUseDistance*maxUseDistance
 	for k,v in pairs(ents) do
 		if v~=actor and v:HasFlag(FLAG_USEABLE) then 
@@ -952,10 +964,7 @@ function USE(actor)
 			end
 		end
 	end
-	if nearestent then
-		nearestent:SendEvent(EVENT_USE,actor)
-		hook.Call("event.use",actor,nearestent)
-	end 
+	return nearestent
 end
 function USE_ITEM(actor,item)  
 	if item then
@@ -1081,7 +1090,7 @@ function OBJ:HandleCameraMovement(actor)
 	local rmb = mlock  -- input.rightMouseButton()
 	
 	local controlled =-- not self:ActorIsBusy()--
-	actor:GetUpdating() and actor.controller == self--self:IsControlling( actor) 
+	actor:GetUpdating() and actor.controller and (actor.controller == self or actor.controller.pai)--self:IsControlling( actor) 
 	
 	local tps_height = actor.tpsheight or 1.3
 	local fps_height = actor.fpsheight or 1.6

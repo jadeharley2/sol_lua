@@ -5,7 +5,7 @@
 #include "headers/enviroment.fxh"
 
 float4x4 Projection;
-float4x4 View;
+float4x4 View; 
 float4x4 World;
 
 float4x4 EyeWorld;
@@ -18,7 +18,9 @@ Texture2D g_IrisTexture_e;
 
 float hdrMultiplier=1;
 float brightness=1;
-float emissive_mul=1;
+float3 emissive_mul=1;
+float3 tint=1;
+float3 irisTint=1;
 
 float2 flipuv = float2(1,1);
 float2 texShift = float2(0,0);
@@ -112,7 +114,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	
 	//float4 wmpos = mul(float4(input.wpos,1),transpose(EyeWorld));
 	//float2 wmTexCoord = float2(0.5,-0.5) *(wmpos.xy/  wmpos.w  + float2( 1, -1 )) ;// /  wmpos.w
-	float4 result =  g_MeshTexture.Sample(MeshTextureSampler, input.tcrd  );
+	float4 result =  g_MeshTexture.Sample(MeshTextureSampler, input.tcrd  )*float4(tint,1);
 	float4 emission =  g_MeshTexture_e.Sample(MeshTextureSampler, input.tcrd  );
 	
 	//float4 irisDiffuse  = float4(0,0,0,1);
@@ -122,7 +124,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float2 wmTexCoord = (input.tcrd - float2(0.5,0.5)+ texShift*flipuv)/eyeScale  + float2(0.5,0.5);
 		
 		//(wmTexCoord - float2(0.5,0.5))/10+float2(0.5,0.5);
-		float4 irisDiffuse = g_IrisTexture.Sample(MeshTextureSampler, wmTexCoord ); // +float4((wmpos.xyz*1)%1,0)*0.8; 
+		float4 irisDiffuse = g_IrisTexture.Sample(MeshTextureSampler, wmTexCoord )*float4(irisTint,1); // +float4((wmpos.xyz*1)%1,0)*0.8; 
 		float4 irisEmissive = g_IrisTexture_e.Sample(MeshTextureSampler, wmTexCoord ); 
 	//} 
 	
@@ -138,7 +140,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float3 envmap =  EnvSampleLevel(reflectcam,0.99);//
 		//+envmap*0.4
 	float3 fbr = ambmap;//+brightness3*TBrightness;
-	output.emission = emission*emissive_mul;
+	output.emission = emission*float4(emissive_mul,1);
 	output.color = result;//*float4(fbr,1);//float4((brightness3+ambmap*0.5)*TBrightness*4,1);// + float4(0,0,eyeId,0);
 	output.normal = float4(input.norm*0.5+0.5,1);
 	output.depth = input.pos.z;///input.pos.w; 

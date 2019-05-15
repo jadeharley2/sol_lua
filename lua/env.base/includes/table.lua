@@ -74,3 +74,21 @@ table.Merge = function(from,to,deep)
 		end
 	end 
 end
+
+--take @count@ elements from start
+table.Take = function(tab,count) 
+	local ntab = {} 
+	for k,v in pairs(tab) do 
+		if k>count then break end
+		ntab[k] = v 
+	end 
+	return ntab
+end
+--skip @count@ elements from start
+table.Skip = function(tab,count) 
+	local ntab = {} 
+	for k,v in pairs(tab) do  
+		if k>count then ntab[k-count] = v end
+	end 
+	return ntab
+end

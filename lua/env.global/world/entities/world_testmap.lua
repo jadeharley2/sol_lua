@@ -237,6 +237,7 @@ function ENT:Spawn()
 		root_skyb:SetSizepower(2000)
 		root_skyb:SetParent(space)
 		root_skyb:SetPos(Vector(0,0.5,0))
+		root_skyb:SetSpaceEnabled(false)
 		root_skyb:Spawn()
 
 		local cubemap = root_skyb:AddComponent(CTYPE_CUBEMAP)  
@@ -410,16 +411,22 @@ function ENT:Spawn()
 	--end)
 
 
+	-- BSP SPAWN TESTS
+	if true then
+		local test13 = ents.Create("bspmap")
+		test13[VARTYPE_FORM] ="gm_flatgrass"-- "gm_construct"--"rp_evocity_dbg"--
+		
+		test13:SetSizepower(1000)
+		test13:SetParent(space)
+		test13:SetPos(Vector(0, 2, 0)) 
+		test13:SetSeed(333333)
+		test13:SetSpaceEnabled(false)
+		test13:Spawn()
+		testA = test13
+	end
+	-- END
 
-	local test13 = ents.Create("bspmap")
-	test13[VARTYPE_FORM] = "rp_evocity_dbg"--"gm_construct"
-	test13:SetSizepower(1000)
-	test13:SetParent(space)
-	test13:SetPos(Vector(0, 0.05, 0)) 
-	test13:SetSeed(333333)
-	test13:SetSpaceEnabled(false)
-	test13:Spawn()
-	testA = test13
+
 	
 	local pn = {}
 	-- x, z, -y
@@ -559,9 +566,8 @@ function ENT:GetSpawn()
 	--chair:SetSeed(space:GetSeed()+38012)
 	--chair.usetype = "sit"
 	 
-	return self.space, Vector(0,0.0013627,0)
+	local c = SpawnPlayerChar( Vector(0,0.0013627,0),self.space)
+
+	return c, Vector(0,0,0)
 end 
-    
-debug.Delayed(100,function()
-	hook.Call("aat","fst")
-end)  
+	

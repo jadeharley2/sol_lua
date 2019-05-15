@@ -56,7 +56,7 @@ PS_IN VS( VS_IN input )
 	 
 	return output;
 }
-
+ 
 PS_OUT PS( PS_IN input ) : SV_Target
 {
 	/*
@@ -113,7 +113,11 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	result = result *Tint;//* (flash+flashcor) + flashcor*float4(0,0.3f,0.04f,1); 
 	//result = float4(1,1,1,1);
 	//result.a = 1;
+	if(isnan(result.x)) result=0;
 	output.color = result;
+	output.normal = float4(0.5,0.5,1,1);
+	output.depth =  1;
+	
 	return output;
 }
 

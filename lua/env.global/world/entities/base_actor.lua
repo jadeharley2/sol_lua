@@ -34,8 +34,9 @@ DeclareEnumValue("event","GESTURE_END",				83013)
 DeclareEnumValue("event","TASK_BEGIN",				84001) 
 DeclareEnumValue("event","TASK_RESET",				84009) 
 
-DeclareEnumValue("event","LERP_HEAD",				85001) 
-
+DeclareEnumValue("event","LERP_HEAD",				85001)
+DeclareEnumValue("event","LOOK_AT",					85002)  
+ 
 DeclareEnumValue("event","SET_AI",					85011) 
 --EVENT_DAMAGE = 80001
 --EVENT_SET_VEHICLE = 80002
@@ -210,6 +211,10 @@ function ENT:LoadGraph(tab)
 		graph:NewState("sit",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
 			e.model:SetAnimation("sit")  
+		end)
+		graph:NewState("sleep",function(s,e) 
+			e.phys:SetMovementDirection(Vector(0,0,0)) 
+			e.model:SetAnimation("sleep")  
 		end)
 		
 		graph:NewState("sit.chair",function(s,e) 
@@ -442,6 +447,9 @@ function ENT:Think()
 		end
 	end
 	--self:RunTaskStep() 
+	--if(self:GetSeed()==1000065)then
+	--	 MsgN("a")
+	--end
 	self.tmanager:Update()
 	
 	local m = self.model
@@ -526,6 +534,9 @@ end
 function ENT:ResetTM()
 	self.tmanager = TaskManager(self)
 end
+function ENT:HasTasks()
+	return self.tmanager and self.tmanager:HasTasks()
+end
 
 function ENT:SetCharacter(id)
  
@@ -570,6 +581,7 @@ function ENT:SetCharacter(id)
 				
 				model:SetDynamic()
 				model:SetUpdateRate(60)
+				model:SetBBOX(Vector(-20,-20,0),Vector(20,20,80))
 				--model:SetBrightness(0)
 				--model:SetBlendMode(BLEND_ADD) 
 				--model:SetRenderGroup(RENDERGROUP_NONE) 
@@ -670,6 +682,19 @@ function ENT:SetCharacter(id)
 					end
 				
 				end 
+				if data.flexes then 
+					for k,v in pairs(data.flexes) do
+						local keys = k:split(':') 
+						local bpart = keys[1] 
+						local id = tonumber( keys[2]) 
+
+						local part = self.spparts[bpart]
+						if bpart == "root" then part = self end 
+						if part then   
+							part.model:SetFlexValue(id,v)
+						end 
+					end
+				end
 				
 				--if SERVER or not network.IsConnected() then
 				--	if data.equipment then  
@@ -1192,7 +1217,7 @@ function ENT:GetHeadingElevation(dir,b)
 	end
 	local rad = dir:Length()
 	local polar = math.atan2(dir.z,dir.x)
-	if dir.x < 0 then polar = polar + 3.1415926 end
+	--if dir.x < 0 then polar = polar + 3.1415926 end
 	local elev = math.asin(dir.y/rad)
 	return rad,polar,elev
 end
@@ -1203,9 +1228,9 @@ function ENT:EyeLookAt(dir)
 		dir = self:GetLocalCoordinates(dir)---Up* (0.67/sz)
 	end
 	local rad, polar,elev = self:GetHeadingElevation(dir,true)
-	self.model:SetPoseParameter("head_yaw",  polar/ 3.1415926 * 180)
-	self.model:SetPoseParameter("head_pitch",elev/ 3.1415926 * 180)
-	
+	--self.model:SetPoseParameter("head_yaw",  polar/ 3.1415926 * 180)
+	--self.model:SetPoseParameter("head_pitch",elev/ 3.1415926 * 180)
+	self:SetEyeAngles(elev/ 3.1415926 * 180,polar/ 3.1415926 * 180,false,true) 
 end
 function ENT:GestureToggle(layer, name)  
 	local g = self.gestures
@@ -1291,7 +1316,7 @@ function ENT:EyeLookAtLerped(dir)
 	end)
 	
 end
-function ENT:SetEyeAngles(pitch,yaw,forced) 
+function ENT:SetEyeAngles(pitch,yaw,forced,nopred) 
 	if not math.bad(pitch) then pitch = 0 end
 	if not math.bad(yaw) then yaw = 0 end
 	local m = self.model
@@ -1310,8 +1335,8 @@ function ENT:SetEyeAngles(pitch,yaw,forced)
 		self.headangles = {yaw,pitch}
 		self.lastheadmove = CurTime() 
 	end
-	m:SetPoseParameter("head_yaw",ha[1])
-	m:SetPoseParameter("head_pitch",ha[2]) 
+	m:SetPoseParameter("head_yaw",ha[1],nopred or false)
+	m:SetPoseParameter("head_pitch",ha[2],nopred or false) 
 	
 	local sForward = self:Right():Normalized()
 	--self.phys:SetViewDirection(sForward)
@@ -1456,12 +1481,27 @@ function ENT:HandleDriving(driver)
 end
 
 
-console.AddCmd("give",function(a,b) 
+console.AddCmd("give",function(a,b)  
 	if CLIENT then
-		if not network.IsConnected() then
-			LocalPlayer():Give(a)
+		if b then
+			for k,v in pairs(LocalPlayer():GetParent():GetChildren()) do
+				if v[VARTYPE_CHARACTER] == a or v[VARTYPE_FORM] == a and v.Give then
+					MsgN(v)
+					if not network.IsConnected() then
+						v:Give(b)
+					else
+						v:SendEvent(EVENT_GIVE_ITEM,b)
+					end
+					break
+				end
+			end
+
 		else
-			LocalPlayer():SendEvent(EVENT_GIVE_ITEM,a)
+			if not network.IsConnected() then
+				LocalPlayer():Give(a)
+			else
+				LocalPlayer():SendEvent(EVENT_GIVE_ITEM,a)
+			end
 		end
 	else
 		local ply = Player(a)
@@ -1959,6 +1999,8 @@ function ENT:KeyDown(key)
 end
 
 
+uuuu = 'привет'
+
 ENT._typeevents = {
 	[EVENT_DAMAGE] = {networked = true, f = function(self,amount) 
 		if SERVER then 
@@ -2065,6 +2107,7 @@ ENT._typeevents = {
 	[EVENT_GESTURE_END] = {networked = true, f = ENT.GestureEnd}, 
 	
 	[EVENT_LERP_HEAD] = {networked = true, f = ENT.EyeLookAtLerped}, 
+	[EVENT_LOOK_AT] = {networked = true, f = ENT.EyeLookAt}, 
 	[EVENT_SET_AI] = {networked = true, f = ENT.SetAi}, 
 	
 	[EVENT_ITEM_ADDED] = {networked = true, f = function(e,index) 
@@ -2128,3 +2171,34 @@ if SERVER then
 
 	hook.Add("umsg._GetCharacter","char",_GetCharacter)
 end
+
+local movemode = false
+local lastpos = false
+console.AddCmd("debug_movemode",function()
+	movemode = not movemode
+	if movemode then
+		hook.Add(EVENT_GLOBAL_UPDATE,"debug_movenode",function()
+			local cam = GetCamera()
+			local tr = GetMousePhysTrace(cam) 
+			if tr then
+				local e = tr.Node
+				debug.ShapeBoxCreate(3030,e,
+					matrix.Translation(Vector(-0.5,-0.5,-0.5)+tr.Normal*0.5) 
+					*matrix.Scaling(1/e:GetSizepower())
+					*matrix.Translation(tr.Position))
+				lastpos = tr.Position
+				--MsgInfo(tr.Position)
+			end
+		end)
+		hook.Add("input.mousedown","debug_movenode",function()
+			if lastpos and input.leftMouseButton() then
+				local move = Task("moveto",lastpos,1.5,true) 
+				LocalPlayer():BeginTask(move)
+				MsgN("move!",lastpos)
+			end
+		end)
+	else
+		hook.Remove(EVENT_GLOBAL_UPDATE,"debug_movenode")
+		hook.Remove("input.mousedown","debug_movenode")
+	end
+end)

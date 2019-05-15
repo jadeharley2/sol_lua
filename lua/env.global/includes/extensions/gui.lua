@@ -94,7 +94,9 @@ function gui.ApplyParameters(node,t)
 end
 
 function gui.FromTable(t,node,style,namedtable,tablekey)
-	node = node or panel.Create(t.type or "panel")
+	local ptype = t.type 
+	if not ptype and style then ptype = style.type end 
+	node = node or panel.Create(ptype or "panel")
 	
 	if style and t.class then
 		local v = style[t.class]

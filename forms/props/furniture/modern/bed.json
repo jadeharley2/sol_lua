@@ -3,8 +3,13 @@
 	"tags" : ["modern"],
 	"model" : "furniture/modern/bed.stmd",
 	"scale" : 0.05,
-	"rotation" : [0,0,0],
-	"phys" :true,
-	"mass" :50,
+	"rotation" : [0,0,0], 
+	"luatype":"use_chair",  
+	"variables":{
+		"mountpoints" : [
+			{"pos":[-0.1,0.6,0,"vec3"],"ang":[0,180,0,"vec3"],"state":"sleep"}
+		],
+		"usetype" : "lie down"
+	}
 	
 }

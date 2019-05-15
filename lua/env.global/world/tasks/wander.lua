@@ -18,13 +18,18 @@ function task:Step()
 		if nav then
 			local parent = actor:GetParent()
 			local sz = parent:GetSizepower()
-			local ptp = nav:GetPointsInRadius(actor:GetPos(),100/sz)
+			local pos_from = actor:GetPos()
+			local ptp = nav:GetPointsInRadius(pos_from,10/sz)
 			if ptp then 
 				local target = table.Random(ptp)
 				if target then
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",target,self.mindist,false)
-					self.manager:Begin(self.movetask)
+					local path = nav:GetPath(pos_from,target,0.001)
+					if path then
+						MsgN(target)
+						self.taskstart = CurTime()
+						self.movetask = Task("moveto",target,self.mindist,false)
+						self.manager:Begin(self.movetask)
+					end
 				end
 			end
 		end

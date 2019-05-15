@@ -522,7 +522,7 @@ float3 GetSpaceColor(PS_IN input)
 	return brightness3;
 }
 
-float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance)
+float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT output)
 { 
 	float blend_clouds = saturate(surfaceDistance/100-1); 
 	float blend_nearfog = saturate(surfaceDistance/10-1); 
@@ -640,7 +640,6 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	float3 total_brightness =(brightness3);// max(min(brightness3,brightness4),ambientlightIntencity);
 	//total_brightness =(total_brightness - total_brightness*0.3+brightness4*0.3)*saturate(atmoLight);
 	 
-	
 	//return pow(asd,1.0/3);
 	
 	
@@ -663,7 +662,9 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	//end
 	
 	
-	float3 finalColor =surface_rampcolor;// total_brightness+atmoLight*0.02;//+total_brightness*atmoLight;// input.color*surface_rampcolor*total_brightness;
+	float3 finalColor =surface_rampcolor;// 
+	
+	//+total_brightness*atmoLight;// input.color*surface_rampcolor*total_brightness;
 	
 	
 	float blend_medium = saturate(1 - surfaceDistance*2); 
@@ -678,7 +679,7 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	}
 	finalColor = finalColor*tilecolor*2+tilecolor.rgb;//*ambient*2;//0.125;
 	
-	
+	//output.color +=float4((total_brightness+atmoLight*0.02)*finalColor,0);
 	////if(hasAtmoshphere)
 	////{ 
 	//////	float3 finalClouds = clouds_dencity*atmoLight*globalLightIntencity*0.5;
@@ -692,7 +693,8 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	//// 
 	////}
 	//return float4(ToSpherical(globalNormal).xy,0,1);
-	
+	output.mask = float4(1,specular_intensity*3,0,1);
+
 	return float4(finalColor,specular_intensity); 
 }
  
@@ -782,15 +784,16 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	
 	float blend_space = saturate(surfaceDistance/10); 
 	
-	float4 color_space = SpaceColor(input,wposLen,surfaceDistance); //SpaceColor//Simplified
+	output.mask = float4(1,0,0,1);
+	float4 color_space = SpaceColor(input,wposLen,surfaceDistance,output); //SpaceColor//Simplified
 	//float3 color_nearby = NearbyColor(input,wposLen,surfaceDistance); 
 	
-	float blend = lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
+	float blend = saturate(color_space.w*20); //lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
 	output.normal = float4(lerp(input.normal,normalize(input.lpos),blend)*0.5+0.5,1);
 	output.depth = //input.pos.w;//
 	input.pos.z;///input.pos.w;
 	//output.depth = 1000-wposLen;//input.pos.z;///input.pos.w; 
-	output.mask = float4(1,0,0,1);// float4(blend,blend,0,1);
+//	output.mask = float4(1,0,0,1);// float4(blend,blend,0,1);
 	
 	if(isCameraUnderWater)
 	{  
@@ -802,6 +805,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	{
 		output.diffuse = color_space;//float4(lerp(color_nearby,color_space.rgb,blend_space)*hdrMultiplier,1);
 	}
+	//output.color +=output.diffuse/4;
+	//output.mask = 0; 
 	return output; 
 }
 
@@ -815,7 +820,7 @@ PS_OUT PS2( PS_IN input ) : SV_Target
 	output.color = float4(globalLightIntencity,globalLightIntencity,globalLightIntencity,1);
 	output.normal = float4(input.normal,1);
     output.depth =input.pos.z/input.pos.w;// float4(input.pos.z/100,input.pos.z/100,input.pos.z/100,1);
-	output.mask = 0;
+	output.mask = 0; 
 	return output;
 }
 

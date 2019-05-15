@@ -8,7 +8,7 @@ local COM = {}
 components = DefineClass("Component","component","lua/env.global/world/components/",COM)
    
 if true then return false end
-
+ 
 function Component(type,node,...) 
 	local lua_components = node.lua_components
 	if not lua_components then

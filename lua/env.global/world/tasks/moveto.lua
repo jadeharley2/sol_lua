@@ -8,6 +8,8 @@ function task:Setup(target,minimal_distance,run)
 	return true
 end 
 function task:OnBegin()
+	MsgN("afas")
+	self.ttt = 10
 	local actor = self.ent
 	local target = self.target
 	local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
@@ -25,10 +27,43 @@ function task:OnBegin()
 		else
 			return false, "nopath"
 		end
+	else
+		local pos_from = actor:GetPos()
+		local pos_to = self.target
+		self.path = {pos_from,pos_to}
+		self.pid = 1
+		MsgN("adsa")
+		return true
 	end
 	return false
 end 
 function task:Step() 
+
+
+	self.ttt = self.ttt -1
+	if self.ttt<0 then
+		local actor = self.ent
+		local target = self.target
+		local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
+		if e and nav then
+			local pos_from = actor:GetPos()
+			local pos_to = self.target
+			if pos_to.GetPos then pos_to = pos_to:GetPos() end
+			self._storedcon = actor.controller
+			--actor.controller = self
+			local path = nav:GetPath(pos_from,pos_to,0.001)
+			if path then
+				self.path = path
+				self.pid = 1 
+			end
+
+		end
+		
+		self.ttt = 10
+	end
+
+
+
 	local actor = self.ent
 	local path = self.path
 	local pid = self.pid
@@ -42,6 +77,9 @@ function task:Step()
 	local positionCurrent = actor:GetPos()
 	local positionTarget = path[pid]
 	local conNorm = phys:GetContactEvasionNormal()
+
+
+	
 	if positionTarget then
 		local dir =  ((positionTarget-positionCurrent)*sz+conNorm*-1):TransformN(LW)--self:GetLocalCoordinates(tp)
 		local dist = dir:Length()
@@ -61,6 +99,9 @@ function task:Step()
 			end
 		end
 		if dist>0 then
+
+
+
 			local dnorm = dir/dist
 			local Up = actor:Up():Normalized()
 			local rad, polar,elev = actor:GetHeadingElevation(-dnorm)
@@ -76,6 +117,7 @@ function task:Step()
 				local Forward = actor:Right():Normalized()
 				phys:SetViewDirection(Forward) 
 				actor.model:SetPoseParameter("move_yaw",  0) 
+				actor:SetEyeAngles(0,0,true)
 				self.wasmoving = true
 			else
 				if lastdist and lastdist<=dist then

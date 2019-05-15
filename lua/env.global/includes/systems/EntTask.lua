@@ -54,6 +54,12 @@ function TASKMANAGER_META:Init(ent)
 	self.ent = ent
 	self.thread = self:CreateThread()
 end
+function TASKMANAGER_META:HasTasks() 
+	for k,v in pairs(self.current) do
+		return true
+	end
+	return false
+end
 function TASKMANAGER_META:Begin(task,enqifrunning)
 	if getmetatable(task) ~= TASK_META then
 		for k,v in pairs(task) do

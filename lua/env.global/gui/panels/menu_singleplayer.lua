@@ -1,87 +1,121 @@
 PANEL.basetype = "menu_dialog"
  
+local style = {
 
+}
+local layout = { 
+	subs = {  
+		{type="floatcontainer",name = "items",  -- class = "submenu",
+			visible = true, 
+			size = {400,120},
+			color = {0,0,0},  
+			textonly=true, 
+			Floater = {type="panel",
+				scrollbars = 1,
+				color = {0,0,0}, 
+				size = {400,120},
+				autosize={false,true}
+			},
+		}, 
+
+		{name = "bload",type="button", class = "btn",
+			text = "Load",  
+			size = {100,20},
+			pos = {-300,-150}, 
+			OnClick = function() hook.Call("menu","load") end,
+		}, 
+		{name = "bback",type="button", class = "btn",
+			text = "Back", 
+			size = {100,20}, 
+			pos = {0,-150}, 
+			OnClick = function() hook.Call("menu","main") end,
+		}, 
+		{name = "bedt",type="button", class = "btn",
+			text = "Editor", 
+			size = {100,20}, 
+			pos = {300,-150}, 
+			OnClick = function() LoadSingleplayer("editor_template") end,
+		}, 
+	}
+}
 function PANEL:Init()  
 
 	
 	self.base.Init(self,"Singleplayer",200,500)
+	gui.FromTable(layout,self,{},self)
+	self.list = self.items.floater
+	self:SetupStyle(self.bload)
+	self:SetupStyle(self.bback)
+	self:SetupStyle(self.bedt)
+	self:PopulateWorldList() 
 	
-	 
-	local bcol = Vector(83,164,255)/255
-	
-	local ff_grid_floater = panel.Create()  
-	ff_grid_floater:SetSize(400,1000)
-	
-	 
-	local flist = file.GetFiles("lua/env.global/world/entities/","lua") 
-	local totals = 0
+end
+function PANEL:PopulateWorldList() 
+	local flist = file.GetFiles("lua/env.global/world/entities/","lua")  
+
+	local lst = self.list
+	lst:Clear()
+
 	for k,v in pairs(flist) do 
 		local cname = string.lower( file.GetFileNameWE(v)) 
 		if string.starts(cname,"world_") then 
 			local meta = ents.GetType(cname)
 			if meta and not meta.hidden then
 				cname = string.sub( cname,7)
-				local sp_new = panel.Create("button")
-				sp_new:SetText(meta.name or cname) 
-				sp_new:Dock(DOCK_TOP)
-				sp_new:SetTextColorAuto(bcol) 
-				sp_new:SetTextAlignment(ALIGN_CENTER)
-				sp_new:SetSize(150,20)
-				sp_new.OnClick = function() LoadSingleplayer(cname) end
-				ff_grid_floater:Add(sp_new)
-				self:SetupStyle(sp_new)
-				totals = totals + 20
+				local sp_new = gui.FromTable({ type = "button",
+					dock = DOCK_TOP,
+					text = meta.name or cname, 
+					textalignment = ALIGN_CENTER,
+					size = {150,20},
+					OnClick = function() self:SelectWorld(cname) end
+				}) 
+				lst:Add(sp_new)
+				self:SetupStyle(sp_new) 
 			end
 		end 
 	end
-	ff_grid_floater:SetSize(400,totals)
-	ff_grid_floater:SetColor(bcol)
-	
-	
-	
-	
-	
-	local ff_grid = panel.Create("floatcontainer") 
-	ff_grid:SetSize(400,120)  
-	if totals > 120 then
-		ff_grid:SetScrollbars(1)
-	end
-	ff_grid:SetFloater(ff_grid_floater) 
-	ff_grid:SetColor(bcol)
-	
-	--MsgN("asdflistlen" ,#flist)
-	
-	
-	
-	local sp_load = panel.Create("button")
-	sp_load:SetText("Load") 
-	sp_load:SetPos(-300,-150) 
-	sp_load:SetSize(100,20)
-	sp_load.OnClick = function() hook.Call("menu","load") end
-	self:SetupStyle(sp_load)
-	
-	local sp_back = panel.Create("button")
-	sp_back:SetText("Back") 
-	sp_back:SetPos(0,-150)
-	sp_back:SetSize(100,20)
-	sp_back.OnClick = function() hook.Call("menu","main") end
-	self:SetupStyle(sp_back)
-	 
-	local sp_editor = panel.Create("button")
-	sp_editor:SetText("Editor") 
-	sp_editor:SetPos(300,-150)
-	sp_editor:SetSize(100,20)
-	sp_editor.OnClick = function()  
-		LoadSingleplayer("editor_template") 
-	end
-	self:SetupStyle(sp_editor)
-	
-	self:Add(ff_grid)
-	for k,v in pairs({sp_load,sp_back,sp_editor}) do  --sp_new,sp_new2,sp_new3,sp_new4,
-		v:SetTextColorAuto(bcol)
-		--v:SetTextOnly(true)
-		v:SetTextAlignment(ALIGN_CENTER) 
-		self:Add(v) 
-	end
-	
+	self:UpdateLayout()
+	self.items:Scroll(-99999)
+end
+function PANEL:SelectWorld(world)
+	--MsgInfo("s"..world)
+	local class = ents.GetType("world_"..world)
+	if class and (class.options or class.GetOptions) then
+		local lst = self.list
+		lst:Clear()
+
+		local sp_new = gui.FromTable({ type = "button",
+			dock = DOCK_TOP,
+			text = "<< back", 
+			textalignment = ALIGN_CENTER,
+			size = {150,20},
+			OnClick = function() self:PopulateWorldList()   end
+		}) 
+		lst:Add(sp_new)
+		self:SetupStyle(sp_new) 
+
+		if class.GetOptions then
+			rawset(class,'options', class.GetOptions()) 
+		end
+
+		for k,v in SortedPairs(class.options) do
+			local sp_new = gui.FromTable({ type = "button",
+				dock = DOCK_TOP,
+				text = v.text or k, 
+				textalignment = ALIGN_CENTER,
+				size = {150,20},
+				OnClick = function() LoadSingleplayer(world, k) end
+			}) 
+			if sp_new then
+				lst:Add(sp_new)
+				self:SetupStyle(sp_new) 
+			end
+		end
+		self:UpdateLayout()
+		self.items:Scroll(-99999)
+	else
+		LoadSingleplayer(world) 
+	end 
+	--	LoadSingleplayer(cname) 
+				
 end

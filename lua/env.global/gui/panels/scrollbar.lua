@@ -135,6 +135,8 @@ function PANEL:Scroll(delta)
 	local type = self.stype
 	
 	local sval = self:GetScroll()
+	if sval~=sval then sval =0 end -- anti nan value
+	
 	if type == 1 then
 		self:SetScroll(sval+delta / floater:GetSize().y)
 	else

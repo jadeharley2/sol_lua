@@ -9,8 +9,8 @@ PANEL.assettypes = {
 		else
 			pos = wtr.Position
 		end
-		 
-		local p = SpawnPV(fulltype,node,wtr.Position,nil,GetFreeUID())--,j.scale,false,false)
+		 MsgN("spawnprop:",fulltype)
+		local p = SpawnPV(fulltype,node,pos,nil,GetFreeUID())--,j.scale,false,false)
 		if p then
 			p:AddFlag(FLAG_EDITORNODE)
 			--p:SetSeed(GetFreeUID())
@@ -190,12 +190,19 @@ function PANEL:InitTabAssets()
 	----------
 	
 	local dirtree = panel.Create("tree")
-	dirtree:SetSize(200,400)
-	dirtree:Dock(DOCK_TOP)
+	dirtree:SetSize(300,400)
+	dirtree:Dock(DOCK_LEFT)
 	P:Add(dirtree)
 	
 	
+	local dirtree2 = panel.Create("files")
+	dirtree2:SetSize(500,400)
+	dirtree2:Dock(DOCK_LEFT)
+	dirtree2:SetFormFS()
+	P:Add(dirtree2)
+
 	self.dirtree = dirtree
+	self.dirtree2 = dirtree2
 	
 	
 	local rtb = {"types"}
@@ -205,16 +212,32 @@ function PANEL:InitTabAssets()
 		linkt[k] = {}
 		local spt = v
 		local onclick = function(b)
-			local type = b:GetText()
-			local fulltype = linkt[k][type]
-			MsgN(type)
-			if(spt.spawn) then
-				local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
-				local edt = e.editor
-				if edt and edt.onSpawn then
-					edt.onSpawn(e)
+		--	local type = b:GetText()
+		--	local fulltype = linkt[k][type]
+		--	MsgN(type)
+		--	if(spt.spawn) then
+		--		local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
+		--		local edt = e.editor
+		--		if edt and edt.onSpawn then
+		--			edt.onSpawn(e)
+		--		end
+		--		worldeditor:Select(e)
+		--	end
+		
+			dirtree2:SetFormFS(k)
+			dirtree2.OnItemClick = function(s,type)
+				MsgN(pth)
+				local type = b:GetText()
+				local fulltype = linkt[k][type]
+				MsgN(type)
+				if(spt.spawn) then
+					local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
+					local edt = e.editor
+					if edt and edt.onSpawn then
+						edt.onSpawn(e)
+					end
+					worldeditor:Select(e)
 				end
-				worldeditor:Select(e)
 			end
 		end  
 		---local tbl = file.GetFiles(v.directory,".json",true)  
@@ -229,7 +252,7 @@ function PANEL:InitTabAssets()
 		---for kk,vv in pairs(tb) do 
 		---	tb2[#tb2+1] = {vv,OnClick=onclick}
 		---end
-		rtb[#rtb+1] = self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
+		rtb[#rtb+1] ={k,OnClick=onclick}-- self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
 	end
 	for k,v in pairs(self.specialtypes) do
 		linkt[k] = {}
@@ -247,6 +270,9 @@ function PANEL:InitTabAssets()
 	dirtree:FromTable(rtb)
 	dirtree:SetSize(200,400)
 	
+
+
+
 	return P
 end
 --function PANEL:InitTabNodes()
@@ -284,18 +310,30 @@ function PANEL:Init()
 	self:SetColor(Vector(0,0,0))
 	
 	
-	local testtabmenu = panel.Create("tabmenu")
-	testtabmenu:AddTab("Assets",self:InitTabAssets())
+	--local testtabmenu = panel.Create("tabmenu")
+	--testtabmenu:AddTab("Assets",self:InitTabAssets())
+	--testtabmenu:AddTab("Nodes",pnode)
 	local pnode = panel.Create("editor_panel_node")   
 	self.pnode = pnode
-	testtabmenu:AddTab("Nodes",pnode)
 	
 	--testtabmenu:AddTab("Hierarchy",self:InitTabNodes())
 	
-	testtabmenu:SetSize(100,100)
-	testtabmenu:Dock(DOCK_FILL)
-	testtabmenu:ShowTab(1)
-	self:Add(testtabmenu)
+	pnode:SetSize(400,100)
+	pnode:Dock(DOCK_LEFT) 
+	self:Add(pnode)
+
+	local assets = self:InitTabAssets()
+	assets:SetSize(200,200)
+	assets:Dock(DOCK_BOTTOM)
+	self:Add(assets) 
+
+
+	local asdas = panel.Create()
+	asdas:SetSize(200,200)
+	asdas:Dock(DOCK_FILL)
+	asdas:SetTexture("@main_diffuse")
+	self:Add(asdas) 
+
 	self:UpdateLayout()
 end 
 

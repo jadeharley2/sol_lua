@@ -51,6 +51,7 @@ end
 
 function PANEL:SetTextColorAuto(color,mul)
 	mul = mul or 0.5
+	color = color or Vector(1,1,1)
 	self.flashtext = true
 	self.textdowncolor = color*(1-mul)
 	self.textupcolor = color

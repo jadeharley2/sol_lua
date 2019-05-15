@@ -89,9 +89,27 @@ function ENT:Turn2(dir)
 end
 function ENT:HandleDriving(actor)   
 end 
+function ENT:GetFreeMountpoint() 
+	for k,v in pairs(self.mountpoints) do
+		if v.ent == nil then
+			return k
+		end
+	end
+	return false
+end 
 
 ENT._typeevents = {
 	[EVENT_USE] = {networked = true, f = function(self,user)
-		user:SendEvent(EVENT_SET_VEHICLE,self,1)
+		local mp = self:GetFreeMountpoint()
+		if mp then
+			user:SendEvent(EVENT_SET_VEHICLE,self,mp)
+		else
+			local oump = self.mountpoints[1]
+			if oump then 
+				if oump.ent:HasFlag(FLAG_USEABLE) then
+					oump.ent:SendEvent(EVENT_USE,user)
+				end
+			end
+		end
 	end},
 } 

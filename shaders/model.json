@@ -32,8 +32,12 @@
 		}     
 	],
 	"definition":{
+		"stage":"backward",
 		"variables" : [
-			{"name":"emissionTint", "type":"float3","default":[1,1,1],"desctription":""}, 
+			{"name":"g_MeshTexture_s", "type":"texture","default":"","description":""},
+			{"name":"g_DetailTexture_m", "type":"texture","default":"","description":""},
+			{"name":"emissionTint", "type":"float3","default":[1,1,1],"description":""},
+			{"name":"rimfadeEmission","type":"float2","default":[1,2],"description":"x - intensity, y - power"} 
 		],
 	},
 	"onload" : { },

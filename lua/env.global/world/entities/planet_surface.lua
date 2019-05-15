@@ -127,11 +127,13 @@ function ENT:Enter()
 	if self.atmosphere then
 		self.atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
 	end
+	render.SetGroupMode(RENDERGROUP_RINGS,RENDERMODE_ENABLED) 
+	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED)  
+	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED)  
 end
 
 function ENT:Leave()   
 	self.surface:SetRenderGroup(RENDERGROUP_PLANET)
-	render.SetGroupMode(RENDERGROUP_RINGS,RENDERMODE_BACKGROUND) 
 	if self.modelA then
 		self.modelA:SetRenderGroup(RENDERGROUP_PLANET)
 		self.model:SetRenderGroup(RENDERGROUP_PLANET)
@@ -155,6 +157,10 @@ function ENT:Leave()
 		--end
 		render.SetCurrentEnvmap()
 		render.ClearShadowMaps()
+
+		render.SetGroupMode(RENDERGROUP_RINGS,RENDERMODE_ENABLED) 
+		render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED)  
+		render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_ENABLED)  
 	end
 end
 function ENT:Think()

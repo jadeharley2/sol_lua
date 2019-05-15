@@ -1,5 +1,5 @@
-ENT.name = "Sol universe root"
-
+ENT.name = "Sol universe root" 
+ENT.hidden = true
 
 function ENT:Init()
  

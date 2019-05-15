@@ -65,9 +65,9 @@ function PANEL:Open(text,options)
 		self.opt = opt
 	end
 	
-	self:UpdateLayout() 
+	self:UpdateLayout()  
 	self:Show()
-	
+	self.npc:Vocalize(string.lower( text))
 end
 function PANEL:SetDialogText(str) 
 	self.dialtext:SetText(str)

@@ -186,7 +186,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float surfaceDistance = length(input.wpos) * distanceMultiplier;
 	float maskmul = saturate(1-surfaceDistance);
 	float3 newNormal = normalize(cross(va,vb).rbg*float3(1,1000*saturate(surfaceDistance),1)
-	*float3(1,1,0.1));  
+	*float3(1,1,1));  
 	float3 worldNormal =normalize( mul( newNormal,transpose(World)).xyz);//input.normal;
 	
 	//lerp(saturate(surfaceDistance*10),normalize( mul( newNormal,transpose(World)).xyz),input.normal);//newNormal.x * input.bnormal +newNormal.y * input.normal + newNormal.z * input.tnormal;

@@ -67,7 +67,7 @@ local layout = {
 					text = "Main menu",  
 					pos = {0,-200}, 
 					OnClick = function(s)
-						UnloadWorld()
+						world.UnloadWorld()
 						s.menu.self:SetWorldLoaded(false)  
 					end,
 					visible = false

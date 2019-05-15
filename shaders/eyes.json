@@ -38,16 +38,19 @@
 		"autoCameraMatrix" : 1,
 		"autoSkin" : 1, 
 		"description":"eye shader",
+		"stage":"backward",
 		"variables" : [
 			{"name":"g_MeshTexture",   "type":"texture", 					"description":"diffuse texture path"}, 
 			{"name":"g_IrisTexture",   "type":"texture", 					"description":"iris texture path"}, 
 			{"name":"g_MeshTexture_e", "type":"texture", "default":"", 		"description":"emissive texture path"}, 
 			{"name":"g_IrisTexture_e", "type":"texture", "default":"", 		"description":"iris emissive texture path"}, 
-			{"name":"emissive_mul",    "type":"float", 	 "default":1, 		"description":"emissive power"}, 
+			{"name":"emissive_mul",    "type":"vector3", "default":[1,1,1], "description":"emissive power"}, 
+			{"name":"tint",    		   "type":"vector3", "default":[1,1,1], "description":"back tint"}, 
+			{"name":"irisTint",    	   "type":"vector3", "default":[1,1,1], "description":"iris tint"}, 
 			{"name":"eyeId",    	   "type":"int",    					"description":"eye index"}, 
 			{"name":"eyeScale",    	   "type":"float",   "default":1, 		"description":"eye scale"}, 
 			{"name":"flipuv",    	   "type":"vector2", "default":[1,1], 	"description":"texture coords multiplier"}, 
 			
-		],
+		] 
 	}
 }            

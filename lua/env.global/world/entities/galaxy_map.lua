@@ -207,6 +207,10 @@ function ENT:Spawn()
 	self:LoadMap(self.dataaa)--testdata)
 	self.cubemap:RequestDraw()
 	 
+
+
+
+	--[[
 	local holoBack = self:AddComponent(CTYPE_MODEL) 
 	holoBack:SetRenderGroup(RENDERGROUP_LOCAL)
 	holoBack:SetModel("engine/gsphere_24_inv.stmd") 
@@ -230,6 +234,7 @@ function ENT:Spawn()
 	holo:SetMatrix(matrix.Scaling(3.8))
 	holo:SetFadeBounds(0.000001,99999,0.0000005)   
 	self.holo = holo
+	]]
 	
 	local origin =  ents.Create()
 	origin:SetSizepower(1)
@@ -250,10 +255,12 @@ function ENT:Spawn()
 	
 	
 	
+	--[[
 	local light = self:AddComponent(CTYPE_LIGHT)  
 	light:SetColor(Vector(0.1,0.2,0.9))
 	light:SetBrightness(10) 
 	self.light = light
+	]]
 	
 	STARMAP = self
 	self.spawned = true
@@ -452,7 +459,7 @@ function ENT:UpdateMap()
 		--self.cam:CopyAng(realcam)
 		self.cam:SetAng(ls)
 		self.origin:SetPos(self.holo_center)
-		self.renderer:RequestDraw(self.holo)
+		self.renderer:RequestDraw()--self.holo)
 		
 	end
 	
@@ -875,7 +882,7 @@ function ENT:CreateCelestialBody(data,objects,root)
 		model:SetFullbright(true)
 		model:SetBrightness(1)
 		
-		self.light:SetColor(data.color or Vector(1,1,1))--Vector(0.1,0.2,0.9))
+		--self.light:SetColor(data.color or Vector(1,1,1))--Vector(0.1,0.2,0.9))
 		
 		
 	elseif data.type == "planet" and data.id == 3 then

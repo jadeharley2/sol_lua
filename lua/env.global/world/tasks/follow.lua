@@ -10,6 +10,7 @@ function task:OnBegin()
 	return true
 end 
 function task:Step()   
+	--MsgN("huh??",self.times)
 
 	if self.times%10 == 0 then 
 		local actor = self.ent
@@ -18,6 +19,7 @@ function task:Step()
 		local dist = actor:GetDistance(target)
 		run = dist > 10 or target:IsRunning()
 		self.manager:Begin(Task("moveto",target,self.mindist,run))
+		--MsgN("huh??")
 	end
 end
 function task:OnEnd(result)

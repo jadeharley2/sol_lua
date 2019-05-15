@@ -5,7 +5,7 @@ function SpawnBP(model,ent,scale,seed)
 	e:SetSizepower(1000)
 	e:SetParent(ent) 
 	e:SetModel(model,scale)
-	if seed then e:SetSeed(seed) end
+	if seed then e:SetSeed(tonumber(seed)) end
 	e:Create()
 	return e 
 end

@@ -275,9 +275,9 @@ struct PS_IN
         float3 h = normalize(v+l);
         //precompute dots
         float NL = dot(n, l);
-        if (NL <= 0.0) return 0.0;
+        if (NL <= 0.01) NL=0.01;//return 0.0;
         float NV = dot(n, v);
-        if (NV <= 0.0) return 0.0;
+        if (NV <= 0.01) NV = 0.01;//return 0.2;
         float NH = dot(n, h);
         float HV = dot(h, v);
         
@@ -289,10 +289,11 @@ struct PS_IN
         float D = GGX_Distribution(NH, roug_sqr);
         float3 F = FresnelSchlick(f0, HV);
 
+
         //mix
         float3 specK = G*D*F*0.25/(NV+0.001);    
         float3 diffK = saturate(1.0-F);
-        return max(0.0, albedo*diffK*NL/PI + specK);
+        return  max(0.0, albedo*diffK*NL/PI + specK);
     }
 
     float3 CookTorrance_GGX_sample(float3 n, float3 l, float3 v, float roughness, float3 f0, out float3 FK, out float pdf) {
@@ -441,8 +442,8 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 //return float4(pos,1);
     if (applyShadow) 
     {  
-		float dotNL = saturate(dot(N,L));
-        LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNL))*dotNL; 
+		float dotNL = min(saturate(dot(N,L)),0.99);
+        LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNL));//*dotNL; 
     }
 
 	float3 output  = lerp(LIGHT,LIGHT*surfcolor,metallness); 

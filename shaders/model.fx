@@ -10,11 +10,7 @@ float4x4 World;
  
 float4x4 EnvInverse;
 
-float3 lightdir = normalize(float3(1,1,1));
-float3 lightdir2 = normalize(float3(-1,1,-1));
-float3 Color = float3(1,1,1)*0.9;
-float3 Color2 = float3(0.02,0.1,0.2);
-
+float3 Color = float3(1,1,1);
 float3 tint = float3(1,1,1);//*0.9;
 float3 emissionTint = float3(1,1,1);//*0.9;
 
@@ -37,16 +33,21 @@ float2 texcoordmul = float2(1,1);
 
 float outline = 0;
 float3 outlineTint = float3(1,1,1)*0.1;
+
+float2 rimfadeEmission = float2(1,2);
  
 Texture2D g_MeshTexture;   
 Texture2D g_MeshTexture_n;  
 Texture2D g_MeshTexture_s;  
-Texture2D g_MeshTexture_m; 
+Texture2D g_MeshTexture_m; //r - smootheness, g - deprecated, b - metallness, a - deprecated 
 Texture2D g_MeshTexture_e; 
 Texture2D g_NoiseTexture; 
-Texture2D g_LightwarpTexture; 
+
+
+
 Texture2D g_DetailTexture;   
 Texture2D g_DetailTexture_n;   
+Texture2D g_DetailTexture_m;   
 
 Texture2D g_tDiffuseView;     
 Texture2D g_tNormalView;    
@@ -100,7 +101,7 @@ SamplerState MeshTextureSampler
     AddressV = Wrap;
 };
 
-SamplerState LightwarpSampler
+SamplerState ClampSampler
 {
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Clamp;
@@ -176,7 +177,7 @@ struct PS_OUT
     float4 light: SV_Target0;
     float4 normal: SV_Target1; 
     float depth: SV_Target2;
-    float4 mask: SV_Target3;
+    float4 mask: SV_Target3;// r - post_process_intensity, g - smootheness, b - metallness, a - none
     float4 diffuse: SV_Target4;
     //float4 light: SV_Target4;
 };
@@ -200,7 +201,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.bnorm = normalize(mul(input.bnorm,nworld)); 
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
-	output.color = input.color;//((float3)input.inds.xyz);
+	output.color = input.color*Color;//((float3)input.inds.xyz);
 	output.spos = mul(wpos,transpose(View));
 	return output;
 }
@@ -223,7 +224,7 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 	output.bnorm = normalize(mul(input.bnorm,nworld)); 
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
-	output.color = input.color*inst.color.xyz*tint;//((float3)input.inds.xyz);
+	output.color = input.color*inst.color.xyz*tint*Color;//((float3)input.inds.xyz);
 	output.spos = mul(wpos,transpose(View));
 	return output;
 }
@@ -249,7 +250,7 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	output.bnorm = normalize(mul(input.bnorm,nworld)); 
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
-	output.color = input.color*tint;//((float3)input.inds.xyz);
+	output.color = input.color*tint*Color;//((float3)input.inds.xyz);
 	output.spos = mul(wpos,transpose(View));
 	return output;
 }
@@ -330,7 +331,14 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 
 
 
-
+float4 SampleDetailIntensity(float2 tcoord)
+{ 
+	float4 result = float4( 
+		g_MeshTexture_m.Sample(MeshTextureSampler, tcoord/4).a,
+		g_MeshTexture_m.Sample(MeshTextureSampler, tcoord/4+float2(0.5,0)).a,
+		g_MeshTexture_m.Sample(MeshTextureSampler, tcoord/4+float2(0,0.5)).a,
+		g_MeshTexture_m.Sample(MeshTextureSampler, tcoord/4+float2(0.5,0.5)).a);
+}
 
 
 
@@ -343,19 +351,7 @@ float LinearizeDepth(float depth)
     float z = depth * 2.0 - 1.0; // back to NDC 
     return (2.0 * near * far) / (far + near - z * (far - near));    
 }
-float3 Lightwarp(float3 light)
-{
-	if (LightwarpEnabled) 
-	{
-		float brightness = length(light);///8;
-		float3 color = g_LightwarpTexture.Sample(LightwarpSampler, float2(brightness,0.5)).rgb;
-		return   color;//*8;//*saturate(light/brightness);
-	}
-	else
-	{
-		return light;
-	} 
-}
+
 PS_OUT PS_CHEAP( PS_IN input ) : SV_Target
 { 
 	PS_OUT output = (PS_OUT)0;
@@ -398,6 +394,27 @@ PS_OUT PS_CHEAP( PS_IN input ) : SV_Target
 	
 	return output;
 }
+
+float isDithered(float2 pos, float alpha) { 
+ 
+    float DITHER_THRESHOLDS[16] =
+    {
+        1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+        13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+        4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+        16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+    };
+
+    int index = (int(pos.x) % 4) * 4 + int(pos.y) % 4;
+    return alpha - DITHER_THRESHOLDS[index];
+}
+
+float rand_1_05(in float2 uv)
+{
+    float2 noise = (frac(sin(dot(uv ,float2(12.9898,78.233)*2.0)) * 43758.5453));
+    return abs(noise.x + noise.y) * 0.5;
+}
+
 PS_OUT PS( PS_IN input ) : SV_Target
 { 
 	PS_OUT output = (PS_OUT)0;
@@ -412,6 +429,9 @@ PS_OUT PS( PS_IN input ) : SV_Target
     output.depth = input.pos.z;///input.pos.w;
 	output.diffuse =0;
 	output.light =0;
+	//output.diffuse=float4(1,1,1,1);
+	//output.normal = float4(input.norm/2+float3(0.5,0.5,0.5),1);
+	//return output;
 	//input.pos.w;///input.pos.w;//float4(input.pos.z/input.pos.w,0,0,1);//*input.pos.w
 	
 	if(clipenabled)
@@ -452,12 +472,15 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float4 bumpMap = g_MeshTexture_n.Sample(MeshTextureSampler, texCoord);
 		
 		
+		float4 detailmap = g_MeshTexture_s.Sample(MeshTextureSampler, texCoord);//) ;	
+		float blendd =1-detailmap.x; 
+
 		if (DetailEnabled) 
 		{	
 			if (detailblend>0)
 			{
 				float4 detbumpMap = g_DetailTexture_n.Sample(MeshTextureSampler, texCoord*detailscale);
-				bumpMap = lerp(bumpMap, detbumpMap,detailblendfactor);
+				bumpMap = lerp(bumpMap, detbumpMap,detailblendfactor*blendd);
 				//bumpMap = bumpMap+detbumpMap*detailblendfactor;
 			}
 		}
@@ -495,17 +518,33 @@ PS_OUT PS( PS_IN input ) : SV_Target
 			specular_tint += maskMap.b*mul_specular_tint ;
 			specular_power +=  pow(10,maskMap.a)*mul_specular_power;
 		}
+
+
+		if (DetailEnabled) 
+		{	
+			if (detailblend>0)
+			{
+				float4 detMaskMap = g_DetailTexture_m.Sample(MeshTextureSampler, texCoord*detailscale);
+				if(detMaskMap.a!=0 || detMaskMap.r!=0|| detMaskMap.g!=0|| detMaskMap.b!=0)
+				{
+					specular_intencity += detMaskMap.r*mul_specular_intencity;
+					specular_rim_intencity += detMaskMap.g*mul_specular_rim_intencity;
+					specular_tint += detMaskMap.b*mul_specular_tint ;
+					specular_power +=  pow(10,detMaskMap.a)*mul_specular_power;
+				}
+			}
+		}
+
 		float metalness = specular_tint;
-		//float brightness = 0.95f*saturate(dot(input.norm,lightdir));
-		//float brightness2 = 0.5f*saturate(dot(input.norm,lightdir2));
-		//float3 reflection = reflect(lightdir,input.norm);
-		//float3 reflection2 = reflect(lightdir2,input.norm);   
+		 
+		float3 camdir = normalize(input.wpos);
 		
 		float4 emissiveMap = g_MeshTexture_e.Sample(MeshTextureSampler, texCoord);
 		
-		float3 emissive = emissiveMap.rgb*emissionTint*mul_emissive_intencity*input.color;
 		
-		float3 camdir = normalize(input.wpos);
+		float3 emissive = emissiveMap.rgb*emissionTint*mul_emissive_intencity
+			*lerp(1,pow(saturate(dot(input.norm,-camdir)),rimfadeEmission.y),rimfadeEmission.x);//*input.color;
+		
 		float3 diffuse = float3(1,1,1);
 		  
 		float3 reflectcam = reflect(camdir,input.norm);
@@ -523,19 +562,27 @@ PS_OUT PS( PS_IN input ) : SV_Target
 			float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, texCoord) ;//* saturate(1-fTotalSum*10);//(0.5 < fTotalSum?0:1);
 			diffuse *= texIn.rgb * input.color;//
 			alpha =  texIn.a;
-			 
+			  
+			//if(alpha<0.9)
+			//{ 
+			//	float n = rand_1_05(input.pos.xy+texCoord+float2(time,0));
+			//	clip(alpha - n);//-0.0001);
+			//}
+		//2		diffuse =(input.pos.x/10)%1;
+
 			//output.mask.x *= alpha;
 			if (DetailEnabled) 
 			{	
 				if (detailblend>0)
 				{
+
 					float4 dtexIn = g_DetailTexture.Sample(MeshTextureSampler, texCoord*detailscale);//) ;	
 					//0-mul
 					//1-add
 					//2-replace
 					if(detailblendmode ==0)
 					{
-						dtexIn = (dtexIn-0.5)*2*detailblendfactor+1;
+						dtexIn = (dtexIn-0.5)*detailblendfactor*blendd+1;
 						diffuse = diffuse * dtexIn.rgb;
 						//alpha = alpha*dtexIn.a;
 					}
@@ -639,11 +686,11 @@ emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 		if(TextureEnabled)
 		{ 
 			float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, texCoord) ; 
-			output.light = float4(Color*input.color*texIn.rgb*TBrightness,texIn.a*TBrightness);
+			output.light = float4(input.color*texIn.rgb*TBrightness,texIn.a*TBrightness);
 		}
 		else
 		{ 
-			output.light = float4(Color*input.color*TBrightness,TBrightness);
+			output.light = float4(input.color*TBrightness,TBrightness);
 		}
 		output.mask = float4(0,0,0,1);
 	}
@@ -658,17 +705,17 @@ emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 		float3 ssfn = mul(fn,VP);
 		
 		float2 tc = input.pos.xy/screenSize;
-		float4 pDepth = g_tDepthView.Sample(LightwarpSampler, tc);
+		float4 pDepth = g_tDepthView.Sample(ClampSampler, tc);
 		
 		
 		float rimlight = pow(saturate(dot(input.norm,-camdir)),1);
 		
 		
 		//float2 tc = input.pos.xy/screenSize+float2(rer.x,rer.y)*saturate(1-(pDepth.x-output.depth.x)*100);
-		float4 pDiffuseR = g_tDiffuseView.Sample(LightwarpSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*10000/screenSize/10); 
-		float4 pDiffuseG = g_tDiffuseView.Sample(LightwarpSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*12000/screenSize/10); 
-		float4 pDiffuseB = g_tDiffuseView.Sample(LightwarpSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*15000/screenSize/10); 
-		//float4 pDiffuse = g_tNormalView.Sample(LightwarpSampler, tc); 
+		float4 pDiffuseR = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*10000/screenSize/10); 
+		float4 pDiffuseG = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*12000/screenSize/10); 
+		float4 pDiffuseB = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*15000/screenSize/10); 
+		//float4 pDiffuse = g_tNormalView.Sample(ClampSampler, tc); 
 		float dpsat = saturate((1-(pDepth.x-output.depth.x)*1000*base_tdencity_val)*rimlight);
 		//output.color = dpsat%1;
 		output.diffuse = lerp(output.diffuse,float4(pDiffuseR.x,pDiffuseG.y,pDiffuseB.z,1),dpsat); 
