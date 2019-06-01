@@ -68,6 +68,7 @@ function ENT:Load()
 	model:SetFadeBounds(0,999999999,0)
 	model:SetMaxRenderDistance(9999999999999)
 	model:Enable(enabled)
+	model:SetPOcclusion(true)
 	
 	modelb:SetRenderGroup(RENDERGROUP_LOCAL)
 	modelb:SetModel(mdl)  
@@ -81,6 +82,7 @@ function ENT:Load()
 	modelb:SetFadeBounds(0,999999999,0)
 	modelb:SetMaxRenderDistance(9999999999999)
 	modelb:Enable(enabled)
+	modelb:SetPOcclusion(true)
 	
 	
 	

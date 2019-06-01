@@ -1,5 +1,5 @@
 
-PANEL.assettypes = {
+local assettypes = {
 	prop = {directory = "forms/props/", recursive=true, spawn = function(type,node,fulltype) 
 		--local j = json.Read(fulltype)--"forms/props/"..type..".json")
 		if not worldeditor then return nil end
@@ -9,25 +9,16 @@ PANEL.assettypes = {
 		else
 			pos = wtr.Position
 		end
-		 MsgN("spawnprop:",fulltype)
-		local p = SpawnPV(fulltype,node,pos,nil,GetFreeUID())--,j.scale,false,false)
-		if p then
-			p:AddFlag(FLAG_EDITORNODE)
-			--p:SetSeed(GetFreeUID())
-		end
-		--if p then
-		--	local random_ry = false
-		--	if j.tags then
-		--		for k,v in pairs(j.tags) do
-		--			if v=="random_ry" then random_ry = true end
-		--		end
-		--	end
-		--	local r = Vector(0,0,0)
-		--	if j.rotation then r = r + Vector(j.rotation[1],j.rotation[2],j.rotation[3]) end
-		--	if random_ry then r = r + Vector(0,math.random(-1800,1800)/10,0) end
-		--	p:SetAng(r)
-		--end
-		return p
+		local fpath = forms.GetForm("prop",type)
+		if fpath then
+		 	MsgN("spawnprop:",fpath)
+			local p = SpawnPV(fpath,node,pos,nil,GetFreeUID())--,j.scale,false,false)
+			if p then
+				p:AddFlag(FLAG_EDITORNODE) 
+			end
+			return p
+		end 
+		return nil
 	end}, 
 	particle = {directory = "particles/",spawn = function(type,node,fulltype) 
 		if not worldeditor then return nil end
@@ -126,152 +117,91 @@ function PANEL:Scandir(name,dir,onclick,recursive,keytable)
 	end
 	return tb2
 end
+local on_dt_display = function(files,item,data,isdir)
+	--MsgN(">>>>>",files,item,data,isdir)
+	if data then
+		--item:SetColorAuto(Vector(0,0.3,0))
+		if isdir then
+			item:SetSize(20,20)
+		else
+			item:SetSize(32,32) 
+
+			local aparts = string.split(data,'/') 
+			local type = string.join('.',table.Skip(aparts,1))
+			if forms.GetForm(aparts[1]..'.'..type) then
+				local pnl = panel.Create('thumbnail')
+				pnl:SetSize(32,32)
+				pnl:Dock(DOCK_RIGHT)
+				pnl:SetCanRaiseMouseEvents(false)
+				pnl:SetForm(aparts[1]..'.'..type,item)
+				item:Add(pnl) 
+			end 
+		end
+	end
+end 
+local on_dt_display2 = function(files,item,data,isdir) 
+	if data then 
+		if isdir then
+			item:SetSize(20,20)
+		else
+			if data:ends('.vvd') or data:ends('.vtx') or data:ends('.phy') or data:ends('.smd') then
+				return false
+			else
+				item:SetSize(32,32)  
+				local pnl = panel.Create('thumbnail')
+				pnl:SetSize(32,32)
+				pnl:Dock(DOCK_RIGHT)
+				pnl:SetCanRaiseMouseEvents(false)
+				pnl:SetPath(data,item)
+				item:Add(pnl) 
+			end
+		end
+	end
+end 
+local on_dt_click = function(b,cdtype) 
+	MsgN("SPAWN REQUEST?",cdtype)
+	local aparts = string.split(cdtype,'/')
+
+	local validtype = assettypes[aparts[1]]
+	if validtype then 
+		local type = string.join('.',table.Skip(aparts,1))
+		MsgN("VALIDTYPE",type,unpack(aparts))
+		local e = validtype.spawn(type,GetCamera():GetParent(),cdtype)
+		local edt = e.editor
+		if edt and edt.onSpawn then
+			edt.onSpawn(e)
+		end
+		worldeditor:Select(e)
+	end 
+end
 function PANEL:InitTabAssets()
 	local P = panel.Create()
 	P:SetColor(Vector(0,0,0))
 	
 	
-	local mpanel = panel.Create()
-	mpanel:SetSize(20,20)
-	mpanel:SetColor(Vector(0.1,0.1,0.1))
-	mpanel:Dock(DOCK_TOP)
-	P:Add(mpanel)
-	
-	
-	local bsave = panel.Create("button")
-	bsave:SetSize(100,40)
-	bsave:SetText("Save")
-	bsave:Dock(DOCK_LEFT)
-	bsave.OnClick = function()
-		local cparent = GetCamera():GetParent()
-		if cparent then
-			local s = panel.Create("window_save")
-			s:SetTitle("Save node") 
-			s:SetButtons("Save","Back") 
-			s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, FLAG_EDITORNODE) end
-			s:Show() 
-		end
-	end 
-	mpanel:Add(bsave)
-	
-	
-	 
-	local bload = panel.Create("button")
-	bload:SetSize(100,40)
-	bload:SetText("Load")
-	bload.OnClick = function() 
-		local cparent = GetCamera():GetParent() 
-		if cparent then
-			local s = panel.Create("window_save")
-			s:SetTitle("Load node") 
-			s:SetButtons("Load","Back") 
-			s.OnAccept = function(s,name) engine.LoadNode(cparent, "manual/"..name) end
-			s:Show() 
-		end 
-	end
-	bload:Dock(DOCK_LEFT)
-	mpanel:Add(bload)
-	
-	
-	
-	local bsaveStatic = panel.Create("button")
-	bsaveStatic:SetSize(100,40)
-	bsaveStatic:SetText("SaveNode")
-	bsaveStatic:Dock(DOCK_LEFT)
-	bsaveStatic.OnClick = function()
-		local cparent = GetCamera():GetParent()
-		local cseed = cparent:GetSeed()
-		if cseed ~= 0 then
-			engine.SaveNode(cparent, tostring(cseed), FLAG_EDITORNODE)
-		end
-	end 
-	mpanel:Add(bsaveStatic)
 	
 	----------
-	
-	local dirtree = panel.Create("tree")
-	dirtree:SetSize(300,400)
-	dirtree:Dock(DOCK_LEFT)
-	P:Add(dirtree)
-	
+	 
 	
 	local dirtree2 = panel.Create("files")
 	dirtree2:SetSize(500,400)
 	dirtree2:Dock(DOCK_LEFT)
+	dirtree2.OnDisplay = on_dt_display
+	dirtree2.OnItemClick = on_dt_click
 	dirtree2:SetFormFS()
 	P:Add(dirtree2)
-
-	self.dirtree = dirtree
+ 
 	self.dirtree2 = dirtree2
-	
-	
-	local rtb = {"types"}
-	 
-	local linkt = {}
-	for k,v in SortedPairs(self.assettypes) do
-		linkt[k] = {}
-		local spt = v
-		local onclick = function(b)
-		--	local type = b:GetText()
-		--	local fulltype = linkt[k][type]
-		--	MsgN(type)
-		--	if(spt.spawn) then
-		--		local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
-		--		local edt = e.editor
-		--		if edt and edt.onSpawn then
-		--			edt.onSpawn(e)
-		--		end
-		--		worldeditor:Select(e)
-		--	end
-		
-			dirtree2:SetFormFS(k)
-			dirtree2.OnItemClick = function(s,type)
-				MsgN(pth)
-				local type = b:GetText()
-				local fulltype = linkt[k][type]
-				MsgN(type)
-				if(spt.spawn) then
-					local e = spt.spawn(type,GetCamera():GetParent(),fulltype)
-					local edt = e.editor
-					if edt and edt.onSpawn then
-						edt.onSpawn(e)
-					end
-					worldeditor:Select(e)
-				end
-			end
-		end  
-		---local tbl = file.GetFiles(v.directory,".json",true)  
-		---local tb = {} 
-		---local tb2 = {k} 
-		---for kk,vv in pairs(tbl) do
-		---	local ltp = file.GetFileNameWE( vv)
-		---	linkt[k][ltp] = vv
-		---	tb[#tb+1] = ltp
-		---end 
-		---table.sort(tb)
-		---for kk,vv in pairs(tb) do 
-		---	tb2[#tb2+1] = {vv,OnClick=onclick}
-		---end
-		rtb[#rtb+1] ={k,OnClick=onclick}-- self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
-	end
-	for k,v in pairs(self.specialtypes) do
-		linkt[k] = {}
-		local spt = v
-		local onclick = function(b) 
-			if(spt.spawn) then
-				local e = spt.spawn(GetCamera():GetParent())
-				worldeditor:Select(e)
-			end
-		end   
-		rtb[#rtb+1] ={k,OnClick=onclick}-- self:Scandir(k,v.directory,onclick,v.recursive,linkt[k])-- tb2
-	end
-	dirtree:SetTableType(2)
-	
-	dirtree:FromTable(rtb)
-	dirtree:SetSize(200,400)
-	
 
-
+	
+	local dirtree3 = panel.Create("files")
+	dirtree3:SetSize(500,400)
+	dirtree3:Dock(DOCK_LEFT)
+	dirtree3.OnDisplay = on_dt_display2 
+	P:Add(dirtree3)
+	
+	  
+	P:UpdateLayout()
 
 	return P
 end
@@ -306,33 +236,81 @@ end
 --	return P
 --end
 
-function PANEL:Init() 
-	self:SetColor(Vector(0,0,0))
-	
-	
-	--local testtabmenu = panel.Create("tabmenu")
-	--testtabmenu:AddTab("Assets",self:InitTabAssets())
-	--testtabmenu:AddTab("Nodes",pnode)
-	local pnode = panel.Create("editor_panel_node")   
-	self.pnode = pnode
-	
-	--testtabmenu:AddTab("Hierarchy",self:InitTabNodes())
-	
-	pnode:SetSize(400,100)
-	pnode:Dock(DOCK_LEFT) 
-	self:Add(pnode)
+function PANEL:Init()  
+	local sty = {
+		bmenu = {type = "button", size = {100,40},dock = DOCK_LEFT}
+	}
+	gui.FromTable({ 
+		color = {0,0,0},
+		subs = {
+			{ name = "rightpanel",
+				size = {300,300},
+				color = {0,0,0},
+				dock = DOCK_RIGHT,
+				subs = {
+					{	name = "mpanel",
+						size = {20,20},
+						color = {0.1,0.1,0.1},
+						dock = DOCK_TOP,
+						subs = {
+							{ class = "bmenu", name = "bsave", text = "Save",
+								OnClick = function()
+									local cparent = GetCamera():GetParent()
+									if cparent then
+										local s = panel.Create("window_save")
+										s:SetTitle("Save node") 
+										s:SetButtons("Save","Back") 
+										s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, FLAG_EDITORNODE) end
+										s:Show() 
+									end
+								end 
+							}, 
+							{ class = "bmenu",  name = "bload", text = "Load", 
+								OnClick = function()
+									local cparent = GetCamera():GetParent() 
+									if cparent then
+										local s = panel.Create("window_save")
+										s:SetTitle("Load node") 
+										s:SetButtons("Load","Back") 
+										s.OnAccept = function(s,name) engine.LoadNode(cparent, "manual/"..name) end
+										s:Show() 
+									end 
+								end 
+							}, 
+							{ class = "bmenu",  name = "bsavenode", text = "SaveNode", 
+								OnClick = function()
+									local cparent = GetCamera():GetParent()
+									local cseed = cparent:GetSeed()
+									if cseed ~= 0 then
+										engine.SaveNode(cparent, tostring(cseed), FLAG_EDITORNODE)
+									end
+								end 
+							}
+						}
+					}
+				}
+			},
+			{ type = "editor_panel_node",name = "pnode",
+				size = {300,100},
+				dock = DOCK_LEFT
+			} 
+		} 
+	},self,sty,self)
+	   
+	   
 
 	local assets = self:InitTabAssets()
-	assets:SetSize(200,200)
+	assets:SetSize(200,300)
 	assets:Dock(DOCK_BOTTOM)
 	self:Add(assets) 
 
 
-	local asdas = panel.Create()
-	asdas:SetSize(200,200)
-	asdas:Dock(DOCK_FILL)
-	asdas:SetTexture("@main_diffuse")
-	self:Add(asdas) 
+	local view = panel.Create("viewport")
+	view:SetSize(200,200)
+	view:Dock(DOCK_FILL)
+	view:InitializeFromTexture(1,"@main_diffuse")
+	self.vp = view
+	self:Add(view) 
 
 	self:UpdateLayout()
 end 

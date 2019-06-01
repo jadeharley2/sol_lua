@@ -35,7 +35,7 @@ function ENT:Spawn()
 			--MsgN("with model: ",modelval," and scale: ", modelscale)
 			self:SetModel(modelval,modelscale)
 		else
-			error("no model specified for body part at spawn time")
+			MsgN("no model specified for body part at spawn time")
 		end
 	end
 end
@@ -106,10 +106,11 @@ function ENT:SetModel(mdl,scale)
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,9e20,0)  
-	model:SetMatrix(pmd:GetMatrix()) --world)
-	
-	model:SetCopyTransforms(pmd)
-	  
+	if pmd then
+		model:SetMatrix(pmd:GetMatrix()) --world)
+		
+		model:SetCopyTransforms(pmd)
+	end
 	self.modelcom = true
 end 
 ENT.editor = {

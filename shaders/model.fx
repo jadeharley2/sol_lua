@@ -70,13 +70,16 @@ float base_specular_intencity = 0.3f;
 float base_specular_tint = 0.3f;
 float base_specular_rim_intencity = 0;//.1f; 
 float base_emissive_intencity = 0;
+float base_subsurface_intencity = 0;
 float mul_specular_power =1;
 float mul_specular_intencity = 1; 
 float mul_specular_tint = 1;
 float mul_specular_rim_intencity =0.03f;
+float mul_subsurface_intencity = 1;
 float mul_emissive_intencity = 1;
 
 float base_tdencity_val = 1;
+float alphatestreference = 0.5;
 
 
 float pow_skybox_mul =2;
@@ -177,7 +180,7 @@ struct PS_OUT
     float4 light: SV_Target0;
     float4 normal: SV_Target1; 
     float depth: SV_Target2;
-    float4 mask: SV_Target3;// r - post_process_intensity, g - smootheness, b - metallness, a - none
+    float4 mask: SV_Target3;// r - deferred_intensity, g - smootheness, b - metallness, a - subsurface_scattering_transparency
     float4 diffuse: SV_Target4;
     //float4 light: SV_Target4;
 };
@@ -202,6 +205,28 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color*Color;//((float3)input.inds.xyz);
+	output.spos = mul(wpos,transpose(View));
+	return output;
+}
+PS_IN VS( VSS_IN input) 
+{
+	PS_IN output = (PS_IN)0;
+	if(SkinningEnabled)
+	{
+		Skin(input.pos,input.norm,input.wts,input.inds);
+	} 
+	float4 wpos = mul(input.pos,transpose(World));
+	float4x4 VP =mul(transpose(View),transpose(Projection));
+	
+	float3x3 nworld = (float3x3)(transpose(World));
+	
+	output.pos = wpos;// mul(wpos,VP);
+	output.wpos = wpos.xyz;
+	output.norm = normalize(mul(input.norm,nworld)); 
+	output.bnorm = normalize(mul(input.bnorm,nworld)); 
+	output.tnorm = normalize(mul(input.tnorm,nworld)); 
+	output.tcrd = input.tcrd; 
+	output.color = input.color*tint*Color;//((float3)input.inds.xyz);
 	output.spos = mul(wpos,transpose(View));
 	return output;
 }
@@ -415,6 +440,14 @@ float rand_1_05(in float2 uv)
     return abs(noise.x + noise.y) * 0.5;
 }
 
+void MaskAdd(inout float4 mask, float4 map,float4 mix)
+{ 
+	if(map.a!=0 || map.r!=0|| map.g!=0|| map.b!=0)
+	{
+		mask += map*mix; 
+	} 
+}
+
 PS_OUT PS( PS_IN input ) : SV_Target
 { 
 	PS_OUT output = (PS_OUT)0;
@@ -444,9 +477,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float realDepth = length(input.wpos)/global_scale;
 	float frontFade = saturate((realDepth - mindist)/fadewidth);
 	float backFade = saturate(1-(realDepth - maxdist-fadewidth)/fadewidth);
-	TBrightness =min(1,frontFade*backFade)*TBrightness;
-	//TBrightness =min(TBrightness,backFade);
-//	min(TBrightness,length(input.wpos)/global_scale*10-0.1);
+	TBrightness =min(1,frontFade*backFade)*TBrightness; 
 	float detailFade = saturate((realDepth - 0.1)/0.1);
 	
 	float detailblend =1;// saturate(1-detailFade);
@@ -506,36 +537,20 @@ PS_OUT PS( PS_IN input ) : SV_Target
 				input.norm = normalize(bumpNormal);//normalize(input.norm+ bumpMap.z * input.norm);
 			}
 		}
-		float specular_power = base_specular_power;
-		float specular_intencity = base_specular_intencity;//1;
-		float specular_tint = base_specular_tint;
-		float specular_rim_intencity = base_specular_rim_intencity;
-		float4 maskMap = g_MeshTexture_m.Sample(MeshTextureSampler, texCoord);
-		if(maskMap.a!=0 || maskMap.r!=0|| maskMap.g!=0|| maskMap.b!=0)
-		{
-			specular_intencity += maskMap.r*mul_specular_intencity;
-			specular_rim_intencity += maskMap.g*mul_specular_rim_intencity;
-			specular_tint += maskMap.b*mul_specular_tint ;
-			specular_power +=  pow(10,maskMap.a)*mul_specular_power;
-		}
+		
+		float4 _mask = float4(base_specular_intencity,base_specular_rim_intencity,base_specular_tint,base_subsurface_intencity);
+		float4 _mask_mix = float4(mul_specular_intencity,mul_specular_rim_intencity,mul_specular_tint,mul_subsurface_intencity);
+		MaskAdd(_mask,g_MeshTexture_m.Sample(MeshTextureSampler, texCoord),_mask_mix); 
 
 
 		if (DetailEnabled) 
 		{	
 			if (detailblend>0)
-			{
-				float4 detMaskMap = g_DetailTexture_m.Sample(MeshTextureSampler, texCoord*detailscale);
-				if(detMaskMap.a!=0 || detMaskMap.r!=0|| detMaskMap.g!=0|| detMaskMap.b!=0)
-				{
-					specular_intencity += detMaskMap.r*mul_specular_intencity;
-					specular_rim_intencity += detMaskMap.g*mul_specular_rim_intencity;
-					specular_tint += detMaskMap.b*mul_specular_tint ;
-					specular_power +=  pow(10,detMaskMap.a)*mul_specular_power;
-				}
+			{ 
+				MaskAdd(_mask,g_DetailTexture_m.Sample(MeshTextureSampler, texCoord*detailscale),_mask_mix); 
 			}
 		}
-
-		float metalness = specular_tint;
+ 
 		 
 		float3 camdir = normalize(input.wpos);
 		
@@ -549,33 +564,24 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		  
 		float3 reflectcam = reflect(camdir,input.norm);
 		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
-		float3 envmap = EnvSampleLevel(reflectEnv,specular_intencity);// g_EnvTexture.SampleLevel(MeshTextureSampler, reflectEnv,saturate(1-specular_intencity)*100);
-		//float3 envmap = g_EnvTexture.SampleLevel(MeshTextureSampler, reflectcam,specular_power);
+		float3 envmap = EnvSampleLevel(reflectEnv,_mask.x);
 		
-		output.mask.y = specular_intencity;
-		output.mask.z = specular_tint;//specular_power;
+		
+		output.mask.y = _mask.x;//smoothness
+		output.mask.z = _mask.y;//metalness
+		output.mask.w = _mask.w;//subsurface
 		    
 		float alpha = 1;
 		if(TextureEnabled)
 		{
-			//float fTotalSum = effect_pen_Process(g_MeshTexture,MeshTextureSampler,1800/1,1000/1,input.tcrd);
 			float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, texCoord) ;//* saturate(1-fTotalSum*10);//(0.5 < fTotalSum?0:1);
 			diffuse *= texIn.rgb * input.color;//
 			alpha =  texIn.a;
-			  
-			//if(alpha<0.9)
-			//{ 
-			//	float n = rand_1_05(input.pos.xy+texCoord+float2(time,0));
-			//	clip(alpha - n);//-0.0001);
-			//}
-		//2		diffuse =(input.pos.x/10)%1;
-
-			//output.mask.x *= alpha;
+			
 			if (DetailEnabled) 
 			{	
 				if (detailblend>0)
 				{
-
 					float4 dtexIn = g_DetailTexture.Sample(MeshTextureSampler, texCoord*detailscale);//) ;	
 					//0-mul
 					//1-add
@@ -598,60 +604,29 @@ PS_OUT PS( PS_IN input ) : SV_Target
 				}
 			}
 			if(alphatest)
-			{
-				//clip(alpha-0.91);
-				clip(alpha-0.5);
-				//alpha = 1;
-				//if(alpha<0.5) output.mask.x =0;
+			{ 
+				clip(alpha-alphatestreference); 
 			}
 		}
 		else
 		{
-			//diffuse.xy *=  float2(0.9,0.9)+input.tcrd*0.2;
 			diffuse.xyz *= input.color;
 		}
-		//diffuse+=float3(0.2,0.2,0.2)*metalness;
 		
-		float3 reflectcolor = lerp(float3(1,1,1),normalize(diffuse.xyz),metalness);
 		
-//////emissive+= envmap*specular_intencity*reflectcolor*Fresnel(dot(input.norm,-camdir))*0.5;
-		//diffuse.xyz+= Lightwarp(envmap*specular_intencity*reflectcolor*Fresnel(dot(input.norm,-camdir)));
-		 
-		//diffuse.xyz = float3(specular_power,specular_power,specular_power)/10;
-		//diffuse.xyz = float3(specular_intencity,specular_intencity,specular_intencity);
-		//float3 specularcolor = saturate(((1-specular_tint)*float3(1,1,1)) + ((specular_tint)* diffuse));
-		//float3 specular =   specular_intencity*pow(saturate(dot(reflection,camdir)),specular_power);
-		//float3 specular2 =   specular_intencity*pow(saturate(dot(reflection2,camdir)),specular_power);
+		float3 reflectcolor = lerp(float3(1,1,1),normalize(diffuse.xyz),_mask.x);
+		
+		
 		float rimlight = pow(saturate(1-dot(input.norm,-camdir)),10);
 		 
-		//specular =  saturate(specularcolor*specular);
-		//specular2 = saturate(specularcolor*specular2);
-	//	float3 brightness3 =   ApplyPointLights2(input.wpos,input.norm,camdir,diffuse.rgb,saturate(specular_rim_intencity),metalness,specular_intencity,specular_power,receiveShadows);
-			//ApplyPointLights(input.wpos,input.norm,camdir,specular_intencity,specular_power,receiveShadows);
-		
+		 
 		float3 ambmapEnv =  mul(float4(input.norm,1),EnvInverse).xyz;
-		float3 ambmap = EnvSampleLevel(ambmapEnv,0.9);//g_EnvTexture.SampleLevel(MeshTextureSampler,ambmapEnv,10);
-		//brightness3+=ambmap*0.5;//Lightwarp(ambmap*0.5);// Lightwarp(ambmap*0.25);
+		float3 ambmap = EnvSampleLevel(ambmapEnv,0.9);
 		
-
-		//brightness3 = float3(1,1,1);
-emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
+		emissive+=diffuse*ambmap*1;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 		float3 result = diffuse;
 		output.light = float4(emissive,1);
 		
-		//saturate(diffuse * (ambient + brightness*Color+brightness2*Color2+brightness3
-		//+saturate(specular_rim_intencity *0.8* rimlight* float3(1,1,1)*diffuse)))
-		//+ specular*brightness*Color
-		//+ specular2*brightness2*Color2
-		//+ saturate(specular_rim_intencity*0.5 * rimlight* float3(1,1,1))
-		
-		//float3 reflectdir = dot(input.norm,-camdir);
-		//float3 lerpdir = lerp(input.norm,reflectdir,saturate(specular_intencity));
-		 
-		//result.xyz+= Lightwarp(envmap*specular_intencity*reflectcolor*Fresnel(reflectdir));
-		
-		
-		//result = brightness3; // lightmap as texture 
 		if (rimfade )
 		{
 			float3 camdir = normalize(input.wpos);
@@ -660,20 +635,6 @@ emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 		}
 		if (!isfinite(result.x)) result = float3(0,0,0);//float3(1,0,1)*10;
 		output.diffuse = float4(result,alpha);
-		//*TBrightness*alpha
-		
-		
-		//output.color = float4(ambmap,1);
-		//output.color = float4(input.norm/2+float3(0.5,0.5,0.5),1);
-		
-		//float fff = Fresnel(dot(input.norm,-camdir));
-		//output.color = float4(fff,fff,fff,1);
-		//{
-		//	float c =g_NoiseTexture.Sample(MeshTextureSampler, input.wpos.xy*100+float2(time,0)).r;
-		//	output.color +=float4(0.1,0.2,1,0)*c*rimlight;
-		//	 
-		//	
-		//}
 	}
 	else
 	{
@@ -687,10 +648,12 @@ emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 		{ 
 			float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, texCoord) ; 
 			output.light = float4(input.color*texIn.rgb*TBrightness,texIn.a*TBrightness);
+			output.diffuse = float4(input.color*texIn.rgb,texIn.a);
 		}
 		else
 		{ 
 			output.light = float4(input.color*TBrightness,TBrightness);
+			output.diffuse = float4(input.color,1);
 		}
 		output.mask = float4(0,0,0,1);
 	}
@@ -698,51 +661,14 @@ emissive+=diffuse*ambmap*0.5;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
 	float3 vv = mul(input.norm,VP);
 	float3 rer = normalize(input.norm);//vv.xyz);
 	output.normal = float4(rer.x/2+0.5,rer.y/2+0.5,rer.z/2+0.5,1); 
-	if(base_tdencity_val<1)
-	{
-		float3 camdir = normalize(input.wpos);
-		float3 fn = refract(input.norm,-camdir,0.3);
-		float3 ssfn = mul(fn,VP);
-		
-		float2 tc = input.pos.xy/screenSize;
-		float4 pDepth = g_tDepthView.Sample(ClampSampler, tc);
-		
-		
-		float rimlight = pow(saturate(dot(input.norm,-camdir)),1);
-		
-		
-		//float2 tc = input.pos.xy/screenSize+float2(rer.x,rer.y)*saturate(1-(pDepth.x-output.depth.x)*100);
-		float4 pDiffuseR = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*10000/screenSize/10); 
-		float4 pDiffuseG = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*12000/screenSize/10); 
-		float4 pDiffuseB = g_tDiffuseView.Sample(ClampSampler, tc+float2(ssfn.x,ssfn.y)*pDepth.x*15000/screenSize/10); 
-		//float4 pDiffuse = g_tNormalView.Sample(ClampSampler, tc); 
-		float dpsat = saturate((1-(pDepth.x-output.depth.x)*1000*base_tdencity_val)*rimlight);
-		//output.color = dpsat%1;
-		output.diffuse = lerp(output.diffuse,float4(pDiffuseR.x,pDiffuseG.y,pDiffuseB.z,1),dpsat); 
-		//output.color.r =rimlight;
-		
-	}
 	
-	//result = float3(1,1,1) *(saturate( ambient + brightness*Color) * saturate(  1 * rimlight <0.04?1:0));
+	
 	if(noiseclip)
 	{
 		float noised = g_NoiseTexture.Sample(MeshTextureSampler, texCoord).x;
-		//float nnn = sin(time);
 		clip(noised*noiseclipmul-noiseclipedge);
 	}
-	  
-	//output.color += GetIsInViewMatrix(float4(input.wpos,1),ShadowMapVPMatrix)/2;
-	 
-	//result+=;
-	//float3(1,1,1);
-	//lerp(Color2.rgb,Color.rgb,saturate(brightness+brightness2)) * (diffuse + specular + specular2);
-	// 
-	//output.color = float4(texCoord,0,1);
-///	float dpdepth = pow(input.pos.z,10);
-	 
-	//output.normal = float4(rer,1);
-    //output.normal = float4(input.norm/2+float3(0.5,0.5,0.5),1);
-	//output.position = input.pos;
+	
 	return output;
 }
 
@@ -803,7 +729,7 @@ float SHADOW_PS_FLOAT( DCI_PS_IN input ) : SV_Target
 	else if(TextureEnabled && alphatest)
 	{
 		float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, input.tcrd) ;   
-		clip(texIn.a-0.5); 
+		clip(texIn.a-alphatestreference); 
 	}
 	return dp;//-0.001f; 
 }
@@ -828,7 +754,7 @@ float4 SHADOW_PS_COLOR( DCI_PS_IN input ) : SV_Target
 	if(TextureEnabled && alphatest)
 	{
 		float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, input.tcrd) ;   
-		clip(texIn.a-0.5); 
+		clip(texIn.a-alphatestreference); 
 	}
 	return float4(DepthEncode(dp),1); 
 }
@@ -873,6 +799,15 @@ technique10 Morphed
 	pass P0
 	{ 
 		SetVertexShader( CompileShader( vs_4_0, VSIM() ) );
+		SetGeometryShader(  CompileShader( gs_4_0, GSScene() )  );
+		SetPixelShader( CompileShader( ps_4_0, PS() ) );
+	}
+}
+technique10 Normal
+{
+	pass P0
+	{
+		SetVertexShader( CompileShader( vs_4_0, VS() ) );
 		SetGeometryShader(  CompileShader( gs_4_0, GSScene() )  );
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}

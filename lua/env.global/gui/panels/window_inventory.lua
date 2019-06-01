@@ -117,8 +117,8 @@ function PANEL:ReloadTabs()
 			--slot.storage = storage
 			--slot.storeslot = k
 			local item  = abilities[k]
-			if item then
-				slot:Add(Item(storage,k,item))
+			if item then 
+				slot:Add(Item(storage,k,{reference = k, table = 'abilities' },ply))
 			end
 			grid2:AddPanel(slot)
 		end 
@@ -208,6 +208,7 @@ function PANEL:RefreshINV()
 	local storage = self.storage 
 	local grid2 = self.grid2
 	if storage and grid2 then
+		local ply = self.node or LocalPlayer()
 		storage:Synchronize(function(s)
 			MsgN("sync",storage,storage:GetNode())
 			--MsgN(debug.traceback())
@@ -219,7 +220,7 @@ function PANEL:RefreshINV()
 				slot.storeslot = k
 				local item  = items[k]
 				if item then
-					slot:Add(Item(storage,k,item))
+					slot:Add(Item(storage,k,item,ply))
 				end
 				grid2:AddPanel(slot)
 			end 

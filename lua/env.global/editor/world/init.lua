@@ -154,15 +154,16 @@ function editor:MouseDown()
 	
 	self:DoubleClick() 
 end
-function editor:GetNodeUnderCursor()
-	local drw = render.DCIGetDrawable()
+function editor:GetNodeUnderCursor(lp)
+	local drw = false
+	if lp then drw = render.DCIGetDrawable(lp) else drw = render.DCIGetDrawable() end
 	if drw then
 		return drw:GetNode()
 	end
 end
 function editor:DoubleClick() 
 	self.mousedowntime = nil
-	if not input.MouseIsHoveringAboveGui() then
+	if not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport then
 		local LMB = input.leftMouseButton() 
 		local RMB = input.rightMouseButton()
 		local MMB = input.middleMouseButton()
@@ -195,8 +196,13 @@ function editor:DoubleClick()
 				----  	end
 				----  end 
 				
+				local vp = self.assets.vp
+				local vsz = vp:GetSize()
+				local vmp = vp:GetLocalCursorPos()
+				local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
+--MsgN(vp,vsz,vmp,vsr)
 				local complete = false
-				local under = self:GetNodeUnderCursor()
+				local under = self:GetNodeUnderCursor(vsr)
 				if under and IsValidEnt(under) then
 					if under.root then
 						complete = true
@@ -245,7 +251,7 @@ end
 
 function editor:Update()
 	render.DCIRequestRedraw()
-	if not input.MouseIsHoveringAboveGui() then
+	if not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport then
 	 
 		if self.mousedowntime and input.leftMouseButton() and CurTime()>self.mousedowntime+0.2 then
 			self.mousedowntime = nil 
@@ -274,8 +280,14 @@ function editor:Update()
 		end
 		
 		
+		local vp = self.assets.vp
+		local vsz = vp:GetSize()
+		local vmp = vp:GetLocalCursorPos()
+		local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
+
+
 		if self.gizmo and not self.gizmo.GIZMO_DRAG then 
-			local under = self:GetNodeUnderCursor()
+			local under = self:GetNodeUnderCursor(vsr)
 			local hlt = true
 			if under and IsValidEnt(under) then
 				if under.root then

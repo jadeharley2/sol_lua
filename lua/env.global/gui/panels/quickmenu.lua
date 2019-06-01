@@ -54,7 +54,12 @@ function PANEL:Init()
 			self:Refresh()
 		end
 	end)
-	
+	hook.Add("input.mousewheel", "gui.quickpanel.repos",function()
+		self:GMouseWheel()
+	end)
+	hook.Add("input.keydown", "gui.quickpanel.repos",function()
+		self:GKeyDown()
+	end)
 end
 function PANEL:UpdatePos()
 	local vsize = GetViewportSize()
@@ -73,6 +78,14 @@ function PANEL:Select(actor,index)
 	--end
 	self.selector:SetVisible(true)
 end
+function PANEL:SelectNext(actor)
+	self:Select(actor,((self.cslot or 1) + 1)%10)
+end
+function PANEL:SelectPrev(actor)
+	local sl = (self.cslot or 1)-1
+	if sl<=0 then sl=sl+10 end
+	self:Select(actor,sl)
+end
 function PANEL:Refresh()
 	for k,v in pairs(self.slots) do
 		v:Refresh()
@@ -83,18 +96,46 @@ function PANEL:GetData()
 end
 function PANEL:SetData(slotdata,inventory)
 	self.slot_data = slotdata or {}
+	local actor = LocalPlayer()
 	
 	for k=1,8 do
 		slot = self.slots[k]
 		data = self.slot_data[k]
 		slot:Clear()
-		if data then
-			local item = Item(inventory,k,data) 
+		if data then  
+			local item = Item(inventory,k,data,actor) 
 			item.original = true
 			slot:Add(item)
+			slot.item = item
 			slot:UpdateLayout()
 			item:SetPos(0,0)
 		end
 	end
+end
+
+function PANEL:GKeyDown() 
+	local actor = LocalPlayer()
+	if (input.KeyPressed(KEYS_D1)) then self:Select(actor,1) end
+	if (input.KeyPressed(KEYS_D2)) then self:Select(actor,2) end
+	if (input.KeyPressed(KEYS_D3)) then self:Select(actor,3) end
+	if (input.KeyPressed(KEYS_D4)) then self:Select(actor,4) end
+	if (input.KeyPressed(KEYS_D5)) then self:Select(actor,5) end
+	if (input.KeyPressed(KEYS_D6)) then self:Select(actor,6) end
+	if (input.KeyPressed(KEYS_D7)) then self:Select(actor,7) end
+	if (input.KeyPressed(KEYS_D8)) then self:Select(actor,8) end
+	if (input.KeyPressed(KEYS_D9)) then self:Select(actor,9) end
+	if (input.KeyPressed(KEYS_D0)) then self:Select(actor,10) end 
+end
+function PANEL:GMouseWheel()
+	local wp = self.wheelpos
+	local nwp = input.MouseWheel()
+	if wp then
+		if wp<nwp then
+			self:SelectPrev(LocalPlayer())
+		elseif wp>nwp then
+			self:SelectNext(LocalPlayer())
+		end
+	end
+	self.wheelpos = nwp
 end
 

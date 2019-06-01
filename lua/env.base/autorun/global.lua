@@ -142,6 +142,10 @@ function isarray(arg)
 	return false 
 end
 
+function ifthen(condition,a,b)
+	if condition then return a end return b
+end
+
 function UniversalSort(a,b)
 	local a_type = type(a)
 	local b_type = type(b)
@@ -196,3 +200,6 @@ end
 function fcall(func,args)  
 	return function() func(unpack(args))end
 end
+
+
+

@@ -29,12 +29,16 @@ function hook.GetTable()
 	return table.Copy(lua_hooks)
 end
 
+local onerror = function()  
+	MsgN(debug.traceback())
+end
+
 function hook.Call(eventid,...)
 	--if eventid ~= "main.update" then MsgN("hook call: "..tostring(eventid)) MsgN(...) end
 	local case = lua_hooks[eventid]
 	if case then
 		for k,v in pairs(case.functions) do
-			local success, result = pcall(v,...)
+			local success, result = xpcall(v,onerror,...)
 			if success then
 				if result then
 					return result

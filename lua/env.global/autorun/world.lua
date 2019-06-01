@@ -26,8 +26,8 @@ function world.LoadWorld(id,mode,onComplete,onFail)
 	end
 
 	if opttable then
-		--load location string or anchor
-		local anchor = opttable.location
+		--load location string or anchor 
+		local anchor =  opttable.anchor or opttable.location
 		if anchor then
 			world.LoadLocation(anchor,function(e)
 				world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
@@ -155,6 +155,9 @@ function world.LoadLocation(target,onComplete,onFail)
 	
 	MsgN("[WORLD] SENDTO ",target)
 
-	engine.SendTo(origin_loader,target, 
-		onComplete,onFail)
+	if string.find(target,';') then --anchorname
+		engine.SendTo(origin_loader,target, onComplete,onFail)
+	else
+		engine.SendToAnchor(origin_loader,target,onComplete,onFail)
+	end
 end

@@ -1,4 +1,5 @@
- 
+PANEL.isviewport = true
+
 function PANEL:Init()  
 
 	local rendernode = ents.Create()
@@ -17,9 +18,22 @@ function PANEL:Initialize(id,w,h)
 	self.rcam:SetRenderTarget(0,self.rt)
 	self:SetTexture(self.rt)
 end
+function PANEL:InitializeFromTexture(id,texname)
+	self.id = tostring(id)
+	self:SetTexture(texname) 
+end
+function PANEL:MouseEnter()
+	hook.Add(EVENT_GLOBAL_UPDATE,"viewport."..self.id,function()
+		self:Update() 
+	end)
+end
+function PANEL:MouseExit()
+	hook.Remove(EVENT_GLOBAL_UPDATE,"viewport."..self.id)
+end
+
 function PANEL:Resize()
-	local vsize = self:GetSize()
 	if self.rt then
+		local vsize = self:GetSize()
 		ResizeRenderTarget(self.rt, vsize.x,vsize.y) 
 	end
 	if self.cameraupdate then self:UpdateCamera() end
@@ -36,6 +50,20 @@ function PANEL:UpdateCamera()
 	local vsize = self:GetSize()
 	local aspect = vsize.x/vsize.y 
 	cam:SetAspectRatio(aspect) 
+end
+function PANEL:Update()
+	if panel.GetTopElement()==self then
+		if input.rightMouseButton() then
+			local vsize = self:GetSize()
+			local pos = vsize/2
+			
+			local size = GetViewportSize() 
+			local center = size / 2
+			center = Point(math.floor( center.x),math.floor(center.y))
+
+			global_controller:UpdateCamRotation(vsize,center,0,0)
+		end
+	end
 end
 function PANEL:EnableRendering(b)
 	if b then

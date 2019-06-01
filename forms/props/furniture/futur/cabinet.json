@@ -3,9 +3,11 @@
 	"tags" : ["futur","storage"],
 	"model" : "furniture/futur/cabinet.stmd",
 	"scale" : 0.03,
-	"rotation" : [0,0,0],
-	"storage" : {
-		"size" : 16,
+	"rotation" : [0,0,0], 
+	"container":{ 
+		"size":20,
+		"itemsets" :{
+			"sdm_clutter" : { "mode":"oneof", "chance":50 }
+		},
 	}
-	
 }

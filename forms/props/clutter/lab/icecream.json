@@ -1,0 +1,11 @@
+{
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "clutter/lab/icecream.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],
+	
+	"phys" : true,
+	"mass" : 1,
+	"icon" : "lab/icecream",
+}

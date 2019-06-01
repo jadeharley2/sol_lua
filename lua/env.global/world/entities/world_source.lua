@@ -41,12 +41,12 @@ function ENT:Spawn()
 	--def:190000000
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(140,161,178)/255,190000000)
 	local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
-	 
+	light:SetGlobalName("source.sun")
 	light.light:SetShadow(true)
 	self.space = space
 	 
 	
-	
+	 
 	
 	
 	
@@ -93,6 +93,7 @@ function ENT:Spawn()
 
  
 end  
+
 function ENT:GetSpawn() 
 	local space = self.space
 
@@ -111,6 +112,7 @@ local LoadOption = function(self,camera,option)
 		test13:SetSizepower(1000)
 		test13:SetParent(self.space)
 		test13:SetPos(Vector(0, 2, 0)) 
+		test13:SetAng(Vector(0,-90,0))
 		test13:SetSeed(333333)
 		test13:SetSpaceEnabled(false)
 		test13:Spawn()

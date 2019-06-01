@@ -43,6 +43,7 @@ function ENT:SetModel(mdl,scale)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world)
 	model:SetMaxRenderDistance(100000000)
+	model:SetPOcclusion(true)
 	  
 	self.modelcom = true
 end 

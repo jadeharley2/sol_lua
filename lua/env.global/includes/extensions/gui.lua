@@ -43,7 +43,7 @@ function UnlockMouse()
 end
 
 
-function gui.ApplyParameters(node,t)
+function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 	for k,v in pairs(t) do
 		if     k == 'size' then node:SetSize(v[1],v[2])  
 		elseif k == 'pvsize' then 
@@ -77,13 +77,33 @@ function gui.ApplyParameters(node,t)
 			for kk,vv in pairs(v) do 
 				node:AddState(kk,vv)
 			end 
-		elseif k == 'state' then --skip
-		else
+		elseif k == 'state' or  k == 'type' then --skip
+		elseif string.starts( k,'_sub_') then
+			local subkey = string.sub(k,6)
+			local subnode = node[subkey]
+			MsgN(subkey,subnode)
+			if subnode and isuserdata(subnode) then
+				gui.ApplyParameters(subnode,v,style,namedtable,tablekey)
+			end
+		else 
 			local customfunction = node['Set'..k]
 			if customfunction and isfunction(customfunction) then
 				customfunction(node,v)
 			else 
-				node[k] = v
+				local info = node[k..'_info']
+				if(info) then
+					if info.type == "children_array" then
+						for k2,v2 in ipairs(v) do 
+							if istable(v2) then
+								info.add(node,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
+							elseif isuserdata(v2) then
+								info.add(node,v2)
+							end
+						end 
+					end
+				else
+					node[k] = v
+				end
 			end
 		end
 	end
@@ -95,7 +115,7 @@ end
 
 function gui.FromTable(t,node,style,namedtable,tablekey)
 	local ptype = t.type 
-	if not ptype and style then ptype = style.type end 
+	if not ptype and style and t.class then ptype = style[t.class].type end 
 	node = node or panel.Create(ptype or "panel")
 	
 	if style and t.class then
@@ -105,8 +125,10 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 		end
 		node.class = t.class
 	end
+
+
 	
-	gui.ApplyParameters(node,t)
+	gui.ApplyParameters(node,t,style,namedtable,tablekey)
 	
 	local FromTable = node.FromTable
 	if FromTable then FromTable(node,t) end
@@ -114,7 +136,11 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 	
 	if t.subs then
 		for k,v in ipairs(t.subs) do 
-			node:Add(gui.FromTable(v,nil,style,namedtable,tablekey)) 
+			if istable(v) then
+				node:Add(gui.FromTable(v,nil,style,namedtable,tablekey)) 
+			elseif isuserdata(v) then
+				node:Add(v)
+			end
 		end
 	end
 	

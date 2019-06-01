@@ -247,6 +247,11 @@ function ENT:LoadGraph(tab)
 		graph:NewState("recall",function(s,e) return e.model:SetAnimation("recall") end)
 		graph:NewState("recall_end",function(s,e) if e.Recall then return e:Recall(s) end return 0 end)
 		
+		graph:NewState("turn_l",function(s,e) e.model:SetAnimation("turn_l",true) return 1 end)
+		graph:NewState("turn_r",function(s,e) e.model:SetAnimation("turn_r",true) return 1 end)
+		graph:NewState("aturnidle",function(s,e) e.model:SetAnimation("idle",true) return 0 end)
+		
+
 		graph:NewState("flight_start",function(s,e) 
 			if e.model:HasAnimation("fly_wings") then
 				if CLIENT then
@@ -280,6 +285,8 @@ function ENT:LoadGraph(tab)
 		graph:NewState("flight_move",function(s,e) e.model:SetAnimation("fly_move")   end)
 		
 		
+		graph:NewState("gesture",function(s,e) return 0 end)
+
 		graph:NewState("dead",function(s,e)
 			local phys = e.phys
 			phys:SetMovementDirection(Vector(0,0,0)) 
@@ -324,6 +331,7 @@ function ENT:LoadGraph(tab)
 		
 		graph:NewGroup("g_movement",{"walk","run"})
 		
+		graph:NewGroup("g_turn",{"turn_l","turn_r"})
 		
 		graph:NewTransition("attack","idle",BEH_CND_ONEND)
 		graph:NewTransition("ability","idle",BEH_CND_ONEND)
@@ -385,7 +393,17 @@ function ENT:LoadGraph(tab)
 		graph:NewTransition("vehicle_exit_start","vehicle_exit_end",BEH_CND_ONEND)
 		graph:NewTransition("vehicle_exit_end","idle",BEH_CND_ONEND)
 		
+		graph:NewTransition("idle","gesture",BEH_CND_ONCALL,"gesture_start")
+		graph:NewTransition("gesture","idle",BEH_CND_ONCALL,"gesture_end")
 		
+		
+		graph:NewTransition("idle","turn_l",BEH_CND_ONCALL,"turn_l")
+		graph:NewTransition("idle","turn_r",BEH_CND_ONCALL,"turn_r")
+		graph:NewTransition("g_turn","turn_l",BEH_CND_ONCALL,"turn_l")
+		graph:NewTransition("g_turn","turn_r",BEH_CND_ONCALL,"turn_r") 
+		graph:NewTransition("turn_l","aturnidle",BEH_CND_ONEND)
+		graph:NewTransition("turn_r","aturnidle",BEH_CND_ONEND)
+		graph:NewTransition("aturnidle","idle",BEH_CND_ONEND) 
 		
 		
 		graph:NewState("unc_transition",function(s,e)
@@ -552,6 +570,10 @@ function ENT:SetCharacter(id)
 				self.directmove=false
 				self.directflight=false
 				self.eyemul = {1,1}
+				self.eyeattachment = nil
+				self.norotation = nil
+				self.nomovement = nil
+
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
 				 
@@ -579,7 +601,7 @@ function ENT:SetCharacter(id)
 				model:SetFadeBounds(0,99999,0)   
 				model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale))---*matrix.Scaling(0.0000001)
 				
-				model:SetDynamic()
+				model:SetDynamic(true)
 				model:SetUpdateRate(60)
 				model:SetBBOX(Vector(-20,-20,0),Vector(20,20,80))
 				--model:SetBrightness(0)
@@ -592,12 +614,12 @@ function ENT:SetCharacter(id)
 					local bpr = self.spparts
 					if bpr then
 						for k,v in pairs(bpr) do
-							v:Despawn()
+							if v and IsValidEnt(v) then v:Despawn() end
 						end 
 						self.spparts = nil
 					end
 				end
-				if CLIENT and data.parts then
+				if CLIENT and data.parts and self.species then
 					local bpath = self.species.model.basedir
 					local bpr = self.spparts or {}
 					for k,v in pairs(data.parts) do 
@@ -696,16 +718,17 @@ function ENT:SetCharacter(id)
 					end
 				end
 				
-				--if SERVER or not network.IsConnected() then
-				--	if data.equipment then  
-				--		for k,v in pairs(data.equipment.items or {}) do
-				--			self:Give(v)
-				--		end
-				--		for k,v in pairs(data.equipment.tools or {}) do
-				--			self:Give(v)
-				--		end
-				--	end
-				--end
+				if SERVER or not network.IsConnected() and not self.equipment_asquired then
+					self.equipment_asquired = true
+					if data.equipment then  
+						for k,v in pairs(data.equipment.items or {}) do
+							self:SendEvent(EVENT_GIVE_ITEM,v)
+						end
+						--for k,v in pairs(data.equipment.tools or {}) do
+						--	self:Give(v)
+						--end
+					end
+				end
 				if SERVER then
 					local slfEquipment = self.equipment
 					if slfEquipment and data.equipment and data.equipment.items then
@@ -899,12 +922,12 @@ end
 --[[ ######## MOVEMENT ######## ]]--
 
 function ENT:Turn(ang)
+	if self.norotation then return nil end
 	if self.model:HasAnimation("turn_l") then 
-		--MsgN(ang)
-			local graph = self.graph
+		MsgN("TURN",ang)
+		local graph = self.graph
 			--graph.debug = true
-		if graph and (ang>0) then 
-			MsgN(ang)
+		if graph and (ang>0) then  
 			if graph:Call("turn_l") then 
 				local Up = self:Up():Normalized()
 				self:TRotateAroundAxis(Up, ang) 
@@ -946,6 +969,7 @@ function ENT:Jump()
 	end
 end
 function ENT:Move(dir,run,updatespeed)
+	if self.nomovement then return false end
 	local phys = self.phys
 	local graph = self.graph
 	local scale = self.scale or 1
@@ -1006,8 +1030,15 @@ function ENT:Move(dir,run,updatespeed)
 		--MsgN(dfa)
 		local model = self.model
 		model:SetPoseParameter("move_yaw",dfa) 
-		model:SetPoseParameter("move_x",dir.x*200)
-		model:SetPoseParameter("move_y",dir.z*200) 
+
+		--model:SetPoseParameter("move_x",dir.x*200)
+		--model:SetPoseParameter("move_y",dir.z*200) 
+		
+		local veldir =self.phys:GetVelocity()-- Vector(0,0,0)
+		local lworld = self:GetWorld():Inversed()
+		veldir = veldir:TransformN(lworld) 
+		model:SetPoseParameter("move_x",veldir.z*100)
+		model:SetPoseParameter("move_y",veldir.x*100) 
 	else 
 		self:Stop()
 	end
@@ -1247,30 +1278,75 @@ function ENT:GestureToggle(layer, name)
 end
 function ENT:GestureStart(layer, name) 
 	local g = self.gestures
-	if g and g[name] then
-		local m = self.model
-		m:PlayLayeredSequence(layer,name,0)
-		g[name].active = true
-		local t = 0 
-		self:Timer("gesture",0,10,15,function()
-			t = t + 1/15 
-			m:SetLayerBlend(layer,t)
-		end)
+	
+	if g then
+		local gest = g[name]
+		if gest then
+			local m = self.model
+			local gesttype = gest.type or "overlay" 
+			gest.active = true
+			if gesttype == 'overlay' then
+				m:PlayLayeredSequence(layer,name,0)
+				local t = 0 
+				self:Timer("gesture",0,10,15,function()
+					t = t + 1/15 
+					m:SetLayerBlend(layer,t)
+				end)
+			elseif gesttype == 'normal' then
+				self.graph:SetState("gesture") 
+				local time = m:SetAnimation(name,gest.stepstart or false)
+				if not gest.loop then
+					self:Delayed("gesture_end",(gest.time or time)*1000,function()
+						self:GestureEnd(layer,name)
+						--self.graph:SetState("idle") 
+						--m:SetAnimation("idle",gest.stepend or false)
+						--gest.active = false
+					end)
+				end
+			end
+			if gest.variables then
+				gest.variables_restore = {}
+				for k,v in pairs(gest.variables) do
+					gest.variables_restore[k] = self[k]
+					self[k] = v
+				end
+			end
+		end
 	end
 end
 function ENT:GestureEnd(layer, name) 
 	local g = self.gestures
-	if g and g[name] then
-		local m = self.model
-		local t = 1 
-		self:Timer("gesture",0,10,16,function()
-			t = t - 1/15 
-			m:SetLayerBlend(layer,t)
-			if(t<0)then
-				m:StopLayeredSequence(layer)
-				g[name].active = false
+	if g then
+		local gest = g[name]
+		if gest then
+			local m = self.model
+			local t = 1 
+			local gesttype = gest.type or "overlay" 
+			if gesttype == 'overlay' then
+				self:Timer("gesture",0,10,16,function()
+					t = t - 1/15 
+					m:SetLayerBlend(layer,t)
+					if(t<0)then
+						m:StopLayeredSequence(layer)
+						gest.active = false
+					end
+				end)
+			elseif gesttype == 'normal' then
+				self.graph:SetState("idle") 
+				m:SetAnimation("idle")
+				gest.active = false
 			end
-		end)
+			if gest.variables_restore then
+				for k,v in pairs(gest.variables) do
+					MsgN(k,nil)
+					self[k] = nil
+				end
+				for k,v in pairs(gest.variables_restore) do
+					MsgN(k,v)
+					self[k] = v
+				end
+			end
+		end
 	end
 end
 function ENT:EyeLookAtLerped(dir) 
@@ -1998,8 +2074,6 @@ function ENT:KeyDown(key)
 	return false
 end
 
-
-uuuu = 'привет'
 
 ENT._typeevents = {
 	[EVENT_DAMAGE] = {networked = true, f = function(self,amount) 

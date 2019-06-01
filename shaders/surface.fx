@@ -631,7 +631,10 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	}
 	  
 	 
-	float3 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0.9);
+	float4 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0.9);
+  
+	
+
 	float3 brightness3 =//ApplyPointLights(input.wpos,input.normal,cameraDirection,specular_intensity,100);//
 ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,specular_intensity,0,true,globalLightIntencity,saturate(1));
 	 
@@ -693,7 +696,8 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	//// 
 	////}
 	//return float4(ToSpherical(globalNormal).xy,0,1);
-	output.mask = float4(1,specular_intensity*3,0,1);
+	output.color+=float4(finalColor*ambient*2,1);
+	output.mask = float4(1,specular_intensity*3,0,0);
 
 	return float4(finalColor,specular_intensity); 
 }
@@ -784,7 +788,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	
 	float blend_space = saturate(surfaceDistance/10); 
 	
-	output.mask = float4(1,0,0,1);
+	output.mask = float4(1,0,0,0);
 	float4 color_space = SpaceColor(input,wposLen,surfaceDistance,output); //SpaceColor//Simplified
 	//float3 color_nearby = NearbyColor(input,wposLen,surfaceDistance); 
 	
@@ -799,7 +803,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	{  
 		float depth = max(1,-input.data.x*1000000.0); 
 		output.diffuse =float4( NearbyColor(input,wposLen,surfaceDistance)/depth,1);; ;//float4(color_nearby*hdrMultiplier,1);
-		output.mask = float4(1-saturate(surfaceDistance*20),0.2,1,1);
+		output.mask = float4(1-saturate(surfaceDistance*20),0.2,1,0);
 	}
 	else
 	{

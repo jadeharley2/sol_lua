@@ -233,32 +233,57 @@ function component:_equip(data,nosave)
 				local eqslt = self.list[slot]  
 				if eqslt then
 					local e = SpawnBP(model,node,scale,seed)
-					eqslt.data = data 
-					eqslt.entity = e
-					e:SetName(slot)
-					e.iscloth = true
-					MsgN(slot,e)
-					if not nosave then
-						node[VARTYPE_EQUIPMENT] = self:ToData()
-					end
-					if CLIENT then
-						node:EmitSound("physics/cloth/rustle_0"..table.Random({1,2,3,4,5,6})..".ogg",1)
-					end 
- 
-
-					local hide = formdata.hide
-					if hide then
-						self.hideray = self.hideray or {}
-
-						local spp = node.spparts
-						if spp then
-							for k,v in pairs(hide) do 
-								local nn = spp[v]
-								if nn then
-									nn:HideBy(e) 
+					if e then
+						eqslt.data = data 
+						eqslt.entity = e
+						e:SetName(slot)
+						e.iscloth = true
+						MsgN(slot,e)
+						if not nosave then
+							node[VARTYPE_EQUIPMENT] = self:ToData()
+						end
+						if CLIENT then
+							node:EmitSound("physics/cloth/rustle_0"..table.Random({1,2,3,4,5,6})..".ogg",1)
+						end 
+						if formdata.luatype then 
+							local meta = ents.GetType(formdata.luatype)
+							if meta then  
+								e._secondbase = meta  
+								if meta.Init then
+									meta.Init(e)
+								end
+								if meta.PreLoadData then
+									meta.PreLoadData(e)
+								end 
+								if isLoad then
+									if meta.Load then 
+										meta.Load(e)
+									end
+								else
+									if meta._spawn then 
+										meta._spawn(e)
+									end
+								end
+								if meta.Think then 
+									e:AddNativeEventListener(EVENT_UPDATE,"think",meta.Think)
 								end
 							end
-							e.hideby = hide
+						end
+
+						local hide = formdata.hide
+						if hide then
+							self.hideray = self.hideray or {}
+
+							local spp = node.spparts
+							if spp then
+								for k,v in pairs(hide) do 
+									local nn = spp[v]
+									if nn then
+										nn:HideBy(e) 
+									end
+								end
+								e.hideby = hide
+							end
 						end
 					end
 				end

@@ -1,0 +1,10 @@
+{
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "clutter/old/prop03.stmd",
+	"scale" : 0.3,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 5, 
+	
+}

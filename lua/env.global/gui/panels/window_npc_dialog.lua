@@ -3,8 +3,7 @@
 function PANEL:Init()
 	--PrintTable(self)
 	self.fixedsize = true
-	self.base.Init(self)
-	 
+	self.base.Init(self,"title",200,800)
 end 
 function PANEL:Start(npc,title) 
 	self.npc = npc
@@ -37,6 +36,12 @@ function PANEL:Start(npc,title)
 		self:Add(label)
 		
 		self.dialtext = label
+
+		local anslst = panel.Create("list")
+		anslst:SetSize(400,100)
+		anslst:SetPos(0,-40) 
+		self:Add(anslst)
+		self.anslst = anslst 
 	end
 	self.label:SetText(title) 
 	input.setMousePosition( self:GetPos()*Point(0.5,-0.5)+ GetViewportSize()  / 2 )
@@ -59,7 +64,8 @@ function PANEL:Open(text,options)
 					debug.Delayed(1000,function() self:Close() BLOCK_MOUSE = false  end)
 				end
 			end
-			self:Add(bopt)
+			--self:Add(bopt)
+			self.anslst:AddItem(bopt)
 			opt[#opt+1] = bopt
 		end 
 		self.opt = opt
@@ -67,6 +73,7 @@ function PANEL:Open(text,options)
 	
 	self:UpdateLayout()  
 	self:Show()
+	self:SetPos(0,-700)
 	self.npc:Vocalize(string.lower( text))
 end
 function PANEL:SetDialogText(str) 

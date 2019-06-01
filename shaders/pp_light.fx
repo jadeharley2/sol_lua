@@ -3,6 +3,7 @@ float pad=1;
 float4x4 Projection;
 float4x4 View;
 float4x4 World;
+float4x4 projWorld; 
 
 float4x4 InvWVP;
 
@@ -33,6 +34,11 @@ Texture2D tMaskView;
     
 TextureCube tEnvView;   
 
+bool isspotlight;
+float4x4 projWorld2=0;
+Texture2D tProjected;    
+float4 pad2=1;
+float pad3=1;
 SamplerState sView
 {
     Filter = MIN_MAG_MIP_POINT;//MIN_MAG_MIP_LINEAR;
@@ -134,7 +140,7 @@ struct PS_IN
     { 
         float camdist = max(1,pow(length(worldposition.xyz)*100,4)/100);
         //bias = 0.0001*tan(acos(dotNL)); 
-        float bias = bias_base + bias_slopemul*tan(acos(dotNL));//*camdist; 
+        float bias = bias_base + bias_slopemul;//*tan(acos(dotNL));//*camdist; 
         // dotNL is dot( n,l ), clamped between 0 and 1
         bias = clamp(bias, 0,0.01); 
 
@@ -268,13 +274,15 @@ struct PS_IN
         return F0 + (1.0 - F0) * pow(1.0 - saturate(cosTheta), 5.0);
     }
 
-    float3 CookTorrance_GGX(float3 n, float3 l, float3 v, float roughness, float3 f0, float3 albedo) {
+    float3 CookTorrance_GGX(float3 n, float3 l, float3 v, float roughness, half subsurface_coeff, float3 f0, float3 albedo) {
         n = normalize(n);
         v = normalize(v);
         l = normalize(l);
         float3 h = normalize(v+l);
         //precompute dots
-        float NL = dot(n, l);
+        float NL1 = dot(n, l); //default
+        float NL2 = pow(dot(n, l)/2+0.5,2);//halflambert mod
+        float NL = lerp(NL1,NL2,subsurface_coeff);
         if (NL <= 0.01) NL=0.01;//return 0.0;
         float NV = dot(n, v);
         if (NV <= 0.01) NV = 0.01;//return 0.2;
@@ -355,20 +363,20 @@ float4 PS( PS_IN input ) : SV_Target
     float3 pos = SS_GetPosition(uv);
     float4 mask =  tMaskView.Sample(sView, uv);
 	float3 surfcolor = tDiffuseView.Sample(sView, uv);
-///	//return  linearDepth(tDepthView.Sample(sView, uv).x)*100;
-///	//return float4(pos*100,1);
-///	//return float4(normalize(camera_pos-pos),1);
-///    float att = attenuation(pos);
-///
-///    float3 lightdir = normalize(lightPos - pos);
-///    float diffuseIntensity = dot(normal, lightdir) * att+att*0.3;
-///
-///    float3 reflectdir = reflect(lightdir, normal);
-///	float shininess = 10*mask.y;//stub
-///    float spec = pow(clamp(dot(normalize(pos-camera_pos), reflectdir), 0.0, 1.0), shininess);
-///
-///  
-///    return float4(diffuse * (lightIntensity + spec*mask.y) * diffuseIntensity*lightColor,1)*mask.x;
+    ///	//return  linearDepth(tDepthView.Sample(sView, uv).x)*100;
+    ///	//return float4(pos*100,1);
+    ///	//return float4(normalize(camera_pos-pos),1);
+    ///    float att = attenuation(pos);
+    ///
+    ///    float3 lightdir = normalize(lightPos - pos);
+    ///    float diffuseIntensity = dot(normal, lightdir) * att+att*0.3;
+    ///
+    ///    float3 reflectdir = reflect(lightdir, normal);
+    ///	float shininess = 10*mask.y;//stub
+    ///    float spec = pow(clamp(dot(normalize(pos-camera_pos), reflectdir), 0.0, 1.0), shininess);
+    ///
+    ///  
+    ///    return float4(diffuse * (lightIntensity + spec*mask.y) * diffuseIntensity*lightColor,1)*mask.x;
 
 
 	float base_subsurface_val = 0;
@@ -415,7 +423,8 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 	float smoothness = mask.y;
 	float roughness = 1-smoothness*0.5;
 	float metallness = mask.z;
-	float sheen = 1;  
+    half subsurface_coeff = mask.a;
+	half sheen = 1;  
 	
 	float3 light_direction = (lightPos-pos);
 	float light_dist = length(light_direction); 
@@ -434,9 +443,9 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 	//float D = GGX_Distribution(dot(N,H), roughness*roughness);
 // 
 	float light_power = max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
-    float3 LIGHT = CookTorrance_GGX(normal,lightPos-pos,camera_pos-pos,roughness,
+    float3 LIGHT = CookTorrance_GGX(normal,lightPos-pos,camera_pos-pos,roughness,subsurface_coeff,
 		0.24,//float3(0.24, 0.24, 0.24),
-		surfcolor)*light_power*lightColor*lightIntensity;
+		surfcolor)*lightColor*lightIntensity;
  
     //eLIGHT = 1;
 //return float4(pos,1);
@@ -444,6 +453,25 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     {  
 		float dotNL = min(saturate(dot(N,L)),0.99);
         LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNL));//*dotNL; 
+    }
+    if (isspotlight)
+    {
+        float3 lpos = 
+            pos-lightPos;
+           // mul(float4(pos,1),transpose(projWorld)).xyz; 
+
+        lpos.yz/=lpos.x;
+        float intensity =saturate( sqrt(lpos.y*lpos.y+lpos.z*lpos.z));
+        
+      //  LIGHT *= saturate(100*pow(dot(smpos*100,float3(1,0,0)),1));
+        float inte =saturate(1-length(lpos.yz))*saturate(lpos.x);
+         
+        LIGHT*=100*inte*light_power
+        ;
+    }
+    else
+    {
+        LIGHT *=light_power;
     }
 
 	float3 output  = lerp(LIGHT,LIGHT*surfcolor,metallness); 

@@ -1,0 +1,76 @@
+{
+	"matpath": ["textures/tile/mat"],
+	"variables" : { 
+		"$gr":1,
+		"$gc":10,
+		"$gw":0.05,
+		"$gl":0.3
+	},
+	"operations" : [ 
+		{"type": "ngon", "out": "base",
+			"r" :"$gr",
+			"sides": "@($gc*2)"
+		},
+		{ "type": "inset","in": "base","out": ["t",["s","b"]],
+			"extrude": 0.2,
+			"amount" :0
+		},
+		{"type": "flip","from": "base","out": "t"},
+		{ "type": "inset","from": "s","out": ["s","b"],
+			"extrude": "@($gl/3*2)",
+			"amount" :["$gw",0]
+		},
+		{ "type": "inset","from": "s","out": ["s","b"],
+			"extrude": "@($gl/3)",
+			"amount" :["$gw",0]
+		},
+
+		
+		{ "type": "inset","from": "t","out": ["t", "b" ],
+			"extrude": 0,
+			"amount" :0.2
+		},
+
+		/*
+		{ "type": "inset","from": "t","out": ["*", ["x"] ],
+			"extrude": -0.1,
+			"amount" :0
+		}, 
+		{"type": "merge","from": "x","out": "x"},
+		{"type": "union","from": "x","out": ["x","b","b","b"]},
+		{ "type": "inset","from": "x","out": ["x", "b" ],
+			"extrude": 0.8,
+			"amount" :0
+		}, 
+		*/
+		
+		{ "type": "inset","from": "t","out": ["t", ["x"] ],
+			"extrude": -0.04,
+			"amount" :0.1
+		}, 
+		{ "type": "inset","from": "t","out": ["t", ["x"] ],
+			"extrude": 0,
+			"amount" :0.4
+		}, 
+		{ "type": "inset","from": "t","out": ["t", ["x"] ],
+			"extrude": 0.04,
+			"amount" :0
+		}, 
+		{ "type": "inset","from": "t","out": ["t", ["x"] ],
+			"extrude": 0,
+			"amount" :0.1
+		}, 
+		{ "type": "inset","from": "t","out": ["*", ["x"] ],
+			"extrude": -0.1,
+			"amount" :0
+		}, 
+
+		{"type": "uvmap","in": ["t","b","x","s"],
+			"mode":"face",
+			"scale":1  
+		},
+		{"type": "material","in": ["t","b","x","s"],
+			"material" : "silver"
+		},
+	]   
+} 

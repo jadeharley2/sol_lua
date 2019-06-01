@@ -287,6 +287,7 @@ function ai:OpenMenu(ply)
 					end
 					return false
 				end}  
+
 				if e:GetVehicle() then 
 					main[#main+1] =
 					{t="встань",f=function(ai,dialog)   
@@ -308,6 +309,16 @@ function ai:OpenMenu(ply)
 					end}
 				end  
 				
+				main[#main+1] =
+				{t="покажи что у тебя есть",f=function(ai,dialog)   
+					dialog:Open(table.Random({"Вот","Смотри"}))
+					CloseInventoryWindow(e)
+					OpenInventoryWindow(e) 
+					local psp = panel.Create("window_character")
+					psp:Set(e)
+					psp:Show()
+					return false
+				end}  
 				--if e:HasTool("bow_kindred_gal") then
 				--	if self.atask then
 				--		main[#main+1] =
@@ -522,21 +533,23 @@ end
 	
 	local flex_mouth_smile    		=17
 	function ai:VFMVL(tab,pow)
-		local m = self.ent.spparts.head.model
-		pow = pow or 1
-		m:SetFlexValue(flex_eyes_upper_ang,tab[1]*pow)
-		m:SetFlexValue(flex_eyes_lower_hep,tab[2]*pow)
+		if self.ent.spparts and self.ent.spparts.head then
+			local m = self.ent.spparts.head.model
+			pow = pow or 1
+			m:SetFlexValue(flex_eyes_upper_ang,tab[1]*pow)
+			m:SetFlexValue(flex_eyes_lower_hep,tab[2]*pow)
 
-		m:SetFlexValue(flex_eyes_a,tab[3]*pow) 
-		m:SetFlexValue(flex_eyes_b,tab[4]*pow)
+			m:SetFlexValue(flex_eyes_a,tab[3]*pow) 
+			m:SetFlexValue(flex_eyes_b,tab[4]*pow)
 
-		m:SetFlexValue(flex_brow_nerw,tab[5]*pow) 
-		m:SetFlexValue(flex_brow_surpr,tab[6]*pow)
-		m:SetFlexValue(flex_brow_angry,tab[7]*pow) 
+			m:SetFlexValue(flex_brow_nerw,tab[5]*pow) 
+			m:SetFlexValue(flex_brow_surpr,tab[6]*pow)
+			m:SetFlexValue(flex_brow_angry,tab[7]*pow) 
 
-		m:SetFlexValue(flex_mouth_smile,tab[8]*pow) 
-		
-		m:SetFlexValue(flex_lip_open,(tab[9] or 0) * pow)
+			m:SetFlexValue(flex_mouth_smile,tab[8]*pow) 
+			
+			m:SetFlexValue(flex_lip_open,(tab[9] or 0) * pow)
+		end
 	end
 
 	MOOD_NEUTRAL 	= 0

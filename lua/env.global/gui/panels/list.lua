@@ -112,7 +112,12 @@ function PANEL:Refresh()
 	end
 	self.lns = lns
 end 
-
+function PANEL:AddItem(a)
+	a:Dock(DOCK_TOP)
+	self.floater:Add(a)
+	self.floater:SetAutoSize(false,true)
+	self:UpdateLayout()
+end
 function PANEL:SetAlpha(a)
 	--Msg("asd!")
 	self.base.SetAlpha(self,a)

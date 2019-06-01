@@ -166,17 +166,17 @@ function AutoConvert(table,level)
 			local rep,vv = AutoConvert(v,level+1)
 			if rep then table[k] = vv end
 		end
-		MsgN(level,"=",k,v)
+		--MsgN(level,"=",k,v)
 		lastval = v
 		tcount = tcount + 1
 		if isnumbers and not isnumber(k) then
 			isnumbers = false
 		end
 	end
-	MsgN(level,"-",tcount,lastval,isnumbers)
+	--MsgN(level,"-",tcount,lastval,isnumbers)
 	if isnumbers and tcount>1 and isstring(lastval) then
 		if lastval=="vec3" and tcount>3 then
-			MsgN("tcount,lastval,isnumbers")
+			--MsgN("tcount,lastval,isnumbers")
 			return true, Vector(table[1],table[2],table[3])
 		end 
 	end
@@ -230,7 +230,7 @@ function ENT:PreLoadData(isLoad)
 			if meta.PreLoadData then
 				meta.PreLoadData(self)
 			end
-			MsgN("load!",isLoad)
+			--MsgN("load!",isLoad)
 			if isLoad then
 				if meta.Load then 
 					meta.Load(self)
@@ -371,7 +371,7 @@ function ENT:LoadData()
 		end
 	end
 	if j.viewdistance then
-		MsgN("mvd",j.viewdistance)
+		--MsgN("mvd",j.viewdistance)
 		self.model:SetMaxRenderDistance(j.viewdistance)
 	end
 end

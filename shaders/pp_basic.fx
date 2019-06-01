@@ -342,7 +342,7 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 		}
 		else
 		{
-			return tMaskView.Sample(sView, input.tcrd);
+			return tMaskView.Sample(sView, input.tcrd).a;
 		}
 	}
 	return 0;
@@ -356,6 +356,7 @@ float4 PS( PS_IN input ) : SV_Target
 	float4 pNormal = tNormalView.Sample(sView, input.tcrd);//float4((tNormalView.Sample(sView, input.tcrd).xyz-float3(0.5,0.5,0.5))*2,1);
 	float pDepth = tDepthView.Sample(sView, input.tcrd);
 	float4 pMask = tMaskView.Sample(sView, input.tcrd);
+	
 	//return pDiffuse;
 	//return float4(pDiffuse.rgb*(1-pMask.x),1);
 	

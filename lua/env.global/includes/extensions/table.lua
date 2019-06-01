@@ -8,23 +8,29 @@ table.MakeKVTree = function(strdict,separator)
       local parts = k
       if isstring(k) then
          parts = string.split(k,separator) 
+      else
+         return root
+         --error("key is not string")
       end
 
       local node = root
-      local pcount = #parts
-      for kk, vv in pairs(parts) do
-         local nnode = node[vv]
-         if not nnode then
-            if kk==pcount then
-               nnode = v
-            else
-               nnode = {}
+      if istable(node) then
+         local pcount = #parts
+         for kk, vv in pairs(parts) do
+            local nnode = node[vv]
+            if not nnode then
+               if kk==pcount then
+                  nnode = v
+               else
+                  nnode = {}
+               end
+               if istable(node) then
+                  node[vv] = nnode
+               end
             end
-            node[vv] = nnode
+            node = nnode
          end
-         node = nnode
       end
-      
    end
    return root
 end

@@ -279,8 +279,10 @@ ENT.options = {
 	},
 	gensokyo = {
 		text = "Gensokyo",
-		anchor = "gensokyo",
+		anchor = "gensokyo", 
 		onload = function(self,origin) 
+			SpawnPlayerChar(origin:GetPos(),origin:GetParent())
+			return true
 		end
 	},
 }

@@ -17,13 +17,37 @@ end
 function PANEL:UpdateContext()  
 	local topel = panel.GetTopElement() 
 	if topel and topel.contextinfo then
-		self:SetText(topel.contextinfo)
-		self:SetTextColor(Vector(1,1,1))
-		self:SetColor(Vector(0,0,0))
-		self:SetTextOnly(false)
-		local mpos = (input.getInterfaceMousePos()*GetViewportSize())+self:GetSize()*Point(1,-1)+Point(10,-10)
-		self:SetPos(mpos) 
-		self:Show()
+		local ci = topel.contextinfo
+
+		local vsize = GetViewportSize()
+		local impos = input.getInterfaceMousePos()
+		local mpos =  impos*vsize
+
+		if isstring(ci) then
+			self:SetText(topel.contextinfo)
+			self:SetTextColor(Vector(1,1,1))
+			self:SetTexture()
+			self:SetColor(Vector(0,0,0))
+			self:SetTextOnly(false)
+			self:SetSize(300,30) 
+			self:SetPos(mpos+self:GetSize()*Point(1,-1)+Point(10,-10)) 
+			self:Show()
+		elseif istable(ci) then
+			if(ci[1]=='image') then
+				self:SetText("")
+				self:SetTexture(ci[2])
+				self:SetSize(300,300)
+				self:SetColor(Vector(1,1,1))
+				self:SetTextOnly(false) 
+				local direction = -1
+				if impos.y<-0.3 then
+					direction = 1
+				end
+
+				self:SetPos(mpos+self:GetSize()*Point(1,direction)+Point(10,-10)) 
+				self:Show()
+			end
+		end
 	else
 		self:Close()
 	end

@@ -147,6 +147,7 @@ function SpawnPlayerChar(posoverride,nodeoverride)
 		----actor:SetPos(targetpos+Vector(0.001,0,0))  
 		
 		local actor2 = ents.Create("base_actor")
+		--actor2.firstspawn = true
 		actor2:SetSizepower(1000)
 		actor2:SetParent(ship)
 		actor2:SetSeed(120001)

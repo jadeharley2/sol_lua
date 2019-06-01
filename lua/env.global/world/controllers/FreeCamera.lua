@@ -93,10 +93,10 @@ function OBJ:Update()
 			result = result:Normalized()
 		end
 		
-		if input.KeyPressed(KEYS_Q) then 
+		if input.KeyPressed(KEYS_Q) or input.KeyPressed(KEYS_Y) then 
 			cam:RotateAroundAxis(VEC_FORWARD, -0.01)
 		end
-		if input.KeyPressed(KEYS_E) then 
+		if input.KeyPressed(KEYS_E) or input.KeyPressed(KEYS_I) then 
 			cam:RotateAroundAxis(VEC_FORWARD, 0.01)
 		end
 		
@@ -114,7 +114,6 @@ function OBJ:Update()
 		local mhag = input.MouseIsHoveringAboveGui()
 		local rmb = input.rightMouseButton()
 
-
 		local shx = 0
 		local shy = 0
 		if input.KeyPressed(KEYS_H) then shx = shx - 10 end
@@ -123,26 +122,10 @@ function OBJ:Update()
 		if input.KeyPressed(KEYS_J) then shy = shy + 10 end
 
 		if (self:MouseLocked() and not mhag) or (shx~=0 or shy~=0) then--not mhag and rmb then
-			if not self.lms_active then
-				input.SetCursorHidden(true)
-				self.lms_active = true
-			end
-			
-			local mousePos = input.getMousePosition()
 			local size = GetViewportSize() 
 			local center = size / 2
 			center = Point(math.floor( center.x),math.floor(center.y))
-			local offset = mousePos - center
-			self.mouse_lastpos = mousePos
-			input.setMousePosition(center)
-
-			
-			offset = offset + Point(shx,shy)
-			if self.firstp then
-				cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000 )*fov/80)
-				cam:RotateAroundAxis(VEC_UP, (offset.x / -1000)*fov/80)
-			end
-			self.firstp = true
+			self:UpdateCamRotation(size,center,shx,shy)
 		end 
 		if self.firstp and not self:MouseLocked() and (shx==0 and shy==0) then
 			self.firstp = false
@@ -189,6 +172,28 @@ function OBJ:Update()
 		
 		--end
 	--end
+end
+function OBJ:UpdateCamRotation(size,center,shx,shy)
+	local cam = GetCamera()
+	local fov = cam:GetFOV()
+
+	if not self.lms_active then
+		input.SetCursorHidden(true)
+		self.lms_active = true
+	end
+
+	local mousePos = input.getMousePosition()
+	local offset = mousePos - center
+	self.mouse_lastpos = mousePos
+	input.setMousePosition(center)
+
+
+	offset = offset + Point(shx,shy)
+	if self.firstp then
+		cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000 )*fov/80)
+		cam:RotateAroundAxis(VEC_UP, (offset.x / -1000)*fov/80)
+	end
+	self.firstp = true
 end
 
 global_atmosphere_sound = global_atmosphere_sound or false

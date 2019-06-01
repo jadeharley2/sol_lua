@@ -213,23 +213,23 @@ function OBJ:KeyDown(key)
 			if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end
 		end 
 		
-		if quickmenu then
-				--local ab = actor.abilities
-				--if ab then
-				--	local a1 = ab[2] if a1 then a1:Cast(actor) end
-				--end
-				
-			if (input.KeyPressed(KEYS_D1)) then quickmenu:Select(actor,1) end
-			if (input.KeyPressed(KEYS_D2)) then quickmenu:Select(actor,2) end
-			if (input.KeyPressed(KEYS_D3)) then quickmenu:Select(actor,3) end
-			if (input.KeyPressed(KEYS_D4)) then quickmenu:Select(actor,4) end
-			if (input.KeyPressed(KEYS_D5)) then quickmenu:Select(actor,5) end
-			if (input.KeyPressed(KEYS_D6)) then quickmenu:Select(actor,6) end
-			if (input.KeyPressed(KEYS_D7)) then quickmenu:Select(actor,7) end
-			if (input.KeyPressed(KEYS_D8)) then quickmenu:Select(actor,8) end
-			if (input.KeyPressed(KEYS_D9)) then quickmenu:Select(actor,9) end
-			if (input.KeyPressed(KEYS_D0)) then quickmenu:Select(actor,10) end 
-		end
+		--if quickmenu then
+		--		--local ab = actor.abilities
+		--		--if ab then
+		--		--	local a1 = ab[2] if a1 then a1:Cast(actor) end
+		--		--end
+		--		
+		--	if (input.KeyPressed(KEYS_D1)) then quickmenu:Select(actor,1) end
+		--	if (input.KeyPressed(KEYS_D2)) then quickmenu:Select(actor,2) end
+		--	if (input.KeyPressed(KEYS_D3)) then quickmenu:Select(actor,3) end
+		--	if (input.KeyPressed(KEYS_D4)) then quickmenu:Select(actor,4) end
+		--	if (input.KeyPressed(KEYS_D5)) then quickmenu:Select(actor,5) end
+		--	if (input.KeyPressed(KEYS_D6)) then quickmenu:Select(actor,6) end
+		--	if (input.KeyPressed(KEYS_D7)) then quickmenu:Select(actor,7) end
+		--	if (input.KeyPressed(KEYS_D8)) then quickmenu:Select(actor,8) end
+		--	if (input.KeyPressed(KEYS_D9)) then quickmenu:Select(actor,9) end
+		--	if (input.KeyPressed(KEYS_D0)) then quickmenu:Select(actor,10) end 
+		--end
 	end
 	if (input.KeyPressed(KEYS_F5)) then 
 		local fc = settings.GetBool("server.nofreecam")
@@ -636,11 +636,14 @@ function OBJ:HandleThirdPersonMovement(actor)
 				--	cam:TRotateAroundAxis(Up, -tcr)
 				--	actor:TRotateAroundAxis(Up, tcr)
 				--end
-				if actor:Turn(tcr) then
+				local trsl = actor:Turn(tcr)
+				if trsl then
 					self.totalCamRotationY = 0
 					cam:TRotateAroundAxis(Up, -tcr)
 					Right = cam:Right():Normalized()
 					--actor:TRotateAroundAxis(Up, tcr)  
+				elseif trsl == nil then
+					--no rotation
 				else
 					self.rmode = true
 				end
@@ -659,7 +662,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 				--end
 				--self.totalCamRotationY = nil
 			end
-			if self.rmode then 
+			if self.rmode and not actor.norotation then 
 				local tcr2 = self.totalCamRotationY/10--2 
 				if not actor.directflight and actor:IsFlying() then
 					local sRight = actor:Forward():Normalized()
@@ -813,11 +816,11 @@ function OBJ:HandleFirstPersonMovement(actor)
 			--actor.model:SetPoseParameter("move_x",result.x*-100)
 			--actor.model:SetPoseParameter("move_y",result.z*-100)
 			
-			actor:Move(-result,IsRunning)
+			if actor:Move(-result,IsRunning) then
 			
-			self.rmode = true
+				self.rmode = true
 			 
-			 
+			end
 		else
 			--actor.move = nil
 			--graph:SetState("idle")
@@ -860,9 +863,12 @@ function OBJ:HandleFirstPersonMovement(actor)
 				--	cam:TRotateAroundAxis(Up, -tcr)
 				--	actor:TRotateAroundAxis(Up, tcr)
 				--end
-				if actor:Turn(tcr) then
+				local trsl = actor:Turn(tcr)
+				if trsl then
 					cam:TRotateAroundAxis(Up, -tcr)
 					self.totalCamRotationY = 0   
+				elseif trsl == nil then
+					--no rotation
 				else
 					self.rmode = true
 				end
@@ -1179,7 +1185,9 @@ function OBJ:HandleCameraMovement(actor)
 			local pos = Vector(0,0,0)
 			local m = actor.model
 			if m then
-				if m:HasAttachment("eyes") then pos = m:GetAttachmentPos("eyes") 
+				local eyeatt = actor.eyeattachment  
+				if eyeatt and m:HasAttachment(eyeatt) then pos = m:GetAttachmentPos(eyeatt) 
+				elseif m:HasAttachment("eyes") then pos = m:GetAttachmentPos("eyes") 
 				elseif m:HasAttachment("head") then pos = m:GetAttachmentPos("head")   
 				elseif m:HasAttachment("muzzle") then pos = m:GetAttachmentPos("muzzle") end -- * parent_sz
 			end 

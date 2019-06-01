@@ -28,17 +28,18 @@ hook.Add(EVENT_GLOBAL_PREDRAW, "gui.item.abupdate", abupdate)
 --hook.Add("ability.cast","item.update",function() 
 --end)
 
-function Item(storage,slot,data)
+function Item(storage,slot,data,node)
 	local item =  panel.Create("item")
 	item.storage = storage
+	item.node = node
 	item:Dock(DOCK_FILL)
-	item:Set(slot,data)
+	item:Set(slot,data,node)
 	return item
 end
 function PANEL:MakeCopy()
 	local cpy = panel.Create("item")
 	cpy.original = self
-	cpy:Set(self.storeslot,self.item) 
+	cpy:Set(self.storeslot,self.item,self.node) 
 	return cpy
 end
 
@@ -189,16 +190,27 @@ function PANEL:TrySetTexture(name)
 	end
 end
 
-function PANEL:Set(slot,item)
+function PANEL:Set(slot,item,node)
 	--hook.Remove("ability.cast","item."..tostring(3))
 	 
 	if not item then return false end
 	
 	self.base.SetColorAuto(self,Vector(0.9,0.9,0.9),0.1)
 	self.storeslot = slot
+
+	
 	self.item = item
-	 
+
+	if item.reference and item.table then
+		--local actor = self.storage:GetNode() 
+		item = node[item.table][item.reference]-- item.table[item.reference] or item
+		 
+	end
+	
+	
 	local data = item.data
+	
+
 	if data then --item
 		local title =  data:Read("/parameters/name")
 		local luatype = data:Read("/parameters/luaenttype") 
@@ -301,24 +313,24 @@ function PANEL:OnDrop()
 end
 
 function PANEL:Select(actor)
-	local ent = self.item 
-		MsgN("select",self,ent)
+	local ent = self.item  
 	if ent then
-		if istable(ent) then
-			PrintTable(ent)
+		if istable(ent) then 
+			actor:SetActiveAbility(ent.reference)
+			--local rit = actor[ent.table][ent.reference]
+			--if rit then
+			--	if rit.Activate then
+			--		rit:Activate(actor)
+			--	elseif rit.Cast then 
+			--		actor:SetActiveAbility(rit._name)
+			--	end
+			--end
 		end
 		--if ent.HasFlag then
 		--	if ent:HasFlag(FLAG_USEABLE) then
 		--		USE_ITEM(actor,ent)
 		--	end
 		--else
-			if ent.Activate then
-				ent:Activate(actor)
-			elseif ent.Cast then
-			--	ent:Cast(actor)
-				--MsgN("select abl",self,ent,ent._name)
-				actor:SetActiveAbility(ent._name)
-			end
 		--end
 	else
 		actor:SetActiveWeapon()

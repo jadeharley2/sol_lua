@@ -48,12 +48,34 @@ table.Values = function(t)
 	end
 	return nt
 end
+table.KVSwitch = function(t)
+	local nt = {}
+	for k,v in pairs(t) do
+		nt[v] = k
+	end
+	return nt
+end
 table.Select = function(t,func,...)
 	local t2 ={}
-	
+	if isstring(func) then  
+		for k,v in pairs(t) do
+			local f = v[func]
+			if f and isfunction(f) then
+				t2[k] = f(v,...) 
+			end
+		end
+	else
+		for k,v in pairs(t) do
+			t2[k] = func(v,...) 
+		end
+	end
+	return t2
+end
+table.Where = function(t,func,...)
+	local t2 ={} 
 	for k,v in pairs(t) do
 		if func(k,v,...) then t2[#t2+1] = v end
-	end
+	end 
 	return t2
 end
 table.Merge = function(from,to,deep) 

@@ -82,6 +82,29 @@ struct PS_OUT
     float4 color : SV_Target4;
 };
 
+PS_IN VS( VSS_IN input) 
+{
+	PS_IN output = (PS_IN)0;
+	if(SkinningEnabled)
+	{
+		Skin(input.pos,input.norm,input.wts,input.inds);
+	}
+	float4x4 InstWorld =  transpose(World);
+	float4 wpos = mul(input.pos,InstWorld);
+	float4x4 VP =mul(transpose(View),transpose(Projection));
+	
+	float3x3 nworld = (float3x3)(InstWorld);
+	
+	output.pos =  mul(wpos,VP);
+	output.wpos =input.pos;// wpos.xyz;///wpos.w;
+	output.norm = normalize(mul(input.norm,nworld)); 
+	output.bnorm = normalize(mul(input.bnorm,nworld)); 
+	output.tnorm = normalize(mul(input.tnorm,nworld)); 
+	output.tcrd = input.tcrd;
+	output.color = input.color; 
+	output.spos = mul(wpos,transpose(View));
+	return output;
+}
 PS_IN VSI( VSS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
@@ -202,5 +225,14 @@ technique10 shadow
 		SetGeometryShader( 0 );
 		SetVertexShader( CompileShader( vs_4_0, CI_VSI() ) );
 		SetPixelShader( CompileShader( ps_4_0, SHADOW_PS_FLOAT() ) );
+	}
+}
+technique10 Normal
+{
+	pass P0
+	{
+		SetGeometryShader( 0 );
+		SetVertexShader( CompileShader( vs_4_0, VS() ) ); 
+		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 }

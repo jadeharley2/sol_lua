@@ -35,16 +35,16 @@ function ENT:Spawn(c)
 	--end
 	--self.model =  model
 
-	local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
-	particlesys:SetRenderGroup(RENDERGROUP_LOCAL)
-	particlesys:SetNodeMode(false)
-	particlesys:AddNode(1) 
-	particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
-	particlesys:SetTexture(1,rdtex)
-	particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.01,10,0) 
-	particlesys:SetMaxRenderDistance(1000)
-	
-	self.particlesys = particlesys 
+--	local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
+--	particlesys:SetRenderGroup(RENDERGROUP_LOCAL)
+--	particlesys:SetNodeMode(false)
+--	particlesys:AddNode(1) 
+--	particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
+--	particlesys:SetTexture(1,rdtex)
+--	particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.01,10,0) 
+--	particlesys:SetMaxRenderDistance(1000)
+--	
+--	self.particlesys = particlesys 
 	self:SetSpaceEnabled(false) 
 	
 	--self:AddEventListener(EVENT_USE,"use_event",function(self,a,b,c,d,e)
@@ -67,7 +67,7 @@ function ENT:SetColor(c)
 	self:SetParameter(VARTYPE_COLOR,c)
 	self.light:SetColor(c) 
 	local brightness = self:GetParameter(VARTYPE_BRIGHTNESS) or 1
-	self.particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.1,10,0) 
+--	self.particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.1,10,0) 
 end
 function ENT:SetBrightness(c) 
 	self:SetParameter(VARTYPE_BRIGHTNESS,c)
@@ -75,13 +75,13 @@ function ENT:SetBrightness(c)
 end 
 function ENT:TurnOff()
 	self.Fstate = false
-	self.particlesys:Enable(false)
+--	self.particlesys:Enable(false)
 	self.light:Enable(false)
 	--self.model:Enable(false) 
 end
 function ENT:TurnOn()
 	self.Fstate = true
-	self.particlesys:Enable(true)
+--	self.particlesys:Enable(true)
 	self.light:Enable(true)
 	--self.model:Enable(true) 
 end
@@ -95,7 +95,7 @@ function ENT:Toggle()
 		self.Fstate = true
 	end 
 	--MsgN("TOGGLE! ",self.Fstate,"-",astate)  
-	self.particlesys:Enable(astate)
+--	self.particlesys:Enable(astate)
 	self.light:Enable(astate) 
 	--self.model:Enable(astate) 
 end

@@ -67,7 +67,7 @@ function ENT:StartTrack(id)
 end
 function ENT:NextTrack()
 	local list = self.list
-	if list then
+	if list and #list>0 then
 		if self.randomtrack then
 			local nid = math.random(1,#list)
 			self:StartTrack(nid)

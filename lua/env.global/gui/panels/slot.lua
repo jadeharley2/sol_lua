@@ -85,8 +85,7 @@ function PANEL:Drop(item)
 	end
 	if self.OnSet then self:OnSet(item) end
 end
-function PANEL:DragDrop(node) 
-	MsgN("DROP!",node) 
+function PANEL:DragDrop(node)  
 	self:Drop(node)
 end
 function PANEL:DragEnter(node) 
@@ -96,8 +95,7 @@ function PANEL:DragExit(node)
 	--MsgN("exit",node) 
 end
 function PANEL:Select(actor)
-	local item = self.item 
-	MsgN("slot select",item)
+	local item = self.item  
 	if item then
 		item:Select(actor)
 	else

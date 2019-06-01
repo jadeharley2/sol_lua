@@ -79,7 +79,7 @@ function ENT:Spawn()
 			rparam:SetClipPlane(true,n,d)
 		end) 
 		
-		
+		rcamera:SetScreenSpace(true)
 		
 		
 		rcamera:SetRenderTarget(0,self.rt)

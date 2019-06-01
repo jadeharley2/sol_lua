@@ -412,7 +412,7 @@ function ENT:Spawn()
 
 
 	-- BSP SPAWN TESTS
-	if true then
+	if false then
 		local test13 = ents.Create("bspmap")
 		test13[VARTYPE_FORM] ="gm_flatgrass"-- "gm_construct"--"rp_evocity_dbg"--
 		

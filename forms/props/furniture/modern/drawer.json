@@ -4,5 +4,8 @@
 	"model" : "furniture/modern/drawer.stmd",
 	"scale" : 0.05,
 	"rotation" : [0,0,0],
+	"container":{ 
+		"size":20 
+	}
 	
 }

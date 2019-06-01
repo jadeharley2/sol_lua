@@ -118,13 +118,13 @@ function ESpawnCorrv2(self,seed,position,angles,len,section_type)
 	len = len or 10
 	if(len<0) then return nil end
 	local rnd = Random(seed)
-	local filtered = table.Select(sections,function(k,v,a) return v[a]   end,section_type)
+	local filtered = table.Where(sections,function(k,v,a) return v[a]   end,section_type)
 	MsgN("filtered: ",#sections," -> ",#filtered)
 	local ctype = table.Random(filtered,rnd) 
 	if ctype then
 		local csection = table.Random(ctype,rnd)
 		local cmodel =  table.Random(csection.models,rnd)
-		local filteredatt = table.Select(csection.points,function(k,v,a) return v.t==a end,section_type)
+		local filteredatt = table.Where(csection.points,function(k,v,a) return v.t==a end,section_type)
 		MsgN("filteredattachments: ",#csection.points," -> ",#filteredatt)
 		local cattachpointa =  table.Random(filteredatt,rnd)-- csection.points[1]
 		if cattachpointa then
@@ -154,7 +154,7 @@ function ESpawnCorrv2(self,seed,position,angles,len,section_type)
 				ent:SetPos(position * sz)
 				ent:SetAng(angles)
 				
-				local otherattachpoints = table.Select(csection.points,function(k,v,a) MsgN(k," - ",v," - ", v~=a) return v~=a end,cattachpointa)
+				local otherattachpoints = table.Where(csection.points,function(k,v,a) MsgN(k," - ",v," - ", v~=a) return v~=a end,cattachpointa)
 				 
 				for k,AP in pairs(otherattachpoints) do 
 					local position2 = position + AP.p:Rotate(angles)
