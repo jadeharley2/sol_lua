@@ -1,0 +1,12 @@
+{
+	"name" : "Kaltag uniform legs", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "legs",
+	"model" : "apparel/leg.stmd",
+	"icon" : "apparel/fk/kt_wrm",
+	"worldmodel" : "apparel/leg.json",
+	"worldmodelscale" : 0.014,
+	"hide":["calf","foot"]
+}

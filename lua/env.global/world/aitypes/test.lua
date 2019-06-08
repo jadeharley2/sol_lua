@@ -73,7 +73,7 @@ ACT_LOOKAT_IDLING = function(s,e,t)
  
 		local ted = false;
 		for k,v in pairs(par:GetChildren()) do
-			if v~=e then
+			if v~=e and v and IsValidEnt(v) then
 				local cls = v:GetClass()
 				if string.find(cls,"actor") then
 					ted = v
@@ -449,18 +449,23 @@ end
 	local flex_lip_open =16  
 	local flex_lip_pt  	=17  
 	function ai:VFEXL(tab,pow)
-		local m = self.ent.spparts.head.model
-		pow = pow or 1
-		m:SetFlexValue(flex_vo_a,tab[1]*pow)
-		m:SetFlexValue(flex_vo_e,tab[2]*pow)
-		m:SetFlexValue(flex_vo_o,tab[3]*pow)
-		
-		m:SetFlexValue(flex_vo_p,tab[4]*pow)
-		m:SetFlexValue(flex_vo_th,tab[5]*pow)
+		local head = self.ent:GetByName('head',true,true)
+		if head then
+			for k,v in pairs(head) do
+				local m = v.model
+				pow = pow or 1
+				m:SetFlexValue(flex_vo_a,tab[1]*pow)
+				m:SetFlexValue(flex_vo_e,tab[2]*pow)
+				m:SetFlexValue(flex_vo_o,tab[3]*pow)
+				
+				m:SetFlexValue(flex_vo_p,tab[4]*pow)
+				m:SetFlexValue(flex_vo_th,tab[5]*pow)
 
-		m:SetFlexValue(flex_tng_up,tab[6]*pow)
-		m:SetFlexValue(flex_lip_open,tab[7]*pow)
-		--m:SetFlexValue(flex_lip_pt,tab[8]*pow)
+				m:SetFlexValue(flex_tng_up,tab[6]*pow)
+				m:SetFlexValue(flex_lip_open,tab[7]*pow)
+				--m:SetFlexValue(flex_lip_pt,tab[8]*pow)
+			end
+		end
 	end
 	function ai:VocSyl(sy,pow)
 		if sy=='a' 		then	self:VFEXL({1,0,0, 0,0, 0,0,0},pow) 
@@ -533,22 +538,25 @@ end
 	
 	local flex_mouth_smile    		=17
 	function ai:VFMVL(tab,pow)
-		if self.ent.spparts and self.ent.spparts.head then
-			local m = self.ent.spparts.head.model
-			pow = pow or 1
-			m:SetFlexValue(flex_eyes_upper_ang,tab[1]*pow)
-			m:SetFlexValue(flex_eyes_lower_hep,tab[2]*pow)
+		local head = self.ent:GetByName('head',true,true)
+		if head then
+			for k,v in pairs(head) do
+				local m = v.model
+				pow = pow or 1
+				m:SetFlexValue(flex_eyes_upper_ang,tab[1]*pow)
+				m:SetFlexValue(flex_eyes_lower_hep,tab[2]*pow)
 
-			m:SetFlexValue(flex_eyes_a,tab[3]*pow) 
-			m:SetFlexValue(flex_eyes_b,tab[4]*pow)
+				m:SetFlexValue(flex_eyes_a,tab[3]*pow) 
+				m:SetFlexValue(flex_eyes_b,tab[4]*pow)
 
-			m:SetFlexValue(flex_brow_nerw,tab[5]*pow) 
-			m:SetFlexValue(flex_brow_surpr,tab[6]*pow)
-			m:SetFlexValue(flex_brow_angry,tab[7]*pow) 
+				m:SetFlexValue(flex_brow_nerw,tab[5]*pow) 
+				m:SetFlexValue(flex_brow_surpr,tab[6]*pow)
+				m:SetFlexValue(flex_brow_angry,tab[7]*pow) 
 
-			m:SetFlexValue(flex_mouth_smile,tab[8]*pow) 
-			
-			m:SetFlexValue(flex_lip_open,(tab[9] or 0) * pow)
+				m:SetFlexValue(flex_mouth_smile,tab[8]*pow) 
+				
+				m:SetFlexValue(flex_lip_open,(tab[9] or 0) * pow)
+			end
 		end
 	end
 
@@ -577,3 +585,18 @@ end
 	end
  
 --TEST END
+if CLIENT then
+	local stai = table.Copy(ai)
+	stai.__index = stai
+	console.AddCmd("csay",function(text,speed,power)
+		local ai = setmetatable({ent = LocalPlayer()},stai) 
+		ai:Vocalize(text,tonumber(speed or '1'),tonumber(power or '1'))
+
+		local ep = LocalPlayer()
+		env.EnvEvent(ep:GetParent(),ep:GetPos(),ENV_EVENT_AUDIAL,{text = text})
+	end)
+	console.AddCmd("cmood",function(mood,power)
+		local ai = setmetatable({ent = LocalPlayer()},stai) 
+		ai:Mood(tonumber(mood),tonumber(power or '1'))
+	end)
+end

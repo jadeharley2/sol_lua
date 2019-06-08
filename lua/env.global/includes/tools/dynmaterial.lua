@@ -20,15 +20,43 @@ dynmateial.LoadDynMaterial = function(data, bmatdir)
 	return mat 
 end
 
+--returns
+--[[
+	[
+		[model_com,[
+			[matid,material]
+			[matid,material]
+			...
+		] ]
+		[model_com,[
+			[matid,material] 
+			...
+		] ]
+		...
+	]
+]]
 
+function RestoreMaterials(table)  
+	if model and table.materials and table.model then
+		for k,v in pairs(table.materials) do
+			table.model:SetMaterial(v,k-1)
+		end
+	end 
+	if table.nodes then
+		for k,v in pairs(table.nodes) do
+			RestoreMaterials(v)
+		end
+	end
+end
 
 function ModModelMaterials(model,modtable,nocopy)
 	
 	local mc = model:GetMaterialCount()
-	local mt = {}
+	local restore = {}
 	for k=1,mc do
 		local mat = model:GetMaterial(k-1)
 		if not nocopy then
+			restore[k] = mat 
 			mat = CopyMaterial(mat)
 			model:SetMaterial(mat,k-1)
 		end
@@ -36,18 +64,20 @@ function ModModelMaterials(model,modtable,nocopy)
 			SetMaterialProperty(mat,kk,vv)
 		end
 	end
-	
+	return {materials = restore, model = model}
 end
 function ModNodeMaterials(node,modtable,nocopy,recursive)
 	local comp = node:GetComponent(CTYPE_MODEL)
+	local restore_n = {}
 	if comp then
-		ModModelMaterials(comp,modtable)
+		restore_n[#restore_n+1] = ModModelMaterials(comp,modtable)
 	end
 	if recursive then
 		for k,v in pairs(node:GetChildren()) do
-			ModNodeMaterials(v,modtable,nocopy,recursive)
+			restore_n[#restore_n+1] =  ModNodeMaterials(v,modtable,nocopy,recursive)
 		end
 	end
+	return {nodes = restore_n}
 end
 function ModNodeRenderOrder(node,newOrder) 
 	local comp = node:GetComponent(CTYPE_MODEL)

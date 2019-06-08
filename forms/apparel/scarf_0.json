@@ -1,0 +1,11 @@
+{
+	"name" : "Scarf", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "neck",
+	"model" : "apparel/scarf.stmd",
+	"icon" : "apparel/fk/scarf",
+	"worldmodel" : "apparel/scarf.json",
+	"worldmodelscale" : 0.014,
+}

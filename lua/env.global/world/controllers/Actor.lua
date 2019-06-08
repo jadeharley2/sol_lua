@@ -580,7 +580,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 				if IsRunning then ISR = 1 end
 				local rotspeed = actor.rotspeed or 1
 				smt = smt + math.AngleDelta(-targetval,smt)/((20 + (20*ISR))*rotspeed)  --4
-				if is_first_person and HIDE_CHAR_IN_FIRST_PERSON() and settings.GetBool("player.fpmode2.rotintertia") then
+				if is_first_person and HIDE_CHAR_IN_FIRST_PERSON() and settings.GetBool("player.fpmode2_rotintertia") then
 					--rotspeed =0.1
 					smt = -targetval
 				end
@@ -1033,13 +1033,13 @@ function OBJ:SwitchToFirstperson(actor)
 				v.model:Enable(false)
 			end
 		end
-		if actor.equipment then
-			for k,v in pairs(actor.equipment) do
-				if v.ent then
-					v.ent.model:Enable(false)
-				end
-			end
-		end
+		--if actor.equipment then
+		--	for k,v in pairs(actor.equipment) do
+		--		if v.ent then
+		--			v.ent.model:Enable(false)
+		--		end
+		--	end
+		--end
 	else
 		--if actor.spparts then
 		--	if actor.spparts.hair then

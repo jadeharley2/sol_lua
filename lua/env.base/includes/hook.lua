@@ -29,7 +29,8 @@ function hook.GetTable()
 	return table.Copy(lua_hooks)
 end
 
-local onerror = function()  
+local onerror = function(err)
+	MsgN(err)  
 	MsgN(debug.traceback())
 end
 

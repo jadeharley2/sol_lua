@@ -1,0 +1,5 @@
+{	
+	"type":"species",
+	"#include":"forms/species/anthro.json",
+	"name":"anthroid",  
+}

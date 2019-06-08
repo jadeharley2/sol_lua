@@ -7,8 +7,7 @@ function task:Setup(target,minimal_distance,run)
 	self.run = run or false
 	return true
 end 
-function task:OnBegin()
-	MsgN("afas")
+function task:OnBegin() 
 	self.ttt = 10
 	local actor = self.ent
 	local target = self.target
@@ -31,8 +30,7 @@ function task:OnBegin()
 		local pos_from = actor:GetPos()
 		local pos_to = self.target
 		self.path = {pos_from,pos_to}
-		self.pid = 1
-		MsgN("adsa")
+		self.pid = 1 
 		return true
 	end
 	return false
@@ -69,6 +67,7 @@ function task:Step()
 	local pid = self.pid
 	local mindist = self.mindist
 	local run = self.run
+
 	
 	local phys = actor.phys
 	local parent = actor:GetParent()
@@ -104,16 +103,40 @@ function task:Step()
 
 			local dnorm = dir/dist
 			local Up = actor:Up():Normalized()
-			local rad, polar,elev = actor:GetHeadingElevation(-dnorm)
 			local lastdist = self.lastdist
 			local times = self.times22 or 0
 			self.times22 = times
 			self.lastdist = dist
-			local drf = polar/ 3.1415926 * 180 
+
+			actor:Hook(EVENT_GLOBAL_PREDRAW,'fratate',function()
+				local rad, polar,elev = actor:GetHeadingElevation(-dnorm)
+				local drf = polar/ 3.1415926 * 180 
+				actor:TRotateAroundAxis(Up, (-drf)/1000)--/rdist) 
+			end)
 			local rdist = math.Clamp(math.fix(dist,1),0.5,10)+1 
-			actor:TRotateAroundAxis(Up, (-drf)/200)--/rdist) 
-			if dist>mindist then   
-				actor:Move(Vector(0,0,1),run)
+			if dist>mindist then  
+				if false then
+					local lworld = (actor:GetWorld() * matrix.Rotation(0,-90,0))--:Inversed()
+					local lpd = dir:TransformN(lworld)
+					local localDir = Vector(lpd.x,0,lpd.z):Normalized()
+					
+					local sz1 = actor:GetSizepower()
+					local sz2 = parent:GetSizepower()
+					
+					debug.ShapeBoxCreate(3333,actor,
+					matrix.Translation(Vector(1,1,1)/-2)
+					* matrix.Scaling(0.2/sz1) 
+					* matrix.Translation(Vector(1,0,0)/sz1))
+
+					debug.ShapeBoxCreate(3334,parent,
+					matrix.Translation(Vector(1,1,1)/-2)
+					* matrix.Scaling(0.02/sz2) 
+					* matrix.Translation(actor:GetPos()+localDir/sz2))
+
+					actor:Move(Vector(localDir.z,0,localDir.x),run)
+				else
+					actor:Move(Vector(0,0,1),run)
+				end
 				local Forward = actor:Right():Normalized()
 				phys:SetViewDirection(Forward) 
 				actor.model:SetPoseParameter("move_yaw",  0) 
@@ -135,5 +158,6 @@ function task:Step()
 	end
 end
 function task:OnEnd(result)
+	self.ent:UnHook(EVENT_GLOBAL_PREDRAW,'fratate')
 	--self.ent.controller = self._storedcon
 end

@@ -247,9 +247,9 @@ function ENT:LoadGraph(tab)
 		graph:NewState("recall",function(s,e) return e.model:SetAnimation("recall") end)
 		graph:NewState("recall_end",function(s,e) if e.Recall then return e:Recall(s) end return 0 end)
 		
-		graph:NewState("turn_l",function(s,e) e.model:SetAnimation("turn_l",true) return 1 end)
-		graph:NewState("turn_r",function(s,e) e.model:SetAnimation("turn_r",true) return 1 end)
-		graph:NewState("aturnidle",function(s,e) e.model:SetAnimation("idle",true) return 0 end)
+		graph:NewState("turn_l",function(s,e) return e.model:ResetAnimation("turn_l",e.turn_sharp_in or false)  end)
+		graph:NewState("turn_r",function(s,e) return e.model:ResetAnimation("turn_r",e.turn_sharp_in or false)  end)
+		graph:NewState("aturnidle",function(s,e) e.model:SetAnimation("idle",e.turn_sharp_out or false) return 0 end)
 		
 
 		graph:NewState("flight_start",function(s,e) 
@@ -401,6 +401,8 @@ function ENT:LoadGraph(tab)
 		graph:NewTransition("idle","turn_r",BEH_CND_ONCALL,"turn_r")
 		graph:NewTransition("g_turn","turn_l",BEH_CND_ONCALL,"turn_l")
 		graph:NewTransition("g_turn","turn_r",BEH_CND_ONCALL,"turn_r") 
+		graph:NewTransition("g_turn","walk",BEH_CND_ONCALL,"walk")
+		graph:NewTransition("g_turn","run",BEH_CND_ONCALL,"run")
 		graph:NewTransition("turn_l","aturnidle",BEH_CND_ONEND)
 		graph:NewTransition("turn_r","aturnidle",BEH_CND_ONEND)
 		graph:NewTransition("aturnidle","idle",BEH_CND_ONEND) 
@@ -475,33 +477,38 @@ function ENT:Think()
 	local srb = self.resetblink
 	local snb = self.nextblink
 
-	local headsub = self:GetByName('head')
+	local headsub = self:GetByName('head',true,true)
 	local hsm = false
 	local flexid =-1
 	if headsub then 
-		hsm = headsub.model 
-		flexid = hsm:GetFlex('blink') 
+		for k,v in pairs(headsub) do
+			hsm = v.model 
+			if hsm then
+				flexid = hsm:GetFlex('blink') 
+			end
+			
+			if srb then
+				if ct>srb then
+					m:StopLayeredSequence(10)
+					self.nextblink = ct+1+math.random(1,8)
+					self.resetblink = nil
+					
+					if flexid>=0 then  
+						hsm:SetFlexSpeed(flexid,3)
+						hsm:SetFlexValue(flexid,0) 
+					end 
+				end
+			elseif not srb  and (not snb or ( snb and ct>snb )) then
+				m:PlayLayeredSequence(10,"_blink_auto")
+				self.resetblink = ct+0.1 
+				if flexid>=0 then  
+					hsm:SetFlexSpeed(flexid,2)
+					hsm:SetFlexValue(flexid,1) 
+				end 
+			end
+		end
 	end
 
-	if srb then
-		if ct>srb then
-			m:StopLayeredSequence(10)
-			self.nextblink = ct+1+math.random(1,8)
-			self.resetblink = nil
-			 
-			if flexid>=0 then  
-				hsm:SetFlexSpeed(flexid,3)
-				hsm:SetFlexValue(flexid,0) 
-			end 
-		end
-	elseif not srb  and (not snb or ( snb and ct>snb )) then
-		m:PlayLayeredSequence(10,"_blink_auto")
-		self.resetblink = ct+0.1 
-		if flexid>=0 then  
-			hsm:SetFlexSpeed(flexid,2)
-			hsm:SetFlexValue(flexid,1) 
-		end 
-	end
 
 
 
@@ -559,7 +566,7 @@ end
 function ENT:SetCharacter(id)
  
 
-	id = id or "kindred"
+	id = id or "vikna"
 	
 	if id then 
 		local path = forms.GetForm("character",id)

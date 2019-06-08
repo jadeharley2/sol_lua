@@ -1,0 +1,10 @@
+{
+	"name" : "tst_hvs", 
+	"filter" :{  
+	},
+	"slot" : "feet",
+	"model" : "apparel/tst_hvs.stmd",
+	"worldmodel" : "apparel/tst_hvs.json",
+	"worldmodelscale" : 0.014,
+	"hide":["toe","foot","calf"]
+}

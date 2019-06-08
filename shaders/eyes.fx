@@ -170,7 +170,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	if(FullbrightMode)
 	{
 		output.mask = float4(0,0,0,1);
-		output.emission = result*brightness*0.2;
+		output.emission = result*brightness;
 	}
 	else
 	{

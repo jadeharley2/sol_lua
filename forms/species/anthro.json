@@ -1,0 +1,90 @@
+{	
+	"type":"species",
+	"name":"anthro", 
+	"genders" : ["male","female"], 
+	"attributes" : ["humanoid"],
+	"mass" : 10,
+	"movement" :{
+		"walk": { "speed" : 1.2 },
+		"run" : { "speed" : 4 }
+	},
+	"equipment":{
+		"slots" : ["skin","head.top","head.eyes","head.mouth","neck","torso",
+			"torso.top","tail", "legs", "arms","torso.under.top","torso.under.bot","feet" ],
+		"groups" : { 
+			"head" : ["head.top","head.eyes","head.mouth"], 
+			"torso.under" : ["torso.under.top","torso.under.bot"], 
+			"legs" : ["leg.left","leg.right"],
+			"feet" : ["foot.left","foot.right"],
+			"arms" : ["arm.left","arm.right"], 
+		},
+		"block" : {
+			"torso" : ["torso.top"],
+			"torso.under" : ["torso"],
+			"skin" : ["torso.under","head","legs","arms","feet","neck","tail"]
+		},
+	},
+	"bodyparts" : {"required" : ["body","tail","hair"], "optional" : []},
+	"model":{
+		"basedir" : "models/species/anthro/",
+		"materials" : [ 
+		], 
+		"variations" :
+		{
+			//"l1" : {			},
+			"default" : {			
+				"skeleton" : "base_anthro",
+				"tpscamheight" : 1.4,
+				"fpscamheight" : 1.4,
+				"body" : ["body_vikna"], 
+				"hair" : [], 
+			}, 
+		},
+		"firstpersoninvisible" : [],//"head"
+	},
+	
+	"variables" :
+	{
+		"directmove" : true,
+		"turn_sharp_in" : true,
+		"turn_angle" : 90, 
+		"eyemul":[1,-1],
+		"gestures":{
+			"greet":{},  
+			"pstand":{ 
+				"variables" :
+				{
+					"norotation":true,
+					"nomovement":true
+				}
+			},   
+		},
+
+		"environment":{ 
+			"air" : {
+				"pressure" : [0.5,2],
+				"composition" : {
+					"oxygen" : [7,99],
+					"c2o" : [0.1,7]
+				}
+			}
+		},
+		"composition":{
+			"flesh" : 90,
+			"bone" : 10,
+		},
+	},
+	"statemachine":{
+		"mood":{
+			"neutral":{},
+			"happy":{},
+			"sad":{},
+			"angry":{
+				"flex" : {
+					"f0":-1
+				}
+			},
+			"surprised":{}, 
+		}
+	}
+}

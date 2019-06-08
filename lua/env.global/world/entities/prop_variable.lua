@@ -325,6 +325,7 @@ function ENT:LoadData()
 		if j.light.pos then
 			light:SetOffset(JVector(j.light.pos)) 
 		end
+		light:SetDirectional(j.light.isdirectional or false)
 		self.light = light
 		 
 		if tags.lamp then

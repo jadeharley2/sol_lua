@@ -59,15 +59,7 @@ function ENT:Spawn()
 				current_itemv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					--LP:Give(itemname) 
-					if CLIENT and not network.IsConnected() then
-						local app = SpawnIA(itemname,LP:GetParent(),LP:GetPos()) 
-						if app then 
-							app:SendEvent(EVENT_PICKUP,LP)
-							LP.inventory:AddItem(LP, app)
-						end
-					else
 						LP:SendEvent(EVENT_GIVE_ITEM,itemname)
-					end
 				end
 				current_itemv:Setup("apparel",givefunc)
 				current_itemv.OnClose = function()
@@ -267,6 +259,7 @@ function ENT:Spawn()
 	if CLIENT then
 	local nav = space:AddComponent(CTYPE_NAVIGATION)   
 	nav:AddStaticMesh(map)
+	nav:Generate()
 	self.nav = nav
 	end
 		
@@ -410,21 +403,7 @@ function ENT:Spawn()
 	--	self:CreateTestPM()
 	--end)
 
-
-	-- BSP SPAWN TESTS
-	if false then
-		local test13 = ents.Create("bspmap")
-		test13[VARTYPE_FORM] ="gm_flatgrass"-- "gm_construct"--"rp_evocity_dbg"--
-		
-		test13:SetSizepower(1000)
-		test13:SetParent(space)
-		test13:SetPos(Vector(0, 2, 0)) 
-		test13:SetSeed(333333)
-		test13:SetSpaceEnabled(false)
-		test13:Spawn()
-		testA = test13
-	end
-	-- END
+ 
 
 
 	
@@ -446,27 +425,42 @@ function ENT:CTO(user,ss)
 	user:SetAbsPos(Vector(0,0.1,0))
 	--if user.model then user.model:SetUpdateRate(10) end
 	--ModNodeMaterials(user,{FullbrightMode=true},false,true)
-	ModNodeMaterials(user,{
-		FullbrightMode=true,
-		outline=1,
-		brightness=0.2
-		--ssao_mul=0, 
-		--LightwarpEnabled =1,
-		--g_LightwarpTexture="textures/warp/lw_soft.dds"
-	},false,true)--,g_LightwarpTexture="models/renamon/tex/lw.dds",LightwarpEnabled=1},false,true)
+	if user._cmodded then
+		RestoreMaterials(user._cmodded)
+		user._cmodded = nil
+	else
+		user._cmodded = ModNodeMaterials(user,{
+			FullbrightMode=true,
+			outline=1,
+			brightness=0.5
+			--ssao_mul=0, 
+			--LightwarpEnabled =1,
+			--g_LightwarpTexture="textures/warp/lw_soft.dds"
+		},false,true)--,g_LightwarpTexture="models/renamon/tex/lw.dds",LightwarpEnabled=1},false,true)
+	end
 end 
 function ENT:CFR(user,ss)
 	user:SetParent(ss:GetParent())
 	user:SetAbsPos(ss:GetAbsPos()+Vector(0,0.1,0))
 	--if user.model then user.model:SetUpdateRate(60) end
-	ModNodeMaterials(user,{
-		ssao_mul=1, 
-		FullbrightMode=false,
-		outline=0,
-		brightness=1
-	
-	},true,true)
+	if user._cmodded then
+		RestoreMaterials(user._cmodded)
+		user._cmodded = nil
+	else
+		user._cmodded = ModNodeMaterials(user,{
+			ssao_mul=1, 
+			FullbrightMode=false,
+			outline=0,
+			brightness=1
+		
+		},true,true)
+	end
 end 
+
+function ENT:LSMicro(ent,pos,data)
+	MsgInfo(data.text or "")
+end
+
 function ENT:GetSpawn() 
 	local space = self.space
  
@@ -485,6 +479,8 @@ function ENT:GetSpawn()
 	sspace:SetGravity(Vector(0,-2,0))
 	space2.space = sspace
 	self.space2 = space2
+
+	env.Microphone(space2,function(s,n,p,d) self:LSMicro(s,n,p,d) end)
 	
 	local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75/4) 
 	instr.model:SetMaterial("textures/gui/test.json")

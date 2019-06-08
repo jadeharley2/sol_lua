@@ -1,0 +1,12 @@
+{
+	"name" : "Uniform ???", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "torso",
+	"model" : "apparel/tur.stmd",
+	"icon" : "apparel/fk/uniform2",
+	"worldmodel" : "apparel/tur.json",
+	"worldmodelscale" : 0.014,
+	"hide":["torso_bot","arm"]
+}

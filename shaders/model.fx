@@ -36,14 +36,19 @@ float3 outlineTint = float3(1,1,1)*0.1;
 
 float2 rimfadeEmission = float2(1,2);
  
-Texture2D g_MeshTexture;   
-Texture2D g_MeshTexture_n;  
-Texture2D g_MeshTexture_s;  
+Texture2D g_MeshTexture;   // albedo
+Texture2D g_MeshTexture_n; // normal map 
+Texture2D g_MeshTexture_s; 
 Texture2D g_MeshTexture_m; //r - smootheness, g - deprecated, b - metallness, a - deprecated 
-Texture2D g_MeshTexture_e; 
+Texture2D g_MeshTexture_e; // emissive
+Texture2D g_MeshTexture_f; // materials mask
 Texture2D g_NoiseTexture; 
 
-
+bool matMasksEnabled = false;
+float4 matColors0 = float4(1,0,0,1);
+float4 matColors1 = float4(0,1,0,1);
+float4 matColors2 = float4(0,0,1,1);
+float4 matColors3 = float4(0,0,0,1);
 
 Texture2D g_DetailTexture;   
 Texture2D g_DetailTexture_n;   
@@ -485,6 +490,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float dpt = LinearizeDepth(input.pos.z);///input.pos.w;
 	
 	float2 texCoord = input.tcrd*texcoordmul + textureshiftdelta*time;
+
+
 	if(screenTexture)
 	{
 		texCoord = input.pos.xy/screenSize;
@@ -575,7 +582,22 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		if(TextureEnabled)
 		{
 			float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, texCoord) ;//* saturate(1-fTotalSum*10);//(0.5 < fTotalSum?0:1);
-			diffuse *= texIn.rgb * input.color;//
+			float4 tMatMasks = 1;
+			if (matMasksEnabled) 
+			{
+				tMatMasks = g_MeshTexture_f.Sample(MeshTextureSampler,texCoord);
+			} 
+			diffuse *= texIn.rgb * input.color * (
+					  tMatMasks.r * (matColors0.rgb/matColors0.a)
+					+ tMatMasks.g * (matColors1.rgb/matColors1.a) 
+					+ tMatMasks.b * (matColors2.rgb/matColors2.a) 
+					+ tMatMasks.a * (matColors3.rgb/matColors3.a));//
+
+			
+
+
+
+
 			alpha =  texIn.a;
 			
 			if (DetailEnabled) 

@@ -1,0 +1,8 @@
+{ 
+    "subsets" :{
+        "uniform0":[ "apparel.uniform_0","apparel.cape_0","apparel.scarf_0"],
+        "uniform1":[ "apparel.uniform_1","apparel.collar","apparel.armw","apparel.legw"],
+        "uniform2":[ "apparel.uniform_2","apparel.boots","apparel.hat_0"],
+        "underw":[ "apparel.ud_bot","apparel.ud_top"]
+    }
+}

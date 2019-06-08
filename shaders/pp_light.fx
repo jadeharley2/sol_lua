@@ -3,6 +3,7 @@ float pad=1;
 float4x4 Projection;
 float4x4 View;
 float4x4 World;
+float4x4 WorldInv;
 float4x4 projWorld; 
 
 float4x4 InvWVP;
@@ -456,8 +457,8 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     }
     if (isspotlight)
     {
-        float3 lpos = 
-            pos-lightPos;
+        float3 invpos = mul(float4( pos,1),transpose(WorldInv)).xyz;
+        float3 lpos = invpos;
            // mul(float4(pos,1),transpose(projWorld)).xyz; 
 
         lpos.yz/=lpos.x;
@@ -466,7 +467,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
       //  LIGHT *= saturate(100*pow(dot(smpos*100,float3(1,0,0)),1));
         float inte =saturate(1-length(lpos.yz))*saturate(lpos.x);
          
-        LIGHT*=100*inte*light_power
+        LIGHT*=10*inte*light_power
         ;
     }
     else

@@ -1,0 +1,12 @@
+{
+	"name" : "Boots", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "feet",
+	"model" : "apparel/boots.stmd",
+	"icon" : "apparel/fk/boots0",
+	"worldmodel" : "apparel/boots.json",
+	"worldmodelscale" : 0.014,
+	"hide":["foot","toe"]
+}

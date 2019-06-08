@@ -1,0 +1,11 @@
+{
+	"name" : "Cape", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "torso.top",
+	"model" : "apparel/cape.stmd",
+	"icon" : "apparel/fk/cape0",
+	"worldmodel" : "apparel/cape.json",
+	"worldmodelscale" : 0.014,
+}

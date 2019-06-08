@@ -1,9 +1,11 @@
 
 task.slot = "movement_upper"
 
-function task:Setup(target,minimal_distance) 
+function task:Setup(target,minimal_distance,tpdistance) 
 	self.target = target
-	self.mindist = minimal_distance or 3 
+	self.mindist = minimal_distance or 3  
+	self.tpdistance = tpdistance or 20 --m
+	
 	return true
 end 
 function task:OnBegin()  
@@ -16,9 +18,18 @@ function task:Step()
 		local actor = self.ent
 		local target = self.target
 		local run = false
+		local tpd = self.tpdistance or 20 
 		local dist = actor:GetDistance(target)
 		run = dist > 10 or target:IsRunning()
-		self.manager:Begin(Task("moveto",target,self.mindist,run))
+
+		--MsgN(dist,tpd)
+		if dist>tpd then
+			local ppos = target:GetPos() - target:Right()/actor:GetParent():GetSizepower()
+			actor:SetPos(ppos)
+		else
+			self.manager:Begin(Task("moveto",target,self.mindist,run))
+		end
+
 		--MsgN("huh??")
 	end
 end

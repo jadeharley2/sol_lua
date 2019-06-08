@@ -1,0 +1,11 @@
+{
+	"name" : "Kaltag uniform", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "torso",
+	"model" : "apparel/tab.stmd",
+	"icon" : "apparel/fk/uniform1",
+	"worldmodel" : "apparel/tab.json",
+	"worldmodelscale" : 0.014,
+}

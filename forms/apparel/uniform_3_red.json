@@ -1,0 +1,18 @@
+{
+	"name" : "Uniform 3", 
+	"filter" :{  
+	},
+	"slot" : "torso", 
+	"model" : "apparel/uniform_3.stmd",
+	"icon" : "apparel/fk/uniform3",
+	"worldmodel" : "apparel/uniform_3.json",
+	"worldmodelscale" : 0.014,
+	"hide":["torso_top","torso_bot","arm","thigh","calf"],
+	"modmaterial" :  [{
+		//"matColors0" : [38,34,33,255],
+		//"matColors1" : [100,100,100,255],
+		"matColors2" : [159,38,43,255],  
+		//"matColors3" : [33,33,33,255],
+		}
+	],
+}

@@ -7,7 +7,7 @@ function ENT:Init()
 
 	
 	local light = self:AddComponent(CTYPE_LIGHT)  
-	local scolor = Vector(1,1,1)
+	local scolor = Vector(0.2,1,0.3)
 	light:SetColor(scolor)
 	light:SetBrightness(10) 
 	self.light = light

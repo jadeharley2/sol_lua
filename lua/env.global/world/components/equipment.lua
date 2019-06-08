@@ -199,9 +199,12 @@ function component:_unequipslot(slot)
 			local spp = node.spparts
 			if spp then
 				for k,v in pairs(unhideray) do
-					local nn = spp[v]
-					if nn then
-						nn:UnhideBy(e) 
+					--local nn = spp[v]
+					--if nn then
+					--	nn:UnhideBy(e) 
+					--end
+					for k,v in pairs(node:GetByName(v,true,true)) do
+						v:UnhideBy(e)
 					end
 				end
 			end
@@ -213,6 +216,21 @@ function component:_unequipslot(slot)
 		eqslt.data = nil
 		MsgN(slot,"free")
 	end
+end
+function component:_updatevisibility() 
+	local node = self:GetNode()
+	for k,e in pairs(node:GetChildren(true)) do
+		if e.hideby then  
+			for k,part in pairs(e.hideby) do
+				for k,v in pairs(node:GetByName(part,true,true)) do
+					if v ~= e and v:GetParent() ~=e and v:GetSeed()==0 then
+						v:HideBy(e)
+						MsgN(v,"hidden by",e)
+					end
+				end
+			end
+		end
+	end 
 end
 function component:_equip(data,nosave)    
 	local node = self:GetNode()
@@ -237,8 +255,10 @@ function component:_equip(data,nosave)
 						eqslt.data = data 
 						eqslt.entity = e
 						e:SetName(slot)
+						e:SetPos(Vector(0,0,0))
+						e:SetAng(Vector(0,0,0))
 						e.iscloth = true
-						MsgN(slot,e)
+						--MsgN(slot,e)
 						if not nosave then
 							node[VARTYPE_EQUIPMENT] = self:ToData()
 						end
@@ -277,14 +297,105 @@ function component:_equip(data,nosave)
 							local spp = node.spparts
 							if spp then
 								for k,v in pairs(hide) do 
-									local nn = spp[v]
-									if nn then
-										nn:HideBy(e) 
+									--local nn = spp[v]
+									--if nn then
+									--	nn:HideBy(e) 
+									--end
+									for k,v in pairs(node:GetByName(v,true,true)) do
+									--	v:HideBy(e)
 									end
 								end
 								e.hideby = hide
 							end
 						end
+
+
+						local nametable = {root = e}
+						if formdata.subs then
+							for k,v in pairs(formdata.subs) do
+								local ee = ents.FromData(json.ToJson(v),e)
+								local en = ee:GetName()
+								if en then
+									nametable[en] = ee
+								else
+									nametable[#nametable+1] = ee
+								end
+							end
+						end
+						--MsgN("names")
+						--PrintTable(nametable)
+
+						if formdata.materials then 
+
+							local bmatdir = formdata.basematdir
+							for k,v in pairs(formdata.materials) do
+								local keys = k:split(':') 
+								local bpart = keys[1] 
+								local id = tonumber( keys[2])
+								if id==nil and bpart == 'mat' then
+									local newmat = dynmateial.LoadDynMaterial(v,bmatdir)
+									for partname,part in pairs(nametable) do
+										for matid,matname in pairs(part.model:GetMaterials()) do
+											if string.find(matname,keys[2]) then
+												part.model:SetMaterial(newmat,matid-1)
+											end
+										end
+									end  
+								else
+									local part = nametable[bpart]
+									if part then  
+										local mat = dynmateial.LoadDynMaterial(v,bmatdir)
+										part.model:SetMaterial(mat,id)
+									end
+								end 
+							end
+						end 
+						if formdata.replacematerial then
+							for ee in pairs(nametable) do
+								local rmodel = ee.model
+								for k,v in pairs(formdata.replacematerial) do
+									if isstring(v) then
+										rmodel:SetMaterial(LoadMaterial(v),k-1) 
+									end
+								end
+							end
+						end
+						if formdata.modmaterials then
+							ModNodeMaterials(e,formdata.modmaterials,false,true)
+						end
+						if formdata.modmaterial then 
+							local rmodel = e.model
+							if rmodel then
+								for k,v in pairs(formdata.modmaterial) do  
+									local mat = rmodel:GetMaterial(k-1)
+									if not nocopy and mat then
+										mat = CopyMaterial(mat)
+										rmodel:SetMaterial(mat,k-1)
+									end
+									for kk,vv in pairs(v) do
+										if istable(vv) and #vv == 3 then
+											SetMaterialProperty(mat,kk,JVector(vv))
+										else
+											SetMaterialProperty(mat,kk,vv)
+										end
+									end
+								end
+							end 
+						end
+						if formdata.flexes then 
+							for k,v in pairs(formdata.flexes) do
+								local keys = k:split(':') 
+								local bpart = keys[1] 
+								local id = tonumber( keys[2]) 
+		
+								local part = nametable[bpart]
+								if bpart == "root" then part = self end 
+								if part then   
+									part.model:SetFlexValue(id,v)
+								end 
+							end
+						end
+						self:_updatevisibility()
 					end
 				end
 			end

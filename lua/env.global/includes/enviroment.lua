@@ -56,6 +56,42 @@ env.MagField = function() --E,W,A,F
 end
 
 
+ENV_EVENT_NONE = 0
+ENV_EVENT_VISUAL = 1
+ENV_EVENT_AUDIAL = 2
+ENV_EVENT_QUAKE = 3
+
+env.EnvEvent = function(node,pos,eid,data)
+	for k,v in pairs(node:GetChildren()) do
+		if v and IsValidEnt(v) then
+			local een = v._eenv
+			if een then
+				local et = een[eid]
+				if et then
+					for k2,v2 in pairs(et) do
+						v2(v,node,pos,data)
+					end
+				end
+			end
+		end
+	end 
+	if eid == ENV_EVENT_AUDIAL then
+	end
+end
+env.EnvSubscribe = function(node,eid,name,f)
+	local een = node._eenv or {}
+	node._eenv = een
+
+	een[eid] = een[eid] or {}
+	een[eid][name] = f
+end
+env.Microphone = function(node,func)
+	env.EnvSubscribe(node,ENV_EVENT_AUDIAL,'sound',func)
+end
+
+
+
+
 tempCreateMap = function(pos,mul) 
 	pos = pos or Vector(0,0,1) 
 	mul = mul or 1

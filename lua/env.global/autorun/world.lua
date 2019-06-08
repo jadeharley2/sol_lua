@@ -4,76 +4,90 @@ world = world or {}
 
 function world.LoadWorld(id,mode,onComplete,onFail)
 	if not id  then hook.Call("menu") return error("world id unspecified") end
-	local cam = GetCamera()
-	cam:SetUpdateSpace(true)
-	UNIid = id
-	
-	
-	MsgN("[WORLD] load sequence begun")
-	 
-	U = ents.Create("world_"..id)  
-	U:Create() 
+	xpcall(function()
+		
+		
+		
+		
 
-	local opttable = false
-	if mode and isstring(mode) then
-		--if U.options then
-			opttable = U.options[mode]
-		--elseif U.GetOption then
-		--	opttable = U:GetOption(mode) 
-		--end
-	else
-		opttable = mode
-	end
+		local cam = GetCamera()
+		cam:SetUpdateSpace(true)
+		UNIid = id
+		
+		
+		MsgN("[WORLD] load sequence begun")
+		
+		U = ents.Create("world_"..id)  
+		U:Create() 
 
-	if opttable then
-		--load location string or anchor 
-		local anchor =  opttable.anchor or opttable.location
-		if anchor then
-			world.LoadLocation(anchor,function(e)
-				world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
-			end,function()
-				if onFail then onFail() end
-			end)
+		local opttable = false
+		if mode and isstring(mode) then
+			--if U.options then
+				opttable = U.options[mode]
+			--elseif U.GetOption then
+			--	opttable = U:GetOption(mode) 
+			--end
 		else
-			world.LoadWorld_OnLoaded(cam,opttable,U,onComplete)
+			opttable = mode
 		end
 
-	else
-		if U.GetSpawn then
-			SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
-			cam:SetParent(SPAWNORIGIN)
-			cam:SetPos(SPAWNPOS)
-			MsgN("[WORLD] load complete")
-			if onComplete then onComplete(U,origin,pos) end
-			hook.Call("engine.location.loaded", cam,"local")
-		else
-			if U.LoadSpawnpoint then
-				hook.Add("world.loaded","spawner",function(origin, pos) 
-					hook.Remove("world.loaded","spawner")
-					SPAWNORIGIN = origin
-					SPAWNPOS = pos
-					cam:SetParent(origin)
-					cam:SetPos(pos)
-					MsgN("[WORLD] load complete")
-					if onComplete then onComplete(U,origin,pos) end
-					hook.Call("engine.location.loaded", cam,"local")
-					
-				end) 
-				hook.Add("world.load.error","spawner",function() 
-					hook.Remove("world.load.error","spawner") 
-					UnloadWorld()
+		if opttable then
+			--load location string or anchor 
+			local anchor =  opttable.anchor or opttable.location
+			if anchor then
+				world.LoadLocation(anchor,function(e)
+					world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
+				end,function()
 					if onFail then onFail() end
-				end) 
-				U:LoadSpawnpoint()
+				end)
+			else
+				world.LoadWorld_OnLoaded(cam,opttable,U,onComplete)
 			end
-		end 
-	end
 
-	
-	 
-	cam:SetGlobalName("player_cam")
-	
-	return U
+		else
+			if U.GetSpawn then
+				SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
+				cam:SetParent(SPAWNORIGIN)
+				cam:SetPos(SPAWNPOS)
+				MsgN("[WORLD] load complete")
+				if onComplete then onComplete(U,origin,pos) end
+				hook.Call("engine.location.loaded", cam,"local")
+			else
+				if U.LoadSpawnpoint then
+					hook.Add("world.loaded","spawner",function(origin, pos) 
+						hook.Remove("world.loaded","spawner")
+						SPAWNORIGIN = origin
+						SPAWNPOS = pos
+						cam:SetParent(origin)
+						cam:SetPos(pos)
+						MsgN("[WORLD] load complete")
+						if onComplete then onComplete(U,origin,pos) end
+						hook.Call("engine.location.loaded", cam,"local")
+						
+					end) 
+					hook.Add("world.load.error","spawner",function() 
+						MsgN("[WORLD] load error")
+						hook.Remove("world.load.error","spawner") 
+						world.UnloadWorld()
+						if onFail then onFail() end
+					end) 
+					U:LoadSpawnpoint()
+				end
+			end 
+		end
+
+		
+		
+		cam:SetGlobalName("player_cam")
+		return U
+	end,function(err) 
+		MsgN("[WORLD] load error")
+		MsgN(err)
+		MsgN(debug.traceback())
+		hook.Remove("world.load.error","spawner") 
+		world.UnloadWorld()
+		if onFail then onFail() end
+	end)
 end 
 
 function world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
@@ -128,8 +142,9 @@ function world.LoadSave(savedgamestate,onComplete,onFail)
 		if onComplete then onComplete() end
 	end)
 	hook.Add("engine.location.loadfailed","spawner",function(origin) 
+		MsgN("[WORLD] load error")
 		hook.Remove("engine.location.loadfailed","spawner")
-		UnloadWorld()
+		world.UnloadWorld()
 		if onFail then onFail() end
 	end)
 	local result, roottable = engine.LoadState(savedgamestate) 

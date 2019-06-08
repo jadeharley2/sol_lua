@@ -36,7 +36,7 @@ function PANEL:Init()
 end
  
 function PANEL:UpdateBar(ent)  
-	if ent then
+	if ent and IsValidEnt(ent) then
 		local back = self.back
 		local hp = self.hp
 		back:SetAlpha(1)

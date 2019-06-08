@@ -62,6 +62,8 @@ function ENT:Spawn()
 		 
 		--light.light:SetShadow(true)
 		self.space = space 
+
+		self:GenerateNavmesh()
 		 
 		   
 		--if CLIENT then
@@ -105,6 +107,22 @@ function ENT:Despawn()
 	--local wtype = self:GetParameter(VARTYPE_CHARACTER)
 	--SetInterior(wtype,nil)
 end
+function ENT:GenerateNavmesh()
+	MsgN("Nav generation")
+	self.space:RemoveComponents(CTYPE_NAVIGATION)
+	local nav = self.space:AddComponent(CTYPE_NAVIGATION)  
+	local chl = self.space:GetChildren()
+	local chlc = #chl
+	for k,v in ipairs(chl) do  
+		if v and IsValidEnt(v) then
+			MsgN("Nav generation part "..k..' of '.. chlc)
+			nav:AddStaticMesh(v)
+		end
+	end
+	nav:Generate()
+	self.nav = nav
+end
+
 
 local static = ENT.static or {}
 ENT.static = static

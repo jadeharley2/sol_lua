@@ -33,6 +33,9 @@ function PANEL:Init()
 				if v.applyfunction then
 					v.applyfunction(val)
 				end
+			elseif v.type == "key" then
+				local val = tonumber(v:GetText())
+				settings.SetNumber(k,val)
 			elseif v.type == "bool" then
 				local val = v.value or false
 				settings.SetBool(k,val)
@@ -104,6 +107,11 @@ function PANEL:Init()
 				inp.OnKeyDown = function(s,k)
 					if v2.apply then v2.apply(s:GetText() or "") end 
 				end
+			elseif v2.type == "key" then 
+				inp = panel.Create("input_text")   
+				inp:SetSize(280,20) 
+				inp.rest_numbers = true
+				inp:SetText2(tostring(settings.GetNumber(v2.var,v2.default))) 
 			elseif v2.type == "string" then 
 				inp = panel.Create("input_text")  
 				inp:SetSize(280,20)

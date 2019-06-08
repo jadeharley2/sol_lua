@@ -1,0 +1,11 @@
+{
+	"name" : "Underwear top", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "torso.under.top",
+	"model" : "apparel/ud_top.stmd",
+	"icon" : "apparel/fk/kt_wrm",
+	"worldmodel" : "apparel/ud_top.json",
+	"worldmodelscale" : 0.014,
+}

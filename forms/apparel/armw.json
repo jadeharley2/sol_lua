@@ -1,0 +1,11 @@
+{
+	"name" : "Kaltag uniform arms", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "arms",
+	"model" : "apparel/arm.stmd",
+	"icon" : "apparel/fk/kt_wrm",
+	"worldmodel" : "apparel/arm.json",
+	"worldmodelscale" : 0.014 
+}

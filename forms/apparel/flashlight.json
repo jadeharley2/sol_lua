@@ -1,0 +1,21 @@
+{
+	"name" : "flashlight",
+	"slot" : "arms",
+	"model" : "apparel/arm.stmd",
+	"icon" : "flashlight",
+	"worldmodel" : "apparel/arm.json",
+	"worldmodelscale" : 0.014, 
+	"subs" : [
+		{ 
+			"sizepower" : 1000, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1000, 
+				"luaenttype" : "flashlight",
+				"position" :[0,0.001,0,"vec3"] 
+			}
+		},
+	]
+
+}

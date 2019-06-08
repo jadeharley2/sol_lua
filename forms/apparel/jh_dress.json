@@ -1,0 +1,11 @@
+{
+	"name" : "Witch dress", 
+	"filter" :{  
+	},
+	"slot" : "torso",
+	"model" : "apparel/jh_dress.stmd",
+	"icon" : "apparel/fk/uniform0",
+	"worldmodel" : "apparel/jh_dress.json",
+	"worldmodelscale" : 0.014,
+	"hide":["torso_bot","torso_top","arm"]//,"arm" 
+}

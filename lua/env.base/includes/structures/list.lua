@@ -25,6 +25,11 @@ function list_meta:Add(val)
 	if not self.f then self.f = new end
 	return true 
 end
+function list_meta:AddRange(tab)
+	for k,v in SortedPairs(tab) do
+		self:Add(v)
+	end
+end
 --local function trd(tab)
 --	if tab then return tab.v else return nil end
 --end

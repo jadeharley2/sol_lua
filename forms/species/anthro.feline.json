@@ -1,0 +1,96 @@
+{	
+	"#include" : "anthro.json", 
+	"racename":"feline", 
+	"mass" : 9,
+	"parts" : { 
+		"head" : "head_ara", 
+		"torso_top":"bp_torso_top",
+		"torso_bot":"bp_torso_bot",
+		"arm"  : "bp_arm",
+		"hand" : "bp_hand",
+		"thigh": "bp_thigh",
+		"calf" : "bp_calf",
+		"foot" : "bp_foot",
+		"toe"  : "bp_toe",
+		"neck"  : "bp_neck",
+		"hair" : "hair_vikna",
+		"tail" : "tail_vikna"
+	},  
+	"materials" : {}, 
+	"basematdir" : "models/species/anthro/materials/", 
+	"editor" : {
+		"matdir":"models/species/anthro/texparts/",
+		"materials" : {
+			"basematerial" : {
+				"variables" : {
+					"shader":"shader.model", 
+					"base_subsurface_val":0.5, 
+					"brightness":1,
+					"base_specular_intencity":0.1,
+					"mul_specular_intencity":1, 
+					"base_specular_power":0.2,
+					"mul_specular_power":1, 
+					"g_MeshTexture":"textures/debug/white.png",  
+					"tint":[1,1,1],
+				}
+			},
+			"body_material" : {
+				"parent" : "basematerial",
+				"slot" :["torso_top","torso_bot","arm","hand","thigh","calf","foot","toe","neck"],
+				"layers" :[
+					{"file":"textures/debug/white.png", "tint":"color_body_1"},
+					{"file":"models/species/anthro/texparts/body_feline_l1.png", "tint":"color_body_2"},
+					{"file":"models/species/anthro/texparts/body_feline_l2.png", "tint":"color_body_3"}
+				]
+			},
+			"head_material" : {
+				"parent" : "basematerial",
+				"slot" :["head"],
+				"layers" :[
+					{"file":"textures/debug/white.png", "tint":"color_body_1"},
+					{"file":"models/species/anthro/texparts/body_colors_l1.png", "tint":"color_body_2"},
+					{"file":"models/species/anthro/texparts/body_colors_l2.png", "tint":"color_body_3"},
+					{"file":"models/species/anthro/texparts/body_colors_l3.png", "tint":"color_body_4"}
+				]
+			},
+			"tail_material" : {
+				"parent" : "basematerial",
+				"slot" :["tail"],
+				"layers" :[
+				]
+			},
+			"hair_material" : {
+				"parent" : "basematerial",
+				"slot" :["hair"],
+				"layers" :[
+				]
+			},
+			"eye_material" : { }
+		},
+		"parameters" :{
+			"group_parts":{
+				"hair":{ "text" : "Hair", "type":"part", "slot" : "hair", 
+					"default" : "hair_ara", 
+				},
+				"tail":{ "text" : "Tail", "type":"part", "slot" : "tail", 
+					"default" : "tail_ara", 
+				}
+			},
+			"group_colors":{
+				"body_color_1" :{"text" : "Body color 1","type":"color","default":[0.2,0.2,0.2]},
+				"body_color_2" :{"text" : "Body color 2","type":"color","default":[0.6,0.6,0.6]},
+				"body_color_3" :{"text" : "Body color 3","type":"color","default":[0.1,0.1,0.1]},
+				"body_color_4" :{"text" : "Body color 4","type":"color","default":[0,0,0]},
+				
+				"hair_color_1" :{"text" : "Hair color 1","type":"color","default":[0,0,0]},
+
+				"eye_color_1" :{"text" : "Eye color 1","type":"color","default":[0.4,0.8,0.2]},
+			},
+			"group_parameters":{
+				"test_value" :{"type":"flex","default":0},
+			}
+		},
+	},
+	//"@attributes" : ["blah"],
+}
+//"torso_top","torso_bot","arm","hand","thigh","calf","foot","toe","neck","hair","tail" 

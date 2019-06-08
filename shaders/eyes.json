@@ -50,6 +50,8 @@
 			{"name":"eyeId",    	   "type":"int",    					"description":"eye index"}, 
 			{"name":"eyeScale",    	   "type":"float",   "default":1, 		"description":"eye scale"}, 
 			{"name":"flipuv",    	   "type":"vector2", "default":[1,1], 	"description":"texture coords multiplier"}, 
+			{"name":"FullbrightMode",  "type":"bool", 	 "default":false, 	"description":"disable light"}, 
+			{"name":"brightness",      "type":"float",   "default":1, 		"description":"brightness"}, 
 			
 		] 
 	}

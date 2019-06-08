@@ -1,0 +1,11 @@
+{
+	"name" : "Witch th", 
+	"filter" :{  
+	},
+	"slot" : "legs",
+	"model" : "apparel/jh_sk.stmd",
+	"icon" : "apparel/fk/uniform0",
+	"worldmodel" : "apparel/jh_sk.json",
+	"worldmodelscale" : 0.014,
+	"hide":["calf","foot","toe"]
+}

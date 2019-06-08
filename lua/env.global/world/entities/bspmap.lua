@@ -29,6 +29,7 @@ function ENT:GenerateNavmesh()
 			nav:AddStaticMesh(v)
 		end
 	end
+	nav:Generate()
 	self.nav = nav
 end
 
@@ -71,7 +72,7 @@ function ENT:LoadModel()
 	self.modelcom = true
 	--self.incol = SpawnSO("tempbspmap.stmd",self,Vector(0,0,0),0.01905)
 	MsgN("[BSP] Map model spawn. Total part count:",mcou)
-	for k=0,mcou do
+	for k=0,mcou-1 do
 		local so = SpawnSO("tempbspmap_"..k..".stmd",self,Vector(0,0,0),0.01905)
 		so:AddFlag(320230)--FLAG_EDITOR_HIDE
 	end

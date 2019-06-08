@@ -1,0 +1,11 @@
+{
+	"name" : "Kaltag uniform collar", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "neck",
+	"model" : "apparel/collar.stmd",
+	"icon" : "apparel/fk/collar",
+	"worldmodel" : "apparel/collar.json",
+	"worldmodelscale" : 0.014,
+}

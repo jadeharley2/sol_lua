@@ -243,7 +243,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float3 ambmap = EnvSampleLevel(worldNormal,0.9);//g_EnvTexture.SampleLevel(MeshTextureSampler, worldNormal,10);
 	float3 reflectcam = reflect(cameraDirection,worldNormal);
 	float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
-	float3 envmap = EnvSample(reflectEnv*float3(1,1,1));//
+	float3 envmap = EnvSampleLevel(reflectEnv*float3(1,1,1),0.99);//
 	//g_EnvTexture.SampleLevel(MeshTextureSampler, reflectcam*float3(-1,1,1),0);
 	//float3 depthcolor = float3(0);
 	float rim2 =  saturate(1-camDot*2);

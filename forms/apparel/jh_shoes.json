@@ -1,0 +1,10 @@
+{
+	"name" : "Witch shoes", 
+	"filter" :{  
+	},
+	"slot" : "feet",
+	"model" : "apparel/jh_shoes.stmd",
+	"icon" : "apparel/fk/uniform0",
+	"worldmodel" : "apparel/jh_shoes.json",
+	"worldmodelscale" : 0.014,
+}

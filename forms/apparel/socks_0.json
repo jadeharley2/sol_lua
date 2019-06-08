@@ -1,0 +1,12 @@
+{
+	"name" : "Socks", 
+	"filter" :{ 
+		"character" : ["vikna"],
+	},
+	"slot" : "legs",
+	"model" : "apparel/skl.stmd",
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel" : "apparel/skl.json",
+	"worldmodelscale" : 0.014,
+	"hide":["calf","foot"]
+}

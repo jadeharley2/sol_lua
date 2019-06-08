@@ -1,0 +1,11 @@
+{
+	"name" : "Shalltear dress", 
+	"filter" :{  
+	},
+	"slot" : "torso",
+	"model" : "apparel/st_dress.stmd",
+	"icon" : "apparel/fk/uniform0",
+	"worldmodel" : "apparel/st_dress.json",
+	"worldmodelscale" : 0.014,
+	"hide":["torso_top","torso_bot","arm","thigh","calf"]
+}

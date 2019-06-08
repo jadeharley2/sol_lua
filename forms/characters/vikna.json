@@ -1,0 +1,29 @@
+{
+	"name": "Vikna",
+	"species" : "anthro.feline:default",  
+	"health" : 100,  
+	"parts" : { 
+		"head" : "head_vikna",
+		//"body" : "body_feline",
+		"torso_top":"bp_torso_top",
+		"torso_bot":"bp_torso_bot",
+		"arm"  : "bp_arm",
+		"hand" : "bp_hand",
+		"thigh": "bp_thigh",
+		"calf" : "bp_calf",
+		"foot" : "bp_foot",
+		"toe"  : "bp_toe",
+		"neck"  : "bp_neck",
+		"hair" : "hair_vikna",
+		"tail" : "tail_vikna"
+	},  
+	"materials" : {}, 
+	"basematdir" : "models/species/anthro/materials/", 
+
+	"equipment":{
+		"items":["uniform_0","cape_0","scarf_0"]
+	}, 
+	"items":[ 
+	] 
+}
+ 
