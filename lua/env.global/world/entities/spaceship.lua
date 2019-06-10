@@ -785,8 +785,10 @@ function ENT:Think()
 		local vel = self.velocity_c:GetVelocity()
 		self:BendSpacetime(vel:Length()*0.00000001)
 		
-		local mvl = math.Clamp((self.speed or 0)*1000,0,1)*0.85--*5-5  
-		self.thrustersnd:SetVolume(mvl)
+		if self.thrustersnd then
+			local mvl = math.Clamp((self.speed or 0)*1000,0,1)*0.85--*5-5  
+			self.thrustersnd:SetVolume(mvl)
+		end
 	end
 	
 	if CLIENT then

@@ -49,63 +49,6 @@ function ENT:Spawn()
 		atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
 		self.atmosphere = atmosphere
 	end
-	if(surfacecom:HasAtmosphere() and false )then -- TODO:DELETE
-		local modelA = self:AddComponent(CTYPE_MODEL) 
-		local model = self:AddComponent(CTYPE_MODEL) 
-		local modelB = self:AddComponent(CTYPE_MODEL) 
-	
-	
-		
-		
-		--0.9096
-		local world= matrix.Scaling(2*0.91) * matrix.Rotation(90,0,0)
-		local world2= matrix.Scaling(Vector(-1,1,1)*2*0.91) * matrix.Rotation(90,0,0)
-		
-		local cloud_mat = "textures/atmosphere/clouds.json"
-		----[[
-		--- cloud layer 1
-		modelA:SetRenderGroup(RENDERGROUP_PLANET)
-		modelA:SetModel("engine/csphere_36_cylproj.json") 
-		modelA:SetMaterial(cloud_mat) 
-		modelA:SetBlendMode(BLEND_ADD) 
-		modelA:SetRasterizerMode(RASTER_NODETPHSOLID) 
-		modelA:SetDepthStencillMode(DEPTH_DISABLED)  
-		modelA:SetMatrix(world)
-		modelA:SetBrightness(0.4)
-		modelA:SetFadeBounds(0.02,99999,0.02) 
-		modelA:SetDrawShadow(false)
-		self.modelA = modelA
-		
-		--- cloud layer 2
-		model:SetRenderGroup(RENDERGROUP_PLANET)
-		model:SetModel("engine/csphere_36_cylproj.json") 
-		model:SetMaterial(cloud_mat) 
-		model:SetBlendMode(BLEND_ALPHA) 
-		model:SetRasterizerMode(RASTER_NODETPHSOLID) 
-		model:SetDepthStencillMode(DEPTH_DISABLED)  
-		model:SetMatrix(world)
-		model:SetBrightness(2)
-		model:SetFadeBounds(0.02,99999,0.02)  
-		model:SetDrawShadow(false)
-		self.model = model
-		--model:Enable(false)
-		
-		---inverted cloud layer
-		
-		modelB:SetRenderGroup(RENDERGROUP_PLANET)
-		modelB:SetModel("engine/csphere_36_cylproj.json") 
-		modelB:SetMaterial(cloud_mat) 
-		modelB:SetBlendMode(BLEND_ALPHA) 
-		modelB:SetRasterizerMode(RASTER_DETPHSOLID) 
-		modelB:SetDepthStencillMode(DEPTH_ENABLED)  
-		modelB:SetMatrix(world2)
-		modelB:SetBrightness(2)
-		modelB:SetFadeBounds(0.02,99999,0.02) --0.0002,99999,0.0002) 
-		modelB:SetDrawShadow(false)
-		self.modelB = modelB
-		--]]
-	end
-	
 	
 	--self:SetUpdating(true,20)
 	
@@ -140,7 +83,7 @@ function ENT:Leave()
 		self.modelB:SetRenderGroup(RENDERGROUP_PLANET)
 	end
 	if self.atmosphere then
-		self.atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
+		self.atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
 	end
 	
 	--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED) 
@@ -167,4 +110,10 @@ function ENT:Think()
 --	--MsgN("d") 
 	--self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
 --	--cr:SetPostOffset()
+	if CLIENT then
+		local cam = GetCamera()
+		if cam:GetParent()==self then
+			render.ClearShadowMaps()
+		end
+	end
 end

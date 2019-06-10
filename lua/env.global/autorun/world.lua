@@ -3,82 +3,91 @@ world = world or {}
 
 
 function world.LoadWorld(id,mode,onComplete,onFail)
-	if not id  then hook.Call("menu") return error("world id unspecified") end
+	if not id  then 
+		if CLIENT then hook.Call("menu") end 
+		return error("world id unspecified") 
+	end
 	xpcall(function()
 		
-		
-		
-		
-
-		local cam = GetCamera()
-		cam:SetUpdateSpace(true)
+		local c_origin = ents.Create()
+		c_origin:SetSpaceEnabled(false)
 		UNIid = id
 		
 		
 		MsgN("[WORLD] load sequence begun")
 		
 		U = ents.Create("world_"..id)  
-		U:Create() 
-
-		local opttable = false
-		if mode and isstring(mode) then
-			--if U.options then
-				opttable = U.options[mode]
-			--elseif U.GetOption then
-			--	opttable = U:GetOption(mode) 
-			--end
+		if not U then
+			return error("No such world: world_"..id) 
 		else
-			opttable = mode
-		end
+			U:Create() 
 
-		if opttable then
-			--load location string or anchor 
-			local anchor =  opttable.anchor or opttable.location
-			if anchor then
-				world.LoadLocation(anchor,function(e)
-					world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
-				end,function()
-					if onFail then onFail() end
-				end)
+			local opttable = false
+			if mode and isstring(mode) then 
+				opttable = U.options[mode] 
 			else
-				world.LoadWorld_OnLoaded(cam,opttable,U,onComplete)
+				opttable = mode
 			end
 
-		else
-			if U.GetSpawn then
-				SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
-				cam:SetParent(SPAWNORIGIN)
-				cam:SetPos(SPAWNPOS)
-				MsgN("[WORLD] load complete")
-				if onComplete then onComplete(U,origin,pos) end
-				hook.Call("engine.location.loaded", cam,"local")
-			else
-				if U.LoadSpawnpoint then
-					hook.Add("world.loaded","spawner",function(origin, pos) 
-						hook.Remove("world.loaded","spawner")
-						SPAWNORIGIN = origin
-						SPAWNPOS = pos
-						cam:SetParent(origin)
-						cam:SetPos(pos)
-						MsgN("[WORLD] load complete")
-						if onComplete then onComplete(U,origin,pos) end
-						hook.Call("engine.location.loaded", cam,"local")
-						
-					end) 
-					hook.Add("world.load.error","spawner",function() 
-						MsgN("[WORLD] load error")
-						hook.Remove("world.load.error","spawner") 
-						world.UnloadWorld()
+			if opttable then
+				--load location string or anchor 
+				local anchor =  opttable.anchor or opttable.location
+				if anchor then
+					world.LoadLocation(anchor,function(e)
+						world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
+					end,function()
 						if onFail then onFail() end
-					end) 
-					U:LoadSpawnpoint()
+					end)
+				else
+					world.LoadWorld_OnLoaded(c_origin,opttable,U,onComplete)
 				end
-			end 
+
+			else
+				if U.GetSpawn then
+					SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
+					c_origin:SetParent(SPAWNORIGIN)
+					c_origin:SetPos(SPAWNPOS)
+					MsgN("[WORLD] load complete")
+					if onComplete then onComplete(U,c_origin,pos) end
+					hook.Call("engine.location.loaded", origin,"local")
+				else
+					if U.LoadSpawnpoint then
+						hook.Add("world.loaded","spawner",function(origin, pos) 
+							hook.Remove("world.loaded","spawner")
+							SPAWNORIGIN = origin
+							SPAWNPOS = pos
+							origin:SetParent(origin)
+							origin:SetPos(pos)
+							if CLIENT then
+								local cam = GetCamera()
+								cam:SetParent(origin)
+								cam:SetPos(pos)
+							end
+
+							MsgN("[WORLD] load complete")
+							if onComplete then onComplete(U,origin,pos) end
+							hook.Call("engine.location.loaded", origin,"local")
+							
+						end) 
+						hook.Add("world.load.error","spawner",function() 
+							MsgN("[WORLD] load error")
+							hook.Remove("world.load.error","spawner") 
+							world.UnloadWorld()
+							if onFail then onFail() end
+						end) 
+						U:LoadSpawnpoint()
+					end
+				end 
+			end
 		end
 
 		
-		
-		cam:SetGlobalName("player_cam")
+		if CLIENT then
+			local cam = GetCamera()
+			cam:SetUpdateSpace(true)
+			cam:SetGlobalName("player_cam")
+		end
+
 		return U
 	end,function(err) 
 		MsgN("[WORLD] load error")
@@ -111,12 +120,12 @@ function world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
 end
 
 function world.UnloadWorld()
-	if network.IsConnected() then
+	if CLIENT and network.IsConnected() then
 		network.Disconnect()
+		SetController()  
+		local cam = GetCamera()
+		cam:SetParent(LOBBY) 
 	end
-	SetController()   
-	local cam = GetCamera()
-	cam:SetParent(LOBBY)
 	
 	if U then
 		if istable(U) then
@@ -127,7 +136,7 @@ function world.UnloadWorld()
 		U = nil 
 	end
 	engine.ClearState()
-	if chat then chat:Close() end
+	if CLIENT and chat then chat:Close() end
 end 
 
 function world.LoadSave(savedgamestate,onComplete,onFail)

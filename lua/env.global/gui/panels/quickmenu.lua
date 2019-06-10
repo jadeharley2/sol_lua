@@ -1,4 +1,5 @@
-
+hook.Remove("input.mousewheel", "gui.quickpanel.repos")
+hook.Remove("input.keydown", "gui.quickpanel.repos")
 function PANEL:Init()
 	local w = (64+32)/2
 	self:SetSize(500-2,w)
@@ -54,11 +55,13 @@ function PANEL:Init()
 			self:Refresh()
 		end
 	end)
-	hook.Add("input.mousewheel", "gui.quickpanel.repos",function()
-		self:GMouseWheel()
-	end)
+--hook.Add("input.mousewheel", "gui.quickpanel.repos",function()
+--	self:GMouseWheel()
+--end)
 	hook.Add("input.keydown", "gui.quickpanel.repos",function()
-		self:GKeyDown()
+		if LocalPlayer() then
+			self:GKeyDown()
+		end
 	end)
 end
 function PANEL:UpdatePos()

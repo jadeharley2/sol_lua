@@ -50,12 +50,19 @@ SPAWNPOS = targetpos
 ]]
 
 function ServerStartup()
-	U = ents.Create("world_solverse")--"world_solverse")--"world_flatcity")--"world_testmap") 
-	network.AddNodeImmediate(U)
-	U:Create() 
-	SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
-	AddOrigin(SPAWNORIGIN)
-	MsgN("loaded world at: ",SPAWNORIGIN)
+	--U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
+	--network.AddNodeImmediate(U)
+	--U:Create() 
+	--SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
+	world.UnloadWorld()
+	world.LoadWorld("testmap",mode,function()
+		AddOrigin(SPAWNORIGIN)
+		MsgN("loaded world at: ",SPAWNORIGIN)
+	end,function()
+		MsgN("error")
+	end)
+
+
 end
 
 
@@ -95,13 +102,14 @@ local function OnPlayerSpawn(ply)
 	--ply.player:LoadAddress(SPAWNORIGIN,ply)
 	ply:SetParent(SPAWNORIGIN)
 	ply:SetPos(SPAWNPOS)
+
 	AddOrigin(ply)
 	
 	ply.player:AssignNode(ply)
 	ply.player:SendCurrentState(ply)
 	
-	ply:SetParent(SPAWNORIGIN)
-	ply:SetPos(SPAWNPOS)
+	--ply:SetParent(SPAWNORIGIN)
+	--if SPAWNPOS then ply:SetPos(SPAWNPOS) end
 	ply.Recall = function(e)
 		e:SetParent(SPAWNORIGIN)
 		e:SetPos(SPAWNPOS)

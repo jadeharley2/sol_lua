@@ -563,6 +563,9 @@ function ENT:HasTasks()
 	return self.tmanager and self.tmanager:HasTasks()
 end
 
+function ENT:GetCharacter()
+	return self._character
+end
 function ENT:SetCharacter(id)
  
 
@@ -573,6 +576,7 @@ function ENT:SetCharacter(id)
 		if path then
 			local data = json.Read(path)--"forms/characters/"..id..".json")
 			if data then 
+				self._character = id
 				self.data = data
 				self.directmove=false
 				self.directflight=false
@@ -711,7 +715,7 @@ function ENT:SetCharacter(id)
 					end
 				
 				end 
-				if data.flexes then 
+				if data.flexes and self.spparts then 
 					for k,v in pairs(data.flexes) do
 						local keys = k:split(':') 
 						local bpart = keys[1] 
@@ -904,10 +908,16 @@ function ENT:SetSize(val)
 		self.phys:SetHeight((self.data.height or 1.7)*val)
 		self.phys:SetRadius((self.data.radius or (0.6*0.6))*val) 
 		self.phys:SetMass((self.data.mass or (20))*val) 
-		self.phys:SetJumpSpeed(4.5)
+		self.phys:SetJumpSpeed(4.5*val)
 		self.innerscale = val or 1
 
-		model:SetMatrix(matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val))
+		local nw = matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val)
+		model:SetMatrix(nw)
+		for k,v in pairs(self:GetChildren(true)) do
+			if v and v.model then
+				v.model:SetMatrix(nw)
+			end
+		end
 	end
 end
 
@@ -1043,7 +1053,7 @@ function ENT:Move(dir,run,updatespeed)
 		
 		local veldir =self.phys:GetVelocity()-- Vector(0,0,0)
 		local lworld = self:GetWorld():Inversed()
-		veldir = veldir:TransformN(lworld) 
+		veldir = veldir:TransformN(lworld)/(self.scale or 1)
 		model:SetPoseParameter("move_x",veldir.z*100)
 		model:SetPoseParameter("move_y",veldir.x*100) 
 	else 
@@ -1381,7 +1391,22 @@ function ENT:EyeLookAtLerped(dir)
 	local tpp_yaw = polar/ 3.1415926 * 180 
 	local tpp_pitch = elev/ 3.1415926 * 180
 	local t = 0 
-	self.lad = self:Timer("lookat",0,10,15,function()
+
+	local turn_angle = self.turn_angle or 90
+	if math.abs(tpp_yaw)>=turn_angle then  
+		local trsl = self:Turn(-polar)
+		if trsl then
+			cam:TRotateAroundAxis(Up, polar)  
+		end 
+	end
+
+	local cpp_yaw = m:GetPoseParameter("head_yaw")
+	local cpp_pitch = m:GetPoseParameter("head_pitch")
+	local rad, polar,elev = self:GetHeadingElevation(dir,true)
+	local tpp_yaw = polar/ 3.1415926 * 180 
+	local tpp_pitch = elev/ 3.1415926 * 180
+
+	self.lad = self:Timer("lookat",0.3,10,15,function()
 		t = t + 1/15 
 		local ss_p =cpp_pitch + (tpp_pitch-cpp_pitch)*t -- Smoothstep(cpp_pitch,tpp_pitch,t)
 		local ss_y =cpp_yaw + (tpp_yaw-cpp_yaw)*t -- Smoothstep(cpp_yaw,tpp_yaw,t)
@@ -1403,7 +1428,7 @@ function ENT:SetEyeAngles(pitch,yaw,forced,nopred)
 	if not math.bad(pitch) then pitch = 0 end
 	if not math.bad(yaw) then yaw = 0 end
 	local m = self.model
-	local noeyedelay = self.noeyedelay or false
+	local noeyedelay = self.noeyedelay or true
 	self.eyeangles = {pitch,yaw}
 	local lms = self.lastheadmove or 0
 	local ha = self.headangles or {0,0}
@@ -1457,6 +1482,7 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		if not mountpoint then return false end
 		if mountpoint.ent then return false end
 		
+		
 		local phys = self.phys
 		self.IsInVehicle = true
 		self.vehicle = veh
@@ -1474,7 +1500,6 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		if weld then
 			weld:Break()
 		end
-		self.weld = constraint.Weld(phys,nil,Vector(0,0,0)) 
 		self:SetUpdateSpace(false)
 		
 		mountpoint.ent = self
@@ -1496,6 +1521,10 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		--	network.RequestAssignNode(assignnode)
 		--	self.assignednode = assignnode
 		--end
+		pcall(function() 
+			self.weld = constraint.Weld(phys,nil,Vector(0,0,0))
+		end)
+		 
 	else
 		local v = self.vehicle
 		if v then
@@ -1587,9 +1616,10 @@ console.AddCmd("give",function(a,b)
 			end
 		end
 	else
-		local ply = Player(a)
+		MsgN( a,b)
+		local ply = Player(tonumber(a))
 		if ply then
-			ply:Give(b)
+			ply:SendEvent(EVENT_GIVE_ITEM,b)
 		end
 	end
 end)
@@ -1597,7 +1627,7 @@ end)
 
 function ENT:Give(type)
 
-	if SERVER or not network.IsConnected() then
+	--if SERVER or not network.IsConnected() then
 		local s = self.storage
 		if s then
 			local p = forms.GetForm("apparel",type)
@@ -1643,7 +1673,7 @@ function ENT:Give(type)
 		--if SERVER then
 		--	self:SendEvent(EVENT_GIVE_ITEM,type)
 		--end  
-	end
+	--end
 end
 
 
@@ -1789,64 +1819,28 @@ end
 
 --[[ ######## EQUIPMENT|APPAREL ######## ]]--
 
-function ENT:GetEquipment(slot)
+function ENT:GetEquipped(slot)
 	local e = self.equipment
 	if e then
-		return e[slot] 
+		return e:GetEquipped(slot) 
 	end
 	return nil
 end
 function ENT:Equip(item) 
-	MsgN(self, " equip ",item)
-	local slot = item.slot
-	MsgN(item, " slot ",slot)
-	if slot then
-		local s = self:GetEquipment(slot) 
-		MsgN("s slot ",s)
-		if s and item.GetSkelModel then
-			local itemmodel = item:GetSkelModel(self,slot) 
-			MsgN("itemmodel ",itemmodel)
-			if itemmodel then
-				if s.ent then
-					s.ent:Despawn()
-					s.ent = nil
-					if s.item.OnUnequipped then s.item:OnUnequipped(self) end
-				end
-				local olditem = s.item
-				
-				local newE = SpawnBP(itemmodel,self,0.03)
-				local data =  item.data
-				if data.materials then
-					local bmatdir = data.basematdir
-					for k,v in pairs(data.materials) do
-						local id = tonumber(k)
-						local mat = dynmateial.LoadDynMaterial(v,bmatdir)
-						newE.model:SetMaterial(mat,id)
-					end
-				end
-				
-				s.ent = newE
-				s.item = item 
-				if item.OnEquipped then item:OnEquipped(self) end
-				return olditem
-			end
-		end
+	local e = self.equipment
+	if e then
+		return e:Equip(slot) 
 	end
 	return nil
 end
-function ENT:Unequip(slot)
-	local s = self:GetEquipment(slot)
-	if s then
-		if s.ent then
-			s.ent:Despawn()
-			s.ent = nil
-			local item = s.item
-			s.item = nil
-			if item.OnUnequipped then item:OnUnequipped(self) end
-			return item
-		end
-	end
-	return nil
+function ENT:Unequip(item)
+	self:SendEvent(EVENT_UNEQUIP,item) 
+end
+function ENT:UnequipSlot(slot)
+	self:SendEvent(EVENT_UNEQUIPSLOT,slot) 
+end
+function ENT:UnequipAll(slot)
+	self:SendEvent(EVENT_UNEQUIPALL) 
 end
 
 
@@ -2167,18 +2161,6 @@ ENT._typeevents = {
 	end,log = false},
 	
 	[EVENT_ABILITY_CAST] = {networked = true, f = ENT.Cast},  
-	[EVENT_EFFECT_APPLY] = {networked = true, f = function(self,abname,source,pos) 
-		local ab = source:GetAbility(abname)
-		if ab then
-			if ab:ApplyEffects(source,self,pos) then
-				MsgN("Magic applied!")
-			else
-				MsgN("Magic failed!")
-			end 
-		else
-			MsgN("Ability not found: ", abname, " in ", self)
-		end
-	end},
 	[EVENT_GIVE_ABILITY] = {networked = true, f = ENT.GiveAbility},
 	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility}, 
 	[EVENT_TASK_BEGIN] = {networked = true, f = ENT.BeginTask}, 

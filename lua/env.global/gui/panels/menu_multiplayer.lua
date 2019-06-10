@@ -51,7 +51,7 @@ function PANEL:Init()
 		debug.Delayed(1,function()  
 			engine.PausePhysics() 
 			if network.IsConnected() then
-				UnloadWorld()
+				world.UnloadWorld()
 			end
 			   
 			if ConnectTo(_GLT) then

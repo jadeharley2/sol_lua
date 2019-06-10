@@ -47,6 +47,7 @@
 			{"name":"matColors1", "type":"float4","default":[0,1,0,1],"description":""},
 			{"name":"matColors2", "type":"float4","default":[0,0,1,1],"description":""},
 			{"name":"matColors3", "type":"float4","default":[0,0,0,1],"description":""},
+			{"name":"freshnelRanges", "type":"float3","default":[1,1,1],"description":""},
 			
 		],
 	},

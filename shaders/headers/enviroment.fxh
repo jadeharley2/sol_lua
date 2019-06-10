@@ -19,7 +19,7 @@ float4 EnvSample(float3 dir)
 }
 float4 EnvSampleLevel(float3 dir,float specular)
 {
-	float miplevel = saturate(1-specular)*100;
+	float miplevel = (1-saturate(specular))*20;
 	float4 sample_a = g_EnvTexture.SampleLevel(EnvSampler,dir,miplevel);
 	float4 sample_b = g_EnvTexture_prev.SampleLevel(EnvSampler,dir,miplevel);
 	return lerp(sample_a,sample_b,envBlendAmount);

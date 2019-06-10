@@ -480,8 +480,10 @@ function ENT:GetSpawn()
 	space2.space = sspace
 	self.space2 = space2
 
-	env.Microphone(space2,function(s,n,p,d) self:LSMicro(s,n,p,d) end)
-	
+	if CLIENT then
+		env.Microphone(space2,function(s,n,p,d) self:LSMicro(s,n,p,d) end)
+	end
+
 	local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75/4) 
 	instr.model:SetMaterial("textures/gui/test.json")
 	
@@ -561,9 +563,14 @@ function ENT:GetSpawn()
 	--local chair = SpawnSPCH("shiptest/chair1.json",space,Vector(0,0,0.0002),0.75)  
 	--chair:SetSeed(space:GetSeed()+38012)
 	--chair.usetype = "sit"
-	 
-	local c = SpawnPlayerChar( Vector(0,0.0013627,0),self.space)
 
-	return c, Vector(0,0,0)
+	if CLIENT then
+		local c = SpawnPlayerChar( Vector(0,0.0013627,0),self.space) 
+		return c, Vector(0,0,0)
+	else 
+		SPAWNORIGIN = self.space2
+		SPAWNPOS = Vector(0,0.0013627,0)
+		return self.space, Vector(0,0,0)
+	end
 end 
 	

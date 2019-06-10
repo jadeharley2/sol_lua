@@ -141,17 +141,27 @@ local function ContainerUse(self,user)
 		self.user = user
 		self:EmitSound("events/storage-open.ogg",1)
 		if CLIENT and LocalPlayer() == user then 
-			OpenInventoryWindow(self) 
+			actor_panels.OpenInventory(self,ALIGN_TOP,nil)
+			actor_panels.OpenInventory(user,ALIGN_BOTTOM,nil)
+			actor_panels.OpenCharacterInfo(user,ALIGN_LEFT,nil) 
+			hook.Add("actor_panels.closed","container_closed",function()
+				hook.Remove("actor_panels.closed","container_closed")
+				self.user = nil
+				self.isopened = false
+				self:EmitSound("events/storage-close.ogg",1)
+			end)
+			--OpenInventoryWindow(self)  
 		end 
-		self.isopened = not self.isopened 
+		self.isopened = true
 	else
 		if self.user == user then
 			self.user = nil
 			self:EmitSound("events/storage-close.ogg",1)
 			if CLIENT and LocalPlayer() == user then 
-				CloseInventoryWindow(self) 
+				actor_panels.CloseAll()
+				--CloseInventoryWindow(self) 
 			end
-			self.isopened = not self.isopened 
+			self.isopened = false
 		end
 	end
 end

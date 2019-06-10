@@ -1,7 +1,7 @@
 
 
 
-local flaginfo = table.KVSwitch(debug.GetAPIInfo('FLAG_'))
+local flaginfo = table.KVSwitch(debug.GetAPIInfo('FLAG_') or {})
 local fntemp = {}
 for k,v in pairs(flaginfo) do 
 	local nk = tonumber(k)
@@ -267,12 +267,13 @@ function PANEL:SelectNode(node)
 		local con_contents = peditor.com.contents
 		for k,v in pairs(node:GetComponents()) do
 		
-			local type = tostring(ifthen(v.GetTypename,v:GetTypename(),v)) 
+			local type = ""
+			if v.GetTypename then type = v:GetTypename() end  
 
 			local con_grp = gui.FromTable({class="cgroup",  Title=type,
 				buttons = {
 					{class = "btitle",text="x",OnClick=function() node:RemoveComponent(v) self:RefreshPanel() end}
-				}
+				}  
 			},nil,style)
 			con_contents:Add(con_grp)  
 			   

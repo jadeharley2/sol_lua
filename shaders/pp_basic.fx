@@ -342,7 +342,7 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 		}
 		else
 		{
-			return tMaskView.Sample(sView, input.tcrd).a;
+			return tMaskView.Sample(sView, input.tcrd);
 		}
 	}
 	return 0;

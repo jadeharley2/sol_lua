@@ -8,7 +8,7 @@ function tableq(t)
 	if istable(t) then return pairs(t) 
 	else
 		return function(t,c)  
-			if c==0 then
+			if c==0 then 
 				return 1, t
 			else
 				return nil
@@ -136,15 +136,3 @@ function ENTITY:PrintEventHandlers()
 		end
 	end
 end
-
-DeclareEnumValue("event","PROP_ED_MOVE",				224980)
-DeclareEnumValue("event","PROP_ED_ROTATE",				224981)
-DeclareEnumValue("event","PROP_ED_SCALE",				224982)
-
-local _metaevents = ENTITY._metaevents 
-
-_metaevents[EVENT_PROP_ED_MOVE]   = {networked = true, f = function(self,pos)  self:SetPos(pos) end}
-_metaevents[EVENT_PROP_ED_ROTATE] = {networked = true, f = function(self,axis,ang)  self:TRotateAroundAxis(axis,ang) end}
-_metaevents[EVENT_PROP_ED_SCALE]  = {networked = true, f = function(self,sca)  self:SetScale(sca) end}
-
- 

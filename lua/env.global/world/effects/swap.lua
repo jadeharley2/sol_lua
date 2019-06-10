@@ -1,10 +1,14 @@
+--TODO:UPDATE
+if true then return end
+
 ability.icon = "hex"
 ability.type = "target" 
 ability.cooldownDelay = 2  
 ability.dispelDelay = 10
 ability.name = "Swap"  
 
-function ability:Begin(caster)  
+function ability:Begin(source,target)  
+
 	if not self.spelltarget then
 		local tr = GetCameraPhysTrace() 
 		if tr and tr.Hit then 

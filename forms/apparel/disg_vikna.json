@@ -155,6 +155,6 @@
 		}
 	], 
 	"modmaterials" :  {
-		"base_specular_intencity" : 1,
+		"base_specular_intencity" : 0.6,
 	},
 }

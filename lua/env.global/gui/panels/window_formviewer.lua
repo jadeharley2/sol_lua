@@ -27,7 +27,7 @@ function PANEL:Setup(form_type,spawn_function)
 	for k,v in SortedPairs(flist) do    
 		
 		local sp_new = panel.Create("button")
-		sp_new:SetText(v) 
+		sp_new:SetText('['..k..']'..v) 
 		sp_new:Dock(DOCK_TOP)
 		sp_new:SetTextColorAuto(bcol) 
 		sp_new:SetTextAlignment(ALIGN_LEFT)

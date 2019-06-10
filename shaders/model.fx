@@ -1,8 +1,8 @@
 
 #include "headers/skin.fxh"
-#include "headers/lightning.fxh"
+//#include "headers/lightning.fxh"
 #include "headers/enviroment.fxh"
-#include "headers/hdr.fxh"
+//#include "headers/hdr.fxh"
 
 float4x4 Projection;
 float4x4 View;
@@ -15,6 +15,7 @@ float3 tint = float3(1,1,1);//*0.9;
 float3 emissionTint = float3(1,1,1);//*0.9;
 
 float3 drawableColorIndex = float3(1,0,0);
+float3 freshnelRanges = float3(1,1,1);
 
 
 float3 ambient = float3(1,1.1,1.2)/20*2;
@@ -453,6 +454,17 @@ void MaskAdd(inout float4 mask, float4 map,float4 mix)
 	} 
 }
 
+float Fresnel2(float cangle)
+{
+	if (cangle <0.5)
+	{
+		return freshnelRanges.z*(1-cangle*2) + freshnelRanges.y*(cangle*2);
+	}
+	else
+	{	
+		return freshnelRanges.y*(1-(cangle*2-1)) + freshnelRanges.x*(cangle*2-1);
+	}
+}
 PS_OUT PS( PS_IN input ) : SV_Target
 { 
 	PS_OUT output = (PS_OUT)0;
@@ -570,12 +582,13 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float3 diffuse = float3(1,1,1);
 		  
 		float3 reflectcam = reflect(camdir,input.norm);
-		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
-		float3 envmap = EnvSampleLevel(reflectEnv,_mask.x);
+
+		float ViewDot = saturate(dot(-normalize(camdir),input.norm));
+		float fren = Fresnel2(ViewDot);
 		
-		
+		output.mask.x = fren;//saturate(1-pow(ViewDot,4));//lpower
 		output.mask.y = _mask.x;//smoothness
-		output.mask.z = _mask.y;//metalness
+		output.mask.z = _mask.z;//metalness
 		output.mask.w = _mask.w;//subsurface
 		    
 		float alpha = 1;
@@ -643,13 +656,21 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		 
 		 
 		float3 ambmapEnv =  mul(float4(input.norm,1),EnvInverse).xyz;
-		float3 ambmap = EnvSampleLevel(ambmapEnv,0.9);
+		float3 ambmap = EnvSampleLevel(ambmapEnv,0);
+
+		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
+		float3 envmap = EnvSampleLevel(reflectEnv,_mask.x);
+		emissive+=
+		lerp(
+			diffuse*ambmap,
+			lerp(envmap,diffuse*envmap, _mask.z),
+			_mask.x)*fren;
 		
-		emissive+=diffuse*ambmap*1;//lerp(ambmap,diffuse*ambmap,metalness)*0.5;
+		//emissive+=diffuse*ambmap*1+ lerp(envmap,diffuse*envmap, _mask.z)*0.5*_mask.x;
 		float3 result = diffuse;
 		output.light = float4(emissive,1);
-		
-		if (rimfade )
+		 
+		if (rimfade )  
 		{
 			float3 camdir = normalize(input.wpos);
 			float frontalblend = pow(saturate(dot(input.norm*5,-camdir)),1);
@@ -766,9 +787,26 @@ float SHADOW_PS_FLOAT( DCI_PS_IN input ) : SV_Target
 
 
 
+float depth_mul = 1;
+float depth_divider = 256;
+
+float depth_shadow_bendadd = 1;
 
 
 
+float3 DepthEncode(float depth)
+{
+	depth = depth * depth_mul;
+	float3 result = float3((depth*depth_divider*depth_divider)%1,depth,depth);
+	result.y = ((depth*depth_divider*depth_divider - result.x)/depth_divider)%1;
+	result.z = (((depth*depth_divider*depth_divider - result.x)/depth_divider-result.y)/depth_divider)%1;
+	
+	return result;
+}
+float DepthDecode(float3 depth)
+{
+	return (depth.x/depth_divider/depth_divider+depth.y/depth_divider+depth.z)/depth_mul;
+}
 
 float4 SHADOW_PS_COLOR( DCI_PS_IN input ) : SV_Target
 {  
@@ -778,7 +816,7 @@ float4 SHADOW_PS_COLOR( DCI_PS_IN input ) : SV_Target
 		float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, input.tcrd) ;   
 		clip(texIn.a-alphatestreference); 
 	}
-	return float4(DepthEncode(dp),1); 
+	return float4(DepthEncode(dp),1); //
 }
 technique10 Instanced
 {

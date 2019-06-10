@@ -43,6 +43,7 @@ function OpenInventoryWindow(container)
 				ww:Show()
 				temp_allinvwindows[seed] = ww
 				hook.Call("player.inventory.open")
+				return ww
 			end
 		end
 	end
@@ -57,6 +58,19 @@ function CloseInventoryWindow(container)
 			hook.Call("player.inventory.close")
 		end
 	end
+end
+local temp_iwindows = {} 
+function AddIWindow(w) 
+	temp_iwindows[#temp_iwindows+1] = w
+end
+function CloseIWindows()
+	for k,v in pairs(temp_iwindows) do
+		if v and v.Close then
+			v:Close()
+		end 
+	end
+	temp_iwindows = {}
+	hook.Call("player.inventory.close")
 end
 
 function PANEL:Init()
@@ -151,7 +165,7 @@ function PANEL:ReloadTabs()
 			testgesture:Dock(DOCK_TOP)
 			local isOn = false
 			testgesture.OnClick = function()
-				LocalPlayer():GestureToggle(1,k)   
+				self.node:GestureToggle(1,k)   
 			end
 
 			grid3:Add(testgesture)

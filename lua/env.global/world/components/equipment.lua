@@ -2,6 +2,7 @@
 DeclareEnumValue("event","EQUIP",	331011) 
 DeclareEnumValue("event","UNEQUIP",	331012) 
 DeclareEnumValue("event","UNEQUIPALL",331013) 
+DeclareEnumValue("event","UNEQUIPSLOT",	331014) 
 
 DeclareEnumValue("vartype","EQUIPMENT",		88020)
 
@@ -116,7 +117,8 @@ function component:TransferItem(from_slot,to,to_id,count)
 	local node = self:GetNode()
 	if from_slot and to and to_id and count then
 		local item = self:GetEquipped(from_slot)
-		if item then
+		MsgN(self:GetNode(),from_slot,to:GetNode(),to_id,count)
+		if item and to:GetNode() then
 			to:GetNode():SendEvent(EVENT_ITEM_ADDED,to_id,item.data,count) 
 			node:SendEvent(EVENT_UNEQUIP,item.data)  
 		end
@@ -395,6 +397,11 @@ function component:_equip(data,nosave)
 								end 
 							end
 						end
+						if formdata.effects then
+							for k,v in pairs(formdata.effects) do 
+								Ability()
+							end
+						end
 						self:_updatevisibility()
 					end
 				end
@@ -416,6 +423,15 @@ component._typeevents = {
 			end 
 		end
 	end}, 
+	[EVENT_UNEQUIPSLOT]={networked=true,f = function(self,slot)   
+		local node = self:GetNode()
+		if node then 
+			self:_unequipslot(slot) 
+			if CLIENT then
+				node:EmitSound("physics/cloth/rustle_0"..table.Random({1,2,3,4,5,6})..".ogg",1)
+			end 
+		end
+	end},
 	[EVENT_UNEQUIPALL]={networked=true,f = function(self)   
 		local node = self:GetNode()
 		if node then 

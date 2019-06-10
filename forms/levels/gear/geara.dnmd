@@ -70,7 +70,7 @@
 			"scale":1  
 		},
 		{"type": "material","in": ["t","b","x","s"],
-			"material" : "silver"
+			"material" : "copper"
 		},
 	]   
 } 

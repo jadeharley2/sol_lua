@@ -275,19 +275,30 @@ struct PS_IN
         return F0 + (1.0 - F0) * pow(1.0 - saturate(cosTheta), 5.0);
     }
 
+    float sqr(float x)
+    {
+        return x*x;
+    }
+
+    float GTR2_aniso(float NdH, float HdX, float HdY, float ax, float ay)
+    {
+        return 1.0f / (PI * ax*ay * sqr(sqr(HdX/ax) + sqr(HdY/ay) + NdH*NdH));
+    }
+
+
     float3 CookTorrance_GGX(float3 n, float3 l, float3 v, float roughness, half subsurface_coeff, float3 f0, float3 albedo) {
-        n = normalize(n);
+        n = normalize(n*float3(0.1,0.1,0.1));
         v = normalize(v);
         l = normalize(l);
         float3 h = normalize(v+l);
         //precompute dots
         float NL1 = dot(n, l); //default
         float NL2 = pow(dot(n, l)/2+0.5,2);//halflambert mod
-        float NL = lerp(NL1,NL2,subsurface_coeff);
+        float NL = lerp(NL1,NL2,subsurface_coeff);// diffuse intencity
         if (NL <= 0.01) NL=0.01;//return 0.0;
-        float NV = dot(n, v);
+        float NV = dot(n, v);  //normal*view dot
         if (NV <= 0.01) NV = 0.01;//return 0.2;
-        float NH = dot(n, h);
+        float NH = dot(n, h); //
         float HV = dot(h, v);
         
         //precompute roughness square
@@ -296,13 +307,14 @@ struct PS_IN
         //calc coefficients
         float G = GGX_PartialGeometry(NV, roug_sqr) * GGX_PartialGeometry(NL, roug_sqr);
         float D = GGX_Distribution(NH, roug_sqr);
-        float3 F = FresnelSchlick(f0, HV);
+        float3 F = FresnelSchlick(f0, HV); //0.25
+
 
 
         //mix
         float3 specK = G*D*F*0.25/(NV+0.001);    
         float3 diffK = saturate(1.0-F);
-        return  max(0.0, albedo*diffK*NL/PI + specK);
+        return  max(0.0, albedo*diffK*saturate(NL)/PI + specK*saturate(NL));
     }
 
     float3 CookTorrance_GGX_sample(float3 n, float3 l, float3 v, float roughness, float3 f0, out float3 FK, out float pdf) {
@@ -422,10 +434,10 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 	float base_subsurface_val = 0;
 	float specular_power =  10; 
 	float smoothness = mask.y;
-	float roughness = 1-smoothness*0.5;
+	float roughness = saturate(1-smoothness*0.95);//*0.5;
 	float metallness = mask.z;
     half subsurface_coeff = mask.a;
-	half sheen = 1;  
+	//half sheen = 1;  
 	
 	float3 light_direction = (lightPos-pos);
 	float light_dist = length(light_direction); 
@@ -445,15 +457,16 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 // 
 	float light_power = max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
     float3 LIGHT = CookTorrance_GGX(normal,lightPos-pos,camera_pos-pos,roughness,subsurface_coeff,
-		0.24,//float3(0.24, 0.24, 0.24),
+		saturate(metallness),//saturate((smoothness+metallness)*0.75),//float3(0.24, 0.24, 0.24),
 		surfcolor)*lightColor*lightIntensity;
  
     //eLIGHT = 1;
 //return float4(pos,1);
+    float dotNL = saturate(dot(N,L));
     if (applyShadow) 
     {  
-		float dotNL = min(saturate(dot(N,L)),0.99);
-        LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNL));//*dotNL; 
+		float dotNLS = min(dotNL,0.99);
+        LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNLS));//*dotNL; 
     }
     if (isspotlight)
     {

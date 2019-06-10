@@ -147,7 +147,7 @@ function OBJ:UnInit()
 	local infobar = self.infobar
 	local quickmenu = self.quickmenu
 	if healthbar then healthbar:Close() self.healthbar=nil end
-	if infobar then infobar:Close() self.infobar=nil end
+	if infobar then infobar:UpdateBar(nil) infobar:Close() self.infobar=nil end
 	if quickmenu then quickmenu:Close() self.quickmenu=nil end 
 end
 
@@ -166,6 +166,8 @@ function OBJ:MouseWheel()
 	end
 end 
 
+
+
 local timer = 0
 function OBJ:KeyDown(key)
 	if input.GetKeyboardBusy() then return nil end
@@ -182,17 +184,24 @@ function OBJ:KeyDown(key)
 			end
 			 
 			if (input.KeyPressed(KEYS_Q)) then  
-				local cpanels = self.cpanels or {}
-				if cpanels.inv then
-					if not SHOWINV then
-						cpanels:Open()
-						SHOWINV = true 
-					else
-						cpanels:Close()
-						SHOWINV = false
-					end
-					MsgN(SHOWINV)
+				if actor_panels.HasPanels() then
+					actor_panels.CloseAll()
+				else
+					actor_panels.OpenInventory(actor,ALIGN_BOTTOM,nil)
+					actor_panels.OpenCharacterInfo(actor,ALIGN_LEFT,nil) 
 				end
+				--local cpanels = self.cpanels or {}
+				--if cpanels.inv then
+				--	if not SHOWINV then
+				--		cpanels:Open()
+				--		SHOWINV = true 
+				--	else
+				--		cpanels:Close()
+				--		SHOWINV = false
+				--		CloseIWindows()
+				--	end
+				--	MsgN(SHOWINV)
+				--end
 			end
 			if input.KeyPressed(KEYS_F) then
 				self:HandlePickup(actor)

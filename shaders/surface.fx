@@ -57,8 +57,9 @@ float3 planetpos;
 float planetradius=1;
 float time =0;
 
-float3 oceanColor = float3(0.3,0.5,0.9)*0.5;
-
+float3 oceanColor = 
+float3(0.1,0.6,0.9*2)*0.2;//*0.5
+//float3(0.1,0.2,0.6)/10;
 
 SamplerState MeshTextureSampler
 {
@@ -595,7 +596,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	{
 		input.normal = globalNormal;
 		localLightIntencity = globalLightIntencity;
-		specular_intensity = 0.4;
+		specular_intensity = 0.7;
 		
 		
 		//float2 water_tcoord = float2(1+input.data.x*3,input.data.z+globalTemperatureModifier);
@@ -631,12 +632,12 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	}
 	  
 	 
-	float4 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0.9);
+	float4 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0);
   
 	
 
 	float3 brightness3 =//ApplyPointLights(input.wpos,input.normal,cameraDirection,specular_intensity,100);//
-ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,specular_intensity,0,true,globalLightIntencity,saturate(1));
+	ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,specular_intensity,0,true,globalLightIntencity,saturate(1));
 	 
 	//float3 brightness4 = 
 	//ApplyPointLights3(float3(1,1,1),input.wpos,globalNormal,cameraDirection,0,0);
@@ -697,7 +698,7 @@ ApplyPointLights3(surface_rampcolor,input.wpos,input.normal,cameraDirection,spec
 	////}
 	//return float4(ToSpherical(globalNormal).xy,0,1);
 	output.color+=float4(finalColor*ambient*2,1);
-	output.mask = float4(1,specular_intensity*3,0,0);
+	output.mask = float4(1,specular_intensity,0,0);
 
 	return float4(finalColor,specular_intensity); 
 }
@@ -798,7 +799,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	input.pos.z;///input.pos.w;
 	//output.depth = 1000-wposLen;//input.pos.z;///input.pos.w; 
 //	output.mask = float4(1,0,0,1);// float4(blend,blend,0,1);
-	
+	 
 	if(isCameraUnderWater)
 	{  
 		float depth = max(1,-input.data.x*1000000.0); 

@@ -63,7 +63,7 @@ function ENT:Spawn()
 		--light.light:SetShadow(true)
 		self.space = space 
 
-		self:GenerateNavmesh()
+		--self:GenerateNavmesh()
 		 
 		   
 		--if CLIENT then

@@ -215,7 +215,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float3 skycolor = base*lightcolor+float3(117,144,48)/128;
 	
 	//float3 color = (skycolor+rampcolor*0.8f*2)*tns*brightness3/2 +rim*base*lightcolor;
-	float3 color =float3(0.1,0.2,0.3)/10;// (rampcolor*0.8f*2);//*tns*brightness3/2/10;
+	float3 color =float3(0.1,0.2,0.6)/10;// (rampcolor*0.8f*2);//*tns*brightness3/2/10;
 	
 	float1 alpha = saturate(1-camDot*camDot);
 	
@@ -262,10 +262,10 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//output.color.a = length(output.color.rgb);
 	//output.color.rgb =worldNormal*0.5+0.5;
 	
-	output.mask = float4(1,maskmul,0,1);
+	output.mask = float4(1,0.6,0,0);
 	if(isCameraUnderWater)
 	{ 
-		output.mask = float4(1-saturate(surfaceDistance*20),maskmul,0,1); 
+		output.mask = float4(1-saturate(surfaceDistance*20),maskmul,0,0); 
 		//output.color.rgb = lerp(output.color.rgb,brightness3*(rampcolor*2),saturate(surfaceDistance*20));
 		//output.color.a = 1;
 	}  

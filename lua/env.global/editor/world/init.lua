@@ -8,6 +8,53 @@ editor.action_deselect = function(node) worldeditor.selected:Remove(node) worlde
 editor.action_move = function(from,to) node:SetPos(to) end 
 editor.action_moveundo = function(from,to) node:SetPos(from) end 
 
+
+DeclareEnumValue("event","EDITOR_MOVE",				224980)
+DeclareEnumValue("event","EDITOR_ROTATE",			224981)
+DeclareEnumValue("event","EDITOR_SCALE",			224982)
+
+DeclareEnumValue("event","EDITOR_COPY",				224983)
+DeclareEnumValue("event","EDITOR_REMOVE",			224984)
+
+local _metaevents = debug.getregistry().Entity._metaevents 
+
+_metaevents[EVENT_EDITOR_MOVE]   = {networked = true, f = function(self,pos)  self:SetPos(pos) end}
+_metaevents[EVENT_EDITOR_ROTATE] = {networked = true, f = function(self,axis,ang)  self:TRotateAroundAxis(axis,ang) end}
+_metaevents[EVENT_EDITOR_SCALE]  = {networked = true, f = function(self,sca)  self:SetScale(sca) end}
+
+_metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self) 
+	local ne = ents.Create(self:GetClass() )
+	local uid =  (GetFreeUID()) 
+	ne:SetParent(self:GetParent())
+	ne:SetSizepower(self:GetSizepower())
+	ne:SetSeed(uid) 
+	self:CopyFlags(ne)
+	self:CopyParameters(ne)
+	
+	if ne.SetCharacter then
+		ne:SetCharacter(self:GetParameter(VARTYPE_CHARACTER))
+	end
+	ne:SetName(self:GetName())
+	ne:SetPos(self:GetPos()) 
+	ne:CopyAng(self) 
+	ne:SetScale(self:GetScale())  
+	ne:Spawn()
+	
+	self:CopyFlags(ne)
+	self:CopyParameters(ne)
+	ne:SetSeed(uid) 
+	--MsgN("asasd?")
+	hook.Call("EditorNodeCopy",self,ne)
+
+	editor.newent = ne
+end}
+
+_metaevents[EVENT_EDITOR_REMOVE]  = {networked = true, f = function(self)  
+	self:Despawn() 
+end}
+
+
+
 function editor:Open()
 	--MsgInfo("OPEN!") 
 	self.selected = self.selected or Set() 
@@ -115,41 +162,7 @@ function editor:Redo()
 	MsgN("redo:",self.undo:Redo()) 
 end
 
-function editor:MouseDown()  
-	--if not input.MouseIsHoveringAboveGui() then
-	--	local LMB = input.leftMouseButton() 
-	--	local RMB = input.rightMouseButton()
-	--	local MMB = input.middleMouseButton()
-	--	if not self.mode then
-	--		if LMB and not RMD and not MMB then
-	--			local wcposgizmo = GetMousePhysTrace(GetCamera(),-CGROUP_NOCOLLIDE_PHYSICS)
-	--			if wcposgizmo and wcposgizmo.Hit then
-	--				if wcposgizmo.Entity then
-	--					--MsgInfo("das?")
-	--					local OnClick = wcposgizmo.Entity.OnClick
-	--					if OnClick then
-	--						OnClick(wcposgizmo.Entity) 
-	--					end 
-	--				end
-	--			else
-	--				local wcpos = GetMousePhysTrace(GetCamera(),self.selected)--,self.selected)  
-	--				if wcpos and wcpos.Hit then
-	--					if wcpos.Entity then
-	--						local OnClick = wcpos.Entity.OnClick
-	--						if OnClick then 
-	--							OnClick(wcpos.Entity)
-	--						else
-	--							--self:Select( wcpos.Entity )
-	--						end
-	--					else
-	--						--self:Select( wcpos.Entity )
-	--					end
-	--				end 
-	--			end 
-	--			
-	--		end
-	--	end
-	--end
+function editor:MouseDown()   
 	
 	
 	self:DoubleClick() 
@@ -170,31 +183,7 @@ function editor:DoubleClick()
 		local multiselect = input.KeyPressed(KEYS_CONTROLKEY)
 		if not self.mode then
 			--MsgInfo("CLICL!")
-			if LMB and not RMD and not MMB then
-				----  local tbl = {}
-				----  for k,v in pairs(self.selected) do 
-				----  	tbl[#tbl+1] = k
-				----  end
-				----  local wcpos = false 
-				----  if #tbl>0 and not multiselect then
-				----  	wcpos = GetMousePhysTrace(GetCamera(),tbl)
-				----  else
-				----  	wcpos = GetMousePhysTrace(GetCamera())
-				----  end
-				----  --local wcpos = self.curtrace 
-				----  if wcpos and wcpos.Hit then
-				----  	---MsgN("hit!",wcpos.Entity)
-				----  	if wcpos.Entity then
-				----  		local OnClick = wcpos.Entity.OnClick
-				----  		if OnClick then
-				----  			--OnClick(wcpos.Entity)
-				----  		else
-				----  			self:Select( wcpos.Entity,multiselect)
-				----  		end 
-				----  	else
-				----  		self:Select( wcpos.Entity )
-				----  	end
-				----  end 
+			if LMB and not RMD and not MMB then 
 				
 				local vp = self.assets.vp
 				local vsz = vp:GetSize()
@@ -227,7 +216,8 @@ function editor:KeyDown()
 		end
 	elseif (input.KeyPressed(KEYS_DELETE)) then  
 		for k,v in pairs(self.selected) do 
-			k:Despawn() 
+			--k:Despawn() 
+			k:SendEvent(EVENT_EDITOR_REMOVE) 
 		end
 		self.selected:Clear()
 		self:ClearSelectionModels()  
@@ -484,29 +474,8 @@ function editor:ClearSelectionModels()
 end
  
 function editor:Copy(ent)  
-	local ne = ents.Create(ent:GetClass() )
-	local uid =  (GetFreeUID()) 
-	ne:SetParent(ent:GetParent())
-	ne:SetSizepower(ent:GetSizepower())
-	ne:SetSeed(uid) 
-	ent:CopyFlags(ne)
-	ent:CopyParameters(ne)
-	
-	if ne.SetCharacter then
-		ne:SetCharacter(ent:GetParameter(VARTYPE_CHARACTER))
-	end
-	ne:SetName(ent:GetName())
-	ne:SetPos(ent:GetPos()) 
-	ne:CopyAng(ent) 
-	ne:SetScale(ent:GetScale())  
-	ne:Spawn()
-	
-	ent:CopyFlags(ne)
-	ent:CopyParameters(ne)
-	ne:SetSeed(uid) 
-	--MsgN("asasd?")
-	hook.Call("EditorNodeCopy",ent,ne)
-	return ne
+	ent:SendEvent(EVENT_EDITOR_COPY)
+	return editor.newent 
 end
 
 local W = editor

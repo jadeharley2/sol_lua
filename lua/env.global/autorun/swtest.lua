@@ -58,3 +58,80 @@ else
 	end
 end
 --data/lua/env.global/autorun/swtest.lua
+--dialog test
+
+DeclareEnumValue("event","DIALOG_START",					3332221) 
+DeclareEnumValue("event","DIALOG_END",						3332222) 
+
+function temp_opendialog(ply, target)
+
+end
+
+for k,v in pairs(player.GetAll()) do
+	v:AddFlag(FLAG_USEABLE)
+	v._events = v._events or {}
+	v._events[EVENT_USE] = {networked = true, f = function(self,user)  
+			if SERVER then
+				if not self._indialog and not user._indialog then
+					MsgN(user._indialog)
+					user._indialog = true
+					self._indialog = true 
+
+					self:SendEvent(EVENT_LERP_HEAD,user)
+					user:SendEvent(EVENT_LERP_HEAD,self)
+	 
+	
+					self:SendEvent(EVENT_DIALOG_START,user)
+					user:SendEvent(EVENT_DIALOG_START,self)
+				end
+
+			end
+		end
+	}
+
+	v._events[EVENT_DIALOG_START] = {networked = true, f = function(self,user)   
+		if(user==LocalPlayer()) then 
+			local dialog = panel.Create("window_npc_dialog")  
+			self._dialog = dialog 
+			actor_panels.SetSide(dialog,ALIGN_BOTTOM)
+			actor_panels.AddPanel(dialog,true) 
+			dialog:Start(facial.getai(self),self:GetName()) 
+			dialog:Open("",
+			{
+				{t="Обмен",f= function()
+					dialog:Close()
+					actor_panels.OpenInventory(user,ALIGN_BOTTOM,nil)
+					actor_panels.OpenCharacterInfo(user,ALIGN_LEFT,nil)
+					actor_panels.OpenInventory(self,ALIGN_TOP,nil)
+					actor_panels.OpenCharacterInfo(self,ALIGN_RIGHT,nil)
+					return false
+				end}, 
+				{t="Иди за мной",f= function()
+					actor_panels.CloseAll()
+					self:SendEvent(EVENT_TASK_BEGIN,"follow",user,2)
+					return false
+				end}, 
+				{t="Не ходи за мной",f= function()
+					actor_panels.CloseAll()
+					self:SendEvent(EVENT_TASK_RESET)
+					return false
+				end}, 
+			})
+			hook.Add("actor_panels.closed","dialog_end",function()
+				self:SendEvent(EVENT_DIALOG_END,user)
+				user:SendEvent(EVENT_DIALOG_END,self)
+				MsgN("dialog end")
+			end)
+			MsgN("dialog start")
+		end
+	end} 
+	v._events[EVENT_DIALOG_END] = {networked = true, f = function(self,user) 
+		if SERVER then
+			user._indialog = false
+			self._indialog = false
+		else
+			hook.Remove("actor_panels.closed","dialog_end")
+			actor_panels.CloseAll()
+		end
+	end}
+end 
