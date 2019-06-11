@@ -84,7 +84,7 @@ function ENT:Init()
 	self.model = model
 	self.phys = phys
 	self:SetSpaceEnabled(false)
-	self:AddFlag(FLAG_PHYSSIMULATED) 
+	self:AddTag(TAG_PHYSSIMULATED) 
 	
 	
 	--self:AddEventListener(EVENT_USE,"use_event",function(user) 
@@ -95,8 +95,8 @@ function ENT:Init()
 	--	end
 	--end)
 	--self:SetNetworkedEvent(EVENT_USE)
-	self:AddFlag(FLAG_USEABLE) 
-	self:AddFlag(FLAG_STOREABLE)
+	self:AddTag(TAG_USEABLE) 
+	self:AddTag(TAG_STOREABLE)
 end
 function ENT:LoadData()
 	local type = self:GetParameter(VARTYPE_FORM)

@@ -68,7 +68,7 @@ function temp_opendialog(ply, target)
 end
 
 for k,v in pairs(player.GetAll()) do
-	v:AddFlag(FLAG_USEABLE)
+	v:AddTag(TAG_USEABLE)
 	v._events = v._events or {}
 	v._events[EVENT_USE] = {networked = true, f = function(self,user)  
 			if SERVER then

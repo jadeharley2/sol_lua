@@ -160,8 +160,8 @@ function Transformation(actor,target_character)
 		else
 		--	actor:SetName(actor:GetName().." statue") 
 		end
-		--actor:AddFlag(FLAG_STOREABLE)
-		--actor:RemoveFlag(FLAG_PLAYER) 
+		--actor:AddTag(TAG_STOREABLE)
+		--actor:RemoveTag(TAG_PLAYER) 
 		actor:SendEvent(EVENT_CHANGE_CHARACTER,target_character)
 		
 		for k,v in pairs(newparts) do

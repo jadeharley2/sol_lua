@@ -161,7 +161,7 @@ function SpawnPlayerChar(posoverride,nodeoverride)
 		--actor:SetPos(targetpos+Vector(0.001,0,0)) 
 		--actor2:SetPos(targetpos)
 		--TM2 = actorD
-		--TM2:AddFlag(FLAG_NPC)
+		--TM2:AddTag(TAG_NPC)
 		
 		--actor2:Give("tool_magic")
 
@@ -169,7 +169,7 @@ function SpawnPlayerChar(posoverride,nodeoverride)
 		playeractor:SetGlobalName('player') 
 		local name = settings.GetString("player.name")
 		playeractor:SetName(name)
-		playeractor:AddFlag(FLAG_PLAYER)
+		playeractor:AddTag(TAG_PLAYER)
 	
 		--local inventory = playeractor:AddComponent(CTYPE_STORAGE)  
 		

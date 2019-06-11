@@ -74,7 +74,7 @@ function ENT:LoadModel()
 	MsgN("[BSP] Map model spawn. Total part count:",mcou)
 	for k=0,mcou-1 do
 		local so = SpawnSO("tempbspmap_"..k..".stmd",self,Vector(0,0,0),0.01905)
-		so:AddFlag(320230)--FLAG_EDITOR_HIDE
+		so:AddTag(320230)--TAG_EDITOR_HIDE
 	end
 end 
 
@@ -110,7 +110,7 @@ function ENT:LoadEnts()
 		local angles = Vector(v.angles[3],v.angles[2],-v.angles[1])
 		local e = SpawnSO("gmod/"..v.model,self,pos,1/5)  
 		e:SetAng(angles)
-		e:AddFlag(77723) 
+		e:AddTag(77723) 
 	end
  
 	MsgN("[BSP] Entity spawn")
@@ -122,7 +122,7 @@ function ENT:LoadEnts()
 			local pos = self:GetEntOrigin(v.origin)
 			e = ents.Create("spawnpoint")
 			e:SetPos(pos)-- SpawnSO("primitives/sphere.stmd",self,pos,0.75)
-			e:AddFlag(77723)
+			e:AddTag(77723)
 			e:SetParent(self)
 			e:Spawn()
 			e:SetPlayerSpawn()
@@ -170,7 +170,7 @@ function ENT:LoadEnts()
 			else
 				e:SetAng(Vector(angles[3],angles[2],-angles[1]))
 			end
-			e:AddFlag(77723) 
+			e:AddTag(77723) 
 		elseif v.classname == "env_sun" then
 			local color = self:GetNumberTable(v.rendercolor)
 			local angles = self:GetNumberTable(v.angles)
@@ -189,14 +189,14 @@ function ENT:LoadEnts()
 			--if CLIENT then
 			--	local eshadow = ents.Create("test_shadowmap2")  
 			--	eshadow.light = sun
-			--	eshadow:AddFlag(77723)
+			--	eshadow:AddTag(77723)
 			--	eshadow:SetParent(space) 
 			--	eshadow:Spawn() 
 			--	self.shadow = eshadow
 			--end
 		end
 		if e then
-			e:AddFlag(77723)
+			e:AddTag(77723)
 			if v.targetname then
 				e:SetName(v.targetname)
 			end
@@ -206,7 +206,7 @@ function ENT:LoadEnts()
 end
 function ENT:ClearEnts() 
 	for k,v in pairs(self:GetChildren()) do
-		if v:HasFlag(77723) then
+		if v:HasTag(77723) then
 			v:Despawn()
 		end
 	end

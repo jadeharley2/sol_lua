@@ -83,7 +83,7 @@ function GetNodesInRadius(space,pos,r,flagfilter,nodefilter)
 		local dist = v:GetPos():DistanceSquared(pos)
 		if dist<=rsq then
 			if not nodefilter or not nodefilter[v] then 
-				if not flagfilter or v:HasFlag(flagfilter) then 
+				if not flagfilter or v:HasTag(flagfilter) then 
 					result[#result+1] = v 
 				end
 			end
@@ -100,7 +100,7 @@ function GetNearestNode(space,pos,flagfilter,nodefilter)
 		local dist = v:GetPos():DistanceSquared(pos)
 		if dist<mindist then
 			if not nodefilter or not nodefilter[v] then 
-				if not flagfilter or v:HasFlag(flagfilter) then  
+				if not flagfilter or v:HasTag(flagfilter) then  
 					result = v 
 					mindist = dist
 				end

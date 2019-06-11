@@ -204,7 +204,7 @@ function generator:GenerateBinarySystem(system, seed)
 	center.mass = 0  
 	center:SetSizepower(6.9551E8 * 100000) 
 	center:SetParent(system)
-	center:RemoveFlag(FLAG_STAR)
+	center:RemoveTag(TAG_STAR)
 	center:Spawn() 
 	
 	

@@ -157,7 +157,7 @@ meta_recorder.ev_use = function(actor)
 	local nearestent = false
 	local ndist = maxUseDistance*maxUseDistance
 	for k,v in pairs(ents) do
-		if v~=actor and v:HasFlag(FLAG_USEABLE) then 
+		if v~=actor and v:HasTag(TAG_USEABLE) then 
 			local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
 			if edist<ndist and edist>0 then
 				nearestent = v

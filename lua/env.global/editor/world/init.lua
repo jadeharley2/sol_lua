@@ -28,7 +28,7 @@ _metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self)
 	ne:SetParent(self:GetParent())
 	ne:SetSizepower(self:GetSizepower())
 	ne:SetSeed(uid) 
-	self:CopyFlags(ne)
+	self:CopyTags(ne)
 	self:CopyParameters(ne)
 	
 	if ne.SetCharacter then
@@ -40,7 +40,7 @@ _metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self)
 	ne:SetScale(self:GetScale())  
 	ne:Spawn()
 	
-	self:CopyFlags(ne)
+	self:CopyTags(ne)
 	self:CopyParameters(ne)
 	ne:SetSeed(uid) 
 	--MsgN("asasd?")
@@ -221,6 +221,7 @@ function editor:KeyDown()
 		end
 		self.selected:Clear()
 		self:ClearSelectionModels()  
+		self.node:SelectNode(nil)
 		local gizmo = self.gizmo 
 		if gizmo then
 			gizmo:Despawn()

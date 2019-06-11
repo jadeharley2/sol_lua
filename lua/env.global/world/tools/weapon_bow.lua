@@ -56,7 +56,7 @@ function TOOL:Fire(dir)
 	end
 end
 function TOOL:OnHit(target) 
-	if target:HasFlag(FLAG_ACTOR) then
+	if target:HasTag(TAG_ACTOR) then
 		target:Hurt(self.damage or 1)
 	end
 	return true

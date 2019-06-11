@@ -34,7 +34,7 @@ function ENT:Init()
 		self.phys:ApplyAngularImpulse(f) 
 	end
 	self:SetSizepower(10) 
-	self:AddFlag(FLAG_PHYSSIMULATED)
+	self:AddTag(TAG_PHYSSIMULATED)
 end
 
 function ENT:Spawn(c)  
@@ -79,7 +79,7 @@ function ENT:Spawn(c)
 	self:SetUpdating(true)
 	self:SetSpaceEnabled(false) 
 	 
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	
 	constraint.RevoluteAngular(phys,nil,Vector(0,1,0)) 
 end

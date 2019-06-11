@@ -132,7 +132,7 @@ if SERVER then
 		client:SendStartupNodes()
 		local actor = ents.Create("base_actor")
 
-		actor:AddFlag(FLAG_PLAYER)
+		actor:AddTag(TAG_PLAYER)
 		actor:SetSizepower(1000)
 		actor:SetParent(GLOBAL_SPAWN_node)
 		actor:SetSeed(120000+id)

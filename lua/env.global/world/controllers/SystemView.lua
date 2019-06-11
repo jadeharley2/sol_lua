@@ -61,11 +61,11 @@ end
 
 function OBJ:FindSystem()   
 	local cam = GetCamera()
-	local parentsystem = cam:GetParentWithFlag(FLAG_PLANET)
+	local parentsystem = cam:GetParentWithFlag(TAG_PLANET)
 	if parentsystem and parentsystem.moons and #parentsystem.moons>0 then
 		return parentsystem
 	else
-		return cam:GetParentWithFlag(FLAG_STAR)
+		return cam:GetParentWithFlag(TAG_STAR)
 	end
 end
 
@@ -82,7 +82,7 @@ function OBJ:KeyDown(key)
 	if input.KeyPressed(KEYS_B) then
 		local cam = GetCamera()
 		local cparent = cam:GetParent()
-		local star = cam:GetParentWithFlag(FLAG_STAR)
+		local star = cam:GetParentWithFlag(TAG_STAR)
 		if cparent~=star then
 			self:PanelsClear()
 			self.system = cparent:GetParent()

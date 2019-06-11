@@ -51,15 +51,15 @@ function PANEL:UpdateData()
 		function recadd(nod,tab)
 			for k,v in pairs(nod:GetChildren()) do
 				MsgN(k,v)
-				if v:HasFlag(FLAG_STAR) then
+				if v:HasTag(TAG_STAR) then
 					local st = {v:GetName() or "unknown star"}
 					recadd(v,st)
 					tab[#tab+1] = st
-				elseif v:HasFlag(FLAG_PLANET) then
+				elseif v:HasTag(TAG_PLANET) then
 					local st = {v:GetName() or "unknown planet"}
 					recadd(v,st)
 					tab[#tab+1] = st
-				elseif v:HasFlag(35335) then
+				elseif v:HasTag(35335) then
 					local st = {"mass center"}
 					recadd(v,st)
 					tab[#tab+1] = st 
@@ -103,7 +103,7 @@ function PANEL:UpdateData()
 		p_system:UpdateLayout()
 		tabs:AddTab("CurSystem",p_system)
 		
-		local planet = cam:GetParentWithFlag(FLAG_PLANET)
+		local planet = cam:GetParentWithFlag(TAG_PLANET)
 		if planet then 
 			local p_planet = panel.Create() p_planet:SetColor(Vector(0,0,0))
 			self.p_planet = p_planet

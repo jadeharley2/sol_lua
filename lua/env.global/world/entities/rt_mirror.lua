@@ -45,7 +45,9 @@ function ENT:Spawn()
 	local rcamera = self:AddComponent(CTYPE_CAMERA) 
 	rcamera:SetCamera(cc) 
 	rcamera:SetParameters(rparam)
+	rcamera:AddForceDisabled(model)
 	
+
 	self.rparam = rparam 
 	self.rcamera = rcamera 
 	self.cc = cc 
@@ -94,6 +96,7 @@ function ENT:Spawn()
 	light:SetColor(Vector(1,1,1))
 	light:SetBrightness(0.1) 
 	self.light = light
+	--self:AddTag(TAG_USEABLE)
 end
 function ENT:Despawn() 
 	self:DDFreeAll() 
@@ -148,8 +151,12 @@ function ENT:UpdatePos()
 		--	end
 		--end
 	end
-	
-	rc:RequestDraw(self.model)
+	if LocalPlayer()==c:GetParent() then
+		self:SetScale(LocalPlayer():GetScale()*Vector(-1,1,1))
+	else
+		self:SetScale(Vector(-1,1,1))
+	end 
+	rc:RequestDraw(self.model) 
 	
 	 
 	MIRROR = self
@@ -169,3 +176,11 @@ function ENT:SetWorld(m)
 		WMUL = 1
 	end
 end 
+
+ENT._typeevents = {
+	[EVENT_USE] = {networked = true, f = function(self,user) 
+		user:SetScale(user:GetScale()*Vector(-1,1,1))
+		render.GlobalRenderParameters():SetCullMode(CULLMODE_NONE)
+		self.rparam:SetCullMode(CULLMODE_NONE)
+	end},
+}

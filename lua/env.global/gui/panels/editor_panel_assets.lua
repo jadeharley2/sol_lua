@@ -14,7 +14,7 @@ local assettypes = {
 		 	MsgN("spawnprop:",fpath)
 			local p = SpawnPV(fpath,node,pos,nil,GetFreeUID())--,j.scale,false,false)
 			if p then
-				p:AddFlag(FLAG_EDITORNODE) 
+				p:AddTag(TAG_EDITORNODE) 
 			end
 			return p
 		end 
@@ -27,7 +27,7 @@ local assettypes = {
 		
 		local p = SpawnParticles(node,type,wtr.Position,0,1,1)
 		if p then
-			p:AddFlag(FLAG_EDITORNODE)
+			p:AddTag(TAG_EDITORNODE)
 			p:SetSeed(GetFreeUID())
 		end
 		return p
@@ -45,7 +45,7 @@ local assettypes = {
 		local actorD = ents.Create("base_actor")
 		actorD:SetSizepower(1000)
 		actorD:SetParent(node)
-		actorD:AddFlag(FLAG_EDITORNODE)
+		actorD:AddTag(TAG_EDITORNODE)
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
 		actorD:Spawn()
@@ -54,7 +54,7 @@ local assettypes = {
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
 		local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
-		ap:AddFlag(FLAG_EDITORNODE)
+		ap:AddTag(TAG_EDITORNODE)
 		return ap
 	end},
 	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)
@@ -65,7 +65,7 @@ local assettypes = {
 		local ap = ents.Create("planet_surface_mod")
 		ap:SetSizepower(100)
 		ap:SetParent(node)
-		ap:AddFlag(FLAG_EDITORNODE)
+		ap:AddTag(TAG_EDITORNODE)
 		ap:SetSeed(GetFreeUID())
 		ap:SetParameter(VARTYPE_CHARACTER,type)
 		ap:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
@@ -86,7 +86,7 @@ PANEL.specialtypes = {
 		
 		local d1 = SpawnDT("door/door2.stmd",node,wtr.Position+Vector(0,1/node:GetSizepower(),0),Vector(0,0,0),0.05) 
 		d1:SetGlobalName("flatgrass.door")
-		d1:AddFlag(FLAG_EDITORNODE)
+		d1:AddTag(TAG_EDITORNODE)
 		d1:SetSeed(GetFreeUID())
 		d1.target = {"models/dyntest/sdm/interior_main.dnmd","foyer.flatgrass.door"}
 		d1:SetParameter(VARTYPE_CHARACTER,"models/dyntest/sdm/interior_main.dnmd:foyer.flatgrass.door")
@@ -167,11 +167,13 @@ local on_dt_click = function(b,cdtype)
 		local type = string.join('.',table.Skip(aparts,1))
 		MsgN("VALIDTYPE",type,unpack(aparts))
 		local e = validtype.spawn(type,GetCamera():GetParent(),cdtype)
-		local edt = e.editor
-		if edt and edt.onSpawn then
-			edt.onSpawn(e)
+		if e then
+			local edt = e.editor
+			if edt and edt.onSpawn then
+				edt.onSpawn(e)
+			end
+			worldeditor:Select(e)
 		end
-		worldeditor:Select(e)
 	end 
 end
 function PANEL:InitTabAssets()
@@ -260,7 +262,7 @@ function PANEL:Init()
 										local s = panel.Create("window_save")
 										s:SetTitle("Save node") 
 										s:SetButtons("Save","Back") 
-										s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, FLAG_EDITORNODE) end
+										s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, TAG_EDITORNODE) end
 										s:Show() 
 									end
 								end 
@@ -282,7 +284,7 @@ function PANEL:Init()
 									local cparent = GetCamera():GetParent()
 									local cseed = cparent:GetSeed()
 									if cseed ~= 0 then
-										engine.SaveNode(cparent, tostring(cseed), FLAG_EDITORNODE)
+										engine.SaveNode(cparent, tostring(cseed), TAG_EDITORNODE)
 									end
 								end 
 							}
@@ -308,7 +310,7 @@ function PANEL:Init()
 	local view = panel.Create("viewport")
 	view:SetSize(200,200)
 	view:Dock(DOCK_FILL)
-	view:InitializeFromTexture(1,"@main_diffuse")
+	view:InitializeFromTexture(1,"@main_final")
 	self.vp = view
 	self:Add(view) 
 

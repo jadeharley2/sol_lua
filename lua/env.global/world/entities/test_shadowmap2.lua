@@ -66,6 +66,12 @@ function ENT:UpdatePos()
 	else
 		--self:SetPos(Vector(0,0,0)) 
 		--self:SetAng(Vector(0,0,0))
+
+		local cp = c:GetParent()
+		if cp and cp:GetClass()=='base_actor' then
+			cp = cp:GetParent()
+		end
+
 		self:SetParent(c:GetParent()) 
 		 
 		
@@ -189,7 +195,7 @@ function ENT:UpdatePos()
 		local p = self:GetParent()
 		local cp = c:GetParent()
 		if cp~=nil then
-			while cp:HasFlag(FLAG_ACTOR) do
+			while cp:HasTag(TAG_ACTOR) do
 				cp = cp:GetParent()
 			end
 			if(cp~=p)then

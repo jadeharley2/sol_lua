@@ -33,7 +33,7 @@ function ENT:Enter()
 		--self.cubemap:RequestDraw()
 		GlobalSetCubemap(self.cubemap)
 		if not SHADOW or not IsValidEnt(SHADOW) then 
-			local star = self:GetParentWithFlag(FLAG_STAR)
+			local star = self:GetParentWithFlag(TAG_STAR)
 			if star then
 				local eshadow = ents.Create("test_shadowmap2")  
 				eshadow.light = star

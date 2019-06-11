@@ -16,7 +16,7 @@ function ENT:Init()
 	self.model = model 
 	self.phys = phys
 
-	self:AddFlag(FLAG_PHYSSIMULATED)
+	self:AddTag(TAG_PHYSSIMULATED)
 end
 function ENT:Spawn()
 	local mdl = "@testdynconstruct"

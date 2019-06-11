@@ -50,7 +50,7 @@ function ENT:Spawn(c)
 	--self:AddEventListener(EVENT_USE,"use_event",function(self,a,b,c,d,e)
 	--	MsgN(self," is used by: ",a,b,c,d,e)
 	--end)
-	--self:AddFlag(FLAG_USEABLE)
+	--self:AddTag(TAG_USEABLE)
 end
 function ENT:Load()
 	local scolor = self[VARTYPE_COLOR] or Vector(1,1,1)

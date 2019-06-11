@@ -2,7 +2,7 @@ local CONST_SPACE_LIGHT_MULTIPLIER=50*2
 local rdtex = LoadTexture("space/star_sprites.png")
 
 function ENT:Init()  
-	self:AddFlag(FLAG_GALAXY)
+	self:AddTag(TAG_GALAXY)
 	self:SetParameter(VARTYPE_TYPE,NTYPE_GALAXY)
 end
 function ENT:Spawn()

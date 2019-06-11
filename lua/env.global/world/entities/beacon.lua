@@ -78,7 +78,7 @@ function ENT:Spawn()
 		user:SetParent(self.target)
 		user:SetPos(self.target_pos)
 	end)
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	
 end
  

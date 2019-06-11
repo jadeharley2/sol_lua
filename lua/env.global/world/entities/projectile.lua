@@ -88,7 +88,7 @@ function ENT:Spawn()
 	--self:AddEventListener(EVENT_USE,"use_event",function(self,a,b,c,d,e)
 	--	MsgN(self," is used by: ",a,b,c,d,e)
 	--end)
-	--self:AddFlag(FLAG_USEABLE)
+	--self:AddTag(TAG_USEABLE)
 end
 function ENT:Hit(a,collider,pos,normal,depth)  
 	local OnHit = self.OnHit

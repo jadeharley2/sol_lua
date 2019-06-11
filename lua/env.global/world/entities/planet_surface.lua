@@ -1,6 +1,6 @@
 
 function ENT:Init()
-	self:AddFlag(FLAG_PLANET_SURFACE)
+	self:AddTag(TAG_PLANET_SURFACE)
 	local constrot  = self:AddComponent(CTYPE_CONSTROT) 
 	constrot:SetParams(0.00001,0,matrix.Rotation(0.1,0,0))
 	--constrot:SetParams(0.1,0,matrix.Rotation(0.1,0,0)) 
@@ -115,5 +115,29 @@ function ENT:Think()
 		if cam:GetParent()==self then
 			render.ClearShadowMaps()
 		end
+
+		if self.atmosphere then
+			local r = Random()
+			--for k=1,10 do
+			local p = ((r:NextVector()-Vector(0.5,0.5,0.5))*Vector(1,0.3,1)):Normalized()
+			--p = Vector(1,0,0)
+			self:LightninStrike(p*0.917)--0.915
+			--end
+		end
 	end
 end
+
+
+function ENT:LightninStrike(pos)
+	local omni = ents.Create("omnilight")
+	omni:SetParent(self)
+	omni:SetPos(pos)
+	omni:Spawn()
+	omni:SetColor(Vector(0.9,0.8,1))
+	omni:SetBrightness(10000000000*1)
+	debug.Delayed(50,function()
+		omni:Despawn()
+	end)
+end
+
+FTEST = ENT.LightninStrike

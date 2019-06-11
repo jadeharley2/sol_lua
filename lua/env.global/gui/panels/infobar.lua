@@ -49,14 +49,14 @@ function PANEL:UpdateBar(ent)
 				back:SetTextColor(ent.info.color/255)
 				back:SetText(ent.info.text) 
 			end
-		elseif ent:HasFlag(FLAG_PLAYER) then
+		elseif ent:HasTag(TAG_PLAYER) then
 			back:SetTextColor(Vector(115,13,201)/255)
 			back:SetText("player "..ent:GetName())
 			
 			local percentage = ent:GetHealthPercentage()
 			hp:SetAlpha(1)
 			hp:SetSize(297*percentage,2)
-		elseif ent:HasFlag(FLAG_NPC) then
+		elseif ent:HasTag(TAG_NPC) then
 			back:SetTextColor(Vector(255,255,255)/255)
 			if ent.usetype then
 				back:SetText( ent:GetName()..": "..(ent.usetype or "unknown"))
@@ -66,10 +66,10 @@ function PANEL:UpdateBar(ent)
 			local percentage = ent:GetHealthPercentage()
 			hp:SetAlpha(1)
 			hp:SetSize(297*percentage,2)
-		elseif ent:HasFlag(FLAG_WEAPON) then
+		elseif ent:HasTag(TAG_WEAPON) then
 			back:SetTextColor(Vector(201,133,13)/255)
 			back:SetText( "weapon "..ent:GetName())
-		elseif ent:HasFlag(FLAG_USEABLE) then
+		elseif ent:HasTag(TAG_USEABLE) then
 			back:SetTextColor(Vector(13,201,115)/255)
 			back:SetText( "use: "..(ent.usetype or "unknown"))
 		

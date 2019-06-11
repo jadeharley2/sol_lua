@@ -6,7 +6,7 @@ function ENT:Init()
 	self.orbit = orbit
 	
 	self.iscelestialbody = true
-	self:AddFlag(FLAG_PLANET)
+	self:AddTag(TAG_PLANET)
 	self:SetSpaceEnabled(true,1)
 end
 
@@ -39,7 +39,7 @@ function ENT:Spawn()
 	--	self:Enter()
 	--end
 	
-	if true then--
+	if false then--
 		local radius = self:GetParameter(VARTYPE_RADIUS) 
 		local seed = self:GetSeed()
 		 

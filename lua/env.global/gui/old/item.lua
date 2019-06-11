@@ -306,8 +306,8 @@ end
 function PANEL:Select(actor)
 	local ent = self.item 
 	if ent then
-		--if ent.HasFlag then
-		--	if ent:HasFlag(FLAG_USEABLE) then
+		--if ent.HasTag then
+		--	if ent:HasTag(TAG_USEABLE) then
 		--		USE_ITEM(actor,ent)
 		--	end
 		--else

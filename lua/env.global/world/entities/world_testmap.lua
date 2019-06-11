@@ -22,6 +22,18 @@ function ENT:Init()
 	self:SetGlobalName("u1_room") 
 
 end
+function ENT:LD1(n)
+	local u = n.phys:GetVelocity()*1
+
+	n:SetParent(self.betaspace)
+	n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
+end
+function ENT:LD2(n)
+	local u = n.phys:GetVelocity()*1
+
+	n:SetParent(self.space)
+	n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
+end
 function ENT:Spawn()
 
 	-- all worlds must have minimum 1 subspace 
@@ -38,12 +50,84 @@ function ENT:Spawn()
 	space.space = sspace
 
 	local map = SpawnSO("map/map_01.stmd",space,Vector(0,0,0),0.75) 
+
+
+
+
+	local betaspace = ents.Create()
+	betaspace:SetLoadMode(1)
+	betaspace:SetSeed(19900002)
+	betaspace:SetParent(self) 
+	betaspace:SetPos(Vector(1,0,0))
+	betaspace:SetScale(Vector(1,1,1))
+	betaspace:SetSizepower(1000)
+	betaspace:SetGlobalName("u1_room.bspace")
+	betaspace:Spawn()  
+	local bsspace = betaspace:AddComponent(CTYPE_PHYSSPACE)  
+	bsspace:SetGravity(Vector(0,-4,0))
+	betaspace.space = bsspace
+
+	local bmap = SpawnSO("map/map_01.stmd",betaspace,Vector(0,0,0),0.75) 
+	bmap.model:Enable(false)
+
+	--local subspace1 = ents.Create()
+	--subspace1:SetLoadMode(1)
+	--subspace1:SetSeed(33221101)
+	--subspace1:SetParent(space) 
+	--subspace1:SetPos(Vector(-0.006,0,0))
+	--subspace1:SetSizepower(4)
+	--subspace1:Spawn()  
+--
+	--local subspace2 = ents.Create()
+	--subspace2:SetLoadMode(1)
+	--subspace2:SetSeed(33221102)
+	--subspace2:SetParent(betaspace) 
+	--subspace2:SetPos(Vector(-0.006,0,0))
+	--subspace2:SetSizepower(4)
+	--subspace2:Spawn() 
+--
+	--local subspace3 = ents.Create()
+	--subspace3:SetLoadMode(1)
+	--subspace3:SetSeed(33221103)
+	--subspace3:SetParent(self) 
+	--subspace3:SetPos(Vector(0.5,0,0))
+	--subspace3:SetSizepower(4)
+	--subspace3:Spawn() 
+
+	--ents.CreateWorldLink(subspace1,subspace2,matrix.Identity())
+	--ents.CreateWorldLink(subspace2,subspace3,matrix.Identity())
+
+	ents.CreateWorldLink(space,betaspace,matrix.Scaling(Vector(1,1,1)))
+
+	local trigger1 = ents.Create('dyn_trigger') 
+	trigger1:SetSeed(33221101)
+	trigger1:SetParent(space) 
+	trigger1:SetPos(Vector(-0.006,0,0))
+	trigger1:SetSizepower(4)
+	trigger1:Spawn()   
+	trigger1.OnTouchEnd = function(s,n)
+		self:LD1(n)
+	end
+	local trigger2 = ents.Create('dyn_trigger') 
+	trigger2:SetSeed(33221102)
+	trigger2:SetParent(betaspace) 
+	trigger2:SetPos(Vector(0.006,0,0))
+	trigger2:SetSizepower(4)
+	trigger2:Spawn()  
+	trigger2.OnTouchEnd = function(s,n)
+		self:LD2(n)
+	end
+
+	--local cmap = SpawnSO("cassie.stmd",betaspace,Vector(0,0,0),0.75*0.04) 
+	--cmap:SetAng(Vector(0,0,90))
+
 	--def:190000000
 	--local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(140,161,178)/255,190000000)
 	local light = self:CreateStaticLight(Vector(-1.3,1.2,-2.5)/2*10,Vector(200,200,200)/255,190000000 * 100)
 	 
 	light.light:SetShadow(true)
 	self.space = space
+	self.betaspace = betaspace
 	 
 	
 	-- apparel dispenser
@@ -234,7 +318,7 @@ function ENT:Spawn()
 
 		local cubemap = root_skyb:AddComponent(CTYPE_CUBEMAP)  
 		self.cubemap = cubemap 
-		cubemap:SetTarget(nil,space) 
+		cubemap:SetTarget(nil,self) 
 		local cbm =cubemap
 		
 		--local cbm = SpawnCubemap(space,Vector(0,0.0013627,0),512)
@@ -490,12 +574,12 @@ function ENT:GetSpawn()
 	instr:AddEventListener(EVENT_USE,"use_event",function(s,user) 
 		self:CFR(user,space2)
 	end)
-	instr:AddFlag(FLAG_USEABLE) 
+	instr:AddTag(TAG_USEABLE) 
 	
 	space2:AddEventListener(EVENT_USE,"use_event",function(s,user)
 		self:CTO(user,space2)
 	end)
-	space2:AddFlag(FLAG_USEABLE) 
+	space2:AddTag(TAG_USEABLE) 
 
 
 

@@ -24,7 +24,7 @@ function ENT:Spawn()
 	light:Enable(false) 
 	self.light = light
 	 
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	self.enabled = true
 	
 	
@@ -55,7 +55,7 @@ end
 function ENT:SearchTeleportLocation()
 	local spaceship = self:GetParent()
 	local pdt = spaceship:GetParent()
-	--local planet = self:GetParentWithFlag(FLAG_PLANET) 
+	--local planet = self:GetParentWithFlag(TAG_PLANET) 
 	local pdts = pdt:GetComponent(CTYPE_PHYSSPACE)
 	if pdts then
 		local sz = pdt:GetSizepower()

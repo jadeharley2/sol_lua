@@ -31,7 +31,7 @@ function ENT:Spawn()
 			error("no model specified for button model at spawn time")
 		end
 	end 
-	self:AddFlag(FLAG_USEABLE) 
+	self:AddTag(TAG_USEABLE) 
 	self:SetMode(self.mode or "char")
 end
 

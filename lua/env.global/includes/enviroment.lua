@@ -2,16 +2,16 @@ if SERVER then return end
  
 env = env or {}
 env.Planet = function()
-	return GetCamera():GetParentWithFlag(FLAG_CELESTIAL_BODY)
+	return GetCamera():GetParentWithFlag(TAG_CELESTIAL_BODY)
 end
 env.Star = function()
-	return GetCamera():GetParentWithFlag(FLAG_STAR)
+	return GetCamera():GetParentWithFlag(TAG_STAR)
 end
 env.Starsystem = function()
-	return GetCamera():GetParentWithFlag(FLAG_STARSYSTEM)
+	return GetCamera():GetParentWithFlag(TAG_STARSYSTEM)
 end
 env.Galaxy = function()
-	return GetCamera():GetParentWithFlag(FLAG_GALAXY)
+	return GetCamera():GetParentWithFlag(TAG_GALAXY)
 end
 
 env.Temperature = function()
@@ -23,7 +23,7 @@ end
 env.AtmPressure = function()
 	--return 0
 	local cam = GetCamera() 
-	local planet = cam:GetParentWithFlag(FLAG_PLANET)
+	local planet = cam:GetParentWithFlag(TAG_PLANET)
 	if planet then 
 	
 		if planet.surface then

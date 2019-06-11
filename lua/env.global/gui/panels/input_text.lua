@@ -147,6 +147,24 @@ function PANEL:OnClick()
 	self:CaretUpdate(CStringLen(text))
 	self:Select()
 end 
+function PANEL:MouseEnter()
+	hook.Add("input.keydown","input.copyonover",function(k) 
+		if input.KeyPressed(KEYS_CONTROLKEY) then
+			if k==KEYS_V then   
+				local text = ClipboardGetText() 
+				self:CaretUpdate(CStringLen(text),true)
+				self.text = text
+				self:SetText(text)
+			elseif k==KEYS_C then 
+				ClipboardSetText(self:GetText())
+				MsgN("asd")
+			end
+		end
+	end)
+end
+function PANEL:MouseLeave()
+	hook.Remove("input.keydown","input.copyonover")
+end
 function PANEL:ToggleCaret()
 	local caret = self.caret or ""
 	if caret == "" then

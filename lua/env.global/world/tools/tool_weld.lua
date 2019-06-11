@@ -32,7 +32,7 @@ function TOOL:Fire(dir)
 			local forw = lw:Forward()--:TransformC(matrix.AxisRotation(lw:Right(),math.random(-30,30)))
 			 
 			local tr = GetCameraPhysTrace()
-			--if tr and tr.Hit and tr.Entity and tr.Entity:HasFlag(FLAG_PHYSSIMULATED) then  
+			--if tr and tr.Hit and tr.Entity and tr.Entity:HasTag(TAG_PHYSSIMULATED) then  
 			--	local user = self:GetParent()
 			--	if tr.Entity == user then return nil end
 			--	if self.state == "select1" then
@@ -45,7 +45,7 @@ function TOOL:Fire(dir)
 			--	end
 			--end
 			if self.state == "select1" then
-				if tr and tr.Hit and tr.Entity and tr.Entity:HasFlag(FLAG_ACTOR) then  
+				if tr and tr.Hit and tr.Entity and tr.Entity:HasTag(TAG_ACTOR) then  
 					local user = self:GetParent()
 					if tr.Entity == user then return nil end
 					if self.state == "select1" then
@@ -82,7 +82,7 @@ function TOOL:AltFire(dir)
 			local forw = lw:Forward()--:TransformC(matrix.AxisRotation(lw:Right(),math.random(-30,30)))
 			 
 			local tr = GetCameraPhysTrace()
-			if tr and tr.Hit and tr.Entity and tr.Entity:HasFlag(FLAG_PHYSSIMULATED) then  
+			if tr and tr.Hit and tr.Entity and tr.Entity:HasTag(TAG_PHYSSIMULATED) then  
 				local user = self:GetParent()
 				if tr.Entity == user then return nil end
 				if self.state == "select1" then
@@ -115,12 +115,12 @@ function TOOL:Copy(ent,parent,pos)
 			ne:SetParameter(v,p)
 		end
 	end
-	local flags = {FLAG_NPC,FLAG_PLAYER,FLAG_ACTOR,FLAG_USEABLE,FLAG_STOREABLE}
+	local flags = {TAG_NPC,TAG_PLAYER,TAG_ACTOR,TAG_USEABLE,TAG_STOREABLE}
 	for k,v in pairs(flags) do 
-		if ent:HasFlag(v) then
-			ne:AddFlag(v)
+		if ent:HasTag(v) then
+			ne:AddTag(v)
 		else
-			ne:RemoveFlag(v)
+			ne:RemoveTag(v)
 		end
 	end
 	ne:SetCharacter(ent:GetParameter(VARTYPE_CHARACTER))
@@ -135,12 +135,12 @@ function TOOL:Copy(ent,parent,pos)
 			ne:SetParameter(v,p)
 		end
 	end
-	local flags = {FLAG_NPC,FLAG_PLAYER,FLAG_ACTOR,FLAG_USEABLE,FLAG_STOREABLE}
+	local flags = {TAG_NPC,TAG_PLAYER,TAG_ACTOR,TAG_USEABLE,TAG_STOREABLE}
 	for k,v in pairs(flags) do 
-		if ent:HasFlag(v) then
-			ne:AddFlag(v)
+		if ent:HasTag(v) then
+			ne:AddTag(v)
 		else
-			ne:RemoveFlag(v)
+			ne:RemoveTag(v)
 		end
 	end
 	return ne

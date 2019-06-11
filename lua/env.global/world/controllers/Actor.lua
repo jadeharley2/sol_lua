@@ -70,7 +70,7 @@ function OBJ:Init()
 	end
 	 
 	
-	if healthbar and actor:HasFlag(FLAG_ACTOR) then
+	if healthbar and actor:HasTag(TAG_ACTOR) then
 		healthbar:UpdateHealth(actor:GetHealth(),actor:GetMaxHealth())
 	end
 	if self.camZoom==0 then 
@@ -373,7 +373,7 @@ function OBJ:Update()
 	end
 	local dt = 1
 	
-	if actor:HasFlag(FLAG_ACTOR) then
+	if actor:HasTag(TAG_ACTOR) then
 		if actor:GetUpdating() and not self:ActorIsBusy() and actor:Alive() then 
 			if actor.IsInVehicle then
 				if not input.GetKeyboardBusy() then  
@@ -496,11 +496,13 @@ function OBJ:HandleThirdPersonMovement(actor)
 	local W,A,S,D = input.KeyPressed(KEYS_W),input.KeyPressed(KEYS_A),input.KeyPressed(KEYS_S),input.KeyPressed(KEYS_D)
 	 
 	local IsRunning =  input.KeyPressed(KEYS_SHIFTKEY)
+	local asc = actor:GetScale()
+	asc = Vector(asc.z,asc.y,asc.x)
 	 
-	if W then result = result - Vector(0,0,1) end
-	if S then result = result + Vector(0,0,1) end
-	if D then result = result - Vector(1,0,0) end
-	if A then result = result + Vector(1,0,0) end
+	if W then result = result - Vector(0,0,1)*asc end
+	if S then result = result + Vector(0,0,1)*asc end
+	if D then result = result - Vector(1,0,0)*asc end
+	if A then result = result + Vector(1,0,0)*asc end
 	if actor:IsFlying() then 
 		if input.KeyPressed(KEYS_SPACE) then result = result + Vector(0,1,0) actor:Jump() end
 		if input.KeyPressed(KEYS_CONTROLKEY) then result = result - Vector(0,1,0) end
@@ -633,7 +635,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 			cam:TRotateAroundAxis(Right, (offy / -1000))
 			Right = cam:Right():Normalized()
 			
-			self.totalCamRotationY = (self.totalCamRotationY or 0) + (offx / -1000)
+			self.totalCamRotationY = (self.totalCamRotationY or 0) + (offx / -1000)*asc.z
 			local tcr = self.totalCamRotationY
 			 
 			cam:TRotateAroundAxis(inUp, (offx / -1000))
@@ -648,7 +650,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 				local trsl = actor:Turn(tcr)
 				if trsl then
 					self.totalCamRotationY = 0
-					cam:TRotateAroundAxis(Up, -tcr)
+					cam:TRotateAroundAxis(Up, -tcr*asc.z)
 					Right = cam:Right():Normalized()
 					--actor:TRotateAroundAxis(Up, tcr)  
 				elseif trsl == nil then
@@ -691,7 +693,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 					end
 					
 				else
-					cam:TRotateAroundAxis(inUp, -tcr2)
+					cam:TRotateAroundAxis(inUp, -tcr2*asc.z)
 					actor:TRotateAroundAxis(Up, tcr2) 
 					self.totalCamRotationY = self.totalCamRotationY - tcr2 
 					if  math.abs(tcr2)<0.001 then
@@ -971,7 +973,7 @@ function NEARESTUSEABLE(actor)
 	local ents = par:GetChildren()
 	local ndist = maxUseDistance*maxUseDistance
 	for k,v in pairs(ents) do
-		if v~=actor and v:HasFlag(FLAG_USEABLE) then 
+		if v~=actor and v:HasTag(TAG_USEABLE) then 
 			local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
 			if edist<ndist and edist>0 then
 				nearestent = v
@@ -1098,6 +1100,7 @@ function OBJ:HandleCameraMovement(actor)
 	local Up = actor:Up():Normalized()
 	local inUp = Vector(0,1,0)
 	local ascale = actor.scale or 1
+	local scax = actor:GetScale().x
 	
 	local mlock = self:MouseLocked()
 	local mhag = input.MouseIsHoveringAboveGui() or MOUSE_LOCKED
@@ -1122,7 +1125,7 @@ function OBJ:HandleCameraMovement(actor)
 		self.totalCamRotationY = sy
 	end
 	if not SHOWINV then
-		if not mhag and (controlled or not is_first_person) and (lmb or (actor.IsInVehicle and IsValidEnt(actor.vehicle) and not actor.vehicle:HasFlag(FLAG_ACTOR) and rmb)) then  
+		if not mhag and (controlled or not is_first_person) and (lmb or (actor.IsInVehicle and IsValidEnt(actor.vehicle) and not actor.vehicle:HasTag(TAG_ACTOR) and rmb)) then  
 			if not self.lms_active then
 				input.SetCursorHidden(true)
 				self.lms_active = true
@@ -1167,15 +1170,16 @@ function OBJ:HandleCameraMovement(actor)
 	Forward = cam:Forward():Normalized() / parent_sz 
 	Right = cam:Right():Normalized() / parent_sz
 	 
-	if controlled and not is_VR and actor.Alive and actor:Alive() and actor:HasFlag(FLAG_ACTOR) then 
+	if controlled and not is_VR and actor.Alive and actor:Alive() and actor:HasTag(TAG_ACTOR) then 
+		
 		if actor.directmove then
 			actor:SetEyeAngles( --pitch, yaw 
 				( (self.totalCamRotationX or 0) / 3.1415926 * 180),
-				(-(self.totalCamRotationY or 0) / 3.1415926 * 180)) 
+				(-(self.totalCamRotationY or 0) / 3.1415926 * 180)*scax) 
 		else
 			actor:SetEyeAngles( --pitch, yaw 
 				( (self.totalCamRotationX or 0) / 3.1415926 * 180),
-				(-(self.totalCamRotationY or 0 ) / 3.1415926 * 180 + (self.ctargetval or 0))) 
+				(-(self.totalCamRotationY or 0 ) / 3.1415926 * 180*scax + (self.ctargetval or 0))) 
 				 
 		end
 		
@@ -1192,16 +1196,18 @@ function OBJ:HandleCameraMovement(actor)
 			cam:SetPos( Up *fps_height* ascale  )
 		else
 			local pos = Vector(0,0,0)
+			local world = matrix.Identity()
 			local m = actor.model
 			if m then
 				local eyeatt = actor.eyeattachment  
-				if eyeatt and m:HasAttachment(eyeatt) then pos = m:GetAttachmentPos(eyeatt) 
-				elseif m:HasAttachment("eyes") then pos = m:GetAttachmentPos("eyes") 
-				elseif m:HasAttachment("head") then pos = m:GetAttachmentPos("head")   
-				elseif m:HasAttachment("muzzle") then pos = m:GetAttachmentPos("muzzle") end -- * parent_sz
+				if eyeatt and m:HasAttachment(eyeatt) then pos,world = m:GetAttachmentPos(eyeatt) 
+				elseif m:HasAttachment("eyes") then pos,world = m:GetAttachmentPos("eyes") 
+				elseif m:HasAttachment("head") then pos,world = m:GetAttachmentPos("head")   
+				elseif m:HasAttachment("muzzle") then pos,world = m:GetAttachmentPos("muzzle") end -- * parent_sz
 			end 
 			--cam:SetPos((pos - Forward * 2 * 0    +Vector(-0.4,0,0)  - Forward * self.camZoom) / parent_sz)
 			--DrawPoint(-10,actor,pos)
+			--cam:SetAng(matrix.Rotation(Vector(-90,0,0))*world*matrix.Rotation(Vector(0,180,0)))
 			cam:SetPos(( pos + Forward * 0.05 * ascale) )
 		end
 	else

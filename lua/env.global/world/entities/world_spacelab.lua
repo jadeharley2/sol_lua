@@ -84,7 +84,7 @@ function ENT:LoadSpawnpoint()
 	
 		if CLIENT then
 			local eshadow = ents.Create("test_shadowmap2")  
-			local star = labnode:GetParentWithFlag(FLAG_STAR)
+			local star = labnode:GetParentWithFlag(TAG_STAR)
 			eshadow.light = star
 			eshadow:SetParent(labnode) 
 			eshadow:Spawn() 

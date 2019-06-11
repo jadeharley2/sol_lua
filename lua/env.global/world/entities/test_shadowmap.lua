@@ -66,7 +66,7 @@ function ENT:UpdatePos()
 	local p = self:GetParent()
 	local cp = c:GetParent()
 	if cp and IsValidEnt(cp) then
-		while cp:HasFlag(FLAG_ACTOR) do
+		while cp:HasTag(TAG_ACTOR) do
 			cp = cp:GetParent()
 		end
 		if(cp~=p)then

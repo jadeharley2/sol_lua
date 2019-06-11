@@ -17,7 +17,7 @@ function OBJ:Init()
 	self.center = Vector(0,0,0)
 	self.zoom = 0.2
 	
-	local parentplanet = cam:GetParentWithFlag(FLAG_PLANET)
+	local parentplanet = cam:GetParentWithFlag(TAG_PLANET)
 	self.planet = parentplanet
 	if parentplanet then
 		cam:SetParent(parentplanet)

@@ -23,9 +23,9 @@ function ENT:Init()
 	self.storage = storage
 	self.isopened = false
 	self:SetSpaceEnabled(false)
-	self:AddFlag(FLAG_PHYSSIMULATED)
+	self:AddTag(TAG_PHYSSIMULATED)
 	 
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 
 	--phys:SetMass(10)  
 	

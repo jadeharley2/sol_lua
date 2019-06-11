@@ -158,7 +158,7 @@ function TOOL:Fire(dir)
 				local p1 = self.model:GetAttachmentPos("muzzle")
 				local p2 = self:ToLocal(parentphysnode,tr.Position)
 				--self:CreateLaser(p1,p2,10,0.1)
-				if tr.Entity and tr.Entity:HasFlag(FLAG_PHYSSIMULATED) then
+				if tr.Entity and tr.Entity:HasTag(TAG_PHYSSIMULATED) then
 					self:PGPick(tr.Entity)
 				end
 			end

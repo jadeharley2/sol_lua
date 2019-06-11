@@ -10,8 +10,8 @@ daycycle.SetDusk = function() daycycle.SetLocalTime(18) end
   
 daycycle.SetLocalTime = function(time,transition)
 	local caller = GetCamera()
-	local planetsurf = caller:GetParentWithFlag(FLAG_PLANET_SURFACE)
-	local star = caller:GetParentWithFlag(FLAG_STAR)
+	local planetsurf = caller:GetParentWithFlag(TAG_PLANET_SURFACE)
+	local star = caller:GetParentWithFlag(TAG_STAR)
 	if planetsurf and star then  
 		local aa = daycycle.GetLocalSunAngle(caller,planetsurf,star) 
 		local conr = planetsurf:GetComponent(CTYPE_CONSTROT)
@@ -53,8 +53,8 @@ daycycle.GetLocalSunAngle = function(ply,surface,star)
 end
 daycycle.GetLocalTime = function()
 	local caller = GetCamera()
-	local planetsurf = caller:GetParentWithFlag(FLAG_PLANET_SURFACE)
-	local star = caller:GetParentWithFlag(FLAG_STAR)
+	local planetsurf = caller:GetParentWithFlag(TAG_PLANET_SURFACE)
+	local star = caller:GetParentWithFlag(TAG_STAR)
 	if planetsurf and star then  
 		local aa = daycycle.GetLocalSunAngle(caller,planetsurf,star)*(12/3.1415926)+12--24h
 		local hours = math.floor(aa)

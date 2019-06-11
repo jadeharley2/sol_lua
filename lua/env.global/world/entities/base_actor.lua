@@ -61,7 +61,7 @@ DeclareEnumValue("event","SET_AI",					85011)
 
 
 function ENT:Init()  
-	self:AddFlag(FLAG_ACTOR)
+	self:AddTag(TAG_ACTOR)
 	local phys = self:AddComponent(CTYPE_PHYSACTOR)  
 	local model = self:AddComponent(CTYPE_MODEL)  
 	local storage = self:AddComponent(CTYPE_STORAGE)  
@@ -84,7 +84,7 @@ function ENT:Init()
 	self:SetParameter(VARTYPE_HEALTH,100)
  
 	
-	self:AddFlag(FLAG_PHYSSIMULATED)
+	self:AddTag(TAG_PHYSSIMULATED)
 	
 	self.tmanager = TaskManager(self)
 	
@@ -800,7 +800,7 @@ end
 function ENT:Config(data,species,variation)
 
 	self:RemoveEventListener(EVENT_USE,"use_event")
-	self:RemoveFlag(FLAG_USEABLE) 
+	self:RemoveTag(TAG_USEABLE) 
 	local phys = self.phys
 	if species then
 		if data.bodyparts then
@@ -861,7 +861,7 @@ function ENT:Config(data,species,variation)
 				self:AddEventListener(EVENT_USE,"use_event",function(self,user) 
 					user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
 				end)
-				self:AddFlag(FLAG_USEABLE) 
+				self:AddTag(TAG_USEABLE) 
 			end
 		end
 	end
@@ -944,20 +944,22 @@ function ENT:Turn(ang)
 		MsgN("TURN",ang)
 		local graph = self.graph
 			--graph.debug = true
-		if graph and (ang>0) then  
-			if graph:Call("turn_l") then 
-				local Up = self:Up():Normalized()
-				self:TRotateAroundAxis(Up, ang) 
-				return true  
+		if graph then
+			if (ang*self:GetScale().x>0) then  
+				if graph:Call("turn_l") then 
+					local Up = self:Up():Normalized()
+					self:TRotateAroundAxis(Up, ang) 
+					return true  
+				end
+				--self:PlayAnimation("turn_l","idle",true) 
+			else 
+				if  graph:Call("turn_r") then
+					local Up = self:Up():Normalized()
+					self:TRotateAroundAxis(Up, ang) 
+					return true
+				end
+				--self:PlayAnimation("turn_r","idle",true) 
 			end
-			--self:PlayAnimation("turn_l","idle",true) 
-		else 
-			if  graph:Call("turn_r") then
-				local Up = self:Up():Normalized()
-				self:TRotateAroundAxis(Up, ang) 
-				return true
-			end
-			--self:PlayAnimation("turn_r","idle",true) 
 		end
 	else 
 		return false
@@ -2008,7 +2010,7 @@ function ENT:PickupNearest()
 			local nearestent = false
 			local ndist = maxPickupDistance*maxPickupDistance
 			for k,v in pairs(entsc) do
-				if v~=self and v:HasFlag(FLAG_STOREABLE) then 
+				if v~=self and v:HasTag(TAG_STOREABLE) then 
 					local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
 					if edist<ndist and edist>0 then
 						nearestent = v

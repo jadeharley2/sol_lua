@@ -294,7 +294,7 @@ function ENT:LoadData()
 		self.storage = storage
 		self.isopened = false 
 		self.usetype = "open container"
-		self:AddFlag(FLAG_USEABLE)
+		self:AddTag(TAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ContainerUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
 
@@ -347,14 +347,14 @@ function ENT:LoadData()
 	end 
 	if j.button then
 		self.usetype = "press button"
-		self:AddFlag(FLAG_USEABLE)
+		self:AddTag(TAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ButtonUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
 		local wio = self:AddComponent(CTYPE_WIREIO)
 		wio:AddOutput("out")
 	end
 	if tags.item then
-		self:AddFlag(FLAG_STOREABLE) 
+		self:AddTag(TAG_STOREABLE) 
 	end
 	if j.replacematerial then
 		local rmodel = self.model

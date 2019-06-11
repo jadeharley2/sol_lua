@@ -135,12 +135,12 @@ function SpawnLift(ent,seed,network,model)
 				local dl = {}
 				if v.d.a then 
 					local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
-					door1:RemoveFlag(FLAG_USEABLE)
+					door1:RemoveTag(TAG_USEABLE)
 					dl[1] = door1
 				end
 				if v.d.b then 
 					local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
-					door2:RemoveFlag(FLAG_USEABLE)
+					door2:RemoveTag(TAG_USEABLE)
 					dl[2] = door2
 				end
 				 
@@ -148,8 +148,8 @@ function SpawnLift(ent,seed,network,model)
 			else
 				local door1 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(-0.4,0,0)/sz,Vector(0,0,0),0.75,33232+seed+k)
 				local door2 =SpawnDoor("lift/liftdoors.stmd",ent,v.p+Vector(0.4,0,0)/sz,Vector(0,180,0),0.75,36232+seed+k)
-				door1:RemoveFlag(FLAG_USEABLE)
-				door2:RemoveFlag(FLAG_USEABLE)
+				door1:RemoveTag(TAG_USEABLE)
+				door2:RemoveTag(TAG_USEABLE)
 				v.d = {door1,door2}
 			end
 		end
@@ -190,14 +190,14 @@ function ENT:Init()
 			self:OpenMenu(user)
 		end
 	end)
-	self:AddFlag(FLAG_USEABLE)  
+	self:AddTag(TAG_USEABLE)  
 end
 function ENT:Spawn()
 	local mdl = self:GetParameter(VARTYPE_MODEL) or "lift/lift.stmd"
 	local door1 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,0,0),0.75,3190813)
 	local door2 =SpawnDoor("lift/liftdoors.stmd",self,Vector(0,0,0),Vector(0,180,0),0.75,3190814)
-	door1:RemoveFlag(FLAG_USEABLE)
-	door2:RemoveFlag(FLAG_USEABLE)
+	door1:RemoveTag(TAG_USEABLE)
+	door2:RemoveTag(TAG_USEABLE)
 	self.door1 = door1
 	self.door2 = door2
 	

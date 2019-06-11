@@ -278,7 +278,7 @@ function ENT:Spawn()
 		--self:AddEventListener(EVENT_USE,"use_event",function(self,user)
 		--	self:Convert(user)
 		--end)
-		--self:AddFlag(FLAG_USEABLE) 
+		--self:AddTag(TAG_USEABLE) 
 	end
 	
 	if system then self:AddVisitedSystem(system) end
@@ -473,7 +473,7 @@ end
 function ENT:LoadCelestialMap(celestial)
 	self:UnloadMap()
 	self.state = "celestial"
-	self.dataaa  = self:GetCelestialData(celestial.ref or self:GetParentWithFlag(FLAG_PLANET))
+	self.dataaa  = self:GetCelestialData(celestial.ref or self:GetParentWithFlag(TAG_PLANET))
 	
 	self:LoadMap(self.dataaa)
 end
@@ -529,7 +529,7 @@ function ENT:DataFromRealSystem(ship,system)
 	local data = { objects = {} }
 	local star = system:GetChildren()[1]
 	for k,v in pairs(system:GetChildren()) do
-		if v:HasFlag(FLAG_STAR) then
+		if v:HasTag(TAG_STAR) then
 			star = v
 		end
 	end

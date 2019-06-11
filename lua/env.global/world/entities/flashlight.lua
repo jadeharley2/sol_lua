@@ -1,7 +1,7 @@
 
 function ENT:Init() 
 	self:SetSpaceEnabled(false)
-	self:AddFlag(FLAG_USEABLE) 
+	self:AddTag(TAG_USEABLE) 
 end
  
 function ENT:Spawn() 

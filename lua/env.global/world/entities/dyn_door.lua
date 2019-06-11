@@ -124,7 +124,7 @@ function ENT:SetModel(mdl,scale)
 	
 	self:LoadGraph()
 	 
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	 
 	self:CopyAng(self)
 	model:ForceUpdate()

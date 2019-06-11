@@ -14,7 +14,7 @@ function ability:Begin(source,target)
 		if tr and tr.Hit then 
 			local pr = tr.Node
 			local sz = pr:GetSizepower() 
-			local nearest,dist = GetNearestNode(tr.Node,tr.Position,FLAG_ACTOR)
+			local nearest,dist = GetNearestNode(tr.Node,tr.Position,TAG_ACTOR)
 			MsgN("nearest: ",nearest,pr)
 			--SpawnExplosion(pr,tr.Position)
 			if nearest and dist*sz<1 and nearest ~= caster then

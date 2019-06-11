@@ -171,9 +171,9 @@ function ai:OnInit()
 	self:AddReaction("aa-1",CND_ONCHAT,ACT_SAY,{msg={"киндред","kindred"},say="что?"})
 	
 	local e = self.ent
-	e:AddFlag(FLAG_USEABLE)
-	e:AddFlag(FLAG_NPC)
-	e:RemoveFlag(FLAG_PLAYER)
+	e:AddTag(TAG_USEABLE)
+	e:AddTag(TAG_NPC)
+	e:RemoveTag(TAG_PLAYER)
 	local char = e:GetParameter(VARTYPE_CHARACTER) or ""
 	local cpath, cname = self.cname or  forms.GetForm("character",char)-- json.Read("forms/characters/"..char..".json")
 	self.cname = cname

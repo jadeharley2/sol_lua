@@ -1,16 +1,16 @@
 
 
 
-local flaginfo = table.KVSwitch(debug.GetAPIInfo('FLAG_') or {})
+local taginfo = table.KVSwitch(debug.GetAPIInfo('TAG_') or {})
 local fntemp = {}
-for k,v in pairs(flaginfo) do 
+for k,v in pairs(taginfo) do 
 	local nk = tonumber(k)
-	flaginfo[k] = nil
+	taginfo[k] = nil
 	if nk~=nil then
 		fntemp[nk] = v
 	end
 end
-flaginfo = fntemp
+taginfo = fntemp 
 
 function PANEL:Init() 
 	self:SetColor(Vector(0,0,0))
@@ -95,7 +95,7 @@ function PANEL:UpdateCnodes(root)
 
 	for k,v in SortedPairs(chp) do 
 		if v then
-			local hide = (v.editor and v.editor.hide) or v:HasFlag(320230)
+			local hide = (v.editor and v.editor.hide) or v:HasTag(320230)
 			if not hide then
 				local onclick = function(b) 
 					local ct = CurTime()
@@ -166,7 +166,7 @@ function PANEL:SelectNode(node)
 				subs = {
 					{ class="bgroup", name = "entbase", Title="Ent Base"},
 					{ class="bgroup", name = "luabase", Title="Lua Base"},
-					{ class="bgroup", name = "flags", Title="Flags"},
+					{ class="bgroup", name = "tags", Title="Tags"},
 					{ class="bgroup", name = "com", Title="Components" }
 				}
 			},peditor,style,peditor)
@@ -183,11 +183,11 @@ function PANEL:SelectNode(node)
 			self:ConstructParams(node,self.ent_meta_base,peditor.entbase.contents,node)
 		end
 		 
-		local contents = peditor.flags.contents
-		contents.selectNewFlag = function(s) 
+		local contents = peditor.tags.contents
+		contents.selectNewTag = function(s) 
 			if s.key then
-				node:AddFlag(s.key)
-				contents.populateFlags()
+				node:AddTag(s.key)
+				contents.populateTags()
 			else
 				contents.plus:SetVisible(true)
 				for k,v in pairs(contents.btns) do
@@ -196,13 +196,13 @@ function PANEL:SelectNode(node)
 			end
 			self:UpdateLayout()
 		end
-		contents.addFlag = function(s)
-			local knownFlags = flaginfo
+		contents.addTag = function(s)
+			local knownTags = taginfo
 			local btns = {}
 			contents.plus = s
 			s:SetVisible(false)
-			for k,v in SortedPairs(knownFlags) do
-				if not node:HasFlag(k) then
+			for k,v in SortedPairs(knownTags) do
+				if not node:HasTag(k) then
 					local b = gui.FromTable({ type = "button",
 						dock=DOCK_TOP,
 						size = {20,textsize},
@@ -210,7 +210,7 @@ function PANEL:SelectNode(node)
 						ColorAuto = Vector(0.5,0.7,0.5), 
 						text = '['..k..'] '..v, 
 						key = k,
-						OnClick = contents.selectNewFlag
+						OnClick = contents.selectNewTag
 					},nil,style)
 					btns[k] = b
 					contents:Add(b)  
@@ -223,7 +223,7 @@ function PANEL:SelectNode(node)
 				ColorAuto = Vector(0.5,0.7,0.5), 
 				textalignment = ALIGN_CENTER,
 				text = 'CANCEL', 
-				OnClick = contents.selectNewFlag
+				OnClick = contents.selectNewTag
 			},nil,style)
 			btns['cncl'] = b
 			contents:Add(b)  
@@ -232,21 +232,21 @@ function PANEL:SelectNode(node)
 			contents.btns = btns
 			self:UpdateLayout()
 		end
-		contents.populateFlags = function()
+		contents.populateTags = function()
 			contents:Clear()
-			local cflags = node:GetFlags()
-			for k,v in SortedPairs(cflags) do
+			local cTags = node:GetTags()
+			for k,v in SortedPairs(cTags) do
 				contents:Add(gui.FromTable({
 					size = {20,textsize},
 					dock = DOCK_TOP,
-					text = '['..tostring(v)..'] '..(flaginfo[v] or 'unknown flag'),
+					text = '['..tostring(v)..'] '..(taginfo[v] or 'unknown tag'),
 					margin = {5,2,0,0},
 					color = {0.1,0.1,0.1},
 					textcolor = {1,1,1},
 					subs = {
 						{ class = "btitle", text = "x", 
 							node = node, tag = v,
-							OnClick =  function(s) s.node:RemoveFlag(v) contents.populateFlags() self:UpdateLayout()  end
+							OnClick =  function(s) s.node:RemoveTag(v) contents.populateTags() self:UpdateLayout()  end
 						}
 					}
 				},nil,style))  
@@ -259,10 +259,10 @@ function PANEL:SelectNode(node)
 				textalignment = ALIGN_CENTER,
 				text = "+",
 				node = node,
-				OnClick = contents.addFlag
+				OnClick = contents.addTag
 			},nil,style))  
 		end
-		contents.populateFlags()
+		contents.populateTags()
 
 		local con_contents = peditor.com.contents
 		for k,v in pairs(node:GetComponents()) do
@@ -557,7 +557,7 @@ PANEL.ent_meta_base = {
 		properties = { 
 			name = {text = "name",type="parameter",valtype="string",key=VARTYPE_NAME}, 
 			seed = {text = "seed",type="parameter",valtype="number",key=VARTYPE_SEED}, 
-			--flags = {text = "flags",type="flags",action = function(ent)   end},
+			
 			position = {text = "position",type="parameter",valtype="vector",
 				apply = function(n,u,k,v) n:SetPos(v) end,
 				get = function(n,u,k) 

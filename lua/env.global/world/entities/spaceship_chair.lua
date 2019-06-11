@@ -47,7 +47,7 @@ function ENT:Spawn(c)
 	--self:SetUpdating(true)
 	self:SetSpaceEnabled(false) 
 	
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	
 end
 

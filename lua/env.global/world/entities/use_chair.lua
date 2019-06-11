@@ -34,7 +34,7 @@ function ENT:Load()
 	else
 		MsgN("no model specified for static model at spawn time")
 	end
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 end
 function ENT:Spawn(c)  
   
@@ -49,7 +49,7 @@ function ENT:Spawn(c)
 	else
 		MsgN("no model specified for static model at spawn time")
 	end
-	self:AddFlag(FLAG_USEABLE)
+	self:AddTag(TAG_USEABLE)
 	
 end
  
@@ -106,7 +106,7 @@ ENT._typeevents = {
 		else
 			local oump = self.mountpoints[1]
 			if oump then 
-				if oump.ent:HasFlag(FLAG_USEABLE) then
+				if oump.ent:HasTag(TAG_USEABLE) then
 					oump.ent:SendEvent(EVENT_USE,user)
 				end
 			end

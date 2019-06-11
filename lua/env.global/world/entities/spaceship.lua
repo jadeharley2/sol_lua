@@ -38,7 +38,7 @@ function CreateLight(ship, pos, color, vel)
 	lighttest.phys = phys
 	
 	lighttest:SetPos(pos) 
-	lighttest:AddFlag(FLAG_STOREABLE)
+	lighttest:AddTag(TAG_STOREABLE)
 	phys:ApplyImpulse(vel or Vector(0,4,40))
 	return lighttest
 end 
@@ -732,7 +732,7 @@ function ENT:Think()
 		end
 		
 		if self.warpmode then
-			local planet = self:GetParentWithFlag(FLAG_PLANET) 
+			local planet = self:GetParentWithFlag(TAG_PLANET) 
 			 
 			if planet then
 				local dist = self:GetDistance(planet)
@@ -842,7 +842,7 @@ function ENT:Throttle(dir,warp_mode,ovrFwd)
 	local parent_sz = parent:GetSizepower()
 	
 	local maxspeed = 500000000 
-	local planet = self:GetParentWithFlag(FLAG_PLANET) 
+	local planet = self:GetParentWithFlag(TAG_PLANET) 
 	
 	--local vel = self.velocity_c:GetVelocity()--self.velocity
 	
@@ -1249,7 +1249,7 @@ function ENT:_HyperjumpTo(ship,coord)
 			if warpspeed>=1 then
 				local oldparent = self:GetParent()
 				self:SetParent(origin)
-				local oldsystem = ship:GetParentWithFlag(FLAG_STARSYSTEM)
+				local oldsystem = ship:GetParentWithFlag(TAG_STARSYSTEM)
 				if IsValidEnt(oldsystem) then
 					if (oldsystem:GetSeed()~=origin:GetSeed()) then  
 						oldsystem:Leave()
@@ -1260,7 +1260,7 @@ function ENT:_HyperjumpTo(ship,coord)
 
 				local star = false
 				for k,v in pairs(origin:GetChildren()) do
-					if v:HasFlag(FLAG_STAR) then
+					if v:HasTag(TAG_STAR) then
 						star = v
 					end
 				end
@@ -1418,7 +1418,7 @@ function ENT:DockLinkAirlocks(station)
 		airlock_left.d2:Close()  
 		airlock_left.d1:Open()
 	end)
-	activator_ent:AddFlag(FLAG_USEABLE) 
+	activator_ent:AddTag(TAG_USEABLE) 
 	activator_ent:Spawn()
 	airlock_left.copy = activator_ent
 	airlock_left:Open()

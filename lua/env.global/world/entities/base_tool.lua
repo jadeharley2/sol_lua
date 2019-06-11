@@ -49,10 +49,10 @@ function ENT:Spawn()
 	
 	 
 	
-	self:AddFlag(FLAG_USEABLE) 
-	self:AddFlag(FLAG_STOREABLE)
-	self:AddFlag(FLAG_WEAPON)
-	self:AddFlag(FLAG_PHYSSIMULATED)
+	self:AddTag(TAG_USEABLE) 
+	self:AddTag(TAG_STOREABLE)
+	self:AddTag(TAG_WEAPON)
+	self:AddTag(TAG_PHYSSIMULATED)
 	
 	self.phys:Enable()
 

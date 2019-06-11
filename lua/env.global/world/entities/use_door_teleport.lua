@@ -22,8 +22,8 @@ function ENT:Init()
 	self.model = model
 	self.phys = phys
 	self:SetSpaceEnabled(false)
-	self:AddFlag(FLAG_PHYSSIMULATED)
-	self:AddFlag(FLAG_USEABLE) 
+	self:AddTag(TAG_PHYSSIMULATED)
+	self:AddTag(TAG_USEABLE) 
 	
 
 	--phys:SetMass(10)  

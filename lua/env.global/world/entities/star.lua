@@ -6,12 +6,12 @@
 function ENT:Init()  
 	--local orbit = self:AddComponent(CTYPE_ORBIT)  
 	--self.orbit = orbit
-	self:AddFlag(FLAG_STAR)
+	self:AddTag(TAG_STAR)
 	self:SetSpaceEnabled(true,1)
 end
 
 function ENT:Spawn()
-	if self:HasFlag(FLAG_STAR) then
+	if self:HasTag(TAG_STAR) then
 		local r = self:GetParameter(VARTYPE_RADIUS) or self.radius
 		local surface = ents.Create("star_surface") 
 		surface:SetParent(self) 
