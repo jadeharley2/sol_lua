@@ -226,7 +226,7 @@ function OnStartup()
 	render.SetGroupMode(RENDERGROUP_CURRENTPLANET,RENDERMODE_BACKGROUND) 
 	render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	render.SetGroupMode(RENDERGROUP_LOCAL,RENDERMODE_ENABLED) 
-	
+	render.ClearShadowMaps()
 	
 	
 	cam:SetFOV(settings.GetNumber("engine.fov"))

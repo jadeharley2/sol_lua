@@ -44,6 +44,7 @@ function PANEL:SetTableType(type)
 end
 --PANEL:Clear() - clear all elements
 function PANEL:FromTable(tbl,parent,clickfn) 
+	--MsgN("from table",debug.traceback())
 	--PrintTable(tbl)
 	local isrootupdate = parent==nil
 
@@ -51,6 +52,12 @@ function PANEL:FromTable(tbl,parent,clickfn)
 	local clevel = parent.level + 1
 	local tabletype = self.tabletype or 1
 	--if parent then self:Clear() end
+
+	local pairsFn = pairs
+	if self.sortitems then
+		pairsFn = SortedPairs or pairsFn
+	end
+
 	local clickfn = clickfn or function(btn) self:ItemClick(btn) end
 	
 	for k,v in pairs(parent.subs or {}) do
@@ -58,7 +65,7 @@ function PANEL:FromTable(tbl,parent,clickfn)
 	end 
 	local subs = {}
 	if tabletype==1 then
-		for k,v in pairs(tbl) do
+		for k,v in pairsFn(tbl) do
 			local nod = self:AddItem(k,parent,v,clickfn)
 			nod.level = clevel
 			subs[#subs+1] = nod 
@@ -72,7 +79,7 @@ function PANEL:FromTable(tbl,parent,clickfn)
 			end
 		end
 	elseif tabletype == 3 then
-		for k,v in pairs(tbl) do 
+		for k,v in pairsFn(tbl) do 
 			if isnumber(k) then
 				local nod = self:AddItem(v,parent,nil,clickfn)
 				nod.level = clevel
@@ -93,6 +100,11 @@ function PANEL:FromTable(tbl,parent,clickfn)
 		self.root:SetPos(0,-sz.y+sz2.y) 
 	end
 end 
+function PANEL:SetTree(t)
+	--MsgN("d")
+	--PrintTable(t)
+	self:FromTable(t)
+end
 function PANEL:Collapse(node) 
 	if node.level and node.level>0 then
 		local totalcon = 0
@@ -143,9 +155,8 @@ function PANEL:AddItem(text,parent,value,clickfn)
 		new_text.OnClick = value.OnClick
 	else
 		new_text.OnClick = clickfn
-	end
-	
-	if vistbl and (tabletype~=1 or #value>1) and (tabletype ~= 2 or #value>1) then  
+	end 
+	if vistbl and (tabletype~=1 or table.count(value)>0) and (tabletype ~= 2 or #value>1) then  
 		expand = panel.Create("button")
 		--
 		
@@ -207,6 +218,15 @@ function PANEL:MouseLeave()
 end
 function PANEL:ItemClick(item)
 	if self.OnItemClick then
-		self:OnItemClick(item:GetParent())
+		self:OnItemClick(item:GetParent(),item)
 	end
+end
+function PANEL:ScrollToBottom()
+	self.grid:Scroll(9999999)
+end
+function PANEL:ScrollToTop()
+	self.grid:Scroll(-9999999)
+end
+function PANEL:Scroll(e)
+	self.grid:Scroll(e or 0)
 end

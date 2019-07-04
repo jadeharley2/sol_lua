@@ -131,7 +131,7 @@ behaviour.AddFunction("ecall",function(state,ent,to,tag)
 			args[k] = v  
 		end
 		args[1] = ent  
-		f(unpack(args))
+		pcall(f,unpack(args))
 	end 
 end) 
 behaviour.AddFunction("call",function(state,ent,to,tag)  

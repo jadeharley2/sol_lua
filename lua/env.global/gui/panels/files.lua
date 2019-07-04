@@ -8,7 +8,7 @@ local layout ={
 			dock = DOCK_TOP,
 			color = {0,0,0}, 
 			subs = { 
-				{type = "button", name = "pardir", text = "<-",
+				{type = "button", name = "pardir", texture = "textures/gui/panel_icons/left.png",--text = "<-",
 					size = {20,20},
 					dock = DOCK_LEFT
 				},
@@ -92,7 +92,7 @@ function PANEL:SetFormFS(formtype)
 		ud = table.MakeKVTree(u,'.')
 		local fs = {}
 		fs.GetDirectories = function(dir)
-			local ray = table.get(ud,dir,'/')
+			local ray = table.get(ud,dir,'/') or {}
 			local rez = {}
 			for k,v in pairs(ray) do
 				if(istable(v)) then 
@@ -102,7 +102,7 @@ function PANEL:SetFormFS(formtype)
 			return rez
 		end
 		fs.GetFiles = function(dir)
-			local ray = table.get(ud,dir,'/')
+			local ray = table.get(ud,dir,'/') or {}
 			local rez = {}
 			for k,v in pairs(ray) do
 				if(not istable(v)) then 

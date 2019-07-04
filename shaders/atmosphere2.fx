@@ -424,8 +424,10 @@ PS_OUT PS(PS_IN input) : SV_Target
 	}
 	else if(mode==10) // atm from below
 	{
-		float spTopDot =  saturate(pow(-dot(input.Normal,float3(0,1,0)),1000)); 
-		if(spTopDot>0.001)
+		//float spTopDot =  saturate(pow(-dot(input.Normal,float3(0,1,0) ),1000)); 
+		float sdt = dot(input.Normal,normalize(planetpos) );
+		float spTopDot =  saturate(pow(sdt+0.0001,1000)); 
+		if(spTopDot>0.001&&sdt>0) 
 		{
 			//float density = saturate((rheight-1.01)*100);
 			

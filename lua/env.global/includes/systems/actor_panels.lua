@@ -91,6 +91,9 @@ end
 function actor_panels.HasPanels()
     return #actor_panels.panels > 0
 end
+function actor_panels.FreePersistent() 
+    actor_panels.persistent = {}
+end
 
 
 actor_panels.__index = nil

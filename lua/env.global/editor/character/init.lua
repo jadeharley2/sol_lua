@@ -129,6 +129,7 @@ local test_options = {
 	},
 }
 chareditor.colorray =chareditor.colorray or {}
+chareditor.strings =chareditor.strings or {}
 function chareditor.SetPart(type,partinfo,key)
 	local char = chareditor.character
 	local partlist = char.spparts
@@ -154,9 +155,7 @@ function chareditor.SetPart(type,partinfo,key)
 			bp.model:SetMaterial(mat,mid-1)
 		end
 	end
-	if bp and partinfo.dynmaterial then 
-		chareditor.UpdateDynamicTexture(type,partinfo,chareditor.colorray) 
-	end
+	chareditor.UpdateDynamicTextures() 
 end
 function chareditor.SetPartColor(type,color) 
 	local char = chareditor.character
@@ -176,45 +175,120 @@ end
 function chareditor.UpdateDynamicTextures() 
 	local char = chareditor.character
 	local partlist = char.spparts
-	for k,v in pairs(test_options) do
+	local colors = chareditor.colorray 
+	local strings = chareditor.strings 
 
-		local bp= partlist[k] 
-		local pn = bp.partname 
-		if pn then
-			local partinfo = v[pn] 
-			if partinfo and partinfo.dynmaterial then 
-				chareditor.UpdateDynamicTexture(k,partinfo,chareditor.colorray) 
+	--for k,v in pairs(colors) do
+	--	MsgN("color:",k,v)
+	--end 
+
+	local E = chareditor.species
+	local mat_table = {}
+	local function getTable(mat)
+		local m = mat_table[mat] 
+		if m then
+			return m
+		else
+			m = E.materials[mat]
+			if m then
+				local t = {}
+				local vartable = {}
+				t.variables = vartable
+				if m.parent then 	
+					local pt = getTable(m.parent)
+					for k,v in pairs(pt.variables) do vartable[k] = v end
+					t.targets = pt.targets
+					t.slot = pt.slot
+					t.matid = pt.matid 
+				end  
+				if m.variables then 
+					for k,v in pairs(m.variables)  		do vartable[k] = v end 
+				end
+				t.targets = m.targets or t.targets
+				t.slot = m.slot or t.slot
+				t.matid = m.matid or t.matid
+				return t
+			else
+				return nil
+			end
+		end 
+	end
+	for k,v in pairs(E.materials) do
+		local t = getTable(k) 
+		if v.colorize then
+			for k2,v2 in pairs(v.colorize) do
+				t.variables[k2] = VectorJ( colors[v2] or Vector(1,1,1))
+			end
+		end
+		mat_table[k] = t -- { variables = vartable, targets = v.targets, slot = v.slot, matid = v.matid }
+	end
+
+	for k,v in pairs(mat_table) do  
+		local mat = NewMaterial(E.matdir, json.ToJson(v.variables)) 
+		v.mat = mat
+		if v.slot then 
+			if v.targets then
+				for target,data in pairs(v.targets) do
+					local size = data.size or {512,512}
+					local tab = {}
+					for k2,v2 in pairs(data.layers) do
+						local file = v2.file 
+						if v2.filekey then 
+							file = strings[v2.filekey] or file or "textures/debug/white.png"
+						end
+						tab[#tab+1] = {
+							texture = file,
+							color = VectorJ( colors[v2.tint] or Vector(1,1,1)),
+							size = {512,512}
+						}
+					end
+					local root = gui.FromTable({size = size, subs = tab})
+					RenderTexture(size[1],size[2],root,function(rtex)
+						SetMaterialProperty(mat,target,rtex) 
+						for k2,v2 in pairs(v.slot) do
+							partlist[v2].model:SetMaterial(mat,v.matid or 0)
+							MsgN("setmat",k,v2,v.matid or 0)
+						end 
+					end)  
+				end
+			else
+				for k,v in pairs(v.slot) do
+					partlist[v].model:SetMaterial(mat,v.matid or 0)
+					MsgN("setmat",k,v.matid or 0)
+				end 
 			end
 		end
 	end
-end
-function chareditor.UpdateDynamicTexture(type,partinfo,colorray) 
-	local char = chareditor.character
-	local partlist = char.spparts
-
-	local bp= partlist[type] 
-	local DM = partinfo.dynmaterial
-	if bp and DM then 
-		local tab = {}
-		for k,v in pairs(DM.texparts) do
-			tab[#tab+1] = {
-				texture = v.file,
-				color = VectorJ( colorray[v.color] or Vector(1,1,1)),
-				size = {512,512}
-			}
-		end
-		local root = gui.FromTable({size ={512,512}, subs = tab})
-		local mat = NewMaterial(DM.matdir, json.ToJson(DM.basematerial)) 
-		--root:Show()
- 
-		--debug.Delayed(2000,function()  root:Close() end)
-		RenderTexture(512,512,root,function(rtex)
-			SetMaterialProperty(mat,"g_MeshTexture",rtex) 
-			bp.model:SetMaterial(mat,DM.matid or 0)
-		end)   
-	end
 
 end
+-- OLD
+--function chareditor.UpdateDynamicTexture(type,partinfo,colorray) 
+--	local char = chareditor.character
+--	local partlist = char.spparts
+--
+--	local bp= partlist[type] 
+--	local DM = partinfo.dynmaterial
+--	if bp and DM then 
+--		local tab = {}
+--		for k,v in pairs(DM.texparts) do
+--			tab[#tab+1] = {
+--				texture = v.file,
+--				color = VectorJ( colorray[v.color] or Vector(1,1,1)),
+--				size = {512,512}
+--			}
+--		end
+--		local root = gui.FromTable({size ={512,512}, subs = tab})
+--		local mat = NewMaterial(DM.matdir, json.ToJson(DM.basematerial)) 
+--		--root:Show()
+-- 
+--		--debug.Delayed(2000,function()  root:Close() end)
+--		RenderTexture(512,512,root,function(rtex)
+--			SetMaterialProperty(mat,"g_MeshTexture",rtex) 
+--			bp.model:SetMaterial(mat,DM.matid or 0)
+--		end)   
+--	end
+--
+--end
 function chareditor.OpenGui()
 	chareditor.CloseGui() 
 	local layout = {type = "panel", 
@@ -228,31 +302,40 @@ function chareditor.OpenGui()
 				margin = {5,5,5,5}, 
 				color = {1,1,1},  
 			},
+			
+			{type = "panel", name ="race_group",
+				dock = DOCK_TOP,   
+				size = {20,20}, 
+				color = {0,0.3,0},
+				margin = {5,5,5,5}, 
+				autosize={false,true}
+			},
+
 			{type = "panel", name ="cat_group",
 				dock = DOCK_TOP,   
 				size = {20,20}, 
-				color = {1,1,1},  
+				color = {0,0.3,0},
 				margin = {5,5,5,5}, 
 				autosize={false,true}
 			},
 			{type = "panel", name ="partlist",
 				dock = DOCK_TOP,   
 				size = {20,20}, 
-				color = {1,1,1},  
+				color = {0,0.3,0},
 				margin = {5,5,5,5}, 
 				autosize={false,true}
 			},
 			{type = "panel", name ="param_group",
 				dock = DOCK_TOP,   
 				size = {20,20}, 
-				color = {0,0,0},  
+				color = {0,0.3,0},
 				margin = {5,5,5,5}, 
 				autosize={false,true}
 			}, 
 			{type = "panel", name ="global_param_group",
 				dock = DOCK_TOP,   
 				size = {20,20}, 
-				color = {0,0,0},  
+				color = {0,0.3,0},  
 				margin = {5,5,5,5},       
 				autosize={false,true}
 			},
@@ -279,40 +362,140 @@ function chareditor.OpenGui()
 			--	}
 			--},  
 		}
-	}
-	local nt = {} 
-	local p = gui.FromTable(layout,nil,{},nt) 
-	chareditor.panel = p 
-	local lstc = nt.partlist
+	} 
+	local p = gui.FromTable(layout,nil,{},chareditor) 
+	chareditor.panel = p  
 	MsgN("aaaa",p,nt)
 	PrintTable(nt)
-	local SelectPartItem = function(type,item,key) 
-		chareditor.SetPart(type,item,key)
 
-		nt.param_group:Clear()
-		if item.colorable then
-			local oncolorchange = function(s,c)
-				chareditor.SetPartColor(type,c)
-			end
-			local cp = gui.FromTable({
-				type = "color_param",
-				dock = DOCK_TOP,
-				text = "Part color",
-				OnPick = oncolorchange
-			})
-			local ptcolor = chareditor.GetPartColor(type)
-			cp:SetValue(ptcolor or Vector(1,1,1))
-			nt.param_group:Add(cp) 
-		end 
-
+	for k,v in pairs(forms.GetList('species')) do
+		local path,name,tags = forms.GetForm('species',k)
+		if table.HasValue(tags,'playable') then
+			chareditor.race_group:Add(gui.FromTable({ type="button",  -- class = "submenu", 
+				size = {20,20},
+				states = {
+					idle    = {color = {0,0,0}},
+					hover   = {color = {0.3,0.3,0.3}},
+					pressed = {color = {0.3,0.5,0.3}}, 
+				}, 
+				stat = "idle",
+				color = {0,0,0}, 
+				textcolor = {1,1,1},
+				text = name,
+				dock = DOCK_TOP,  
+				toggleable = true,
+				tag = k,
+				margin = {1,1,1,1}, 
+				OnClick = function(s) 
+					chareditor.SelectSpecies(s.tag)
+				end
+			}))  
+		end
 		p:UpdateLayout()
+	end 
+
+
+
+	local vsize = GetViewportSize()  
+	p:SetPos(vsize.x-300,0)
+	p:Show()  
+	p:UpdateLayout()
+end
+local selectOne = function(btn)
+	local par = btn:GetParent()
+	for k,v in pairs(par:GetChildren()) do if v~=btn then v:SetState("idle") end end 
+end
+function chareditor.SelectSpecies(type)
+	local data = forms.ReadForm('species.'..type)
+	
+	local lst = chareditor.cat_group
+	lst:Clear()
+	chareditor.global_param_group:Clear()  
+	
+	if data and data.editor then
+		local E = data.editor
+		chareditor.species = E
+		local char = chareditor.character
+		char:SetCharacter(E.base)
+		char:DisableGraphUpdate() 
+		char:SetEyeAngles(0,0,true) 
+		char.model:SetAnimation('idle')
+		chareditor.UpdateDynamicTextures()
+		
+		for k,v in pairs(E.parameters.group_parts) do
+			lst:Add(gui.FromTable({ type="button",  -- class = "submenu", 
+				size = {20,20},
+				states = {
+					idle    = {color = {0,0,0}},
+					hover   = {color = {0.3,0.3,0.3}},
+					pressed = {color = {0.3,0.5,0.3}}, 
+				}, 
+				stat = "idle",
+				color = {0,0,0}, 
+				textcolor = {1,1,1},
+				margin = {1,1,1,1}, 
+				text = v.text or k,
+				dock = DOCK_TOP,   
+				toggleable = true,
+				
+				tag = k,
+				OnClick = function(s) 
+					chareditor.SelectPartType(s.tag)
+					selectOne(s)
+				end
+			})) 
+		end 
+	
+		local oncolorchange = function(s,c)
+			chareditor.colorray[s.key] = c
+			chareditor.UpdateDynamicTextures()--type,item,colorpickray)
+		end
+		local onselectorchange = function(s,k,v)
+			MsgN(s.key,k,v)
+			chareditor.strings[s.key] = v
+			chareditor.UpdateDynamicTextures()--type,item,colorpickray)
+		end
+		for k,v in SortedPairs(E.parameters.group_colors) do
+			if v.type=='color' then
+				local cp = gui.FromTable({
+					type = "color_param",
+					dock = DOCK_TOP,
+					key = k,
+					margin = {1,1,1,1}, 
+					OnPick = oncolorchange
+				})
+				--local cp = gui.FromTable(button_c)
+				cp:SetText(v.text) 
+				cp.OnPick = oncolorchange
+				cp:SetValue(chareditor.colorray[k] or JVector(v.default) or Vector(1,1,1))
+				chareditor.global_param_group:Add(cp)  
+			elseif v.type=='selector' then
+				local cp = gui.FromTable({
+					type = "selector",
+					dock = DOCK_TOP,
+					key = k,
+					margin = {1,1,1,1}, 
+					OnPick = onselectorchange
+				}) 
+				cp:SetText(v.text) 
+				cp.OnSelect = onselectorchange
+				cp:SetVariants(v.variants)
+				cp:SetValue(chareditor.strings[k] or v.default or "")
+				chareditor.global_param_group:Add(cp)  
+			end
+		end  
 	end
-	local SelectPartType = function(type)
-		lstc:Clear()
-		nt.param_group:Clear()
-		local typeinfo = test_options[type]
-		for k,v in pairs(typeinfo) do
-			lstc:Add(gui.FromTable({ type="button",  -- class = "submenu", 
+	chareditor.panel:UpdateLayout()
+end
+function chareditor.SelectPartType(type)
+	chareditor.partlist:Clear()
+	chareditor.param_group:Clear()
+	local E = chareditor.species
+	local typeinfo = E.parameters.group_parts[type]
+
+	if typeinfo.variants then
+		for k,v in pairs(typeinfo.variants) do
+			chareditor.partlist:Add(gui.FromTable({ type="button",  -- class = "submenu", 
 				size = {20,20},
 				states = {
 					idle    = {color = {0,0,0}},
@@ -322,70 +505,39 @@ function chareditor.OpenGui()
 				stat = "idle",
 				color = {0,0,0}, 
 				textcolor = {1,1,1},
-				text = v.text,
+				text = v.text or k,
 				dock = DOCK_TOP,  
 				tag = {type,v,k},
+				margin = {1,1,1,1}, 
 				OnClick = function(s) 
-					SelectPartItem(s.tag[1],s.tag[2],s.tag[3])
+					chareditor.SelectPartItem(s.tag[1],s.tag[2],s.tag[3])
 				end
 			}))  
 		end  
+	end
+	chareditor.panel:UpdateLayout()
+end
+function chareditor.SelectPartItem(type,item,key) 
+	chareditor.SetPart(type,item,key)
 
-		p:UpdateLayout()
-	end
-
-	local lst = nt.cat_group
-	local selectOne = function(btn)
-		for k,v in pairs(lst:GetChildren()) do if v~=btn then v:SetState("idle") end end 
-	end
-	for k,v in pairs(test_options) do
-		lst:Add(gui.FromTable({ type="button",  -- class = "submenu", 
-			size = {20,20},
-			states = {
-				idle    = {color = {0,0,0}},
-				hover   = {color = {0.3,0.3,0.3}},
-				pressed = {color = {0.3,0.5,0.3}}, 
-			}, 
-			stat = "idle",
-			color = {0,0,0}, 
-			textcolor = {1,1,1},
-			text = k,
-			dock = DOCK_TOP,   
-			toggleable = true,
-			
-			tag = k,
-			OnClick = function(s) 
-				SelectPartType(s.tag)
-				selectOne(s)
-			end
-		}))  
-	end
- 
-	nt.global_param_group:Clear()  
-	local oncolorchange = function(s,c)
-		chareditor.colorray[s.key] = c
-		chareditor.UpdateDynamicTextures()--type,item,colorpickray)
-	end
-	for k,v in pairs(global_color_options.keys) do
+	chareditor.param_group:Clear()
+	if item.colorable then
+		local oncolorchange = function(s,c)
+			chareditor.SetPartColor(type,c)
+		end
 		local cp = gui.FromTable({
 			type = "color_param",
 			dock = DOCK_TOP,
-			key = v,
+			text = "Part color",
 			OnPick = oncolorchange
 		})
-		--local cp = gui.FromTable(button_c)
-		cp:SetText(v)
-		cp.key = v
-		cp.OnPick = oncolorchange
-		cp:SetValue(chareditor.colorray[v] or Vector(1,1,1))
-		nt.global_param_group:Add(cp)  
-	end  
+		local ptcolor = chareditor.GetPartColor(type)
+		cp:SetValue(ptcolor or Vector(1,1,1))
+		chareditor.param_group:Add(cp) 
+	end 
 
-	local vsize = GetViewportSize()  
-	p:SetPos(vsize.x-300,0)
-	p:Show()  
-	p:UpdateLayout()
-end
+	chareditor.panel:UpdateLayout()
+end 
 
 function chareditor.Enable()
 	if not chareditor.world  then chareditor.SpawnWorld() end

@@ -463,7 +463,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     //eLIGHT = 1;
 //return float4(pos,1);
     float dotNL = saturate(dot(N,L));
-    if (applyShadow) 
+    if ( applyShadow) 
     {  
 		float dotNLS = min(dotNL,0.99);
         LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNLS));//*dotNL; 

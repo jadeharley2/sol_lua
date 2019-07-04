@@ -1,0 +1,343 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+	},
+	"operations" : [ 
+		
+		{ "type" : "obj","out" : {
+				"white":"city",
+				"white.001":"city",
+				"road":"roads",
+				"subroad":"subroads",
+				"green":"grass",
+				"sand":"sand",
+				"blue":"water",
+				"facade":"fac1",
+				"facade2f":"fac2",
+				"frame":"fac3",
+				"frgrid":"frgrid",
+				"finsert":"finsert"
+			},  
+			"mode":"materials", 
+			"file": "map.obj"
+		},         
+		
+		{"type": "material","in": ["city"],
+			"material":"rock01",
+			"smooth":false
+		},    
+		{"type": "material","in": ["roads"],
+			"material":"concrete06",
+			"smooth":false
+		},    
+		{"type": "material","in": ["subroads"],
+			"material":"concrete06",
+			"smooth":false
+		},    
+		{"type": "material","in": ["grass"],
+			"material":"grass01",
+			"smooth":true
+		},    
+		{"type": "material","in": ["sand"],
+			"material":"sand01",
+			"smooth":true
+		},     
+		{"type": "material","in": ["water"],
+			"material":"water01",
+			"smooth":true
+		}, 
+		{ "type" : "uvmap", "in":["grass","sand","city","roads","subroads"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},     
+		//{"type":"tesselate","from":["grass"] ,"out" :"grass", 
+		//	"joinall":true,
+		//	"times" : 1  ,    
+		//	"mode"  : "smooth",
+		//	"amount":1
+		//},   
+		//{"type":"inset", "from":"roads","out": "roads",
+		//	"amount": 1,
+		//	"extrude": 5
+		//}
+
+
+
+		//////////////////////////////// ROADS 
+
+
+		{"type":"tilesplit", "from":"roads","out": ["a","b","c","d"], 
+		},
+		{"type": "material","in": ["a"],
+			"material":"redarrow", 
+		}, 
+		{"type": "material","in": ["b"],
+			"material":"greenarrow", 
+		}, 
+		{"type": "material","in": ["c"],
+			"material":"bluearrow", 
+		}, 
+		{"type": "material","in": ["d"],
+			"material":"yellowarrow", 
+		},     
+		{ "type" : "uvmap", "in":["a","b","c","d"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"mode":"face"
+		},     
+
+		{"type": "split", "from": "b","out":["b1","brd"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"second"
+		},
+		{"type":"inset", "from":"brd","out": ["rd",["*","*","rsd","*"]],
+			"amount": 0,
+			"extrude": "-$rbheight"
+		},
+
+
+		{"type": "split", "from": "c","out":["c1","crd1"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"second"
+		},
+		{"type": "split", "from": "c1","out":["c1","crd2"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type": "split", "from": "crd1","out":["crd11","crd12"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type":"inset", "from":"crd12","out": ["rd","*"],
+			"amount": 0,
+			"extrude": "-$rbheight"
+		},
+		{"type":"inset", "from":"crd11","out": ["rd",["*","rsd","*","*"]],
+			"amount": 0,
+			"extrude": "-$rbheight"
+		},
+		{"type":"inset", "from":"crd2","out": ["rd",["*","*","rsd","*"]],
+			"amount": 0,
+			"extrude": "-$rbheight"
+		},
+
+		
+		{"type": "split", "from": "a","out":["a1","a2"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"second"
+		},
+		{"type": "split", "from": "a2","out":["a1","ard"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type":"inset", "from":"ard","out": ["rd",["*","rsd","rsd","*"]],
+			"amount": 0,
+			"extrude":  "-$rbheight"
+		},
+
+		{"type": "material","in": ["rd"],
+			"material":"black", 
+		},  
+
+		{"type": "material","in": ["a1","a2","b1","b2","c1","c2","rsd"],
+			"material":"concrete06",
+			"smooth":false
+		},    
+
+		//////////////////////////////// FACADE 
+		{"type": "frotate","in": "fac*", 
+			"align":[0,1,0]
+		},
+		{"type": "material","in": "fac*",
+			"material":"rock01",
+			"smooth":false
+		},    
+		{ "type" : "uvmap", "in":"fac*",
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"mode":"face"
+		},        
+		{"type": "split", "from": "fac*","out":["fbr","%","fbr"],
+			"size" :[2,0,2],        
+			"stype":"constant",  
+			"side":"second"
+		},      
+		{"type": "split", "from": "fac*","out":["fbr","%","fbr"],
+			"size" :[0.1,0,1],        
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type":"inset", "from":"fac*","out": ["%","fcs"],
+			"amount": 0.5,
+			"extrude":  -0.5, 
+		}, 
+
+		{"type":"foreach","from": "fac1","out": ["fpr","foth"],"var":"f",
+			"operations":[
+				{"type": "split", "from": "f","out":["f1","foth","foth","foth","foth","foth"],
+					"steps" :"@($l/4)",        
+					"stype":"constant",  
+					"side":"fourth" 
+				},
+
+				{"type": "random","from": "f1","var":"f1","out": ["foth","fenter","foth"],
+					"variants":[
+						[
+							{"type": "split", "from": "f1","out":["foth","fenter","foth"],
+								"size":[0,4,0],       
+								"stype":"constant",  
+								"side":"first"
+							},
+						], 
+						[
+							{"type": "split", "from": "f1","out":["fenter","foth"],
+								"size":[4,0],       
+								"stype":"constant",  
+								"side":"first"
+							},
+						], 
+						[
+							{"type": "split", "from": "f1","out":["foth","fenter"],
+								"size":[0,4],       
+								"stype":"constant",  
+								"side":"first"
+							},
+						], 
+					]
+				},
+
+				{"type":"inset", "from":"fenter","out": ["fe1","fpr"],
+					"amount": 0.2,
+					"extrude":  0, 
+				},
+				{"type":"inset", "from":"fe1","out": ["fe1","fpr"],
+					"amount": 0,
+					"extrude":  -0.2 
+				},
+				{"type":"inset", "from":"fe1","out": ["fe1","fpr"],
+					"amount": [1,1,0,1],
+					"extrude":  -0.2 
+				},
+				{"type":"inset", "from":"fe1","out": ["fpr","fpr"],
+					"amount": 0,
+					"extrude":  -0.2 
+				},
+			]
+		},
+		
+		{"type": "frotate","in": ["fac2"], 
+			"align":[0,1,0]
+		},
+		{"type": "split", "from": "fac2","out":"fac2l",
+			"steps" :"@($l/4)",        
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type": "union","from": "fac2l","out":"foth"},
+		{"type": "split", "from": "foth","out":"fpanels",
+			"steps" :"@($l/4)",        
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type": "random","from": "fpanels","var":"fpn","out": "fpr",
+			"variants":[
+				[
+					{"type":"inset", "from":"fpn","out": "fpr",
+						"amount": 1,
+						"extrude":  1,
+						"chamfer":1
+					},
+				],
+				[
+					{"type":"inset", "from":"fpn","out": "fpr",
+						"amount": 1,
+						"extrude":  -1,
+						"chamfer":1
+					},
+				],
+				[{"type":"union","from":"fpn","out":"fpr"}]
+			]
+		},
+		////FRGRID
+
+		
+		{"type": "frotate","in": "frgrid", 
+			"align":[0,1,0]
+		},
+		{"type": "material","in": ["frgrid","finsert"],
+			"material":"rock01",
+			"smooth":false
+		},    
+		{ "type" : "uvmap", "in": ["frgrid","finsert"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"mode":"face"
+		},        
+		{"type": "split", "from": "frgrid","out":["fbr","%","fbr"],
+			"size" :[1,0,1],        
+			"stype":"constant",  
+			"side":"first"
+		},  
+		{"type":"inset", "from":"frgrid","out": ["frgrid","other"],
+			"amount": 1,
+			"extrude":  -1, 
+		},
+		{"type": "split", "from": "frgrid","out":"frgrid",
+			"steps" :"@($l/8)",        
+			"stype":"constant",  
+			"side":"first"
+		},    
+		{"type": "split", "from": "frgrid","out":["fbr","%","fbr"],
+			"size" :[1,0,1],        
+			"stype":"constant",  
+			"side":"second"
+		},    
+		{"type": "split", "from": "frgrid","out":"frgrid",
+			"steps" :"@($l/16)",        
+			"stype":"constant",  
+			"side":"first"
+		}, 
+		{"type":"inset", "from":"frgrid","out": ["frgrid","other"],
+			"amount": 1,
+			"extrude":  0, 
+		},
+		{"type":"inset", "from":"frgrid","out": "frgrid",
+			"amount": 1,
+			"extrude":  -1, 
+		},
+
+		{"type":"inset", "from":"finsert","out": ["finsert","other"],
+			"amount": 1,
+			"extrude":  0, 
+		},
+		{"type":"inset", "from":"finsert","out": "finsert",
+			"amount": 1,
+			"extrude":  -1, 
+		},
+
+		
+	
+	]   
+} 

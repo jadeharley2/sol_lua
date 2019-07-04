@@ -326,7 +326,7 @@ function PANEL:Init()
 	--nodelayer:Add(TESTONLY)
 	 
 	
-	---[[
+	--[[
 	local TESTONLY = panel.Create("dockslot") 
 	TESTONLY:SetSize(vsize.x,vsize.y)
 	TESTONLY:SetPos(100,10000*0) 

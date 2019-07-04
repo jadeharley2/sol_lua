@@ -17,6 +17,7 @@ end
 
 table.Copy = deepcopy
 
+
 table.Random = function(t,rnd)
 	if #t == 0 then return nil end
 	if rnd then
@@ -34,29 +35,38 @@ table.RandomKey = function(t,rnd)
 	end
 	return table.Random(nt,rnd)
 end
+
+
+function T(t)
+	return setmetatable(t or {},table)
+end
+
+--x = 2
+--f(x,y){x} 
+
 table.Keys = function(t)
-	local nt = {}
+	local nt = T()
 	for k,v in pairs(t) do
 		nt[#nt+1] = k
 	end
 	return nt
 end
 table.Values = function(t)
-	local nt = {}
+	local nt = T()
 	for k,v in pairs(t) do
 		nt[#nt+1] = v
 	end
 	return nt
 end
 table.KVSwitch = function(t)
-	local nt = {}
+	local nt = T()
 	for k,v in pairs(t) do
 		nt[v] = k
 	end
 	return nt
 end
 table.Select = function(t,func,...)
-	local t2 ={}
+	local t2 = T()
 	if isstring(func) then  
 		for k,v in pairs(t) do
 			local f = v[func]
@@ -71,10 +81,34 @@ table.Select = function(t,func,...)
 	end
 	return t2
 end
+table.SelectKV = function(t,func,...)
+	local t2 = T()
+	if isstring(func) then  
+		for k,v in pairs(t) do
+			local f = v[func]
+			if f and isfunction(f) then
+				t2[k] = f(k,v,...) 
+			end
+		end
+	else
+		for k,v in pairs(t) do
+			t2[k] = func(k,v,...) 
+		end
+	end
+	return t2
+end
 table.Where = function(t,func,...)
-	local t2 ={} 
+	local t2 = T() 
 	for k,v in pairs(t) do
 		if func(k,v,...) then t2[#t2+1] = v end
+	end 
+	return t2
+end
+table.Map = function(t,func,...)
+	local t2 = T() 
+	for k,v in pairs(t) do
+		local nk,nv = func(k,v,...)
+		if nk~=nil and nv~=nil then t2[nk] = nv end
 	end 
 	return t2
 end
@@ -99,7 +133,7 @@ end
 
 --take @count@ elements from start
 table.Take = function(tab,count) 
-	local ntab = {} 
+	local ntab = T()
 	for k,v in pairs(tab) do 
 		if k>count then break end
 		ntab[k] = v 
@@ -108,9 +142,18 @@ table.Take = function(tab,count)
 end
 --skip @count@ elements from start
 table.Skip = function(tab,count) 
-	local ntab = {} 
+	local ntab = T()
 	for k,v in pairs(tab) do  
 		if k>count then ntab[k-count] = v end
 	end 
 	return ntab
 end
+
+table.__index = table
+
+
+
+--[short function declaration example]
+--local bla = _(v){v*v*v}
+--PrintTable(T({a=1,b=2,c=3}):Select(bla))  
+--PrintTable(T({a=1,b=2,c=3}):Select(_(v){v*v*v}))  

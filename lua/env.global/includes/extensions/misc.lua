@@ -23,7 +23,10 @@ function JPoint(jvec,default)
 	end
 end
 function VectorJ(vec)
-	return {vec.x,vec.y,vec.z}
+	if vec then
+		return {vec.x,vec.y,vec.z}
+	end
+	return {0,0,0} 
 end
 
 function Multicall(tab_obj,func,...)

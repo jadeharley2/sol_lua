@@ -22,3 +22,14 @@ end
 function math.mod(a,b)
 	return a - math.floor(a/b)*b
 end
+function math.sum(t)
+	local o = 0
+	for k,v in pairs(t) do o = o + v end
+	return o
+end
+function math.avg(t)
+	local o = 0
+	local c = 0
+	for k,v in pairs(t) do o = o + v   c = c + 1 end
+	return o/c
+end

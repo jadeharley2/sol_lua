@@ -142,6 +142,8 @@ function OBJ:UnInit()
 	end
 	
 	self:DestroyCharacterPanels(actor)
+	actor_panels.CloseAll()
+	actor_panels.FreePersistent() 
 	
 	local healthbar = self.healthbar
 	local infobar = self.infobar
@@ -175,15 +177,15 @@ function OBJ:KeyDown(key)
 	local aibusy = self:ActorIsBusy()
 	if not aibusy and actor:Alive() then
 		if actor.IsInVehicle then 
-			if (input.KeyPressed(KEYS_V)) then 
+			if (key == KEYS_V) then 
 				actor:SendEvent(EVENT_EXIT_VEHICLE) --SetVehicle(nil)
 			end
 		else
-			if (input.KeyPressed(KEYS_E)) then 
+			if (key == KEYS_E) then 
 				self:HandleUse(actor)
 			end
 			 
-			if (input.KeyPressed(KEYS_Q)) then  
+			if (key == KEYS_Q) then  
 				if actor_panels.HasPanels() then
 					actor_panels.CloseAll()
 				else
@@ -203,23 +205,23 @@ function OBJ:KeyDown(key)
 				--	MsgN(SHOWINV)
 				--end
 			end
-			if input.KeyPressed(KEYS_F) then
+			if key == KEYS_F then
 				self:HandlePickup(actor)
 			end
-			if input.KeyPressed(KEYS_TAB) then
+			if key == KEYS_TAB then
 				self.flightmode = not self.flightmode
 			end
 			
 			
-			if input.KeyPressed(KEYS_J) then
+			if key == KEYS_J then
 				actor:Alert()
 			end
-			if input.KeyPressed(KEYS_R) then
+			if key == KEYS_R then
 				--if actor:GetActiveWeapon() then
 					--actor:SendEvent(EVENT_TOOL_DROP)
 				--end
 			end
-			if input.KeyPressed(KEYS_SPACE) then actor:SendEvent(EVENT_ACTOR_JUMP) end
+			if key == KEYS_SPACE then actor:SendEvent(EVENT_ACTOR_JUMP) end
 		end 
 		
 		--if quickmenu then
@@ -240,21 +242,21 @@ function OBJ:KeyDown(key)
 		--	if (input.KeyPressed(KEYS_D0)) then quickmenu:Select(actor,10) end 
 		--end
 	end
-	if (input.KeyPressed(KEYS_F5)) then 
+	if (key == KEYS_F5) then 
 		local fc = settings.GetBool("server.nofreecam")
 		if not fc then
 			SetController("freecamera")
 		end
 	end
-	if (input.KeyPressed(KEYS_F6)) then 
-		SetController("starmap")
-	end
+	--if (key == KEYS_F6) then 
+	--	SetController("starmap")
+	--end
 			 
-	if input.KeyPressed(KEYS_C) then
+	if key == KEYS_C then
 		self:ToggleMouse()
 	end
 		 
-	if input.KeyPressed(KEYS_Z) then
+	if key == KEYS_Z then
 		swap()
 	end
 

@@ -1,0 +1,23 @@
+{
+    "title" : "Test quest",
+    "tags" :[],
+
+    "references":{
+        "ara" : { "type":"node", "luatype":"base_actor", "filter":{"function":"GetCharacter","returns":"ara"}}
+    },
+    "stages" :{
+        "start":{
+            "dialogue":{
+                "ara" : {
+                    "0":{"option":"hi","reaction":"hello"},
+                    "1":{"option":"how are you?","reaction":"im fine"},
+                    "2":{"option":"do you need something?","reaction":"i need a mug"},
+                },
+                "links": [
+                    {"from":["0"],"to":["1"]},
+                    {"from":["1"],"to":["2"]},
+                ]
+            }
+        }
+    }
+}

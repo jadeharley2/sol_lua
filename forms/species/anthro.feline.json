@@ -18,7 +18,9 @@
 	},  
 	"materials" : {}, 
 	"basematdir" : "models/species/anthro/materials/", 
+	"tags" : ["playable"],
 	"editor" : {
+		"base" : "anthro.feline_base",
 		"matdir":"models/species/anthro/texparts/",
 		"materials" : {
 			"basematerial" : {
@@ -37,45 +39,98 @@
 			"body_material" : {
 				"parent" : "basematerial",
 				"slot" :["torso_top","torso_bot","arm","hand","thigh","calf","foot","toe","neck"],
-				"layers" :[
-					{"file":"textures/debug/white.png", "tint":"color_body_1"},
-					{"file":"models/species/anthro/texparts/body_feline_l1.png", "tint":"color_body_2"},
-					{"file":"models/species/anthro/texparts/body_feline_l2.png", "tint":"color_body_3"}
-				]
+				"targets" :{
+					"g_MeshTexture" : {
+						"size" : [512,512],
+						"layers" :[
+							{"file":"textures/debug/white.png", "tint":"body_color_1"},
+							{"filekey" : "body_layer_1",  		"tint":"body_color_2"},
+							{"file":"models/species/anthro/texparts/body_feline_l2.png", "tint":"body_color_3"}
+						]
+					}
+				}
 			},
 			"head_material" : {
 				"parent" : "basematerial",
-				"slot" :["head"],
-				"layers" :[
-					{"file":"textures/debug/white.png", "tint":"color_body_1"},
-					{"file":"models/species/anthro/texparts/body_colors_l1.png", "tint":"color_body_2"},
-					{"file":"models/species/anthro/texparts/body_colors_l2.png", "tint":"color_body_3"},
-					{"file":"models/species/anthro/texparts/body_colors_l3.png", "tint":"color_body_4"}
-				]
+				"slot" :["head","tail"],
+				"targets" :{
+					"g_MeshTexture" : {
+						"size" : [512,512],
+						"layers" : [
+							{"file":"textures/debug/white.png", "tint":"body_color_1"},
+							{"file":"models/species/anthro/texparts/body_colors_l1.png", "tint":"body_color_2"},
+							{"file":"models/species/anthro/texparts/body_colors_l2.png", "tint":"body_color_3"},
+							{"file":"models/species/anthro/texparts/body_colors_l3.png", "tint":"body_color_4"}
+						]
+					}
+				}
 			},
-			"tail_material" : {
-				"parent" : "basematerial",
-				"slot" :["tail"],
-				"layers" :[
-				]
-			},
+			//"tail_material" : {
+			//	"parent" : "basematerial",
+			//	"slot" :["tail"],
+			//	"layers" :[
+			//	]
+			//},
 			"hair_material" : {
 				"parent" : "basematerial",
 				"slot" :["hair"],
-				"layers" :[
-				]
+				"colorize" : {
+					"tint" : "hair_color_1"
+				} 
 			},
-			"eye_material" : { }
-		},
+			"eye_base" : {
+				"variables" : {
+					"shader" :  "shader.eyes",
+					"g_MeshTexture" : "textures/debug/white.png",  
+					"g_IrisTexture" : "models/species/anthro/materials/iris.dds",   
+					"flipuv" : [-1.2,1.2],
+					"brightness":1,
+					"eyeScale":0.8,
+					"tint":[1,1,1]
+				}, 
+				//"colorize" : {
+				//	"tint" : "eye_color_3"
+				//},
+				"targets" :{
+					"g_IrisTexture" : {
+						"size" : [512,512],
+						"layers" :[
+							{"file":"models/species/anthro/texparts/iris_l1.png", "tint":"eye_color_1"},
+							{"file":"models/species/anthro/texparts/iris_l2.png", "tint":"eye_color_2"},
+						]
+					}
+				}
+			},
+			"eye_l" : { 
+				"parent" : "eye_base",
+				"slot" :["head"],
+				"variables" :{ "eyeId" : 0}, 
+				"matid" : 1,
+			},
+			"eye_r" : { 
+				"parent" : "eye_base",
+				"slot" :["head"],
+				"variables" :{ "eyeId" : 1},
+				"matid" : 2,
+			}
+		}, 
 		"parameters" :{
-			"group_parts":{
+			"group_parts":{ 
 				"hair":{ "text" : "Hair", "type":"part", "slot" : "hair", 
 					"default" : "hair_ara", 
+					"variants":{
+						"hair_ara":{ "text":"Type 1","part":"hair_ara"},
+						"hair_vikna":{ "text":"Type 2","part":"hair_vikna"},
+					}
 				},
 				"tail":{ "text" : "Tail", "type":"part", "slot" : "tail", 
 					"default" : "tail_ara", 
+					"variants":{
+						"tail_ara":{ "text":"Type 1","part":"tail_ara"},
+						"tail_vikna":{ "text":"Type 2","part":"tail_vikna"},
+					}, 
 				}
-			},
+			}, 
 			"group_colors":{
 				"body_color_1" :{"text" : "Body color 1","type":"color","default":[0.2,0.2,0.2]},
 				"body_color_2" :{"text" : "Body color 2","type":"color","default":[0.6,0.6,0.6]},
@@ -84,7 +139,17 @@
 				
 				"hair_color_1" :{"text" : "Hair color 1","type":"color","default":[0,0,0]},
 
-				"eye_color_1" :{"text" : "Eye color 1","type":"color","default":[0.4,0.8,0.2]},
+				"eye_color_1" :{"text" : "Iris color 1","type":"color","default":[0.4,0.8,0.2]},
+				"eye_color_2" :{"text" : "Iris color 2","type":"color","default":[0.2,0.4,0.2]},
+				"eye_color_3" :{"text" : "Eye color","type":"color","default":[1,1,1]},
+ 
+				"body_layer_1" :{"text" : "Body pattern", "type":"selector", "variants" : 
+					{
+						"type1":"models/species/anthro/texparts/body_feline_l1.png",
+						"type2":"models/species/anthro/texparts/body_feline_l1b.png"
+					},
+					"default":"type1"
+				},
 			},
 			"group_parameters":{
 				"test_value" :{"type":"flex","default":0},

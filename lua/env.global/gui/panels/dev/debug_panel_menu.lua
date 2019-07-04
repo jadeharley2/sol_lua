@@ -1,6 +1,7 @@
 
 debug_panel = debug_panel or {} 
 debug_panel.controls = debug_panel.controls or {}
+debug_panel.exposure = 1
 
 function PANEL:Init() 
 	local vsize = GetViewportSize()
@@ -55,10 +56,13 @@ function PANEL:Expand()
 	self:AddSeparator()
 	self:AddControl("toggle_channels","button","TC",Vector(0.7,0.3,0.4),function() console.Call("debug_toggle pp_channels") end,true)
 	self:AddControl("toggle_light","button","TL",Vector(0.6,0.6,0.6),function() console.Call("debug_toggle light") end,true) 
-	local exposure = 1;
-	self:AddControl("set_exposure_1","button","E1",Vector(0.7,0.4,0.8),function() exposure = 1 console.Call("r_exposure "..exposure) end) 
-	self:AddControl("add_exposure","button","E+",Vector(0.5,0.4,0.8),function() exposure = exposure*2 console.Call("r_exposure "..exposure) end) 
-	self:AddControl("sub_exposure","button","E-",Vector(0.3,0.4,0.8),function() exposure = exposure/2 console.Call("r_exposure "..exposure) end) 
+	--local exposure = 1;
+	self:AddControl("set_exposure_1","button","E1",Vector(0.7,0.4,0.8),function() 
+		debug_panel.exposure = 1 console.Call("r_exposure "..debug_panel.exposure) end) 
+	self:AddControl("add_exposure","button","E+",Vector(0.5,0.4,0.8),function() 
+		debug_panel.exposure = debug_panel.exposure*2 console.Call("r_exposure "..debug_panel.exposure) end) 
+	self:AddControl("sub_exposure","button","E-",Vector(0.3,0.4,0.8),function() 
+		debug_panel.exposure = debug_panel.exposure/2 console.Call("r_exposure "..debug_panel.exposure) end) 
 	self:AddControl("unfix_exposure","button","UE",Vector(0.7,0.4,0.8),function() console.Call("r_exposure -1") end) 
 	self:AddSeparator()
 	self:AddControl("debug_profiler","button","DP",Vector(0.5,0.1,0.1),function() console.Call("debug_profiler") end,true)
@@ -78,11 +82,11 @@ function PANEL:Expand()
 	self:AddControl("to_camera","button","TC",Vector(0.5,0.9,0.4),function() 
 		local c = GetCamera() local p = LocalPlayer() p:SetParent(c:GetParent()) p:SetPos(c:GetPos()) end) 
 	self:AddSeparator()
-	self:AddControl("time_dawn","button","TM",Vector(0.8,0.5,0.3),function() daycycle.SetLocalTime(6,1) end)
+	self:AddControl("time_dawn","button","TM",Vector(0.8,0.5,0.3),function() daycycle.SetLocalTime(6.5,1) end)
 	self:AddControl("time_9h","button","TS",Vector(0.8,0.8,0.3),function() daycycle.SetLocalTime(9,1) end)
 	self:AddControl("time_day","button","TD",Vector(0.6,0.8,0.9),function() daycycle.SetLocalTime(12,1) end)
 	self:AddControl("time_15h","button","TF",Vector(0.8,0.8,0.3),function() daycycle.SetLocalTime(15,1) end)
-	self:AddControl("time_dusk","button","TE",Vector(0.8,0.3,0.3),function() daycycle.SetLocalTime(18,1) end)
+	self:AddControl("time_dusk","button","TE",Vector(0.8,0.3,0.3),function() daycycle.SetLocalTime(17.5,1) end)
 	self:AddControl("time_night","button","TN",Vector(0.3,0.3,0.8),function() daycycle.SetLocalTime(24,1) end)  
 	self:AddSeparator()
 	self:AddControl("menu_main","button","MM",Vector(0.5,0.7,0.8),function() hook.Call("menu","main") end)  
@@ -158,10 +162,20 @@ function PANEL:AddSeparator()
 	self:Add(sep)
 end 
 
-hook.Add("input.keydown", "toggle_debug_panel" ,function()
-	if input.KeyPressed(KEYS_F4) and debug_panel.panel then
-		debug_panel.vistoggle = not (debug_panel.vistoggle or false)
-		debug_panel.panel:SetVisible(debug_panel.vistoggle)
+hook.Add("input.keydown", "toggle_debug_panel" ,function(key)
+	if not input.GetKeyboardBusy() then
+		if key == KEYS_F4 and debug_panel.panel then
+			debug_panel.vistoggle = not (debug_panel.vistoggle or false)
+			debug_panel.panel:SetVisible(debug_panel.vistoggle)
+		end
+		if key == KEYS_OEMPLUS then
+			debug_panel.exposure = debug_panel.exposure*2 
+			console.Call("r_exposure "..debug_panel.exposure) 
+		end
+		if key == KEYS_OEMMINUS then
+			debug_panel.exposure = debug_panel.exposure/2 
+			console.Call("r_exposure "..debug_panel.exposure) 
+		end
 	end
 end)
 

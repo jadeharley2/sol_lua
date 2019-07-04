@@ -130,8 +130,8 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 	
 	gui.ApplyParameters(node,t,style,namedtable,tablekey)
 	
-	local FromTable = node.FromTable
-	if FromTable then FromTable(node,t) end
+--	local FromTable = node.FromTable  -- conflict with tree.FromTable
+--	if FromTable then FromTable(node,t) end
 	
 	
 	if t.subs then

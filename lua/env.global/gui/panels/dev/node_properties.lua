@@ -1,123 +1,58 @@
 
 
-
-local taginfo = table.KVSwitch(debug.GetAPIInfo('TAG_') or {})
-local fntemp = {}
-for k,v in pairs(taginfo) do 
-	local nk = tonumber(k)
-	taginfo[k] = nil
-	if nk~=nil then
-		fntemp[nk] = v
+local function gettags(key)
+	local taginfo = table.KVSwitch(debug.GetAPIInfo(key) or {})
+	local fntemp = {}
+	for k,v in pairs(taginfo) do 
+		local nk = tonumber(k)
+		taginfo[k] = nil
+		if nk~=nil then
+			fntemp[nk] = v
+		end
 	end
+	return fntemp
 end
-taginfo = fntemp 
-
-function PANEL:Init() 
-	self:SetColor(Vector(0,0,0))
-	self:SetSize(200,200)
-	
-	 
-	
-	local nph = panel.Create()
-	nph:SetSize(100,20)
-	nph:SetColor(Vector(0.3,0.6,0.9))
-	nph:Dock(DOCK_TOP)
-	nph:SetTextAlignment(ALIGN_CENTER)
-	nph:SetText("Current space nodes")
-	
-	local refcom = panel.Create("button") 
-	refcom:SetColorAuto(Vector(0,0.8,0.3))
-	refcom:SetSize(20,20)
-	refcom:Dock(DOCK_RIGHT)
-	refcom:SetText("O")
-	refcom:SetTextAlignment(ALIGN_CENTER)
-	refcom.OnClick = function() self:UpdateCnodes() end
-	nph:Add(refcom)
-	self:Add(nph)
-	
-	local nodetree = panel.Create("tree")
-	nodetree:SetSize(200,400)
-	nodetree:Dock(DOCK_TOP)
-	self:Add(nodetree)
-	
-
-	local sep = panel.Create()
-	sep:Dock(DOCK_TOP)
-	sep:SetColor(Vector(0.5,0.5,0.5))
-	sep:SetSize(200,5)
-	self:Add(sep)
 
 
-	local ff_grid_floater = panel.Create()  
-	ff_grid_floater:SetSize(400,800)  
-	--ff_grid_floater:SetAutoSize(false,true) 
-	ff_grid_floater:SetColor(Vector(0.2,0.2,0.2))
-	 
+taginfo = gettags('TAG_') 
+taginfo2 = table.KVSwitch(taginfo)
+comtypeinfo = table.KVSwitch(gettags('CTYPE_'))
 
 
-	local peditor = panel.Create("floatcontainer")
-	peditor:SetSize(200,400)
-	peditor:Dock(DOCK_FILL)
-	peditor:SetScrollbars(1) 
-	peditor:SetFloater(ff_grid_floater) 
-	peditor:SetColor(Vector(0,0,0)) 
-	peditor:UpdateLayout()
-	ff_grid_floater.level = 0
-	self:Add(peditor)
+
+local layout = {
+    color = {0,0,0},
+    size = {200,200},
+    subs = {
+		{ name = "header",
+			size = {100,20},
+			dock = DOCK_TOP,
+			textalignment = ALIGN_CENTER,
+			text = "Node properties",
+			color = {0.3,0.6,0.9}, 
+		},
+		{ name = "nodename",
+			size = {100,16},
+			dock = DOCK_TOP,
+			--textalignment = ALIGN_CENTER,
+			text = "",
+			color = {0.1,0.1,0.1}, 
+			textcolor = {1,1,1}
+		},
+		{type="list", name = "propcontainer",
+			size = {200,200},
+            dock = DOCK_FILL, 
+        }
+    }   
+}
+
+function PANEL:Init()  
+
+    gui.FromTable(layout,self,{},self)
+	--self.propcontainer = self.list.floater--ff_grid_floater
 	
-	self.nodetree = nodetree
-	self.peditor = peditor
-
-	self.pe_in = ff_grid_floater
-	
-	self:UpdateCnodes() 
 	
 end 
-function PANEL:UpdateCnodes(root) 
-	local nodetree = self.nodetree
-	local rtb = {"types"}
-	
-	root = root or GetCamera():GetParent()
-	local chp = root:GetChildren()
-	  
-	local tb2 = {"<<parent>>",OnClick=function(b) 
-		local ct = CurTime()
-		if b.lastclc and b.lastclc>(ct-0.5) then
-			if root:GetParent() then
-				self:UpdateCnodes(root:GetParent())
-			end
-		else
-			b.lastclc = ct 
-			worldeditor:Select(root)
-		end
-	end}  
-	rtb[#rtb+1] = tb2
-
-	for k,v in SortedPairs(chp) do 
-		if v then
-			local hide = (v.editor and v.editor.hide) or v:HasTag(320230)
-			if not hide then
-				local onclick = function(b) 
-					local ct = CurTime()
-					if b.lastclc and b.lastclc>(ct-0.5) then
-						self:UpdateCnodes(v)
-					else
-						b.lastclc = ct 
-						worldeditor:Select(v)
-					end
-				end 
-				local tb2 = {tostring(v),OnClick=onclick}  
-				rtb[#rtb+1] = tb2
-			end
-		end
-	end
-	nodetree:SetTableType(2)
-	
-	nodetree:FromTable(rtb)
-	nodetree:SetSize(430,400) 
-	nodetree:UpdateLayout()
-end
-
  
 function PANEL:RefreshPanel() 
 	if self.cnode then
@@ -130,21 +65,23 @@ local style = {
 		dock=DOCK_RIGHT,
 		size = {20,textsize},
 		margin = {1,1,1,1},
+		textcolor = {1,0.3,0.3},
+		ColorAuto = Vector(0,0,0),
 		textalignment = ALIGN_CENTER,
 	},
 	bgroup = { type="group",  
 		dock=DOCK_TOP,
 		_sub_header = {
-			color = {0.3,0.6,0.9},
+			color = {0,0,0},
 			size = {20,textsize},
-			textcolor = {0,0,0}
+			textcolor = {0.3,0.9,0.7}
 		} 
 	},
 	cgroup = { type="group",  
 		dock=DOCK_TOP,
 		_sub_header = {
-			color = {0.9,0.6,0.3},
-			textcolor = {0,0,0},
+			color = {0.2,0.1,0},
+			textcolor = {0.9,0.6,0.3},
 			size = {20,textsize},
 			textalignment = ALIGN_LEFT
 		} 
@@ -153,17 +90,17 @@ local style = {
 function PANEL:SelectNode(node) 
 	self.cnode = node
 	
-	local peditor = self.pe_in--self.peditor
-	peditor:Clear()
+	self.nodename:SetText(tostring(node))
+	local peditor = self.propcontainer--self.peditor
+	peditor:ClearItems()
 	
-	
-	
+	 
 	
 	
 	if node then
 	
 		local grouptest = gui.FromTable({
-				subs = {
+				items = {
 					{ class="bgroup", name = "entbase", Title="Ent Base"},
 					{ class="bgroup", name = "luabase", Title="Lua Base"},
 					{ class="bgroup", name = "tags", Title="Tags"},
@@ -183,55 +120,7 @@ function PANEL:SelectNode(node)
 			self:ConstructParams(node,self.ent_meta_base,peditor.entbase.contents,node)
 		end
 		 
-		local contents = peditor.tags.contents
-		contents.selectNewTag = function(s) 
-			if s.key then
-				node:AddTag(s.key)
-				contents.populateTags()
-			else
-				contents.plus:SetVisible(true)
-				for k,v in pairs(contents.btns) do
-					contents:Remove(v)
-				end
-			end
-			self:UpdateLayout()
-		end
-		contents.addTag = function(s)
-			local knownTags = taginfo
-			local btns = {}
-			contents.plus = s
-			s:SetVisible(false)
-			for k,v in SortedPairs(knownTags) do
-				if not node:HasTag(k) then
-					local b = gui.FromTable({ type = "button",
-						dock=DOCK_TOP,
-						size = {20,textsize},
-						margin = {1,1,1,1},
-						ColorAuto = Vector(0.5,0.7,0.5), 
-						text = '['..k..'] '..v, 
-						key = k,
-						OnClick = contents.selectNewTag
-					},nil,style)
-					btns[k] = b
-					contents:Add(b)  
-				end
-			end
-			local b = gui.FromTable({ type = "button",
-				dock=DOCK_TOP,
-				size = {20,textsize},
-				margin = {1,1,1,1},
-				ColorAuto = Vector(0.5,0.7,0.5), 
-				textalignment = ALIGN_CENTER,
-				text = 'CANCEL', 
-				OnClick = contents.selectNewTag
-			},nil,style)
-			btns['cncl'] = b
-			contents:Add(b)  
-
-
-			contents.btns = btns
-			self:UpdateLayout()
-		end
+		local contents = peditor.tags.contents 
 		contents.populateTags = function()
 			contents:Clear()
 			local cTags = node:GetTags()
@@ -250,20 +139,26 @@ function PANEL:SelectNode(node)
 						}
 					}
 				},nil,style))  
-			end
-			contents:Add(gui.FromTable({ type = "button",
+			end 
+			contents:Add(gui.FromTable({ type = "enum_selector",
 				dock=DOCK_TOP,
 				size = {20,textsize},
-				margin = {1,1,1,1},
-				ColorAuto = Vector(0.2,1,0.2),
-				textalignment = ALIGN_CENTER,
-				text = "+",
-				node = node,
-				OnClick = contents.addTag
-			},nil,style))  
+				margin = {1,1,1,1}, 
+				Options = taginfo2,
+				OnSelect = function(s,val) 
+					if val then
+						MsgInfo("addtag:"..val) 
+						node:AddTag(val)
+						contents.populateTags()
+						self:UpdateLayout()
+					end
+				end 
+			},nil,style))
 		end
 		contents.populateTags()
 
+
+		-- -- -- --
 		local con_contents = peditor.com.contents
 		for k,v in pairs(node:GetComponents()) do
 		
@@ -283,19 +178,25 @@ function PANEL:SelectNode(node)
 				local totalY = self:ConstructParams(node,meta,con_grp.contents,v)  
 			end
 			 
-		end
-		con_contents:Add(gui.FromTable({ type = "button",
+		end 
+		con_contents:Add(gui.FromTable({ type = "enum_selector",
 			dock=DOCK_TOP,
 			size = {20,textsize},
-			margin = {1,1,1,1},
-			ColorAuto = Vector(0.2,1,0.2),
-			textalignment = ALIGN_CENTER,
-			text = "+"
+			margin = {1,1,1,1}, 
+			Options = comtypeinfo,
+			OnSelect = function(s,val) 
+				if val then
+					MsgInfo("addcom:"..val)
+					node:AddComponent(val)
+					self:RefreshPanel()
+				end
+			end 
 		},nil,style))
 		 
 		
 			
-		peditor:UpdateLayout()
+		self:UpdateLayout()
+		self.propcontainer:ScrollToTop()
 	end
 end
 
@@ -304,12 +205,14 @@ function PANEL:ConstructParams(node,meta,parent,com)
 	if meta.editor and meta.editor.properties then
 		for k,v in SortedPairs(meta.editor.properties) do 
 			local pva = panel.Create("button") 
-			pva:SetColorAuto(Vector(0.6,0.6,0.6),0)
+			pva:SetColorAuto(Vector(0.6,0.6,0.6)/5,0)
+			pva:SetTextColor(Vector(1,1,1))
 			pva:SetSize(20,textsize)
 			pva:Dock(DOCK_TOP)
 			pva:SetMargin(5,2,0,0)
 			pva:SetTextAlignment(ALIGN_LEFT)
 			pva:SetText(v.text..":")
+			pva:SetTextOnly(true)
 			--pva.OnClick = function() end
 			parent:Add(pva)
 			
@@ -390,7 +293,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					--inp.evalfunction = v2.proc 
 
 					local mgr = gui.FromTable({class = 'cgroup', Title = 'arguments',margin = {5,2,0,0},
-						_sub_header = { color = {0.6,0.6,0.6} } 
+						_sub_header = { color = {0.1,0.1,0.1} } 
 					},nil,style) 
 
 					local fApply =  function(n)
@@ -441,13 +344,13 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					end
 					
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
-						text = 'add', ColorAuto = Vector(0.2,1,0.2), OnClick = function()
+						text = 'add', ColorAuto = Vector(0.2,1,0.2)/10, textcolor = {0.2,1,0.2}, OnClick = function()
 							mgr:AddItem(gui.FromTable(arg_template,nil,style))
 							self:UpdateLayout()
 						end
 					},nil,style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
-						text = 'sel', ColorAuto = Vector(0.5,0.9,0.9), OnClick = function()
+						text = 'sel', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							local lp = file.GetDirectory(inp:GetText())
 							OpenFileDialog(lp,nil,function(path) 
 								inp:SetText(path)
@@ -456,7 +359,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 						end
 					},nil,style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
-						text = 'clr', ColorAuto = Vector(0.5,0.9,0.9), OnClick = function()
+						text = 'clr', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							inp:SetText('')
 							fApply(inp)
 						end

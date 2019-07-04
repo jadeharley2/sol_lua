@@ -21,7 +21,8 @@ function PANEL:Init()
 	self:Add(framePanel)  
 end
 
-function PANEL:AddTab(name,sub)
+function PANEL:AddTab(name,sub,btnmodt)
+
 	local b = panel.Create("button") 
 	local plist = self.plist
 	b:SetText(name or "Tab")
@@ -29,6 +30,7 @@ function PANEL:AddTab(name,sub)
 	b:SetSize(100,30)
 	b:Dock(DOCK_LEFT)
 	tabButtonPanel:Add(b)
+
 	local lid = #plist+1
 	plist[lid] = sub 
 	b.OnClick = function() self:ShowTab(lid) end
@@ -39,6 +41,10 @@ function PANEL:AddTab(name,sub)
 	separator:Dock(DOCK_LEFT)
 	separator:SetColor(bordcol)
 	tabButtonPanel:Add(separator)
+
+	if btnmodt then
+		gui.FromTable(btnmodt,b)
+	end
 	
 end
 function PANEL:ShowTab(id)

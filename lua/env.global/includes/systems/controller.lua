@@ -68,7 +68,7 @@ function SetController(name)
 				end) end   
 				if ts.MouseWheel then hook.Add("input.mousewheel", "controller", function() ts:MouseWheel() end) end
 				if ts.MouseDown then hook.Add("input.mousedown", "controller", function() ts:MouseDown() end) end
-				if ts.KeyDown then hook.Add("input.keydown", "controller", function() ts:KeyDown() end) end
+				if ts.KeyDown then hook.Add("input.keydown", "controller", function(key) ts:KeyDown(key) end) end
 				            
 				global_controller = ts
 				MsgN("Controller changed to ",  ts._name)
@@ -83,7 +83,7 @@ function SetController(name)
 					end) end
 					if prev.MouseWheel then hook.Add("input.mousewheel", "controller", function() prev:MouseWheel() end) end
 					if prev.MouseDown then hook.Add("input.mousedown", "controller", function() prev:MouseDown() end) end 
-					if prev.KeyDown then hook.Add("input.keydown", "controller", function() prev:KeyDown() end) end              
+					if prev.KeyDown then hook.Add("input.keydown", "controller", function(key) prev:KeyDown(key) end) end              
 					                
 					global_controller = prev 
 				end     

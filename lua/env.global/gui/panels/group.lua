@@ -17,7 +17,8 @@ function PANEL:Init()
 						dock = DOCK_RIGHT,
 						margin = {1,1,1,1},
 						textalignment = ALIGN_CENTER,
-						ColorAuto = Vector(0.2,0.6,0.8),
+						ColorAuto = Vector(0.2,0.6,0.8)/50,
+						textcolor = {1,1,1}, 
 						OnClick = function(s) self:ToggleCollapse() end
 					}
 				}

@@ -311,12 +311,11 @@ function ai:OpenMenu(ply)
 				
 				main[#main+1] =
 				{t="покажи что у тебя есть",f=function(ai,dialog)   
-					dialog:Open(table.Random({"Вот","Смотри"}))
-					CloseInventoryWindow(e)
-					OpenInventoryWindow(e) 
-					local psp = panel.Create("window_character")
-					psp:Set(e)
-					psp:Show()
+					dialog:Open(table.Random({"Вот","Смотри"})) 
+					actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
+					actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
+					actor_panels.OpenInventory(e,ALIGN_TOP,nil)
+					actor_panels.OpenCharacterInfo(e,ALIGN_RIGHT,nil)  
 					return false
 				end}  
 				--if e:HasTool("bow_kindred_gal") then

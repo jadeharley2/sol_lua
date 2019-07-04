@@ -49,6 +49,7 @@
 			{"name":"matColors3", "type":"float4","default":[0,0,0,1],"description":""},
 			{"name":"freshnelRanges", "type":"float3","default":[1,1,1],"description":""},
 			
+			{"name":"stencil", "type":"float","default":0,"description":"stencil buffer write value"},
 		],
 	},
 	"onload" : { },

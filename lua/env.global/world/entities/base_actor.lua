@@ -1641,6 +1641,11 @@ function ENT:Give(type)
 				else
 					s:PutItemAsData(s:GetFreeSlot(),item) 
 				end
+			else
+				local itemb = forms.GetItem(type)
+				if itemb then
+					s:PutItemAsData(s:GetFreeSlot(),itemb) 
+				end
 			end
 		end
 		---local inv = self.inventory

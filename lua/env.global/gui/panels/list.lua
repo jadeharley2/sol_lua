@@ -118,6 +118,11 @@ function PANEL:AddItem(a)
 	self.floater:SetAutoSize(false,true)
 	self:UpdateLayout()
 end
+function PANEL:ClearItems() 
+	self.floater:Clear()
+end
+PANEL.items_info = {type="children_array",add = PANEL.AddItem}
+
 function PANEL:SetAlpha(a)
 	--Msg("asd!")
 	self.base.SetAlpha(self,a)

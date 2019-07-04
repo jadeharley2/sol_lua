@@ -252,6 +252,49 @@ end
 function component:HasItemAt(index)
 	return self.list[index]~=nil 
 end
+function component:HasItem(formid)
+	for k,v in pairs(self.list) do
+		if v and v.data then
+			if isstring(v.data) then
+				if v.data == formid then
+					return true
+				end
+			else
+				if v.data.parameters then
+					local fid = v.data.parameters.form or v.data.parameters.character
+					if fid and fid == formid then
+						return true
+					end
+				end
+			end 
+		end
+	end
+	return false
+end
+function component:FormIdCounts()
+	local fids = {}
+	for k,v in pairs(self.list) do
+		if v and v.data then
+			if isstring(v.data) then
+				local fidl = fids[v.data] or {}
+				fidl[k] = v.count or 1
+				fids[v.data] = fidl
+				--fids[v.data] = (fids[v.data] or 0) + (v.count or 1)
+			else
+				if v.data.parameters then
+					local fid = v.data.parameters.form or v.data.parameters.character
+					if fid then 
+						local fidl = fids[fid] or {}
+						fidl[k] = v.count or 1
+						fids[fid] = fidl
+						--fids[fid] = (fids[fid] or 0) + (v.count or 1)
+					end
+				end
+			end 
+		end
+	end
+	return fids
+end
 function component:GetFreeSlot() 
 	for k=1,100 do 
 		if not self:HasItemAt(k) then
@@ -259,6 +302,9 @@ function component:GetFreeSlot()
 		end
 	end
 	return nil
+end
+function component:HasFreeSlot(count)
+	return true
 end
 function component:ContainsItemOfType(itemtype)
 	return false--return self.list:Contains(item)

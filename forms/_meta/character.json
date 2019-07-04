@@ -1,0 +1,22 @@
+{
+    "parameters" :{
+        "abilities" : {
+            "type" : "array",
+            "arraytype" : "lua.Ability"
+        },
+        "behaviour" : {
+            "editor" : {
+                "type" : "node",
+                "mode" : "statemachine"
+            }
+        },
+        "equipment" : {
+            "type" : "array",
+            "arraytype" : "lua.Item"
+        },
+        "model" : {
+            "type" : "filepath",
+            "filter" : "#model"
+        }
+    }
+}

@@ -3,7 +3,7 @@
 	"species" : "anthro.feline:default",  
 	"health" : 100,  
 	"parts" : {  
-		"head" : "head_ara", 
+		"head" : "head_vikna", 
 		"torso_top":"bp_torso_top",
 		"torso_bot":"bp_torso_bot",
 		"arm"  : "bp_arm",
@@ -14,7 +14,7 @@
 		"toe"  : "bp_toe",
 		"neck"  : "bp_neck",
 		"hair" : "hair_ara",
-		"tail" : "tail_ara"
+		"tail" : "tail_vikna"
 	},   
 	"materials" : {   
 	}, 

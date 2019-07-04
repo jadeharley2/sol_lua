@@ -7,6 +7,7 @@
 float4x4 Projection;
 float4x4 View;
 float4x4 World;
+float4x4 WorldInv;
  
 float4x4 EnvInverse;
 
@@ -27,6 +28,8 @@ float global_scale=1;
 float mindist = 0;
 float maxdist = 999999999;
 float fadewidth = 0.1;
+
+float stencil = 0;
 
 float time =0;
 float2 textureshiftdelta = float2(0,0);
@@ -189,6 +192,7 @@ struct PS_OUT
     float4 mask: SV_Target3;// r - deferred_intensity, g - smootheness, b - metallness, a - subsurface_scattering_transparency
     float4 diffuse: SV_Target4;
     //float4 light: SV_Target4;
+	float stencil : SV_StencilRef; 
 };
 
 PS_IN VSI( VSS_IN input, I_IN inst ) 
@@ -479,6 +483,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
     output.depth = input.pos.z;///input.pos.w;
 	output.diffuse =0;
 	output.light =0;
+	output.stencil = stencil;
+	
 	//output.diffuse=float4(1,1,1,1);
 	//output.normal = float4(input.norm/2+float3(0.5,0.5,0.5),1);
 	//return output;
@@ -510,7 +516,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	}
 	if(SkyboxMode)
 	{
-		float3 envdir = mul(input.wpos,EnvInverse);
+		float3 envdir = mul(input.wpos,WorldInv);
 		float3 envmap =// EnvSampleLevel(envdir,1);// 
 		g_SkyTexture.SampleLevel(MeshTextureSampler,envdir,0);
 		output.light = float4(pow(envmap,pow_skybox_mul)*TBrightness,1);

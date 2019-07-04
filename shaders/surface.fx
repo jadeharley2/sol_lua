@@ -7,6 +7,7 @@ float4x4 Projection;
 float4x4 View;
 float4x4 World;
 
+
 float4x4 EnvInverse;
  
 float albedoSurface = 1;
@@ -587,21 +588,31 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	}
 	
 	
-	bool isunderwater = hasHydrosphere && input.data.x<0.00;
+	bool isunderwater = hasHydrosphere;// && input.data.x<0.00;
 	float specular_intensity = 0.001;
 	  
 	  
+	float topDot = saturate(dot(globalNormal,input.normal)); 
 	
 	if(isunderwater)
 	{
-		input.normal = globalNormal;
 		localLightIntencity = globalLightIntencity;
-		specular_intensity = 0.7;
+
 		
 		
 		//float2 water_tcoord = float2(1+input.data.x*3,input.data.z+globalTemperatureModifier);
 		//float4 water_rampcolor = wTexture.Sample(MeshTextureSampler,water_tcoord);
 		surface_rampcolor.rgb =lerp(surface_rampcolor.rgb, oceanColor/(1-input.data.x*1000),saturate(-input.data.x*1000000));// water_rampcolor; 
+	
+		float wetness =  saturate(-input.data.x*10000000+1);
+		surface_rampcolor.rgb *=1-wetness*0.8;
+		specular_intensity =wetness*0.7*saturate((1-topDot)*5);
+		if( input.data.x<0.00 && 0.99<saturate(surfaceDistance*10-10	)) //!nearMode && 
+		{
+			input.normal = globalNormal;
+			topDot =1;
+			specular_intensity =0.7;
+		}
 	}  
 	float clouds_dencity =0;
 	float clouds_shadow_rampcolor = 1;
@@ -673,7 +684,6 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	
 	float blend_medium = saturate(1 - surfaceDistance*2); 
 	float blend_far = saturate(1-blend_medium);
-	float topDot = saturate(dot(globalNormal,input.normal)); 
 	float2 tile_textcoord = float2(1-tcrdSmall.x,tcrdSmall.y);
 	float4 tilecolor = lerp(float4(0.1,0.1,0.1,1),BlendTileset(input.data,tile_textcoord,topDot,surfaceDistance)*0.1,1-blend_nearfog)*2;
 	
@@ -793,7 +803,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float4 color_space = SpaceColor(input,wposLen,surfaceDistance,output); //SpaceColor//Simplified
 	//float3 color_nearby = NearbyColor(input,wposLen,surfaceDistance); 
 	
-	float blend = saturate(color_space.w*20); //lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
+	//42
+	float blend = saturate(surfaceDistance*10-10)*saturate(-input.data.x*100000000);//saturate(color_space.w*20); //lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
 	output.normal = float4(lerp(input.normal,normalize(input.lpos),blend)*0.5+0.5,1);
 	output.depth = //input.pos.w;//
 	input.pos.z;///input.pos.w;

@@ -123,9 +123,9 @@ function world.UnloadWorld()
 	if CLIENT and network.IsConnected() then
 		network.Disconnect()
 		SetController()  
-		local cam = GetCamera()
-		cam:SetParent(LOBBY) 
 	end
+	local cam = GetCamera()
+	cam:SetParent(LOBBY) 
 	
 	if U then
 		if istable(U) then

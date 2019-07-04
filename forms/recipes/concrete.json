@@ -1,0 +1,24 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "mixer"
+    },
+    "output" : { 
+        "item":"resource.concrete",
+        "count":10 
+    },
+    "input" : [
+        {
+            "item":"resource.stone",
+            "count":4
+        },
+        {
+            "item":"resource.sand",
+            "count":8
+        },
+        {
+            "item":"resource.water",
+            "count":4
+        }
+    ]
+}

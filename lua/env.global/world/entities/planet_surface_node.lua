@@ -65,7 +65,7 @@ function ENT:CubemapFrame()
 	local sz = self:GetSizepower()
 	if sc then
 		sc:SetPos(cp+Vector(0,300/sz,0))
-		sc:SetAng(Vector(90,90,0))
+		sc:SetAng(Vector(0,90,0))
 	end 
 end
 function ENT:Leave() 

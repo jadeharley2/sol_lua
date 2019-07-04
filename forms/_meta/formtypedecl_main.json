@@ -4,24 +4,28 @@
 		{
 			"name":"species", 		
 			"shortname":"SPCS", 	
-			"directory":"species"
+			"directory":"species",
+			"group":"actor",
 		},
 		{
 			"name":"ability", 		
 			"shortname":"ABIL", 	
 			"directory":"abilities", 	
-			"recursive":true
+			"recursive":true,
+			"group":"items",
 		}, 
 		{
 			"name":"character", 	
 			"shortname":"CHAR", 	
 			"directory":"characters", 
-			"baseclass":"base_actor"
+			"baseclass":"base_actor",
+			"group":"actor",
 		},
 		{
 			"name":"apparel", 		
 			"shortname":"APPA", 	
-			"directory":"apparel" 	 
+			"directory":"apparel", 
+			"group":"items",	 
 		},
 		//add baseclass
 		//{"name":"item", 		"shortname":"ITEM", 	"dir":"items",		"baseclass":"base_tool", "subdir":true},//items|tools?
@@ -30,37 +34,64 @@
 			"shortname":"TOOL", 	
 			"directory":"items/tools",
 			"baseclass":"base_tool", 
-			"recursive":true
+			"recursive":true,
+			"group":"items",	 
 		}, 
 		{
 			"name":"prop", 		
 			"shortname":"PROP", 	
 			"directory":"props", 		
 			"baseclass":"prop_variable", 
-			"recursive":true
+			"recursive":true,
+			"group":"world",	 
 		}, 
 		{
 			"name":"spaceship", 	
 			"shortname":"SPSH", 	
 			"directory":"spaceships", 
-			"baseclass":"spaceship"
+			"baseclass":"spaceship",
+			"group":"world",	 
 		}, 
 		{
 			"name":"surfacemod", 	
 			"shortname":"SFMD", 	
 			"directory":"surfacemods", 
-			"baseclass":"planet_surface_mod"
+			"baseclass":"planet_surface_mod",
+			"group":"world",	 
 		}, 
 		{
 			"name":"anchor", 		
 			"shortname":"ANCH", 	
-			"directory":"anchors"
+			"directory":"anchors",
+			"group":"world",	 
 		}, 
 		{
 			"name":"itemset", 		
 			"shortname":"ISET", 	
 			"directory":"itemset", 
-			"recursive":true
+			"recursive":true,
+			"group":"items",	 
+		}, 
+		{
+			"name":"recipe", 		
+			"shortname":"RECP", 	
+			"directory":"recipes", 
+			"recursive":true,
+			"group":"items",	 
+		}, 
+		{
+			"name":"quest", 		
+			"shortname":"QEST", 	
+			"directory":"quests", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
+			"name":"resource", 		
+			"shortname":"RESR", 	
+			"directory":"resources", 
+			"recursive":true,
+			"group":"items",	 
 		}
 	]
 }

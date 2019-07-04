@@ -1,5 +1,5 @@
 
-gizmometa = gizmometa or {}
+gizmometa = gizmometa or {} 
 
 local function CreatePart(parent,model,color,rotation,type) 
 	local R = ents.Create("gizmo_part")
@@ -94,7 +94,9 @@ function gizmometa:DragUpdate()
 		local right = camera:Right()
 		local campos = camera:GetPos() 
 		  
-		local snap = false-- input.KeyPressed(KEYS_MENU)
+		local snap = worldeditor.possnap or false --3 
+		local angsnap = 45
+		if snap then snap = 4 end
 		
 		local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
 		local dir = camera:Unproject(mpos):Normalized()
@@ -123,7 +125,7 @@ function gizmometa:DragUpdate()
 					
 					local newPos = startnodepos+ pos - spos
 					if snap then
-						newPos = Vector(math.round(newPos.x,3),math.round(newPos.y,3),math.round(newPos.z,3))
+						newPos = Vector(math.round(newPos.x,snap),math.round(newPos.y,snap),math.round(newPos.z,snap))
 					end
 					
 					local oldPos = self.parts[1]:GetPos()
@@ -167,7 +169,7 @@ function gizmometa:DragUpdate()
 			--MsgN(pos)
 					local newPos = startnodepos + constr * (rps - dpos)-- *1000000 / (startscale*startscale)
 					if snap then
-						newPos = Vector(math.round(newPos.x,3),math.round(newPos.y,3),math.round(newPos.z,3))
+						newPos = Vector(math.round(newPos.x,snap),math.round(newPos.y,snap),math.round(newPos.z,snap))
 					end
 
 					local oldPos = self.parts[1]:GetPos()
@@ -191,12 +193,21 @@ function gizmometa:DragUpdate()
 					Waxis = lsn:Forward()
 				end
 				
-				for k,v in pairs(self.parts) do
-					v:TRotateAroundAxis(Waxis,mouseDiff2.x/100)
+				local addang = mouseDiff2.x/100
+				
+				if angsnap then
+					--addang = math.round(addang/angsnap)*angsnap 
 				end
-				self:Rotate(Waxis,mouseDiff2.x/100) 
+				
+
+				if worldeditor.gridmode=='local' then
+					for k,v in pairs(self.parts) do
+						v:TRotateAroundAxis(Waxis,addang)
+					end
+				end
+				self:Rotate(Waxis,addang)  
 			end
-		else
+		else 
 			local pp = Plane(startpos, startpos + right*100, startpos + up*100)
 			local hit, pos = pp:Intersect(campos, dir)
 			if hit then

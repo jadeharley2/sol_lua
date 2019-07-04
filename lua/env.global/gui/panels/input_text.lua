@@ -151,10 +151,12 @@ function PANEL:MouseEnter()
 	hook.Add("input.keydown","input.copyonover",function(k) 
 		if input.KeyPressed(KEYS_CONTROLKEY) then
 			if k==KEYS_V then   
-				local text = ClipboardGetText() 
-				self:CaretUpdate(CStringLen(text),true)
-				self.text = text
-				self:SetText(text)
+				if static.CURRENT_INPUT ~= self then
+					local text = ClipboardGetText() 
+					self:CaretUpdate(CStringLen(text),true)
+					self.text = text
+					self:SetText(text)
+				end
 			elseif k==KEYS_C then 
 				ClipboardSetText(self:GetText())
 				MsgN("asd")

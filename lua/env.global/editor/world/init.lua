@@ -102,7 +102,7 @@ function editor:Open()
 	self.assets:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
 	self.assets:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
 	self.assets:Show()
-	self.node = self.assets.pnode
+	self.node = self.assets.node_props--pnode
 	
 	render.DCISetEnabled(true)
 	
@@ -134,7 +134,7 @@ function editor:Close()
 	hook.Remove("input.mousedown","editor")
 	hook.Remove("input.keydown","editor")
 	--hook.Remove("input.doubleclick","editor")
-	
+	 
 	debug.ShapeDestroy(100)
 	debug.ShapeDestroy(101)
 	
@@ -149,7 +149,7 @@ function editor:Close()
 end
 function editor:Toggle()
 	if self.isopen then self:Close() 
-	else self:Open() end
+	else self:Open() end 
 end
 function editor:Enabled() 
 	return editor.node ~= nil 
@@ -160,12 +160,28 @@ function editor:Undo()
 end
 function editor:Redo()
 	MsgN("redo:",self.undo:Redo()) 
-end
+end 
 
 function editor:MouseDown()   
 	
-	
+	 
 	self:DoubleClick() 
+end
+function editor:SetGridMode(str)
+	self.gridmode = str
+	if self.gizmo then
+		if str=="local" then 
+			local s = next(self.selected)
+			if s then
+				self.gizmo:SetAng(s:GetMatrixAng())
+			end
+		else 
+			self.gizmo:SetAng(matrix.Identity())
+		end
+	end
+end
+function editor:SetPosSnap(enable)
+	self.possnap = enable or false
 end
 function editor:GetNodeUnderCursor(lp)
 	local drw = false
@@ -340,10 +356,14 @@ function editor:Update()
 		local s = false
 		for k,v in pairs(self.selected) do s = k break end 
 		if s and IsValidEnt(s) and gizmo.parts[1] then
-			local gsz = gizmo.parts[1]:GetParent():GetSizepower()
-			local psz = s:GetParent():GetSizepower()
-			local dist = s:GetPos():Distance(GetCamera():GetPos())*(gsz/psz)
-			gizmo:Rescale(dist)  
+			local prnt =  s:GetParent()
+			local gpr = gizmo.parts[1]:GetParent()
+			if prnt and gpr then
+				local gsz = gpr:GetSizepower()
+				local psz = prnt:GetSizepower()
+				local dist = s:GetPos():Distance(GetCamera():GetPos())*(gsz/psz)
+				gizmo:Rescale(dist)  
+			end
 		else
 		end
 			--local sssd = ""
@@ -408,7 +428,11 @@ function editor:Select(node,multiselect)
 		local gizmo = self.gizmo or CreateGizmo(node:GetParent())
 		gizmo:SetParent(node:GetParent())
 		gizmo:SetPos(node:GetPos())
-		gizmo:SetAng(node:GetMatrixAng())
+		if self.gridmode == "local" then 
+			gizmo:SetAng(node:GetMatrixAng())
+		else
+			gizmo:SetAng(matrix.Identity())
+		end
 		gizmo.mnode = node
 		self.gizmo = gizmo
 	end
@@ -439,7 +463,8 @@ function editor:Select(node,multiselect)
 	--	MsgN(k,v)
 	--end
 	self.node:SelectNode(node)
-	SELECTION = self.selected:ToTable()
+	E_SELECTION = self.selected:ToTable()
+	E_FS = E_SELECTION[1] -- first selected
 end
 
 function editor:AddSelectionModel(ent) 

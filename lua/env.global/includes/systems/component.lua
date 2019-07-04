@@ -25,7 +25,7 @@ function Component(type,node,...)
 		com:OnAttach(node)
 	end 
 	return com
-end 
+end  
      
    
 function TryGetComponent(type,node) 
