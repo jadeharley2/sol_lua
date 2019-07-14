@@ -5,7 +5,6 @@
 	},
 	"slot" : "torso",
 	"model" : "apparel/tab.stmd",
-	"icon" : "apparel/fk/uniform1",
-	"worldmodel" : "apparel/tab.json",
+	"icon" : "apparel/fk/uniform1", 
 	"worldmodelscale" : 0.014,
 }

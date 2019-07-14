@@ -77,7 +77,7 @@ function forms.GetItem(formid,seed)
 	elseif aparts[1]=='character' then 
  
 	elseif aparts[1]=='apparel' then   
-		seed = seed or GetFreeUid()
+		seed = seed or GetFreeUID()
 		local fn = forms.GetForm('apparel',loctype)
 		return ItemIA(fn,seed)
 	elseif aparts[1]=='resource' then    

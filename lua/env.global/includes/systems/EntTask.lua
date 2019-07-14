@@ -101,64 +101,72 @@ end
 
 function TASKMANAGER_META:RunLoop()
 	local ctasks = self.current
-	for k,v in pairs(self.current) do
-		
-		local task = v
-		if istable(k) then
-			task = k
-		end
-		
-		
-		
-		if not task.Step then
-			MsgN("malformed task ",task)
-			self.current[k] = nil 
-		elseif task.errored then
-			MsgN("errored task ",task)
-			self.current[k] = nil 
-		else
-			task.times = (task.times or 0) + 1
-			task.errored = true
-			local result, rtype = task:Step()
-			task.errored = nil
-			if result ~=nil then
-				if task.OnEnd then task:OnEnd(result,rtype) end
-				task._finished = true
-				self.current[k] = nil
-				if result then 
-					if task.success then 
-						if rtype and task.success[rtype] then
-							self:Begin(task.success[rtype])
-						else
-							self:Begin(task.success)
-						end 
-					end
-				else 
-					if task.fail then 
-						if rtype and task.fail[rtype] then
-							self:Begin(task.fail[rtype])
-						else
-							self:Begin(task.fail)
+	if ctasks then
+		for k,v in pairs(ctasks) do
+			
+			local task = v
+			if istable(k) then
+				task = k
+			end
+			
+			
+			
+			if not task.Step then
+				MsgN("malformed task ",task)
+				self.current[k] = nil 
+				return true
+			elseif task.errored then
+				MsgN("errored task ",task)
+				self.current[k] = nil 
+				return true
+			else
+				task.times = (task.times or 0) + 1
+				task.errored = true
+				local result, rtype = task:Step()
+				task.errored = nil
+				if result ~=nil then
+					if task.OnEnd then task:OnEnd(result,rtype) end
+					task._finished = true
+					self.current[k] = nil
+					if result then 
+						if task.success then 
+							if rtype and task.success[rtype] then
+								self:Begin(task.success[rtype])
+							else
+								self:Begin(task.success)
+							end 
+						end
+					else 
+						if task.fail then 
+							if rtype and task.fail[rtype] then
+								self:Begin(task.fail[rtype])
+							else
+								self:Begin(task.fail)
+							end
 						end
 					end
-				end
-				if task.next then 
-					if rtype and task.next[rtype] then
-						self:Begin(task.next[rtype])
-					else
-						self:Begin(task.next)
-					end 
+					if task.next then 
+						if rtype and task.next[rtype] then
+							self:Begin(task.next[rtype])
+						else
+							self:Begin(task.next)
+						end 
+					end
+					return true
 				end
 			end
 		end
 	end
-	
 end
 
+local onerror = function(err)
+	MsgN("task error:",err)  
+	MsgN(debug.traceback())
+end
 function TASKMANAGER_META:CreateThread()
 	return coroutine.create(function()
 		while(true) do
-			self:RunLoop()
+			xpcall(self.RunLoop,onerror,self)
 			coroutine.yield()
 		end
 	end)

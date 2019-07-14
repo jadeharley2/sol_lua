@@ -23,7 +23,7 @@ function task:Step()
 		run = dist > 10 or target:IsRunning()
 
 		--MsgN(dist,tpd)
-		if dist>tpd then
+		if false and dist>tpd then
 			local ppos = target:GetPos() - target:Right()/actor:GetParent():GetSizepower()
 			actor:SetPos(ppos)
 		else

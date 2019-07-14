@@ -10,6 +10,12 @@
 			{"pos":[-0.1,0.45,0.15,"vec3"],"ang":[0,180,0,"vec3"],"state":"sleep"},
 			{"pos":[-0.1,1.55,0.15,"vec3"],"ang":[0,180,0,"vec3"],"state":"sleep"}
 		],
+		"needs" : {
+			"delta":{
+				"fatigue" : 5,
+				"sleep":1,
+			}
+		},
 		"usetype" : "lie down"
 	}
 	

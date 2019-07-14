@@ -49,8 +49,14 @@ function RestoreMaterials(table)
 	end
 end
 
-function ModModelMaterials(model,modtable,nocopy)
-	
+function ModModelsMaterials(models,modtable,nocopy)
+	local restore_n = {}
+	for k,v in pairs(models) do
+		restore_n[#restore_n+1] = ModModelMaterials(v,modtable,nocopy)
+	end
+	return {nodes = restore_n}
+end
+function ModModelMaterials(model,modtable,nocopy) 
 	local mc = model:GetMaterialCount()
 	local restore = {}
 	for k=1,mc do
@@ -92,4 +98,15 @@ function ModMaterial(mat,modtable)
 	for kk,vv in pairs(modtable) do
 		SetMaterialProperty(mat,kk,vv)
 	end
+end
+
+function dynmateial.GetModels(node,recursive,tab)
+	tab = tab or {}
+	tab[#tab+1] = node:GetComponent(CTYPE_MODEL)
+	if recursive then
+		for k,v in pairs(node:GetChildren()) do
+			dynmateial.GetModels(v,true,tab)
+		end
+	end
+	return tab
 end

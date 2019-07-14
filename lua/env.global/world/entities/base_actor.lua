@@ -584,6 +584,8 @@ function ENT:SetCharacter(id)
 				self.eyeattachment = nil
 				self.norotation = nil
 				self.nomovement = nil
+				self.saccadic = nil
+				 
 
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
@@ -759,6 +761,9 @@ function ENT:SetCharacter(id)
 					if data.height then phys:SetHeight(data.height) end
 					if data.radius then phys:SetRadius(data.radius) end
 					if data.mass   then phys:SetMass(data.mass) end 
+				end
+				if self.saccadic then 
+					model:SetSaccadic(self.saccadic)
 				end
 				
 				self:SetUpdating(true,100)
@@ -1396,10 +1401,7 @@ function ENT:EyeLookAtLerped(dir)
 
 	local turn_angle = self.turn_angle or 90
 	if math.abs(tpp_yaw)>=turn_angle then  
-		local trsl = self:Turn(-polar)
-		if trsl then
-			cam:TRotateAroundAxis(Up, polar)  
-		end 
+		local trsl = self:Turn(-polar) 
 	end
 
 	local cpp_yaw = m:GetPoseParameter("head_yaw")
@@ -1445,8 +1447,8 @@ function ENT:SetEyeAngles(pitch,yaw,forced,nopred)
 		self.headangles = {yaw,pitch}
 		self.lastheadmove = CurTime() 
 	end
-	m:SetPoseParameter("head_yaw",ha[1],nopred or false)
-	m:SetPoseParameter("head_pitch",ha[2],nopred or false) 
+	m:SetPoseParameter("head_yaw",ha[1],true)--nopred or false)
+	m:SetPoseParameter("head_pitch",ha[2],true)--nopred or false) 
 	
 	local sForward = self:Right():Normalized()
 	--self.phys:SetViewDirection(sForward)
@@ -1632,8 +1634,8 @@ function ENT:Give(type)
 	--if SERVER or not network.IsConnected() then
 		local s = self.storage
 		if s then
-			local p = forms.GetForm("apparel",type)
-			if p  then
+			local p = forms.GetForm("apparel",type) or forms.GetForm(type)
+			if p  then 
 				local item = ItemIA(p,GetFreeUID())
 				local eq = self.equipment 
 				if eq then
@@ -1691,6 +1693,20 @@ function ENT:HasTool(type)
 	if inv then
 		return #inv:Select(function(e) return e and e.type==type  end)>0
 	end
+end
+function ENT:HasItem(formid)
+	if not string.ends(formid,'.json') then
+		formid = forms.GetForm(formid) 
+	end
+	local s = self.storage
+	local e = self.equipment
+	if s then
+		if s:HasItem(formid) then return true end
+	end
+	if e then
+		if e:HasItem(formid) then return true end
+	end
+	return false
 end
 
 function ENT:PickupWeapon(weap)

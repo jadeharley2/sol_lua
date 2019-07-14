@@ -4,8 +4,7 @@
 	},
 	"slot" : "torso", 
 	"model" : "apparel/uniform_3.stmd",
-	"icon" : "apparel/fk/uniform3",
-	"worldmodel" : "apparel/uniform_3.json",
+	"icon" : "apparel/fk/uniform3", 
 	"worldmodelscale" : 0.014,
 	"hide":["torso_top","torso_bot","arm","thigh","calf"],
 	"modmaterial" :  [{

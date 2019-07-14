@@ -1,0 +1,10 @@
+{
+	"name" : "Gloves", 
+	"filter" :{  
+	},
+	"slot" : "arms",
+	"model" : "apparel/rgloves.stmd",
+	"icon" : "apparel/fk/kt_wrm",
+	"worldmodel" : "apparel/rgloves_w.stmd",
+	"worldmodelscale" : 0.03
+}

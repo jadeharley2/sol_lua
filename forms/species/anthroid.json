@@ -2,4 +2,49 @@
 	"type":"species",
 	"#include":"forms/species/anthro.json",
 	"name":"anthroid",  
+	"tags":["robotic"],
+	"@variables" :
+	{
+		"saccadic":0, 
+		"needs":{ 
+			"list":{
+				"energy" : {
+					"value":0,
+					"rate":0.001, 
+					"replenishaction":{
+						"range":1,
+						"time":40,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				}, 
+				"entertainment" : {
+					"value":0,
+					"rate":0.01, 
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				}, 
+				"social" : {
+					"value":0,
+					"rate":0.01, 
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+			}, 
+			"delta":{
+				"social":1
+			}
+		},
+	}
 }

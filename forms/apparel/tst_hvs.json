@@ -3,8 +3,7 @@
 	"filter" :{  
 	},
 	"slot" : "feet",
-	"model" : "apparel/tst_hvs.stmd",
-	"worldmodel" : "apparel/tst_hvs.json",
+	"model" : "apparel/tst_hvs.stmd", 
 	"worldmodelscale" : 0.014,
 	"hide":["toe","foot","calf"]
 }

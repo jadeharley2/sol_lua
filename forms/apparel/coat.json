@@ -1,0 +1,11 @@
+{
+	"name" : "Hat", 
+    "filter" :{ 
+    	"character" : ["vikna"],
+    },
+	"slot" : "torso",
+	"model" : "apparel/coat.stmd",
+	"icon" : "apparel/fk/hat0", 
+	"worldmodelscale" : 0.014,
+	"hide":["torso_bot","arm"],
+}

@@ -1,4 +1,4 @@
-﻿EVENT_CCOMMAND = 9999901
+EVENT_CCOMMAND = 9999901
 _AI_chat = {}
 hook.Add("chat.msg.received","airead",function(sender,text)  
 	if sender and text then
@@ -201,11 +201,11 @@ function ai:OnUpdate()
 	--MsgN("upd:",self)
 end 
 local phrases = {
-	agreement = {"хорошо", "ладно", "ок", "угу", "ага"},
+	agreement = {  "Ok"},--"Good","I'll do this",, ""
 }
 function ai:OpenMenu(ply)
 	if self.dialog then
-		self.dialog:Close()
+		self.dialog:Close() 
 		self.dialog = nil
 	end
 	if CLIENT and self.dialog == nil then
@@ -216,14 +216,14 @@ function ai:OpenMenu(ply)
 			ply:SendEvent(EVENT_LERP_HEAD,e)
 			--ply:EyeLookAtLerped(e)
 
-			local greettext= "Что тебе нужно?";
+			local greettext= "Need something?";
 			if not self.seen:Contains(ply) then
 				self.seen:Add(ply)
-				greettext = "Привет. ".. greettext
+				greettext = "Hello. ".. greettext
 				self:Mood(MOOD_SURPRISED,0.5,0.5)
 			else 
 				self:Mood(MOOD_HAPPY,0.5)
-				greettext = table.Random({"Aга?","Что тебе нужно?","М?","Да?"})
+				greettext = table.Random({"Yes?","Need something?","Hm?","Im listening"})
 			end
 			self.task = nil
 			self.target = ply
@@ -236,19 +236,19 @@ function ai:OpenMenu(ply)
 				p:Start(self,e:GetName())
 				
 				local main = {
-					{t="Как дела?",f=function(ai,dialog) 
-						dialog:Open("Нормально. А у тебя?",
+					{t="How are you?",f=function(ai,dialog) 
+						dialog:Open("Im fine. You?",
 						{
-							{t="Хорошо",f= function() dialog:Open("норм") self:Mood(MOOD_HAPPY,0.5) end},
-							{t="Средне",f= function() dialog:Open("хех") self:Mood(MOOD_NEUTRAL) end},
-							{t="Плохо",f= function() dialog:Open(":(") self:Mood(MOOD_SAD,0.5) end},
+							{t="Good",f= function() dialog:Open("That's good") self:Mood(MOOD_HAPPY,0.5) end},
+							{t="Ok",f= function() dialog:Open("*sigh*") self:Mood(MOOD_NEUTRAL) end},
+							{t="Bad",f= function() dialog:Open(":(") self:Mood(MOOD_SAD,0.5) end},
 						})
 						return true;
 					end},
 				}
 				if self.ftask then
 					main[#main+1] =
-					{t="Стой тут",f=function(ai,dialog) 
+					{t="Wait here",f=function(ai,dialog) 
 						ai.ftask = nil
 						if ai.ftask and ai.ftask.Abort then ai.ftask:Abort() end
 						e:SendEvent(EVENT_TASK_RESET)
@@ -259,16 +259,15 @@ function ai:OpenMenu(ply)
 					end}
 				else 
 					main[#main+1] =
-					{t="Иди за мной",f=function(ai,dialog) 
+					{t="Follow me",f=function(ai,dialog) 
 						if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
 						ai.ftask = true
 						e:SendEvent(EVENT_TASK_BEGIN,"follow",ai.target,2)
-						dialog:Open(table.Random(phrases.agreement))
-						MsgN('ads')
+						dialog:Open(table.Random(phrases.agreement)) 
 						return false
 					end}
 					main[#main+1] =
-					{t="гуляй",f=function(ai,dialog)  
+					{t="You can go",f=function(ai,dialog)  
 						if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
 						ai.ftask =true
 						e:SendEvent(EVENT_TASK_BEGIN,"wander")
@@ -279,7 +278,7 @@ function ai:OpenMenu(ply)
 				end
 				
 				main[#main+1] =
-				{t="подбери",f=function(ai,dialog)   
+				{t="Pick up",f=function(ai,dialog)   
 					dialog:Close()
 					
 					if e:PickupNearest() and CLIENT then
@@ -290,28 +289,28 @@ function ai:OpenMenu(ply)
 
 				if e:GetVehicle() then 
 					main[#main+1] =
-					{t="встань",f=function(ai,dialog)   
+					{t="Stand up",f=function(ai,dialog)   
 						dialog:Close() 
 						e:SendEvent(EVENT_EXIT_VEHICLE)
 						return false
 					end}  
 				else
 					main[#main+1] =
-					{t="используй",f=function(ai,dialog)   
+					{t="Use this",f=function(ai,dialog)   
 						local ner = NEARESTUSEABLE(e)
 						if ner then
 							dialog:Close() 
 							USE(e)
 						else
-							dialog:Open("Тут ничего нет")
+							dialog:Open("What?")
 						end
 						return false
 					end}
 				end  
 				
 				main[#main+1] =
-				{t="покажи что у тебя есть",f=function(ai,dialog)   
-					dialog:Open(table.Random({"Вот","Смотри"})) 
+				{t="Show your inventory",f=function(ai,dialog)   
+					dialog:Open(table.Random({"Look","Here"})) 
 					actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
 					actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
 					actor_panels.OpenInventory(e,ALIGN_TOP,nil)
@@ -548,7 +547,7 @@ end
 				self:VocSyl(syl,power)
 				index = index +1
 			end
-			if(input.len(text)<index) then
+			if(cstring.len(text)<index) then
 				hook.Remove(EVENT_GLOBAL_PREDRAW,"vocalize_")
 			end
 		end)
@@ -604,7 +603,7 @@ end
 				
 				m:SetFlexValue(flex_lip_open,(tab[9] or 0) * pow)
 			end
-		end
+		end  
 	end
 
 	MOOD_NEUTRAL 	= 0
@@ -671,13 +670,13 @@ if CLIENT then
 	end
 	local findany = function(s,t)
 		for k,v in pairs(t) do
-			if input.find(s,v,1,true) then return true end
+			if cstring.find(s,v,1,true) then return true end
 		end
 		return false
 	end
 	local replany = function(s,t,r)
 		for k,v in pairs(t) do
-			s = input.replace(s,v,r)
+			s = cstring.replace(s,v,r)
 		end
 		return s
 	end

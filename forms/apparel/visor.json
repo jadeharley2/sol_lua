@@ -1,0 +1,10 @@
+{
+	"name" : "Hat", 
+    "filter" :{ 
+    	"character" : ["vikna"],
+    },
+	"slot" : "head.top",
+	"model" : "apparel/visor.stmd",
+	"icon" : "apparel/fk/hat0", 
+	"worldmodelscale" : 0.014,
+}

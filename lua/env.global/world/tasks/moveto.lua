@@ -108,7 +108,7 @@ function task:Step()
 			self.times22 = times
 			self.lastdist = dist
 
-			actor:Hook(EVENT_GLOBAL_PREDRAW,'fratate',function()
+			actor:Hook(EVENT_GLOBAL_PREDRAW,'frotate',function()
 				local rad, polar,elev = actor:GetHeadingElevation(-dnorm)
 				local drf = polar/ 3.1415926 * 180 
 				actor:TRotateAroundAxis(Up, (-drf)/1000)--/rdist) 
@@ -158,6 +158,6 @@ function task:Step()
 	end
 end
 function task:OnEnd(result)
-	self.ent:UnHook(EVENT_GLOBAL_PREDRAW,'fratate')
+	self.ent:UnHook(EVENT_GLOBAL_PREDRAW,'frotate')
 	--self.ent.controller = self._storedcon
 end

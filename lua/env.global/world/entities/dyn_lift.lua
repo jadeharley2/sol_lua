@@ -1,4 +1,7 @@
 
+DeclareEnumValue("event","SELECT_OPTION",			3322001) 
+DeclareEnumValue("tag","SELECTION_MENU",			3322002) 
+ 
 local tBorder = LoadTexture("gui/menu/edge.png")
 local tBorder2 = LoadTexture("gui/menu/edge2.png")
 local tCorner = LoadTexture("gui/menu/corner.png")
@@ -161,7 +164,7 @@ ENT.usetype = "select destination"
 
 function ENT:Init()  
 	self:SetSizepower(1)
-	
+	self:AddTag(TAG_SELECTION_MENU)
 	local space = self:AddComponent(CTYPE_PHYSSPACE)  
 	space:SetGravity(Vector(0,-9.5,0))
 	--local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
@@ -372,81 +375,91 @@ function ENT:Think()
 		end
 	end
 end
-
-function ENT:OpenMenu(user)
-	if not self.menuUser then
-		self.menuUser = user
-		local net = self.network 
-		
-		local wn = self.wn
-		wn = nil
-		if not wn then
-			local totalh = 0
-			local prev = false
-			local prevc =0
-			local btns = {}
-			for k,v in pairs(net) do
-				if isnumber(k) and v.s and k ~= net.currentid then
-					if v.c then
-						if v.c ~= prevc then
-							prevc = v.c
-							prev = nil
-						end
-					end
-					local btn = panel.Create("button") 
-					btn:SetText(v.n)
-					btn:SetSize(70,20)
-					if prev then
-						btn:AlignTo(prev,ALIGN_BOTTOM,ALIGN_TOP)  
-					else
-						btn:SetPos(prevc*140-300,25) 
-					end
-					btn.OnClick = function()
-						self:SendEvent(EVENT_LIFT_CALL,v.id,user) 
-						local w = self.wn
-						if w then
-							w:SetVisible(false) 
-							w:Close() 
-							BLOCK_MOUSE = false
-							self.menuUser = nil
-						end
-					end
-					prev = btn
-					totalh = totalh + 25
-					btns[#btns+1] = btn
-				end
-			end
-			wn = NewDialogPanel("Select destination",totalh+20)
-			BLOCK_MOUSE = true
-			for k,v in pairs(btns) do
-				wn:Add(v)
-				wn:SetupStyle(v)
-			end
-			local ebtn = panel.Create("button") 
-			ebtn:SetText("X")
-			ebtn:SetSize(25,25) 
-			ebtn:SetTextAlignment(ALIGN_CENTER)
-			ebtn:AlignTo(wn,6,6)   
-					wn:SetupStyle(ebtn)
-					ebtn:SetTexture(tButton32)
-			ebtn.OnClick = function() 
-				local w = self.wn
-				if w then
-					w:SetVisible(false) 
-					w:Close()
-					BLOCK_MOUSE = false
-					self.menuUser = nil
-				end
-			end
-			wn:Add(ebtn)
-			self.wn = wn
+function ENT:GetOptions()
+	local t= {}
+	local net = self.network 
+	for k,v in pairs(net) do
+		if isnumber(k) and v.s and k ~= net.currentid then
+			t[#t+1] = v.id
 		end
-		wn:SetPos(0,0) 
-		wn:SetVisible(true) 
-		wn:Show() 
-		MsgN("NW: ",wn)
 	end
-	
+	return t
+end 
+function ENT:OpenMenu(user)
+	if CLIENT and user==LocalPlayer() then
+		if not self.menuUser then
+			self.menuUser = user
+			local net = self.network 
+			
+			local wn = self.wn
+			wn = nil
+			if not wn then
+				local totalh = 0
+				local prev = false
+				local prevc =0
+				local btns = {}
+				for k,v in pairs(net) do
+					if isnumber(k) and v.s and k ~= net.currentid then
+						if v.c then
+							if v.c ~= prevc then
+								prevc = v.c
+								prev = nil
+							end
+						end
+						local btn = panel.Create("button") 
+						btn:SetText(v.n)
+						btn:SetSize(70,20)
+						if prev then
+							btn:AlignTo(prev,ALIGN_BOTTOM,ALIGN_TOP)  
+						else
+							btn:SetPos(prevc*140-300,25) 
+						end
+						btn.OnClick = function()
+							self:SendEvent(EVENT_LIFT_CALL,v.id,user) 
+							local w = self.wn
+							if w then
+								w:SetVisible(false) 
+								w:Close() 
+								BLOCK_MOUSE = false
+								self.menuUser = nil
+							end
+						end
+						prev = btn
+						totalh = totalh + 25
+						btns[#btns+1] = btn
+					end
+				end
+				wn = NewDialogPanel("Select destination",totalh+20)
+				BLOCK_MOUSE = true
+				for k,v in pairs(btns) do
+					wn:Add(v)
+					wn:SetupStyle(v)
+				end
+				local ebtn = panel.Create("button") 
+				ebtn:SetText("X")
+				ebtn:SetSize(25,25) 
+				ebtn:SetTextAlignment(ALIGN_CENTER)
+				ebtn:AlignTo(wn,6,6)   
+						wn:SetupStyle(ebtn)
+						ebtn:SetTexture(tButton32)
+				ebtn.OnClick = function() 
+					local w = self.wn
+					if w then
+						w:SetVisible(false) 
+						w:Close()
+						BLOCK_MOUSE = false
+						self.menuUser = nil
+					end
+				end
+				wn:Add(ebtn)
+				self.wn = wn
+			end
+			wn:SetPos(0,0) 
+			wn:SetVisible(true) 
+			wn:Show() 
+			MsgN("NW: ",wn)
+		end
+	end
 end
 
 function ENT:SetPathNetwork(pn) 
@@ -612,5 +625,8 @@ ENT._typeevents = {
 		if self.graph:CurrentState()=="idle" then
 			self:OpenMenu(user)
 		end
+	end},
+	[EVENT_SELECT_OPTION] = {networked = false, f = function(self,user,id)   
+		self:SendEvent(EVENT_LIFT_CALL,id,user) 
 	end},
 }  

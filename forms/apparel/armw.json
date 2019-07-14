@@ -5,7 +5,7 @@
 	},
 	"slot" : "arms",
 	"model" : "apparel/arm.stmd",
-	"icon" : "apparel/fk/kt_wrm",
-	"worldmodel" : "apparel/arm.json",
-	"worldmodelscale" : 0.014 
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03 
 }

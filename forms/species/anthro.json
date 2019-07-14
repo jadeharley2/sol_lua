@@ -10,7 +10,7 @@
 	},
 	"equipment":{
 		"slots" : ["skin","head.top","head.eyes","head.mouth","neck","torso",
-			"torso.top","tail", "legs", "arms","torso.under.top","torso.under.bot","feet" ],
+			"torso.top","tail", "legs", "arms","hands","torso.under.top","torso.under.bot","feet" ],
 		"groups" : { 
 			"head" : ["head.top","head.eyes","head.mouth"], 
 			"torso.under" : ["torso.under.top","torso.under.bot"], 
@@ -58,6 +58,79 @@
 					"nomovement":true
 				}
 			},   
+		},
+		"needs":{ 
+			"list":{
+				"sleep" : {
+					"value":0,
+					"rate":0.001,
+					"replenishaction":{
+						"range":1.5,
+						"time":30,
+						"use":true,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"fatigue": {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1.5,
+						"time":10,
+						"use":true,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"hunger" : {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"thirst" :{
+					"value":0,
+					"rate":0.02,
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"entertainment" :{
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":2,
+						"time":20,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"social" : {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1.2,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+			}, 
+			"delta":{
+				"social":1
+			}
 		},
 
 		"environment":{ 

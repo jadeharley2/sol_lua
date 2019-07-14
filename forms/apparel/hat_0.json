@@ -5,7 +5,6 @@
     },
 	"slot" : "head.top",
 	"model" : "apparel/hat1.stmd",
-	"icon" : "apparel/fk/hat0",
-	"worldmodel" : "apparel/hat1.json",
+	"icon" : "apparel/fk/hat0", 
 	"worldmodelscale" : 0.014,
 }

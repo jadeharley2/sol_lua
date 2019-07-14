@@ -100,6 +100,26 @@ end
 function component:HasSlot(slot) 
 	return self.list[slot] ~= nil
 end
+function component:HasItem(formid) 
+	local lst = {}
+	for k,v in SortedPairs(self.list) do
+		if v.data and v.data.parameters and v.data.parameters.form == formid then
+			return v.data
+		end
+	end 
+	return false
+end
+function component:UnequipId(formid) 
+	local p = forms.GetForm("apparel",formid) or forms.GetForm(formid)
+
+	local lst = {}
+	for k,v in SortedPairs(self.list) do
+		if v.data and v.data.parameters and v.data.parameters.form == p then 
+			return true
+		end
+	end 
+	return false
+end
 function component:GetSlots()  
 	local lst = {}
 	for k,v in SortedPairs(self.list) do
@@ -252,7 +272,7 @@ function component:_equip(data,nosave)
 
 				local eqslt = self.list[slot]  
 				if eqslt then
-					local e = SpawnBP(model,node,scale,seed)
+					local e = SpawnBP(model,node,scale,GetFreeUID())
 					if e then
 						eqslt.data = data 
 						eqslt.entity = e
@@ -401,6 +421,19 @@ function component:_equip(data,nosave)
 							for k,v in pairs(formdata.effects) do 
 								Ability()
 							end
+						end
+						if formdata.viseffects then
+							--debug.Delayed(100,function()
+								for k,v in pairs(formdata.viseffects) do 
+									local targ = false
+									if v.target =='self' then targ = e
+									elseif v.target =='owner' then targ = node
+									end
+									if targ then
+										disstest(targ,v.args)
+									end
+								end
+							--end)
 						end
 						self:_updatevisibility()
 					end

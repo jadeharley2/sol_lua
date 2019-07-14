@@ -1,0 +1,14 @@
+{    
+	"shader" :  "shader.model",
+	"g_MeshTexture" : "textures/stdif/Facade01_col.jpg",   
+	"g_MeshTexture_n" : "textures/stdif/Facade01_nrm.jpg",    
+	//"g_MeshTexture_e" : "textures/stdif/Facade01_e.png",    
+	"emissionTint":[2,1.7,1], 
+	"rimfadeEmission":[1,1],
+	"nodarkenspec" : 0,
+	"base_specular_power":1,
+	"mul_specular_power":1, 
+	"base_specular_intencity": 0.01,
+	"mul_specular_intencity":1,      
+	
+}

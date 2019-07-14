@@ -129,6 +129,7 @@ table.Merge = function(from,to,deep)
 			end
 		end
 	end 
+	return to
 end
 
 --take @count@ elements from start

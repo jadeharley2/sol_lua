@@ -5,8 +5,7 @@
 	},
 	"slot" : "feet",
 	"model" : "apparel/boots.stmd",
-	"icon" : "apparel/fk/boots0",
-	"worldmodel" : "apparel/boots.json",
+	"icon" : "apparel/fk/boots0", 
 	"worldmodelscale" : 0.014,
 	"hide":["foot","toe"]
 }

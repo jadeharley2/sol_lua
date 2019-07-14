@@ -2,8 +2,7 @@
 	"name" : "flashlight",
 	"slot" : "arms",
 	"model" : "apparel/arm.stmd",
-	"icon" : "flashlight",
-	"worldmodel" : "apparel/arm.json",
+	"icon" : "flashlight", 
 	"worldmodelscale" : 0.014, 
 	"subs" : [
 		{ 

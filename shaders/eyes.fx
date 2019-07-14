@@ -163,7 +163,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float3 envmap =  EnvSampleLevel(reflectcam,0.99);//
 		//+envmap*0.4
 	float3 fbr = ambmap;//+brightness3*TBrightness;
-	output.emission = emission*float4(emissive_mul,1);
+	output.emission = emission*float4(emissive_mul,1)+result*float4(ambmap,1);
 	output.color = result;//*float4(fbr,1);//float4((brightness3+ambmap*0.5)*TBrightness*4,1);// + float4(0,0,eyeId,0);
 	output.normal = float4(input.norm*0.5+0.5,1);
 	output.depth = input.pos.z;///input.pos.w; 

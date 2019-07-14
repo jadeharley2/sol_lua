@@ -97,7 +97,7 @@ function ENT:Spawn()
 	--ents.CreateWorldLink(subspace1,subspace2,matrix.Identity())
 	--ents.CreateWorldLink(subspace2,subspace3,matrix.Identity())
 
-	ents.CreateWorldLink(space,betaspace,matrix.Scaling(Vector(1,1,1)))
+	--ents.CreateWorldLink(space,betaspace,matrix.Scaling(Vector(1,1,1)))
 
 	local trigger1 = ents.Create('dyn_trigger') 
 	trigger1:SetSeed(33221101)
@@ -106,7 +106,7 @@ function ENT:Spawn()
 	trigger1:SetSizepower(4)
 	trigger1:Spawn()   
 	trigger1.OnTouchEnd = function(s,n)
-		self:LD1(n)
+	--	self:LD1(n)
 	end
 	local trigger2 = ents.Create('dyn_trigger') 
 	trigger2:SetSeed(33221102)
@@ -115,7 +115,7 @@ function ENT:Spawn()
 	trigger2:SetSizepower(4)
 	trigger2:Spawn()  
 	trigger2.OnTouchEnd = function(s,n)
-		self:LD2(n)
+	--	self:LD2(n)
 	end
 
 	--local cmap = SpawnSO("cassie.stmd",betaspace,Vector(0,0,0),0.75*0.04) 

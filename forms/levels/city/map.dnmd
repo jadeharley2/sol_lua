@@ -3,7 +3,8 @@
 	"matpath" : [ 
 		"models/dyntest/mat", 
 		"textures/debug", 
-		"textures/stdif"
+		"textures/stdif", 
+		"forms/levels/city"
 	],   
 	"variables" : {  
 		"$rbsize":3,
@@ -21,12 +22,14 @@
 				"blue":"water",
 				"facade":"fac1",
 				"facade2f":"fac2",
-				"frame":"fac3",
+				//"frame":"fac3",
+				//"frgrid":"frgrid",
+				"finsert":"finsert",
+				"frame":"finsert", 
 				"frgrid":"frgrid",
-				"finsert":"finsert"
 			},  
-			"mode":"materials", 
-			"file": "map.obj"
+			"mode":"materials",  
+			"file": "city.obj"
 		},         
 		
 		{"type": "material","in": ["city"],
@@ -60,12 +63,12 @@
 			"mul" : [1,1,1], 
 			"mode":"face", 
 		},     
-		//{"type":"tesselate","from":["grass"] ,"out" :"grass", 
-		//	"joinall":true,
-		//	"times" : 1  ,    
-		//	"mode"  : "smooth",
-		//	"amount":1
-		//},   
+		{"type":"tesselate","from":["grass"] ,"out" :"grass", 
+			"joinall":true,
+			"times" : 1   ,    
+			"mode"  : "linear",
+			"amount":1, 
+		},   
 		//{"type":"inset", "from":"roads","out": "roads",
 		//	"amount": 1,
 		//	"extrude": 5
@@ -81,7 +84,7 @@
 		{"type": "material","in": ["a"],
 			"material":"redarrow", 
 		}, 
-		{"type": "material","in": ["b"],
+		{"type": "material","in": ["b"],  
 			"material":"greenarrow", 
 		}, 
 		{"type": "material","in": ["c"],
@@ -95,7 +98,7 @@
 			"scale" : 5 ,
 			"shift" : [0.0 ,0.0], 
 			"mul" : [1,1,1],
-			"mode":"face"
+			"mode":"face","ortogonal":true
 		},     
 
 		{"type": "split", "from": "b","out":["b1","brd"],
@@ -175,7 +178,7 @@
 			"scale" : 5 ,
 			"shift" : [0.0 ,0.0], 
 			"mul" : [1,1,1],
-			"mode":"face"
+			"mode":"face","ortogonal":true
 		},        
 		{"type": "split", "from": "fac*","out":["fbr","%","fbr"],
 			"size" :[2,0,2],        
@@ -199,31 +202,11 @@
 					"stype":"constant",  
 					"side":"fourth" 
 				},
-
-				{"type": "random","from": "f1","var":"f1","out": ["foth","fenter","foth"],
-					"variants":[
-						[
-							{"type": "split", "from": "f1","out":["foth","fenter","foth"],
-								"size":[0,4,0],       
-								"stype":"constant",  
-								"side":"first"
-							},
-						], 
-						[
-							{"type": "split", "from": "f1","out":["fenter","foth"],
-								"size":[4,0],       
-								"stype":"constant",  
-								"side":"first"
-							},
-						], 
-						[
-							{"type": "split", "from": "f1","out":["foth","fenter"],
-								"size":[0,4],       
-								"stype":"constant",  
-								"side":"first"
-							},
-						], 
-					]
+ 
+				{"type": "split", "from": "f1","out":["foth","fenter","foth"],
+					"size":[0,4,0],       
+					"stype":"constant",  
+					"side":"first"
 				},
 
 				{"type":"inset", "from":"fenter","out": ["fe1","fpr"],
@@ -248,11 +231,48 @@
 		{"type": "frotate","in": ["fac2"], 
 			"align":[0,1,0]
 		},
+		{"type": "frotate","in": ["foth"], 
+			"align":[0,1,0],"add":1
+		},
 		{"type": "split", "from": "fac2","out":"fac2l",
 			"steps" :"@($l/4)",        
 			"stype":"constant",  
 			"side":"first"
+		}, 
+		{"type":"material","in":["fac2l","foth"],"material":"windows_blue"}, 
+		  
+		{"type": "random","from": ["fac2l","foth"],"var":"fpn","out": "fpr",
+			"variants":[  
+				[
+					{"type":"material","in":"fpn","material":"windows_yellow"}, 
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0 ,0],"mul" : [1,1,1],"mode":"face","ortogonal":true},   
+					{"type":"union","from":"fpn","out":"fpr"}
+				],
+				[ 
+					{"type":"material","in":"fpn","material":"windows_yellow"}, 
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0 ,0.2],"mul" : [1,1,1],"mode":"face","ortogonal":true},  
+					{"type":"union","from":"fpn","out":"fpr"}
+				],
+				[
+					{"type":"material","in":"fpn","material":"windows_yellow"}, 
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0 ,0.4],"mul" : [1,1,1],"mode":"face","ortogonal":true},  
+					{"type":"union","from":"fpn","out":"fpr"}
+				],
+				[
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0 ,0.6],"mul" : [1,1,1],"mode":"face","ortogonal":true},  
+					{"type":"union","from":"fpn","out":"fpr"}
+				],
+				[
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0 ,0.8],"mul" : [1,1,1],"mode":"face","ortogonal":true},  
+					{"type":"union","from":"fpn","out":"fpr"}
+				],
+				[
+					{ "type" : "uvmap", "in":"fpn","edge" : 2,"scale" : 42 ,"shift" : [0.0625 ,0.2],"mul" : [1,1,1],"mode":"face","ortogonal":true},  
+					{"type":"union","from":"fpn","out":"fpr"}
+				]
+			]
 		},
+		/*
 		{"type": "union","from": "fac2l","out":"foth"},
 		{"type": "split", "from": "foth","out":"fpanels",
 			"steps" :"@($l/4)",        
@@ -278,6 +298,7 @@
 				[{"type":"union","from":"fpn","out":"fpr"}]
 			]
 		},
+		*/
 		////FRGRID
 
 		
@@ -293,7 +314,7 @@
 			"scale" : 5 ,
 			"shift" : [0.0 ,0.0], 
 			"mul" : [1,1,1],
-			"mode":"face"
+			"mode":"face","ortogonal":true
 		},        
 		{"type": "split", "from": "frgrid","out":["fbr","%","fbr"],
 			"size" :[1,0,1],        

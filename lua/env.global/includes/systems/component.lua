@@ -3,7 +3,7 @@
 local COM = {}
  
  
-  
+    
 
 components = DefineClass("Component","component","lua/env.global/world/components/",COM)
    

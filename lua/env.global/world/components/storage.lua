@@ -62,7 +62,7 @@ component._typeevents = {
 	[EVENT_ITEM_DROP] = {networked = true, f = function(self,id) 
 		local e = self:TakeItem(id)
 		if e then
-			e:Spawn()
+			--e:Spawn()
 			if SERVER then
 				MsgN(self:GetNode(),"item dropped at",id)
 				network.AddNodeImmediate(e)

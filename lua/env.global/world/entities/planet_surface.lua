@@ -121,7 +121,7 @@ function ENT:Think()
 			--for k=1,10 do
 			local p = ((r:NextVector()-Vector(0.5,0.5,0.5))*Vector(1,0.3,1)):Normalized()
 			--p = Vector(1,0,0)
-			self:LightninStrike(p*0.917)--0.915
+			--self:LightninStrike(p*0.917)--0.915
 			--end
 		end
 	end

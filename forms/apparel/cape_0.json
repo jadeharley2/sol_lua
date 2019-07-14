@@ -5,7 +5,6 @@
 	},
 	"slot" : "torso.top",
 	"model" : "apparel/cape.stmd",
-	"icon" : "apparel/fk/cape0",
-	"worldmodel" : "apparel/cape.json",
+	"icon" : "apparel/fk/cape0", 
 	"worldmodelscale" : 0.014,
 }

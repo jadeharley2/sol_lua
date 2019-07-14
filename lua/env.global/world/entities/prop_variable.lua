@@ -442,7 +442,16 @@ ENT.editor = {
 	name = "Prop Variable",
 	properties = {
 		type = {text = "type",type="parameter",valtype="string",key=VARTYPE_FORM,reload=true}, 
-		 
+		reload = {text = "reload form",type="action",action = function(ent)  
+			ent:SetUpdating(false)
+			ent:_despawn()
+			ent._secondbase=nil
+			for k,v in pairs(ent:GetComponents()) do
+				ent:RemoveComponent(v)
+			end
+			ent:_spawn()
+			MsgN('te')
+		end},
 	},  
 	
 }

@@ -5,7 +5,6 @@
 	},
 	"slot" : "torso.under.bot",
 	"model" : "apparel/ud_bot.stmd",
-	"icon" : "apparel/fk/kt_wrm",
-	"worldmodel" : "apparel/ud_bot.json",
+	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodelscale" : 0.014,
 }

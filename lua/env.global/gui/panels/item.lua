@@ -170,6 +170,35 @@ function PANEL:MouseClick(fid)
 		--		context[#context+1] = {text = "equip",action = function(i) ACT_USE(i) i:Refresh() end}
 		--	end
 		--end
+		if self.customactions then
+			local node = self.storage:GetNode()
+			local fenf = setmetatable({
+				storage = self.storage, 
+				node = node
+			},{__index = _G})
+			for k,v in pairs(self.customactions) do
+				local condvalue = true
+				if v.condition then
+					for k,v in pairs(v.condition) do
+						if v[1]=='if' then
+							condvalue = condvalue and node[v[2]]
+						elseif v[1]=='ifnot' then
+							condvalue = condvalue and (not node[v[2]]) 
+						end 
+					end
+				end
+				if condvalue then
+					local f,e1,e2,e3 = load(v.action,nil,nil,fenf)
+					if f and isfunction(f) then 
+						context[#context+1] = {text = v.text, action = function(item) 
+							pcall(f)
+						end}
+					else
+						MsgN(f,e1,e2,e3)
+					end
+				end
+			end
+		end
 		
 		ContextMenu(self,context)
 	end 
@@ -233,6 +262,7 @@ function PANEL:Set(slot,item,node)
 		else
 			self.amount:SetText("")
 		end 
+		self.customactions = data:Read("/parameters/actions")
 	else -- ability 
 		local title =  item.name 
 		local icon =  item.icon

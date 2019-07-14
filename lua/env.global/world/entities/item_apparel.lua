@@ -1,5 +1,7 @@
 
 
+DeclareEnumValue("variable","icon",					33210) 
+
 function ItemIA(type,seed,modtable)
 	local j = json.Read(type) 
 	if not j then return nil end 
@@ -13,41 +15,20 @@ function ItemIA(type,seed,modtable)
 			form = type,
 			icon = j.icon,
 			slot = j.slot,
-			seed = seed 
+			seed = seed,
+			actions = j.actions
 		}, 
 	}
 	if modtable then table.Merge(modtable,t,true) end
 	return json.ToJson(t)
 end
 
---function SpawnIA(type,ent,pos,seed)
---	local data = json.Read("forms/apparel/"..type..".json")
---	if data then
---		local e = ents.Create("item_apparel") 
---		e.slot = data.slot
---		e.info = data.name or type
---		e.icon = data.icon
---		e.data = data
---		e.skinmodel = data.model
---		e:SetName(data.name or type)
---		e:SetModel(data.worldmodel)
---		e:SetModelScale(data.worldmodelscale or 0.75)
---		e:SetSizepower(1)
---		e:SetParent(ent)
---		e:SetSeed(seed or 0)
---		e:SetPos(pos) 
---		if data.worldmaterials then
---			local bmatdir = data.worldbasematdir
---			for k,v in pairs(data.materials) do
---				local id = tonumber(k)
---				local mat = dynmateial.LoadDynMaterial(v,bmatdir)
---				e.model:SetMaterial(mat,id)
---			end
---		end
---		e:Spawn()
---		return e
---	end
---end
+function SpawnIA(type,ent,pos,seed)
+	local data = ItemIA("forms/apparel/"..type..".json",seed,{})
+	MsgN("data",data,type)
+	local e = ents.FromData(data,ent,pos)  
+	return e 
+end
 --function CreateIA(type,ent,pos,seed)
 --	if not seed or seed == 0 then error("seed is nil") end
 --	local data = json.Read("forms/apparel/"..type..".json")
@@ -100,17 +81,21 @@ function ENT:Init()
 end
 function ENT:LoadData()
 	local type = self:GetParameter(VARTYPE_FORM)
-	local data = json.Read("forms/apparel/"..type..".json")
+	local data = json.Read(type)
 	if data then
 		self.data = data 
 
-		e.slot = data.slot
-		e.info = data.name or type
-		e.icon = data.icon
-		e.skinmodel = data.model
+		self.slot = data.slot
+		self.info = data.name or type
+		self.icon = data.icon
+		self.skinmodel = data.model
 		if data.worldmodel then
-			self:SetParameter(VARTYPE_MODEL,data.worldmodel)
+			self:SetParameter(VARTYPE_MODEL,data.worldmodel) 
 			self:SetParameter(VARTYPE_MODELSCALE,data.worldmodelscale or 1) 
+		else
+			self:SetParameter(VARTYPE_MODEL,"models/clutter/misc/smallitembox.stmd") 
+			self:SetParameter(VARTYPE_MODELSCALE,0.06) 
+			
 		end
 	end
 end
@@ -135,7 +120,7 @@ function ENT:LoadModel()
 		local model_scale = self:GetParameter(VARTYPE_MODELSCALE) or 1
 		
 		local model = self.model
-		local world = matrix.Scaling(model_scale)-- * matrix.Rotation(-90,0,0)
+		local world = matrix.Scaling(model_scale) * matrix.Rotation(-90,0,0)
 		
 		local phys =  self.phys
 		local amul = 0.8
@@ -148,18 +133,21 @@ function ENT:LoadModel()
 		model:SetDepthStencillMode(DEPTH_ENABLED)  
 		model:SetBrightness(1)
 		model:SetFadeBounds(0,99999,0)  
+		MsgN("fas",model_file)
+		model:SetMatrix( world)
 		
-		
-		if(model:HasCollision()) then
-			phys:SetShapeFromModel(world * matrix.Scaling(1/amul) ) 
-		else
-			--phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
+		if phys then
+			if(model:HasCollision()) then
+				phys:SetShapeFromModel(world  ) 
+			else
+				--phys:SetShape(mdl,world * matrix.Scaling(1/amul) ) 
+			end
+			
+			
+			phys:SetMass(10) 
+			
+			--model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul )) 
 		end
-		
-		
-		phys:SetMass(10) 
-		
-		model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul ))
 	end
 end
 function ENT:Load()
@@ -169,9 +157,9 @@ function ENT:Load()
 end
 function ENT:Spawn() 
 	self:LoadData()
-	self.phys:SetMaterial("cloth") 
+	if self.phys then self.phys:SetMaterial("cloth") end
 	self:LoadModel() 
-	self.phys:SoundCallbacks()  
+	if self.phys then self.phys:SoundCallbacks() end 
 end
 function ENT:SetModel(mdl)
 	self:SetParameter(VARTYPE_MODEL,mdl) 

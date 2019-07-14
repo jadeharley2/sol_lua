@@ -6,7 +6,7 @@
 	"slot" : "legs",
 	"model" : "apparel/skl.stmd",
 	"icon" : "apparel/fk/kt_wrm", 
-	"worldmodel" : "apparel/skl.json",
-	"worldmodelscale" : 0.014,
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03,
 	"hide":["calf","foot"]
 }

@@ -48,13 +48,18 @@ local assettypes = {
 		actorD:AddTag(TAG_EDITORNODE)
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
-		actorD:Spawn()
-		actorD:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
+		actorD:Spawn() 
+		actorD:SetPos(wtr.Position)
 		return actorD 
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if not wtr or not wtr.Hit then return nil end
+
 		local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
 		ap:AddTag(TAG_EDITORNODE)
+		ap:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
 		return ap
 	end},
 	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)

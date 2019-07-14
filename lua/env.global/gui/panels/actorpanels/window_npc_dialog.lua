@@ -11,7 +11,7 @@ function PANEL:Start(npc,title)
 	local pcol = Vector(0,0,0)
 	if not self.bclose then
 		local bclose = panel.Create("button")
-		bclose:SetText("Назад")
+		bclose:SetText("Close")
 		bclose:SetSize(70,20)
 		bclose:SetPos(0,-200+25)
 		self:SetupStyle(bclose)
@@ -25,7 +25,7 @@ function PANEL:Start(npc,title)
 		
 		
 		local label = panel.Create()
-		label:SetText("Привет. Что тебе нужно?")
+		label:SetText("text")
 		label:SetTextAlignment(ALIGN_CENTER)
 		label:SetSize(400,20)
 		label:SetPos(0,100) 
@@ -54,11 +54,13 @@ function PANEL:Open(text,options)
 		local opt = {}
 		for k,v in pairs(options) do
 			local bopt = panel.Create("button")
-			bopt:SetText(v.t)
+			bopt:SetText(string.lower( v.t))
 			bopt:SetSize(300,20)
 			bopt:SetPos(0,100-k*50)
 			self:SetupStyle(bopt)
 			bopt.OnClick = function()  
+				MsgN("dasdas",v.t)
+				LocalPlayer():Say(v.t)
 				if not v.f(self.npc,self) then
 					debug.Delayed(900,function() input.setMousePosition( GetViewportSize()  / 2 ) end)
 					debug.Delayed(1000,function() self:Close() BLOCK_MOUSE = false  end)

@@ -20,7 +20,7 @@ function AI_META:React()
 				end     
 			else       
 				if not condition(self,self.ent,tag) then istrue = false end
-			end       
+			end        
 			if istrue then
 				if istable(action) then
 					for c,c2 in pairs(action) do

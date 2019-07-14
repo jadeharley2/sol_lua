@@ -6,6 +6,6 @@
 	"slot" : "neck",
 	"model" : "apparel/collar.stmd",
 	"icon" : "apparel/fk/collar",
-	"worldmodel" : "apparel/collar.json",
-	"worldmodelscale" : 0.014,
+	"worldmodel" : "apparel/collar_w.stmd",
+	"worldmodelscale" : 0.03,
 }

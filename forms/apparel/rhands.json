@@ -1,0 +1,10 @@
+{
+	"name" : "Hands", 
+	"filter" :{  
+	},
+	"slot" : "hands",
+	"model" : "apparel/rhands.stmd",
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodelscale" : 0.03,
+	"hide":["hand"]
+}

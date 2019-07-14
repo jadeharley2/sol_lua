@@ -5,7 +5,6 @@
 	},
 	"slot" : "neck",
 	"model" : "apparel/scarf.stmd",
-	"icon" : "apparel/fk/scarf",
-	"worldmodel" : "apparel/scarf.json",
+	"icon" : "apparel/fk/scarf", 
 	"worldmodelscale" : 0.014,
 }

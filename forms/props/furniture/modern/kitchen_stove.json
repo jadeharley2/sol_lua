@@ -5,4 +5,11 @@
 	"scale" : 0.05,
 	"rotation" : [0,0,0],
 	
+	"variables":{ 
+		"needs" : {
+			"delta":{
+				"hunger" : 1
+			}
+		}
+	}
 }
