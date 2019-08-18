@@ -46,5 +46,8 @@
 				"social":1
 			}
 		},
+	},
+	"components":{
+		"antr_systems":{}
 	}
 }

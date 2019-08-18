@@ -983,6 +983,43 @@ function NEARESTUSEABLE(actor)
 			end
 		end
 	end
+	if not nearestent then
+		for k,v in pairs(ents) do
+			for kk,vv in pairs(v:GetChildren()) do
+				if vv~=actor and vv:HasTag(TAG_USEABLE) then 
+					local edist = actor:GetDistanceSq(vv)   
+					if edist<ndist and edist>0 then
+						nearestent = vv
+						ndist = edist
+					end
+				end
+			end
+		end
+	end
+	if not nearestent and par and par:GetParent() then 
+		for k,v in pairs(par:GetParent():GetChildren()) do
+			if v~=par then
+				if v~=actor and v:HasTag(TAG_USEABLE) then 
+					local edist = actor:GetDistanceSq(v)   
+					if edist<ndist and edist>0 then
+						nearestent = v
+						ndist = edist
+					end
+				end
+
+				for kk,vv in pairs(v:GetChildren()) do
+					if vv~=actor and vv:HasTag(TAG_USEABLE) then 
+						local edist = actor:GetDistanceSq(vv)   
+						if edist<ndist and edist>0 then
+							nearestent = vv
+							ndist = edist
+						end
+					end
+				end 
+			end
+		end
+	end
+	MsgN("n",nearestent)
 	return nearestent
 end
 function USE_ITEM(actor,item)  
@@ -1065,6 +1102,7 @@ function OBJ:SwitchToFirstperson(actor)
 	local cam = GetCamera()
 	local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
 	cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+	hook.Call("controller.actor.view","first")
 end
 function OBJ:SwitchToThirdperson(actor)
 	--if HIDE_CHAR_IN_FIRST_PERSON() then
@@ -1088,6 +1126,7 @@ function OBJ:SwitchToThirdperson(actor)
 	local cam = GetCamera()
 	local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
 	cam:SetAng(Vector(tgt,-90-self.ctargetval,0)) 
+	hook.Call("controller.actor.view","third")
 end
 function OBJ:HandleCameraMovement(actor)
 	

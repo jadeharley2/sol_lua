@@ -1,0 +1,152 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"forms/levels/city"
+	],   
+	
+	"variables" : {   
+		"$fmodel":"fp3_2.obj",
+		"$fzmul":-0.8,
+		"$fflip":false,
+    },
+    "input_operations": [
+		{"type": "rectangle","out": "base",
+			"l":20,
+			"w":"@(1*25+10)"//85
+		}, 
+
+		{ "type" : "uvmap", "in":["base"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},
+		{"type": "split","from":"base","out": ["in_wall","in_f_c","in_f_a","in_f_a","in_wall"],
+			"size" :[0.4,0,3,7,0.4],    
+			"stype":"constant",  
+			"side":"second"
+		}, 
+		{"type":"split","from":"in_f_a","out":["in_f_b1","in_f_a","in_f_b2"],
+			"size" :[0,4,0],    
+			"stype":"constant",  
+			"side":"first"
+		},  
+		{"type":"split","from":"in_f_c","out":["in_f_c1","in_f_c2"],
+			"size" :[0,0],    
+			"stype":"constant",  
+			"side":"first"
+		},  
+		{"type": "merge","from": "in_f_b1","out": "in_f_b1"},
+		{"type": "merge","from": "in_f_b2","out": "in_f_b2"},
+
+
+
+
+
+    ],
+	"operations" : [  
+	//	{"type": "frotate","in": ["in_f_b1"],"add":3},  
+		{"type": "substitute","from": "base","out": {
+				"floor":"floor2",
+				"walls":"walls2", 
+				"doors":"doors",
+				"ceil":"ceiling2",
+				"windowwall":"windowwall",
+				"wabove":"wabove",
+				
+				"hall":"hall",
+				"bathroom":"bathroom",
+				"hallway":"hallway",
+				"kitchen":"kitchen"
+			},
+			"obj":"$fmodel",
+			"zscale": "$fzmul",//3.2/4
+			"flip":"$fflip"  
+		},   
+		
+		{"type":"select","in":[
+			"walls2@hallway","walls2@hall","walls2@kitchen","windowwall"],"out":"test01",
+			"mode":"dotnormalsegments",
+			"normal":[0,0,1],
+			"directed":true,
+			"invert":true 
+		}, 
+		{"type":"extrude","from":"test01", "out":"test01",
+			"shift":[0,0,0.1]
+		}, 
+		{"type":"material","in": "test01", "material":"wood_01.json" },
+		{"type":"inset","from": ["test01"],"out":["floor","floor"],
+			"amount":0,
+			"extrude":0.02, 
+			"nolimits":true
+		},
+		{"type":"union","from":"wabove","out":"walls2"},
+
+		{"type":"material","in": ["walls2","windowwall"], "material":"wpaper_01.json"},
+		{"type":"material","in": "floor2", "material":"lam_01.json" },
+		{"type":"material","in": ["floor2@bathroom","walls2@bathroom"], "material":"tile_01.json" },
+		{"type":"material","in": ["windowwall@kitchen","walls2@kitchen","walls2@hallway"], "material":"wpaper_02.json" },
+		{"type":"material","in": "ceiling2", "material":"ceil_01.json" },
+
+		{"type":"union","from":"walls2","out":"floor"},
+		{"type":"union","from":"floor2","out":"floor"},
+		{"type":"union","from":"ceiling2","out":"ceiling"},
+
+
+		{ "type" : "uvmap", "in":["windowwall"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},
+		
+
+		//windowwall
+		{"type":"split","from":"windowwall","out":
+			["walls","windowwall","windowwall","walls"],
+			"size" :[0.6,0,0,0.6],    
+			"stype":"constant",  
+			"side":"second"
+		},   
+		{"type":"inset","from": "windowwall","out":["windowwall","wallsnu"],
+			"inamount":[2,1],
+			"shift":[-0.4,0],
+		},
+		{"type":"inset","from": "windowwall","out":["*","wframe"],
+			"amount":0,
+			"extrude":-0.1 
+		},
+
+		//frames
+		{"type":"material","in":  ["doors","wframe"], "material":"wood_01.json" },
+		{"type":"inset","from": ["doors","wframe"],"out":["floor","floor"],
+			"amount":0,
+			"extrude":0.04, 
+			"nolimits":true
+		}, 
+
+		{ "type" : "uvmap", "in":["walls","doors"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+		{ "type" : "uvmap", "in":["floor"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+		{"type": "remove","in": ["hall","hallway","bathroom","kitchen"],"names":true},
+	]   
+} 

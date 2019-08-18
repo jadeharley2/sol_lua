@@ -19,7 +19,7 @@ function ItemPV(type,seed,modtable)
 	if modtable then table.Merge(modtable,t,true) end
 	return json.ToJson(t)
 end
-function SpawnPV(type,ent,pos,ang,seed)
+function InitPV(type,ent,pos,ang,seed,e)
 	local j = json.Read(type) 
 	if not j then return nil end
 	
@@ -34,7 +34,7 @@ function SpawnPV(type,ent,pos,ang,seed)
 	if j.rotation then r = r + JVector(j.rotation) end
 	if tags.random_ry then r = r + Vector(0,math.random(-1800,1800)/10,0) end
 	
-	local e = ents.Create("prop_variable") 
+	e = e or ents.Create("prop_variable") 
 	e.data = j
 	e.tags = tags
 	e.collonly = false 
@@ -42,6 +42,7 @@ function SpawnPV(type,ent,pos,ang,seed)
 	e:SetSizepower(1)
 	e:SetParent(ent)
 	e:SetPos(pos) 
+	e:SetAng(r) 
 	if seed then
 		e:SetSeed(seed)
 	end
@@ -49,10 +50,11 @@ function SpawnPV(type,ent,pos,ang,seed)
 	--	e:SetParameter(VARTYPE_MODELDATA, json.ToJson(j.modeldata))
 	--end
 	--e:SetModel(j.model,j.scale,false)
+	return e
+end
+function SpawnPV(type,ent,pos,ang,seed)
+	local e = InitPV(type,ent,pos,ang,seed)
 	e:Spawn()
-	e:SetAng(r)
-	
-	
 	return e
 end
 
@@ -61,36 +63,23 @@ function ENT:Init()
 	
 end
 function ENT:Load()
-	local compo = self:GetComponents()
-	for k,v in pairs(compo) do
-		self:RemoveComponent(v)
-	end
-
-	self:PreLoadData(true)
-	if not self.data.luatype then
-		local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
-		local phys = self:AddComponent(CTYPE_PHYSOBJ)  
-		local model = self:AddComponent(CTYPE_MODEL)  
-		self.model = model
-		self.coll = coll 
-		self.phys = phys
-
-		local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
-		local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
-		if modelval then 
-			self:SetModel(modelval,modelscale)
-		else
-			--MsgN("no model specified for static model at spawn time")
-		end 
-	end
-	self:LoadData()
+--	MsgN("load",self)
+	--local compo = self:GetComponents()
+	--for k,v in pairs(compo) do
+	--	self:RemoveComponent(v)
+	--end
+	self:Construct()
 end  
 function ENT:Spawn()  
+--	MsgN("spawn",self)
+	self:Construct()
+end
+function ENT:Construct()
 	self:PreLoadData()
 	if not self.data.luatype then
-		local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
-		local phys = self:AddComponent(CTYPE_PHYSOBJ)  
-		local model = self:AddComponent(CTYPE_MODEL)  
+		local model = self.model or self:AddComponent(CTYPE_MODEL)  
+		local coll = self.coll or self:AddComponent(CTYPE_STATICCOLLISION)  
+		local phys = self.phys or self:AddComponent(CTYPE_PHYSOBJ)  
 		self.model = model
 		self.coll = coll 
 		self.phys = phys
@@ -100,7 +89,16 @@ function ENT:Spawn()
 			local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
 			local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
 			if modelval then 
-				self:SetModel(modelval,modelscale)
+				if self.data.procedural then
+					self:SetupModelParams()
+					model:SetMatrix( matrix.Scaling(modelscale) * matrix.Rotation(-90,0,0)) 
+					local procgen = self:AddComponent(CTYPE_PROCGEN)  
+					self.procgen = procgen
+					procgen:SetModel(modelval)
+					self:SetupPhysics(matrix.Scaling(modelscale) * matrix.Rotation(-90,0,0),modelscale)
+				else
+					self:SetModel(modelval,modelscale)
+				end
 			else
 				--error("no model specified for static model at spawn time")
 			end
@@ -131,9 +129,32 @@ local function ButtonUse(s,user)
 	--end
 	if s.wireio then
 		s.wireio:SetOutput("out")
-	end
+	end 
 	if CLIENT then
 		s:EmitSound("events/lamp-switch.ogg",1)
+	end
+end
+local function DoorUse(s,user)  
+	MsgN(s,user,s.flatnum)
+	if s.flatnum then
+		if s.doorstate  then
+			s.doorstate =false
+			s.model:ResetAnimation("close")
+			s.coll:Enable(true)
+			s:Delayed("f",1000,function()
+				s:GetParent().procgen:Collapse(s.flatnum)
+			end)
+		else
+			s:GetParent().procgen:Expand(s.flatnum)
+			s.doorstate =true
+			s:Delayed("f",50,function()
+				s.model:ResetAnimation("open")
+				s.coll:Enable(false)
+			end)
+		end
+	end
+	if CLIENT then
+	--	s:EmitSound("door/door_wood_close.ogg",1)
 	end
 end
 local function ContainerUse(self,user)
@@ -226,7 +247,9 @@ function ENT:PreLoadData(isLoad)
 	local lt = data.luatype
 	if lt and isstring(lt) then  
 		local meta = ents.GetType(lt)
+		MsgN(lt,meta)
 		if meta then
+			MsgN(lt,meta)
 			--for k,v in pairs(meta) do
 			--	if k ~= 'Spawn' and k ~= 'Despawn' then
 			--		self[k] = v 
@@ -345,11 +368,24 @@ function ENT:LoadData()
 			wio:AddInput("off",LampInputs)
 		end
 	end 
-	if j.button then
+	if j.button then 
 		self.usetype = "press button"
 		self:AddTag(TAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ButtonUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
+		local wio = self:AddComponent(CTYPE_WIREIO)
+		wio:AddOutput("out")
+	end
+	if j.door then 
+		self.usetype = "use door"
+		self:AddTag(TAG_USEABLE)
+		self:AddEventListener(EVENT_USE,"a",DoorUse)
+		self:SetNetworkedEvent(EVENT_USE,true)
+		self:SetUpdating(true)
+		self.model:SetDynamic()
+		self.model:SetAnimation('idle')
+		self.model:ForceUpdate()
+		self.doorstate = false
 		local wio = self:AddComponent(CTYPE_WIREIO)
 		wio:AddOutput("out")
 	end
@@ -386,28 +422,18 @@ function ENT:LoadData()
 		self.model:SetMaxRenderDistance(j.viewdistance)
 	end
 end
- 
-function ENT:SetModel(mdl,scale,norotation) 
-	scale = scale or 1
-	norotation = norotation or false
+function ENT:SetupModelParams()
 	local model = self.model
-	local world = matrix.Scaling(scale)
-	if not norotation then
-		world = world * matrix.Rotation(-90,0,0)
-	end
-	
-	self:SetParameter(VARTYPE_MODEL,mdl)
-	self:SetParameter(VARTYPE_MODELSCALE,scale)
-	
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel(mdl)   
 	model:SetBlendMode(BLEND_OPAQUE) 
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
 	model:SetBrightness(1)
 	model:SetFadeBounds(0,9e20,0)  
-	model:SetMatrix(world) 
+end
+function ENT:SetupPhysics(world,scale)	
 	if self.collonly ~= NO_COLLISION then 
+		local model = self.model
 		local data = self.data
 		if data.phys then
 			local phys =  self.phys 
@@ -435,6 +461,22 @@ function ENT:SetModel(mdl,scale,norotation)
 			end
 		end
 	end
+end
+function ENT:SetModel(mdl,scale,norotation) 
+	scale = scale or 1
+	norotation = norotation or false
+	local model = self.model
+	local world = matrix.Scaling(scale)
+	if not norotation then
+		world = world * matrix.Rotation(-90,0,0)
+	end
+	
+	self:SetParameter(VARTYPE_MODEL,mdl)
+	self:SetParameter(VARTYPE_MODELSCALE,scale)
+	self:SetupModelParams()
+	model:SetModel(mdl)   
+	model:SetMatrix(world) 
+	self:SetupPhysics(world,scale)	
 	self.modelcom = true
 end 
 

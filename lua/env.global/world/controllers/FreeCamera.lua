@@ -40,7 +40,35 @@ function OBJ:MouseWheel()
 	end
 	self.mouseWheelValue = mWVal 
 end
+function OBJ:MouseDown()
+	if self.mouseactive then
+		if(input.leftMouseButton()) then
+			self:SelectNode(function(n)
+				if n and n:HasTag(TAG_USEABLE) then
+					USE(GetCamera(),n)
+				end	
+				--MsgN("nod:",n)
+			end)
+		end
+	end
+end
 
+function OBJ:SelectNode(callback)
+
+	local vsz = GetViewportSize()
+	local vmp = input.getInterfaceMousePos()
+	local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
+
+	render.DCISetEnabled(true)
+	render.DCIRequestRedraw()
+	debug.Delayed(50,function()
+		local drw = render.DCIGetDrawable(vsr)  
+		render.DCISetEnabled(false)
+		if drw then
+			callback(drw:GetNode())
+		end 
+	end)
+end
 function OBJ:KeyDown(key)  
 	if input.GetKeyboardBusy() then return nil end
 	if input.KeyPressed(KEYS_D1) then

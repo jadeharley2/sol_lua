@@ -1,0 +1,27 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"forms/levels/city"
+	],   
+	"variables" : {   
+	},
+	"operations" : [ 
+		
+		{ "type" : "obj","out" : {
+				"white":"white", 
+			},  
+			"mode":"materials",   
+			"file": "sst_in.obj"
+		},         
+		{"type": "material","in": "white",
+			"material":"rock01",
+			"smooth":false
+		},    
+		 
+		
+	
+	]   
+} 

@@ -60,8 +60,8 @@ end
 
 ENT.slot = "neck"
 function ENT:Init()  
-	local phys = self:AddComponent(CTYPE_PHYSOBJ)  
-	local model = self:AddComponent(CTYPE_MODEL)  
+	local phys =  self:GetComponent(CTYPE_PHYSOBJ) or self:AddComponent(CTYPE_PHYSOBJ)  
+	local model = self:GetComponent(CTYPE_MODEL) or self:AddComponent(CTYPE_MODEL)  
 	self.model = model
 	self.phys = phys
 	self:SetSpaceEnabled(false)

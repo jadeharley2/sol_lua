@@ -1,0 +1,34 @@
+{
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"forms/levels/city"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+		"$floors":5,
+		"$sections":2,
+	},
+    "operations":[ 
+		{"type": "rectangle","out": "base",
+			"l":20,
+			"w":"@($sections*25+10)"//85
+		}, 
+		{"type": "material","in":  "base",
+			"material":"rock01",
+			"smooth":false
+		}, 
+		{"type": "flip","in":"base","out":"bottom"},
+		{"type":"inset","from": "bottom","out":["bottom","bsides"],
+			"amount":0,
+			"extrude":5
+		}, 
+
+    ]
+
+}

@@ -1,0 +1,164 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"forms/levels/city",
+		"textures/tile/road"
+	],   
+	"variables" : {  
+		"$rbsize":0.4,
+		"$rbheight":0.1,
+	},
+	"input_operations": [
+		{ "type" : "obj","out" : "roads",  
+			"mode":"materials",  
+			"file": "roadtest.obj",
+		},      
+	],
+	"operations" : [ 
+		
+
+		//////////////////////////////// ROADS 
+		{"type":"tilesplit", "in":"roads","out": ["*","*","c_roads","*","*"], 
+			"split":false
+		},
+		{"type": "tag","from": "c_roads","val":"rd2"},
+		
+
+		{"type":"tilesplit", "from":"roads","out": ["a","b","c","d"], 
+		},
+		{"type": "material","in": ["a"],
+			"material":"redarrow", 
+		}, 
+		{"type": "material","in": ["b"],  
+			"material":"greenarrow", 
+		}, 
+		{"type": "material","in": ["c"],
+			"material":"bluearrow", 
+		},  
+		{"type": "material","in": ["d"],
+			"material":"yellowarrow", 
+		},     
+		{ "type" : "uvmap", "in":["a","b","c","d"],
+			"edge" : 0,     
+			"scale" : 2.5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"mode":"face","ortogonal":true
+		},     
+
+		//side 
+		{"type": "split", "from": "b","out":["b1","brd","gcd" ],
+			"size" :["$rbsize"      ,0.05,0 ],//
+			"stype":"constant",  
+			"side":"second"
+		},
+		//{"type":"inset", "from":"brd","out": ["rd",["*","*","rsd","*"]],
+		//	"amount": 0,
+		//	"normal":[0,0,1],
+		//	"extrude": "-$rbheight"
+		//}, 
+		{"type":"extrude", "from":"brd","out": [["*","*","rsd","*"],"rd2"], 
+			"shift":[0,"-$rbheight",0], 
+		},
+		{"type":"extrude", "from":"gcd","out": [["*"],"rd"], 
+			"shift":[0,"-$rbheight",0], 
+		}, 
+		// outer corner
+		{"type": "split", "from": "c","out":["c1","crd1"],
+		 	"size" :["$rbsize",0],      
+			"stype":"constant",   
+			"side":"second"
+		},
+		{"type": "split", "from": "c1","out":["c1","crd2"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type": "split", "from": "crd1","out":["crd11","crd12"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		
+		{"type": "frotate","in": "c1","add":3},
+		{"type":"extrude", "in":"c1","out": [["*"],"rd"], 
+			"shift":[0,"-$rbheight",0], 
+		},
+		{"type": "curve","from":"c1","out": ["crv1",["crv1_f","*"]],
+			"offset":0,
+			"every":2, 
+			"mul":0.5
+		},
+		{"type":"extrude", "from":"crv1","out": ["crv1_rd"], 
+			"shift":[0,"-$rbheight",0], 
+		},
+		{"type": "flip","from": "crv1_rd","out": "rsd"}, 
+		{"type":"extrude", "from":["crd12","crd11","crd2"],"out": [["*"],"rd"], 
+			"shift":[0,"-$rbheight",0], 
+		},
+
+ 
+		//inner corner
+		{"type": "split", "from": "a","out":["a1","a2"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"second"
+		},
+		{"type": "split", "from": "a2","out":["a1","ard"],
+			"size" :["$rbsize",0],      
+			"stype":"constant",  
+			"side":"first"
+		},
+		{"type": "frotate","in": "ard","add":1},
+		{"type": "curve","from":"ard","out": ["ard_c",["ard_f1","ard_f2"]],
+			"offset":0,
+			"every":2,
+			"mul":0.5,
+			"segments":10
+		},
+		{"type":"extrude", "from":"ard_c","out": ["rsd"], 
+			"shift":[0,"-$rbheight",0], 
+		},
+		{"type": "frotate","in": "ard_f2","add":2},
+		{"type":"extrude", "from":"ard_f1","out": [["*"],"rd"], 
+			"shift":[0,"-$rbheight",0], 
+		}, 
+
+		{"type": "material","in": "*","material":"concrete"},
+	 
+		{"type": "material","in": ["rd"],
+			"material":"asphalt",
+			"smooth":false
+		},    
+		{"type": "material","in": ["rd2"],
+			"material":"concrete",
+			"smooth":false
+		},   
+		{ "type" : "uvmap", "in":["rd2","rsd"],
+			"edge" : 0,     
+			"scale" : 2.5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+			"mode":"face","ortogonal":true
+		},  
+		  
+	//{"type": "union","from": "rd#rd2","out": "ascad"},
+	//{"type": "material","in": ["ascad"], 
+	//	"material":"road",
+	//	"smooth":false
+	//},   
+	//{ "type" : "uvmap", "in":["ascad"],
+	//	"edge" : 0,     
+	//	"scale" : 5 ,
+	//	"shift" : [0.0 ,0],//0.04], 
+	//	"mul" : [1,1,1],
+	//	"mode":"face","ortogonal":true
+	//},  
+		//{"type": "merge","from": "ascad","out": "ascad2"}, 
+		{"type": "stop"},
+	
+	]   
+} 

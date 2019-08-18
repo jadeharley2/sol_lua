@@ -1,0 +1,7 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "forms/levels/city/sst/sst_corridor.dnmd",
+	"scale" : 1,
+	"rotation" : [90,0,0],  
+}

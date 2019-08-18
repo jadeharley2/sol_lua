@@ -39,7 +39,9 @@ _metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self)
 	ne:CopyAng(self) 
 	ne:SetScale(self:GetScale())  
 	ne:Spawn()
-	
+	ne:CopyAng(ne) 
+	ne:SetPos(ne:GetPos())
+
 	self:CopyTags(ne)
 	self:CopyParameters(ne)
 	ne:SetSeed(uid) 

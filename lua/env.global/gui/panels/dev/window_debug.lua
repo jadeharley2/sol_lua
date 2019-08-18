@@ -15,6 +15,7 @@ function PANEL:Init()
 		{"REC STOP",function() r:Stop() end},
 		{"REC PLAY",function() r:Play() end},
 		{"REC PLAYLOOP",function() r:PlayLooped() end},
+		{"FIX CONTROLLER",function() LocalPlayer().controller = nil SetController('actor') end},
 	}
 	self.clist = {self,inner,self.mv,self.bc}
 	for k,v in pairs(structure) do

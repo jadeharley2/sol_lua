@@ -1,0 +1,20 @@
+{
+	"group" : "building",
+	"tags" : [],
+	"model" : "forms/levels/city/facade_gen_test.dnmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+    "procedural":true,
+    "structure":{
+        "outside":{
+            "links":["section"]
+        },
+        "section":{
+            "model":"",
+            "links":["flat"]
+        },
+        "flat":{
+            "model":""
+        }
+    }
+}

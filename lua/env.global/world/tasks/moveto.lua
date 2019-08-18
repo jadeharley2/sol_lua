@@ -37,7 +37,6 @@ function task:OnBegin()
 end 
 function task:Step() 
 
-
 	self.ttt = self.ttt -1
 	if self.ttt<0 then
 		local actor = self.ent

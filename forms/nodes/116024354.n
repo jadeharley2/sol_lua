@@ -1,0 +1,80 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000012,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000012,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.92132985591888, 3.97512865066528, -28.9537544250488, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard02.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/cupboard02.json"
+		},
+		"flags" : ["useable", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000016,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000016,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [2.17329835891724, 3.94869375228882, -24.5807609558105, "vec3"],
+			"rotation" : [0, -0.352274209260941, 0, 0.935896813869476, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/table01.json"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000017,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000017,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [1.89953005313873, 4.66316795349121, -24.5047855377197, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "clutter/lab/lamp_a.stmd",
+			"modelscale" : 0.03,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/clutter/lab/lamp_a_blue.json"
+		},
+		"flags" : ["editornode"]
+	}
+]

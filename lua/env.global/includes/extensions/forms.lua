@@ -17,17 +17,18 @@ function forms.LoadForm(form)
 end
 
 function forms.Spawn(form,parent,arguments) 
+	arguments = arguments or {} 
 	local aparts = string.split(form,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
-	MsgN(aparts[1],loctype)
+--	MsgN(aparts[1],loctype)
 	if aparts[1]=='prop' then 
-		local fn = forms.GetForm('prop',loctype)
+		local fn = forms.GetForm('prop',loctype) 
 		return SpawnPV(fn,parent,
 			arguments.pos or Vector(0,0,0),
 			arguments.ang or Vector(0,0,0),
 			arguments.seed or 0)
 	elseif aparts[1]=='character' then 
-
+ 
 		local actorD = ents.Create("base_actor")
 		actorD:SetSizepower(1000)
 		actorD:SetParent(parent)
@@ -50,6 +51,7 @@ function forms.Spawn(form,parent,arguments)
 	end
 	--for k,v in pairs(arguments)
 end
+CreateFORM = forms.Spawn
 
 function ItemRES(type)
 	local j = json.Read(type) 

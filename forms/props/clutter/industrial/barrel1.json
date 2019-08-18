@@ -1,0 +1,12 @@
+{
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "clutter/industrial/barrel1.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 10,
+	"physmaterial":"barrel" 
+	//"icon" : "lab/book",
+	
+}

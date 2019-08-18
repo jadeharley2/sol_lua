@@ -1,0 +1,16 @@
+{
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "clutter/industrial/container1.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 1000,
+	"modmaterial" :  [{
+			"matColors0" : [238,238,238,255],
+		}
+	],
+	"physmaterial":"barrel" 
+	//"icon" : "lab/book",
+	
+}

@@ -16,7 +16,7 @@ function viseffect.Update()
 
 end
 
-local dissolve = {}
+local dissolve = dissolve or {}
 function dissolve:Start(node,targs)
     self.node = node
     self.targs = targs
@@ -51,13 +51,17 @@ end
 function dissolve:Update()
     local time = self.time +0.01
     self.time = time
-
+    if self.ustart then--error in prev loop
+        return false
+    end
+    self.ustart=true
     ModModelsMaterials(self.models,{ 
         noiseclipedge=time 
     },true,true)
     ModModelsMaterials(self.tmodels,{ 
         noiseclipedge=-time
     },true,true)
+    self.ustart=false
 
     return time>1
 end

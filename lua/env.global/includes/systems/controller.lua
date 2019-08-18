@@ -72,6 +72,12 @@ function SetController(name)
 				            
 				global_controller = ts
 				MsgN("Controller changed to ",  ts._name)
+				
+				if prev then
+					hook.Call("controller.changed",prev._name, ts._name)
+				else
+					hook.Call("controller.changed",nil, ts._name)
+				end
 			else                         
 				MsgN("Controller change to ",  ts._name, " is failed, revert initiated.") 
 				

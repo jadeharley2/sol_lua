@@ -103,3 +103,6 @@ function ENT:Think()
 		self:Despawn()
 	end
 end
+console.AddCmd("explode",function()
+	SpawnExplosion(LocalPlayer(),Vector(0,0,0),1)
+end)

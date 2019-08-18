@@ -11,7 +11,7 @@ function PANEL:Init()
 	
 	local back = panel.Create() 
     back:SetTexture(testtexture) 
-	back:SetPos(0,0)
+	back:SetPos(0,0) 
 	back:SetSize(299,8)
 	back:SetColor(Vector(0.6,0.6,0.6)/3)
 	

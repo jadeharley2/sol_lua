@@ -30,8 +30,8 @@ local function RemoveHook(obj, funcname)
 	obj["_r_"..funcname] = nil
 end
 
-local rdtlist = {
-"Jump","Move","Stop","Attack","TRotateAroundAxis",
+local rdtlist = {--"Move",
+"Jump","Stop","Attack","TRotateAroundAxis",
 "SetEyeAngles","SetCrouching",
 "Throttle","Turn","Turn2","SendEvent","WeaponFire"}
  
@@ -47,6 +47,18 @@ function meta_recorder:Start()
 	for k,v in pairs(rdtlist) do
 		CrtEventHook(self.ent,v,self)
 	end 
+	 
+	local realfn = self.ent['Move']
+	local cparent = self.ent:GetParent()
+	self.ent['Move'] = function(e,...)
+		local nparent = e:GetParent()
+		if nparent~=cparent then
+			self:AddEvent('SetParent',nparent)
+			cparent = nparent
+		end
+		self:AddEvent('Move',...)
+		return realfn(e,...)
+	end
 	 
 	local realSetVehicle = self.ent["SetVehicle"]
 	self.ent["SetVehicle"] = function(e,v,...)
@@ -85,6 +97,7 @@ function meta_recorder:Stop()
 	for k,v in pairs(rdtlist) do
 		RemoveHook(self.ent,v)
 	end  
+	RemoveHook(self.ent,'Move')
 	self.ent["SetVehicle"] = nil
 	hook.Remove(EVENT_GLOBAL_PREDRAW, "recorder.play")
 	hook.Remove("event.use","asd")
@@ -103,7 +116,7 @@ function meta_recorder:Play()
 	local cid = 1
 	hook.Add(EVENT_GLOBAL_PREDRAW, "recorder.play", function() 
 		local time = CurTime() -  self.starttime
-		MsgN("recorder.time ",time) 
+		--MsgN("recorder.time ",time) 
 		local ct=true 
 		while ct do
 			ct = false
@@ -185,3 +198,19 @@ function Recorder(ent)
 	setmetatable(recorder,meta_recorder)
 	return recorder
 end
+
+
+u:Close()
+
+u =  gui.FromTable({type='valuebar', 
+		_sub_bar = {color= {0,1,1}},
+		Value = 50
+	})
+ 
+u:Show()  
+hook.Add(EVENT_GLOBAL_PREDRAW,"test343",function()
+	u:Think() 
+end)
+debug.DelayedTimer(100,100,10,function()
+	u:SetValue(u:GetValue()-1)   
+end)  

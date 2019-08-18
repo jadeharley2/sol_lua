@@ -121,6 +121,7 @@ function ENT:UpdatePos()
 	local c = GetCamera()  
 	---local cc = self.cc
 	local rc = self.rcamera
+	if not rc then return nil end
 	---local rp = self.rparam 
 	---c:UpdateWorld()
 	---

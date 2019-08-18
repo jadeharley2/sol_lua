@@ -1,0 +1,328 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"forms/levels/city"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+		"$floors":5,
+		"$sections":2,
+    },
+    "input_operations": [
+		{"type": "rectangle","out": "base",
+			"l":20,
+			"w":"@(1*25+10)"//85
+		}, 
+    ],
+	"operations" : [  
+		{"type": "material","in":  "base",
+			"material":"rock01",
+			"smooth":false
+		},
+		{"type": "set",
+			"$flat_index":0
+		},
+		//sections
+        {"type": "foreach","from": "base","var":"in_fsection","out": 
+            ["floor","ceiling","walls","doors","wallsnu"],"operations":[ 
+                {"type":"inset","from": "in_fsection","out":["in_ffloor","*"],
+                    "amount":0,
+                    "extrude":0 
+                },
+                //{"type": "union","in":"in_base","out":"in_firstfloor"},
+                {"type":"inset","in": "in_ffloor","out":["in_ffloor","*"],
+                    "amount":0,
+                    "extrude":4,
+                    "times":"@($floors-1)",
+                    "savecenter":true 
+                },
+                
+                //floors
+                {"type": "foreach","from": "in_ffloor","var":"in_floor","out": 
+                    ["floor","ceiling","walls","doors","wallsnu"],"operations":[ 
+					{"type": "split","from":"in_floor","out": ["in_wall","in_f_c","in_f_a","in_f_a","in_wall"],
+						"size" :[0.4,0,3,7,0.4],    
+						"stype":"constant",  
+						"side":"first"
+					}, 
+					{"type":"split","from":"in_f_a","out":["in_f_b1","in_f_a","in_f_b2"],
+						"size" :[0,4,0],    
+						"stype":"constant",  
+						"side":"first"
+					},  
+					{"type":"split","from":"in_f_c","out":["in_f_c1","in_f_c2"],
+						"size" :[0,0],    
+						"stype":"constant",  
+						"side":"first"
+					},  
+					{"type": "merge","from": "in_f_b1","out": "in_f_b1"},
+                    {"type": "merge","from": "in_f_b2","out": "in_f_b2"},
+                    
+				//{"type":"inset","from": ["in_f_a","in_f_b","in_f_c"],"out":["%","*"],
+				//	"amount":0.1,  
+				//},
+				//{"type":"inset","from": ["in_f_a","in_f_b","in_f_c"],"out":["ceiling","walls"],
+				//	"amount":0, 
+				//	"extrude":-0.3,  
+				//},
+		
+				//{"type": "substitute","from": "in_f_b2","out": {"rooms":"zu1" },
+				//	"obj":"fp_o1.obj"     
+				//}, 
+				//{"type":"flip","from":"zu1","out":"floor"},
+		
+				//{"type":"flip","in":"floor","out":"ceiling"},
+		
+					{"type": "merge","from": "in_f_a","out": "in_f_a"},
+					{"type": "frotate","in": ["in_f_a"],"add":3}, 
+					{"type": "substitute","from": "in_f_a","out": {
+							"floor":"floor",
+							"walls":"walls",
+							"doors":"cdoors",
+							"doors2":"cdoors2",
+							"ceil":"ceiling",
+							"pr_down":"pr_down",
+							"pr_up":"pr_up",
+							"windowwall":"windowwall2",
+							"fdoors":"fdoors",
+						},
+						"obj":"fp3_1.obj",
+						"zscale": -0.8//3.2/4
+					},   
+					 
+					{"type":"inset","in": ["pr_down"],"out":["*","pr_dwalls"],
+						"amount":0, 
+						"extrude":-0.8 
+					}, 
+					{ "type" : "uvmap", "in":["pr_dwalls","windowwall","windowwall2"],
+						"edge" : 1,     
+						"scale" : 5 ,
+						"shift" : [0.0 ,0.0], 
+						"mul" : [1,1,1], 
+						"mode":"face", 
+					}, 
+
+
+
+					//topfloor dependant
+					{"type":"union","from":"pr_dwalls","out":"walls"},
+					{"type":"branch","condition":"bool","value":"@($in_floor=$floors-1)",
+						"ontrue":[
+							{"type":"union","from":"pr_up","out":"ceiling"}
+						],
+						"onfalse":[
+							{"type":"branch","condition":"bool","value":"@($in_floor>0)",
+								"ontrue":[ 
+									{ 	"type" : "structure", "out" : "ceiling",
+										"path" : "staircase_2w.dnmd",
+										"in" : {"base":"pr_down"},         
+										"$height" : 4,
+										"$step.height" : 0.18, 
+										"$path.width" : 2,
+									},        
+								] 
+							}
+							//{"type":"union","from":"pr_down","out":"ceiling"}
+						]
+					},
+					//bottomfloor dependant
+					{"type":"branch","condition":"bool","value":"@($in_floor>0)",
+						"ontrue":[ 
+							{"type":"set",
+								"$flat_index":"@($flat_index+1)", 
+							},   
+							//windowwall2
+							{"type":"inset","from": "windowwall2","out":["windowwall2","wallsnu"],
+								"amount":[0.35,0.5,2.1,0.5], 
+								"extrude":0,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":0, 
+								"extrude":-0.6  
+							}, 
+							{"type":"split","from":"windowwall2","out":
+								["*","walls","*"],
+								"size" :[0,0.3,0],    
+								"stype":"constant",  
+								"side":"second"
+							},  
+							
+							//frames          
+							{"type":"select","in":"cdoors","out":"door_place",
+								"mode":"dotnormal",
+								"normal":[0,0,-1]
+							}, 
+							{"type":"select","in":"cdoors2","out":"door_place2",
+								"mode":"dotnormal",
+								"normal":[0,0,-1]
+							},
+							{"type": "object","from": "door_place",
+								"form":[ "prop.furniture.common.door" ],  
+								"random":true,  
+								"ang":[0,-90,0], 
+								//"angalign":[0,"major",0],
+								"offset":[-0.75,0,0],
+								"name":"@($in_fsection+'_'+$in_floor+'_'+$i)" ,
+								"variables":{
+									//"brightness":0.4, 
+									"brightness":"@($in_floor/10 * $in_floor)"
+								},
+								"script_variables":{
+									"flatnum":"@($in_fsection+'_'+$in_floor+'_'+$i)" 
+								}      
+							},      
+							{"type": "object","from": "door_place2",
+								"form":[ "prop.furniture.common.door" ],  
+								"random":true,  
+								"ang":[0,180,0], 
+								//"angalign":[0,"major",0],
+								"offset":[0,0,-0.75],
+								"name":"@($in_fsection+'_'+$in_floor+'_'+$i)" ,
+								"variables":{
+									//"brightness":0.4, 
+									"brightness":"@($in_floor/10 * $in_floor)"
+								},
+								"script_variables":{
+									"flatnum":"@($in_fsection+'_'+$in_floor+'_'+(3-$i))" 
+								}      
+								
+							},   
+							{"type":"union","from":"cdoors2","out":"cdoors"},
+ 
+							{"type":"material","in":  ["cdoors","wframe"], "material":"wood_01.json" },
+							{"type":"inset","from": ["cdoors","wframe"],"out":["floor","floor"],
+								"amount":0, 
+								"extrude":0.04, 
+								"nolimits":true
+                            }, 
+                             
+
+						    {"type": "frotate","in": ["in_f_b1"],"add":3}, 
+                            { 	"type" : "structure", "out" : "walls",
+                                "path" : "building_flat.dnmd",
+                                "isstaged":true, 
+                                "from" : {"base":"in_f_b1"},
+                                "$fmodel" : "fp3_2.obj",  
+								"$fzmul" : -0.8,  
+								
+								"$node_index":"@($in_fsection+'_'+$in_floor+'_'+0)" 
+                            }, 
+
+						    {"type": "frotate","in": ["in_f_b2"],"add":1}, 
+                            {"type":"flip","from":"in_f_b2","out":"in_f_b2"},
+                            { 	"type" : "structure", "out" : "walls",
+                                "path" : "building_flat.dnmd",
+                                "isstaged":true, 
+                                "from" : {"base":"in_f_b2"},
+                                "$fmodel" : "fp3_2.obj",  
+                                "$fzmul" : 0.8,
+								"$fflip" : true,
+								
+								"$node_index":"@($in_fsection+'_'+$in_floor+'_'+1)" 
+                            }, 
+
+                            
+						    {"type": "frotate","in": ["in_f_c1"],"add":3}, 
+                            { 	"type" : "structure", "out" : "walls",
+                                "path" : "building_flat.dnmd",
+                                "isstaged":true, 
+                                "from" : {"base":"in_f_c1"},
+                                "$fmodel" : "fp3_3.obj",   
+								"$fzmul" : -0.8,
+								
+								"$node_index":"@($in_fsection+'_'+$in_floor+'_'+2)" 
+                            }, 
+ 
+						    {"type": "frotate","in": ["in_f_c2"],"add":1}, 
+                            {"type":"flip","from":"in_f_c2","out":"in_f_c2"},
+                            { 	"type" : "structure", "out" : "walls",
+                                "path" : "building_flat.dnmd",
+                                "isstaged":true, 
+                                "from" : {"base":"in_f_c2"},
+                                "$fmodel" : "fp3_3.obj",  
+                                "$fzmul" : 0.8,
+								"$fflip" : true,
+								
+								"$node_index":"@($in_fsection+'_'+$in_floor+'_'+3)" 
+                            }, 
+						], 
+						"onfalse":[
+							{"type":"union","from":"fdoors","out":"walls"},
+							{"type":"split","from":"pr_down","out": ["pr_down","floor"],
+								"size" :[0,2],    
+								"stype":"constant",  
+								"side":"fourth"
+							},  
+							{"type":"split","from":"pr_down","out": ["pr_down","floor"],
+								"size" :[0,0],    
+								"stype":"constant",  
+								"side":"first"
+							},  
+							{"type":"union","in":"pr_down","out":"floor"},
+							//{"type": "frotate","in": ["pr_down"],"add":1}, 
+							{"type":"stairs","from":"pr_down","out":["walls","walls","rails"],
+								"side":3, 
+								"height":4, 
+								"stepheight":0.2, 
+								"leftside":true,
+								"rightside":false, 
+								"sidewidth":0.2,  
+								"sideheight": 0.1,  
+								"sidedepth": 0.4, 
+								"bottom":true,
+								"dropside":false,  
+							}, 
+							//doorwall
+							{"type":"inset","from": "windowwall2","out":["windowwall2","wallsnu"],
+								"inamount":[3,2], 
+								"shift":[-0.1,0],
+								"extrude":0,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":0, 
+								"extrude":-0.3,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":[0,0.2,0.2,0.2], 
+								"extrude":0,
+								"nolimits":true
+							}, 
+						]
+					}
+					//{"type":"union","from":"in_f_c","out":"floor"}
+				]},
+			],
+		},
+		
+
+	//	{"type":"inset","from": "ceiling","out":["ceiling",["walls"]],
+	//		"amount":0,
+	//		"extrude":-3
+	//	},  
+		
+		{ "type" : "uvmap", "in":["walls","doors"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+		{ "type" : "uvmap", "in":["floor"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+	]   
+} 

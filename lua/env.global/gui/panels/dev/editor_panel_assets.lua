@@ -4,11 +4,11 @@ local assettypes = {
 		--local j = json.Read(fulltype)--"forms/props/"..type..".json")
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
+
 		local pos = Vector(0,0,0)
 		if not wtr or not wtr.Hit then --return nil
-		else
-			pos = wtr.Position
-		end
+		else pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) end
+
 		local fpath = forms.GetForm("prop",type)
 		if fpath then
 		 	MsgN("spawnprop:",fpath)
@@ -24,8 +24,9 @@ local assettypes = {
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
 		if not wtr or not wtr.Hit then return nil end
-		
-		local p = SpawnParticles(node,type,wtr.Position,0,1,1)
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+
+		local p = SpawnParticles(node,type,pos,0,1,1)
 		if p then
 			p:AddTag(TAG_EDITORNODE)
 			p:SetSeed(GetFreeUID())
@@ -40,6 +41,7 @@ local assettypes = {
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
 		if not wtr or not wtr.Hit then return nil end
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 		  
 		
 		local actorD = ents.Create("base_actor")
@@ -49,23 +51,25 @@ local assettypes = {
 		actorD:SetSeed(GetFreeUID())
 		actorD:SetCharacter(type)
 		actorD:Spawn() 
-		actorD:SetPos(wtr.Position)
+		actorD:SetPos(pos)
 		return actorD 
 	end},
 	apparel = {directory = "forms/apparel/", spawn = function(type,node)
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
 		if not wtr or not wtr.Hit then return nil end
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 
 		local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
 		ap:AddTag(TAG_EDITORNODE)
-		ap:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
+		ap:SetPos(pos+Vector(0,1/node:GetSizepower(),0))
 		return ap
 	end},
 	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
 		if not wtr or not wtr.Hit then return nil end
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 		
 		local ap = ents.Create("planet_surface_mod")
 		ap:SetSizepower(100)
@@ -73,7 +77,7 @@ local assettypes = {
 		ap:AddTag(TAG_EDITORNODE)
 		ap:SetSeed(GetFreeUID())
 		ap:SetParameter(VARTYPE_CHARACTER,type)
-		ap:SetPos(wtr.Position+Vector(0,1/node:GetSizepower(),0))
+		ap:SetPos(pos+Vector(0,1/node:GetSizepower(),0))
 		ap:SetAng(Vector(90,0,0))
 		ap:Spawn()  
 		return ap
@@ -88,8 +92,9 @@ PANEL.specialtypes = {
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
 		if not wtr or not wtr.Hit then return nil end
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 		
-		local d1 = SpawnDT("door/door2.stmd",node,wtr.Position+Vector(0,1/node:GetSizepower(),0),Vector(0,0,0),0.05) 
+		local d1 = SpawnDT("door/door2.stmd",node,pos+Vector(0,1/node:GetSizepower(),0),Vector(0,0,0),0.05) 
 		d1:SetGlobalName("flatgrass.door")
 		d1:AddTag(TAG_EDITORNODE)
 		d1:SetSeed(GetFreeUID())

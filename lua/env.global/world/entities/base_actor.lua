@@ -586,6 +586,11 @@ function ENT:SetCharacter(id)
 				self.nomovement = nil
 				self.saccadic = nil
 				 
+				if self._spcom then
+					for k,v in pairs(self._spcom) do
+						self:RemoveComponent(v)
+					end
+				end
 
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
@@ -827,7 +832,13 @@ function ENT:Config(data,species,variation)
 			end 
 		end
 	end
-
+	if data.components then 
+		self._spcom = self._spcom or {}
+		for k,v in pairs(data.components) do
+			local nc = self:AddComponent(k) 
+			self._spcom[k] = nc
+		end
+	end
 	if data.model then
 		if isstring(data.model) then
 			self:SetModel(data.model) 
@@ -1527,6 +1538,7 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		--end
 		pcall(function() 
 			self.weld = constraint.Weld(phys,nil,Vector(0,0,0))
+			self.nocol = constraint.NoCollide(phys,nil)
 		end)
 		 
 	else
@@ -1536,7 +1548,9 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			if weld then
 				weld:Break()
 				self.weld = nil
-			end
+			end 
+			local phys = self.phys
+			constraint.NoCollide(phys,nil,true)
 			
 			local cmp = self.currentmountpoint
 			if cmp and cmp.attachment then

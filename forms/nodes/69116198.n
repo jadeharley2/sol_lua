@@ -1,0 +1,54 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000012,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000012,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [4.67663288116455, 4.00576591491699, -0.666942000389099, "vec3"],
+			"rotation" : [0, -0.999707221984863, 0, -0.0242014098912477, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/cupboard01.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/cupboard01.json"
+		},
+		"flags" : ["useable", "editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000017,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000017,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [2.85004615783691, 3.80602407455444, -0.873414516448975, "vec3"],
+			"rotation" : [0, 0, 0, 1, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "forms/levels/sdm/furn/table01.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "forms/props/furniture/sdm/table01.json"
+		},
+		"flags" : ["editornode"]
+	}
+]

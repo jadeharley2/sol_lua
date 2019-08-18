@@ -1,0 +1,9 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" :// "forms/levels/city/facade_gen_test.dnmd",//
+	"forms/levels/city/building.dnmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"procedural":true 
+}

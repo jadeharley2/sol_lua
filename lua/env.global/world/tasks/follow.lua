@@ -4,7 +4,7 @@ task.slot = "movement_upper"
 function task:Setup(target,minimal_distance,tpdistance) 
 	self.target = target
 	self.mindist = minimal_distance or 3  
-	self.tpdistance = tpdistance or 20 --m
+	self.tpdistance = tpdistance or 40 --m
 	
 	return true
 end 
@@ -22,8 +22,8 @@ function task:Step()
 		local dist = actor:GetDistance(target)
 		run = dist > 10 or target:IsRunning()
 
-		--MsgN(dist,tpd)
-		if false and dist>tpd then
+		--MsgN(dist,tpd) 
+		if false and (dist>tpd or dist==0) then
 			local ppos = target:GetPos() - target:Right()/actor:GetParent():GetSizepower()
 			actor:SetPos(ppos)
 		else

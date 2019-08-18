@@ -26,13 +26,13 @@ function ENT:LD1(n)
 	local u = n.phys:GetVelocity()*1
 
 	n:SetParent(self.betaspace)
-	n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
+	--n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
 end
 function ENT:LD2(n)
 	local u = n.phys:GetVelocity()*1
 
 	n:SetParent(self.space)
-	n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
+	--n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
 end
 function ENT:Spawn()
 
@@ -51,7 +51,7 @@ function ENT:Spawn()
 
 	local map = SpawnSO("map/map_01.stmd",space,Vector(0,0,0),0.75) 
 
-
+	map.coll:SetupNodeTransfer(space)
 
 
 	local betaspace = ents.Create()
@@ -68,34 +68,34 @@ function ENT:Spawn()
 	betaspace.space = bsspace
 
 	local bmap = SpawnSO("map/map_01.stmd",betaspace,Vector(0,0,0),0.75) 
-	bmap.model:Enable(false)
+	--bmap.model:Enable(false)
 
-	--local subspace1 = ents.Create()
-	--subspace1:SetLoadMode(1)
-	--subspace1:SetSeed(33221101)
-	--subspace1:SetParent(space) 
-	--subspace1:SetPos(Vector(-0.006,0,0))
-	--subspace1:SetSizepower(4)
-	--subspace1:Spawn()  
+--	local subspace1 = ents.Create()
+--	subspace1:SetLoadMode(1)
+--	subspace1:SetSeed(33221101)
+--	subspace1:SetParent(space) 
+--	subspace1:SetPos(Vector(-0.006,0,0))
+--	subspace1:SetSizepower(4)
+--	subspace1:Spawn()  
 --
-	--local subspace2 = ents.Create()
-	--subspace2:SetLoadMode(1)
-	--subspace2:SetSeed(33221102)
-	--subspace2:SetParent(betaspace) 
-	--subspace2:SetPos(Vector(-0.006,0,0))
-	--subspace2:SetSizepower(4)
-	--subspace2:Spawn() 
+--	local subspace2 = ents.Create()
+--	subspace2:SetLoadMode(1)
+--	subspace2:SetSeed(33221102)
+--	subspace2:SetParent(betaspace) 
+--	subspace2:SetPos(Vector(-0.006,0,0))
+--	subspace2:SetSizepower(4)
+--	subspace2:Spawn() 
+----
+--	local subspace3 = ents.Create()
+--	subspace3:SetLoadMode(1)
+--	subspace3:SetSeed(33221103)
+--	subspace3:SetParent(self) 
+--	subspace3:SetPos(Vector(0.5,0,0))
+--	subspace3:SetSizepower(4)
+--	subspace3:Spawn() 
 --
-	--local subspace3 = ents.Create()
-	--subspace3:SetLoadMode(1)
-	--subspace3:SetSeed(33221103)
-	--subspace3:SetParent(self) 
-	--subspace3:SetPos(Vector(0.5,0,0))
-	--subspace3:SetSizepower(4)
-	--subspace3:Spawn() 
-
-	--ents.CreateWorldLink(subspace1,subspace2,matrix.Identity())
-	--ents.CreateWorldLink(subspace2,subspace3,matrix.Identity())
+--	ents.CreateWorldLink(subspace1,subspace2,matrix.Identity())
+--	ents.CreateWorldLink(subspace2,subspace3,matrix.Identity())
 
 	--ents.CreateWorldLink(space,betaspace,matrix.Scaling(Vector(1,1,1)))
 
@@ -106,7 +106,7 @@ function ENT:Spawn()
 	trigger1:SetSizepower(4)
 	trigger1:Spawn()   
 	trigger1.OnTouchEnd = function(s,n)
-	--	self:LD1(n)
+		self:LD1(n)
 	end
 	local trigger2 = ents.Create('dyn_trigger') 
 	trigger2:SetSeed(33221102)
@@ -115,7 +115,7 @@ function ENT:Spawn()
 	trigger2:SetSizepower(4)
 	trigger2:Spawn()  
 	trigger2.OnTouchEnd = function(s,n)
-	--	self:LD2(n)
+		self:LD2(n)
 	end
 
 	--local cmap = SpawnSO("cassie.stmd",betaspace,Vector(0,0,0),0.75*0.04) 
@@ -334,7 +334,9 @@ function ENT:Spawn()
 		--debug.Delayed(3000,function()
 		--MsgN("RENDER!")
 		cbm:RequestDraw()
+		
 		--end) 
+		self:Hook("rcubemap","cbc",function() cbm:RequestDraw() end)
 	end
 	
 	--local aatest = ents.Create() 
@@ -488,7 +490,7 @@ function ENT:Spawn()
 	--end)
 
  
-
+	CreatePlayerspawn(space, Vector(0,0.0013627,0))
 
 	
 	local pn = {}

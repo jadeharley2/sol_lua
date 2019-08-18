@@ -210,224 +210,257 @@ function ai:OpenMenu(ply)
 	end
 	if CLIENT and self.dialog == nil then
 		local e = self.ent 
-		if e then
-			MsgN("asd",e,ply)
-			e:SendEvent(EVENT_LERP_HEAD,ply)
-			ply:SendEvent(EVENT_LERP_HEAD,e)
-			--ply:EyeLookAtLerped(e)
+		if e then 
+			if e:GetUpdating() then
+				e:SendEvent(EVENT_LERP_HEAD,ply)
+				ply:SendEvent(EVENT_LERP_HEAD,e)
+				--ply:EyeLookAtLerped(e)
 
-			local greettext= "Need something?";
-			if not self.seen:Contains(ply) then
-				self.seen:Add(ply)
-				greettext = "Hello. ".. greettext
-				self:Mood(MOOD_SURPRISED,0.5,0.5)
-			else 
-				self:Mood(MOOD_HAPPY,0.5)
-				greettext = table.Random({"Yes?","Need something?","Hm?","Im listening"})
-			end
-			self.task = nil
-			self.target = ply
-
-			if ply == LocalPlayer()  then
-				local p = panel.Create("window_npc_dialog")  
-				--p:Init(e:GetName(),300,500)
-				
-				p:SetPos(0,-400) 
-				p:Start(self,e:GetName())
-				
-				local main = {
-					{t="How are you?",f=function(ai,dialog) 
-						dialog:Open("Im fine. You?",
-						{
-							{t="Good",f= function() dialog:Open("That's good") self:Mood(MOOD_HAPPY,0.5) end},
-							{t="Ok",f= function() dialog:Open("*sigh*") self:Mood(MOOD_NEUTRAL) end},
-							{t="Bad",f= function() dialog:Open(":(") self:Mood(MOOD_SAD,0.5) end},
-						})
-						return true;
-					end},
-				}
-				if self.ftask then
-					main[#main+1] =
-					{t="Wait here",f=function(ai,dialog) 
-						ai.ftask = nil
-						if ai.ftask and ai.ftask.Abort then ai.ftask:Abort() end
-						e:SendEvent(EVENT_TASK_RESET)
-						dialog:Open(table.Random(phrases.agreement))
-						e:Stop()
-						e:ResetTM()
-						return false
-					end}
+				local greettext= "Need something?";
+				if not self.seen:Contains(ply) then
+					self.seen:Add(ply)
+					greettext = "Hello. ".. greettext
+					self:Mood(MOOD_SURPRISED,0.5,0.5)
 				else 
-					main[#main+1] =
-					{t="Follow me",f=function(ai,dialog) 
-						if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
-						ai.ftask = true
-						e:SendEvent(EVENT_TASK_BEGIN,"follow",ai.target,2)
-						dialog:Open(table.Random(phrases.agreement)) 
-						return false
-					end}
-					main[#main+1] =
-					{t="You can go",f=function(ai,dialog)  
-						if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
-						ai.ftask =true
-						e:SendEvent(EVENT_TASK_BEGIN,"wander")
-						dialog:Open(table.Random(phrases.agreement))
-						return false
-					end}
-					
+					self:Mood(MOOD_HAPPY,0.5)
+					greettext = table.Random({"Yes?","Need something?","Hm?","Im listening"})
 				end
-				
-				main[#main+1] =
-				{t="Pick up",f=function(ai,dialog)   
-					dialog:Close()
-					
-					if e:PickupNearest() and CLIENT then
-						GetCamera():SetParent(e) 
-					end
-					return false
-				end}  
+				self.task = nil
+				self.target = ply
 
-				if e:GetVehicle() then 
+				if ply == LocalPlayer()  then
+					local p = panel.Create("window_npc_dialog")  
+					--p:Init(e:GetName(),300,500)
+					
+					p:SetPos(0,-400) 
+					p:Start(self,e:GetName())
+					
+					local main = {
+						{t="How are you?",f=function(ai,dialog) 
+							dialog:Open("Im fine. You?",
+							{
+								{t="Good",f= function() dialog:Open("That's good") self:Mood(MOOD_HAPPY,0.5) end},
+								{t="Ok",f= function() dialog:Open("*sigh*") self:Mood(MOOD_NEUTRAL) end},
+								{t="Bad",f= function() dialog:Open(":(") self:Mood(MOOD_SAD,0.5) end},
+							})
+							return true;
+						end},
+					}
+					if self.ftask then
+						main[#main+1] =
+						{t="Wait here",f=function(ai,dialog) 
+							ai.ftask = nil
+							if ai.ftask and ai.ftask.Abort then ai.ftask:Abort() end
+							e:SendEvent(EVENT_TASK_RESET)
+							dialog:Open(table.Random(phrases.agreement))
+							e:Stop()
+							e:ResetTM()
+							return false
+						end}
+					else 
+						main[#main+1] =
+						{t="Follow me",f=function(ai,dialog) 
+							if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
+							ai.ftask = true
+							e:SendEvent(EVENT_TASK_BEGIN,"follow",ai.target,2)
+							dialog:Open(table.Random(phrases.agreement)) 
+							return false
+						end}
+						main[#main+1] =
+						{t="You can go",f=function(ai,dialog)  
+							if e:GetVehicle() then e:SendEvent(EVENT_EXIT_VEHICLE) end 
+							ai.ftask =true
+							e:SendEvent(EVENT_TASK_BEGIN,"wander")
+							dialog:Open(table.Random(phrases.agreement))
+							return false
+						end}
+						
+					end
+					
 					main[#main+1] =
-					{t="Stand up",f=function(ai,dialog)   
-						dialog:Close() 
-						e:SendEvent(EVENT_EXIT_VEHICLE)
-						return false
-					end}  
-				else
-					main[#main+1] =
-					{t="Use this",f=function(ai,dialog)   
-						local ner = NEARESTUSEABLE(e)
-						if ner then
-							dialog:Close() 
-							USE(e)
-						else
-							dialog:Open("What?")
+					{t="Pick up",f=function(ai,dialog)   
+						dialog:Close()
+						
+						if e:PickupNearest() and CLIENT then
+							GetCamera():SetParent(e) 
 						end
 						return false
-					end}
-				end  
-				
-				main[#main+1] =
-				{t="Show your inventory",f=function(ai,dialog)   
-					dialog:Open(table.Random({"Look","Here"})) 
-					actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
-					actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
-					actor_panels.OpenInventory(e,ALIGN_TOP,nil)
-					actor_panels.OpenCharacterInfo(e,ALIGN_RIGHT,nil)  
-					return false
-				end}  
-				--if e:HasTool("bow_kindred_gal") then
-				--	if self.atask then
-				--		main[#main+1] =
-				--		{t="Хватит",f = function(ai,dialog)
-				--			ai.atask = nil
-				--			if ai.atask and ai.atask.Abort then ai.atask:Abort() end
-				--			e:SendEvent(EVENT_TASK_RESET)
-				--			dialog:Open(table.Random(phrases.agreement))
-				--			return false
-				--		end}
-				--	else
-				--		main[#main+1] =
-				--		{t="Атакуй меня",f = function(ai,dialog)
-				--			ai.atask = true
-				--			e:SendEvent(EVENT_TASK_BEGIN,"attack",ai.target)
-				--			
-				--			dialog:Open(table.Random(phrases.agreement))
-				--			return false
-				--		end}
-				--	end
-				--else
-				--	main[#main+1] =
-				--	{t="Возьми оружие",f = function(ai,dialog)
-				--		if e:HasTool("bow_kindred_gal") then
-				--			dialog:Open("у меня уже есть. не видишь?")
-				--		else
-				--			dialog:Open(table.Random(phrases.agreement).." сейчас")
-				--			ACT_TEST_PRESSBUTTON(ai,e,{ent = ply})
-				--		end
-				--		return false
-				--	end}
-				--end
-				
-				
-				p:Open(greettext,main)
-				self.dialog = p
-				--[[
-				
-				local bcol = Vector(83,164,255)/255
-				local pcol = Vector(0,0,0)
-				
-				local label = panel.Create()
-				label:SetText("Привет. Что тебе нужно?")
-				label:SetTextAlignment(ALIGN_CENTER)
-				label:SetSize(400,20)
-				label:SetPos(0,100) 
-				label:SetTextColor(bcol)
-				label:SetColor(pcol)
-				--label:SetAlpha(0.7)
-				label:SetTextOnly(true)
-				p:Add(label)
-		 
-				local opt = {}
-				local bopt = panel.Create("button")
-				bopt:SetText("Иди за мной")
-				bopt:SetSize(300,20)
-				bopt:SetPos(0,0+25)
-				p:SetupStyle(bopt)
-				bopt.OnClick = function() 
-					for k,v in pairs(opt) do p:Remove(v) end
-					label:SetText("Хорошо.") 
-					self.target = ply
-					self:AddReaction("j3",CND_ONRND,{ACT_MOVETO}, { max = 300 })
-					debug.Delayed(1000,function() p:Close() self.dialog = nil  BLOCK_MOUSE = false  end)
-				end
-				p:Add(bopt)
-				opt[#opt+1] = bopt
-				
-				local bopt = panel.Create("button")
-				bopt:SetText("Стой здесь")
-				bopt:SetSize(300,20)
-				bopt:SetPos(0,0-25)
-				p:SetupStyle(bopt)
-				bopt.OnClick = function() 
-					for k,v in pairs(opt) do p:Remove(v) end
-					label:SetText("Хорошо.")
-					self.consys["j3"]  = nil
-					 
-					debug.Delayed(1000,function() p:Close() self.dialog = nil BLOCK_MOUSE = false end)
+					end}  
+
+					if e:GetVehicle() then 
+						main[#main+1] =
+						{t="Stand up",f=function(ai,dialog)   
+							dialog:Close() 
+							e:SendEvent(EVENT_EXIT_VEHICLE)
+							return false
+						end}  
+					else
+						main[#main+1] =
+						{t="Use this",f=function(ai,dialog)   
+							local ner = NEARESTUSEABLE(e)
+							if ner then
+								dialog:Close() 
+								USE(e)
+							else
+								dialog:Open("What?")
+							end
+							return false
+						end}
+					end  
 					
+					main[#main+1] =
+					{t="Show your inventory",f=function(ai,dialog)   
+						dialog:Open(table.Random({"Look","Here"})) 
+						actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
+						actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
+						actor_panels.OpenInventory(e,ALIGN_TOP,nil)
+						actor_panels.OpenCharacterInfo(e,ALIGN_RIGHT,nil)  
+						return false
+					end}  
+					--if e:HasTool("bow_kindred_gal") then
+					--	if self.atask then
+					--		main[#main+1] =
+					--		{t="Хватит",f = function(ai,dialog)
+					--			ai.atask = nil
+					--			if ai.atask and ai.atask.Abort then ai.atask:Abort() end
+					--			e:SendEvent(EVENT_TASK_RESET)
+					--			dialog:Open(table.Random(phrases.agreement))
+					--			return false
+					--		end}
+					--	else
+					--		main[#main+1] =
+					--		{t="Атакуй меня",f = function(ai,dialog)
+					--			ai.atask = true
+					--			e:SendEvent(EVENT_TASK_BEGIN,"attack",ai.target)
+					--			
+					--			dialog:Open(table.Random(phrases.agreement))
+					--			return false
+					--		end}
+					--	end
+					--else
+					--	main[#main+1] =
+					--	{t="Возьми оружие",f = function(ai,dialog)
+					--		if e:HasTool("bow_kindred_gal") then
+					--			dialog:Open("у меня уже есть. не видишь?")
+					--		else
+					--			dialog:Open(table.Random(phrases.agreement).." сейчас")
+					--			ACT_TEST_PRESSBUTTON(ai,e,{ent = ply})
+					--		end
+					--		return false
+					--	end}
+					--end
+					
+					
+					if e._spcom and e._spcom.antr_systems then
+						main[#main+1] =
+						{t="Turn off",f=function(ai,dialog)   
+								e._spcom.antr_systems:Shutdown()
+							return false
+						end}  
+					end
+					p:Open(greettext,main)
+					self.dialog = p
+					--[[
+					
+					local bcol = Vector(83,164,255)/255
+					local pcol = Vector(0,0,0)
+					
+					local label = panel.Create()
+					label:SetText("Привет. Что тебе нужно?")
+					label:SetTextAlignment(ALIGN_CENTER)
+					label:SetSize(400,20)
+					label:SetPos(0,100) 
+					label:SetTextColor(bcol)
+					label:SetColor(pcol)
+					--label:SetAlpha(0.7)
+					label:SetTextOnly(true)
+					p:Add(label)
+			
+					local opt = {}
+					local bopt = panel.Create("button")
+					bopt:SetText("Иди за мной")
+					bopt:SetSize(300,20)
+					bopt:SetPos(0,0+25)
+					p:SetupStyle(bopt)
+					bopt.OnClick = function() 
+						for k,v in pairs(opt) do p:Remove(v) end
+						label:SetText("Хорошо.") 
+						self.target = ply
+						self:AddReaction("j3",CND_ONRND,{ACT_MOVETO}, { max = 300 })
+						debug.Delayed(1000,function() p:Close() self.dialog = nil  BLOCK_MOUSE = false  end)
+					end
+					p:Add(bopt)
+					opt[#opt+1] = bopt
+					
+					local bopt = panel.Create("button")
+					bopt:SetText("Стой здесь")
+					bopt:SetSize(300,20)
+					bopt:SetPos(0,0-25)
+					p:SetupStyle(bopt)
+					bopt.OnClick = function() 
+						for k,v in pairs(opt) do p:Remove(v) end
+						label:SetText("Хорошо.")
+						self.consys["j3"]  = nil
+						
+						debug.Delayed(1000,function() p:Close() self.dialog = nil BLOCK_MOUSE = false end)
+						
+					end
+					p:Add(bopt)
+					opt[#opt+1] = bopt
+					]]
+					BLOCK_MOUSE = true 
+				elseif e==LocalPlayer() then
+					local p = panel.Create("window_npc_dialog")  
+					--p:Init(e:GetName(),300,500)
+					
+					p:SetPos(0,-400) 
+					p:Start(self,ply:GetName())
+					
+					greettext = table.Random({"Aга?","Что тебе нужно?","М?","Да?"})
+					local main = {
+						{t=greettext,f=function(ai,dialog) 
+							local repst = table.Random(phrases.agreement)
+							dialog:Open("Иди за мной",
+							{
+								{t=repst,f= function() self:Vocalize(repst,1,1) end}, 
+							})
+							return true;
+						end},
+					}
+					p:Open("Эй",main)
+					self.dialog = p
+					self:Vocalize(greettext,1,1)
+				else
+					self:Vocalize(greettext,1,1)
 				end
-				p:Add(bopt)
-				opt[#opt+1] = bopt
-				]]
-				BLOCK_MOUSE = true 
-			elseif e==LocalPlayer() then
-				local p = panel.Create("window_npc_dialog")  
-				--p:Init(e:GetName(),300,500)
-				
-				p:SetPos(0,-400) 
-				p:Start(self,ply:GetName())
-				
-				greettext = table.Random({"Aга?","Что тебе нужно?","М?","Да?"})
-				local main = {
-					{t=greettext,f=function(ai,dialog) 
-						local repst = table.Random(phrases.agreement)
-						dialog:Open("Иди за мной",
-						{
-							{t=repst,f= function() self:Vocalize(repst,1,1) end}, 
-						})
-						return true;
-					end},
-				}
-				p:Open("Эй",main)
-				self.dialog = p
-				self:Vocalize(greettext,1,1)
 			else
-				self:Vocalize(greettext,1,1)
+				
+				ply:SendEvent(EVENT_LERP_HEAD,e)
+				--ply:EyeLookAtLerped(e) 
+				self.task = nil
+				self.target = ply
+
+				if ply == LocalPlayer()  then
+					local p = panel.Create("window_npc_dialog")  
+					--p:Init(e:GetName(),300,500)
+					
+					p:SetPos(0,-400) 
+					p:Start(self,e:GetName())
+					
+					local main = { } 
+					if e._spcom and e._spcom.antr_systems then
+						main[#main+1] =
+						{t="Turn on",f=function(ai,dialog)   
+								e._spcom.antr_systems:PowerUp()
+							return false
+						end}  
+					end
+					p:Open("...",main)
+					self.dialog = p 
+					BLOCK_MOUSE = true 
+				end
 			end
-		else
-			MsgN("wat?",e)
+		else 
 		end
 	end
 end
@@ -631,7 +664,7 @@ end
 	end
  
 --TEST END
-if CLIENT then
+if CLIENT then 
 	local stai = table.Copy(ai)
 	stai.__index = stai
 	facial = {}

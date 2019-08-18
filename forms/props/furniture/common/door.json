@@ -1,0 +1,10 @@
+{
+	"group" : "doors",
+	"tags" : [],
+	"model" : "models/artificial/doors/geometric.dnmd",
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+	"door":{
+
+	}
+}

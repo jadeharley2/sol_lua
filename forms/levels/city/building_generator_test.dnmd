@@ -20,34 +20,34 @@
 				"green":"grass",
 				"sand":"sand",
 				"blue":"water",
-				"facade":"fac1",
+				"facade":"fac1", 
 				"facade2f":"fac2",
-				//"frame":"fac3",
-				//"frgrid":"frgrid",
+				//"frame":"fac3", 
+				//"frgrid":"frgrid",  
 				"finsert":"finsert",
-				"frame":"finsert", 
-				"lot":"lot",
-			},  
-			"mode":"materials",  
-			"file": "building_generator_test.obj"
-		},         
+				"frame":"finsert",   
+				"lot":"lot", 
+			},    
+			"mode":"materials",   
+			"file": "lottest2.obj"//"building_generator_test.obj"
+		},          
 		
 		{"type": "material","in": ["city"],
 			"material":"rock01",
 			"smooth":false
 		},    
 		{"type": "material","in": ["roads"],
-			"material":"concrete06",
-			"smooth":false
-		},    
-		{"type": "material","in": ["subroads"],
-			"material":"concrete06",
-			"smooth":false
-		},    
+			"material":"concrete06", 
+			"smooth":false    
+		},          
+		{"type": "material","in": ["subroads"], 
+			"material":"concrete06",     
+			"smooth":false     
+		},      
 		{"type": "material","in": ["grass"],
-			"material":"grass01",
+			"material":"grass01", 
 			"smooth":true
-		},    
+		},     
 		{"type": "material","in": ["sand"],
 			"material":"sand01",
 			"smooth":true
@@ -70,6 +70,12 @@
 			"amount":1, 
 		},     
 
+		{ 	"type" : "structure", "out" : "roads2",
+			"path" : "roadtest.dnmd", 
+			"from" : {"roads":"subroads"},
+			"$rbsize":1.5,
+			"$rbheight":0.2, 
+		},   
 
 		//lot test
 		{ "type" : "uvmap", "in":["lot"],
@@ -93,11 +99,32 @@
 		//}, 
 		//{"type": "material","in": ["c"],
 		//	"material":"bluearrow", 
-		//}, 
+		//},  
 		//{"type": "material","in": ["d"],
 		//	"material":"redarrow", 
-		//},  
-		{"type": "foreach","from": ["a","b"],"var":"v","out": "ffb",
+		//},   
+		{"type": "foreach","from": ["b"],"var":"v","out": "ffb", 
+			"operations":[   
+				{ 	"type" : "structure", "out" : "ffb",
+					"path" : "building_gen.dnmd", 
+					"from" : {"base":"v"},  
+					"$align":[0,0,-1],
+				}, 
+			]   
+		},   
+		{"type": "foreach","from": ["a"],"var":"v","out": "ffb", 
+			"operations":[   
+				{ 	"type" : "structure", "out" : "ffb",
+					"path" : "building_gen.dnmd", 
+					"from" : {"base":"v"},  
+					"$align":[0,0,-1],
+					"$iscorner":true
+				}, 
+			]  
+		},  
+		 
+		//{"type": "stop"},//,"b"
+		{"type": "foreach","from": ["a"],"var":"v","out": "ffb",
 			"operations":[
 				{"type":"inset","from": "v","out":["fr1",["fsf","fs","fs","fs"]],
 					"amount":0,

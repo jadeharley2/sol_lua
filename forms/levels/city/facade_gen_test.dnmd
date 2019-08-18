@@ -1,0 +1,736 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"forms/levels/city"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+		"$floors":5,
+		"$sections":2,
+	},
+	"operations" : [ 
+		    
+		{"type": "rectangle","out": "base",
+			"l":20,
+			"w":"@($sections*25+10)"//85
+		}, 
+		{"type": "material","in":  "base",
+			"material":"rock01",
+			"smooth":false
+		}, 
+		//{"type":"inset","in": "base","out":["bottom","bsides"],
+		//	"amount":-1,
+		//	"extrude":0
+		//},
+		{"type": "flip","in":"base","out":"bottom"},
+		{"type":"inset","from": "bottom","out":["bottom","bsides"],
+			"amount":0,
+			"extrude":5
+		}, 
+
+		
+		{"type":"inset","in": "base","out":["roof",["w1","w2","w3","w4"]],
+			"amount":0,
+			"extrude":"@($floors*4)"
+		},
+		{ "type" : "uvmap", "in":["roof","w1","w2","w3","w4","bottom","bsides"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},  
+		{"type": "frotate","in": ["w1"], 
+			"align":[0,1,0]
+		},    
+		//{"type": "remove","in":"roof"},
+		//{"type": "remove","in":"w3"},
+
+
+
+		//facade  
+		{"type":"split","from":"w1","out":["ce","w1","ce"],
+			"size":[0.5,0,0.5],   
+			"stype":"constant",  
+			"side":"first"
+		},  
+		{"type":"split","from":"w1","out":"w1",
+			"steps" :"@($l/25)",    
+			"stype":"constant",  
+			"side":"second"
+		},    
+		//sections
+		{"type":"split","from":"w1","out":["w1","s1","w1"],
+			"size" :[0,4,0],    
+			"stype":"constant",  
+			"side":"second"
+		},    
+		{"type":"split","from":"w1","out":"w1",
+			"steps" :"@($l/7)",    
+			"stype":"constant",  
+			"side":"second"
+		},    
+		{"type":"split","from":"w1","out":["ce","w1","ce"],
+			"size":[0.5,0,0.5],   
+			"stype":"constant",  
+			"side":"second"
+		},    
+		  
+		//{"type":"split","from":"w1","out":["ce","w1","ce","w1","ce","w1","ce"],
+		//	"size":[1,0,1,0,1,0,1],   
+		//	"stype":"constant",  
+		//	"side":"first"
+		//},          
+		{"type":"inset","from": "ce","out":["ce",["ce"]],
+			"amount":0,
+			"extrude":0.4
+		},
+		{"type":"split","from":"w1","out":["f1","fo"],
+			"size":[4,0],   
+			"stype":"constant",  
+			"side":"first"
+		},      
+		//variants
+		//  singleoutput:
+		//    out:"a"
+		//    out:["a","b"]
+		//    out:["a","b",["c","d"],"e"] // only 1 array is permitted
+		//  multioutput:
+		//    out:{a:"bc",b:"other"}
+		//    out:["a",["b","c"],"d"]
+		//
+		//{"type":"split","from":"w1","out":["f1",["fo"],"fl"],
+		//	"size":[4,0],   
+		//	"stype":"constant",  
+		//	"side":"first"
+		//},  
+		{"type":"split","from":"fo","out":"fo",
+			"steps" :"@($l/4)",    
+			"stype":"constant",  
+			"side":"second"
+		},   
+		//entrance col
+		{"type":"inset","from": "s1","out":["s1",["ce"]],
+			"amount":0,
+			"extrude":0.4
+		},
+		{"type":"split","from":"s1","out":["sf1","sfo"],
+			"size":[4,0],   
+			"stype":"constant",  
+			"side":"first"
+		},  
+		{"type":"inset","from": "sf1","out":["sf1",["cenf"]],
+			"inamount":[2,3],
+			"shift":[0,-0.5],
+			"extrude":0
+		},
+		{"type":"inset","from": "sf1","out":["sf1",["ce"]],
+			"amount":0,
+			"extrude":-0.4
+		},
+		{"type":"inset","from": "sf1","out":["sf1",["cenf"]],
+			"amount":[0.2,0.2,0.2,0],
+			"extrude":0
+		},
+		{"type":"inset","from": "sf1","out":["door",["ce"]],
+			"amount":[0],
+			"extrude":-0.2
+		},
+
+
+		//other levels
+		{"type":"split","from":"sfo","out":"sfo",
+			"steps" :"@($l/4)",    
+			"stype":"constant",  
+			"side":"second"
+		},   
+		{"type":"split","from":"sfo","out":["sfo","sfg"],
+			"size" :[1.5,0],    
+			"stype":"constant",  
+			"side":"second"
+		},     
+		{"type":"inset","from": "sfg","out":["sfg","ce"],
+			"amount":0.1,
+			"extrude":0.05
+		},
+		//decor
+		{"type": "substitute","from": "sfg","out": {"center":"zu","other":"og"},
+			"obj":"inset_circle.obj"     
+		}, 
+		{"type": "frotate","in": ["og","zu"],"add":1}, 
+		{"type":"inset","from": "zu","out":["zu",["ce"]],
+			"amount":0.1,
+			"extrude":-0.1
+		},  
+		{"type":"inset","from": "zu","out":["x",["zu"]],
+			"amount":0.4,
+			"extrude":0
+		},     
+		{"type":"inset","from": "x","out":["x",["cs"]],
+			"amount":0.1,
+			"extrude":0
+		},   
+		{"type":"inset","from": "x","out":["x",["x"]],
+			"amount":0.01,
+			"extrude":-0.1 
+		},    
+		//end
+
+
+		{"type":"inset","from": "zu","out":["zu","ce"],
+			"amount":0.1,
+			"extrude":-0.1
+		},  
+  
+		{"type":"inset","from": "sfo","out":["sfo","ce"],
+			"amount":0.1,
+			"extrude":-0.1
+		},  
+		{"type":"inset","from": "sfo","out":["sfo","cenf"],
+			"inamount":[3,1],
+			"extrude":0
+		},            
+
+		{"type":"split","from":"sfo","out":"sfo",
+			"steps" :2,    
+			"stype":"constant",  
+			"side":"first"
+		},   
+		{"type":"inset","from": "sfo","out":["window",["cenf"]],
+			"amount":0.2,
+			"extrude":0
+		},
+		//door
+		{"type": "remove","in": "door"},
+	//	{ "type" : "uvmap", "in":["door"],
+	//		"edge" : 0,     
+	//		"scale" : 1 ,
+	//		"shift" : [0.0 ,0.0], 
+	//		"mul" : [1,1,1], 
+	//		"mode":"face", 
+	//	}, 
+	//	//{"type": "material","in":  "door",
+	//	//	"material":"windows_blue",
+	//	//	"smooth":false
+	//	//}, 
+	//	{"type":"split","from":"door","out":["dup","door"],
+	//		"size":[0.6,0],   
+	//		"stype":"constant",  
+	//		"side":"second"
+	//	},  
+//
+	//	{"type":"split","from":"door","out":["door","door"],
+	//		"size":[0,0],   
+	//		"stype":"constant",  
+	//		"side":"first"
+	//	},      
+	//	{"type":"split","from":"door","out":["dd","door","dd"],
+	//		"size":[0.03,0,0.03],   
+	//		"stype":"constant",  
+	//		"side":"second"
+	//	},      
+	//	{"type":"inset","from": "dd","out":["dd",["door_s"]],
+	//		"amount":0.01,
+	//		"extrude":0.01
+	//	}, 
+	//	{"type":"inset","from": "door","out":["door",["door_s"]],
+	//		"amount":0.1,
+	//		"extrude":0.02
+	//	}, 
+	//	{"type":"split","from":"door","out":["du","dx","du"],
+	//		"size":[0,0,0],   
+	//		"stype":"constant",  
+	//		"side":"first"
+	//	},      
+	//	{"type":"inset","from": "du","out":["du",["door_s"]],
+	//		"amount":0.04,
+	//		"extrude":-0.02
+	//	}, 
+	//	
+	//	{"type":"inset","from": "dup","out":["dup",["dup_s"]],
+	//		"amount":0.1,
+	//		"extrude":0
+	//	},
+	//	{"type":"inset","from": "dup","out":["dup",["dup_s"]],
+	//		"amount":0,
+	//		"extrude":-0.05
+	//	},
+	//	{"type": "material","in":  "dup",
+	//		"material":"windows_blue",
+	//		"smooth":false
+	//	}, 
+ 
+
+		//f1 cells
+		{"type":"inset","from": "f1","out":["ce",["ce"]],
+			"amount":0,
+			"extrude":-1
+		},
+		//cells
+		{"type":"inset","from": "fo","out":["fo",["ff"]],
+			"amount":0.2,
+			"extrude":0
+		},  
+		{"type":"inset","from": "fo","out":["fo",["ce"]],
+			"amount":0,
+			"extrude":-0.2
+		},     
+		{"type":"split","from":"fo","out":"fo",
+			"steps" :2,    
+			"stype":"constant",  
+			"side":"first"
+		},     
+		{"type":"inset","from": "fo","out":["window",["ff"]],
+			"inamount":[2,1],
+			"extrude":0
+		},  
+		{"type":"inset","from": "window","out":["fo",["ce"]],
+			"amount":0,
+			"extrude":-0.2
+		},  
+		{"type":"inset","in": "fo","out":["*","ff"],
+			"amount":-0.1,
+			"extrude":0
+		},  
+		{"type": "material","in":  "fo",
+			"material":"windows_blue",
+			"smooth":false
+		}, 
+		{ "type" : "uvmap", "in":["ce","w1"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+		{"type": "remove","in": "fo"},
+		//roof
+
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":-0.4,
+			"extrude":0
+		},
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":0,
+			"extrude":0.2
+		},
+		{"type":"inset","from": "roof","out":["roof",["roof"]],
+			"amount":[2,4],
+			"extrude":3
+		},
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":0,
+			"extrude":0.2,
+			"group":true
+		},
+		//{"type":"inset","from": "roof","out":["roof",["ff"]],
+		//	"amount":[0,2],
+		//	"extrude":1
+		//},
+
+
+
+		//{"type": "point","out": "ppp", "pos": [0,0,15]},
+		//{"type": "point","out": "ppp2", "pos": [0,30,15]},
+		//{"type": "point","out": "ppp2", "pos": [0,-30,15]},
+		//{"type": "tesselate","from": ["ce","w1","ff","cenf","roof","w2","w3","w4"],"out":"oj",
+		//	"times":3,
+		//},
+		//{"type": "pointdeform","in": ["ce","w1","fo","ff","cenf","oj"],"inpoints":"ppp", 
+		//	"dir":[0,0,1],
+		//	"r":15,
+		//	"pow":8,
+		//	"func":"sin"
+		//},
+		//{"type": "pointdeform","in": ["ce","w1","fo","ff","cenf","oj"],"inpoints":"ppp2", 
+		//	"dir":[0,0,-1],
+		//	"r":15,
+		//	"pow":8,
+		//	"func":"sin"
+		//},
+		//{"type": "material","in":  "*",
+		//	"material":"wireframe",
+		//	"smooth":false
+		//}, 
+		
+		//interior
+		 
+		{"type": "material","in":  "base",
+			"material":"rock01",
+			"smooth":false
+		},  
+		{ "type" : "uvmap", "in":["base"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+
+	//	{"type": "space", "in": "base", 
+	//		"onenter":[
+	//			//....
+	//		],
+	//		"onexit":[
+	//			{"type":"clear"}
+	//		]
+	//	},
+	//{"type":"stop"},
+		{"type":"inset","from": "base","out":["in_base","*"],
+			"amount":0,
+			"extrude":0 
+		},
+		//{"type": "union","in":"in_base","out":"in_firstfloor"},
+		{"type":"inset","in": "in_base","out":["in_base","*"],
+			"amount":0,
+			"extrude":4,
+			"times":"@($floors-1)",
+			"savecenter":true 
+		},
+		{"type": "foreach","from": "in_base","var":"in_floor","out": 
+			["floor","ceiling","walls","doors","wallsnu"],"operations":[ 
+				{"type":"split","from":"in_floor","out":["*","in_floor","*"],
+					"size":[0.5,0,0.5],   
+					"stype":"constant",  
+					"side":"first"
+				},   
+				{"type": "split","from":"in_floor","out": "in_floor",
+					"steps" :"@($l/25)",    
+					"stype":"constant",  
+					"side":"second"
+				},  
+				//sections
+				{"type": "foreach","from": "in_floor","var":"in_section","out": 
+					["floor","ceiling","walls","doors","wallsnu"],"operations":[ 
+					{"type": "split","from":"in_section","out": ["in_wall","in_f_c","in_f_a","in_f_a","in_wall"],
+						"size" :[0.4,0,3,7,0.4],    
+						"stype":"constant",  
+						"side":"first"
+					},
+					{"type":"split","from":"in_f_a","out":["in_f_b1","in_f_a","in_f_b2"],
+						"size" :[0,4,0],    
+						"stype":"constant",  
+						"side":"first"
+					},  
+					{"type":"split","from":"in_f_c","out":["in_f_c1","in_f_c2"],
+						"size" :[0,0],    
+						"stype":"constant",  
+						"side":"first"
+					},  
+					{"type": "merge","from": "in_f_b1","out": "in_f_b1"},
+					{"type": "merge","from": "in_f_b2","out": "in_f_b2"},
+				//{"type":"inset","from": ["in_f_a","in_f_b","in_f_c"],"out":["%","*"],
+				//	"amount":0.1,  
+				//},
+				//{"type":"inset","from": ["in_f_a","in_f_b","in_f_c"],"out":["ceiling","walls"],
+				//	"amount":0, 
+				//	"extrude":-0.3,  
+				//},
+		
+				//{"type": "substitute","from": "in_f_b2","out": {"rooms":"zu1" },
+				//	"obj":"fp_o1.obj"     
+				//}, 
+				//{"type":"flip","from":"zu1","out":"floor"},
+		
+				//{"type":"flip","in":"floor","out":"ceiling"},
+		
+					{"type": "merge","from": "in_f_a","out": "in_f_a"},
+					{"type": "frotate","in": ["in_f_a"],"add":3}, 
+					{"type": "substitute","from": "in_f_a","out": {
+							"floor":"floor",
+							"walls":"walls",
+							"doors":"doors",
+							"ceil":"ceiling",
+							"pr_down":"pr_down",
+							"pr_up":"pr_up",
+							"windowwall":"windowwall2",
+							"fdoors":"fdoors",
+						},
+						"obj":"fp2_1.obj",
+						"zscale": -0.8//3.2/4
+					},   
+					 
+					{"type":"inset","in": ["pr_down"],"out":["*","pr_dwalls"],
+						"amount":0, 
+						"extrude":-0.8 
+					}, 
+					{ "type" : "uvmap", "in":["pr_dwalls","windowwall","windowwall2"],
+						"edge" : 1,     
+						"scale" : 5 ,
+						"shift" : [0.0 ,0.0], 
+						"mul" : [1,1,1], 
+						"mode":"face", 
+					}, 
+
+
+
+					//topfloor dependant
+					{"type":"union","from":"pr_dwalls","out":"walls"},
+					{"type":"branch","condition":"bool","value":"@($in_floor=$floors-1)",
+						"ontrue":[
+							{"type":"union","from":"pr_up","out":"ceiling"}
+						],
+						"onfalse":[
+							{"type":"branch","condition":"bool","value":"@($in_floor>0)",
+								"ontrue":[ 
+									{ 	"type" : "structure", "out" : "ceiling",
+										"path" : "staircase_2w.dnmd",
+										"in" : {"base":"pr_down"},         
+										"$height" : 4,
+										"$step.height" : 0.18, 
+										"$path.width" : 2,
+									},        
+								] 
+							}
+							//{"type":"union","from":"pr_down","out":"ceiling"}
+						]
+					},
+					//bottomfloor dependant
+					{"type":"branch","condition":"bool","value":"@($in_floor>0)",
+						"ontrue":[ 
+
+							{"type": "frotate","in": ["in_f_b1"],"add":3}, 
+							{"type": "substitute","from": "in_f_b1","out": {
+									"floor":"floor2",
+									"walls":"walls2",
+									"doors":"doors",
+									"ceil":"ceiling2",
+									"windowwall":"windowwall",
+									"wabove":"wabove",
+									
+									"hall":"hall",
+									"bathroom":"bathroom",
+									"hallway":"hallway",
+									"kitchen":"kitchen"
+								},
+								"obj":"fp3_2.obj",
+								"zscale": -0.8//3.2/4
+							}, 
+							{"type": "frotate","in": ["in_f_b2"],"add":1}, 
+							{"type":"flip","from":"in_f_b2","out":"in_f_b2"},
+							{"type": "substitute","from": "in_f_b2","out": {
+									"floor":"floor2",
+									"walls":"walls2",
+									"doors":"doors",
+									"ceil":"ceiling2",
+									"windowwall":"windowwall",
+									"wabove":"wabove",
+
+									"hall":"hall",
+									"bathroom":"bathroom",
+									"hallway":"hallway",
+									"kitchen":"kitchen"
+								},
+								"obj":"fp3_2.obj",
+								"zscale": 0.8,//3.2/4
+								"flip":true  
+							}, 
+
+							
+							{"type": "frotate","in": ["in_f_c1"],"add":3}, 
+							{"type": "substitute","from": "in_f_c1","out": {
+									"floor":"floor2",
+									"walls":"walls2",
+									"doors":"doors",
+									"ceil":"ceiling2",
+									"windowwall":"windowwall",
+									"wabove":"wabove",
+
+									"hall":"hall",
+									"bathroom":"bathroom",
+									"hallway":"hallway",
+									"kitchen":"kitchen"
+								},
+								"obj":"fp3_3.obj",
+								"zscale": -0.8,//3.2/4  
+							}, 
+							{"type": "frotate","in": ["in_f_c2"],"add":1}, 
+							{"type":"flip","from":"in_f_c2","out":"in_f_c2"},
+							{"type": "substitute","from": "in_f_c2","out": {
+									"floor":"floor2",
+									"walls":"walls2",
+									"doors":"doors",
+									"ceil":"ceiling2",
+									"windowwall":"windowwall",
+									"wabove":"wabove",
+
+									"hall":"hall",
+									"bathroom":"bathroom",
+									"hallway":"hallway",
+									"kitchen":"kitchen"
+								},
+								"obj":"fp3_3.obj",
+								"zscale": 0.8,//3.2/4  
+								"flip":true  
+							},      
+							
+							{"type":"select","in":[
+								"walls2@hallway","walls2@hall","walls2@kitchen","windowwall"],"out":"test01",
+								"mode":"dotnormalsegments",
+								"normal":[0,0,1],
+								"directed":true,
+								"invert":true 
+							}, 
+							{"type":"extrude","from":"test01", "out":"test01",
+								"shift":[0,0,0.1]
+							}, 
+							{"type":"material","in": "test01", "material":"wood_01.json" },
+							{"type":"inset","from": ["test01"],"out":["floor","floor"],
+								"amount":0,
+								"extrude":0.02, 
+								"nolimits":true
+							},
+							{"type": "object","in": "ceiling2@hall",
+								"form":[
+									"prop.clutter.lab.lamp_a",
+									"prop.clutter.lab.lamp_a_red",
+									//"prop.clutter.lab.lamp_a_green",
+									"prop.clutter.lab.lamp_a_blue",""],
+								"random":true,  
+								"ang":[0,0,180],
+								"variables":{
+									"brightness":2
+								}
+							},   
+							{"type":"union","from":"wabove","out":"walls2"},
+
+							{"type":"material","in": ["walls2","windowwall"], "material":"wpaper_01.json"},
+							{"type":"material","in": "floor2", "material":"lam_01.json" },
+							{"type":"material","in": ["floor2@bathroom","walls2@bathroom"], "material":"tile_01.json" },
+							{"type":"material","in": ["windowwall@kitchen","walls2@kitchen","walls2@hallway"], "material":"wpaper_02.json" },
+							{"type":"material","in": "ceiling2", "material":"ceil_01.json" },
+
+							{"type":"union","from":"walls2","out":"floor"},
+							{"type":"union","from":"floor2","out":"floor"},
+							{"type":"union","from":"ceiling2","out":"ceiling"},
+    
+							
+
+							{ "type" : "uvmap", "in":["windowwall"],
+								"edge" : 1,     
+								"scale" : 5 ,
+								"shift" : [0.0 ,0.0], 
+								"mul" : [1,1,1], 
+								"mode":"face", 
+							}, 
+							//windowwall
+							{"type":"split","from":"windowwall","out":
+								["walls","windowwall","windowwall","walls"],
+								"size" :[0.6,0,0,0.6],    
+								"stype":"constant",  
+								"side":"second"
+							},   
+							{"type":"inset","from": "windowwall","out":["windowwall","wallsnu"],
+								"inamount":[2,1],
+								"shift":[-0.4,0],
+							},
+							{"type":"inset","from": "windowwall","out":["*","wframe"],
+								"amount":0,
+								"extrude":-0.1 
+							},
+
+							//windowwall2
+							{"type":"inset","from": "windowwall2","out":["windowwall2","wallsnu"],
+								"amount":[0.35,0.5,2.1,0.5], 
+								"extrude":0,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":0, 
+								"extrude":-0.6 
+							}, 
+							{"type":"split","from":"windowwall2","out":
+								["*","walls","*"],
+								"size" :[0,0.3,0],    
+								"stype":"constant",  
+								"side":"second"
+							},  
+							
+							//frames
+							{"type":"material","in":  ["doors","wframe"], "material":"wood_01.json" },
+							{"type":"inset","from": ["doors","wframe"],"out":["floor","floor"],
+								"amount":0,
+								"extrude":0.04, 
+								"nolimits":true
+							}, 
+
+						],
+						"onfalse":[
+							{"type":"union","from":"fdoors","out":"walls"},
+							{"type":"split","from":"pr_down","out": ["pr_down","floor"],
+								"size" :[0,2],    
+								"stype":"constant",  
+								"side":"fourth"
+							},  
+							{"type":"split","from":"pr_down","out": ["pr_down","floor"],
+								"size" :[0,0],    
+								"stype":"constant",  
+								"side":"first"
+							},  
+							{"type":"union","in":"pr_down","out":"floor"},
+							//{"type": "frotate","in": ["pr_down"],"add":1}, 
+							{"type":"stairs","from":"pr_down","out":["walls","walls","rails"],
+								"side":3, 
+								"height":4, 
+								"stepheight":0.2, 
+								"leftside":true,
+								"rightside":false, 
+								"sidewidth":0.2,  
+								"sideheight": 0.1,  
+								"sidedepth": 0.4, 
+								"bottom":true,
+								"dropside":false,  
+							}, 
+							//doorwall
+							{"type":"inset","from": "windowwall2","out":["windowwall2","wallsnu"],
+								"inamount":[3,2], 
+								"shift":[-0.1,0],
+								"extrude":0,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":0, 
+								"extrude":-0.3,
+								"nolimits":true
+							}, 
+							{"type":"inset","from": "windowwall2","out":["windowwall2","walls"],
+								"amount":[0,0.2,0.2,0.2], 
+								"extrude":0,
+								"nolimits":true
+							}, 
+						]
+					}
+					//{"type":"union","from":"in_f_c","out":"floor"}
+				]},
+			],
+		},
+		
+
+	//	{"type":"inset","from": "ceiling","out":["ceiling",["walls"]],
+	//		"amount":0,
+	//		"extrude":-3
+	//	},  
+		
+		{ "type" : "uvmap", "in":["walls","doors"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+		{ "type" : "uvmap", "in":["floor"],
+			"edge" : 1,     
+			"scale" : 3 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		}, 
+	]   
+} 

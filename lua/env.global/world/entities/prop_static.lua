@@ -8,7 +8,9 @@ function SpawnSO(model,ent,pos,scale,collonly,norotation)
 	e.collonly = collonly
 	e:SetSizepower(1)
 	e:SetParent(ent)
-	e:SetModel(model,scale,norotation)
+	e:SetParameter(VARTYPE_MODEL,model)
+	e:SetParameter(VARTYPE_MODELSCALE,scale)
+	--e:SetModel(model,scale,norotation)
 	e:SetPos(pos) 
 	e:Spawn()
 	return e
@@ -23,12 +25,15 @@ function ENT:Init()
 	
 end
 function ENT:Load()
-	local modelval = self:GetParameter(VARTYPE_MODEL)
-	local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
-	if modelval then 
-		self:SetModel(modelval,modelscale)
-	else
-		MsgN("no model specified for static model at spawn time")
+	local modelcom = self.modelcom
+	if not modelcom then
+		local modelval = self:GetParameter(VARTYPE_MODEL)
+		local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or 1
+		if modelval then 
+			self:SetModel(modelval,modelscale)
+		else
+			MsgN("no model specified for static model at spawn time")
+		end
 	end
 	--MsgN("dfa")
 end  
@@ -55,7 +60,7 @@ function ENT:SetModel(mdl,scale,norotation)
 	if not norotation then
 		world = world * matrix.Rotation(-90,0,0)
 	end
-	
+	 
 	self:SetParameter(VARTYPE_MODEL,mdl)
 	self:SetParameter(VARTYPE_MODELSCALE,scale)
 	

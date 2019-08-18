@@ -1,0 +1,371 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"textures/tile/mat", 
+		"textures/tile/tilt", 
+		"forms/levels/city",  
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+		"$floors":2,
+		"$sections":2,
+		"$align":[0,-1,0],
+		"$colorw":"glass",
+		"$colorf":"wood",
+		"$colorr":"roofm",
+		"$colorb":"concrete",
+		"$tint":[1,1,1],
+		"$iscorner":false
+	}, 
+	"input_operations": [
+		//{"type":"set","$sections":"@(randi(1,4))"}, 
+		//{"type": "rectangle","out": "base",
+		//	"l":20, 
+		//	"w":"@($sections*25+10)"//85
+		//},  
+		{"type": "surface","out": "base","points": [
+			[0,0,0],[0,10,0],[50,10,0],[50,0,0]
+		]}           
+	],
+	"operations" : [ 
+		//    {"type": "stop"},
+		{"type": "random","variants":[
+			[{"type":"set","$doortype":"detail/door01.obj","$dwidth":2.2}],
+			[{"type":"set","$doortype":"detail/door02.obj","$dwidth":2.2}],
+			[{"type":"set","$doortype":"detail/door03.obj","$dwidth":2.7}],
+		]},    
+		{"type": "random","variants":[ 
+			[{"type":"set","$color":"concrete","$tint":[0.8,0.8,0.8]}], 
+			[{"type":"set","$color":"concrete","$tint":"f1d3b6"}], 
+			[{"type":"set","$color":"concrete","$tint":"f1ceb2"}],  
+			[{"type":"set","$color":"concrete","$tint":"dcf2ea"}], 
+			//[{"type":"set","$color":"beige"}], 
+			[{"type":"set","$color":"bricks11"}], 
+		]},        
+		{"type":"set","$floors":"@(randi(2,7))"}, 
+		{"type": "material","in":  "base",
+			"material":"$color",
+			"tint":"$tint",
+			"smooth":false
+		}, 
+		//{"type":"inset","in": "base","out":["bottom","bsides"],
+		//	"amount":-1,
+		//	"extrude":0
+		//},
+	//	{"type": "flip","in":"base","out":"bottom"},
+	//	{"type":"inset","from": "bottom","out":["bottom","bsides"],
+	//		"amount":0,
+	//		"extrude":5
+	//	}, 
+
+		
+		{"type":"branch","condition":"bool","value":"$iscorner",
+			"ontrue":[
+				{"type":"inset","from": "base","out":["roof",["w1","w1","w3","w4"]],
+					"amount":0,
+					"extrude":"@($floors*4)"
+				}, 
+			],
+			"onfalse":[
+				{"type":"inset","from": "base","out":["roof",["w1","w2","w3","w4"]],
+					"amount":0,
+					"extrude":"@($floors*4)"
+				}, 
+			]
+		},
+		{ "type" : "uvmap", "in":["roof","w1","w2","w3","w4","bottom","bsides"],
+			"edge" : 0,     
+			"scale" : 2.5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},  
+		{"type": "frotate","in": ["w*"], 
+			"align":"$align"
+		},    
+		//{"type": "remove","in":"roof"},
+		//{"type": "remove","in":"w3"},
+
+
+
+		//facade  
+		{"type": "data","in":"w1","length":"$lenc"},
+		{"type": "branch","condition":"bool","value":"@(4>99)",//"@($lenc>20)",
+			"ontrue":[
+				{"type":"split","from":"w1","out":["ce","w1","ce"],
+					"size":[0.5,0,0.5],   
+					"stype":"constant",  
+					"side":"first"
+				},  
+				{"type":"split","from":"w1","out":"w1",
+					"steps" :"@($l/25)",    
+					"stype":"constant",  
+					"side":"second"
+				},    
+				//sections
+				{"type":"split","from":"w1","out":["w1","s1","w1"],
+					"size" :[0,5,0],    
+					"stype":"constant",  
+					"side":"second"
+				},    
+				{"type":"split","from":"w1","out":"w1",
+					"steps" :"@($l/7)",    
+					"stype":"constant",  
+					"side":"second"
+				},   
+				//separators
+				{"type": "branch","condition":"random",
+					"ontrue":[
+						{"type":"split","from":"w1","out":["ce","w1","ce"],
+							"size":[0.5,0,0.5],   
+							"stype":"constant",  
+							"side":"second"
+						},            
+					],
+					"onfalse":[
+						{"type": "frotate","in": "w1","add":2},
+					]
+				},
+			],
+			"onfalse":[
+
+				{"type":"split","from":"w1","out":["ce","w1","ce"],
+					"size":[0.5,0,0.5],   
+					"stype":"constant",  
+					"side":"first"
+				},   
+				{"type": "frotate","in":"w1","add":2}, 
+				//sections
+				{"type": "random","variants":[
+					[
+						{"type":"split","from":"w1","out":["s1","w1"],
+							"size" :[0,0],    
+							"stype":"constant",  
+							"side":"second"   
+						},         
+					],
+					[
+						{"type":"split","from":"w1","out":["w1","s1"],
+							"size" :[0,0],    
+							"stype":"constant",  
+							"side":"second"         
+						},         
+					]
+				]},
+			]
+		},  
+		{"type": "material","in":  "ce",
+			 "tint":[1.2,1.2,1.2]
+		}, 
+ 
+		
+		  
+		//{"type":"split","from":"w1","out":["ce","w1","ce","w1","ce","w1","ce"],
+		//	"size":[1,0,1,0,1,0,1],   
+		//	"stype":"constant",  
+		//	"side":"first"
+		//},          
+		{"type":"inset","from": "ce","out":["ce",["ce"]],
+			"amount":0,
+			"extrude":0.4
+		},
+		{"type":"split","from":"w1","out":["f1","fo"],
+			"size":[4,0],   
+			"stype":"constant",  
+			"side":"first"
+		},      
+		{"type":"split","from":"s1","out":["ss1","ss2"],
+			"size":[4,0],   
+			"stype":"constant",  
+			"side":"first"
+		}, 
+		//variants
+			 
+		{"type": "random","variants":[
+			[
+				{"type": "frotate","in": "ss1","add":3},
+				{"type": "substitute","from": "ss1","out": {
+						"wall":"wall",
+						"frame":"frame",
+						"window":"window",
+						"door":"door",
+					},
+					"obj":"detail/fcell_special01.obj",
+					"zscale": -2
+				}, 
+			],
+			[
+				{"type":"split","from":"ss1","out":["ss1","ssc","ss1"],
+					"size":[0,"$dwidth",0],   
+					"stype":"constant",  
+					"side":"first"
+				}, 
+				{"type": "frotate","in": "ssc","add":2},
+				{"type": "substitute","from": "ssc","out": {
+						"wall":"wall",
+						"frame":"frame",
+						"window":"window",
+						"door":"door",
+					},
+					"obj":"$doortype",
+					"zscale": -2
+				},  
+			]
+		]},
+
+	
+		{"type":"split","from":["fo","ss2"],"out":["hfo1","hfo2"],
+			"size" :[0,4],    
+			"stype":"constant",  
+			"side":"fourth"
+		}, 
+		{"type":"split","from":"hfo*","out":["wstep","%"],
+			"size" :[0.5,0],    
+			"stype":"constant",  
+			"side":"fourth"
+		},         
+		{"type": "material","in":  "wstep",
+			"tint":[1.2,1.2,1.2]
+		}, 
+		{"type":"inset","from": "wstep","out":["ce",["ce"]],
+			"amount":0,
+			"extrude":0.3
+		}, 
+		
+		{"type":"split","from":["hfo1"],"out":["fo","fo2","fo2"],
+			"steps" :"@($l/4)",    
+			"stype":"constant",  
+			"side":"fourth"
+		},  
+		{"type":"split","from":["hfo2"],"out":["fo3","fo4"],
+			"steps" :"@($l/4)",    
+			"stype":"constant",  
+			"side":"fourth"
+		},  
+		{"type":"split","from":"fo*","out":["fd","%"],
+			"size" :[0.5,0],    
+			"stype":"constant",  
+			"side":"fourth"
+		},  
+ 
+		{"type":"split","from":"fo*","out":["cs","%","cs","%","cs"],
+			"size" :[0,2,0,2,0],    
+			"stype":"constant",  
+			"side":"first"
+		},   
+		{"type": "frotate","in": "fo*","add":2},
+		{"type": "substitute","from": "fo","out": {
+				"wall":"wall",
+				"frame":"frame",
+				"window":"window",
+				"door":"door",
+			},
+			"obj":"detail/window01.obj",
+			"zscale": -2
+		}, 
+		{"type": "substitute","from": "fo2","out": {
+				"wall":"wall",
+				"frame":"frame",
+				"window":"window",
+				"door":"door",
+			},
+			"obj":"detail/window04.obj",
+			"zscale": -2
+		}, 
+		{"type": "substitute","from": ["fo3","fo4"],"out": {
+				"wall":"wall",
+				"frame":"frame",
+				"window":"window",
+				"door":"door",
+			},
+			"obj":"detail/window03.obj",
+			"zscale": -2
+		}, 
+		{"type": "frotate","in": "f1","add":3},
+		{"type": "union","from": "f1","out": ["f1a","f1b","f1a"]},
+		{"type": "substitute","from": "f1a","out": {
+				"wall":"wall",
+				"frame":"frame",
+				"window":"window",
+				"door":"door",
+			},
+			"obj":"detail/fcell_window01.obj",
+			"zscale": -2
+		}, 
+		{"type": "substitute","from": "f1b","out": {
+				"wall":"wall",
+				"frame":"frame",
+				"window":"window",
+				"door":"door",
+			},
+			"obj":"detail/fcell_door01.obj",
+			"zscale": -2
+		}, 
+		{"type": "material","in":  "window",
+			"material":"$colorw",
+			"smooth":false
+		},
+		{"type": "material","in":  "frame",
+			"material":"$colorf",
+			"smooth":false
+		},
+		{"type": "material","in":  "door",
+			"material":"$colorf",
+			"smooth":false
+		},
+
+
+		
+		//roof
+
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":-0.4,
+			"extrude":0
+		},
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":0,
+			"extrude":0.2
+		},
+		
+		{"type":"material","in":"roof","material":"$colorr","color":[1,1,1]},
+		{"type": "random","variants":[
+			[
+				{"type":"inset","from": "roof","out":["roof",["roof"]],
+					"amount":[0,10],
+					"extrude":3
+				},
+			],
+		//[ 
+		//	{"type":"inset","from": "roof","out":["roof",["roof"]],
+		//		"amount":[5,10],
+		//		"extrude":3  
+		//	},
+		//] ,
+		//[ 
+		//	{"type":"inset","from": "roof","out":["roof",["roof"]],
+		//		"amount":[5,8],
+		//		"extrude":3  
+		//	},
+		//] ,
+			[ 
+				{"type":"inset","from": "roof","out":["roof",["roof"]],
+					"amount":[1,1],
+					"extrude":1  
+				},
+			]  
+		]},
+		{"type":"inset","from": "roof","out":["roof",["ff"]],
+			"amount":0,
+			"extrude":0.2,
+			"group":true
+		},
+		{"type": "stop"},
+	]   
+} 

@@ -276,7 +276,7 @@ function component:_equip(data,nosave)
 					if e then
 						eqslt.data = data 
 						eqslt.entity = e
-						e:SetName(slot)
+						e:SetName('ap'..slot)
 						e:SetPos(Vector(0,0,0))
 						e:SetAng(Vector(0,0,0))
 						e.iscloth = true

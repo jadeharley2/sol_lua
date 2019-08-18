@@ -116,7 +116,7 @@ function PANEL:MouseClick(fid)
 			local ply = LocalPlayer()
 			local target = false
 			if(node==ply) then
-				for k,v in pairs(temp_allinvwindows) do
+				for k,v in pairs(actor_panels.panels) do
 					if v and v.storage and v.storage~=source then
 						target = v.storage
 						break
@@ -152,6 +152,8 @@ function PANEL:MouseClick(fid)
 			{text = "drop",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "destroy",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data))  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "edit",action = function(item)  EIT = json.FromJson(item.storage.list[item.storeslot].data) end},
+			{text = "save",action = function(item)  item.storage.list[item.storeslot].data = json.ToJson(EIT) end},
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
 			--{text = "CCC",sub={
 			--	{text = "lel"},

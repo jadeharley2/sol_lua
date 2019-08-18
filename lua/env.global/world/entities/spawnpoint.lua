@@ -14,6 +14,16 @@ function ENT:SetPlayerSpawn()
 	active_spawnpoints[self] = true
 end
 
+function CreatePlayerspawn(ent,pos) 
+	e = ents.Create("spawnpoint")
+	e:SetPos(pos) 
+	--e:AddTag(77723)
+	e:SetParent(ent)
+	e:Spawn()
+	e:SetPlayerSpawn()
+	return e
+end
+
 hook.Add("player.onspawn","spawnpoint",function(ply)
 	local spwn = table.RandomKey(active_spawnpoints)
 	if spwn then

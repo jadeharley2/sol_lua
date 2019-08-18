@@ -54,7 +54,7 @@
 		},     
 		{"type": "material","in": ["water"],
 			"material":"water01",
-			"smooth":true
+			"smooth":true 
 		}, 
 		{ "type" : "uvmap", "in":["grass","sand","city","roads","subroads"],
 			"edge" : 1,     
@@ -65,7 +65,7 @@
 		},     
 		{"type":"tesselate","from":["grass"] ,"out" :"grass", 
 			"joinall":true,
-			"times" : 1   ,    
+			"times" : 1   ,      
 			"mode"  : "linear",
 			"amount":1, 
 		},   
@@ -78,92 +78,12 @@
 
 		//////////////////////////////// ROADS 
 
-
-		{"type":"tilesplit", "from":"roads","out": ["a","b","c","d"], 
-		},
-		{"type": "material","in": ["a"],
-			"material":"redarrow", 
-		}, 
-		{"type": "material","in": ["b"],  
-			"material":"greenarrow", 
-		}, 
-		{"type": "material","in": ["c"],
-			"material":"bluearrow", 
-		}, 
-		{"type": "material","in": ["d"],
-			"material":"yellowarrow", 
-		},     
-		{ "type" : "uvmap", "in":["a","b","c","d"],
-			"edge" : 1,     
-			"scale" : 5 ,
-			"shift" : [0.0 ,0.0], 
-			"mul" : [1,1,1],
-			"mode":"face","ortogonal":true
-		},     
-
-		{"type": "split", "from": "b","out":["b1","brd"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"second"
-		},
-		{"type":"inset", "from":"brd","out": ["rd",["*","*","rsd","*"]],
-			"amount": 0,
-			"extrude": "-$rbheight"
-		},
-
-
-		{"type": "split", "from": "c","out":["c1","crd1"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"second"
-		},
-		{"type": "split", "from": "c1","out":["c1","crd2"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"first"
-		},
-		{"type": "split", "from": "crd1","out":["crd11","crd12"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"first"
-		},
-		{"type":"inset", "from":"crd12","out": ["rd","*"],
-			"amount": 0,
-			"extrude": "-$rbheight"
-		},
-		{"type":"inset", "from":"crd11","out": ["rd",["*","rsd","*","*"]],
-			"amount": 0,
-			"extrude": "-$rbheight"
-		},
-		{"type":"inset", "from":"crd2","out": ["rd",["*","*","rsd","*"]],
-			"amount": 0,
-			"extrude": "-$rbheight"
-		},
-
-		
-		{"type": "split", "from": "a","out":["a1","a2"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"second"
-		},
-		{"type": "split", "from": "a2","out":["a1","ard"],
-			"size" :["$rbsize",0],      
-			"stype":"constant",  
-			"side":"first"
-		},
-		{"type":"inset", "from":"ard","out": ["rd",["*","rsd","rsd","*"]],
-			"amount": 0,
-			"extrude":  "-$rbheight"
-		},
-
-		{"type": "material","in": ["rd"],
-			"material":"black", 
+		{ 	"type" : "structure", "out" : "roads2",
+			"path" : "roadtest.dnmd", 
+			"from" : {"roads":"roads"},
+			"$rbsize":3,
+			"$rbheight":0.2, 
 		},  
-
-		{"type": "material","in": ["a1","a2","b1","b2","c1","c2","rsd"],
-			"material":"concrete06",
-			"smooth":false
-		},    
 
 		//////////////////////////////// FACADE 
 		{"type": "frotate","in": "fac*", 

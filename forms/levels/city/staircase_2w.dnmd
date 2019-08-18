@@ -1,0 +1,97 @@
+{
+	"name" : "fence.subtest", 
+	"input" : {
+		"base" : { "type" : "surface", "default" : [[4,-2,0],[-4,-2,0],[-4,2,0],[4,2,0]],},
+	}, 
+	"matpath" : [
+		//"textures/stdif",
+		"models/dyntest/mat",
+		"textures/debug"
+	],
+	"variables" : { 
+		"$mat.main" : "concrete06b.json",
+		"$mat.columns" : "concrete06b.json",
+		"$mat.floor" : "fo_floor.json",
+		"$mat.ceiling" : "ceiling31.json",
+		"$mat.carpet" : "redcarpet.json",
+		
+		"$height" : 6,
+		"$step.height" : 0.18,
+		"$path.width" : 1.7,
+	},  
+	"operations" : [   
+		
+		{ "type" : "split", "from" : "base","out" : ["base","rm_floor_b"],   
+			"size" : ["$path.width",0],  
+			"stype":"constant",   
+			"side":"second",  
+		},        
+		{ "type" : "split", "from" : "rm_floor_b","out" : ["rm_floor_g","*","rm_floor_b"],   
+			"size" : ["$path.width",0,"$path.width"],  
+			"stype":"constant",   
+			"side":"third",    
+		},        
+		
+		 
+		{ "type" : "inset", "from" : "rm_floor_g","out" : ["rm_floor_g","*"],  
+			"mode" : "normal",
+			"amount" : 0,  
+			"extrude" : "@($height/2)", 
+		},          
+		 
+		{"type":"stairs","from":"rm_floor_g","out":["stairs_faces","stairs_faces","rails"],
+			"side":3, 
+			"height":"@($height/2)", 
+			"stepheight":"$step.height", 
+			"leftside":true,
+			"rightside":false, 
+			"sidewidth":0.2,  
+			"sideheight": 0.1,  
+			"sidedepth": 0.4, 
+			"bottom":true,
+			"dropside":false,  
+		},   
+		 
+		{"type":"stairs","from":"rm_floor_b","out":["stairs_faces","stairs_faces","rails"],
+			"side":1, 
+			"height":"@($height/2)", 
+			"stepheight":"$step.height", 
+			"leftside":true,
+			"rightside":false, 
+			"sidewidth":0.2,  
+			"sideheight": 0.1,  
+			"sidedepth": 0.4, 
+			"bottom":true,
+			"dropside":false,  
+		},   
+		{"type":"union","in":"rm_floor_b","out":"rm_floor"},
+		
+		{ "type" : "inset", "from" : "base","out" : ["base","*"],  
+			"mode" : "normal",
+			"amount" : 0,  
+			"extrude" : "@($height/2)", 
+		},          
+		
+		{ "type" : "inset", "in" : "base","out" : ["rm_floor_z","*"],   
+			"amount" : 0,  
+			"extrude" : -0.4, 
+		},           
+		{"type":"flip","from":"rm_floor_z","out":"stairs_faces"},	
+		
+		{ 	"type" : "structure", "out" : "fence",
+			"path" : "models/dyntest/jp_fence.dnmd",
+			"in" : {"path":"rails"},
+		},   
+		{"type": "stop"},   
+		{ "type" : "material","in" : "fence",
+			"material" : "$mat.main", //"red.json"
+		},     
+		{ "type" : "uvmap", "in":["stairs_faces","fence"],
+			"edge" : 3,     
+			"scale" : 2.0     ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1],
+		},             
+		
+	]   
+} 

@@ -1,0 +1,10 @@
+{
+	"group" : "doors",
+	"tags" : [],
+	"model" : "models/artificial/doors/entrance_double.dnmd?width=0.8",
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+	"door":{
+
+	}
+}

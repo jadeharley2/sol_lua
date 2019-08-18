@@ -25,9 +25,9 @@ function Component(type,node,...)
 		com:OnAttach(node)
 	end 
 	return com
-end  
-     
-   
+end 
+
+
 function TryGetComponent(type,node) 
 	if node then
 		local lua_components = node.lua_components

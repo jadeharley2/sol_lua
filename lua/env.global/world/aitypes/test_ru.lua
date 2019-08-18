@@ -1,3 +1,4 @@
+if true then return end
 EVENT_CCOMMAND = 9999901
 _AI_chat = {}
 hook.Add("chat.msg.received","airead",function(sender,text)  
