@@ -1,0 +1,24 @@
+{
+    "tags" : ["furniture"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"prop.furniture.futur.chair_a",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.steel",
+            "count":3
+        },
+        {
+            "item":"resource.cloth",
+            "count":2
+        },
+        {
+            "item":"resource.dye_red",
+            "count":1
+        }
+    ]
+}

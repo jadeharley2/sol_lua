@@ -1,0 +1,12 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "cheat"
+    },
+    "output" : { 
+        "item":"resource.nanofiber",
+        "count":10 
+    },
+    "input" : [ 
+    ]
+}

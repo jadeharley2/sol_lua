@@ -14,7 +14,7 @@ local AB = {}
 --self:Think(ent)
 --self:End(ent)   
 
-function AB:Cast(ent) 
+function AB:Cast(ent)  
 	self.nextcast = self.nextcast or 0
 	if self.Begin and self.nextcast<CurTime() then
 		--local trace = ent:GetEyeTrace()--= 0

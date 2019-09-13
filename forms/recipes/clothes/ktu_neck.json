@@ -1,0 +1,24 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.collar",
+        "count":1 
+    },
+    "input" : [
+        {
+            "item":"resource.steel",
+            "count":1
+        },
+        {
+            "item":"resource.electrofiber",
+            "count":2
+        },
+        {
+            "item":"resource.electronic_components",
+            "count":3
+        },
+    ]
+}

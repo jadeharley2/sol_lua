@@ -1,0 +1,6 @@
+{
+    "tags":["solid"],
+    "icon":"res/sheet",
+    "tint":[0.2,0.22,0.2],
+    "name":"Glass", 
+}

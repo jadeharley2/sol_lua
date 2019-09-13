@@ -28,7 +28,11 @@ function dissolve:Start(node,targs)
         g_NoiseTexture="textures/noise/perlin1.jpg"
     }) 
     
-    self.models = dynmateial.GetModels(node,true)
+    if istable(node) then
+
+    else
+        self.models = dynmateial.GetModels(node,true)
+    end
     
     self.tmodels  = {}
     for k,v in pairs(self.models) do

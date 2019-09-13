@@ -21,7 +21,7 @@
 	"basematdir" : "models/species/anthro/materials/", 
 
 	"equipment":{
-		"items":["uniform_1","collar","legw","armw"]
+		"items":["apparel.uniform_1","apparel.collar","apparel.legw","apparel.armw"]
 	}, 
 	"items":[ 
 	] 

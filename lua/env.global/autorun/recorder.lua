@@ -200,17 +200,19 @@ function Recorder(ent)
 end
 
 
-u:Close()
+function test33333()
+	u:Close()
 
-u =  gui.FromTable({type='valuebar', 
-		_sub_bar = {color= {0,1,1}},
-		Value = 50
-	})
- 
-u:Show()  
-hook.Add(EVENT_GLOBAL_PREDRAW,"test343",function()
-	u:Think() 
-end)
-debug.DelayedTimer(100,100,10,function()
-	u:SetValue(u:GetValue()-1)   
-end)  
+	u =  gui.FromTable({type='valuebar', 
+			_sub_bar = {color= {0,1,1}},
+			Value = 50
+		})
+	
+	u:Show()  
+	hook.Add(EVENT_GLOBAL_PREDRAW,"test343",function()
+		u:Think() 
+	end)
+	debug.DelayedTimer(100,100,10,function()
+		u:SetValue(u:GetValue()-1)   
+	end)  
+end

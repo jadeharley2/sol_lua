@@ -104,8 +104,9 @@ function GETPOS()
 end
    
 if CBTASK then CBTASK:Stop() end 
+--[[
 CBTASK = debug.DelayedTimer(0,2600,-1,function()
 	hook.Call("pre_cubemap_render")  
 	hook.Call("cubemap_render") 
 	--MsgInfo("asd")
-end) 
+end) ]]

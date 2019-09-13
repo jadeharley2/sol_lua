@@ -1,0 +1,24 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.clt_top",
+        "count":1 
+    },
+    "input" : [
+        {
+            "item":"resource.cloth",
+            "count":3
+        },
+        {
+            "item":"resource.dye_black",
+            "count":2
+        },
+        {
+            "item":"resource.dye_lime",
+            "count":1
+        },
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.legw",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.nanofiber",
+            "count":2
+        },
+        {
+            "item":"resource.electrofiber",
+            "count":1
+        },
+        {
+            "item":"resource.dye_blue",
+            "count":1
+        }
+    ]
+}

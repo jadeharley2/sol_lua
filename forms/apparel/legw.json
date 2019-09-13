@@ -8,5 +8,6 @@
 	"icon" : "apparel/fk/kt_wrm",
 	"worldmodel":"apparel/rolled.stmd",
 	"worldmodelscale" : 0.03,
-	"hide":["calf","foot"]
+	"hide":["calf","foot"],
+	"furmasks":{"body":"models/apparel/submaps/legw.png"},
 }

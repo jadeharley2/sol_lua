@@ -76,6 +76,8 @@ function PANEL:Init()
 	for k,v in pairs(SETTINGS_VALUES.Categories) do
 		local tab = panel.Create() 
 		tab:SetColor(panelColor)
+		tab:SetSize(450,20)  
+		tab:SetAutoSize(false,true)
 		for k2,v2 in pairs(v.variables) do
 			
 			local sp = panel.Create()
@@ -127,13 +129,26 @@ function PANEL:Init()
 			  
 			tab:Add(sp)
 		end
-		testtabmenu:AddTab(v.name,tab)
+
+		
+		local pnl = gui.FromTable({type="floatcontainer",name = "items",  -- class = "submenu",
+			visible = true, 
+			size = {400,120},
+			color = {0,0,0},  
+			textonly=true, 
+			Floater = {type="panel",
+				scrollbars = 1,
+				color = {0,0,0}, 
+				size = {400,120},
+				autosize={false,true}
+			},
+		});
+		tab:Dock(DOCK_TOP)
+		pnl.floater:Add(tab)
+		testtabmenu:AddTab(v.name,pnl)
 	end
 	self.savelist = savelist
-	
-	--testtabmenu:AddTab("T01",panel.Create())
-	--testtabmenu:AddTab("T02",panel.Create("button"))
-	--testtabmenu:AddTab("o_O",panel.Create("window_chat"))
+	 
 	testtabmenu:SetSize(100,100)
 	testtabmenu:Dock(DOCK_FILL)
 	testtabmenu:ShowTab(1)

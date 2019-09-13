@@ -39,11 +39,11 @@ end
 function PANEL:Drop(item)
 	if self.OnDrop then
 		self:OnDrop(item)
-		return 
+		--return 
 	end
 	if self.slottype == "reference" then
 		local cpy = item:MakeCopy()
-		item.lastSlot:Drop(item)
+		--item.lastSlot:Add(item)
 		item = cpy
 		--MsgN("CPY! ",cpy)
 	end

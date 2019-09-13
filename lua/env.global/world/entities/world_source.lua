@@ -82,6 +82,7 @@ function ENT:Spawn()
 		--debug.Delayed(3000,function()
 		--MsgN("RENDER!")
 		cbm:RequestDraw()
+		self:Hook("cubemap_render","cbc",function() cbm:RequestDraw() end)
 		--end) 
 	end
 	

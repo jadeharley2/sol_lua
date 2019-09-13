@@ -319,7 +319,7 @@ float3 Temperature(float nit)
 	else return CBlend(float3(0,0,0),float3(0,0,1),0,0.08,lognit);
 }
 float4 CHANNELS(PS_IN input ) : SV_Target
-{  
+{   
 	if(input.tcrd.y<0.5 )
 	{
 		if (input.tcrd.x<0.5)

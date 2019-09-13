@@ -33,6 +33,7 @@
 	], 
 	"parameters" : {
 		"tNoise" 					: {"type":"texture"},
+		"tNoise2" 					: {"type":"texture"},
 		"cTexture" 					: {"type":"texture"},
 		"tileTexture" 				: {"type":"texture"},
 		"tileNearTexture_d" 		: {"type":"texture"},
@@ -46,6 +47,7 @@
 		"layout" :"VertexNBTTexture",
 		"values" : {
 			"tNoise" 				: "textures/noise/perlinover_n.jpg",
+			"tNoise2" 				: "textures/noise/white.png",
 			"cTexture" 				: "textures/atmosphere/clouds.dds",
 			"tileTexture" 			: "textures/surface/terrain/test/tiletest2.png",
 			"tileNearTexture_d" 	: "textures/surface/terrain/test/nearsurface_d.dds",

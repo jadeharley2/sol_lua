@@ -1,10 +1,21 @@
 {
-	"name" : "Uniform 3", 
+	"name" : "Formal uniform", 
 	"filter" :{  
 	},
+	"tags":["dyeable"],
 	"slot" : "torso",
 	"model" : "apparel/uniform_3.stmd",
 	"icon" : "apparel/fk/uniform3", 
 	"worldmodelscale" : 0.014,
-	"hide":["torso_top","torso_bot","arm","thigh","calf"]
+	"hide":["torso_top","torso_bot","arm","thigh","calf"],
+	"modmaterial" :  [{ 
+		"matColors2" : [255,255,255,255],   
+		}
+	],
+	"dye" :{
+		"type" : "modmaterial",
+		"matid" : 1,
+		"vartype" : "vec4",
+		"variable" : "matColors2" 
+	}
 }

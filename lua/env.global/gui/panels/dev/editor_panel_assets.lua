@@ -9,7 +9,7 @@ local assettypes = {
 		if not wtr or not wtr.Hit then --return nil
 		else pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) end
 
-		local fpath = forms.GetForm("prop",type)
+		local fpath = "prop."..type-- forms.GetForm("prop",type)
 		if fpath then
 		 	MsgN("spawnprop:",fpath)
 			local p = SpawnPV(fpath,node,pos,nil,GetFreeUID())--,j.scale,false,false)
@@ -68,8 +68,14 @@ local assettypes = {
 	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
-		if not wtr or not wtr.Hit then return nil end
-		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+		local pos = ssstest or Vector(0,0,0)
+		if not wtr or not wtr.Hit then 
+			if not ssstest then
+				return nil 
+			end
+		else
+			pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+		end 
 		
 		local ap = ents.Create("planet_surface_mod")
 		ap:SetSizepower(100)

@@ -4,14 +4,9 @@ MOVETYPE_RUN = 2
 MOVETYPE_SWIM = 3
 MOVETYPE_FLY = 4
  
-DeclareEnumValue("event","DAMAGE",					80001) 
 DeclareEnumValue("event","SET_VEHICLE",				80002) 
 DeclareEnumValue("event","EXIT_VEHICLE",			80003) 
-
-DeclareEnumValue("event","HEALTH_CHANGED",			81003) 
-DeclareEnumValue("event","MAXHEALTH_CHANGED",		81004) 
-DeclareEnumValue("event","DEATH",					81005) 
-DeclareEnumValue("event","SPAWN",					81006) 
+ 
 DeclareEnumValue("event","ACTOR_JUMP",				81007) 
 DeclareEnumValue("event","CHANGE_CHARACTER",		81008) 
 DeclareEnumValue("event","TOOL_DROP",				81011) 
@@ -37,8 +32,7 @@ DeclareEnumValue("event","TASK_RESET",				84009)
 DeclareEnumValue("event","LERP_HEAD",				85001)
 DeclareEnumValue("event","LOOK_AT",					85002)  
  
-DeclareEnumValue("event","SET_AI",					85011) 
---EVENT_DAMAGE = 80001
+DeclareEnumValue("event","SET_AI",					85011)  
 --EVENT_SET_VEHICLE = 80002
 --
 --EVENT_HEALTH_CHANGED = 81003
@@ -66,10 +60,12 @@ function ENT:Init()
 	local model = self:AddComponent(CTYPE_MODEL)  
 	local storage = self:AddComponent(CTYPE_STORAGE)  
 	local equipment = self:AddComponent(CTYPE_EQUIPMENT)  
+	local health = self:AddComponent(CTYPE_HEALTH) 
 	self.model = model
 	self.phys = phys
 	self.storage = storage
 	self.equipment = equipment
+	self.health = health
 	self:SetSpaceEnabled(false)
 	
 	self.speedmul = 1
@@ -736,6 +732,8 @@ function ENT:SetCharacter(id)
 					end
 				end
 				
+				hook.Call("actor.setcharacter",self,id) 
+
 				if SERVER or not network.IsConnected() and not self.equipment_asquired then
 					self.equipment_asquired = true
 					if data.equipment then  
@@ -910,11 +908,7 @@ function ENT:Say(text)
 end
 
 function ENT:SetModel(mdl)
-	self:SetParameter(VARTYPE_MODEL,mdl)
-	--self.modelfile = mdl
-	--if SERVER then
-	--	network.BroadcastLua("ents.GetById("..tostring(self:GetSeed())..").modelfile = '"..mdl.."'")
-	--end
+	self:SetParameter(VARTYPE_MODEL,mdl) 
 end
 function ENT:SetSize(val)
 	local model = self.model
@@ -936,22 +930,7 @@ function ENT:SetSize(val)
 		end
 	end
 end
-
---[[
-if SERVER then
-	
-	hook.Add("umsg.actor_set_vehicle","0",function(actor,veh,mountpointid,assignnode) 
-		network.BroadcastCall("actor_set_vehicle",actor,veh,mountpointid,assignnode) 
-	end) 
-else -- CLIENT
-
-	-hook.Add("umsg.actor_set_vehicle","0",function(actor,veh,mountpointid,assignnode)  
-	-	MsgN("set vehicle: ",actor,veh,mountpointid,assignnode)
-	-	actor:SetVehicle(veh,mountpointid,assignnode,true)  
-	-end)  
-end
-]]
-
+ 
 --[[ ######## MOVEMENT ######## ]]--
 
 function ENT:Turn(ang)
@@ -1610,17 +1589,110 @@ function ENT:HandleDriving(driver)
 	end
 end
 
+--[[ ######## ITEMS ######## ]]--
 
-console.AddCmd("give",function(a,b)  
+function ENT:Give(formid,count)
+ MsgN(formid)
+	local s = self.storage
+	if s and s:HasFreeSlot() then
+		local item = forms.GetItem(formid)
+		if item then
+			local eq = self.equipment 
+			MsgN(self,formid)
+			if eq and item:Read("/parameters/luaenttype")  == 'item_apparel' then
+				eq:Equip(item)
+			else
+				s:PutItemAsData(nil,item,count) 
+				hook.Call("inventory_update",self)
+			end
+		end
+		--local p = forms.GetForm("apparel",type) or forms.GetForm(type)
+		--if p  then 
+		--	local item = ItemIA(p,GetFreeUID())
+		--	local eq = self.equipment 
+		--	if eq then
+		--		eq:Equip(item)
+		--	else
+		--		s:PutItemAsData(s:GetFreeSlot(),item) 
+		--	end
+		--else
+		--	local itemb = forms.GetItem(type)
+		--	if itemb then
+		--		s:PutItemAsData(s:GetFreeSlot(),itemb) 
+		--	end
+		--end
+	end 
+end
+
+function ENT:Equip(formid)
+	local s = self.storage
+	local eq = self.equipment 
+	if s and eq then
+		local item = s:GetItem(formid) 
+		if item then 
+			PrintTable(item)
+			eq:Equip(item)
+		end
+	end
+end
+
+
+console.AddCmd("giveto",function(formid,count)  
+	--if CLIENT then
+	--	if b then
+	--		for k,v in pairs(LocalPlayer():GetParent():GetChildren()) do
+	--			if v[VARTYPE_CHARACTER] == a or v[VARTYPE_FORM] == a and v.Give then
+	--				MsgN(v)
+	--				if not network.IsConnected() then
+	--					v:Give(b)
+	--				else
+	--					v:SendEvent(EVENT_GIVE_ITEM,b)
+	--				end
+	--				break
+	--			end
+	--		end
+--
+	--	else
+	--		if not network.IsConnected() then
+	--			LocalPlayer():Give(formid,tonumber(count or 1))
+	--		else
+	--			LocalPlayer():SendEvent(EVENT_GIVE_ITEM,a)
+	--		end
+	--	end
+	--else
+	--	MsgN( a,b)
+	--	local ply = Player(tonumber(a))
+	--	if ply then
+	--		ply:SendEvent(EVENT_GIVE_ITEM,b,tonumber(count or 1)
+	--	end
+	--end
+end)
+if CLIENT then
+	console.AddCmd("give",function(formid,count) 
+		count = tonumber(count or 1)
+		if not network.IsConnected() then
+			LocalPlayer():Give(formid,count)
+		else
+			LocalPlayer():SendEvent(EVENT_GIVE_ITEM,formid,count)
+		end  
+	end)
+else --SERVER
+	console.AddCmd("give",function(plyid,formid,count) 
+		local ply = Player(tonumber(plyid))
+		if ply then
+			count = tonumber(count or 1) 
+			ply:SendEvent(EVENT_GIVE_ITEM,b,count)
+		end  
+	end)
+end
+console.AddCmd("equip",function(a,b)  
 	if CLIENT then
 		if b then
 			for k,v in pairs(LocalPlayer():GetParent():GetChildren()) do
 				if v[VARTYPE_CHARACTER] == a or v[VARTYPE_FORM] == a and v.Give then
 					MsgN(v)
 					if not network.IsConnected() then
-						v:Give(b)
-					else
-						v:SendEvent(EVENT_GIVE_ITEM,b)
+						v:Equip(b) 
 					end
 					break
 				end
@@ -1628,77 +1700,13 @@ console.AddCmd("give",function(a,b)
 
 		else
 			if not network.IsConnected() then
-				LocalPlayer():Give(a)
-			else
-				LocalPlayer():SendEvent(EVENT_GIVE_ITEM,a)
+				LocalPlayer():Equip(a) 
 			end
 		end
-	else
-		MsgN( a,b)
-		local ply = Player(tonumber(a))
-		if ply then
-			ply:SendEvent(EVENT_GIVE_ITEM,b)
-		end
+	else 
+		---
 	end
 end)
---[[ ######## ITEMS ######## ]]--
-
-function ENT:Give(type)
-
-	--if SERVER or not network.IsConnected() then
-		local s = self.storage
-		if s then
-			local p = forms.GetForm("apparel",type) or forms.GetForm(type)
-			if p  then 
-				local item = ItemIA(p,GetFreeUID())
-				local eq = self.equipment 
-				if eq then
-					eq:Equip(item)
-				else
-					s:PutItemAsData(s:GetFreeSlot(),item) 
-				end
-			else
-				local itemb = forms.GetItem(type)
-				if itemb then
-					s:PutItemAsData(s:GetFreeSlot(),itemb) 
-				end
-			end
-		end
-		---local inv = self.inventory
-		---if not inv then
-		---	self.inventory = Inventory(4*8,self:GetSeed()+3000) 
-		---end  
-		---local tool = forms.GetPath("tool",type)
-		---if tool then  
-		---MsgN("TOOL!",tool)
-		---	local hasitem = self:HasTool(type)
-		---	if not hasitem then
-		---		local tool = CreateWeapon(type,self:GetParent(),Vector(0,0,0),GetFreeUID())
-		---		if tool then
-		---			if SERVER then
-		---				network.AddNodeImmediate(tool)
-		---			end 
-		---			self:SendEvent(EVENT_PICKUP_TOOL,tool)
-		---		end
-		---	end 
-		---else 
-		---	local app = CreateIA(type,self:GetParent(),Vector(0,0,0),GetFreeUID()) 
-		---	if app then  
-		---		network.AddNodeImmediate(app)
-		---		local inv = self.inventory
-		---		if not inv then
-		---			self.inventory = Inventory(4*8,self:GetSeed()+3000) 
-		---		end
-		---		self:SendEvent(EVENT_PICKUP_ITEM,app)
-		---		--inv:AddItem(self, app)
-		---	end 
-		---end 
-		--if SERVER then
-		--	self:SendEvent(EVENT_GIVE_ITEM,type)
-		--end  
-	--end
-end
-
 
 --[[ ######## WEAPON|TOOLS ######## ]]--
 
@@ -1713,10 +1721,10 @@ function ENT:HasItem(formid)
 		formid = forms.GetForm(formid) 
 	end
 	local s = self.storage
-	local e = self.equipment
 	if s then
 		if s:HasItem(formid) then return true end
 	end
+	local e = self.equipment
 	if e then
 		if e:HasItem(formid) then return true end
 	end
@@ -1801,59 +1809,26 @@ function ENT:SetActiveWeapon(weap)
 	end
 	return false
 end
+ 
 
- --[[function ENT:SetActiveWeapon(type)
-	if type then 
-		local wr = self.weapons
-		if wr then
-			local weap = wr[type]
-			if weap then
-				local em = self.model
-				local aw = self.activeweapon
-				if aw and em then em:Detach(aw) end 
-				self.activeweapon = weap
-				em:Attach(weap,"weapon1",true,weap.attachworld or matrix.Identity())
-				em:PlayLayeredSequence(1,"weapon_hold_test")
-				em:PlayLayeredSequence(2,"weapon_aim")
-				
+function ENT:WeaponFire(dir,alternative) 
+	if CLIENT then
+		local weap = self:GetActiveWeapon() 
+		if alternative then
+			if RF and weap.AltFire and weap:IsReady() then
+				weap:SendEvent(EVENT_TOOL_FIRE,1,dir)  
 				return true
-			end
+			end  
+		else
+			if weap.Fire and weap:IsReady() then  
+				weap:SendEvent(EVENT_TOOL_FIRE,0,dir) 
+				return true
+			end 
 		end
-	else
-		local em = self.model
-		local aw = self.activeweapon
-		if aw and em then em:Detach(aw) end 
-		self.activeweapon = nil
-		em:StopLayeredSequence(2)
-		em:StopLayeredSequence(1)
-		return true
 	end
 	return false
 end
-function ENT:DropWeapon(type)
-	local em = self.model
-	local aw = self.activeweapon
-	local wr = self.weapons or {}
-	self.weapons = wr
-	if aw and aw.type == type then 
-		if aw and em then em:Detach(aw) end 
-		self.activeweapon = nil 
-		wr[type] = nil
-		em:StopLayeredSequence(1)
-		aw:OnDrop(self)
-	end
-end
-
-function ENT:DropActiveWeapon()
-	local aw = self.activeweapon
-	if aw then self:DropWeapon(aw.type) end
-end
-function ENT:GetWeapons()
-	return self.weapons
-end
-]]
-
-
+ 
 --[[ ######## EQUIPMENT|APPAREL ######## ]]--
 
 function ENT:GetEquipped(slot)
@@ -1917,71 +1892,7 @@ end
 function ENT:TakeAbility(aname)
 	self.abilities[aname] = nil
 end
- 
 
-
---[[ ######## HEALTH|ALIVENESS ######## ]]--
-
-function ENT:GetHealth()
-	return self:GetParameter(VARTYPE_HEALTH)
-end
-function ENT:SetHealth(val) 
-	self:SendEvent(EVENT_HEALTH_CHANGED,val)
-end
-
-function ENT:GetMaxHealth()
-	return self:GetParameter(VARTYPE_MAXHEALTH)
-end
-function ENT:SetMaxHealth(val) 
-	self:SendEvent(EVENT_MAXHEALTH_CHANGED,val)
-end
-
-function ENT:GetHealthPercentage()
-	return self:GetParameter(VARTYPE_HEALTH) / self:GetParameter(VARTYPE_MAXHEALTH)
-end
-
-function ENT:SetHealthPercentage(pc) 
-	self:SendEvent(EVENT_HEALTH_CHANGED, pc*self:GetParameter(VARTYPE_MAXHEALTH))
-end
-
-function ENT:Hurt(amount) 
-	self:SendEvent(EVENT_DAMAGE,amount)
-end
-
-function ENT:Kill() 
-	if SERVER then self.graph:SetState("dead")  end
-	self:SendEvent(EVENT_DEATH)
-end
-function ENT:Respawn() 
-	if SERVER then self.graph:SetState("spawn")  end
-	self:SendEvent(EVENT_SPAWN)
-end
-
-function ENT:Alive()
-	return not self._dead
-end
-
-function ENT:Dead()
-	return self._dead == true
-end
-
-function ENT:WeaponFire(dir,alternative) 
-	if CLIENT then
-		local weap = self:GetActiveWeapon() 
-		if alternative then
-			if RF and weap.AltFire and weap:IsReady() then
-				weap:SendEvent(EVENT_TOOL_FIRE,1,dir)  
-				return true
-			end  
-		else
-			if weap.Fire and weap:IsReady() then  
-				weap:SendEvent(EVENT_TOOL_FIRE,0,dir) 
-				return true
-			end 
-		end
-	end
-	return false
-end
  
 
 
@@ -2114,49 +2025,33 @@ end
 
 
 ENT._typeevents = {
-	[EVENT_DAMAGE] = {networked = true, f = function(self,amount) 
-		if SERVER then 
-			local hp = self:GetParameter(VARTYPE_HEALTH) 
-			hp = hp - amount 
-			self:SetParameter(VARTYPE_HEALTH,hp)
-			self:SetHealth(hp)  
-			return
-		end
-		
-		local hp = self:GetParameter(VARTYPE_HEALTH) 
-		hp = hp - amount 
-		self:SetParameter(VARTYPE_HEALTH,hp)
-		if hp <= 0 then 	self:SendEvent(EVENT_DEATH) end
-		if CLIENT and LocalPlayer() == self then
-			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
-			healthbar:UpdateHealth(hp,mhp) 
-		end
+	[EVENT_DAMAGE] = {networked = true, f = function(self,amount)  
+
 	end},
 	[EVENT_HEALTH_CHANGED] = {networked = true, f = function(self,val) 
-		self:SetParameter(VARTYPE_HEALTH,val)  
+		--self:SetParameter(VARTYPE_HEALTH,val)  
 		if CLIENT and LocalPlayer() == self then 
 			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
 			healthbar:UpdateHealth(val,mhp) 
 		end
-		self:SetVehicle(nil) 
+		--self:SetVehicle(nil) 
 	end},
-	[EVENT_MAXHEALTH_CHANGED] = {networked = true, f = function(self,val) self:SetParameter(VARTYPE_MAXHEALTH,val) end},
-	[EVENT_DEATH] = {networked = true, f = function(self) 
-		self:SetParameter(VARTYPE_HEALTH,0)  
+	[EVENT_MAXHEALTH_CHANGED] = {networked = true, f = function(self,val)
 		if CLIENT and LocalPlayer() == self then 
-			local mhp = self:GetParameter(VARTYPE_MAXHEALTH) 
-			healthbar:UpdateHealth(0,mhp) 
+			local hp = self:GetParameter(VARTYPE_HEALTH) 
+			healthbar:UpdateHealth(hp,val) 
 		end
-		self._dead = true
+	end},
+	[EVENT_DEATH] = {networked = true, f = function(self)  
+		if CLIENT and LocalPlayer() == self then  
+			healthbar:UpdateHealth(0,self[VARTYPE_MAXHEALTH]) 
+		end 
 		self.graph:SetState("dead") 
 	end},
-	[EVENT_SPAWN] = {networked = true, f = function(self) 
-		local hp = self:GetParameter(VARTYPE_MAXHEALTH)
-		self:SetParameter(VARTYPE_HEALTH,hp)  
-		if CLIENT and LocalPlayer() == self then 
-			healthbar:UpdateHealth(hp,hp) 
-		end
-		self._dead = nil
+	[EVENT_SPAWN] = {networked = true, f = function(self)  
+		if CLIENT and LocalPlayer() == self then  
+			healthbar:UpdateHealth(self[VARTYPE_HEALTH],self[VARTYPE_MAXHEALTH]) 
+		end 
 		self.graph:SetState("spawn") 
 	end},
 	[EVENT_CHANGE_CHARACTER] = {networked = true, f = ENT.SetCharacter},
@@ -2300,5 +2195,13 @@ console.AddCmd("debug_movemode",function()
 	else
 		hook.Remove(EVENT_GLOBAL_UPDATE,"debug_movenode")
 		hook.Remove("input.mousedown","debug_movenode")
+	end
+end)
+
+console.AddCmd("hideplayer",function()
+	for k,v in pairs(LocalPlayer():GetChildren()) do
+		if v.model then
+			v.model:Enable(false)
+		end
 	end
 end)

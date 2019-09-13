@@ -3,7 +3,7 @@ local COLLISION_ONLY = COLLISION_ONLY or 1
  
 
 function ItemPV(type,seed,modtable)
-	local j = json.Read(type) 
+	local j = forms.ReadForm(type)--json.Read(type) 
 	if not j then return nil end 
 	local t = {
 		sizepower=1, 
@@ -20,7 +20,7 @@ function ItemPV(type,seed,modtable)
 	return json.ToJson(t)
 end
 function InitPV(type,ent,pos,ang,seed,e)
-	local j = json.Read(type) 
+	local j = forms.ReadForm(type)--json.Read(type) 
 	if not j then return nil end
 	
 	local tags = {}
@@ -217,7 +217,7 @@ end
 function ENT:PreLoadData(isLoad) 
 	if not self.data then
 		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
-		self.data = json.Read(type) 
+		self.data = forms.ReadForm(type)--json.Read(type) 
 	end
 	if not self.data then
 		MsgN("prop_variable error loading type "..tostring(type or "nil"))
@@ -282,11 +282,17 @@ end
 
 function ItemsetSpawn(storage,k,v,rnd) 
 	local its = forms.ReadForm('itemset.'..k) 
+	--MsgN("itemsetspawn",its)
 	if its then
 		if not v.mode or v.mode == "all" then
 			for kk,vv in pairs(its.subsets) do -- groups 
 				for k3,v3 in pairs(vv) do -- items
-					storage:AddFormItem(v3)
+					--storage:AddFormItem(v3)
+					local item = forms.GetItem(v3,0) 
+					if item then
+						MsgN("is_item",v3,item)
+						storage:PutItemAsData(nil,item)
+					end
 				end
 			end
 		elseif v.mode == "oneof" then
@@ -294,7 +300,12 @@ function ItemsetSpawn(storage,k,v,rnd)
 			local group = its.subsets[key]   
 			if group then 
 				for k3,v3 in pairs(group) do -- items
-					storage:AddFormItem(v3)
+					--storage:AddFormItem(v3)
+					local item = forms.GetItem(v3,0) 
+					if item then
+						MsgN("is_item2",v3,item)
+						storage:PutItemAsData(nil,item)
+					end
 				end
 			end
 		end

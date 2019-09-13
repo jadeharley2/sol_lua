@@ -8,4 +8,5 @@
 	"icon" : "apparel/fk/hat0", 
 	"worldmodelscale" : 0.014,
 	"hide":["torso_bot","arm"],
+	"furmasks":{"body":"models/apparel/submaps/coat.png"},
 }

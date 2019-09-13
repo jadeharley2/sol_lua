@@ -1,0 +1,16 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "cheat"
+    },
+    "output" : { 
+        "item":"resource.dye_green",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.water",
+            "count":1
+        },
+    ]
+}

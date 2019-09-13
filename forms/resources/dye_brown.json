@@ -1,0 +1,7 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid",
+    "tint":[0.3882353,0.2509804,0.1176471],
+    "name":"Brown dye",
+    "suffix":"brown"
+}

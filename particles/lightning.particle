@@ -1,0 +1,100 @@
+{
+    "name":"lgt",
+	"emitters": [
+		//{"type":"continuously","rate":100}
+		{"type":"once","count":200}
+	],
+	"initializers": [
+		{"type":"positiononline","to":[0,0,0],"from":[0,1000,0],
+            "noisemul":50,"count":200},
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		{"type":"attractor","dir":[0,0,0],"power":0,"mode":0},  
+        {"type":"lifetime","time":0.2},
+        {"type":"spawnsub","name":"line","probability":0.003}
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+        {"type":"movement","dir":[0,0,0],"drag":0.2}, 
+        {"type":"turbulence","power":103},
+        {"type":"scale","startscale":0,"endscale":1,"starttime":0,"endtime":0.01}, 
+        {"type":"scale","startscale":1,"endscale":-0,"starttime":0.01,"endtime":0.2}, 
+        //{"type":"tint","starttint":[1,1,1],"endtint":[0,0,0],"starttime":0.1,"endtime":0.5}, 
+	],
+	
+	"renderers": [ 
+	//	{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
+        //{ "type":"stars",
+        //     "blend" : 0, 
+        //     "depth" : "read", 
+        //     "texture":"textures/space/spcloud1.jpg",
+        //     "tint":[0.1,0.07,0.05,1]
+        //},
+        { "type":"line",
+            "width":0.5,
+            "blend" : 0,  
+            "smooth":2,
+            "texture":"textures/tile/linear/simple.png",
+            "tint":[0.76,0.635,0.96,1],
+            "brightness":100,
+       },
+       { "type":"light",
+            "brightness":100000000000,
+            "tint":[0.76,0.635,0.96,1],
+            "maxcount":10
+        }
+    ],
+    "children":{
+        "line":{ 
+            "noauto":true,
+            "emitters": [ 
+                {"type":"once","count":50}
+            ],
+            "initializers": [
+                {"type":"positiononline","to":[0,0,0],"from":[0,100,0],
+                    "noisemul":50,"count":50},  
+                {"type":"lifetime","time":0.2},
+            ],
+            "updaters": [ 
+                {"type":"movement","dir":[0,0,0],"drag":0.2}, 
+                {"type":"turbulence","power":103},
+                {"type":"scale","startscale":0,"endscale":1,"starttime":0,"endtime":0.01}, 
+                {"type":"scale","startscale":1,"endscale":-0,"starttime":0.01,"endtime":0.2}, 
+            ],
+            
+            "renderers": [  
+                { "type":"line",
+                    "width":0.5,
+                    "blend" : 0,  
+                    "smooth":2,
+                    "texture":"textures/tile/linear/simple.png",
+                    "tint":[0.76,0.635,0.96,1],
+                    "brightness":100,
+               }, 
+            ],
+        },
+       // "topflare":{ 
+       //     "emitters": [ 
+       //         {"type":"once","count":10}
+       //     ],
+       //     "initializers": [
+       //         {"type":"positiononline","to":[0,1400,0],"from":[0,1400,0],
+       //             "noisemul":50,"count":50},   
+       //             {"type":"rotationrand"},  
+       //     ],
+       //     "updaters":[ 
+       //         {"type":"scale","startscale":3000,"endscale":3000,"starttime":0,"endtime":1}, 
+       //         {"type":"tint","starttint":[0,0,0,0],"endtint":[0.01,0.01,0.01,1],"starttime":0,"endtime":0.01},
+       //         {"type":"tint","endtint":[0,0,0,0],"starttint":[0.02,0.02,0.02,1],"starttime":0.01,"endtime":0.5},  
+       //     ],
+       //     "renderers": [  
+       //         { "type":"stars",
+       //              "blend" : 0, 
+       //              "depth" : "read", 
+       //              "texture":"textures/space/star.jpg",
+       //              "tint":[0.76,0.635,0.96,1],
+       //         },
+       //     ],
+       // }
+    }
+	
+}

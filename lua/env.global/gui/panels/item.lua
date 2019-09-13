@@ -47,13 +47,15 @@ function PANEL:Init()
 	self.base.Init(self) 
 	self.base.SetColorAuto(self,Vector(0.1,0.3,0.1),0.1) 
 	local title = panel.Create()
-	title:Dock(DOCK_TOP)
-	title:SetSize(10,10)
+	title:Dock(DOCK_BOTTOM)
+	title:SetSize(10,10) 
+	title:SetColor(Vector(0,0,0))
+	title:SetTextColor(Vector(4,4,4))
 	title:SetCanRaiseMouseEvents(false)
-	--title:SetAlpha(0.5)
+	title:SetAlpha(0.5)
 	
 	local amount = panel.Create()
-	amount:Dock(DOCK_BOTTOM)
+	amount:Dock(DOCK_TOP)
 	amount:SetSize(15,15)
 	amount:SetTextOnly(true)
 	amount:SetCanRaiseMouseEvents(false)
@@ -130,8 +132,12 @@ function PANEL:MouseClick(fid)
 				local fs = target:GetFreeSlot()
 				if fs then
 					source:TransferItem(self.storeslot,target,fs,1)
-					MsgN("sclick!")  
-					InvRefreshAll()
+				--	MsgN("sclick!")  
+				--	InvRefreshAll()
+					debug.Delayed(100,function()
+						hook.Call("inventory_update",target:GetNode()) 
+						hook.Call("inventory_update",source:GetNode()) 
+					end)
 				end
 			elseif GLOBAL_CEQPANEL then
 				local data = self.item.data
@@ -139,6 +145,9 @@ function PANEL:MouseClick(fid)
 					MsgN("uu", self.slot,self.item) 
 					if GLOBAL_CEQPANEL:EquipItem(self) then 
 					end
+					debug.Delayed(100,function()
+						hook.Call("inventory_update",LocalPlayer()) 
+					end)
 				end 
 			end
 		end
@@ -149,9 +158,16 @@ function PANEL:MouseClick(fid)
 		local context = {
 			{text = ""..self.title:GetText()},
 			--{text = "use",action = ACT_USE},
-			{text = "drop",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "destroy",action = function(item) item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) self:GetParent():Remove(self)  end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data))  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "drop",action = function(item) 
+				item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) 
+				--self:GetParent():Remove(self)  
+
+			end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "destroy",action = function(item) 
+				item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) 
+				self:GetParent():Remove(self)  
+			end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data),5)  end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "edit",action = function(item)  EIT = json.FromJson(item.storage.list[item.storeslot].data) end},
 			{text = "save",action = function(item)  item.storage.list[item.storeslot].data = json.ToJson(EIT) end},
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
@@ -250,6 +266,7 @@ function PANEL:Set(slot,item,node)
 		local icon =   data:Read("/parameters/icon")
 		--MsgN(icon)
 		self.title:SetText(title or class or luatype or "???")
+		self.contextinfo = title or class or luatype or "???"
 		--MsgN(title,luatype,class,amount,icon)
 		--PrintTable(class)   
 		if not ( self:TrySetTexture(icon) or self:TrySetTexture(class) or self:TrySetTexture(luatype) ) then 
@@ -259,12 +276,19 @@ function PANEL:Set(slot,item,node)
 			self:SetTexture(unknowntex)
 		end
 		
+		--PrintTable(item)
 		if item.count>1 then
 			self.amount:SetText(tostring(item.count)) 
 		else
 			self.amount:SetText("")
 		end 
 		self.customactions = data:Read("/parameters/actions")
+
+		local tint = data:Read("/parameters/tint")
+		if tint then
+			self:SetColorAuto(JVector(tint))
+		end
+
 	else -- ability 
 		local title =  item.name 
 		local icon =  item.icon
@@ -344,6 +368,18 @@ function PANEL:OnDrop()
 	LAST_DROP_TIME = CurTime()
 end
 
+function PANEL:OnDropped(onto)
+	--MsgN(onto) 
+	local parent = self:GetParent()
+	if not parent then
+		self:Close() 
+		local ls = self.lastSlot 
+		if ls then
+			ls:Add(self)
+			ls:UpdateLayout()
+		end
+	end
+end
 function PANEL:Select(actor)
 	local ent = self.item  
 	if ent then

@@ -1,6 +1,6 @@
 {
 	"group" : "furniture",
-	"tags" : ["modern"],
+	"tags" : ["modern","dyeable"],
 	"model" : "furniture/modern/bed.stmd",
 	"scale" : 0.05,
 	"rotation" : [0,0,0], 
@@ -16,6 +16,12 @@
 			}
 		},
 		"usetype" : "lie down"
+	},
+	"dye" :{
+		"type" : "modmaterial",
+		"matid" : 2,
+		"vartype" : "vec3",
+		"variable" : "tint" 
 	}
 	
 }

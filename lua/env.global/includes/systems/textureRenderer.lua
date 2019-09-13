@@ -21,3 +21,4 @@ function RenderThumbnail(form,callback)
 	end 
 	rte:Draw(form,callback) 
 end                                     
+ 

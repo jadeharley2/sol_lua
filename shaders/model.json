@@ -37,17 +37,22 @@
 			{"name":"g_MeshTexture_s", "type":"texture","default":"","description":""},
 			{"name":"g_DetailTexture_m", "type":"texture","default":"","description":""},
 			{"name":"g_MeshTexture_f", "type":"texture","default":"","description":""},
+			{"name":"g_MeshTexture_g", "type":"texture","default":"textures/debug/white.png","description":""},
 			{"name":"emissionTint", "type":"float3","default":[1,1,1],"description":""},
 			{"name":"rimfadeEmission","type":"float2","default":[1,2],"description":"x - intensity, y - power"} ,
 			{"name":"base_subsurface_intencity", "type":"float","default":0,"description":"subsurface intensity"},
 			{"name":"mul_subsurface_intencity", "type":"float","default":0,"description":"subsurface multiplier"},
 			
+			{"name":"sMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matColors0", "type":"float4","default":[1,0,0,1],"description":""},
 			{"name":"matColors1", "type":"float4","default":[0,1,0,1],"description":""},
 			{"name":"matColors2", "type":"float4","default":[0,0,1,1],"description":""},
 			{"name":"matColors3", "type":"float4","default":[0,0,0,1],"description":""},
 			{"name":"freshnelRanges", "type":"float3","default":[1,1,1],"description":""},
+			
+			{"name":"furLen", "type":"float","default":0,"description":"fur length"},
+			{"name":"furShift", "type":"float2", "description":"fur shift"},
 			
 			{"name":"stencil", "type":"float","default":0,"description":"stencil buffer write value"},
 		],

@@ -1,0 +1,20 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.clt_headphones",
+        "count":1 
+    },
+    "input" : [
+        {
+            "item":"resource.plastic",
+            "count":1
+        },
+        {
+            "item":"resource.electronic_components",
+            "count":1
+        }, 
+    ]
+}

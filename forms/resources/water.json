@@ -1,5 +1,13 @@
 {
     "tags":["liquid"],
     "icon":"res/liquid",
-    "name":"Water"
+    "tint":[0.4,0.6,0.8],
+    "name":"Water",
+    "transitions":[
+        {
+            "type":"temperature",
+            "condition":["below",0],
+            "result" :"resource.water_ice"
+        }
+    ]
 }

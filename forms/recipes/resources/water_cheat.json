@@ -1,0 +1,12 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "cheat"
+    },
+    "output" : { 
+        "item":"resource.water",
+        "count":1
+    },
+    "input" : [  
+    ]
+}

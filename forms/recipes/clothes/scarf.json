@@ -4,13 +4,17 @@
         "type" : "sewing_machine"
     },
     "output" : { 
-        "item":"apparel.uniform_1",
+        "item":"apparel.scarf_0",
         "count":1 
     },
     "input" : [
         {
             "item":"resource.cloth",
-            "count":4
+            "count":1
+        },
+        {
+            "item":"resource.dye_red",
+            "count":1
         }
     ]
 }

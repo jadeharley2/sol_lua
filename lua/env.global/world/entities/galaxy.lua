@@ -58,6 +58,7 @@ function ENT:Enter()
 		generator:AddEvent(EVENT_GENERATOR_SETUP)
 		generator:AddEvent(EVENT_PARTITION_CREATE)
 		generator:AddEvent(EVENT_PARTITION_COLLAPSE)
+		generator:AddEvent(EVENT_PARTITION_DESTROY)
 		local seed = self:GetSeed()
 		if math.mod(seed,2)== 0 or seed==1712499733 then
 			generator:SetGenerator("com.galaxy.spiral")

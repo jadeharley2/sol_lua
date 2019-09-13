@@ -1,6 +1,6 @@
 {
 	"group" : "furniture",
-	"tags" : ["futur"],
+	"tags" : ["futur","dyeable"],
 	"model" : "furniture/futur/bench.stmd",
 	"scale" : 0.03,
 	"rotation" : [0,0,0],
@@ -17,6 +17,12 @@
 				"fatigue" : 1
 			}
 		},
+	},
+	"dye" :{
+		"type" : "modmaterial",
+		"matid" : 2,
+		"vartype" : "vec3",
+		"variable" : "tint" 
 	}
 	
 }

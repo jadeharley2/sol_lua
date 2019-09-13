@@ -1,0 +1,16 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.boots",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.leather",
+            "count":3
+        }
+    ]
+}

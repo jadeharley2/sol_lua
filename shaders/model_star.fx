@@ -78,6 +78,7 @@ struct PS_IN
 	float3 color : TEXCOORD5;
 	float3 spos : TEXCOORD6;
 	
+	half layer :TEXCOORD7;
 	//float z_depth : TEXCOORD2;
 };
 
@@ -95,6 +96,7 @@ struct PS_OUT
     //float depth: SV_Target2;
 };
 
+
 PS_IN VSI( VSS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0; 
@@ -104,7 +106,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
-	output.pos =  mul(wpos,VP);
+	output.pos =  wpos;//mul(wpos,VP);
 	output.wpos = wpos.xyz;
 	output.norm = normalize(mul(input.norm,nworld)); 
 	output.bnorm = normalize(mul(input.bnorm,nworld)); 
@@ -114,6 +116,42 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.spos = mul(float4(0,0,0,1),InstWorld);
 	return output;
 }
+ 
+[maxvertexcount(3+3*12)]//+3
+void GSS( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
+{   
+    PS_IN output = (PS_IN)0;
+	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	
+	float3 pos1 = input[0].pos;
+	float3 pos2 = input[1].pos;
+	float3 pos3 = input[2].pos;
+
+	input[0].pos = mul( input[0].pos  ,mx);
+	input[1].pos = mul( input[1].pos  ,mx);
+	input[2].pos = mul( input[2].pos  ,mx);
+	OutputStream.Append( input[0] );
+	OutputStream.Append( input[1] );
+	OutputStream.Append( input[2] ); 
+	OutputStream.RestartStrip();
+
+	[unroll]
+	for (int x = 1; x < 20; x++)
+	{
+		float w = 0.0010*x;  
+		input[0].pos = mul(float4(pos1+input[0].norm.xyz*w*input[0].spos.x,1),mx);
+		input[1].pos = mul(float4(pos2+input[1].norm.xyz*w*input[1].spos.x,1),mx);
+		input[2].pos = mul(float4(pos3+input[2].norm.xyz*w*input[2].spos.x,1),mx); 
+		input[0].layer = (float)x/19;
+		input[1].layer = (float)x/19;
+		input[2].layer = (float)x/19;
+		OutputStream.Append( input[0] );
+		OutputStream.Append( input[1] );
+		OutputStream.Append( input[2] ); 
+		OutputStream.RestartStrip();
+	} 
+}
+
 
 PS_OUT PS( PS_IN input ) : SV_Target
 { 
@@ -192,7 +230,12 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float3 result = lerp(low,high, saturate(texIn.x-lnd*0.3))*1.3;//*2.5;
 		result*=saturate(lnd*lnd*50);
 		output.color = float4(result*TBrightness*spots,texIn.a*TBrightness);
-		//output.color =  spots;
+
+		float height = saturate(texIn.x)*0.5 + saturate(spots.x);
+		//output.color = height*10;
+		float blend = saturate(height/3)-input.layer;
+		clip(blend ); 
+		output.color.a = blend; 
 	}
 	else
 	{ 
@@ -216,8 +259,8 @@ technique10 Instanced
 {
 	pass P0
 	{
-		SetGeometryShader( 0 );
 		SetVertexShader( CompileShader( vs_4_0, VSI() ) );
+		SetGeometryShader(  CompileShader( gs_4_0, GSS() ) ); 
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 } 

@@ -84,6 +84,7 @@ function ENT:Spawn()
 			--local cbm  = SpawnCubemap(otherspace,Vector(0,0.002,0),512)
 			--space.cubemap = cbm
 			--otherspace.cubemap:RequestDraw()
+			self:Hook("cubemap_render","cbc",function() cbm:RequestDraw() end)
 			
 			space:AddNativeEventListener(EVENT_ENTER,"cubmapset",function() 
 				--GlobalSetCubemap(cbm,true)   

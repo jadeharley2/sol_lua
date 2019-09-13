@@ -1,0 +1,12 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "cheat"
+    },
+    "output" : { 
+        "item":"resource.fur",
+        "count":10 
+    },
+    "input" : [ 
+    ]
+}

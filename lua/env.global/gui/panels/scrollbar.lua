@@ -43,7 +43,7 @@ function PANEL:SetType(type)
 	
 	b1:SetColorAuto(bcol)
 	b2:SetColorAuto(bcol)
-	bdrag:SetColorAuto(bcol)
+	bdrag:SetColorAuto(bcol/2)
 	
 	
 	self.stype = type
@@ -62,14 +62,24 @@ function PANEL:SetType(type)
 		self:SetTexture(LoadTexture("gui/bar_v.png")) 
 		bdrag.locky = true
 	end
-	
+	local drawerrorfix = panel.Create()
+	drawerrorfix:SetSize(0,0)
+	self:Add(bdrag)
 	self:Add(b1)
 	self:Add(b2)
-	self:Add(bdrag)
+	self:Add(drawerrorfix)
 	self.b1 = b1
 	self.b2 = b2
 	self.bdrag = bdrag
 	bdrag.bar = self
+	
+	local subbdr = panel.Create()
+	subbdr:Dock(DOCK_FILL)
+	subbdr:SetSize(2,2)
+	subbdr:SetMargin(2,2,2,2)
+	subbdr:SetColor(Vector(0,0,0))
+	subbdr:SetCanRaiseMouseEvents(false)
+	bdrag:Add(subbdr)
 	
 	b1.cooldown = 0.02
 	b2.cooldown = 0.02
@@ -163,6 +173,6 @@ function PANEL:Refresh()
 	else
 		bdrag:SetSize(scrollH,w)
 		bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH),0)
-	end
+	end 
 	--fcon:UpdateLayout()
 end

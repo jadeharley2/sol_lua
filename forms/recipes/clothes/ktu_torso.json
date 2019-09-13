@@ -1,0 +1,20 @@
+{
+    "tags" : ["handcraft","test"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"apparel.uniform_1",
+        "count":1 
+    },
+    "input" : [
+        {
+            "item":"resource.nanofiber",
+            "count":3
+        },
+        {
+            "item":"resource.electrofiber",
+            "count":1
+        },
+    ]
+}

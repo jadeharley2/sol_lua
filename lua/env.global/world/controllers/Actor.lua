@@ -43,7 +43,7 @@ function OBJ:Init()
 	healthbar:UpdateHealth(actor:GetParameter(VARTYPE_HEALTH),actor:GetParameter(VARTYPE_MAXHEALTH))
 	
 	infobar = panel.Create("infobar")  
-	infobar:SetPos(0,-80) --+csize.x +csize.y 
+	infobar:SetPos(0,-180) --+csize.x +csize.y 
 	infobar:Show()
 	
 	quickmenu = panel.Create("quickmenu")   
@@ -175,7 +175,7 @@ function OBJ:KeyDown(key)
 	if input.GetKeyboardBusy() then return nil end
 	local actor = LocalPlayer() 
 	local aibusy = self:ActorIsBusy()
-	if not aibusy and actor:Alive() then
+	if not aibusy and actor:IsAlive() then
 		if actor.IsInVehicle then 
 			if (key == KEYS_V) then 
 				actor:SendEvent(EVENT_EXIT_VEHICLE) --SetVehicle(nil)
@@ -272,10 +272,10 @@ end
 
 function OBJ:ToggleMouse()
 	if self.mouseactive then
-		input.SetCursorHidden(false)
+		--input.SetCursorHidden(false)
 		self.mouseactive = false
 	else 
-		input.SetCursorHidden(true)
+		--input.SetCursorHidden(true)
 		self.mouseactive = true 
 	end
 	
@@ -376,7 +376,7 @@ function OBJ:Update()
 	local dt = 1
 	
 	if actor:HasTag(TAG_ACTOR) then
-		if actor:GetUpdating() and not self:ActorIsBusy() and actor:Alive() then 
+		if actor:GetUpdating() and not self:ActorIsBusy() and actor:IsAlive() then 
 			if actor.IsInVehicle then
 				if not input.GetKeyboardBusy() then  
 					self:HandleDriving(actor)
@@ -623,6 +623,12 @@ function OBJ:HandleThirdPersonMovement(actor)
 			local center = size / 2
 			center = Point(math.floor( center.x),math.floor(center.y))
 			local offset = mousePos - center
+			if not self.lms_active then
+				input.SetCursorHidden(true)
+				self.lms_active = true
+				self.lmp = mousePos
+				offset = Point(0,0)
+			end
 			local offx = offset.x
 			local offy = offset.y
 			self.mouse_lastpos = mousePos
@@ -1167,15 +1173,20 @@ function OBJ:HandleCameraMovement(actor)
 	end
 	if not SHOWINV then
 		if not mhag and (controlled or not is_first_person) and (lmb or (actor.IsInVehicle and IsValidEnt(actor.vehicle) and not actor.vehicle:HasTag(TAG_ACTOR) and rmb)) then  
-			if not self.lms_active then
-				input.SetCursorHidden(true)
-				self.lms_active = true
-			end
+			
 			local mousePos = input.getMousePosition()
 			local size = GetViewportSize() 
 			local center = size / 2
 			center = Point(math.floor( center.x),math.floor(center.y))
 			local offset = mousePos - center
+
+			if not self.lms_active then
+				input.SetCursorHidden(true)
+				self.lms_active = true
+				self.lmp = mousePos
+				offset = Point(0,0)
+			end
+
 			local offx = offset.x
 			local offy = offset.y
 			
@@ -1203,6 +1214,7 @@ function OBJ:HandleCameraMovement(actor)
 	if self.lms_active and (not (lmb or rmb) or mhag) then
 		input.SetCursorHidden(false)
 		self.lms_active = false
+		if self.lmp then input.setMousePosition(self.lmp) end
 	end
 	
 	--Up = actor:Up():Normalized() / parent_sz
@@ -1211,7 +1223,7 @@ function OBJ:HandleCameraMovement(actor)
 	Forward = cam:Forward():Normalized() / parent_sz 
 	Right = cam:Right():Normalized() / parent_sz
 	 
-	if controlled and not is_VR and actor.Alive and actor:Alive() and actor:HasTag(TAG_ACTOR) then 
+	if controlled and not is_VR and actor.IsAlive and actor:IsAlive() and actor:HasTag(TAG_ACTOR) then 
 		
 		if actor.directmove then
 			actor:SetEyeAngles( --pitch, yaw 

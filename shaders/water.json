@@ -33,12 +33,14 @@
 	],
 	"parameters" : {
 		"tNoise" 					: {"type":"texture"}, 
+		"tFoam" 					: {"type":"texture"}, 
 	},
 	"onload" : {
 		"tech" : "Render",
 		"layout" :"VertexNBTTexture",
 		"values" : {
 			"tNoise" 				: "textures/noise/perlin1.jpg", 
+			"tFoam" 				: "textures/surface/foam.jpg", 
 		},
 	},
 }             

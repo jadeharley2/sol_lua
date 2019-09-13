@@ -1,0 +1,13 @@
+{
+    "tags":["solid"],
+    "icon":"res/shard",
+    "tint":[0.8,0.9,1],
+    "name":"Water Ice",
+    "transitions":[
+        {
+            "type":"temperature",
+            "condition":["above",1],
+            "result" :"resource.water"
+        }
+    ]
+}

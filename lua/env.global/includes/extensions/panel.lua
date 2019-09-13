@@ -208,7 +208,7 @@ end
 				
 				if panel.current_drag_on_drop then 
 					if top then
-						panel.call(top,"DragDrop",node) 
+						result = panel.call(top,"DragDrop",node) 
 					end
 					
 					panel.call(node,"OnDropped",top)

@@ -1,19 +1,32 @@
 
 local forms = forms
 
+function forms.GetData2(formid)
+	local aparts = string.split(formid,'.')
+	local part2 = string.join('.',aparts,1)
+	return forms.GetData(aparts[1],part2)
+end
 function forms.ReadForm(form)
-	local path = forms.GetForm(form)
-	if path then
-		local j = json.Read(path)
-		return j
+	local data = forms.GetData2(form)
+	if data then
+		return  json.FromJson(data)
 	end
+	--local path = forms.GetForm(form)
+	--if path then
+	--	local j = json.FromJson( forms.GetData2(form))--json.Read(path)
+	--	return j, path
+	--end
 end
 function forms.LoadForm(form)
-	local path = forms.GetForm(form)
-	if path then
-		local j = json.Load(path)
-		return j
+	local data = forms.GetData2(form)
+	if data then
+		return data
 	end
+	--local path = forms.GetForm(form)
+	--if path then
+	--	local j = forms.GetData2(form)--json.Load(path)
+	--	return j, path
+	--end
 end
 
 function forms.Spawn(form,parent,arguments) 
@@ -41,7 +54,7 @@ function forms.Spawn(form,parent,arguments)
 		return actorD
 	elseif aparts[1]=='apparel' then  -- warning: thumbnail use only
 		
-		local fn = forms.GetForm('apparel',loctype)
+		local fn =form-- forms.GetForm('apparel',loctype)
 
 		return SpawnPV(fn,parent,
 			arguments.pos or Vector(0,0,0),
@@ -53,8 +66,9 @@ function forms.Spawn(form,parent,arguments)
 end
 CreateFORM = forms.Spawn
 
-function ItemRES(type)
-	local j = json.Read(type) 
+function ItemRES(formid)
+	local fn = forms.GetForm(formid)--'resource',loctype)
+	local j = json.Read(fn) 
 	if not j then return nil end 
 	local t = {
 		sizepower=1, 
@@ -63,7 +77,8 @@ function ItemRES(type)
 		parameters =  { 
 			name = j.name,
 			icon = j.icon,
-			form = type,
+			tint = j.tint,
+			form = formid,
 		}, 
 	} 
 	return json.ToJson(t)
@@ -73,17 +88,70 @@ function forms.GetItem(formid,seed)
 	local aparts = string.split(formid,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
 	if aparts[1]=='prop' then 
-		seed = seed or GetFreeUid()
-		local fn = forms.GetForm('prop',loctype)
+		seed = seed or GetFreeUID()
+		local fn = formid --forms.GetForm('prop',loctype)
 		return ItemPV(fn,seed)
 	elseif aparts[1]=='character' then 
  
 	elseif aparts[1]=='apparel' then   
 		seed = seed or GetFreeUID()
-		local fn = forms.GetForm('apparel',loctype)
+		local fn = formid-- forms.GetForm('apparel',loctype)
 		return ItemIA(fn,seed)
 	elseif aparts[1]=='resource' then    
-		local fn = forms.GetForm('resource',loctype)
-		return ItemRES(fn)
+		return ItemRES(formid)
+	end
+end
+function forms.GetIcon(formid)
+	local data = forms.LoadForm(formid)
+	if data then 
+		return  
+			forms._checkIcon(data:Read("/icon")) or
+			forms._checkIcon(data:Read("/parameters/icon")) or
+			forms._checkIcon(data:Read("/parameters/form")) or
+			forms._checkIcon(data:Read("/parameters/character")) or
+			forms._checkIcon(data:Read("/parameters/luaenttype"))
+	end
+end
+function forms.GetName(formid)
+	local data = forms.LoadForm(formid)
+	if data then 
+		return  
+			data:Read("/name") or
+			data:Read("/parameters/name") or
+			data:Read("/parameters/form") or
+			data:Read("/parameters/character") or
+			data:Read("/parameters/luaenttype")
+	end
+end
+function forms.HasTag(formid,tag)
+	local data = forms.LoadForm(formid)
+	if data then 
+		local tags = data:Read("tags")
+		if tags then
+			for k,v in pairs(tags) do
+				if v==tag then return true end
+			end
+		end
+	end
+	return false
+end
+function forms.GetTint(formid)
+	local data = forms.LoadForm(formid)
+	if data then 
+		return  
+			data:Read("/tint") or {1,1,1}
+	end
+	return {1,1,1}
+end
+local basedir = "textures/gui/icons/"
+function forms._checkIcon(name)
+	if not name then return nil end
+	if not isstring(name) then return nil end
+	local tfn = basedir..name..".png"
+	--MsgN("iconsearch: ",tfn)       
+	if file.Exists(tfn) then 
+		return tfn 
+	else
+		return nil
 	end
 end

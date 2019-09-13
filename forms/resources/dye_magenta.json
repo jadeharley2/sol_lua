@@ -1,0 +1,7 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid",
+    "tint":[1,0.3,1],
+    "name":"Magenta dye",
+    "suffix":"magenta"
+}

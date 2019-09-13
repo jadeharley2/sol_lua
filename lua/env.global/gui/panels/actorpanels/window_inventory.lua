@@ -6,6 +6,13 @@ function InvRefreshAll()
 		v:RefreshINV()
 	end
 end
+hook.Add("inventory_update","refr_all",function(node)
+	for k,v in pairs(temp_allinvwindows) do
+		if v.node==node then
+			v:RefreshINV()
+		end
+	end
+end)
 
 function InventoryWindow(container)
 	if container then
@@ -216,7 +223,8 @@ function PANEL:Open()
 	--self.ab_grid:Refresh()
 	self:ReloadTabs() 
 	self:UpdateLayout()
-	self:Show()
+	self:Show() 
+ 
 end
 function PANEL:RefreshINV() 
 	local storage = self.storage 

@@ -1,0 +1,7 @@
+{
+	"name" : "Headphones",  
+	"slot" : "head.top",
+	"model" : "apparel/headphones.stmd", 
+	"icon" : "apparel/clt/headphones", 
+	"worldmodelscale" : 0.014,  
+}

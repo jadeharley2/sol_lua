@@ -3,7 +3,7 @@
 DeclareEnumValue("variable","icon",					33210) 
 
 function ItemIA(type,seed,modtable)
-	local j = json.Read(type) 
+	local j = forms.ReadForm(type)--json.Read(type) 
 	if not j then return nil end 
 	local t = {
 		sizepower=1, 
@@ -81,7 +81,7 @@ function ENT:Init()
 end
 function ENT:LoadData()
 	local type = self:GetParameter(VARTYPE_FORM)
-	local data = json.Read(type)
+	local data = forms.ReadForm(type)--json.Read(type)
 	if data then
 		self.data = data 
 

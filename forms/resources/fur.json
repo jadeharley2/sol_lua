@@ -1,0 +1,7 @@
+{
+    "tags":["flammable"],
+    "icon":"res/sheet_fur",
+    "tint":[0.8,0.8,0.8],
+    "name":"Fur",
+
+}

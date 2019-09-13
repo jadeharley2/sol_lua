@@ -140,6 +140,8 @@ function component:TransferItem(from_slot,to,to_id,count)
 		MsgN(self:GetNode(),from_slot,to:GetNode(),to_id,count)
 		if item and to:GetNode() then
 			to:GetNode():SendEvent(EVENT_ITEM_ADDED,to_id,item.data,count) 
+			local eqslt = self.list[from_slot] 
+			if eqslt then eqslt.transfered = true end 
 			node:SendEvent(EVENT_UNEQUIP,item.data)  
 		end
 	end
@@ -232,11 +234,18 @@ function component:_unequipslot(slot)
 			end
 		end
 
-
+		if not eqslt.transfered then
+			local storage = node.storage
+			if storage then
+				storage:PutItemAsData(storage:GetFreeSlot(),eqslt.data)
+			end
+		else
+			eqslt.transfered = nil
+		end
 		eqslt.entity:Despawn()
 		eqslt.entity = nil
 		eqslt.data = nil
-		MsgN(slot,"free")
+		hook.Call("equipment.unequip",node,slot)
 	end
 end
 function component:_updatevisibility() 
@@ -258,7 +267,7 @@ function component:_equip(data,nosave)
 	local node = self:GetNode()
 	local form = data:Read("/parameters/form")
 	if node and form then 
-		local formdata = json.Read(form) 
+		local formdata = forms.ReadForm(form)--json.Read(form) 
 		if formdata then
 			local model = formdata.model--data:Read("/parameters/model")
 			local slot = data:Read("/parameters/slot") or 0
@@ -383,7 +392,7 @@ function component:_equip(data,nosave)
 							end
 						end
 						if formdata.modmaterials then
-							ModNodeMaterials(e,formdata.modmaterials,false,true)
+							e.defmat = ModNodeMaterials(e,formdata.modmaterials,false,true)
 						end
 						if formdata.modmaterial then 
 							local rmodel = e.model
@@ -436,6 +445,7 @@ function component:_equip(data,nosave)
 							--end)
 						end
 						self:_updatevisibility()
+						hook.Call("equipment.equip",node,slot,formdata)
 					end
 				end
 			end
@@ -484,3 +494,11 @@ component._typeevents = {
 	end}, 
 }
  
+if CLIENT then
+	console.AddCmd("unequipall",function()
+		local l = LocalPlayer()
+		if l then
+			l:SendEvent(EVENT_UNEQUIPALL)
+		end
+	end)
+end

@@ -62,6 +62,8 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			end
 		elseif k == 'visible' then node:SetVisible(v)
 		elseif k == 'texture' then node:SetTexture(v)--LoadTexture(v))
+
+		elseif k == 'mouseenabled' then node:SetCanRaiseMouseEvents(v)
 		
 		elseif k == 'text' then node:SetText(v)
 		elseif k == 'textonly' then node:SetTextOnly(v)

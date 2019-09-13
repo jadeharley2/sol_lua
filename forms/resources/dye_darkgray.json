@@ -1,0 +1,7 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid",
+    "tint":[0.25,0.25,0.25],
+    "name":"Dark gray dye",
+    "suffix":"darkgray"
+}

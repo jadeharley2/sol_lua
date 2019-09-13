@@ -3,7 +3,7 @@
 	"species" : "anthro.feline:default",  
 	"health" : 100,  
 	"parts" : { 
-		"head" : "head_vikna",
+		"head" : "head_ara",
 		//"body" : "body_feline",
 		"torso_top":"bp_torso_top",
 		"torso_bot":"bp_torso_bot",
@@ -16,12 +16,15 @@
 		"neck"  : "bp_neck",
 		"hair" : "hair_vikna",
 		"tail" : "tail_vikna"
+	},   
+	"basematdir" : "models/species/anthro/materials/",  
+	"materials" : {
+		"mat:head": "models/species/anthro/materials/head_vikna.json", 
+		"mat:eye_b_l": "models/species/anthro/materials/eye_l.json",  
+		"mat:eye_b_r": "models/species/anthro/materials/eye_r.json",  
 	},  
-	"materials" : {}, 
-	"basematdir" : "models/species/anthro/materials/", 
-
 	"equipment":{
-		"items":["uniform_0","cape_0","scarf_0"]
+		"items":["apparel.uniform_0","apparel.cape_0","apparel.scarf_0"]
 	}, 
 	"items":[ 
 	] 

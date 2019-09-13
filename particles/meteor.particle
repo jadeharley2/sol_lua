@@ -1,0 +1,91 @@
+{
+    "name":"lgt",
+	"emitters": [
+		//{"type":"continuously","rate":100}
+		{"type":"once","count":1}
+	],
+	"initializers": [ 
+        {"type":"lifetime","time":3}, 
+		{"type":"attractor","pos":[30,0,0],"power":10000,"mode":2}, 
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+        {"type":"movement","dir":[30,0,0],"drag":0.2},  
+        {"type":"scale",
+            "startscale":0,
+            "endscale":10,
+            "starttime":0,
+            "endtime":1
+        },  
+        {"type":"scale",
+            "startscale":20,
+            "endscale":0,
+            "starttime":2.9,
+            "endtime":3
+        }, 
+        //{"type":"tint","starttint":[1,1,1],"endtint":[0,0,0],"starttime":0.1,"endtime":0.5}, 
+	],
+	
+	"renderers": [ 
+	//	{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
+        { "type":"stars",
+             "blend" : 0, 
+             "depth" : "read", 
+             "texture":"textures/space/star.jpg", 
+             "tint":[0.231,0.204,0.172,1],
+             "brightness":10
+        }, 
+        { "type":"light",
+            "brightness":10000000000,
+            "tint":[0.231,0.204,0.172,1],
+            "maxcount":10
+        }
+    ],
+    "children":[
+        {
+            "emitters": [
+                {"type":"continuously","rate":10}
+            ],
+            "initializers": [ 
+                {"type":"rotationrand"},
+                {"type":"parent","pos":true,"vel":true}, 
+            ],
+            "updaters": [ 
+                {"type":"tint",
+                    "starttint":[1,1,1],
+                    "endtint":[0,0,0],
+                    "starttime":0,
+                    "endtime":1
+                }, 
+                {"type":"scale",
+                    "startscale":1,
+                    "endscale":0,
+                    "starttime":0,
+                    "endtime":2
+                }, 
+	             {"type":"movement","dir":[0,0,0],"drag":2},  
+            ],
+            "renderers": [ 
+            //	{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
+                { "type":"stars",
+                     "blend" : 0, 
+                     "depth" : "read", 
+                     "texture":"textures/space/spcloud1.jpg", 
+                     "tint":[0.231,0.204,0.172,1],
+                     "brightness":100
+                } ,
+                { "type":"line",
+                    "width":1,
+                    "blend" : 0,  
+                    "smooth":2,
+                    "texture":"textures/tile/linear/simple.png",
+                    "tint":[0.231,0.204,0.172,1],
+                    "brightness":10,
+               }, 
+            ], 
+
+        }
+    ] 
+    
+	
+}

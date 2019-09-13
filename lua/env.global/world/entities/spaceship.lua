@@ -3,8 +3,18 @@ EVENT_DOCK = 11002
 EVENT_DOCK_FINISH = 11003
 EVENT_HYPERJUMP = 11004
 
-function SpawnSS(type,pos,ent)
-	
+function SpawnSS(type,ent,pos,seed)
+	local ship = ents.Create("spaceship")
+	if seed then ship:SetSeed(seed) end
+	ship:SetSizepower(1000) 
+	ship:SetParent(ent)
+	ship:SetPos(pos)
+	ship:SetParameter(VARTYPE_CHARACTER,type or "libra")
+	ship:Create()
+	ship:Enter()
+	ship:SetUpdateSpace(true)
+	ship:SetSpaceEnabled(false)
+	return ship
 end
 
 function ENT:CreateStaticLight( pos, color,power)
@@ -657,6 +667,7 @@ function ENT:Leave()
 end
 --local uup = {}
 function ENT:Think()   
+	if true then return false end 
 	if not self.tmtest then
 		self.tmtest = TaskManager(self)
 	end
@@ -702,85 +713,7 @@ function ENT:Think()
 
 
 	if self.tmtest then self.tmtest:Update()  end
-
-	--if CLIENT then
-
-	--[[]
-	local lastparent =  self.last_parent 
-	
-	local parent = self:GetParent()
-	if parent then
-		local parent_sz = parent:GetSizepower()
-		
-		
-		self.velocity = self:GetNWVector("velocity",self.velocity or Vector(0,0,0)) 
-		
-		local pos = self:GetPos()
-		local vel = self.velocity or Vector(0,0,0)
-		local angvel = self.angvelocity
-		
-		
-		if lastparent ~= parent then
-			if lastparent ~= nil and IsValidEnt(lastparent) then
-				MsgN(parent,lastparent)
-				local transform =parent :GetLocalSpace(lastparent)
-				local sizediff =parent:GetSizepower()/ lastparent:GetSizepower()
-				local newVel = vel:TransformN(transform)*sizediff
-				vel = newVel
-			end
-			self.last_parent = parent
-		end
-		
-		if self.warpmode then
-			local planet = self:GetParentWithFlag(TAG_PLANET) 
-			 
-			if planet then
-				local dist = self:GetDistance(planet)
-				local radius = planet.radius
-				if radius then
-					local sealevel_height = dist-radius
-			
-					local pdir = (parent:GetLocalCoordinates(planet)-parent:GetLocalCoordinates(self)):Normalized()
-					vel = vel + pdir*-1000000000/ math.max(1, sealevel_height/10)
-				end
-			end
-		end
-		
-		local F = self:Forward():Normalized()
-		local R = self:Right():Normalized()
-		local U = self:Up():Normalized()
-		local rvel = vel * (1/parent_sz) * dt-- -F*(vel.x/parent_sz)+U*(vel.y/parent_sz)+R*(vel.z/parent_sz)
-		
-		local currentpmsp = self.pmsp or 1
-		
-		local pmsp = parent.maxshipspeed  
-		if pmsp then
-			currentpmsp = currentpmsp + (pmsp - currentpmsp) /3
-			rvel = rvel * currentpmsp 
-		else
-			currentpmsp = currentpmsp + (1 - currentpmsp) /3
-		end
-		self.pmsp = currentpmsp
-		
-		self:SetPos(pos + rvel)
-		
-		if self.warpmode then
-			vel = vel*0.01
-		end
-		
-		self.velocity = vel * 0.95 --auto decceleration
-		self.angvelocity = angvel * 0.95
-		self:RotateAroundAxis(Vector(1,0,0), angvel.x/100*dt)
-		self:RotateAroundAxis(Vector(0,1,0), angvel.y/100*dt)
-		self:RotateAroundAxis(Vector(0,0,1), angvel.z/100*dt)
-		
-		self:SetNWVector("velocity",self.velocity) 
-		--end
-		
-		self:BendSpacetime(vel:Length()*0.00000001)
-		 
-	end
-	]]
+ 
 	if CLIENT then
 		local vel = self.velocity_c:GetVelocity()
 		self:BendSpacetime(vel:Length()*0.00000001)

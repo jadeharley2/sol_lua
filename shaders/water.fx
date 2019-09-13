@@ -30,6 +30,7 @@ float2 screenSize = float2(1024,1024);
 Texture2D wTexture;  
 Texture2D tNoise;  
 Texture2D tReflection;  
+Texture2D tFoam;  
    
 //TextureCube g_EnvTexture;  
   
@@ -191,8 +192,8 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 		+WaveFunction(3.2,1,2,40000,1000,time,float3(0.5,0,0.7),fwp)
 	 	+WaveFunction(7.8,1,2,80000,500,time,float3(0.4,0,-0.7),fwp);
 	float3 sMed = 0
-	 	+WaveFunction(3.2,1,2,4000,1000,time,float3(0.5,0,0.7),fwp)
-	 	+WaveFunction(7.8,1,2,8000,500,time,float3(0.4,0,-0.7),fwp);
+	 	+WaveFunction(3.2,1,2,4000,1000,time,float3(0.2,0,0.7),fwp)
+	 	+WaveFunction(7.8,1,2,8000,500,time,float3(0.3,0,-0.7),fwp);
 	float3 sSml = 0 
 	 	+WaveFunction(0.2,0.5,2,1000,100,time,float3(-0.3,0,0.7),fwp)
 	 	//+WaveFunction(0.5,0.5,2,400,200,time,float3(0.5,0,0.7),fwp)
@@ -216,6 +217,7 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	//wpos.xyz+=0.00001*( 
 	//	
 	//	); 
+	input.color = shift;
 
 	output.pos =  mul(mul(wpos,transpose(View)),transpose(Projection));//mul(Proj, mul( input.pos,World));
 	
@@ -304,12 +306,22 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float1 alpha = saturate(1-camDot*camDot);
 	
 	float opacity = saturate(-input.data.x/4);
-	
-	
+	float nearcoast = saturate(input.data.x+10);
+
+	float3 foam = saturate(saturate(input.color.g/20+tns-1.8)+saturate(input.data.x*4+tns)*tns)*nearcoast
+	* tFoam.Sample(NoiseTextureSampler,input.tcrd.xy*10000 ).r
+	 ;
+	float3 foamTex = 
+	 tFoam.Sample(NoiseTextureSampler,input.tcrd.zw*2 ) 
+	 ;
+
 	output.color = 
 	//float4(color,0.9-camDot)*
-		float4(color*input.color*(1+2.4*saturate(surfaceDistance/3)),1)  
-	  ;
+		float4(
+			lerp(color*(1+2.4*saturate(surfaceDistance/3)),foamTex,foam)
+			
+			,1)  
+	  ;//*input.color
 //*lerp(0,1,input.data.x*-1)
 	//output.color = float4(normalize(input.bnormal*float3(1,0,1))*0.5+0.5,1);
 
@@ -330,7 +342,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	////clip(0.5-surfaceDistance);
 	//output.color = output.color+float4(( lightcolor-output.color.rgb)*atmosphereFogIntencity,0);  
 	  
-	float specular_intencity = 0.9;
+	float specular_intencity = 0.9-foam;
 	
 	float3 ambmap = EnvSampleLevel(worldNormal,1);//g_EnvTexture.SampleLevel(MeshTextureSampler, worldNormal,10);
 	float3 reflectcam = reflect(cameraDirection,worldNormal);
@@ -340,7 +352,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float3 depthcolor = float3(0);
 	float rim2 =  saturate(1-camDot*2);
 	
-	float waterA = 1;//(saturate(0.2-camDot));
+	float3 waterA = lerp(1,foamTex,foam);//(saturate(0.2-camDot));
 	 
 	output.light.rgb =waterA*ambmap*0.1+waterA*envmap*0.2;//envmap;// brightness3*color +lerp(envmap*rim*0.7+ambmap*0.3,float3(0,0,0),maskmul);
 	output.light.a = 1;
@@ -367,7 +379,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	output.normal = float4(worldNormal*0.5+0.5,1);
 	output.depth =// input.pos.w;//
 	input.pos.z;///input.pos.w;
-
+ 
 
 	//float3 test =  normalize(-input.wpos) ;
 	//output.color = float4(test,1);

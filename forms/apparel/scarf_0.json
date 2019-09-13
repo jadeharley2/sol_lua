@@ -3,8 +3,19 @@
 	"filter" :{ 
 		"character" : ["vikna"],
 	},
+	"tags" : ["dyeable"],
 	"slot" : "neck",
 	"model" : "apparel/scarf.stmd",
 	"icon" : "apparel/fk/scarf", 
 	"worldmodelscale" : 0.014,
+	"dye":{
+		"type" : "modmaterial",
+		"matid" : 1,
+		"vartype" : "vec3",
+		"variable" : "tint"  
+	}
+	//"modmaterial" :  [{ 
+	//		"tint" : [0.1490196,0.1686275,0.6235294],   
+	//	}
+	//],
 }

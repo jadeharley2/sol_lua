@@ -46,6 +46,7 @@ function ENT:Init()
 	 
 	generator:AddEvent(EVENT_PARTITION_CREATE)
 	generator:AddEvent(EVENT_PARTITION_COLLAPSE)
+	generator:AddEvent(EVENT_PARTITION_DESTROY)
 	generator:SetGenerator("com.cluster.default")
 	
 	partition:SetBBoxPower(4)

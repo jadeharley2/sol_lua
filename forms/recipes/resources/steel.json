@@ -1,0 +1,20 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "furnace"
+    },
+    "output" : { 
+        "item":"resource.steel",
+        "count":5 
+    },
+    "input" : [
+        {
+            "item":"resource.iron",
+            "count":4
+        },
+        {
+            "item":"resource.coal",
+            "count":3
+        } 
+    ]
+}

@@ -9,6 +9,7 @@ function PANEL:Init()
 	self:SetTextOnly(true)
 	self:SetCanRaiseMouseEvents(false)
 	self:SetText("TEST CONTEXT TEXT")
+	self:SetAutoSize(true,false)
 	self:UpdateLayout()
 
 	hook.Add(EVENT_GLOBAL_PREDRAW,"gui.contextinfo",function() self:UpdateContext() end)
@@ -24,16 +25,20 @@ function PANEL:UpdateContext()
 		local mpos =  impos*vsize
 
 		if isstring(ci) then
+			self:SetAutoSize(true,false)
 			self:SetText(topel.contextinfo)
 			self:SetTextColor(Vector(1,1,1))
 			self:SetTexture()
 			self:SetColor(Vector(0,0,0))
 			self:SetTextOnly(false)
 			self:SetSize(300,30) 
+			self:UpdateLayout()
 			self:SetPos(mpos+self:GetSize()*Point(1,-1)+Point(10,-10)) 
 			self:Show()
+		
 		elseif istable(ci) then
 			if(ci[1]=='image') then
+				self:SetAutoSize(false,false)
 				self:SetText("")
 				self:SetTexture(ci[2])
 				self:SetSize(300,300)

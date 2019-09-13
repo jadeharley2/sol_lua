@@ -7,5 +7,6 @@
 	"model" : "apparel/boots.stmd",
 	"icon" : "apparel/fk/boots0", 
 	"worldmodelscale" : 0.014,
-	"hide":["foot","toe"]
+	"hide":["foot","toe"],
+	"furmasks":{"body":"models/apparel/submaps/boots00.png"},
 }

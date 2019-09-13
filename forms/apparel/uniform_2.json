@@ -7,5 +7,6 @@
 	"model" : "apparel/tur.stmd",
 	"icon" : "apparel/fk/uniform2", 
 	"worldmodelscale" : 0.014,
-	"hide":["torso_bot","arm"]
+	"hide":["torso_bot","arm"],
+	"furmasks":{"body":"models/apparel/submaps/uniform02.png"},
 }

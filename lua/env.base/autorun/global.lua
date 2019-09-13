@@ -25,6 +25,12 @@ function SortedPairs (t, f)
 	end
 	return iter
 end
+function AscendingPairs (t, f) 
+	return SortedPairs(t,function(a,b) return f(a) < f(b) end)
+end
+function DescendingPairs (t, f) 
+	return SortedPairs(t,function(a,b) return f(a) > f(b) end)
+end
 local function reversedipairsiter(t, i)
     i = i - 1
     if i ~= 0 then
@@ -141,6 +147,19 @@ function isarray(arg)
 	end
 	return false 
 end
+function IsOfType(obj,ttype)
+	if obj then
+		if isstring(ttype) then
+			local atype = type(obj)
+			if atype == ttype then return true end
+			ttype = FindMetaTable(ttype)
+		end
+		if ttype then
+			return getmetatable(obj) == type
+		end
+	end
+	return false
+end
 
 function ifthen(condition,a,b)
 	if condition then return a end return b
@@ -203,3 +222,12 @@ end
 
 
 
+
+
+function COMRegFunctions(com,table)  
+	local u = com._entfunctions or {}
+	com._entfunctions = u
+	for k,v in pairs(table) do
+		u[k] = v
+	end
+end

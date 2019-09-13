@@ -1,0 +1,20 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "reaction"
+    },
+    "output" : { 
+        "item":"resource.water",
+        "count":3 
+    },
+    "input" : [ 
+        {
+            "item":"resource.hydrogen",
+            "count":2
+        },
+        {
+            "item":"resource.oxygen",
+            "count":1
+        },
+    ]
+}

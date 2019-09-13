@@ -1,5 +1,5 @@
 {
-	"name" : "magic",
+	"name" : "explosion",
 	
 	"emitters": [
 		{"type":"once","count":1000}
@@ -8,7 +8,7 @@
 		{"type":"positionrandomsphere","pos":[0,0,0],"max":10},
 		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
 		{"type":"attractor","dir":[0,0,0],"power":-10,"mode":0}, 
-		{"type":"rotationrand"}, 
+		{"type":"rotationrand"},  
 		
 	],
 	"updaters": [
@@ -19,7 +19,7 @@
 	],
 	
 	"renderers": [ 
-		{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
+	//	{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
 		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
 	],
 	
@@ -46,6 +46,7 @@
 			
 			"renderers": [  
 				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[1,0.7,0.5,1] },
+				//{ "type":"light","brightness":0.1,"tint":[1,0.7,0.5,1]}
 			],
 		},
 		{
@@ -63,6 +64,7 @@
 			
 			"renderers": [  
 				{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/star.jpg","tint":[1,0.4,0.2,1] },
+				{ "type":"light","brightness":10000,"tint":[1,0.7,0.5,1]}
 			],
 		},
 		//{

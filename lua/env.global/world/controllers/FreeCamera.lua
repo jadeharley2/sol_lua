@@ -260,11 +260,11 @@ function OBJ:UpdateSounds()
 	end
 		if atmPressure and atmPressure > 0.01 and windSpeed>0.01 then
 			if not global_atmosphere_sound then
-				global_atmosphere_sound = sound.Start(self.sounds.wind,0.9)
+		--		global_atmosphere_sound = sound.Start(self.sounds.wind,0.9)
 			end
 			local volume = atmPressure*math.min(1,windSpeed)
-			global_atmosphere_sound:SetVolume(volume)
-			global_atmosphere_sound:SetSpeed(atmPressure*atmPressure*windSpeed)
+		--	global_atmosphere_sound:SetVolume(volume)
+		--	global_atmosphere_sound:SetSpeed(atmPressure*atmPressure*windSpeed)
 		else
 			if global_atmosphere_sound then
 				global_atmosphere_sound:Stop()

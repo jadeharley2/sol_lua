@@ -33,10 +33,11 @@ function string.empty(s)
    return s == nil or s == ''
 end
 
-function string.join(separator,tab)
-	local r = tab[1]
-	for k,v in pairs(tab) do
-		if k > 1 then 
+function string.join(separator,tab,skip)
+   skip = skip or 0
+	local r = tab[1+skip]
+	for k,v in ipairs(tab) do
+		if k > (1+skip) then 
 			r = r .. separator .. v
 		end
 	end

@@ -110,9 +110,15 @@ function PANEL:UpdateCnodes(root)
 		end
 	end}  
 	rtb[#rtb+1] = tb2
-
+	local maxnodecount = 100
 	for k,v in SortedPairs(chp) do 
 		if v then
+			maxnodecount = maxnodecount - 1
+			if maxnodecount<=0 then
+				local tb2 = {(#chp-100).." more"}  
+				rtb[#rtb+1] = tb2
+				break
+			end
 			local hide = (v.editor and v.editor.hide) or v:HasTag(320230)
 			if not hide then
 				local onclick = function(b) 

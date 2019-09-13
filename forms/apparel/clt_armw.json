@@ -1,0 +1,12 @@
+{
+	"name" : "Neon arm warmers",  
+	"slot" : "arms",
+	"model" : "apparel/arm.stmd",
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03,
+	"furmasks":{"body":"models/apparel/submaps/armw.png"}, 
+	"materials" : {
+		"mat:arm":"models/apparel/tex_mhm/arm2.json",  
+	},   
+}

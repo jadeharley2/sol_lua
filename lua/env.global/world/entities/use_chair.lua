@@ -15,6 +15,9 @@ ENT.mountpoints = {
 }
 
 ENT.usetype = "sit"
+ENT._interact = {
+	sit={text="sit"},
+}
 
 function ENT:Init()   
 	self:SetSizepower(1) 

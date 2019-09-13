@@ -1,0 +1,6 @@
+{
+    "tags":["solid","dyeable"],
+    "icon":"res/solid",
+    "tint":[1.2,1.2,1.2],
+    "name":"Chalk"
+}

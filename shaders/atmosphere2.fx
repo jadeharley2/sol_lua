@@ -247,6 +247,7 @@ struct PS_IN
 	float3 Pos :TEXCOORD1;
     float3 LPOS : TEXCOORD2;
 	float2 tcrd : TEXCOORD3;  // local position
+	float3 data : TEXCOORD4;
 };
 struct PS_OUT
 {
@@ -269,6 +270,7 @@ PS_IN VS(VSS_IN input)
 	output.Pos = worldPosition;
 	output.LPOS =worldPosition-planetpos;
 	output.tcrd = input.tcrd;
+	output.data = input.color;
 
     return output;
 }
@@ -380,6 +382,9 @@ PS_OUT PS(PS_IN input) : SV_Target
 			+noise*0.001
 			+float2(1,0)*time*0.00001
 			)*float4(1,1,1,1); 
+		
+		float blenddata = input.data.x+noise*0.1;
+		////////clouds = lerp(0,lerp(clouds,1,saturate(blenddata*2-1)),saturate(blenddata*2));
 		//clouds =float4(noise.x,noise.y,1,1);
 		//float4 cloudNoise = 
 		//	(
@@ -414,7 +419,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 			ou.color = float4(
 				clouds*sunTotal*cloudColor*1.6*2
 				*atmmix*saturate(sqrt(clouds.a))
-				*saturate(1-cloudmul/2)
+				*saturate(1-cloudmul/2)  
 				+atmglow*5
 				,
 				clouds.a*density*0.5*cloudmul);

@@ -143,7 +143,7 @@ function ENT:Spawn()
 				current_itemv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					--LP:Give(itemname) 
-						LP:SendEvent(EVENT_GIVE_ITEM,itemname)
+						LP:SendEvent(EVENT_GIVE_ITEM,'apparel.'..itemname)
 				end
 				current_itemv:Setup("apparel",givefunc)
 				current_itemv.OnClose = function()
@@ -336,7 +336,7 @@ function ENT:Spawn()
 		cbm:RequestDraw()
 		
 		--end) 
-		self:Hook("rcubemap","cbc",function() cbm:RequestDraw() end)
+		self:Hook("cubemap_render","cbc",function() cbm:RequestDraw() end)
 	end
 	
 	--local aatest = ents.Create() 
@@ -589,34 +589,33 @@ function ENT:GetSpawn()
 	local c = SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
 	local cc = c:GetComponent(CTYPE_STORAGE)
 	if cc then
-		cc:PutItemAsData(1, ItemPV("forms/props/clutter/clut_lab_book.json",24879,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",24879,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(2, ItemPV("forms/props/clutter/clut_lab_book.json",4352,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",4352,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(3, ItemPV("forms/props/clutter/clut_lab_book.json",4452,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",4452,{ 
 			parameters = { name = "The Book",  },
 		})) 
-		cc:PutItemAsData(4, ItemPV("forms/props/clutter/clut_lab_book.json",2542,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",2542,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(5,ItemPV("forms/props/furniture/futur/chair_a.json",346334,{
+		cc:PutItemAsData(nil,ItemPV("prop.furniture.futur.chair_a",346334,{
 			parameters = {name = "Egg chair"},
 			flags = {"storeable"},
 		}))
-		cc:PutItemAsData(6,ItemPV("forms/props/furniture/space/chair.json",349820,{
+		cc:PutItemAsData(nil,ItemPV("prop.furniture.space.chair",349820,{
 			parameters = {name = "O chair"},
 			flags = {"storeable"},
 		})) 
-		cc:PutItemAsData(7,ItemIA("forms/apparel/uniform_0.json",3498224)) 
-		cc:PutItemAsData(8,ItemIA("forms/apparel/cape_0.json",3498225)) 
-		cc:PutItemAsData(9,ItemIA("forms/apparel/scarf_0.json",3498226)) 
-		--cc:PutItemAsData(10,ItemIA("forms/apparel/socks_0.json",3498227)) 
-		cc:PutItemAsData(11,ItemIA("forms/apparel/uniform_1.json",3498228)) 
-		cc:PutItemAsData(12,ItemIA("forms/apparel/armw.json",3498229)) 
-		cc:PutItemAsData(13,ItemIA("forms/apparel/legw.json",3498230)) 
-		cc:PutItemAsData(14,ItemIA("forms/apparel/collar.json",3498231)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.uniform_0",3498224)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.cape_0",3498225)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.scarf_0",3498226))  
+		cc:PutItemAsData(nil,ItemIA("apparel.uniform_1",3498228)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.armw",3498229)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.legw",3498230)) 
+		cc:PutItemAsData(nil,ItemIA("apparel.collar",3498231)) 
 	end 
 	
 	--[[

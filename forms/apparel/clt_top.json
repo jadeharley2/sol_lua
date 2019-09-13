@@ -1,0 +1,9 @@
+{
+	"name" : "Neon top",  
+	"slot" : "torso",
+	"model" : "apparel/clt_hd.stmd",
+	"icon" : "apparel/clt/top", 
+	"worldmodelscale" : 0.014,
+	"hide":[],
+	"furmasks":{"body":"models/apparel/submaps/mh_top.png"},
+}

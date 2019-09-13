@@ -136,3 +136,31 @@ function ENTITY:PrintEventHandlers()
 		end
 	end
 end
+
+
+function ENTITY:RegisterComponent(com)
+	self._comevents = self._comevents or {}
+	self._comevents[com.uid] = com
+
+	local comef = com._entfunctions
+	if comef then  
+		local cf = self._comfunctions or {}
+		self._comfunctions = cf
+		for k,v in pairs(comef) do
+			cf[k] = comef
+		end
+	end
+end
+function ENTITY:UnregisterComponent(com)
+	self._comevents = self._comevents or {}
+	self._comevents[com.uid] = nil
+
+	local comef = com._entfunctions
+	if comef then
+		local cf = self._comfunctions or {}
+		self._comfunctions = cf
+		for k,v in pairs(comef) do
+			cf[k] = nil
+		end
+	end
+end

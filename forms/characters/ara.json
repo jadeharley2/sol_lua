@@ -23,10 +23,19 @@
 	"abilities" : ["shipremotecontrol"],
 	"materials" : {
 		"mat:body": {   
-			"#include" : "models/species/anthro/materials/body_base.json", 
+			"#include" : "models/species/anthro/materials/body.json", 
 			"g_MeshTexture" : "models/species/anthro/materials/ara_body.png",  
 			"g_MeshTexture_e" : "models/species/anthro/materials/ara_body_e.png",  
-			"rimfadeEmission":[1,2]
+			"g_MeshTexture_g" : "textures/debug/white.png",  
+			"rimfadeEmission":[1,2],
+			"g_DetailTexture" : "textures/detail/noise0.png", 
+			"g_DetailTexture_n" : "", 
+			"detailscale" : [20,20], 
+			"detailblendmode" : 0,   
+			"detailblendfactor" : 1,  
+			"furLen":1,
+			"furShift":[-0.0,-0.01],
+ 
 		}, 
 	///	"body:0" : {   
 	///		"#include" : "models/species/anthro/materials/body_base.json", 
@@ -51,7 +60,7 @@
 	"basematdir" : "models/species/anthro/materials/", 
 
 	"equipment":{
-		"items":["uniform_1","collar","legw","armw"]
+		"items":["apparel.uniform_1","apparel.collar","apparel.legw","apparel.armw"]
 	}, 
 	"items":[ 
 	] 

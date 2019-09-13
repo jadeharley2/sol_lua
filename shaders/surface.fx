@@ -33,6 +33,7 @@ Texture2DArray tileSpaceTexture_d;
 Texture2DArray tileSpaceTexture_n;  
  
 Texture2D tNoise;  
+Texture2D tNoise2;  
 
 Texture2D cTexture;  
 
@@ -93,8 +94,17 @@ float4 SampleTile(float x,float y, float2 tileTC,Texture2D tex,float dist)
 //}  
 float4 SampleTileS(float2 tileTC,Texture2DArray tex,float z)
 {
-	return tex.Sample(NearTextureSapler,float3(tileTC.xy,z));
+	return  tex.Sample(NearTextureSapler,float3(tileTC.xy,z)) ;
 }  
+float4 SampleTileSM(float2 tileTC,Texture2DArray tex,float z)
+{
+	return 
+	
+		tex.Sample(NearTextureSapler,float3(tileTC.xy,z))
+		*tex.Sample(NearTextureSapler,float3(tileTC.xy/10,z))
+		*1.75;
+}  
+
 
 
 float4 BlendT(float4 A,float4 B, float mix)
@@ -163,20 +173,22 @@ float4 BlendTilesetSpace(float4 data, float2 texCoord)
 	
 	
 	
-	float4 sand = SampleTileS(texCoord,tileSpaceTexture_d,0);
-	float4 sand_rock = SampleTileS(texCoord*10,tileSpaceTexture_d,1);
-	float4 steppe = SampleTileS(texCoord,tileSpaceTexture_d,6);
-	float4 grass = SampleTileS(texCoord,tileSpaceTexture_d,3);  
-	float4 forest = SampleTileS(texCoord,tileSpaceTexture_d,4);  
-	float4 tundra = SampleTileS(texCoord*2,tileSpaceTexture_d,7);   
-	float4 tundra_snow = SampleTileS(texCoord*2,tileSpaceTexture_d,8);  
-	float4 rock = SampleTileS(texCoord*2,tileSpaceTexture_d,10); 
+	float4 sand = SampleTileSM(texCoord,tileSpaceTexture_d,0);
+	float4 sand_rock = SampleTileSM(texCoord*10,tileSpaceTexture_d,1);
+	float4 steppe = SampleTileSM(texCoord,tileSpaceTexture_d,6);
+	float4 grass = SampleTileSM(texCoord,tileSpaceTexture_d,3);  
+	float4 forest = SampleTileSM(texCoord,tileSpaceTexture_d,4);  
+	float4 tundra = SampleTileSM(texCoord*2,tileSpaceTexture_d,7);   
+	float4 tundra_snow = SampleTileSM(texCoord*2,tileSpaceTexture_d,8);  
+	float4 rock = SampleTileSM(texCoord*2,tileSpaceTexture_d,10); 
 	 
+	//desert = height: sandrock<1000|200>sand
 	float4 desert_all =BlendB(sand_rock,sand, 100,1000,height);
+	// tundra = temp: snow<-0.5|-0.4>tundra
 	float4 tundra_all = BlendB(tundra,tundra_snow,-0.5,-0.4,temp);
-	
+	// temperate = height: rock<1000|200>forest<200|100>grass<20|0>sand
 	float4 temperate_all = BlendB(BlendB(rock,BlendB(forest,grass,100,200,height),200,1000,height),sand,0,20,height);
-	 
+	// result = temp: tundra<-0.2|-0.1>temperate<0.08|0.12>desert 
 	float4 result =BlendB( desert_all, BlendB(temperate_all,tundra_all,-0.2,-0.1,temp) ,0.08,0.12,temp); 
 	return result;
 }
@@ -583,8 +595,11 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 		//float noise_bigA = SampleNoise(tcrdBig*0.005);
 		//float noise_bigB = SampleNoise(tcrdBig*0.005+0.24);
 		//+float2(noise_bigA,noise_bigB)
-		surface_rampcolor = BlendTilesetSpace(input.data,tcrdBig*4*2);
+		//float angle22 =   1-pow(dot(-globalNormal,-input.normal),10);
+		surface_rampcolor = BlendTilesetSpace(input.data,tcrdBig*4*2 );
+		//surface_rampcolor = lerp(surface_rampcolor,surface_rampcolor*float4(1,0.6,0.6,1),angle22); 
 	//	return float4(noise_bigA,noise_bigB,0,1);
+	//surface_rampcolor = angle22;
 	}
 	
 	
@@ -634,12 +649,26 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	//////	 specular_intensity =  (specular_intensity - clouds_dencity*0.3);
 	//////}
 	 
-	if(input.data.w>9999)
+	if(input.data.w>1000)
 	{
-		float2 grassTcrd =input.tnormal.yx;/// float2(input.data.w-10000,(tcrdSmall.x+tcrdSmall.y));  
-		float4 grass = sTexture.Sample(MeshTextureSampler,grassTcrd);
-		//surface_rampcolor *= saturate(grass*8*grassTcrd.y);
-		clip(grass.a-0.5);
+		if(input.data.w>10000)
+		{   
+			float2 tile_textcoord = float2(1-tcrdSmall.x,tcrdSmall.y)/200;
+			float4 forest = tNoise2.Sample(NoiseTextureSampler,tile_textcoord); 
+			float4 forest2 = tNoise.Sample(NoiseTextureSampler,tcrdBig*100); 
+		//	surface_rampcolor = float4(1,0,0,1);
+			clip(forest.r-saturate(input.data.w/10000-1)-forest2.r);
+			surface_rampcolor *=forest.r*0.8;
+		}
+		else
+		{
+			float2 grassTcrd =input.tnormal.yx;/// float2(input.data.w-10000,(tcrdSmall.x+tcrdSmall.y));  
+			float4 grass = sTexture.Sample(MeshTextureSampler,grassTcrd);
+		//	float4 forest2 = tNoise.Sample(NoiseTextureSampler,tcrdBig*10000); 
+			//surface_rampcolor *= saturate(grass*8*grassTcrd.y);
+			//surface_rampcolor *= forest2.r;
+			clip(grass.a-0.5);//-forest2.r
+		}
 	}
 	  
 	 
@@ -915,7 +944,7 @@ void Plane( inout TriangleStream<PS_IN> TriStream,float4x4 mx, float3 p1,float3 
 	TriStream.Append( outputD ); 
     TriStream.RestartStrip();
 }
-[maxvertexcount(3+12)]//+3
+[maxvertexcount(3+12+12)]//+3
 void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 {   
     PS_IN output = (PS_IN)0;
@@ -945,6 +974,7 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
    //OutputStream.RestartStrip();
 	float3 fpp1 = input[0].pos;
 	float3 fpp2 = input[1].pos;
+	float3 fpp3 = input[2].pos;
 	input[0].pos = mul(input[0].pos,mx);
 	input[1].pos = mul(input[1].pos,mx);
 	input[2].pos = mul(input[2].pos,mx);
@@ -953,8 +983,58 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 	OutputStream.Append( input[2] ); 
 	OutputStream.RestartStrip();
 
+	// forest "fur"
+	bool gdc = false;
+	if(_DrawGSGrass && hasAtmoshphere && input[0].data.x*1000000>0.7)
+	{
+		float3 dn =input[1].normal ;
+		if(dot(dn,float3(0,1,0))>0.95) 
+		{ 
+			float dist = length(fpp1)*distanceMultiplier;
+			if(dist>0.3&&dist<15)//dist>0.4&&
+			{
+				gdc = true;
+				if(dist<3)
+				{
+					float distmul = 1;//saturate((dist-0.4)*2);
+					float3 dp = float3(0,distmul,0);
+					[unroll]
+					for (int x = 1; x < 8; x++)
+					{
+						float3 w = 0.001*dp*x*2;  
+						input[0].data.w  = x*1000+10000;
+						input[1].data.w  = x*1000+10000;
+						input[2].data.w  = x*1000+10000;
+						input[0].pos = mul(float4( fpp1 +w,1),mx);
+						input[1].pos = mul(float4( fpp2 +w,1),mx);
+						input[2].pos = mul(float4( fpp3 +w,1),mx);
+						OutputStream.Append( input[0] );
+						OutputStream.Append( input[1] );
+						OutputStream.Append( input[2] ); 
+						OutputStream.RestartStrip();
+					}
+				} 
+				else
+				{
+					float3 w = 0.01*float3(0,1,0) ;  
+					input[0].data.w  = 11000;
+					input[1].data.w  = 11000;
+					input[2].data.w  = 11000;
+					input[0].pos = mul(float4( fpp1 +w,1),mx);
+					input[1].pos = mul(float4( fpp2 +w,1),mx);
+					input[2].pos = mul(float4( fpp3 +w,1),mx);
+					OutputStream.Append( input[0] );
+					OutputStream.Append( input[1] );
+					OutputStream.Append( input[2] );  
+					OutputStream.RestartStrip();
+				}
+			}
+		}
+	}
+
  //grass  height*1000000>1, topDot>098
-	if(_DrawGSGrass && hasAtmoshphere && nearMode && input[0].data.x*1000000>0.7 )
+
+	if(  _DrawGSGrass && !gdc && hasAtmoshphere && nearMode && input[0].data.x*1000000>0.7 )
 	{
 		float height = 1;
 		float dist = length(fpp1)*distanceMultiplier;
@@ -981,8 +1061,8 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 				input[1].data.w = 10000;
 				PS_IN b2 = input[0];
 				PS_IN b4 = input[1];
-				b2.data.w = 10001;
-				b4.data.w = 10001;
+				b2.data.w = 1001;
+				b4.data.w = 1001;
 				
 				input[0].tnormal = float3(1,0.2,0);
 				input[1].tnormal = float3(1,0.8,0);

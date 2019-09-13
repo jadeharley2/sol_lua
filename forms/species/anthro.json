@@ -45,6 +45,7 @@
 	
 	"variables" :
 	{
+		"hasfur":true,
 		"directmove" : true,
 		"turn_sharp_in" : true,
 		"turn_angle" : 90, 
@@ -58,6 +59,10 @@
 					"nomovement":true
 				}
 			},   
+			"pstand2":{ 
+				"variables" : {  }
+			},   
+			
 		},
 		"needs":{ 
 			"list":{

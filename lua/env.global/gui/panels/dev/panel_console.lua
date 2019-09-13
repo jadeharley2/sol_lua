@@ -93,7 +93,6 @@ function PANEL:Select()
 		self.input_text:Select() 
 	end)
 end
-
 function PANEL:InputKeyDown(n,key) 
 	if key== KEYS_ENTER then
 		local text = n:GetText()
@@ -117,25 +116,25 @@ function PANEL:InputKeyDown(n,key)
 		end
 		self.input_history_id = #self.input_history+1
 
-		if text == "debug" then 
-			local debugp = panel.Create("window_debug")  
-			debugp:SetTitle("Debug") 
-			debugp:UpdateLayout() 
-			debugp:SetPos(-800,0)
-			debugp:Show()                
-			--self:GetParent():Add(debugp) 
-		elseif text == "testgui" then  
-			local debugp = panel.Create("tree")
-			debugp:SetPos(-800,0)
-			debugp:SetSize(400,800)
-			debugp:Show()   
-			--self:GetParent():Add(debugp)    
-			debugp:UpdateLayout() 
-		elseif text == "testcolors" then
-			MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
-			.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
-			.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")  
-		elseif string.starts(text,"filter") then   
+		--if text == "debug" then 
+		--	local debugp = panel.Create("window_debug")  
+		--	debugp:SetTitle("Debug") 
+		--	debugp:UpdateLayout() 
+		--	debugp:SetPos(-800,0)
+		--	debugp:Show()                
+		--	--self:GetParent():Add(debugp) 
+		--elseif text == "testgui" then  
+		--	local debugp = panel.Create("tree")
+		--	debugp:SetPos(-800,0)
+		--	debugp:SetSize(400,800)
+		--	debugp:Show()   
+		--	--self:GetParent():Add(debugp)    
+		--	debugp:UpdateLayout() 
+		--elseif text == "testcolors" then
+		--	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
+		--	.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
+		--	.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")  
+		if string.starts(text,"filter") then   
 			local arg = string.sub(text,7) 
 			if arg then
 				self.filter = string.trim(arg)
@@ -315,3 +314,31 @@ end
 LuaApiGetSub = function(parent,key)
 
 end
+
+console.AddCmd("debug",function()
+	local debugp = panel.Create("window_debug")  
+	debugp:SetTitle("Debug") 
+	debugp:UpdateLayout() 
+	debugp:SetPos(-800,0)
+	debugp:Show()      
+end)
+console.AddCmd("testgui",function()
+	local debugp = panel.Create("tree")
+	debugp:SetPos(-800,0)
+	debugp:SetSize(400,800)
+	debugp:Show()     
+	debugp:UpdateLayout()  
+end)
+console.AddCmd("testcolors",function()
+	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
+	.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
+	.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")   
+end)
+console.AddCmd("testcolors",function()
+	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
+	.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
+	.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")   
+end)
+
+--placeholder
+console.AddCmd("filter",function() end)

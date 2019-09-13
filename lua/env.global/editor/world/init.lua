@@ -110,7 +110,7 @@ function editor:Open()
 	
 	hook.Add(EVENT_GLOBAL_PREDRAW,"editor",function() self:Update() end)
 	hook.Add("input.mousedown","editor",function() self:MouseDown() end )
-	hook.Add("input.keydown","editor", function() self:KeyDown() end )
+	hook.Add("input.keydown","editor", function(key) self:KeyDown(key) end )
 	--hook.Add("input.doubleclick","editor",editor.DoubleClick)
 	
 	SetController("freecamera")
@@ -227,7 +227,20 @@ function editor:DoubleClick()
 		end
 	end 
 end
-function editor:KeyDown()  
+function editor:KeyDown(k)  
+	if k==KEYS_TAB then
+		self.tabtoggle = not (self.tabtoggle or false)
+		if self.tabtoggle then
+			self.assets.vp:Close()
+			self.assets:Show()
+		else
+			self.assets:Close()
+			self.assets.vp:Show()
+			self.assets.vp:SetPos(0,0) 
+			self.assets.vp:SetSize(GetViewportSize())
+			self.assets.vp:Close()
+		end
+	end 
 	if (input.KeyPressed(KEYS_F)) then  
 		if self.gizmo then
 			self.gizmo:ChangeMode()
@@ -292,6 +305,7 @@ function editor:Update()
 		local vp = self.assets.vp
 		local vsz = vp:GetSize()
 		local vmp = vp:GetLocalCursorPos()
+
 		local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
 
 

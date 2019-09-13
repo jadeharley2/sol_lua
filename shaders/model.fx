@@ -39,15 +39,22 @@ float outline = 0;
 float3 outlineTint = float3(1,1,1)*0.1;
 
 float2 rimfadeEmission = float2(1,2);
+
+float furLen =0;
+float2 furShift =float2(0,0);
  
 Texture2D g_MeshTexture;   // albedo
 Texture2D g_MeshTexture_n; // normal map 
-Texture2D g_MeshTexture_s; 
+Texture2D g_MeshTexture_s; // TODO: MERGE WITH g_MeshTexture_f
 Texture2D g_MeshTexture_m; //r - smootheness, g - deprecated, b - metallness, a - deprecated 
 Texture2D g_MeshTexture_e; // emissive
 Texture2D g_MeshTexture_f; // materials mask
+Texture2D g_MeshTexture_g; // fur len --TEST--
+
 Texture2D g_NoiseTexture; 
 
+bool _DrawGSFur = true;
+bool sMasksEnabled = false;
 bool matMasksEnabled = false;
 float4 matColors0 = float4(1,0,0,1);
 float4 matColors1 = float4(0,1,0,1);
@@ -173,7 +180,7 @@ struct PS_IN
 	
 	float3 color : TEXCOORD5;
 	float3 spos : TEXCOORD6;
-	
+	half layer : TEXCOORD7;
 	//float z_depth : TEXCOORD2;
 };
 
@@ -215,7 +222,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color*Color;//((float3)input.inds.xyz);
-	output.spos = mul(wpos,transpose(View));
+	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
 	return output;
 }
 PS_IN VS( VSS_IN input) 
@@ -260,7 +267,8 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
 	output.color = input.color*inst.color.xyz*tint*Color;//((float3)input.inds.xyz);
-	output.spos = mul(wpos,transpose(View));
+	//output.spos = mul(wpos,transpose(View)); 
+	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
 	return output;
 }
 PS_IN VSIM( VSS_IN input, MORPH_IN morph ) 
@@ -286,14 +294,15 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
 	output.color = input.color*tint*Color;//((float3)input.inds.xyz);
-	output.spos = mul(wpos,transpose(View));
+	//output.spos = mul(wpos,transpose(View));
+	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
 	return output;
 }
 
 
 
 
-
+/*
 void Plane( inout TriangleStream<PS_IN> TriStream,float4x4 mx, float3 p1,float3 p2,float3 p3,float3 p4)
 { 
     PS_IN outputA=(PS_IN)0;
@@ -358,6 +367,62 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 		OutputStream.RestartStrip();
 	}
 }
+*/
+
+
+[maxvertexcount(3+3*12)]//+3
+void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
+{   
+    PS_IN output = (PS_IN)0;
+	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	
+	float3 pos1 = input[0].pos;
+	float3 pos2 = input[1].pos;
+	float3 pos3 = input[2].pos;
+
+	input[0].pos = mul( input[0].pos  ,mx);
+	input[1].pos = mul( input[1].pos  ,mx);
+	input[2].pos = mul( input[2].pos  ,mx);
+	OutputStream.Append( input[0] );
+	OutputStream.Append( input[1] );
+	OutputStream.Append( input[2] ); 
+	OutputStream.RestartStrip();
+
+	if(_DrawGSFur && furLen>0)
+	{
+		[unroll]
+		for (int x = 1; x < 12; x++)
+		{
+			float w = 0.000001*x*furLen;  
+			input[0].pos = mul(float4(pos1+input[0].norm.xyz*w*input[0].spos.x,1),mx);
+			input[1].pos = mul(float4(pos2+input[1].norm.xyz*w*input[1].spos.x,1),mx);
+			input[2].pos = mul(float4(pos3+input[2].norm.xyz*w*input[2].spos.x,1),mx); 
+			input[0].layer = x;
+			input[1].layer = x;
+			input[2].layer = x;
+			OutputStream.Append( input[0] );
+			OutputStream.Append( input[1] );
+			OutputStream.Append( input[2] ); 
+			OutputStream.RestartStrip();
+		} 
+	}
+	else if(outline>0)
+	{
+		float w =outline* 0.000002*0.2; 
+		float3 c = float3(1,1,1)*0;
+		input[0].pos = mul(float4(pos1+input[0].norm.xyz*w,1),mx);
+		input[1].pos = mul(float4(pos2+input[1].norm.xyz*w,1),mx);
+		input[2].pos = mul(float4(pos3+input[2].norm.xyz*w,1),mx);
+		input[0].color = c;
+		input[1].color = c;
+		input[2].color = c;
+		OutputStream.Append( input[2] ); 
+		OutputStream.Append( input[1] );
+		OutputStream.Append( input[0] );
+		OutputStream.RestartStrip();
+	}
+}
+
 
 
 
@@ -484,7 +549,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	output.diffuse =0;
 	output.light =0;
 	output.stencil = stencil;
-	
+	//output.diffuse = float4(input.spos,1);
+	//return output;
 	//output.diffuse=float4(1,1,1,1);
 	//output.normal = float4(input.norm/2+float3(0.5,0.5,0.5),1);
 	//return output;
@@ -581,9 +647,17 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		
 		float4 emissiveMap = g_MeshTexture_e.Sample(MeshTextureSampler, texCoord);
 		
-		
-		float3 emissive = emissiveMap.rgb*emissionTint*mul_emissive_intencity
-			*lerp(1,pow(saturate(dot(input.norm,-camdir)),rimfadeEmission.y),rimfadeEmission.x);//*input.color;
+		float emissionMul = 1;
+		if(rimfadeEmission.x<0) 
+		{
+			emissionMul = 1-lerp(1,pow(saturate(dot(input.norm,-camdir)),rimfadeEmission.y),-rimfadeEmission.x);
+		}
+		else
+		{
+			emissionMul = lerp(1,pow(saturate(dot(input.norm,-camdir)),rimfadeEmission.y),rimfadeEmission.x);
+		}
+		float3 emissive = emissiveMap.rgb*emissionTint*mul_emissive_intencity*emissionMul;
+			;//*input.color;
 		
 		float3 diffuse = float3(1,1,1);
 		  
@@ -623,7 +697,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 			{	
 				if (detailblend>0)
 				{
-					float4 dtexIn = g_DetailTexture.Sample(MeshTextureSampler, texCoord*detailscale);//) ;	
+					float4 dtexIn = g_DetailTexture.Sample(MeshTextureSampler, 
+						texCoord*detailscale+furShift*input.layer);//) ;	
 					//0-mul
 					//1-add
 					//2-replace
@@ -641,6 +716,26 @@ PS_OUT PS( PS_IN input ) : SV_Target
 					else if(detailblendmode ==2)
 					{
 						diffuse = dtexIn.rgb;//lerp(diffuse, dtexIn.rgb,blend); 
+					}
+
+					if(furLen>0)
+					{ 
+						//clip(detailmap.x-0.5);
+						if(sMasksEnabled)
+						{
+							if(detailmap.x>0.1)
+							{
+								clip(0.1-input.layer);
+							}
+							else
+							{
+								clip(dtexIn-input.layer/13 );
+							}
+						}
+						else
+						{
+							clip(dtexIn-input.layer/13 );
+						}
 					}
 				}
 			}
@@ -710,7 +805,6 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float3 vv = mul(input.norm,VP);
 	float3 rer = normalize(input.norm);//vv.xyz);
 	output.normal = float4(rer.x/2+0.5,rer.y/2+0.5,rer.z/2+0.5,1); 
-	
 	
 	if(noiseclip)
 	{
@@ -829,7 +923,7 @@ technique10 Instanced
 	pass P0
 	{
 		SetVertexShader( CompileShader( vs_4_0, VSIC() ) );
-		SetGeometryShader(  CompileShader( gs_4_0, GSScene() )  );
+		SetGeometryShader(  CompileShader( gs_4_0, GSSceneFUR() )  );
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 }
@@ -865,7 +959,7 @@ technique10 Morphed
 	pass P0
 	{ 
 		SetVertexShader( CompileShader( vs_4_0, VSIM() ) );
-		SetGeometryShader(  CompileShader( gs_4_0, GSScene() )  );
+		SetGeometryShader(  CompileShader( gs_4_0, GSSceneFUR() )  );
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 }
@@ -874,7 +968,7 @@ technique10 Normal
 	pass P0
 	{
 		SetVertexShader( CompileShader( vs_4_0, VS() ) );
-		SetGeometryShader(  CompileShader( gs_4_0, GSScene() )  );
+		SetGeometryShader(  CompileShader( gs_4_0, GSSceneFUR() )  );
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 }

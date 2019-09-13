@@ -13,6 +13,9 @@ function SpawnCONT(model,parent,pos)
 end
 
 ENT.usetype = "open container"
+ENT._interact = {
+	open={text="open container"},
+}
 
 function ENT:Init()  
 	local phys = self:AddComponent(CTYPE_PHYSOBJ)  

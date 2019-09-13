@@ -97,3 +97,4 @@ end
 
 
 actor_panels.__index = nil
+console.AddCmd("actor_panels.free",actor_panels.FreePersistent)

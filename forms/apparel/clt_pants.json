@@ -1,0 +1,9 @@
+{
+	"name" : "Neon pants",  
+	"slot" : "legs",
+	"model" : "apparel/clt_ud.stmd",
+	"icon" : "apparel/clt/pants", 
+	"worldmodelscale" : 0.014,
+	"hide":["calf","thigh"],
+	"furmasks":{"body":"models/apparel/submaps/pants.png"},
+}

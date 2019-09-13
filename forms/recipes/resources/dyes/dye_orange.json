@@ -1,0 +1,20 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "cheat"
+    },
+    "output" : { 
+        "item":"resource.dye_orange",
+        "count":3
+    },
+    "input" : [ 
+        {
+            "item":"resource.dye_red",
+            "count":2
+        },
+        {
+            "item":"resource.dye_yellow",
+            "count":1
+        },
+    ]
+}

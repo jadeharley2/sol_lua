@@ -1,0 +1,20 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "blend"
+    },
+    "output" : { 
+        "item":"resource.dye_pink",
+        "count":2 
+    },
+    "input" : [ 
+        {
+            "item":"resource.dye_white",
+            "count":1
+        },
+        {
+            "item":"resource.dye_purple",
+            "count":1
+        },
+    ]
+}

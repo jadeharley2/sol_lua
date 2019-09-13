@@ -13,7 +13,8 @@ function ENT:Spawn()
 	self.interface = interface   
 	local rparam = render.RenderParameters()
 	interface:SetParameters(rparam)
-	self.rt = CreateRenderTarget(512,512,"")
+	local size = self.size or 512
+	self.rt = CreateRenderTarget(size,size,"")
 	interface:SetRenderTarget(0,self.rt )
 	
 	self:AddNativeEventListener(EVENT_RENDERER_FINISH,"event",function(s,e,c)
@@ -28,10 +29,16 @@ function ENT:Spawn()
 	end)
 	self.cooldowntime = CurTime() 
 	 
-	hook.Add("main.postcontroller","textureRenderer", function() self:Update() end)
+	self:Hook("main.postcontroller","textureRenderer", function() 
+		if IsValidEnt(self) then
+			self:Update()
+		else
+			--self:DDFreeAll()
+		end
+	end)
 end 
-function ENT:Draw(target,root,callback) 
-	self.rqu:Push({target,root,callback})
+function ENT:Draw(target,root,callback,args) 
+	self.rqu:Push({target,root,callback,args})
 	--MsgN("render request")
 end
 function ENT:Update() 
@@ -42,10 +49,18 @@ function ENT:Update()
 		self.busy = true
 		local ln = self.rqu:Pop()
 		local interface = self.interface
-		local target,root,callback = ln[1],ln[2],ln[3]
+		local target,root,callback,args = ln[1],ln[2],ln[3],ln[4]
 		self.target = target
 		self.callback = callback
 		--interface:SetRenderTarget(0,target)
+		if args then
+			if args.blend then
+				interface:SetBlend(args.blend)
+			end
+			if args.backcolor or args.backalpha then
+				interface:SetBack(args.backcolor or Vector(0,0,0),args.backalpha or 0)
+			end
+		end
 		interface:SetRoot(root) 
 		interface:RequestDraw() 
 		--rqu[#rqu] = nil

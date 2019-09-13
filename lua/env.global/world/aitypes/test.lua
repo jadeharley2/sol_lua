@@ -149,6 +149,18 @@ ACT_RANDMOVE = function(s,e,t)
 	
 	debug.Delayed(1000,function() e:Stop() end)
 end 
+
+console.AddCmd("trade",function() 
+	local ply = LocalPlayer()
+	local e = GetCameraPhysTrace(GetCamera(),ply.phys)
+	if e and IsValidEnt(e.Entity) and e.Entity:GetClass()=="base_actor" then
+		actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
+		actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
+		actor_panels.OpenInventory(e.Entity,ALIGN_TOP,nil)
+		actor_panels.OpenCharacterInfo(e.Entity,ALIGN_RIGHT,nil) 
+	end
+end)
+
 function ai:OnInit() 
 	MsgN("hi3!",self.cname) 
 	local greet = {"hi","hello","прив","привет"}

@@ -48,8 +48,7 @@ function PANEL:ShowMsg(msg,pos,color)
 	self:Add(text)
 	--self:SetPos(0,0)
 	self:Show()
-	self.target = pos
-	self.target2 = pos + Point(-5000,0)
+	self.target = pos 
 	local showtime = 4
 	
 	if color then self.indicator:SetColor(color) end
@@ -58,18 +57,15 @@ function PANEL:ShowMsg(msg,pos,color)
 	debug.DelayedTimer(0,20,(showtime*1000+1000)/20, function() 
 		local pos = self:GetPos()
 		local target = self.target
-		self:SetPos(pos+(target-pos)/10) 
+		self:SetPos(pos+(target-pos)/2) 
 	end)
 	debug.DelayedTimer(showtime*1000,20,50, function() 
 		local pos = self:GetPos()
-		local target = self.target2
-		self:SetPos(pos+(target-pos)/10) 
+		local target = self.target + Point(-5000,0)
+		self:SetPos(pos+(target-pos)/5) 
 	end)
 	debug.Delayed(showtime*1000+1000, function() 
 		self:Close() 
 		_P[self.id] = nil
 		end)
-end 
---debug.Delayed(100,function()
---MsgInfo("leld")
---end)
+end

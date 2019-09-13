@@ -1,0 +1,6 @@
+{
+    "tags":["solid"],
+    "icon":"res/ingot",
+    "tint":[0.7,0.7,0.7],
+    "name":"Steel ingot"
+}

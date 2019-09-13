@@ -28,9 +28,11 @@ SETTINGS_VALUES = {
 				{type = "bool", name = "SSLR", var = "engine/pp_sslr", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSLR(v) end},
 				{type = "bool", name = "Bloom enabled", var = "engine/pp_bloom", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessBloom(v) end},
 				{type = "bool", name = "Grass enabled", var = "engine/gsh_grass", default = true, apply = function(v) render.GlobalRenderParameters():SetDrawGSGrass(v) end},
+				{type = "bool", name = "Fur enabled", var = "engine/fur", default = true, apply = function(v) render.GlobalRenderParameters():SetDrawGSFur(v) end},
 				
 				{type = "bool", name = "Volume clouds top", var = "engine/cheapclouds_top", default = true, apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsTop(v) end},
 				{type = "bool", name = "Volume clouds bot", var = "engine/cheapclouds_bot", default = true, apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsBot(v) end},
+
 			}
 		},
 		{

@@ -59,7 +59,7 @@ function SetController(name)
 				if prev.MouseDown then hook.Remove("input.mousedown", "controller") end
 				if prev.KeyDown then hook.Remove("input.keydown", "controller" ) end
 			end      
-			
+			ts.name = name
 			local result = ts:Init()
 			if result ~= false then
 				if ts.Update then hook.Add(EVENT_GLOBAL_PREDRAW, "controller", function() 

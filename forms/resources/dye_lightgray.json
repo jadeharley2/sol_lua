@@ -1,0 +1,7 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid",
+    "tint":[0.75,0.75,0.75],
+    "name":"Light gray dye",
+    "suffix":"lightgray"
+}

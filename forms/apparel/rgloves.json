@@ -6,5 +6,6 @@
 	"model" : "apparel/rgloves.stmd",
 	"icon" : "apparel/fk/kt_wrm",
 	"worldmodel" : "apparel/rgloves_w.stmd",
-	"worldmodelscale" : 0.03
+	"worldmodelscale" : 0.03,
+	"furmasks":{"body":"models/apparel/submaps/glove01.png"},
 }

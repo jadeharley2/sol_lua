@@ -1,8 +1,9 @@
 {
 	"group" : "furniture",
-	"tags" : ["futur"],
+	"name" : "Egg chair",
+	"tags" : ["futur","dyeable"],
 	"model" : "furniture/futur/chair_a.stmd",
-	"scale" : 0.03,
+	"scale" : 0.03, 
 	"rotation" : [0,0,0],
 	"icon" : "lab/chair_a",
 	"luatype":"use_chair",  
@@ -15,6 +16,12 @@
 				"fatigue" : 1
 			}
 		},
+	},
+	"dye" :{
+		"type" : "modmaterial",
+		"matid" : 2,
+		"vartype" : "vec3",
+		"variable" : "tint" 
 	}
  
 }

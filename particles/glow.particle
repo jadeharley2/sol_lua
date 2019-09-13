@@ -1,0 +1,56 @@
+{
+	"name" : "glow",
+	
+	"emitters": [
+		{"type":"continuously","rate":100}
+	],
+	"initializers": [
+		{"type":"positionrandomvertex","pos":[0,0,0],"max":1},//,"transform":{"ang":[-90,0,90]}
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		//{"type":"attractor","dir":[0,0,0],"power":-0.6,"mode":0}, 
+		{"type":"rotationrand"},  
+		
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		{"type":"movement","dir":[0,0.001,0],"drag":0.2},
+		{"type":"scale","startscale":0,"endscale":0.0001,"starttime":0,"endtime":0.2},
+		{"type":"scale","startscale":0.0001,"endscale":0,"starttime":0.2,"endtime":1},
+		{"type":"parent","level":2,"power":0.75}
+	],
+	
+	"renderers": [ 
+	//	{ "type":"stars", "blend" : 3, "depth" : "read", "texture":"textures/space/spcloud1.jpg","tint":[0.1,0.07,0.05,1] },
+		{ "type":"stars", "blend" : 0, "depth" : "read", "texture":"textures/space/spcloud1.jpg",
+			"tint":[0.05,0.07,0.1,1] },
+		//{"type":"light","brightness":0.1,"tint":[0.05,0.07,0.1]}
+	],
+	
+	"forces": [
+	], 
+	"children":[
+		{"name" : "glow_light",
+	
+			"emitters": [
+				{"type":"continuously","rate":10}
+			],
+			"initializers": [
+				{"type":"positionrandomvertex","pos":[0,0,0],"max":1}, 
+				//{"type":"attractor","dir":[0,0,0],"power":-0.6,"mode":0}, 
+				{"type":"rotationrand"},  
+				
+			],
+			"updaters": [ 
+				{"type":"movement","dir":[0,0.001,0],"drag":0.2},
+				{"type":"scale","startscale":0,"endscale":0.0001,"starttime":0,"endtime":0.2},
+				{"type":"scale","startscale":0.0001,"endscale":0,"starttime":0.2,"endtime":1},
+				{"type":"parent","level":2,"power":0.75}
+			],
+			
+			"renderers": [ 
+				{"type":"light","brightness":1000.1,"tint":[0.05,0.07,0.1],"sizemul":true}
+			],
+			
+		}
+	]
+}

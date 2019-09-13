@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "shaders"
+		},
+		{
+			"path": "particles"
 		}
 	],
 	"settings": {

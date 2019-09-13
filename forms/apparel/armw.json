@@ -7,5 +7,6 @@
 	"model" : "apparel/arm.stmd",
 	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodel":"apparel/rolled.stmd",
-	"worldmodelscale" : 0.03 
+	"worldmodelscale" : 0.03,
+	"furmasks":{"body":"models/apparel/submaps/armw.png"}
 }

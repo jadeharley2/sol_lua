@@ -77,7 +77,7 @@ function PANEL:EquipItem(itempanel)
 				iprt:Remove(itempanel)
 			end
 			itempanel:Close() 
-			if slotpanel.item then
+			if slotpanel.item and itempanel.lastSlot then
 				local II = slotpanel.item
 				local ls = itempanel.lastSlot
 				ls.item = II 

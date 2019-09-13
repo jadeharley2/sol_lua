@@ -47,7 +47,7 @@ EF.Dispel = EF.Dispell
 
 
 local ef_class = DefineClass("Effect","effect","lua/env.global/world/effects/",EF)
-    
+      
 function Effect(type) 
 	local path = "forms/effects/"..type..".json"
 	if file.Exists(path) then

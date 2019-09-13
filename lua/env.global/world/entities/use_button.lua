@@ -13,6 +13,9 @@ function SpawnButton(parent,model,pos,ang,action,seed,scale)
 end
 
 ENT.usetype = "button"
+ENT._interact = {
+	press={text="press button"},
+}
 
 function ENT:Init()   
 	local model = self:AddComponent(CTYPE_MODEL)  
