@@ -6,4 +6,7 @@
 	"worldmodelscale" : 0.014,
 	"hide":["calf","thigh"],
 	"furmasks":{"body":"models/apparel/submaps/pants.png"},
+	"composition" :{
+		"resource.cloth" : 2,     
+	} 
 }

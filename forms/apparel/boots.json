@@ -9,4 +9,8 @@
 	"worldmodelscale" : 0.014,
 	"hide":["foot","toe"],
 	"furmasks":{"body":"models/apparel/submaps/boots00.png"},
+	"composition" :{
+		"resource.leather" : 2,   
+		"resource.rubber" : 1,  
+	} 
 }

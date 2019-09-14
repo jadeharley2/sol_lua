@@ -22,6 +22,10 @@
 		"matid" : 2,
 		"vartype" : "vec3",
 		"variable" : "tint" 
+	},
+	"composition" :{
+		"resource.steel" : 2,
+		"resource.cloth" : 1
 	}
  
 }

@@ -8,4 +8,7 @@
 	"icon" : "apparel/fk/collar",
 	"worldmodel" : "apparel/collar_w.stmd",
 	"worldmodelscale" : 0.03,
+	"composition" :{
+		"resource.steel" : 1,     
+	} 
 }

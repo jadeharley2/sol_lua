@@ -6,5 +6,8 @@
 	"model" : "apparel/jh_sk.stmd",
 	"icon" : "apparel/fk/uniform0", 
 	"worldmodelscale" : 0.014,
-	"hide":["calf","foot","toe"]
+	"hide":["calf","foot","toe"],
+	"composition" :{
+		"resource.cloth" : 1,     
+	} 
 }

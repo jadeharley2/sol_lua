@@ -1,11 +1,11 @@
 { 
     "subsets" :{
-        "book":["prop.clutter.clut_lab_book","prop.clutter.clut_lab_book_red"], 
-        "bowl":["prop.clutter.clut_lab_bowl_a","prop.clutter.clut_lab_bowl_b","prop.clutter.clut_lab_bowl_c",
-            "prop.clutter.clut_lab_bowl_d"], 
-        "glass":["prop.clutter.clut_lab_glass_a","prop.clutter.clut_lab_glass_b","prop.clutter.clut_lab_glass_c"], 
-        "mug":["prop.clutter.clut_lab_mug_a","prop.clutter.clut_lab_mug_a_red","prop.clutter.clut_lab_mug_b"], 
-        "plate":["prop.clutter.clut_lab_plate_a"], 
-        "vase":["prop.clutter.clut_lab_vase"], 
+        "book":["prop.clutter.lab.book","prop.clutter.lab.book_red"], 
+        "bowl":["prop.clutter.lab.bowl_a","prop.clutter.lab.bowl_b","prop.clutter.lab.bowl_c",
+            "prop.clutter.lab.bowl_d"], 
+        "glass":["prop.clutter.lab.glass_a","prop.clutter.lab.glass_b","prop.clutter.lab.glass_c"], 
+        "mug":["prop.clutter.lab.mug_a","prop.clutter.lab.mug_a_red","prop.clutter.lab.mug_b"], 
+        "plate":["prop.clutter.lab.plate_a"], 
+        "vase":["prop.clutter.lab.vase"], 
     } 
 }

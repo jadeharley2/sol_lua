@@ -11,5 +11,9 @@
 				"thirst" : 1
 			}
 		}
+	},
+	"composition" :{
+		"resource.wood" : 2, 
+		"resource.steel" :1,
 	}
 }

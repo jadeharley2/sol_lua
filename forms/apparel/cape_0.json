@@ -7,4 +7,7 @@
 	"model" : "apparel/cape.stmd",
 	"icon" : "apparel/fk/cape0", 
 	"worldmodelscale" : 0.014,
+	"composition" :{
+		"resource.leather" : 1,     
+	} 
 }

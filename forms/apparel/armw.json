@@ -8,5 +8,8 @@
 	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodel":"apparel/rolled.stmd",
 	"worldmodelscale" : 0.03,
-	"furmasks":{"body":"models/apparel/submaps/armw.png"}
+	"furmasks":{"body":"models/apparel/submaps/armw.png"},
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
 }

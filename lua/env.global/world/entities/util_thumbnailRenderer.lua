@@ -47,13 +47,13 @@ function ENT:Spawn()
 		if self.callback then self.callback(newTexture) end 
 		self:ClearStage()
 	end)
-	self.cooldowntime = CurTime() 
+	self.cooldowntime = CurTime()  
 	self:Start()
 	-- self:CreateStaticLight(Vector(10,10,10),Vector(1,1,1),10000)
 end 
-local onerror = function() MsgN(debug.traceback()) end
-function ENT:Start() 
-	hook.Add("main.postcontroller","thumbnailRenderer", function() 
+local onerror = function(err) MsgN(err,"\n", debug.traceback()) end
+function ENT:Start()   
+	hook.Add("main.postcontroller","thumbnailRenderer", function()  
 		local status, err = xpcall(function() self:Update() end,onerror) 
 		if status then
 			-- all ok
@@ -78,7 +78,9 @@ function ENT:Cleanup()
 	RTHUMB = nil
 end
 
-function ENT:Draw(form,callback) 
+function ENT:Draw(form,callback)  
+	
+	
 	self.rqu:Push({form,callback})
 	--MsgN("render request")
 end
@@ -105,6 +107,7 @@ function ENT:SetForm(form)
 
 			end
 		else
+			MsgN("spawnform ",form)
 			p = forms.Spawn(form,self,{})-- 
 		end
 
@@ -144,18 +147,20 @@ function ENT:Update()
 		if not self.busy and self.rqu:Peek() then
 			self.busy = true
 			local ln = self.rqu:Pop() 
-			local form,callback = ln[1],ln[2]
-			MsgN("render start",form)
+			if ln then
+				local form,callback = ln[1],ln[2]
+				MsgN("render start",form)
 
-			self.form = form
-			self.callback = callback
-			if self:SetForm(form) then
-				--self.rcamera:RequestDraw() 
-				self.stage = "drawprep"
-				self.cooldowntime = CurTime() + 0.001
-			else
-				self.busy = false
-				self.cooldowntime = CurTime() + 0.001
+				self.form = form
+				self.callback = callback
+				if self:SetForm(form) then
+					--self.rcamera:RequestDraw() 
+					self.stage = "drawprep"
+					self.cooldowntime = CurTime() + 0.001
+				else
+					self.busy = false
+					self.cooldowntime = CurTime() + 0.001
+				end
 			end
 		elseif self.stage == 'drawprep' then
 			ModNodeMaterials(self.entity,{FullbrightMode=true},nil,true)

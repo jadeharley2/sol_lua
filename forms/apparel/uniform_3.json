@@ -17,5 +17,8 @@
 		"matid" : 1,
 		"vartype" : "vec4",
 		"variable" : "matColors2" 
-	}
+	},
+	"composition" :{
+		"resource.cloth" : 3,     
+	} 
 }

@@ -11,6 +11,10 @@
         {
             "item":"resource.leather",
             "count":3
+        }, 
+        {
+            "item":"resource.rubber",
+            "count":1
         }
     ]
 }

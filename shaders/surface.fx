@@ -996,7 +996,7 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 				gdc = true;
 				if(dist<3)
 				{
-					float distmul = 1;//saturate((dist-0.4)*2);
+					float distmul =1.5/distanceMultiplier;//saturate((dist-0.4)*2);
 					float3 dp = float3(0,distmul,0);
 					[unroll]
 					for (int x = 1; x < 8; x++)

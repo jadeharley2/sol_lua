@@ -8,4 +8,7 @@
 	"phys" : true,
 	"mass" : 1,
 	"icon" : "lab/glass_b",
+	"composition" :{
+		"resource.glass" : 1,    
+	}
 }

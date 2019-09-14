@@ -8,4 +8,7 @@
 	"icon" : "apparel/fk/uniform1", 
 	"worldmodelscale" : 0.014, 
 	"furmasks":{"body":"models/apparel/submaps/uniform01.png"},
+	"composition" :{
+		"resource.nanofiber" : 2,     
+	} 
 }

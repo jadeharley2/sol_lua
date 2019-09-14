@@ -4,5 +4,8 @@
 	"model" : "furniture/futur/shelf.stmd",
 	"scale" : 0.03,
 	"rotation" : [0,0,0],
+	"composition" :{
+		"resource.steel" : 1, 
+	}
 	
 }

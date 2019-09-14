@@ -7,4 +7,8 @@
 	"model" : "apparel/visor.stmd",
 	"icon" : "apparel/fk/visor", 
 	"worldmodelscale" : 0.014,
+	"composition" :{
+		"resource.plastic" : 1,   
+		"resource.electronic_components":1,  
+	} 
 }

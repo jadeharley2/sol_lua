@@ -6,5 +6,8 @@
 	"model" : "apparel/rhands.stmd",
 	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodelscale" : 0.03,
-	"hide":["hand"]
+	"hide":["hand"],
+	"composition" :{
+		"resource.synthskin" : 1,     
+	} 
 }

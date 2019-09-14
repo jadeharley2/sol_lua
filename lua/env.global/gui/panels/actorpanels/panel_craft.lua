@@ -25,20 +25,22 @@ function PANEL:LoadRecipes(category)
 	if category == nil then 
 		local loadedCategories = {}
 		for resultid,v in SortedPairs(temp_all_recipes) do  
-			local ccat = string.split(resultid,'.')[1]
-			if ccat and not loadedCategories[ccat] then 
-				loadedCategories[ccat] = true 
-				local btn = gui.FromTable({
-					type="button",
-					dock = DOCK_TOP,
-					size = {22,22}, 
-					text = ccat, 
-					OnClick = function(s) 
-						self:LoadRecipes(ccat)
-						self.recipelist:ScrollToTop()
-					end,
-				}) 
-				self.recipelist:AddItem(btn)
+			for recipeid,vv in pairs(v) do
+				local ccat = vv.category--string.split(resultid,'.')[1]
+				if ccat and not loadedCategories[ccat] then 
+					loadedCategories[ccat] = true 
+					local btn = gui.FromTable({
+						type="button",
+						dock = DOCK_TOP,
+						size = {22,22}, 
+						text = ccat, 
+						OnClick = function(s) 
+							self:LoadRecipes(ccat)
+							self.recipelist:ScrollToTop()
+						end,
+					}) 
+					self.recipelist:AddItem(btn)
+				end
 			end
 		end
 	else
@@ -54,8 +56,9 @@ function PANEL:LoadRecipes(category)
 		}) 
 		self.recipelist:AddItem(btn)
 		for resultid,v in SortedPairs(temp_all_recipes) do  
-			if string.starts(resultid,category..'.') then
-				for recipeid,vv in pairs(v) do
+			for recipeid,vv in pairs(v) do 
+				if category == vv.category then
+
 					local context = nil
 					for kkk,vvv in pairs(vv.input) do
 						local nl = (vvv.count or '1') .. ' ' .. (forms.GetName(vvv.item) or vvv.item)
@@ -103,7 +106,7 @@ function PANEL:LoadRecipes(category)
 					}) 
 					self.recipelist:AddItem(btn)
 				end
-			end
+			end 
 		end
 	end
 	self:UpdateLayout()

@@ -10,7 +10,10 @@
 			"matColors0" : [238,238,238,255],
 		}
 	],
-	"physmaterial":"barrel" 
+	"physmaterial":"barrel",
 	//"icon" : "lab/book",
+	"composition" :{
+		"resource.iron" : 20,    
+	}
 	
 }

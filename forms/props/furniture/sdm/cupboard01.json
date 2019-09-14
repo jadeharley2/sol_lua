@@ -11,5 +11,9 @@
 		"itemsets" :{
 			"sdm_clutter" : { "mode":"oneof", "chance":50 }
 		}
+	},
+	"composition" :{
+		"resource.wood" : 4,    
+		"resource.glass" : 2,  
 	}
 }

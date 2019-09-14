@@ -5,5 +5,8 @@
 	"slot" : "feet",
 	"model" : "apparel/tst_hvs.stmd", 
 	"worldmodelscale" : 0.014,
-	"hide":["toe","foot","calf"]
+	"hide":["toe","foot","calf"],
+	"composition" :{
+		"resource.synthskin" : 1,     
+	} 
 }

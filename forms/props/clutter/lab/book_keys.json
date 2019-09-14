@@ -10,6 +10,9 @@
 	],
 	"phys" : true,
 	"mass" : 1,
-	"icon" : "lab/book",
+	"icon" : "lab/book", 
+	"composition" :{
+		"resource.paper" : 2,    
+	}
 	
 }

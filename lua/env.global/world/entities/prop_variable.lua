@@ -15,6 +15,7 @@ function ItemPV(type,seed,modtable)
 			form = type,
 			icon = j.icon,
 		}, 
+		flags = {"storeable"}
 	}
 	if modtable then table.Merge(modtable,t,true) end
 	return json.ToJson(t)

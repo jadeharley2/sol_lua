@@ -13,9 +13,12 @@
 		"matid" : 1,
 		"vartype" : "vec3",
 		"variable" : "tint"  
-	}
+	},
 	//"modmaterial" :  [{ 
 	//		"tint" : [0.1490196,0.1686275,0.6235294],   
 	//	}
 	//],
+	"composition" :{
+		"resource.cloth" : 1,     
+	} 
 }

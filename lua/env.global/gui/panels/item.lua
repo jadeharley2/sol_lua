@@ -269,11 +269,18 @@ function PANEL:Set(slot,item,node)
 		self.contextinfo = title or class or luatype or "???"
 		--MsgN(title,luatype,class,amount,icon)
 		--PrintTable(class)   
-		if not ( self:TrySetTexture(icon) or self:TrySetTexture(class) or self:TrySetTexture(luatype) ) then 
-			if class then
-				
-			end
-			self:SetTexture(unknowntex)
+ 
+		if not ( self:TrySetTexture(icon) 
+			or self:TrySetTexture(class) 
+			or self:TrySetTexture(luatype) ) then 
+
+				FormThumbnailRender(self,class)
+			--local tfname = 'textures/thumb/'..class..'.png' 
+			--if file.Exists(tfname) then
+			--	self:SetTexture(tfname)
+			--else
+			--	self:SetTexture(unknowntex)
+			--end
 		end
 		
 		--PrintTable(item)

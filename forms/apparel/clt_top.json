@@ -6,4 +6,7 @@
 	"worldmodelscale" : 0.014,
 	"hide":[],
 	"furmasks":{"body":"models/apparel/submaps/mh_top.png"},
+	"composition" :{
+		"resource.cloth" : 2,     
+	} 
 }

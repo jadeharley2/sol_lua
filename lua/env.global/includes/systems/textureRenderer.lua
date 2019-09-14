@@ -14,10 +14,12 @@ end
 
 function RenderThumbnail(form,callback) 
 	local rte = RTHUMB
-	if not IsValidEnt(rte) then 
+	if not rte or not IsValidEnt(rte) then 
+		MsgN("huh",rte)
 		rte = ents.Create("util_thumbnailRenderer")
 		rte:Spawn()
 		RTHUMB = rte
+		MsgN("huh2",rte)
 	end 
 	rte:Draw(form,callback) 
 end                                     

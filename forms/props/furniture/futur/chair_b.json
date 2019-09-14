@@ -15,5 +15,8 @@
 				"fatigue" : 1
 			}
 		},
+	},
+	"composition" :{
+		"resource.steel" : 2, 
 	}
 }

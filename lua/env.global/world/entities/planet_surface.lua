@@ -111,7 +111,7 @@ function ENT:Think()
 --	--MsgN("d") 
 	--self.constrot:SetParams(0.001,0,matrix.Rotation(0.1,0,0))
 --	--cr:SetPostOffset()
-	if CLIENT then
+	if CLIENT and false then
 		local cam = GetCamera()
 		if cam:GetParent()==self then
 			render.ClearShadowMaps()

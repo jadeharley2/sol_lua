@@ -11,5 +11,10 @@
 				"entertainment" : 1
 			}
 		}
+	},
+	"composition" :{
+		"resource.steel" : 1,
+		"resource.glass" : 1,
+		"resource.electronic_components" : 1,
 	}
 }

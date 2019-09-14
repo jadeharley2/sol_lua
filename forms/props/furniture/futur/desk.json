@@ -4,5 +4,8 @@
 	"model" : "furniture/futur/desk.stmd",
 	"scale" : 0.03,
 	"rotation" : [0,0,0],
+	"composition" :{
+		"resource.steel" : 3, 
+	}
 	
 }

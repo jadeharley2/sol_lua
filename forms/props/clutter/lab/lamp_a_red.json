@@ -6,4 +6,8 @@
 	"rotation" : [0,0,0],
 	"light" : { "pos" : [0,0.3,0], "color" :[1,0.3,0.1],"brightness":0.1 },
 	"modmaterial" :  [ {}, {"tint":[1,0.3,0.1]}, ],
+	"composition" :{
+		"resource.steel" : 1,  
+		"resource.glass" : 1,    
+	}
 }

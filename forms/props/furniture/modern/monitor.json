@@ -11,5 +11,9 @@
 				"entertainment" : 1
 			}
 		}
+	},
+	"composition" :{
+		"resource.plastic" : 1,   
+		"resource.electronic_components" : 1,
 	}
 }

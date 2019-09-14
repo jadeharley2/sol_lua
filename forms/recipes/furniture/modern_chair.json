@@ -1,0 +1,20 @@
+{
+    "tags" : ["furniture"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"prop.furniture.modern.chair",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.wood",
+            "count":5
+        },
+        {
+            "item":"resource.cloth",
+            "count":4
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 {
+	"name" : "Modern chair",
 	"group" : "furniture",
 	"tags" : ["modern","dyeable"],
 	"model" : "furniture/modern/chair.stmd",
@@ -20,6 +21,10 @@
 		"matid" : 2,
 		"vartype" : "vec3",
 		"variable" : "tint" 
+	},
+	"composition" :{
+		"resource.wood" : 4,
+		"resource.cloth" : 3
 	}
 	
 }

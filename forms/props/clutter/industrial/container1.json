@@ -6,7 +6,10 @@
 	"rotation" : [0,0,0],
 	"phys" : true,
 	"mass" : 1000,
-	"physmaterial":"barrel" 
+	"physmaterial":"barrel",
 	//"icon" : "lab/book",
+	"composition" :{
+		"resource.iron" : 20,    
+	}
 	
 }

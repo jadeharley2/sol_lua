@@ -35,7 +35,7 @@ function forms.Spawn(form,parent,arguments)
 	local loctype = string.join('.',table.Skip(aparts,1)) 
 --	MsgN(aparts[1],loctype)
 	if aparts[1]=='prop' then 
-		local fn = forms.GetForm('prop',loctype) 
+		local fn = form --forms.GetForm('prop',loctype) 
 		return SpawnPV(fn,parent,
 			arguments.pos or Vector(0,0,0),
 			arguments.ang or Vector(0,0,0),
@@ -104,12 +104,17 @@ end
 function forms.GetIcon(formid)
 	local data = forms.LoadForm(formid)
 	if data then 
-		return  
+		local icon =   
 			forms._checkIcon(data:Read("/icon")) or
 			forms._checkIcon(data:Read("/parameters/icon")) or
 			forms._checkIcon(data:Read("/parameters/form")) or
 			forms._checkIcon(data:Read("/parameters/character")) or
 			forms._checkIcon(data:Read("/parameters/luaenttype"))
+		if icon then return icon end
+		local tfname = 'textures/thumb/'..formid..'.png' 
+		if file.Exists(tfname) then
+			return tfname
+		end
 	end
 end
 function forms.GetName(formid)

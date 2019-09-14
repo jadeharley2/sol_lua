@@ -1,7 +1,9 @@
 {
+	"name" : "Modern bed",
 	"group" : "furniture",
 	"tags" : ["modern","dyeable"],
 	"model" : "furniture/modern/bed.stmd",
+	//"icon" : "fur"
 	"scale" : 0.05,
 	"rotation" : [0,0,0], 
 	"luatype":"use_chair",  
@@ -22,6 +24,10 @@
 		"matid" : 2,
 		"vartype" : "vec3",
 		"variable" : "tint" 
+	},
+	"composition" :{
+		"resource.wood" : 8,
+		"resource.cloth" : 6
 	}
 	
 }

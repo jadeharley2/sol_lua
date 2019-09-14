@@ -10,4 +10,7 @@
 	"worldmodelscale" : 0.03,
 	"hide":["calf","foot"],
 	"furmasks":{"body":"models/apparel/submaps/legw.png"},
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
 }

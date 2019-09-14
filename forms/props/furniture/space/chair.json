@@ -15,6 +15,11 @@
 				"fatigue" : 1
 			}
 		}
+	},
+	"composition" :{
+		"resource.plastic" : 3,    
+		"resource.leather" : 2,  
+		"resource.electronic_components" : 1,
 	}
  
 }

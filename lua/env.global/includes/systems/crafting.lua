@@ -7,10 +7,12 @@ function crafting.LoadRecipes()
         local data = forms.ReadForm('recipe.'..id) 
         --MsgN("c",id,v,data)      
         if data then
+            local path = forms.GetForm('recipe.'..id) 
             local outform = data.output.item 
             if outform then
                 local rectable = crafting.recipes[outform] or {}
                 crafting.recipes[outform] = rectable
+                data.category = string.join('.',table.SubTrim(string.split(path,'/'),2,1))
                 rectable[id] = data
             end
         end
@@ -151,6 +153,7 @@ function crafting.Craft(formid,recipeid,storage)
     end
 end
 
+--[[## COMBINE ##]]
 function crafting.GetCombineOptions(item_data_a,item_data_b)
     if item_data_a and item_data_b then
         local formid_a = item_data_a:Read("/parameters/form")
@@ -189,14 +192,15 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
                             data_a.modmaterial[d.matid][d.variable] = {data_b.tint[1],data_b.tint[2],data_b.tint[3],1}
                         end
                     end
-                    PrintTable(data_a.modmaterial)
+                   -- PrintTable(data_a.modmaterial)
                     data_a.name = (data_a.name or formid_a)  .. " | " .. (data_b.suffix or data_b.name)
 
                     --storage:PutItemAsData(nil,json.ToJson(data_a), 1)
 
                     local idparts = string.split(formid_a,'.')
 
-                    local newid = idparts[2].."_"..(data_b.suffix or string.split(formid_b,'.')[2])
+                    local newid = string.join('.',idparts,1).."_"..(data_b.suffix or string.join('.',string.split(formid_b,'.'),1))
+                    MsgN("new form id:",newid)
                     if forms.Create(idparts[1],newid) then
                         forms.SetData(idparts[1],newid,json.ToJson(data_a))
 
@@ -215,4 +219,35 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
             end
         end
     end
+end
+--[[## DECONSTRUCT ##]]
+function crafting.GetDeconstructResult(item_data)
+    if item_data then
+        local formid = item_data :Read("/parameters/form")
+        
+        local form_data = forms.ReadForm(formid) 
+        if form_data then 
+            PrintTable(form_data)
+            return form_data.composition 
+        end 
+    end
+    return false
+end
+function crafting.Deconstruct(item_data,storage)
+    if item_data then
+        local formid = item_data:Read("/parameters/form")
+        
+        local form_data = forms.ReadForm(formid) 
+        local slotA = storage:GetItemSlot(formid)
+        if form_data and form_data.composition and slotA then  
+            for k,v in pairs(form_data.composition) do
+                local critem = forms.GetItem(k,0)
+                storage:PutItemAsData(nil,critem,v)
+            end
+            storage:TakeItemAsData(slotA,1)
+            MsgInfo("deconstruction complete: "..(forms.GetName(formid) or formid) )
+            return true
+        end 
+    end
+    return false
 end

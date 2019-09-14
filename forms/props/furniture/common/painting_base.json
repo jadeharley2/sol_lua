@@ -3,5 +3,8 @@
 	"tags" : ["common","painting"],
 	"model" : "ERROR",//forms/levels/sdm/furn/painting01.dnmd", 
 	"scale" : 1,
-	"rotation" : [90,0,0], 
+	"rotation" : [90,0,0],
+	"composition" :{
+		"resource.wood" : 1,     
+	} 
 }

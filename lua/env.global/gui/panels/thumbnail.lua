@@ -23,6 +23,9 @@ function PANEL:SetForm(formid,usecontext)
 		end)
 	end 
 end
+
+FormThumbnailRender = PANEL.SetForm
+
 function PANEL:SetPath(path,usecontext)
     if file.Exists(path) then
         local ext = file.GetExtension(path)

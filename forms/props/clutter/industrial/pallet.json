@@ -6,7 +6,10 @@
 	"rotation" : [0,0,0],
 	"phys" : true,
 	"mass" : 10,
-	"physmaterial":"wood" 
+	"physmaterial":"wood",
 	//"icon" : "lab/book",
+	"composition" :{
+		"resource.wood" : 4,    
+	}
 	
 }

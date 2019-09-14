@@ -149,6 +149,21 @@ table.Skip = function(tab,count)
 	end 
 	return ntab
 end
+--skip startcount till end
+table.SubTrim = function(tab,startc,endc) 
+	local ntab = T()
+	local c = 0
+	for k,v in pairs(tab) do  
+		if k>startc then 
+			ntab[k-startc] = v 
+			c = c +1 
+		end 
+	end  
+	for k = 1, endc do 
+		ntab[c-k+1] = nil
+	end
+	return ntab
+end
 
 table.__index = table
 

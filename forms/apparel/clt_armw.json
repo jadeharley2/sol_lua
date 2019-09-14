@@ -9,4 +9,7 @@
 	"materials" : {
 		"mat:arm":"models/apparel/tex_mhm/arm2.json",  
 	},   
+	"composition" :{
+		"resource.cloth" : 1,     
+	} 
 }

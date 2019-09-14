@@ -7,4 +7,7 @@
 	"model" : "apparel/hat1.stmd",
 	"icon" : "apparel/fk/hat0", 
 	"worldmodelscale" : 0.014,
+	"composition" :{
+		"resource.fur" : 1,     
+	} 
 }

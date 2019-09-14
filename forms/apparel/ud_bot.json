@@ -7,4 +7,7 @@
 	"model" : "apparel/ud_bot.stmd",
 	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodelscale" : 0.014,
+	"composition" :{
+		"resource.cloth" : 1,     
+	} 
 }

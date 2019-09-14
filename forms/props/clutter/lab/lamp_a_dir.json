@@ -4,5 +4,9 @@
 	"model" : "clutter/lab/flashlight.stmd",
 	"scale" : 0.03,
 	"rotation" : [0,0,0],
-	"light" : { "pos" : [0,0.3,0], "color" :[0.8,0.9,1],"brightness":5,"isdirectional":true }, 
+	"light" : { "pos" : [0,0.3,0], "color" :[0.8,0.9,1],"brightness":5,"isdirectional":true },
+	"composition" :{
+		"resource.steel" : 1,  
+		"resource.glass" : 1,    
+	} 
 }

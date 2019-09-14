@@ -9,8 +9,8 @@
     },
     "input" : [
         {
-            "item":"resource.steel",
-            "count":1
+            "item":"resource.plastic",
+            "count":2
         },
         {
             "item":"resource.electrofiber",

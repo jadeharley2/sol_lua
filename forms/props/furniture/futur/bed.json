@@ -17,6 +17,10 @@
 			}
 		},
 		"usetype" : "lie down"
+	},
+	"composition" :{
+		"resource.steel" : 10,   
+		"resource.cloth" : 4,       
 	}
 	
 }

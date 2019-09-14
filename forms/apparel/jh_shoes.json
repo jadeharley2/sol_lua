@@ -6,4 +6,7 @@
 	"model" : "apparel/jh_shoes.stmd",
 	"icon" : "apparel/fk/uniform0", 
 	"worldmodelscale" : 0.014,
+	"composition" :{
+		"resource.leather" : 1,     
+	} 
 }

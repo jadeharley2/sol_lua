@@ -4,4 +4,7 @@
 	"model" : "apparel/headphones.stmd", 
 	"icon" : "apparel/clt/headphones", 
 	"worldmodelscale" : 0.014,  
+	"composition" :{
+		"resource.plastic" : 1,     
+	} 
 }

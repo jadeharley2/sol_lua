@@ -6,6 +6,9 @@
 	"rotation" : [0,0,0],
 	"container":{ 
 		"size":20 
+	},
+	"composition" :{
+		"resource.wood" : 3, 
 	}
 	
 }

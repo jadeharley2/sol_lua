@@ -589,16 +589,16 @@ function ENT:GetSpawn()
 	local c = SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
 	local cc = c:GetComponent(CTYPE_STORAGE)
 	if cc then
-		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",24879,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.lab.book",24879,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",4352,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.lab.book",4352,{ 
 			parameters = { name = "The Book",  },
 		}))
-		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",4452,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.lab.book",4452,{ 
 			parameters = { name = "The Book",  },
 		})) 
-		cc:PutItemAsData(nil, ItemPV("prop.clutter.clut_lab_book",2542,{ 
+		cc:PutItemAsData(nil, ItemPV("prop.clutter.lab.book",2542,{ 
 			parameters = { name = "The Book",  },
 		}))
 		cc:PutItemAsData(nil,ItemPV("prop.furniture.futur.chair_a",346334,{

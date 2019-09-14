@@ -8,4 +8,7 @@
 	"phys" : true,
 	"mass" : 1,
 	"icon" : "lab/bowl_d",
+	"composition" :{
+		"resource.ceramic" : 1,    
+	}
 }

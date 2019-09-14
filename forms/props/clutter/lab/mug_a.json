@@ -8,4 +8,7 @@
 	"phys" : true,
 	"mass" : 1,
 	"icon" : "lab/mug",
+	"composition" :{
+		"resource.ceramic" : 1,    
+	}
 }

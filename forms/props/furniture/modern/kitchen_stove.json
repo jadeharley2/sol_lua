@@ -11,5 +11,10 @@
 				"hunger" : 1
 			}
 		}
+	},
+	"composition" :{
+		"resource.wood" : 2, 
+		"resource.steel" :1,
+		"resource.glass" :1,
 	}
 }

@@ -8,5 +8,8 @@
 	"icon" : "apparel/fk/kt_wrm", 
 	"worldmodel":"apparel/rolled.stmd",
 	"worldmodelscale" : 0.03,
-	"hide":["calf","foot"]
+	"hide":["calf","foot"],
+	"composition" :{
+		"resource.cloth" : 2,     
+	} 
 }

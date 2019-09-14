@@ -8,4 +8,7 @@
 	"worldmodel" : "apparel/rgloves_w.stmd",
 	"worldmodelscale" : 0.03,
 	"furmasks":{"body":"models/apparel/submaps/glove01.png"},
+	"composition" :{
+		"resource.rubber" : 1,     
+	} 
 }
