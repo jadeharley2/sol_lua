@@ -1,0 +1,9 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid_metallic",
+    "tint":[0.8,0.8,0.8],
+    "metalness":1,
+    "smooth" :0.8,
+    "name":"Metallic dye",
+    "suffix":"metallic"
+}

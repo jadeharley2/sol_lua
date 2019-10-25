@@ -78,7 +78,7 @@ function PANEL:Drop(item)
 			--if slot_to and not storage_to:HasItemAt(slot_to) then
 			--	storage_from:MoveItem(slot_from,storage_to,slot_to,1)
 			--end
-			storage_from:TransferItem(slot_from,storage_to,slot_to,1)
+			storage_from:TransferItem(slot_from,storage_to,slot_to)
 		end
 		
 		

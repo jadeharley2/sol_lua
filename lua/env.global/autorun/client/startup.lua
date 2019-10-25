@@ -1,5 +1,7 @@
 if SERVER then return nil end
 
+module.Require('render')
+
 SAVEDGAME = false 
 CONSOLE = CONSOLE or false
 	-- lua_run  TACTOR:GetParentWith(NTYPE_STARSYSTEM):ReloadSkybox()

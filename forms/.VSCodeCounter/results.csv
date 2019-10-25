@@ -1,0 +1,1350 @@
+filename, language, JSON, JSON with Comments, Ini, Lua, XML, Papyrus, HLSL, comment, blank, total
+_bin\soltest\data\forms\_meta\character.json, JSON, 22, 0, 0, 0, 0, 0, 0, 0, 0, 22
+_bin\soltest\data\forms\_meta\formtypedecl_main.json, JSON, 94, 0, 0, 0, 0, 0, 0, 2, 1, 97
+_bin\soltest\data\forms\_meta\schema\anchor.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\_meta\schema\appearance.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 0, 18
+_bin\soltest\data\forms\_meta\schema\character.json, JSON, 42, 0, 0, 0, 0, 0, 0, 0, 0, 42
+_bin\soltest\data\forms\_meta\schema\damage.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\_meta\schema\dynamicmodel.json, JSON, 28, 0, 0, 0, 0, 0, 0, 0, 0, 28
+_bin\soltest\data\forms\_meta\schema\form.json, JSON, 29, 0, 0, 0, 0, 0, 0, 0, 2, 31
+_bin\soltest\data\forms\_meta\schema\formdeclaration.json, JSON, 37, 0, 0, 0, 0, 0, 0, 0, 1, 38
+_bin\soltest\data\forms\_meta\schema\material.json, JSON, 35, 0, 0, 0, 0, 0, 0, 0, 0, 35
+_bin\soltest\data\forms\_meta\schema\material_eye.json, JSON, 25, 0, 0, 0, 0, 0, 0, 0, 1, 26
+_bin\soltest\data\forms\_meta\schema\material_model.json, JSON, 202, 0, 0, 0, 0, 0, 0, 0, 1, 203
+_bin\soltest\data\forms\_meta\schema\modelpath.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
+_bin\soltest\data\forms\_meta\schema\movementtype.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\_meta\schema\proceduraloperation.json, JSON, 99, 0, 0, 0, 0, 0, 0, 0, 1, 100
+_bin\soltest\data\forms\_meta\schema\projectile.json, JSON, 21, 0, 0, 0, 0, 0, 0, 0, 1, 22
+_bin\soltest\data\forms\_meta\schema\prop.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 0, 11
+_bin\soltest\data\forms\_meta\schema\tool.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 0, 19
+_bin\soltest\data\forms\_meta\schema\vector3.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\forms\anchors\debugsystem.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\anchors\earth.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\forms\anchors\gensokyo.json, JSON, 15, 0, 0, 0, 0, 0, 0, 2, 0, 17
+_bin\soltest\data\forms\anchors\human_village.json, JSON, 15, 0, 0, 0, 0, 0, 0, 2, 0, 17
+_bin\soltest\data\forms\anchors\msys.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\anchors\othersystem.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\anchors\planet_location_test.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\anchors\sol.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\anchors\spacelab.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\armw.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\boots.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\apparel\cape_0.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\clt_armw.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\clt_headphones.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\forms\apparel\clt_pants.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\apparel\clt_top.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\apparel\coat.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\collar.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\apparel\flashlight.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 1, 20
+_bin\soltest\data\forms\apparel\hat_0.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\jh_dress.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\jh_shoes.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\apparel\jh_sk.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\legw.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\apparel\rgloves.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\apparel\rhands.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\scarf_0.json, JSON, 20, 0, 0, 0, 0, 0, 0, 4, 0, 24
+_bin\soltest\data\forms\apparel\socks_0.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\st_dress.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\tst_hvs.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\apparel\ud_bot.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\ud_top.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\apparel\uniform_0.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\uniform_1.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\apparel\uniform_2.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\apparel\uniform_3.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\apparel\visor.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\characters\anthro.feline_base.json, JSON, 27, 0, 0, 0, 0, 0, 0, 0, 2, 29
+_bin\soltest\data\forms\characters\ara.json, JSON, 45, 0, 0, 0, 0, 0, 0, 20, 3, 68
+_bin\soltest\data\forms\characters\testrace.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\forms\characters\vikna.json, JSON, 30, 0, 0, 0, 0, 0, 0, 1, 1, 32
+_bin\soltest\data\forms\classes\classlist.json, JSON, 15, 0, 0, 0, 0, 0, 0, 9, 3, 27
+_bin\soltest\data\forms\classes\material.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
+_bin\soltest\data\forms\classes\model.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
+_bin\soltest\data\forms\dbformtype\basic.json, JSON, 29, 0, 0, 0, 0, 0, 0, 0, 0, 29
+_bin\soltest\data\forms\effects\kindred_transform.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
+_bin\soltest\data\forms\events\sound\steps.json, JSON, 89, 0, 0, 0, 0, 0, 0, 0, 2, 91
+_bin\soltest\data\forms\flow\functions\functest.json, JSON, 62, 0, 0, 0, 0, 0, 0, 0, 10, 72
+_bin\soltest\data\forms\flow\functions\vecshift.json, JSON, 108, 0, 0, 0, 0, 0, 0, 0, 12, 120
+_bin\soltest\data\forms\items\tools\bow_kindred.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 1, 18
+_bin\soltest\data\forms\items\tools\bow_kindred_gal.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\forms\items\tools\physgun.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\items\tools\staff_nami.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\items\touhou\minihakkero.dnmd, JSON with Comments, 0, 107, 0, 0, 0, 0, 0, 0, 8, 115
+_bin\soltest\data\forms\itemset\fk_clothes.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\itemset\sdm_clutter.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 0, 11
+_bin\soltest\data\forms\itemset\test.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\levels\city\building.dnmd, JSON with Comments, 0, 372, 0, 0, 0, 0, 0, 112, 33, 517
+_bin\soltest\data\forms\levels\city\building_flat.dnmd, JSON with Comments, 0, 132, 0, 0, 0, 0, 0, 3, 17, 152
+_bin\soltest\data\forms\levels\city\building_gen.dnmd, JSON with Comments, 0, 311, 0, 0, 0, 0, 0, 41, 19, 371
+_bin\soltest\data\forms\levels\city\building_generator_test.dnmd, JSON with Comments, 0, 205, 0, 0, 0, 0, 0, 21, 12, 238
+_bin\soltest\data\forms\levels\city\building_section.dnmd, JSON with Comments, 0, 272, 0, 0, 0, 0, 0, 31, 25, 328
+_bin\soltest\data\forms\levels\city\facade_gen_test.dnmd, JSON with Comments, 0, 532, 0, 0, 0, 0, 0, 156, 48, 736
+_bin\soltest\data\forms\levels\city\map.dnmd, JSON with Comments, 0, 230, 0, 0, 0, 0, 0, 36, 18, 284
+_bin\soltest\data\forms\levels\city\roadtest.dnmd, JSON with Comments, 0, 130, 0, 0, 0, 0, 0, 22, 12, 164
+_bin\soltest\data\forms\levels\city\sst\sst_corridor.dnmd, JSON with Comments, 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+_bin\soltest\data\forms\levels\city\sst\sst_entrance.dnmd, JSON with Comments, 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+_bin\soltest\data\forms\levels\city\sst\sst_in.dnmd, JSON with Comments, 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+_bin\soltest\data\forms\levels\city\sst\sst_transfer.dnmd, JSON with Comments, 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+_bin\soltest\data\forms\levels\city\staircase_2w.dnmd, JSON with Comments, 0, 86, 0, 0, 0, 0, 0, 1, 10, 97
+_bin\soltest\data\forms\levels\city\staircase_3w.dnmd, JSON with Comments, 0, 109, 0, 0, 0, 0, 0, 3, 16, 128
+_bin\soltest\data\forms\levels\city\test_building.dnlv, JSON with Comments, 0, 32, 0, 0, 0, 0, 0, 0, 2, 34
+_bin\soltest\data\forms\levels\city\windows_blue.json, JSON, 12, 0, 0, 0, 0, 0, 0, 1, 1, 14
+_bin\soltest\data\forms\levels\city\windows_yellow.json, JSON, 12, 0, 0, 0, 0, 0, 0, 1, 1, 14
+_bin\soltest\data\forms\levels\east_common\jp_fence.dnmd, JSON with Comments, 0, 95, 0, 0, 0, 0, 0, 6, 13, 114
+_bin\soltest\data\forms\levels\east_common\jp_fence_test.dnmd, JSON with Comments, 0, 45, 0, 0, 0, 0, 0, 0, 4, 49
+_bin\soltest\data\forms\levels\east_common\jp_window_frame_a.dnmd, JSON with Comments, 0, 53, 0, 0, 0, 0, 0, 2, 5, 60
+_bin\soltest\data\forms\levels\east_common\tree_sakura.dnmd, JSON with Comments, 0, 125, 0, 0, 0, 0, 0, 10, 19, 154
+_bin\soltest\data\forms\levels\gear\geara.dnmd, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 12, 5, 76
+_bin\soltest\data\forms\levels\hvil\bridge.dnmd, JSON with Comments, 0, 104, 0, 0, 0, 0, 0, 3, 23, 130
+_bin\soltest\data\forms\levels\hvil\bush_green.dnmd, JSON with Comments, 0, 108, 0, 0, 0, 0, 0, 10, 19, 137
+_bin\soltest\data\forms\levels\hvil\fence.dnmd, JSON with Comments, 0, 90, 0, 0, 0, 0, 0, 0, 4, 94
+_bin\soltest\data\forms\levels\hvil\house.dnmd, JSON with Comments, 0, 90, 0, 0, 0, 0, 0, 61, 19, 170
+_bin\soltest\data\forms\levels\hvil\road.dnmd, JSON with Comments, 0, 44, 0, 0, 0, 0, 0, 7, 5, 56
+_bin\soltest\data\forms\levels\hvil\tree_green.dnmd, JSON with Comments, 0, 126, 0, 0, 0, 0, 0, 10, 19, 155
+_bin\soltest\data\forms\levels\hvil\tree_green_old.dnmd, JSON with Comments, 0, 125, 0, 0, 0, 0, 0, 10, 19, 154
+_bin\soltest\data\forms\levels\hvil\tree_pine.dnmd, JSON with Comments, 0, 163, 0, 0, 0, 0, 0, 10, 19, 192
+_bin\soltest\data\forms\levels\sdm\arch\building.dnmd, JSON with Comments, 0, 592, 0, 0, 0, 0, 0, 52, 115, 759
+_bin\soltest\data\forms\levels\sdm\arch\corridor.dnmd, JSON with Comments, 0, 234, 0, 0, 0, 0, 0, 1, 30, 265
+_bin\soltest\data\forms\levels\sdm\arch\corridors_1floor.dnmd, JSON with Comments, 0, 1261, 0, 0, 0, 0, 0, 71, 161, 1493
+_bin\soltest\data\forms\levels\sdm\arch\corridors_2floor.dnmd, JSON with Comments, 0, 1533, 0, 0, 0, 0, 0, 129, 213, 1875
+_bin\soltest\data\forms\levels\sdm\arch\entrance_room.dnmd, JSON with Comments, 0, 447, 0, 0, 0, 0, 0, 47, 85, 579
+_bin\soltest\data\forms\levels\sdm\arch\foyer.dnmd, JSON with Comments, 0, 198, 0, 0, 0, 0, 0, 27, 20, 245
+_bin\soltest\data\forms\levels\sdm\arch\library.dnmd, JSON with Comments, 0, 348, 0, 0, 0, 0, 0, 38, 83, 469
+_bin\soltest\data\forms\levels\sdm\arch\parts\arch.dnmd, JSON with Comments, 0, 94, 0, 0, 0, 0, 0, 5, 17, 116
+_bin\soltest\data\forms\levels\sdm\arch\parts\bookshelf.dnmd, JSON with Comments, 0, 184, 0, 0, 0, 0, 0, 2, 5, 191
+_bin\soltest\data\forms\levels\sdm\arch\parts\clocktower.dnmd, JSON with Comments, 0, 209, 0, 0, 0, 0, 0, 46, 27, 282
+_bin\soltest\data\forms\levels\sdm\arch\parts\column.dnmd, JSON with Comments, 0, 116, 0, 0, 0, 0, 0, 1, 4, 121
+_bin\soltest\data\forms\levels\sdm\arch\parts\door01.dnmd, JSON with Comments, 0, 163, 0, 0, 0, 0, 0, 19, 12, 194
+_bin\soltest\data\forms\levels\sdm\arch\parts\floor_carpet.dnmd, JSON with Comments, 0, 51, 0, 0, 0, 0, 0, 1, 0, 52
+_bin\soltest\data\forms\levels\sdm\arch\parts\library_arch.dnmd, JSON with Comments, 0, 98, 0, 0, 0, 0, 0, 6, 13, 117
+_bin\soltest\data\forms\levels\sdm\arch\parts\roof.dnmd, JSON with Comments, 0, 76, 0, 0, 0, 0, 0, 7, 6, 89
+_bin\soltest\data\forms\levels\sdm\arch\parts\roof_small.dnmd, JSON with Comments, 0, 56, 0, 0, 0, 0, 0, 1, 4, 61
+_bin\soltest\data\forms\levels\sdm\arch\parts\staircase_3w.dnmd, JSON with Comments, 0, 109, 0, 0, 0, 0, 0, 3, 16, 128
+_bin\soltest\data\forms\levels\sdm\arch\parts\stddoor.dnmd, JSON with Comments, 0, 52, 0, 0, 0, 0, 0, 1, 1, 54
+_bin\soltest\data\forms\levels\sdm\arch\parts\stdwindow.dnmd, JSON with Comments, 0, 46, 0, 0, 0, 0, 0, 6, 1, 53
+_bin\soltest\data\forms\levels\sdm\arch\parts\wallcolumns.dnmd, JSON with Comments, 0, 40, 0, 0, 0, 0, 0, 1, 2, 43
+_bin\soltest\data\forms\levels\sdm\arch\parts\wallsegment_a.dnmd, JSON with Comments, 0, 77, 0, 0, 0, 0, 0, 3, 8, 88
+_bin\soltest\data\forms\levels\sdm\arch\parts\window_a.dnmd, JSON with Comments, 0, 80, 0, 0, 0, 0, 0, 2, 3, 85
+_bin\soltest\data\forms\levels\sdm\arch\tower2.dnmd, JSON with Comments, 0, 70, 0, 0, 0, 0, 0, 1, 10, 81
+_bin\soltest\data\forms\levels\sdm\arch\tower2_room.dnmd, JSON with Comments, 0, 138, 0, 0, 0, 0, 0, 2, 13, 153
+_bin\soltest\data\forms\levels\sdm\bridge.dnmd, JSON with Comments, 0, 114, 0, 0, 0, 0, 0, 1, 23, 138
+_bin\soltest\data\forms\levels\sdm\exterior.dnlv, JSON with Comments, 0, 77, 0, 0, 0, 0, 0, 0, 2, 79
+_bin\soltest\data\forms\levels\sdm\furn\chair01.dnmd, JSON with Comments, 0, 126, 0, 0, 0, 0, 0, 1, 12, 139
+_bin\soltest\data\forms\levels\sdm\furn\cupboard01.dnmd, JSON with Comments, 0, 118, 0, 0, 0, 0, 0, 7, 14, 139
+_bin\soltest\data\forms\levels\sdm\furn\cupboard02.dnmd, JSON with Comments, 0, 146, 0, 0, 0, 0, 0, 7, 17, 170
+_bin\soltest\data\forms\levels\sdm\furn\cupboard03.dnmd, JSON with Comments, 0, 69, 0, 0, 0, 0, 0, 2, 8, 79
+_bin\soltest\data\forms\levels\sdm\furn\cupboard_small01.dnmd, JSON with Comments, 0, 70, 0, 0, 0, 0, 0, 7, 8, 85
+_bin\soltest\data\forms\levels\sdm\furn\lamp01.dnmd, JSON with Comments, 0, 127, 0, 0, 0, 0, 0, 1, 12, 140
+_bin\soltest\data\forms\levels\sdm\furn\painting01.dnmd, JSON with Comments, 0, 96, 0, 0, 0, 0, 0, 0, 3, 99
+_bin\soltest\data\forms\levels\sdm\furn\painting01_square.dnmd, JSON with Comments, 0, 24, 0, 0, 0, 0, 0, 0, 2, 26
+_bin\soltest\data\forms\levels\sdm\furn\parts\cupdoor.dnmd, JSON with Comments, 0, 95, 0, 0, 0, 0, 0, 1, 12, 108
+_bin\soltest\data\forms\levels\sdm\furn\parts\cupdoor2.dnmd, JSON with Comments, 0, 93, 0, 0, 0, 0, 0, 1, 9, 103
+_bin\soltest\data\forms\levels\sdm\furn\parts\cupdoor3.dnmd, JSON with Comments, 0, 83, 0, 0, 0, 0, 0, 1, 9, 93
+_bin\soltest\data\forms\levels\sdm\furn\parts\handle.dnmd, JSON with Comments, 0, 57, 0, 0, 0, 0, 0, 1, 3, 61
+_bin\soltest\data\forms\levels\sdm\furn\parts\legs.dnmd, JSON with Comments, 0, 54, 0, 0, 0, 0, 0, 1, 3, 58
+_bin\soltest\data\forms\levels\sdm\furn\parts\shelf.dnmd, JSON with Comments, 0, 48, 0, 0, 0, 0, 0, 4, 5, 57
+_bin\soltest\data\forms\levels\sdm\furn\table01.dnmd, JSON with Comments, 0, 108, 0, 0, 0, 0, 0, 1, 6, 115
+_bin\soltest\data\forms\levels\sdm\interior_library.dnlv, JSON with Comments, 0, 98, 0, 0, 0, 0, 0, 8, 18, 124
+_bin\soltest\data\forms\levels\sdm\interior_main.dnlv, JSON with Comments, 0, 264, 0, 0, 0, 0, 0, 17, 40, 321
+_bin\soltest\data\forms\levels\sdm\interior_tower2.dnlv, JSON with Comments, 0, 99, 0, 0, 0, 0, 0, 1, 16, 116
+_bin\soltest\data\forms\levels\sdm\rail.dnmd, JSON with Comments, 0, 101, 0, 0, 0, 0, 0, 4, 8, 113
+_bin\soltest\data\forms\levels\sdm\wall.dnmd, JSON with Comments, 0, 101, 0, 0, 0, 0, 0, 4, 8, 113
+_bin\soltest\data\forms\levels\shr\gate.dnmd, JSON with Comments, 0, 83, 0, 0, 0, 0, 0, 2, 6, 91
+_bin\soltest\data\forms\levels\shr\house.dnmd, JSON with Comments, 0, 207, 0, 0, 0, 0, 0, 5, 35, 247
+_bin\soltest\data\forms\levels\shr\jp_shrine_lantern_stone.dnmd, JSON with Comments, 0, 146, 0, 0, 0, 0, 0, 6, 17, 169
+_bin\soltest\data\forms\levels\shr\jp_shrine_lantern_wood.dnmd, JSON with Comments, 0, 199, 0, 0, 0, 0, 0, 19, 24, 242
+_bin\soltest\data\forms\levels\shr\shrine.dnmd, JSON with Comments, 0, 167, 0, 0, 0, 0, 0, 5, 33, 205
+_bin\soltest\data\forms\levels\train\bogie.dnmd, JSON with Comments, 0, 233, 0, 0, 0, 0, 0, 0, 24, 257
+_bin\soltest\data\forms\levels\train\carriage.dnmd, JSON with Comments, 0, 563, 0, 0, 0, 0, 0, 72, 57, 692
+_bin\soltest\data\forms\levels\train\carriage_nowheels.dnmd, JSON with Comments, 0, 553, 0, 0, 0, 0, 0, 82, 57, 692
+_bin\soltest\data\forms\levels\train\grate.dnmd, JSON with Comments, 0, 74, 0, 0, 0, 0, 0, 0, 3, 77
+_bin\soltest\data\forms\levels\train\mpart1.dnmd, JSON with Comments, 0, 27, 0, 0, 0, 0, 0, 0, 0, 27
+_bin\soltest\data\forms\levels\train\mpart2.dnmd, JSON with Comments, 0, 69, 0, 0, 0, 0, 0, 0, 6, 75
+_bin\soltest\data\forms\levels\train\platform_roof.dnmd, JSON with Comments, 0, 157, 0, 0, 0, 0, 0, 0, 31, 188
+_bin\soltest\data\forms\levels\train\sofa.dnmd, JSON with Comments, 0, 61, 0, 0, 0, 0, 0, 1, 2, 64
+_bin\soltest\data\forms\levels\train\track.dnmd, JSON with Comments, 0, 103, 0, 0, 0, 0, 0, 8, 5, 116
+_bin\soltest\data\forms\levels\train\wheel.dnmd, JSON with Comments, 0, 75, 0, 0, 0, 0, 0, 0, 7, 82
+_bin\soltest\data\forms\levels\train\window.dnmd, JSON with Comments, 0, 46, 0, 0, 0, 0, 0, 0, 0, 46
+_bin\soltest\data\forms\nodes\1000002.n, JSON with Comments, 0, 20, 0, 0, 0, 0, 0, 0, 1, 21
+_bin\soltest\data\forms\nodes\1065632697.n, JSON with Comments, 0, 27, 0, 0, 0, 0, 0, 0, 1, 28
+_bin\soltest\data\forms\nodes\116024354.n, JSON with Comments, 0, 77, 0, 0, 0, 0, 0, 0, 3, 80
+_bin\soltest\data\forms\nodes\1178403595.n, JSON with Comments, 0, 1591, 0, 0, 0, 0, 0, 0, 60, 1651
+_bin\soltest\data\forms\nodes\1178403595_old.n, JSON with Comments, 0, 220, 0, 0, 0, 0, 0, 0, 9, 229
+_bin\soltest\data\forms\nodes\1178403595_old2.n, JSON with Comments, 0, 421, 0, 0, 0, 0, 0, 0, 17, 438
+_bin\soltest\data\forms\nodes\1178403595_old3.n, JSON with Comments, 0, 1405, 0, 0, 0, 0, 0, 0, 53, 1458
+_bin\soltest\data\forms\nodes\1384125349.n, JSON with Comments, 0, 276, 0, 0, 0, 0, 0, 0, 13, 289
+_bin\soltest\data\forms\nodes\146495685.n, JSON with Comments, 0, 250, 0, 0, 0, 0, 0, 0, 12, 262
+_bin\soltest\data\forms\nodes\1563639284.n, JSON with Comments, 0, 163, 0, 0, 0, 0, 0, 0, 5, 168
+_bin\soltest\data\forms\nodes\170364350.n, JSON with Comments, 0, 249, 0, 0, 0, 0, 0, 18, 12, 279
+_bin\soltest\data\forms\nodes\1712499733.n, JSON with Comments, 0, 34, 0, 0, 0, 0, 0, 0, 0, 34
+_bin\soltest\data\forms\nodes\1934751279.n, JSON with Comments, 0, 21, 0, 0, 0, 0, 0, 0, 1, 22
+_bin\soltest\data\forms\nodes\2008649333.n, JSON with Comments, 0, 20, 0, 0, 0, 0, 0, 37, 1, 58
+_bin\soltest\data\forms\nodes\2053289040.n, JSON with Comments, 0, 21, 0, 0, 0, 0, 0, 0, 1, 22
+_bin\soltest\data\forms\nodes\254000.n, JSON with Comments, 0, 346, 0, 0, 0, 0, 0, 0, 14, 360
+_bin\soltest\data\forms\nodes\333333.n, JSON with Comments, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+_bin\soltest\data\forms\nodes\44301001.n, JSON with Comments, 0, 1711, 0, 0, 0, 0, 0, 0, 69, 1780
+_bin\soltest\data\forms\nodes\56001.n, JSON with Comments, 0, 201, 0, 0, 0, 0, 0, 51, 5, 257
+_bin\soltest\data\forms\nodes\69116198.n, JSON with Comments, 0, 52, 0, 0, 0, 0, 0, 0, 2, 54
+_bin\soltest\data\forms\nodes\92782007.n, JSON with Comments, 0, 39, 0, 0, 0, 0, 0, 0, 2, 41
+_bin\soltest\data\forms\nodes\_dump\9900002 (2).n, JSON with Comments, 0, 102, 0, 0, 0, 0, 0, 0, 4, 106
+_bin\soltest\data\forms\nodes\_dump\9900002.n, JSON with Comments, 0, 62, 0, 0, 0, 0, 0, 22, 7, 91
+_bin\soltest\data\forms\nodes\manual\_jtest1.n, JSON with Comments, 0, 29, 0, 0, 0, 0, 0, 0, 1, 30
+_bin\soltest\data\forms\nodes\manual\_jtest2.n, JSON with Comments, 0, 34, 0, 0, 0, 0, 0, 0, 1, 35
+_bin\soltest\data\forms\nodes\manual\_jtest3.n, JSON with Comments, 0, 33, 0, 0, 0, 0, 0, 0, 1, 34
+_bin\soltest\data\forms\nodes\manual\a1.n, JSON with Comments, 0, 422, 0, 0, 0, 0, 0, 0, 21, 443
+_bin\soltest\data\forms\nodes\manual\a2.n, JSON with Comments, 0, 182, 0, 0, 0, 0, 0, 0, 9, 191
+_bin\soltest\data\forms\nodes\manual\a3.n, JSON with Comments, 0, 1062, 0, 0, 0, 0, 0, 0, 53, 1115
+_bin\soltest\data\forms\nodes\manual\aaa1.n, JSON with Comments, 0, 707, 0, 0, 0, 0, 0, 0, 34, 741
+_bin\soltest\data\forms\nodes\manual\aaa2.n, JSON with Comments, 0, 385, 0, 0, 0, 0, 0, 0, 21, 406
+_bin\soltest\data\forms\nodes\manual\asd.n, JSON with Comments, 0, 116, 0, 0, 0, 0, 0, 0, 5, 121
+_bin\soltest\data\forms\nodes\manual\bbb1.n, JSON with Comments, 0, 608, 0, 0, 0, 0, 0, 0, 30, 638
+_bin\soltest\data\forms\nodes\manual\beds.n, JSON with Comments, 0, 162, 0, 0, 0, 0, 0, 0, 8, 170
+_bin\soltest\data\forms\nodes\manual\l_bridge.n, JSON with Comments, 0, 65, 0, 0, 0, 0, 0, 0, 4, 69
+_bin\soltest\data\forms\nodes\manual\s1.n, JSON with Comments, 0, 1329, 0, 0, 0, 0, 0, 0, 66, 1395
+_bin\soltest\data\forms\nodes\manual\s2.n, JSON with Comments, 0, 1797, 0, 0, 0, 0, 0, 0, 89, 1886
+_bin\soltest\data\forms\nodes\manual\s3.n, JSON with Comments, 0, 3264, 0, 0, 0, 0, 0, 0, 162, 3426
+_bin\soltest\data\forms\nodes\manual\s4.n, JSON with Comments, 0, 3444, 0, 0, 0, 0, 0, 0, 171, 3615
+_bin\soltest\data\forms\nodes\manual\sa1.n, JSON with Comments, 0, 1382, 0, 0, 0, 0, 0, 0, 69, 1451
+_bin\soltest\data\forms\nodes\manual\set1.n, JSON with Comments, 0, 1185, 0, 0, 0, 0, 0, 0, 59, 1244
+_bin\soltest\data\forms\nodes\manual\test111111.n, JSON with Comments, 0, 593, 0, 0, 0, 0, 0, 0, 28, 621
+_bin\soltest\data\forms\nodes\manual\testfence.n, JSON with Comments, 0, 114, 0, 0, 0, 0, 0, 0, 3, 117
+_bin\soltest\data\forms\nodes\manual\testflat.n, JSON with Comments, 0, 292, 0, 0, 0, 0, 0, 0, 12, 304
+_bin\soltest\data\forms\nodes\manual\wtf.n, JSON with Comments, 0, 782, 0, 0, 0, 0, 0, 0, 39, 821
+_bin\soltest\data\forms\nodes\worlds\u1.n, JSON with Comments, 0, 15, 0, 0, 0, 0, 0, 0, 2, 17
+_bin\soltest\data\forms\planets\earth.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\planets\gen_barren\info.json, JSON, 53, 0, 0, 0, 0, 0, 0, 0, 0, 53
+_bin\soltest\data\forms\planets\gen_gas.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 0, 17
+_bin\soltest\data\forms\planets\jupiter.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\planets\moon.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\planets\neptune.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\planets\saturn.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\planets\uranus.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 0, 14
+_bin\soltest\data\forms\planets\venus.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\presets\furthest_ring.json, JSON, 37, 0, 0, 0, 0, 0, 0, 0, 0, 37
+_bin\soltest\data\forms\presets\jade_house.json, JSON, 237, 0, 0, 0, 0, 0, 0, 28, 12, 277
+_bin\soltest\data\forms\presets\john_house.json, JSON, 254, 0, 0, 0, 0, 0, 0, 20, 12, 286
+_bin\soltest\data\forms\presets\old\jade_house - копия.json, JSON, 123, 0, 0, 0, 0, 0, 0, 1, 7, 131
+_bin\soltest\data\forms\presets\old\john_house_b.json, JSON, 258, 0, 0, 0, 0, 0, 0, 20, 12, 290
+_bin\soltest\data\forms\presets\old\john_house_b_original.json, JSON, 225, 0, 0, 0, 0, 0, 0, 21, 10, 256
+_bin\soltest\data\forms\presets\old\test.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4
+_bin\soltest\data\forms\presets\sol.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\presets\starsystem.classlist1.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\presets\test_planet.json, JSON, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+_bin\soltest\data\forms\presets\universe_human.json, JSON, 50, 0, 0, 0, 0, 0, 0, 0, 0, 50
+_bin\soltest\data\forms\props\active\futur\button.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\forms\props\active\vendor_ability.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\forms\props\active\vendor_character.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 0, 11
+_bin\soltest\data\forms\props\active\vendor_item.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\forms\props\architecture\building_a0.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\props\architecture\test_fence.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\test_rails.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\test_station.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\tile_beam.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\tile_column.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\tile_floor.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\tile_node.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\architecture\tile_wall.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\clutter\clut_lab_book.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_book_hex.json, JSON, 14, 0, 0, 0, 0, 0, 0, 1, 1, 16
+_bin\soltest\data\forms\props\clutter\clut_lab_book_keys.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 1, 15
+_bin\soltest\data\forms\props\clutter\clut_lab_book_red.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 0, 15
+_bin\soltest\data\forms\props\clutter\clut_lab_bowl_a.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_bowl_b.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_bowl_c.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_bowl_d.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_glass_a.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_glass_b.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_glass_c.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_icecream.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_lamp_a.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\clutter\clut_lab_lamp_a_blue.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\clutter\clut_lab_lamp_a_green.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\clutter\clut_lab_lamp_a_red.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\clutter\clut_lab_lamp_b.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\forms\props\clutter\clut_lab_mug_a.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_mug_a_red.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\forms\props\clutter\clut_lab_mug_b.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_plate_a.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\clut_lab_vase.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\industrial\barrel1.json, JSON, 13, 0, 0, 0, 0, 0, 0, 1, 1, 15
+_bin\soltest\data\forms\props\clutter\industrial\container1.json, JSON, 13, 0, 0, 0, 0, 0, 0, 1, 1, 15
+_bin\soltest\data\forms\props\clutter\industrial\container1_blue.json, JSON, 17, 0, 0, 0, 0, 0, 0, 1, 1, 19
+_bin\soltest\data\forms\props\clutter\industrial\container1_red.json, JSON, 17, 0, 0, 0, 0, 0, 0, 1, 1, 19
+_bin\soltest\data\forms\props\clutter\industrial\container1_white.json, JSON, 17, 0, 0, 0, 0, 0, 0, 1, 1, 19
+_bin\soltest\data\forms\props\clutter\industrial\pallet.json, JSON, 13, 0, 0, 0, 0, 0, 0, 1, 1, 15
+_bin\soltest\data\forms\props\clutter\lab\book.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\book_hex.json, JSON, 17, 0, 0, 0, 0, 0, 0, 1, 0, 18
+_bin\soltest\data\forms\props\clutter\lab\book_keys.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 1, 18
+_bin\soltest\data\forms\props\clutter\lab\book_red.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 0, 18
+_bin\soltest\data\forms\props\clutter\lab\bowl_a.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\bowl_b.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\bowl_c.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\bowl_d.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\glass_a.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\glass_b.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\glass_c.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\icecream.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\clutter\lab\lamp_a.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\props\clutter\lab\lamp_a_blue.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\props\clutter\lab\lamp_a_dir.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\props\clutter\lab\lamp_a_green.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\props\clutter\lab\lamp_a_red.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\props\clutter\lab\lamp_b.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\clutter\lab\mug_a.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\mug_a_red.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 1, 15
+_bin\soltest\data\forms\props\clutter\lab\mug_b.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\plate_a.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\lab\vase_a.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\clutter\old\prop01.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\clutter\old\prop02.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\clutter\old\prop03.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\clutter\old\prop04.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\clutter\old\vase.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\furniture\common\door.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\furniture\common\entrance_door.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\forms\props\furniture\common\painting_base.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\forms\props\furniture\common\painting_darkness.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_dawn.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_dome.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_field.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_flare.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_flight.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_hall.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_hills.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_horison.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_horizon2.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_lake.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_mountainside.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_mountainside2.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_night.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_night2.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\common\painting_orb.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\forms\props\furniture\common\painting_outer.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\furniture\futur\bed.json, JSON, 25, 0, 0, 0, 0, 0, 0, 0, 1, 26
+_bin\soltest\data\forms\props\furniture\futur\bench.json, JSON, 31, 0, 0, 0, 0, 0, 0, 0, 1, 32
+_bin\soltest\data\forms\props\furniture\futur\cabinet.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\props\furniture\futur\chair_a.json, JSON, 30, 0, 0, 0, 0, 0, 0, 0, 1, 31
+_bin\soltest\data\forms\props\furniture\futur\chair_b.json, JSON, 22, 0, 0, 0, 0, 0, 0, 0, 0, 22
+_bin\soltest\data\forms\props\furniture\futur\console.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 1, 20
+_bin\soltest\data\forms\props\furniture\futur\desk.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\furniture\futur\monitor_a.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 1, 20
+_bin\soltest\data\forms\props\furniture\futur\shelf.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\furniture\futur\table.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\forms\props\furniture\futur\wall_lamp.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\props\furniture\modern\bed.json, JSON, 31, 0, 0, 0, 0, 0, 0, 1, 1, 33
+_bin\soltest\data\forms\props\furniture\modern\chair.json, JSON, 29, 0, 0, 0, 0, 0, 0, 0, 1, 30
+_bin\soltest\data\forms\props\furniture\modern\diskholder.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\furniture\modern\drawer.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\furniture\modern\kitchen_drawer.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+_bin\soltest\data\forms\props\furniture\modern\kitchen_sink.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 1, 19
+_bin\soltest\data\forms\props\furniture\modern\kitchen_stove.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 1, 20
+_bin\soltest\data\forms\props\furniture\modern\monitor.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 1, 19
+_bin\soltest\data\forms\props\furniture\sdm\chair01.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 0, 18
+_bin\soltest\data\forms\props\furniture\sdm\cupboard01.json, JSON, 17, 0, 0, 0, 0, 0, 0, 2, 0, 19
+_bin\soltest\data\forms\props\furniture\sdm\cupboard02.json, JSON, 17, 0, 0, 0, 0, 0, 0, 2, 0, 19
+_bin\soltest\data\forms\props\furniture\sdm\cupboard03.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 0, 18
+_bin\soltest\data\forms\props\furniture\sdm\cupboard_small01.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 0, 18
+_bin\soltest\data\forms\props\furniture\sdm\lamp01.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\props\furniture\sdm\table01.json, JSON, 10, 0, 0, 0, 0, 0, 0, 2, 0, 12
+_bin\soltest\data\forms\props\furniture\space\chair.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 1, 25
+_bin\soltest\data\forms\props\gensokyo\human\bridge.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\human\fence.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\human\road.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\nature\sakura.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\gensokyo\nature\tree_green.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\gensokyo\redfence.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\gensokyo\sdm\bridge.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\sdm\building.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\gensokyo\sdm\rail.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\sdm\wall.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\gensokyo\shrine\gate.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\props\gensokyo\shrine\lantern.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\props\gensokyo\shrine\shrine.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\nature\test_tree.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\camera.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\props\other\debug_cubemap.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\debug_sizebox.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\flashlight.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\props\other\light.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\other\mircroplanet.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\forms\props\other\ngon.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\other\phys_box.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\other\phys_cylinder.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\other\phys_sphere.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\forms\props\other\prim_box.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\prim_cone.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\prim_cylinder.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\prim_sphere.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\shadertest.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\forms\props\other\test_city.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\test_dynamic_fence.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\other\test_dynamic_road.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\other\test_dynamic_track.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\other\test_facgen.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\forms\props\other\test_lotgen.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\test_roads.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\props\other\test_sst.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\forms\props\other\test_sstc.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\props\other\test_train.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\forms\quests\testquest.json, JSON, 22, 0, 0, 0, 0, 0, 0, 0, 1, 23
+_bin\soltest\data\forms\recipes\clothes\boots.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\cape.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\clothes\clt_armw.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\clt_headphones.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\clt_pants.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\clt_top.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\ktu_armw.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\ktu_legw.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\ktu_neck.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\ktu_torso.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\ktu_visor.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\clothes\scarf.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\uniform_0.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\uniform_2.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\clothes\uniform_3.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_black.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_blue.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_brown.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_cyan.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_darkgray.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_gray.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_green.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_lightblue.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_lightgray.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_lime.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_magenta.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_orange.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_pink.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_purple.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\dyes\dye_red.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_white.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\dyes\dye_yellow.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 16
+_bin\soltest\data\forms\recipes\furniture\eggchair.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\furniture\modern_bed.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\furniture\modern_chair.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\resources\cloth.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\recipes\resources\concrete.json, JSON, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24
+_bin\soltest\data\forms\recipes\resources\emfiber.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\recipes\resources\fur.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\recipes\resources\nanofiber.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\recipes\resources\steel.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\resources\water.json, JSON, 20, 0, 0, 0, 0, 0, 0, 0, 0, 20
+_bin\soltest\data\forms\recipes\resources\water_cheat.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\forms\resources\air.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\ceramic.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\chalk.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\clay.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\cloth.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\coal.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\concrete.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
+_bin\soltest\data\forms\resources\copper.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\dye_black.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_blue.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_brown.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_cyan.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_darkgray.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_gray.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_green.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_lightblue.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_lightgray.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_lime.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_magenta.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_orange.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_pink.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_purple.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_red.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_white.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\dye_yellow.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\electrofiber.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\electronic_components.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\fur.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\glass.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\gold.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\hydrogen.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\iron.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\leather.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\nanofiber.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\oxygen.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\paper.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\plastic.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\resources\rubber.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\salt.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\sand.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\silicon.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\forms\resources\silver.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\steel.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\stone.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\synthskin.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\forms\resources\water.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\resources\water_ice.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\forms\resources\wood.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\forms\scenarios\debug_sol_space.json, JSON, 36, 0, 0, 0, 0, 0, 0, 3, 1, 40
+_bin\soltest\data\forms\spaceships\Libra.json, JSON, 107, 0, 0, 0, 0, 0, 0, 1, 1, 109
+_bin\soltest\data\forms\spaceships\Midnight.json, JSON, 99, 0, 0, 0, 0, 0, 0, 2, 4, 105
+_bin\soltest\data\forms\spaceships\Sevneka.json, JSON, 74, 0, 0, 0, 0, 0, 0, 7, 0, 81
+_bin\soltest\data\forms\species\anthro.feline.json, JSON, 147, 0, 0, 0, 0, 0, 0, 11, 3, 161
+_bin\soltest\data\forms\species\anthro.json, JSON, 164, 0, 0, 0, 0, 0, 0, 1, 3, 168
+_bin\soltest\data\forms\species\anthroid.json, JSON, 53, 0, 0, 0, 0, 0, 0, 0, 0, 53
+_bin\soltest\data\forms\surfacemods\gen_sdm_level.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+_bin\soltest\data\forms\surfacemods\gensokyo.json, JSON, 27, 0, 0, 0, 0, 0, 0, 0, 6, 33
+_bin\soltest\data\forms\surfacemods\round_crater_small.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+_bin\soltest\data\forms\surfacemods\round_level.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+_bin\soltest\data\forms\surfacemods\round_noinstances.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+_bin\soltest\data\forms\surfacemods\round_sdm_lake_test.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+_bin\soltest\data\forms\surfacemods\test_earth.json, JSON, 35, 0, 0, 0, 0, 0, 0, 0, 6, 41
+_bin\soltest\data\lua\.metadata\.plugins\org.eclipse.dltk.ui\dialog_settings.xml, XML, 0, 0, 0, 0, 10, 0, 0, 0, 1, 11
+_bin\soltest\data\lua\.metadata\.plugins\org.eclipse.ui.workbench\dialog_settings.xml, XML, 0, 0, 0, 0, 15, 0, 0, 0, 1, 16
+_bin\soltest\data\lua\.metadata\.plugins\org.eclipse.ui.workbench\workingsets.xml, XML, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4
+_bin\soltest\data\lua\.metadata\version.ini, Ini, 0, 0, 3, 0, 0, 0, 0, 0, 1, 4
+_bin\soltest\data\lua\_dump\ActorControllerOld.lua, Lua, 0, 0, 0, 621, 0, 0, 0, 55, 104, 780
+_bin\soltest\data\lua\_dump\abilities\swap.lua, Lua, 0, 0, 0, 5, 0, 0, 0, 0, 3, 8
+_bin\soltest\data\lua\_dump\angle.lua, Lua, 0, 0, 0, 37, 0, 0, 0, 4, 8, 49
+_bin\soltest\data\lua\_dump\base_actor.lua, Lua, 0, 0, 0, 1451, 0, 0, 0, 230, 211, 1892
+_bin\soltest\data\lua\_dump\entity.lua, Lua, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+_bin\soltest\data\lua\_dump\generators_old\defaultsystem.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\lua\_dump\generators_old\defaultsystem.lua, Lua, 0, 0, 0, 138, 0, 0, 0, 1, 28, 167
+_bin\soltest\data\lua\_dump\generators_old\emptygen.lua, Lua, 0, 0, 0, 4, 0, 0, 0, 0, 6, 10
+_bin\soltest\data\lua\_dump\generators_old\emptysystem.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\lua\_dump\generators_old\galaxygentest.lua, Lua, 0, 0, 0, 76, 0, 0, 0, 34, 20, 130
+_bin\soltest\data\lua\_dump\generators_old\masseffectsystem.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\lua\_dump\generators_old\masseffectsystem.lua, Lua, 0, 0, 0, 68, 0, 0, 0, 2, 14, 84
+_bin\soltest\data\lua\_dump\generators_old\old\defaultsystem.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\lua\_dump\generators_old\old\defaultsystem.lua, Lua, 0, 0, 0, 69, 0, 0, 0, 5, 14, 88
+_bin\soltest\data\lua\_dump\generators_old\saga1.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\lua\_dump\generators_old\saga1.lua, Lua, 0, 0, 0, 30, 0, 0, 0, 18, 9, 57
+_bin\soltest\data\lua\_dump\generators_old\spiralgalaxy.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\lua\_dump\generators_old\spiralgalaxy.lua, Lua, 0, 0, 0, 61, 0, 0, 0, 16, 14, 91
+_bin\soltest\data\lua\_dump\gui\gui_button.lua, Lua, 0, 0, 0, 49, 0, 0, 0, 8, 12, 69
+_bin\soltest\data\lua\_dump\oldfunctions.lua, Lua, 0, 0, 0, 47, 0, 0, 0, 7, 0, 54
+_bin\soltest\data\lua\_dump\render\stages\RenderStage.lua, Lua, 0, 0, 0, 58, 0, 0, 0, 6, 11, 75
+_bin\soltest\data\lua\_dump\render\stages\skyboxStage.lua, Lua, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3
+_bin\soltest\data\lua\_dump\template.lua, Lua, 0, 0, 0, 17, 0, 0, 0, 0, 6, 23
+_bin\soltest\data\lua\env.base\autorun\global.lua, Lua, 0, 0, 0, 200, 0, 0, 0, 12, 21, 233
+_bin\soltest\data\lua\env.base\autorun\units.lua, Lua, 0, 0, 0, 62, 0, 0, 0, 5, 14, 81
+_bin\soltest\data\lua\env.base\includes\hook.lua, Lua, 0, 0, 0, 47, 0, 0, 0, 1, 6, 54
+_bin\soltest\data\lua\env.base\includes\math.lua, Lua, 0, 0, 0, 52, 0, 0, 0, 0, 6, 58
+_bin\soltest\data\lua\env.base\includes\meta.lua, Lua, 0, 0, 0, 14, 0, 0, 0, 0, 2, 16
+_bin\soltest\data\lua\env.base\includes\profiler.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 2, 4, 34
+_bin\soltest\data\lua\env.base\includes\structures\list.lua, Lua, 0, 0, 0, 165, 0, 0, 0, 10, 19, 194
+_bin\soltest\data\lua\env.base\includes\structures\set.lua, Lua, 0, 0, 0, 55, 0, 0, 0, 1, 13, 69
+_bin\soltest\data\lua\env.base\includes\structures\stack.lua, Lua, 0, 0, 0, 39, 0, 0, 0, 0, 8, 47
+_bin\soltest\data\lua\env.base\includes\table.lua, Lua, 0, 0, 0, 153, 0, 0, 0, 9, 13, 175
+_bin\soltest\data\lua\env.base\includes\undo.lua, Lua, 0, 0, 0, 27, 0, 0, 0, 0, 9, 36
+_bin\soltest\data\lua\env.global\autorun\BehaviorGraph.lua, Lua, 0, 0, 0, 328, 0, 0, 0, 9, 19, 356
+_bin\soltest\data\lua\env.global\autorun\client\startup.lua, Lua, 0, 0, 0, 229, 0, 0, 0, 79, 65, 373
+_bin\soltest\data\lua\env.global\autorun\navigation.lua, Lua, 0, 0, 0, 12, 0, 0, 0, 2, 6, 20
+_bin\soltest\data\lua\env.global\autorun\physcam.lua, Lua, 0, 0, 0, 39, 0, 0, 0, 15, 10, 64
+_bin\soltest\data\lua\env.global\autorun\recorder.lua, Lua, 0, 0, 0, 195, 0, 0, 0, 5, 18, 218
+_bin\soltest\data\lua\env.global\autorun\server\startup.lua, Lua, 0, 0, 0, 101, 0, 0, 0, 28, 36, 165
+_bin\soltest\data\lua\env.global\autorun\swtest.lua, Lua, 0, 0, 0, 133, 0, 0, 0, 5, 16, 154
+_bin\soltest\data\lua\env.global\autorun\test_gen.lua, Lua, 0, 0, 0, 84, 0, 0, 0, 1, 19, 104
+_bin\soltest\data\lua\env.global\autorun\test_visualeffect.lua, Lua, 0, 0, 0, 173, 0, 0, 0, 20, 24, 217
+_bin\soltest\data\lua\env.global\autorun\warpdrive.lua, Lua, 0, 0, 0, 101, 0, 0, 0, 3, 18, 122
+_bin\soltest\data\lua\env.global\autorun\world.lua, Lua, 0, 0, 0, 155, 0, 0, 0, 1, 31, 187
+_bin\soltest\data\lua\env.global\editor\character\init.lua, Lua, 0, 0, 0, 507, 0, 0, 0, 62, 41, 610
+_bin\soltest\data\lua\env.global\editor\form\init.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 1, 7, 36
+_bin\soltest\data\lua\env.global\editor\lua\init.lua, Lua, 0, 0, 0, 25, 0, 0, 0, 1, 7, 33
+_bin\soltest\data\lua\env.global\editor\map\init.lua, Lua, 0, 0, 0, 19, 0, 0, 0, 0, 4, 23
+_bin\soltest\data\lua\env.global\editor\node\init.lua, Lua, 0, 0, 0, 33, 0, 0, 0, 2, 7, 42
+_bin\soltest\data\lua\env.global\editor\world\gizmo.lua, Lua, 0, 0, 0, 358, 0, 0, 0, 66, 68, 492
+_bin\soltest\data\lua\env.global\editor\world\init.lua, Lua, 0, 0, 0, 494, 0, 0, 0, 71, 64, 629
+_bin\soltest\data\lua\env.global\gui\old\item.lua, Lua, 0, 0, 0, 244, 0, 0, 0, 60, 24, 328
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\healthbar.lua, Lua, 0, 0, 0, 113, 0, 0, 0, 2, 17, 132
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\infobar.lua, Lua, 0, 0, 0, 161, 0, 0, 0, 2, 18, 181
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_combine.lua, Lua, 0, 0, 0, 89, 0, 0, 0, 7, 3, 99
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_craft.lua, Lua, 0, 0, 0, 113, 0, 0, 0, 1, 4, 118
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_deconstruct.lua, Lua, 0, 0, 0, 105, 0, 0, 0, 0, 2, 107
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_equipment.lua, Lua, 0, 0, 0, 131, 0, 0, 0, 10, 24, 165
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_itemmerger.lua, Lua, 0, 0, 0, 99, 0, 0, 0, 3, 24, 126
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\panel_stats.lua, Lua, 0, 0, 0, 54, 0, 0, 0, 0, 11, 65
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\quickmenu.lua, Lua, 0, 0, 0, 124, 0, 0, 0, 7, 14, 145
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\valuebar.lua, Lua, 0, 0, 0, 68, 0, 0, 0, 3, 18, 89
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\window_character.lua, Lua, 0, 0, 0, 46, 0, 0, 0, 1, 6, 53
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\window_inventory.lua, Lua, 0, 0, 0, 187, 0, 0, 0, 55, 19, 261
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\window_map.lua, Lua, 0, 0, 0, 201, 0, 0, 0, 6, 7, 214
+_bin\soltest\data\lua\env.global\gui\panels\actorpanels\window_npc_dialog.lua, Lua, 0, 0, 0, 85, 0, 0, 0, 3, 8, 96
+_bin\soltest\data\lua\env.global\gui\panels\bar.lua, Lua, 0, 0, 0, 45, 0, 0, 0, 0, 5, 50
+_bin\soltest\data\lua\env.global\gui\panels\button.lua, Lua, 0, 0, 0, 125, 0, 0, 0, 18, 20, 163
+_bin\soltest\data\lua\env.global\gui\panels\checkbox.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 13, 6, 47
+_bin\soltest\data\lua\env.global\gui\panels\color_param.lua, Lua, 0, 0, 0, 62, 0, 0, 0, 1, 3, 66
+_bin\soltest\data\lua\env.global\gui\panels\colorbox.lua, Lua, 0, 0, 0, 36, 0, 0, 0, 1, 11, 48
+_bin\soltest\data\lua\env.global\gui\panels\colorhue.lua, Lua, 0, 0, 0, 15, 0, 0, 0, 0, 2, 17
+_bin\soltest\data\lua\env.global\gui\panels\colorpicker.lua, Lua, 0, 0, 0, 74, 0, 0, 0, 0, 4, 78
+_bin\soltest\data\lua\env.global\gui\panels\context_info.lua, Lua, 0, 0, 0, 56, 0, 0, 0, 1, 11, 68
+_bin\soltest\data\lua\env.global\gui\panels\context_menu.lua, Lua, 0, 0, 0, 78, 0, 0, 0, 4, 9, 91
+_bin\soltest\data\lua\env.global\gui\panels\dev\debug_loaded_assets.lua, Lua, 0, 0, 0, 91, 0, 0, 0, 4, 17, 112
+_bin\soltest\data\lua\env.global\gui\panels\dev\debug_panel_menu.lua, Lua, 0, 0, 0, 180, 0, 0, 0, 1, 11, 192
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_forms.lua, Lua, 0, 0, 0, 444, 0, 0, 0, 6, 32, 482
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_manipulator.lua, Lua, 0, 0, 0, 146, 0, 0, 0, 1, 22, 169
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_panel_assets.lua, Lua, 0, 0, 0, 367, 0, 0, 0, 5, 26, 398
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_panel_character.lua, Lua, 0, 0, 0, 16, 0, 0, 0, 0, 5, 21
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_panel_classtree.lua, Lua, 0, 0, 0, 241, 0, 0, 0, 10, 33, 284
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_panel_node.lua, Lua, 0, 0, 0, 139, 0, 0, 0, 0, 8, 147
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_point.lua, Lua, 0, 0, 0, 80, 0, 0, 0, 2, 9, 91
+_bin\soltest\data\lua\env.global\gui\panels\dev\editor_wire.lua, Lua, 0, 0, 0, 70, 0, 0, 0, 0, 2, 72
+_bin\soltest\data\lua\env.global\gui\panels\dev\node_properties.lua, Lua, 0, 0, 0, 398, 0, 0, 0, 29, 57, 484
+_bin\soltest\data\lua\env.global\gui\panels\dev\panel_console.lua, Lua, 0, 0, 0, 250, 0, 0, 0, 63, 31, 344
+_bin\soltest\data\lua\env.global\gui\panels\dev\window_console.lua, Lua, 0, 0, 0, 118, 0, 0, 0, 28, 11, 157
+_bin\soltest\data\lua\env.global\gui\panels\dev\window_debug.lua, Lua, 0, 0, 0, 42, 0, 0, 0, 3, 6, 51
+_bin\soltest\data\lua\env.global\gui\panels\dev\window_formviewer.lua, Lua, 0, 0, 0, 65, 0, 0, 0, 1, 16, 82
+_bin\soltest\data\lua\env.global\gui\panels\dev\window_nodetree.lua, Lua, 0, 0, 0, 58, 0, 0, 0, 2, 9, 69
+_bin\soltest\data\lua\env.global\gui\panels\dev\window_renderdebug.lua, Lua, 0, 0, 0, 41, 0, 0, 0, 1, 10, 52
+_bin\soltest\data\lua\env.global\gui\panels\dockslot.lua, Lua, 0, 0, 0, 104, 0, 0, 0, 42, 25, 171
+_bin\soltest\data\lua\env.global\gui\panels\dropdownmenu.lua, Lua, 0, 0, 0, 116, 0, 0, 0, 11, 10, 137
+_bin\soltest\data\lua\env.global\gui\panels\enum_selector.lua, Lua, 0, 0, 0, 69, 0, 0, 0, 3, 5, 77
+_bin\soltest\data\lua\env.global\gui\panels\files.lua, Lua, 0, 0, 0, 218, 0, 0, 0, 10, 11, 239
+_bin\soltest\data\lua\env.global\gui\panels\floatcontainer.lua, Lua, 0, 0, 0, 112, 0, 0, 0, 1, 9, 122
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_anchor.lua, Lua, 0, 0, 0, 216, 0, 0, 0, 3, 35, 254
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_behavior_anchor.lua, Lua, 0, 0, 0, 47, 0, 0, 0, 0, 18, 65
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_behavior_node.lua, Lua, 0, 0, 0, 47, 0, 0, 0, 1, 9, 57
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_editor.lua, Lua, 0, 0, 0, 462, 0, 0, 0, 39, 86, 587
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_grid.lua, Lua, 0, 0, 0, 36, 0, 0, 0, 0, 11, 47
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_group.lua, Lua, 0, 0, 0, 129, 0, 0, 0, 24, 30, 183
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node.lua, Lua, 0, 0, 0, 164, 0, 0, 0, 13, 19, 196
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_assign.lua, Lua, 0, 0, 0, 64, 0, 0, 0, 1, 13, 78
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_branch.lua, Lua, 0, 0, 0, 64, 0, 0, 0, 1, 10, 75
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_compound.lua, Lua, 0, 0, 0, 126, 0, 0, 0, 9, 18, 153
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_const.lua, Lua, 0, 0, 0, 85, 0, 0, 0, 5, 11, 101
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_event.lua, Lua, 0, 0, 0, 44, 0, 0, 0, 1, 8, 53
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_for.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 1, 11, 65
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_function.lua, Lua, 0, 0, 0, 111, 0, 0, 0, 9, 14, 134
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_input.lua, Lua, 0, 0, 0, 34, 0, 0, 0, 10, 7, 51
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_join.lua, Lua, 0, 0, 0, 39, 0, 0, 0, 1, 11, 51
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_output.lua, Lua, 0, 0, 0, 48, 0, 0, 0, 10, 12, 70
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_sequence.lua, Lua, 0, 0, 0, 54, 0, 0, 0, 3, 12, 69
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_var.lua, Lua, 0, 0, 0, 39, 0, 0, 0, 1, 7, 47
+_bin\soltest\data\lua\env.global\gui\panels\graph\graph_node_while.lua, Lua, 0, 0, 0, 59, 0, 0, 0, 1, 10, 70
+_bin\soltest\data\lua\env.global\gui\panels\grid.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 1, 3, 32
+_bin\soltest\data\lua\env.global\gui\panels\group.lua, Lua, 0, 0, 0, 67, 0, 0, 0, 1, 4, 72
+_bin\soltest\data\lua\env.global\gui\panels\icongrid.lua, Lua, 0, 0, 0, 93, 0, 0, 0, 26, 25, 144
+_bin\soltest\data\lua\env.global\gui\panels\info_popup.lua, Lua, 0, 0, 0, 64, 0, 0, 0, 1, 6, 71
+_bin\soltest\data\lua\env.global\gui\panels\input_text.lua, Lua, 0, 0, 0, 202, 0, 0, 0, 12, 14, 228
+_bin\soltest\data\lua\env.global\gui\panels\item.lua, Lua, 0, 0, 0, 321, 0, 0, 0, 55, 41, 417
+_bin\soltest\data\lua\env.global\gui\panels\list.lua, Lua, 0, 0, 0, 128, 0, 0, 0, 3, 23, 154
+_bin\soltest\data\lua\env.global\gui\panels\listbox.lua, Lua, 0, 0, 0, 58, 0, 0, 0, 0, 14, 72
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_addons.lua, Lua, 0, 0, 0, 62, 0, 0, 0, 2, 9, 73
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_dialog.lua, Lua, 0, 0, 0, 62, 0, 0, 0, 3, 19, 84
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_editors.lua, Lua, 0, 0, 0, 40, 0, 0, 0, 6, 15, 61
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_loadgame.lua, Lua, 0, 0, 0, 51, 0, 0, 0, 0, 14, 65
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_loadscreen.lua, Lua, 0, 0, 0, 17, 0, 0, 0, 1, 5, 23
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_main.lua, Lua, 0, 0, 0, 156, 0, 0, 0, 2, 14, 172
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_multiplayer.lua, Lua, 0, 0, 0, 62, 0, 0, 0, 0, 12, 74
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_savegame.lua, Lua, 0, 0, 0, 48, 0, 0, 0, 4, 12, 64
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_settings.lua, Lua, 0, 0, 0, 138, 0, 0, 0, 0, 21, 159
+_bin\soltest\data\lua\env.global\gui\panels\menu\menu_singleplayer.lua, Lua, 0, 0, 0, 107, 0, 0, 0, 2, 12, 121
+_bin\soltest\data\lua\env.global\gui\panels\moveable_panel.lua, Lua, 0, 0, 0, 5, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\lua\env.global\gui\panels\scrollbar.lua, Lua, 0, 0, 0, 152, 0, 0, 0, 2, 25, 179
+_bin\soltest\data\lua\env.global\gui\panels\selector.lua, Lua, 0, 0, 0, 86, 0, 0, 0, 1, 3, 90
+_bin\soltest\data\lua\env.global\gui\panels\slider.lua, Lua, 0, 0, 0, 23, 0, 0, 0, 0, 2, 25
+_bin\soltest\data\lua\env.global\gui\panels\slot.lua, Lua, 0, 0, 0, 76, 0, 0, 0, 25, 9, 110
+_bin\soltest\data\lua\env.global\gui\panels\tabmenu.lua, Lua, 0, 0, 0, 51, 0, 0, 0, 1, 11, 63
+_bin\soltest\data\lua\env.global\gui\panels\testdragable.lua, Lua, 0, 0, 0, 314, 0, 0, 0, 19, 47, 380
+_bin\soltest\data\lua\env.global\gui\panels\thumbnail.lua, Lua, 0, 0, 0, 57, 0, 0, 0, 5, 10, 72
+_bin\soltest\data\lua\env.global\gui\panels\tree.lua, Lua, 0, 0, 0, 189, 0, 0, 0, 19, 25, 233
+_bin\soltest\data\lua\env.global\gui\panels\viewport.lua, Lua, 0, 0, 0, 68, 0, 0, 0, 0, 8, 76
+_bin\soltest\data\lua\env.global\gui\panels\window.lua, Lua, 0, 0, 0, 142, 0, 0, 0, 11, 33, 186
+_bin\soltest\data\lua\env.global\gui\panels\window_chat.lua, Lua, 0, 0, 0, 156, 0, 0, 0, 11, 14, 181
+_bin\soltest\data\lua\env.global\gui\panels\window_save.lua, Lua, 0, 0, 0, 42, 0, 0, 0, 1, 12, 55
+_bin\soltest\data\lua\env.global\gui\panels\window_serverstatus.lua, Lua, 0, 0, 0, 54, 0, 0, 0, 1, 5, 60
+_bin\soltest\data\lua\env.global\gui\panels\window_space_info.lua, Lua, 0, 0, 0, 146, 0, 0, 0, 55, 26, 227
+_bin\soltest\data\lua\env.global\gui\styles\default.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 0, 6, 34
+_bin\soltest\data\lua\env.global\includes\class.lua, Lua, 0, 0, 0, 121, 0, 0, 0, 6, 10, 137
+_bin\soltest\data\lua\env.global\includes\collidable.lua, Lua, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+_bin\soltest\data\lua\env.global\includes\coordinate.lua, Lua, 0, 0, 0, 32, 0, 0, 0, 0, 5, 37
+_bin\soltest\data\lua\env.global\includes\daycycle.lua, Lua, 0, 0, 0, 63, 0, 0, 0, 2, 3, 68
+_bin\soltest\data\lua\env.global\includes\enviroment.lua, Lua, 0, 0, 0, 112, 0, 0, 0, 2, 17, 131
+_bin\soltest\data\lua\env.global\includes\extensions\entity.lua, Lua, 0, 0, 0, 131, 0, 0, 0, 11, 25, 167
+_bin\soltest\data\lua\env.global\includes\extensions\forms.lua, Lua, 0, 0, 0, 138, 0, 0, 0, 13, 11, 162
+_bin\soltest\data\lua\env.global\includes\extensions\gui.lua, Lua, 0, 0, 0, 138, 0, 0, 0, 15, 24, 177
+_bin\soltest\data\lua\env.global\includes\extensions\json.lua, Lua, 0, 0, 0, 30, 0, 0, 0, 4, 5, 39
+_bin\soltest\data\lua\env.global\includes\extensions\math.lua, Lua, 0, 0, 0, 32, 0, 0, 0, 0, 3, 35
+_bin\soltest\data\lua\env.global\includes\extensions\misc.lua, Lua, 0, 0, 0, 37, 0, 0, 0, 5, 7, 49
+_bin\soltest\data\lua\env.global\includes\extensions\panel.lua, Lua, 0, 0, 0, 425, 0, 0, 0, 15, 99, 539
+_bin\soltest\data\lua\env.global\includes\extensions\string.lua, Lua, 0, 0, 0, 32, 0, 0, 0, 6, 8, 46
+_bin\soltest\data\lua\env.global\includes\extensions\table.lua, Lua, 0, 0, 0, 69, 0, 0, 0, 4, 10, 83
+_bin\soltest\data\lua\env.global\includes\extensions\vector.lua, Lua, 0, 0, 0, 8, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\lua\env.global\includes\randomtest.lua, Lua, 0, 0, 0, 18, 0, 0, 0, 2, 8, 28
+_bin\soltest\data\lua\env.global\includes\scriptreload.lua, Lua, 0, 0, 0, 16, 0, 0, 0, 1, 2, 19
+_bin\soltest\data\lua\env.global\includes\stellarclass.lua, Lua, 0, 0, 0, 44, 0, 0, 0, 4, 10, 58
+_bin\soltest\data\lua\env.global\includes\systems\EntTask.lua, Lua, 0, 0, 0, 186, 0, 0, 0, 12, 22, 220
+_bin\soltest\data\lua\env.global\includes\systems\ability.lua, Lua, 0, 0, 0, 75, 0, 0, 0, 22, 10, 107
+_bin\soltest\data\lua\env.global\includes\systems\actor_panels.lua, Lua, 0, 0, 0, 91, 0, 0, 0, 0, 10, 101
+_bin\soltest\data\lua\env.global\includes\systems\ai\action.lua, Lua, 0, 0, 0, 4, 0, 0, 0, 0, 3, 7
+_bin\soltest\data\lua\env.global\includes\systems\ai\ai.lua, Lua, 0, 0, 0, 82, 0, 0, 0, 0, 9, 91
+_bin\soltest\data\lua\env.global\includes\systems\ai\mind.lua, Lua, 0, 0, 0, 23, 0, 0, 0, 1, 1, 25
+_bin\soltest\data\lua\env.global\includes\systems\component.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 1, 11, 40
+_bin\soltest\data\lua\env.global\includes\systems\controller.lua, Lua, 0, 0, 0, 71, 0, 0, 0, 37, 27, 135
+_bin\soltest\data\lua\env.global\includes\systems\crafting.lua, Lua, 0, 0, 0, 218, 0, 0, 0, 16, 19, 253
+_bin\soltest\data\lua\env.global\includes\systems\effect.lua, Lua, 0, 0, 0, 79, 0, 0, 0, 12, 16, 107
+_bin\soltest\data\lua\env.global\includes\systems\formlibrary.lua, Lua, 0, 0, 0, 6, 0, 0, 0, 38, 6, 50
+_bin\soltest\data\lua\env.global\includes\systems\generator.lua, Lua, 0, 0, 0, 22, 0, 0, 0, 4, 6, 32
+_bin\soltest\data\lua\env.global\includes\systems\interact.lua, Lua, 0, 0, 0, 67, 0, 0, 0, 20, 9, 96
+_bin\soltest\data\lua\env.global\includes\systems\inventory.lua, Lua, 0, 0, 0, 81, 0, 0, 0, 1, 14, 96
+_bin\soltest\data\lua\env.global\includes\systems\item.lua, Lua, 0, 0, 0, 1, 0, 0, 0, 0, 3, 4
+_bin\soltest\data\lua\env.global\includes\systems\levelgenerator.lua, Lua, 0, 0, 0, 38, 0, 0, 0, 1, 11, 50
+_bin\soltest\data\lua\env.global\includes\systems\player.lua, Lua, 0, 0, 0, 148, 0, 0, 0, 6, 25, 179
+_bin\soltest\data\lua\env.global\includes\systems\settings.lua, Lua, 0, 0, 0, 127, 0, 0, 0, 1, 12, 140
+_bin\soltest\data\lua\env.global\includes\systems\stage_02\editor.lua, Lua, 0, 0, 0, 9, 0, 0, 0, 3, 5, 17
+_bin\soltest\data\lua\env.global\includes\systems\stage_02\furmanager.lua, Lua, 0, 0, 0, 103, 0, 0, 0, 6, 4, 113
+_bin\soltest\data\lua\env.global\includes\systems\textureRenderer.lua, Lua, 0, 0, 0, 23, 0, 0, 0, 0, 3, 26
+_bin\soltest\data\lua\env.global\includes\systems\undo.lua, Lua, 0, 0, 0, 55, 0, 0, 0, 2, 4, 61
+_bin\soltest\data\lua\env.global\includes\systems\visualEffect.lua, Lua, 0, 0, 0, 79, 0, 0, 0, 0, 21, 100
+_bin\soltest\data\lua\env.global\includes\testlp.lua, Lua, 0, 0, 0, 262, 0, 0, 0, 0, 1, 263
+_bin\soltest\data\lua\env.global\includes\tools\dynmaterial.lua, Lua, 0, 0, 0, 180, 0, 0, 0, 4, 10, 194
+_bin\soltest\data\lua\env.global\includes\tools\math.lua, Lua, 0, 0, 0, 29, 0, 0, 0, 1, 8, 38
+_bin\soltest\data\lua\env.global\includes\tools\spatiallinkhelper.lua, Lua, 0, 0, 0, 5, 0, 0, 0, 0, 5, 10
+_bin\soltest\data\lua\env.global\includes\tools\trace.lua, Lua, 0, 0, 0, 99, 0, 0, 0, 12, 11, 122
+_bin\soltest\data\lua\env.global\includes\uid.lua, Lua, 0, 0, 0, 8, 0, 0, 0, 0, 3, 11
+_bin\soltest\data\lua\env.global\includes\worldsystems\airlock.lua, Lua, 0, 0, 0, 35, 0, 0, 0, 0, 2, 37
+_bin\soltest\data\lua\env.global\includes\worldsystems\traintrack.lua, Lua, 0, 0, 0, 149, 0, 0, 0, 34, 27, 210
+_bin\soltest\data\lua\env.global\world\aitypes\test.lua, Lua, 0, 0, 0, 587, 0, 0, 0, 99, 66, 752
+_bin\soltest\data\lua\env.global\world\aitypes\test_ru.lua, Lua, 0, 0, 0, 552, 0, 0, 0, 97, 60, 709
+_bin\soltest\data\lua\env.global\world\components\antr_systems.lua, Lua, 0, 0, 0, 149, 0, 0, 0, 3, 9, 161
+_bin\soltest\data\lua\env.global\world\components\constrot.lua, Lua, 0, 0, 0, 5, 0, 0, 0, 0, 3, 8
+_bin\soltest\data\lua\env.global\world\components\equipment.lua, Lua, 0, 0, 0, 448, 0, 0, 0, 18, 38, 504
+_bin\soltest\data\lua\env.global\world\components\health.lua, Lua, 0, 0, 0, 116, 0, 0, 0, 0, 19, 135
+_bin\soltest\data\lua\env.global\world\components\light.lua, Lua, 0, 0, 0, 7, 0, 0, 0, 0, 3, 10
+_bin\soltest\data\lua\env.global\world\components\model.lua, Lua, 0, 0, 0, 17, 0, 0, 0, 0, 2, 19
+_bin\soltest\data\lua\env.global\world\components\orbit.lua, Lua, 0, 0, 0, 41, 0, 0, 0, 0, 3, 44
+_bin\soltest\data\lua\env.global\world\components\physobj.lua, Lua, 0, 0, 0, 9, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\lua\env.global\world\components\physspace.lua, Lua, 0, 0, 0, 9, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\lua\env.global\world\components\storage.lua, Lua, 0, 0, 0, 421, 0, 0, 0, 13, 33, 467
+_bin\soltest\data\lua\env.global\world\components\vendor.lua, Lua, 0, 0, 0, 129, 0, 0, 0, 2, 18, 149
+_bin\soltest\data\lua\env.global\world\components\wireio.lua, Lua, 0, 0, 0, 76, 0, 0, 0, 26, 8, 110
+_bin\soltest\data\lua\env.global\world\controllers\Actor.lua, Lua, 0, 0, 0, 994, 0, 0, 0, 229, 179, 1402
+_bin\soltest\data\lua\env.global\world\controllers\ActorWait.lua, Lua, 0, 0, 0, 24, 0, 0, 0, 0, 6, 30
+_bin\soltest\data\lua\env.global\world\controllers\FreeCamera.lua, Lua, 0, 0, 0, 245, 0, 0, 0, 18, 45, 308
+_bin\soltest\data\lua\env.global\world\controllers\OrbitingCamera.lua, Lua, 0, 0, 0, 65, 0, 0, 0, 0, 20, 85
+_bin\soltest\data\lua\env.global\world\controllers\PlanetView.lua, Lua, 0, 0, 0, 85, 0, 0, 0, 0, 21, 106
+_bin\soltest\data\lua\env.global\world\controllers\StarMap.lua, Lua, 0, 0, 0, 127, 0, 0, 0, 103, 22, 252
+_bin\soltest\data\lua\env.global\world\controllers\SystemView.lua, Lua, 0, 0, 0, 202, 0, 0, 0, 0, 38, 240
+_bin\soltest\data\lua\env.global\world\effects\mindlink.lua, Lua, 0, 0, 0, 74, 0, 0, 0, 3, 8, 85
+_bin\soltest\data\lua\env.global\world\effects\physinteraction.lua, Lua, 0, 0, 0, 18, 0, 0, 0, 0, 9, 27
+_bin\soltest\data\lua\env.global\world\effects\shipremotecontrol.lua, Lua, 0, 0, 0, 10, 0, 0, 0, 0, 2, 12
+_bin\soltest\data\lua\env.global\world\effects\swap.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 2, 8, 63
+_bin\soltest\data\lua\env.global\world\effects\transform.lua, Lua, 0, 0, 0, 15, 0, 0, 0, 0, 5, 20
+_bin\soltest\data\lua\env.global\world\entities\ambient_sound.lua, Lua, 0, 0, 0, 61, 0, 0, 0, 9, 10, 80
+_bin\soltest\data\lua\env.global\world\entities\base_actor.lua, Lua, 0, 0, 0, 1701, 0, 0, 0, 283, 223, 2207
+_bin\soltest\data\lua\env.global\world\entities\base_tool.lua, Lua, 0, 0, 0, 244, 0, 0, 0, 33, 47, 324
+_bin\soltest\data\lua\env.global\world\entities\base_vehicle.lua, Lua, 0, 0, 0, 75, 0, 0, 0, 10, 22, 107
+_bin\soltest\data\lua\env.global\world\entities\beacon.lua, Lua, 0, 0, 0, 59, 0, 0, 0, 5, 20, 84
+_bin\soltest\data\lua\env.global\world\entities\body_part.lua, Lua, 0, 0, 0, 112, 0, 0, 0, 3, 8, 123
+_bin\soltest\data\lua\env.global\world\entities\bspmap.lua, Lua, 0, 0, 0, 183, 0, 0, 0, 33, 24, 240
+_bin\soltest\data\lua\env.global\world\entities\dyn_camera.lua, Lua, 0, 0, 0, 32, 0, 0, 0, 0, 8, 40
+_bin\soltest\data\lua\env.global\world\entities\dyn_door.lua, Lua, 0, 0, 0, 158, 0, 0, 0, 9, 27, 194
+_bin\soltest\data\lua\env.global\world\entities\dyn_flashlight.lua, Lua, 0, 0, 0, 37, 0, 0, 0, 0, 11, 48
+_bin\soltest\data\lua\env.global\world\entities\dyn_lift.lua, Lua, 0, 0, 0, 501, 0, 0, 0, 58, 73, 632
+_bin\soltest\data\lua\env.global\world\entities\dyn_road.lua, Lua, 0, 0, 0, 188, 0, 0, 0, 16, 31, 235
+_bin\soltest\data\lua\env.global\world\entities\dyn_trigger.lua, Lua, 0, 0, 0, 22, 0, 0, 0, 0, 2, 24
+_bin\soltest\data\lua\env.global\world\entities\editor_handle.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 0, 6, 59
+_bin\soltest\data\lua\env.global\world\entities\env_cubemap.lua, Lua, 0, 0, 0, 34, 0, 0, 0, 3, 8, 45
+_bin\soltest\data\lua\env.global\world\entities\env_emitter.lua, Lua, 0, 0, 0, 129, 0, 0, 0, 1, 16, 146
+_bin\soltest\data\lua\env.global\world\entities\env_explosion.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 43, 16, 112
+_bin\soltest\data\lua\env.global\world\entities\env_skybox.lua, Lua, 0, 0, 0, 21, 0, 0, 0, 1, 4, 26
+_bin\soltest\data\lua\env.global\world\entities\env_skydome.lua, Lua, 0, 0, 0, 14, 0, 0, 0, 0, 4, 18
+_bin\soltest\data\lua\env.global\world\entities\flashlight.lua, Lua, 0, 0, 0, 51, 0, 0, 0, 3, 9, 63
+_bin\soltest\data\lua\env.global\world\entities\galaxy.lua, Lua, 0, 0, 0, 80, 0, 0, 0, 10, 10, 100
+_bin\soltest\data\lua\env.global\world\entities\galaxy_map.lua, Lua, 0, 0, 0, 778, 0, 0, 0, 143, 134, 1055
+_bin\soltest\data\lua\env.global\world\entities\gizmo_part.lua, Lua, 0, 0, 0, 97, 0, 0, 0, 33, 16, 146
+_bin\soltest\data\lua\env.global\world\entities\interior_worldspace.lua, Lua, 0, 0, 0, 135, 0, 0, 0, 21, 38, 194
+_bin\soltest\data\lua\env.global\world\entities\item_apparel.lua, Lua, 0, 0, 0, 146, 0, 0, 0, 40, 22, 208
+_bin\soltest\data\lua\env.global\world\entities\mass_center.lua, Lua, 0, 0, 0, 6, 0, 0, 0, 2, 2, 10
+_bin\soltest\data\lua\env.global\world\entities\mircroplanet.lua, Lua, 0, 0, 0, 50, 0, 0, 0, 4, 8, 62
+_bin\soltest\data\lua\env.global\world\entities\nebula.lua, Lua, 0, 0, 0, 4, 0, 0, 0, 4, 3, 11
+_bin\soltest\data\lua\env.global\world\entities\omnilight.lua, Lua, 0, 0, 0, 49, 0, 0, 0, 41, 12, 102
+_bin\soltest\data\lua\env.global\world\entities\planet.lua, Lua, 0, 0, 0, 106, 0, 0, 0, 21, 25, 152
+_bin\soltest\data\lua\env.global\world\entities\planet_surface.lua, Lua, 0, 0, 0, 142, 0, 0, 0, 36, 23, 201
+_bin\soltest\data\lua\env.global\world\entities\planet_surface_mod.lua, Lua, 0, 0, 0, 57, 0, 0, 0, 0, 15, 72
+_bin\soltest\data\lua\env.global\world\entities\planet_surface_node.lua, Lua, 0, 0, 0, 78, 0, 0, 0, 21, 13, 112
+_bin\soltest\data\lua\env.global\world\entities\portal.lua, Lua, 0, 0, 0, 79, 0, 0, 0, 9, 23, 111
+_bin\soltest\data\lua\env.global\world\entities\procedural_station.lua, Lua, 0, 0, 0, 195, 0, 0, 0, 33, 17, 245
+_bin\soltest\data\lua\env.global\world\entities\projectile.lua, Lua, 0, 0, 0, 98, 0, 0, 0, 9, 19, 126
+_bin\soltest\data\lua\env.global\world\entities\prop_dynamic.lua, Lua, 0, 0, 0, 35, 0, 0, 0, 0, 7, 42
+_bin\soltest\data\lua\env.global\world\entities\prop_physics.lua, Lua, 0, 0, 0, 54, 0, 0, 0, 15, 14, 83
+_bin\soltest\data\lua\env.global\world\entities\prop_static.lua, Lua, 0, 0, 0, 81, 0, 0, 0, 6, 10, 97
+_bin\soltest\data\lua\env.global\world\entities\prop_variable.lua, Lua, 0, 0, 0, 445, 0, 0, 0, 38, 29, 512
+_bin\soltest\data\lua\env.global\world\entities\ring.lua, Lua, 0, 0, 0, 32, 0, 0, 0, 10, 12, 54
+_bin\soltest\data\lua\env.global\world\entities\rt_camera.lua, Lua, 0, 0, 0, 27, 0, 0, 0, 0, 6, 33
+_bin\soltest\data\lua\env.global\world\entities\rt_interface.lua, Lua, 0, 0, 0, 24, 0, 0, 0, 0, 6, 30
+_bin\soltest\data\lua\env.global\world\entities\rt_layer.lua, Lua, 0, 0, 0, 80, 0, 0, 0, 8, 23, 111
+_bin\soltest\data\lua\env.global\world\entities\rt_mirror.lua, Lua, 0, 0, 0, 131, 0, 0, 0, 30, 26, 187
+_bin\soltest\data\lua\env.global\world\entities\spacecluster.lua, Lua, 0, 0, 0, 47, 0, 0, 0, 4, 14, 65
+_bin\soltest\data\lua\env.global\world\entities\spaceship.lua, Lua, 0, 0, 0, 1070, 0, 0, 0, 168, 175, 1413
+_bin\soltest\data\lua\env.global\world\entities\spaceship_chair.lua, Lua, 0, 0, 0, 99, 0, 0, 0, 12, 25, 136
+_bin\soltest\data\lua\env.global\world\entities\spaceship_teleporter.lua, Lua, 0, 0, 0, 131, 0, 0, 0, 6, 19, 156
+_bin\soltest\data\lua\env.global\world\entities\spacestation.lua, Lua, 0, 0, 0, 78, 0, 0, 0, 7, 41, 126
+_bin\soltest\data\lua\env.global\world\entities\spawnpoint.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 1, 4, 33
+_bin\soltest\data\lua\env.global\world\entities\star.lua, Lua, 0, 0, 0, 51, 0, 0, 0, 9, 11, 71
+_bin\soltest\data\lua\env.global\world\entities\star_surface.lua, Lua, 0, 0, 0, 43, 0, 0, 0, 29, 10, 82
+_bin\soltest\data\lua\env.global\world\entities\starsystem.lua, Lua, 0, 0, 0, 118, 0, 0, 0, 43, 18, 179
+_bin\soltest\data\lua\env.global\world\entities\test_dimtonnel.lua, Lua, 0, 0, 0, 99, 0, 0, 0, 5, 20, 124
+_bin\soltest\data\lua\env.global\world\entities\test_dynamic_construct.lua, Lua, 0, 0, 0, 96, 0, 0, 0, 41, 27, 164
+_bin\soltest\data\lua\env.global\world\entities\test_procmesh.lua, Lua, 0, 0, 0, 29, 0, 0, 0, 0, 7, 36
+_bin\soltest\data\lua\env.global\world\entities\test_psys.lua, Lua, 0, 0, 0, 45, 0, 0, 0, 7, 9, 61
+_bin\soltest\data\lua\env.global\world\entities\test_shadowmap.lua, Lua, 0, 0, 0, 76, 0, 0, 0, 4, 11, 91
+_bin\soltest\data\lua\env.global\world\entities\test_shadowmap2.lua, Lua, 0, 0, 0, 151, 0, 0, 0, 12, 86, 249
+_bin\soltest\data\lua\env.global\world\entities\testenttype.lua, Lua, 0, 0, 0, 31, 0, 0, 0, 2, 9, 42
+_bin\soltest\data\lua\env.global\world\entities\timed_ent_test.lua, Lua, 0, 0, 0, 2, 0, 0, 0, 0, 2, 4
+_bin\soltest\data\lua\env.global\world\entities\train_carriage.lua, Lua, 0, 0, 0, 174, 0, 0, 0, 41, 21, 236
+_bin\soltest\data\lua\env.global\world\entities\use_button.lua, Lua, 0, 0, 0, 72, 0, 0, 0, 1, 14, 87
+_bin\soltest\data\lua\env.global\world\entities\use_chair.lua, Lua, 0, 0, 0, 99, 0, 0, 0, 0, 20, 119
+_bin\soltest\data\lua\env.global\world\entities\use_container.lua, Lua, 0, 0, 0, 95, 0, 0, 0, 24, 19, 138
+_bin\soltest\data\lua\env.global\world\entities\use_door_teleport.lua, Lua, 0, 0, 0, 176, 0, 0, 0, 36, 30, 242
+_bin\soltest\data\lua\env.global\world\entities\use_vendor.lua, Lua, 0, 0, 0, 141, 0, 0, 0, 4, 13, 158
+_bin\soltest\data\lua\env.global\world\entities\util_textureRenderer.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 10, 7, 70
+_bin\soltest\data\lua\env.global\world\entities\util_thumbnailRenderer.lua, Lua, 0, 0, 0, 140, 0, 0, 0, 7, 24, 171
+_bin\soltest\data\lua\env.global\world\entities\warp_portal.lua, Lua, 0, 0, 0, 27, 0, 0, 0, 2, 8, 37
+_bin\soltest\data\lua\env.global\world\entities\web_screen.lua, Lua, 0, 0, 0, 59, 0, 0, 0, 6, 14, 79
+_bin\soltest\data\lua\env.global\world\entities\world_editor_template.lua, Lua, 0, 0, 0, 60, 0, 0, 0, 8, 16, 84
+_bin\soltest\data\lua\env.global\world\entities\world_solverse.lua, Lua, 0, 0, 0, 240, 0, 0, 0, 45, 71, 356
+_bin\soltest\data\lua\env.global\world\entities\world_solverse_inroot.lua, Lua, 0, 0, 0, 46, 0, 0, 0, 0, 18, 64
+_bin\soltest\data\lua\env.global\world\entities\world_solverse_inspace.lua, Lua, 0, 0, 0, 46, 0, 0, 0, 16, 19, 81
+_bin\soltest\data\lua\env.global\world\entities\world_source.lua, Lua, 0, 0, 0, 92, 0, 0, 0, 12, 32, 136
+_bin\soltest\data\lua\env.global\world\entities\world_spacelab.lua, Lua, 0, 0, 0, 141, 0, 0, 0, 22, 56, 219
+_bin\soltest\data\lua\env.global\world\entities\world_testcity.lua, Lua, 0, 0, 0, 87, 0, 0, 0, 7, 20, 114
+_bin\soltest\data\lua\env.global\world\entities\world_testmap.lua, Lua, 0, 0, 0, 375, 0, 0, 0, 182, 105, 662
+_bin\soltest\data\lua\env.global\world\entities\world_void.lua, Lua, 0, 0, 0, 19, 0, 0, 0, 2, 5, 26
+_bin\soltest\data\lua\env.global\world\generators\com.system.default.lua, Lua, 0, 0, 0, 365, 0, 0, 0, 87, 109, 561
+_bin\soltest\data\lua\env.global\world\generators\com.system.empty.lua, Lua, 0, 0, 0, 1, 0, 0, 0, 0, 2, 3
+_bin\soltest\data\lua\env.global\world\generators\com.system.galaxycenter.lua, Lua, 0, 0, 0, 21, 0, 0, 0, 0, 5, 26
+_bin\soltest\data\lua\env.global\world\tasks\attack.lua, Lua, 0, 0, 0, 31, 0, 0, 0, 0, 4, 35
+_bin\soltest\data\lua\env.global\world\tasks\follow.lua, Lua, 0, 0, 0, 28, 0, 0, 0, 3, 7, 38
+_bin\soltest\data\lua\env.global\world\tasks\moveto.lua, Lua, 0, 0, 0, 135, 0, 0, 0, 5, 22, 162
+_bin\soltest\data\lua\env.global\world\tasks\rotateto.lua, Lua, 0, 0, 0, 26, 0, 0, 0, 0, 5, 31
+_bin\soltest\data\lua\env.global\world\tasks\ship_centering.lua, Lua, 0, 0, 0, 18, 0, 0, 0, 0, 3, 21
+_bin\soltest\data\lua\env.global\world\tasks\ship_warp.lua, Lua, 0, 0, 0, 73, 0, 0, 0, 13, 12, 98
+_bin\soltest\data\lua\env.global\world\tasks\use.lua, Lua, 0, 0, 0, 17, 0, 0, 0, 0, 3, 20
+_bin\soltest\data\lua\env.global\world\tasks\wait.lua, Lua, 0, 0, 0, 17, 0, 0, 0, 0, 3, 20
+_bin\soltest\data\lua\env.global\world\tasks\wander.lua, Lua, 0, 0, 0, 265, 0, 0, 0, 47, 20, 332
+_bin\soltest\data\lua\env.global\world\tools\allhooks.lua, Lua, 0, 0, 0, 8, 0, 0, 0, 0, 5, 13
+_bin\soltest\data\lua\env.global\world\tools\flare.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 5, 20, 78
+_bin\soltest\data\lua\env.global\world\tools\lighteningtool.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 5, 20, 78
+_bin\soltest\data\lua\env.global\world\tools\lightgun.lua, Lua, 0, 0, 0, 50, 0, 0, 0, 1, 17, 68
+_bin\soltest\data\lua\env.global\world\tools\tool_gravitygun.lua, Lua, 0, 0, 0, 7, 0, 0, 0, 0, 7, 14
+_bin\soltest\data\lua\env.global\world\tools\tool_physgun.lua, Lua, 0, 0, 0, 140, 0, 0, 0, 20, 24, 184
+_bin\soltest\data\lua\env.global\world\tools\tool_propspawner.lua, Lua, 0, 0, 0, 53, 0, 0, 0, 9, 9, 71
+_bin\soltest\data\lua\env.global\world\tools\tool_weld.lua, Lua, 0, 0, 0, 200, 0, 0, 0, 15, 21, 236
+_bin\soltest\data\lua\env.global\world\tools\weapon_bow.lua, Lua, 0, 0, 0, 68, 0, 0, 0, 13, 8, 89
+_bin\soltest\data\lua\env.global\world\tools\weapon_energy.lua, Lua, 0, 0, 0, 117, 0, 0, 0, 5, 25, 147
+_bin\soltest\data\lua\env.global\world\tools\weapon_staff.lua, Lua, 0, 0, 0, 30, 0, 0, 0, 1, 7, 38
+_bin\soltest\data\models\active\tex\chest.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\models\apparel\tex2\cloth_base.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 3, 14
+_bin\soltest\data\models\apparel\tex2\shoes.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 2, 18
+_bin\soltest\data\models\apparel\tex2\skirt.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\apparel\tex2\th.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 1, 18
+_bin\soltest\data\models\apparel\tex2\top.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 1, 17
+_bin\soltest\data\models\apparel\tex3\AM_MAT.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 4, 17
+_bin\soltest\data\models\apparel\tex3\AM_MAT2.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 4, 17
+_bin\soltest\data\models\apparel\tex3\am_full.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 4, 16
+_bin\soltest\data\models\apparel\tex\ContVisor.json, JSON, 16, 0, 0, 0, 0, 0, 0, 1, 2, 19
+_bin\soltest\data\models\apparel\tex\arm.json, JSON, 13, 0, 0, 0, 0, 0, 0, 9, 3, 25
+_bin\soltest\data\models\apparel\tex\body.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\apparel\tex\boots.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 2, 13
+_bin\soltest\data\models\apparel\tex\cape_a.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\apparel\tex\cape_b.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\models\apparel\tex\cloth_base.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 3, 12
+_bin\soltest\data\models\apparel\tex\coat.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 2, 18
+_bin\soltest\data\models\apparel\tex\cord.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\apparel\tex\hat.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 2, 17
+_bin\soltest\data\models\apparel\tex\leg.json, JSON, 20, 0, 0, 0, 0, 0, 0, 3, 4, 27
+_bin\soltest\data\models\apparel\tex\neck.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 2, 19
+_bin\soltest\data\models\apparel\tex\scarfred.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\apparel\tex\skt2.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\apparel\tex\tab.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 2, 18
+_bin\soltest\data\models\apparel\tex\tur.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 4, 22
+_bin\soltest\data\models\apparel\tex\ud.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\apparel\tex\uniform_a.json, JSON, 7, 0, 0, 0, 0, 0, 0, 1, 2, 10
+_bin\soltest\data\models\apparel\tex\uniform_b.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\models\apparel\tex\uniform_c.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\models\apparel\tex\unr.json, JSON, 22, 0, 0, 0, 0, 0, 0, 2, 5, 29
+_bin\soltest\data\models\apparel\tex\unr_red.json, JSON, 21, 0, 0, 0, 0, 0, 0, 2, 3, 26
+_bin\soltest\data\models\apparel\tex_mhm\arm2.json, JSON, 15, 0, 0, 0, 0, 0, 0, 9, 3, 27
+_bin\soltest\data\models\apparel\tex_mhm\belt.json, JSON, 13, 0, 0, 0, 0, 0, 0, 11, 3, 27
+_bin\soltest\data\models\apparel\tex_mhm\cloth_base.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 3, 12
+_bin\soltest\data\models\apparel\tex_mhm\headphones.json, JSON, 17, 0, 0, 0, 0, 0, 0, 8, 3, 28
+_bin\soltest\data\models\apparel\tex_mhm\mhdc.json, JSON, 17, 0, 0, 0, 0, 0, 0, 7, 3, 27
+_bin\soltest\data\models\apparel\tex_mhm\pants.json, JSON, 17, 0, 0, 0, 0, 0, 0, 7, 3, 27
+_bin\soltest\data\models\apparel\texr\gloves.json, JSON, 16, 0, 0, 0, 0, 0, 0, 1, 5, 22
+_bin\soltest\data\models\apparel\texr\rhands.json, JSON, 10, 0, 0, 0, 0, 0, 0, 1, 4, 15
+_bin\soltest\data\models\artificial\buildings\citadel\tex\grayblue.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
+_bin\soltest\data\models\artificial\buildings\medi\sample.dnmd, JSON with Comments, 0, 62, 0, 0, 0, 0, 0, 3, 4, 69
+_bin\soltest\data\models\artificial\buildings\medi\sample_wall.dnmd, JSON with Comments, 0, 53, 0, 0, 0, 0, 0, 3, 3, 59
+_bin\soltest\data\models\artificial\buildings\skyscraper\tex\grayblue.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\models\artificial\city\procedural_city_test.dnmd, JSON with Comments, 0, 77, 0, 0, 0, 0, 0, 3, 4, 84
+_bin\soltest\data\models\artificial\doors\double_base.dnmd, JSON with Comments, 0, 109, 0, 0, 0, 0, 0, 6, 7, 122
+_bin\soltest\data\models\artificial\doors\double_sliding_base.dnmd, JSON with Comments, 0, 98, 0, 0, 0, 0, 0, 1, 7, 106
+_bin\soltest\data\models\artificial\doors\entrance_double.dnmd, JSON with Comments, 0, 53, 0, 0, 0, 0, 0, 1, 5, 59
+_bin\soltest\data\models\artificial\doors\geometric.dnmd, JSON with Comments, 0, 104, 0, 0, 0, 0, 0, 1, 13, 118
+_bin\soltest\data\models\artificial\doors\knob.dnmd, JSON with Comments, 0, 37, 0, 0, 0, 0, 0, 0, 2, 39
+_bin\soltest\data\models\artificial\doors\metro_double.dnmd, JSON with Comments, 0, 48, 0, 0, 0, 0, 0, 1, 4, 53
+_bin\soltest\data\models\artificial\doors\single_base.dnmd, JSON with Comments, 0, 104, 0, 0, 0, 0, 0, 8, 4, 116
+_bin\soltest\data\models\clutter\industrial\tex\barrel.json, JSON, 21, 0, 0, 0, 0, 0, 0, 2, 4, 27
+_bin\soltest\data\models\clutter\industrial\tex\metal.json, JSON, 21, 0, 0, 0, 0, 0, 0, 0, 2, 23
+_bin\soltest\data\models\clutter\industrial\tex\wood.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\clutter\lab\tex\Ceramic.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\Cream.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\PlasticG1.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\chris-johns-fluorescent_2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 1, 2, 11
+_bin\soltest\data\models\clutter\lab\tex\cottonist2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\depositphotos_30386905-stock-illustration-waffle-background.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\flashlight.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\glass.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\lab\tex\plastic_dark.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\misc\tex\itembox.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 2, 12
+_bin\soltest\data\models\clutter\misc\tex\ngon.json, JSON, 12, 0, 0, 0, 0, 0, 0, 1, 1, 14
+_bin\soltest\data\models\clutter\nature\gem.dnmd, JSON with Comments, 0, 31, 0, 0, 0, 0, 0, 1, 2, 34
+_bin\soltest\data\models\clutter\old\tex\ceramic.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\old\tex\metal.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\clutter\old\tex\wood.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\corridors\beta\section_ctype_a.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_ctype_b.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_end.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_straight.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_ttype.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_window.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_window_b.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_xtype.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_xtype_b.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\section_xtype_c.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\beta\tex\walls.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\corridors\gamma\MainCorridor.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\gamma\MainCorridorCurve.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\gamma\MainCorridorX.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\gamma\MainToSecondCorridorAdapter.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\corridors\gamma\tex\bigpanelfloorwall4.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\corridors\v2\Corridornotubes.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\CorridornotubesX.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\Corridornotubescurve.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\Corridorpanel.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\CorridorpanelX.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\Corridortubes.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\corridors\v2\tex\black.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\corridors\v2\tex\cables.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\corridors\v2\tex\floor.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\corridors\v2\tex\walls.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\door\tex\rest.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 2, 11
+_bin\soltest\data\models\dyntest\chartest\test_objchar.dnmd, JSON with Comments, 0, 76, 0, 0, 0, 0, 0, 6, 6, 88
+_bin\soltest\data\models\dyntest\chartest\tex\colors.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\models\dyntest\df_fence.dnmd, JSON with Comments, 0, 63, 0, 0, 0, 0, 0, 1, 8, 72
+_bin\soltest\data\models\dyntest\dump\jp_shrine_lantern_wood_test.dnmd, JSON with Comments, 0, 21, 0, 0, 0, 0, 0, 1, 3, 25
+_bin\soltest\data\models\dyntest\dump\test_ngon_inset.dnmd, JSON with Comments, 0, 22, 0, 0, 0, 0, 0, 74, 1, 97
+_bin\soltest\data\models\dyntest\mapgenv2.dnmd, JSON with Comments, 0, 326, 0, 0, 0, 0, 0, 102, 20, 448
+_bin\soltest\data\models\dyntest\maptest.dnmd, JSON with Comments, 0, 368, 0, 0, 0, 0, 0, 110, 19, 497
+_bin\soltest\data\models\dyntest\mat\Wood07.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\bookfront.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\dyntest\mat\books.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\dyntest\mat\bricks11.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\models\dyntest\mat\ceiling31.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\chekers.json, JSON, 11, 0, 0, 0, 0, 0, 0, 1, 0, 12
+_bin\soltest\data\models\dyntest\mat\concrete06.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\concrete06b.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\models\dyntest\mat\concrete06c.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\fo_floor.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\glass.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+_bin\soltest\data\models\dyntest\mat\glass_lum.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\models\dyntest\mat\glass_notransp.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\models\dyntest\mat\metal.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\dyntest\mat\redcarpet.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 3, 20
+_bin\soltest\data\models\dyntest\mat\roof03.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\models\dyntest\mat\sky.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\dyntest\pb_building.dnmd, JSON with Comments, 0, 21, 0, 0, 0, 0, 0, 0, 0, 21
+_bin\soltest\data\models\dyntest\test_22.dnmd, JSON with Comments, 0, 74, 0, 0, 0, 0, 0, 5, 3, 82
+_bin\soltest\data\models\dyntest\test_bone_smooth.dnmd, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 0, 2, 61
+_bin\soltest\data\models\dyntest\test_char.dnmd, JSON with Comments, 0, 149, 0, 0, 0, 0, 0, 22, 17, 188
+_bin\soltest\data\models\dyntest\test_char_face.dnmd, JSON with Comments, 0, 222, 0, 0, 0, 0, 0, 27, 23, 272
+_bin\soltest\data\models\dyntest\test_char_face2.dnmd, JSON with Comments, 0, 222, 0, 0, 0, 0, 0, 27, 23, 272
+_bin\soltest\data\models\dyntest\test_char_finger.dnmd, JSON with Comments, 0, 30, 0, 0, 0, 0, 0, 2, 3, 35
+_bin\soltest\data\models\dyntest\test_char_hand.dnmd, JSON with Comments, 0, 122, 0, 0, 0, 0, 0, 33, 7, 162
+_bin\soltest\data\models\dyntest\test_corners.dnmd, JSON with Comments, 0, 196, 0, 0, 0, 0, 0, 24, 28, 248
+_bin\soltest\data\models\dyntest\test_curves.dnmd, JSON with Comments, 0, 35, 0, 0, 0, 0, 0, 2, 2, 39
+_bin\soltest\data\models\dyntest\test_cut.dnmd, JSON with Comments, 0, 92, 0, 0, 0, 0, 0, 22, 2, 116
+_bin\soltest\data\models\dyntest\test_dynamic.dnmd, JSON with Comments, 0, 57, 0, 0, 0, 0, 0, 0, 1, 58
+_bin\soltest\data\models\dyntest\test_dynamic_sub.dnmd, JSON with Comments, 0, 67, 0, 0, 0, 0, 0, 30, 3, 100
+_bin\soltest\data\models\dyntest\test_dynamic_sub2.dnmd, JSON with Comments, 0, 67, 0, 0, 0, 0, 0, 6, 3, 76
+_bin\soltest\data\models\dyntest\test_dynamic_sub_lot.dnmd, JSON with Comments, 0, 54, 0, 0, 0, 0, 0, 9, 3, 66
+_bin\soltest\data\models\dyntest\test_osm.dnmd, JSON with Comments, 0, 300, 0, 0, 0, 0, 0, 14, 12, 326
+_bin\soltest\data\models\dyntest\test_point_import.dnmd, JSON with Comments, 0, 27, 0, 0, 0, 0, 0, 21, 3, 51
+_bin\soltest\data\models\dyntest\test_road.dnmd, JSON with Comments, 0, 274, 0, 0, 0, 0, 0, 20, 41, 335
+_bin\soltest\data\models\dyntest\test_smooth.dnmd, JSON with Comments, 0, 86, 0, 0, 0, 0, 0, 6, 3, 95
+_bin\soltest\data\models\dyntest\test_smooth2.dnmd, JSON with Comments, 0, 77, 0, 0, 0, 0, 0, 2, 4, 83
+_bin\soltest\data\models\dyntest\test_split_system.dnmd, JSON with Comments, 0, 76, 0, 0, 0, 0, 0, 0, 4, 80
+_bin\soltest\data\models\dyntest\test_tree.dnmd, JSON with Comments, 0, 103, 0, 0, 0, 0, 0, 9, 21, 133
+_bin\soltest\data\models\editor\handle\tex\white.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\models\editor\matdisplay.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\editor\tex\grid.json, JSON, 14, 0, 0, 0, 0, 0, 0, 5, 2, 21
+_bin\soltest\data\models\engine\cubemap\white.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 2, 12
+_bin\soltest\data\models\engine\gizmo\circle.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\engine\mv_background2.dnmd, JSON with Comments, 0, 27, 0, 0, 0, 0, 0, 0, 1, 28
+_bin\soltest\data\models\engine\shadertest\tex\uv.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 2, 12
+_bin\soltest\data\models\engine\tex\blue.json, JSON, 7, 0, 0, 0, 0, 0, 0, 3, 4, 14
+_bin\soltest\data\models\engine\tex\white.json, JSON, 23, 0, 0, 0, 0, 0, 0, 5, 7, 35
+_bin\soltest\data\models\furniture\futur\tex\KeyboardNOTEXT.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\Large_FR-813.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\chris-johns-fluorescent_2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 1, 2, 11
+_bin\soltest\data\models\furniture\futur\tex\cottonist1.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\cottonist2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\d78d4069da54ade6085b7d540cfde597.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\glass.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\futur\tex\images.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\furniture\futur\tex\post-39-1180415643.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\cottonist2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\glass.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\images.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\furniture\modern\tex\metal_refl.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\plastic_dark.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\plastic_gray.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\modern\tex\post-39-1180415643.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\furniture\space\tex\chair.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\map\citytest\sky.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\map\citytest\tex\0019.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\map\citytest\tex\Cstone.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\Rail.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\_env.json, JSON, 3, 0, 0, 0, 0, 0, 0, 1, 0, 4
+_bin\soltest\data\models\map\citytest\tex\asphalt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\map\citytest\tex\concrete.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\floor_static.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\grass_03.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\map\citytest\tex\grayblue.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 2, 11
+_bin\soltest\data\models\map\citytest\tex\rock_02.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\sky.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\citytest\tex\water.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+_bin\soltest\data\models\map\citytest\tex\white.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\map\citytest\tex\window1.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\map_01\materials\brick.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\map\map_01\materials\concrete.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\map\map_01\materials\grass_01.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\map\map_01\materials\sky.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\nature\default\tex\Bush.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\models\nature\default\tex\Tree.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\nature\default\tex\Treefull.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\models\nature\default\tex\far.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\models\nature\default\tex\pine.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\models\nature\default\tex\white.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\nature\default\tex_grass\far.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+_bin\soltest\data\models\nature\default\tree_green.dnmd, JSON with Comments, 0, 125, 0, 0, 0, 0, 0, 10, 19, 154
+_bin\soltest\data\models\nature\zrock\tex\mesh1_diffuse.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
+_bin\soltest\data\models\nature\zrock\tex\mesh2_d.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
+_bin\soltest\data\models\nature\zrock\tex\rock_02.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 2, 13
+_bin\soltest\data\models\primitives\tex\floor_static.json, JSON, 7, 0, 0, 0, 0, 0, 0, 7, 2, 16
+_bin\soltest\data\models\space\atmotest.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\space\ships\cargo1\all_ref.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\space\ships\common\tex\chair.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\common\tex\chair_base.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\common\tex\chair_root.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\libra\materials\floor_step.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\libra\materials\glass.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\models\space\ships\libra\materials\grayblue.json, JSON, 8, 0, 0, 0, 0, 0, 0, 2, 1, 11
+_bin\soltest\data\models\space\ships\libra\materials\hex.json, JSON, 8, 0, 0, 0, 0, 0, 0, 1, 2, 11
+_bin\soltest\data\models\space\ships\libra\materials\redcarpet.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\space\ships\libra\materials\rest.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\libra\materials\tube.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\libra\materials\wall2.json, JSON, 9, 0, 0, 0, 0, 0, 0, 1, 2, 12
+_bin\soltest\data\models\space\ships\libra\materials\wall3.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\libra\materials\wall_black.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\libra\materials\white.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\space\ships\midnight\tex2\@webrt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\space\ships\midnight\tex2\floor_step.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\midnight\tex2\grayblue.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 1, 10
+_bin\soltest\data\models\space\ships\midnight\tex2\hex.json, JSON, 5, 0, 0, 0, 0, 0, 0, 3, 2, 10
+_bin\soltest\data\models\space\ships\midnight\tex2\hull007b.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\ships\midnight\tex2\redcarpet.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\midnight\tex2\tube.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\midnight\tex2\wall2.json, JSON, 9, 0, 0, 0, 0, 0, 0, 1, 2, 12
+_bin\soltest\data\models\space\ships\midnight\tex2\wall3.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\midnight\tex2\wall_black.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\midnight\tex2\white.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\space\ships\midnight\tex\black.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\bridge_middle.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\midnight\tex\chair.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\default_texture.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\ships\midnight\tex\engine.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\ships\midnight\tex\floor1.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\floor_fen1.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\ships\midnight\tex\glass.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 2, 12
+_bin\soltest\data\models\space\ships\midnight\tex\hull007b.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\metall2.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\panel1.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\ship_surface.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\ships\midnight\tex\target01.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\space\ships\midnight\tex\wall2.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\midnight\tex\wall3.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\ships\midnight\tex\wall4.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\midnight\tex\white.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\ships\midnight\tex\wirewea.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\models\space\ships\sevneka\materials\buttons.json, JSON, 9, 0, 0, 0, 0, 0, 0, 2, 1, 12
+_bin\soltest\data\models\space\ships\sevneka\materials\buttons2.json, JSON, 9, 0, 0, 0, 0, 0, 0, 2, 1, 12
+_bin\soltest\data\models\space\ships\sevneka\materials\grayblue.json, JSON, 8, 0, 0, 0, 0, 0, 0, 2, 1, 11
+_bin\soltest\data\models\space\ships\sevneka\materials\lamp.json, JSON, 9, 0, 0, 0, 0, 0, 0, 2, 1, 12
+_bin\soltest\data\models\space\ships\sevneka\materials\no_material.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 1, 10
+_bin\soltest\data\models\space\ships\sevneka\materials\platstic_dark.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 1, 10
+_bin\soltest\data\models\space\ships\sevneka\materials\ship.json, JSON, 8, 0, 0, 0, 0, 0, 0, 2, 1, 11
+_bin\soltest\data\models\space\ships\sevneka\materials\wall_black.json, JSON, 7, 0, 0, 0, 0, 0, 0, 2, 1, 10
+_bin\soltest\data\models\space\stations\dring\tex2\floor_step.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\stations\dring\tex2\glass.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+_bin\soltest\data\models\space\stations\dring\tex2\grayblue.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\stations\dring\tex2\hex.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\space\stations\dring\tex2\hull007b.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\models\space\stations\dring\tex2\tube.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\stations\dring\tex2\wall3.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\models\space\stations\dring\tex2\wall_black.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\space\stations\dring\tex2\white.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\models\space\stations\dynparts\cylinder_block.dnmd, JSON with Comments, 0, 236, 0, 0, 0, 0, 0, 5, 26, 267
+_bin\soltest\data\models\space\stations\dynparts\lot_commercial.dnmd, JSON with Comments, 0, 124, 0, 0, 0, 0, 0, 23, 16, 163
+_bin\soltest\data\models\space\stations\dynparts\lot_industrial.dnmd, JSON with Comments, 0, 126, 0, 0, 0, 0, 0, 21, 16, 163
+_bin\soltest\data\models\space\stations\dynparts\lot_recreational.dnmd, JSON with Comments, 0, 89, 0, 0, 0, 0, 0, 15, 11, 115
+_bin\soltest\data\models\space\stations\dynparts\mod_dock.dnmd, JSON with Comments, 0, 166, 0, 0, 0, 0, 0, 23, 7, 196
+_bin\soltest\data\models\space\stations\dynparts\mod_dock_inside.dnmd, JSON with Comments, 0, 105, 0, 0, 0, 0, 0, 48, 8, 161
+_bin\soltest\data\models\space\stations\dynparts\mod_power.dnmd, JSON with Comments, 0, 113, 0, 0, 0, 0, 0, 3, 18, 134
+_bin\soltest\data\models\space\stations\dynparts\mod_ring.dnmd, JSON with Comments, 0, 100, 0, 0, 0, 0, 0, 27, 9, 136
+_bin\soltest\data\models\space\stations\spacelab\lab_door.dnmd, JSON with Comments, 0, 101, 0, 0, 0, 0, 0, 74, 6, 181
+_bin\soltest\data\models\space\stations\spacelab\lab_door2.dnmd, JSON with Comments, 0, 48, 0, 0, 0, 0, 0, 1, 6, 55
+_bin\soltest\data\models\space\stations\spacelab\lab_node.dnmd, JSON with Comments, 0, 42, 0, 0, 0, 0, 0, 0, 2, 44
+_bin\soltest\data\models\space\stations\spacelab\the_lab.dnmd, JSON with Comments, 0, 392, 0, 0, 0, 0, 0, 28, 57, 477
+_bin\soltest\data\models\space\tex\white.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\models\species\anthro\materials\ara_body.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 2, 18
+_bin\soltest\data\models\species\anthro\materials\ara_tail.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\species\anthro\materials\body.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 2, 16
+_bin\soltest\data\models\species\anthro\materials\body_base.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\species\anthro\materials\body_colors.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4
+_bin\soltest\data\models\species\anthro\materials\body_colors_b.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4
+_bin\soltest\data\models\species\anthro\materials\bodyblue.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\species\anthro\materials\bodypink.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\species\anthro\materials\bodywhite.json, JSON, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3
+_bin\soltest\data\models\species\anthro\materials\eye_a.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\models\species\anthro\materials\eye_b.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\models\species\anthro\materials\eye_b_l.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\models\species\anthro\materials\eye_b_r.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\models\species\anthro\materials\eye_c.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\models\species\anthro\materials\eye_l.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\species\anthro\materials\eye_r.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\models\species\anthro\materials\eyewhite.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\models\species\anthro\materials\hairblack.json, JSON, 12, 0, 0, 0, 0, 0, 0, 3, 2, 17
+_bin\soltest\data\models\species\anthro\materials\hairblue.json, JSON, 6, 0, 0, 0, 0, 0, 0, 4, 1, 11
+_bin\soltest\data\models\species\anthro\materials\head.json, JSON, 17, 0, 0, 0, 0, 0, 0, 5, 3, 25
+_bin\soltest\data\models\species\anthro\materials\head_vikna.json, JSON, 16, 0, 0, 0, 0, 0, 0, 5, 3, 24
+_bin\soltest\data\models\species\anthro\materials\lashes.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+_bin\soltest\data\models\species\anthro\materials\lips.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\models\species\anthro\materials\vikna_body.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\models\species\anthro\materials\vikna_tail.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 0, 11
+_bin\soltest\data\particles\blackhole_short.particle, JSON with Comments, 0, 74, 0, 0, 0, 0, 0, 24, 8, 106
+_bin\soltest\data\particles\clouds.particle, JSON with Comments, 0, 22, 0, 0, 0, 0, 0, 6, 4, 32
+_bin\soltest\data\particles\explosion.particle, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 25, 7, 91
+_bin\soltest\data\particles\explosion_void.particle, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 23, 7, 89
+_bin\soltest\data\particles\fire.particle, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 23, 7, 89
+_bin\soltest\data\particles\fireworks.particle, JSON with Comments, 0, 154, 0, 0, 0, 0, 0, 8, 6, 168
+_bin\soltest\data\particles\glow.particle, JSON with Comments, 0, 42, 0, 0, 0, 0, 0, 6, 8, 56
+_bin\soltest\data\particles\hakkero.particle, JSON with Comments, 0, 59, 0, 0, 0, 0, 0, 4, 7, 70
+_bin\soltest\data\particles\lightning.particle, JSON with Comments, 0, 63, 0, 0, 0, 0, 0, 34, 3, 100
+_bin\soltest\data\particles\magic_explosion.particle, JSON with Comments, 0, 74, 0, 0, 0, 0, 0, 24, 8, 106
+_bin\soltest\data\particles\meteor.particle, JSON with Comments, 0, 82, 0, 0, 0, 0, 0, 5, 4, 91
+_bin\soltest\data\particles\star.particle, JSON with Comments, 0, 23, 0, 0, 0, 0, 0, 98, 5, 126
+_bin\soltest\data\particles\star_bursts.particle, JSON with Comments, 0, 72, 0, 0, 0, 0, 0, 57, 8, 137
+_bin\soltest\data\shaders\_old\effect_ssao.fxh, HLSL, 0, 0, 0, 0, 0, 0, 427, 32, 43, 502
+_bin\soltest\data\shaders\_old\pp_basic.fx, HLSL, 0, 0, 0, 0, 0, 0, 280, 72, 49, 401
+_bin\soltest\data\shaders\_old\pptest.fx, HLSL, 0, 0, 0, 0, 0, 0, 87, 19, 25, 131
+_bin\soltest\data\shaders\_old\shader.pptest.json, JSON, 34, 0, 0, 0, 0, 0, 0, 0, 0, 34
+_bin\soltest\data\shaders\_old\shader.test_gshader.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 0, 18
+_bin\soltest\data\shaders\_old\stars.fx, HLSL, 0, 0, 0, 0, 0, 0, 99, 24, 16, 139
+_bin\soltest\data\shaders\_old\surface - копия (2).fx, HLSL, 0, 0, 0, 0, 0, 0, 235, 415, 66, 716
+_bin\soltest\data\shaders\_old\surface - копия.fx, HLSL, 0, 0, 0, 0, 0, 0, 201, 81, 58, 340
+_bin\soltest\data\shaders\_old\test_gshader.fx, HLSL, 0, 0, 0, 0, 0, 0, 168, 51, 42, 261
+_bin\soltest\data\shaders\_old\test_mrch.fx, HLSL, 0, 0, 0, 0, 0, 0, 761, 23, 41, 825
+_bin\soltest\data\shaders\_old\volume.fx, HLSL, 0, 0, 0, 0, 0, 0, 389, 18, 90, 497
+_bin\soltest\data\shaders\atmosphere2.fx, HLSL, 0, 0, 0, 0, 0, 0, 410, 193, 124, 727
+_bin\soltest\data\shaders\atmosphere2.json, JSON, 46, 0, 0, 0, 0, 0, 0, 0, 0, 46
+_bin\soltest\data\shaders\atmosphere2.psc, Papyrus, 0, 0, 0, 0, 0, 38, 0, 0, 0, 38
+_bin\soltest\data\shaders\blob.fx, HLSL, 0, 0, 0, 0, 0, 0, 109, 15, 40, 164
+_bin\soltest\data\shaders\cubemap_debug.fx, HLSL, 0, 0, 0, 0, 0, 0, 88, 9, 16, 113
+_bin\soltest\data\shaders\cubemap_debug.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\debug.fx, HLSL, 0, 0, 0, 0, 0, 0, 59, 0, 12, 71
+_bin\soltest\data\shaders\debug.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\debug.psc, Papyrus, 0, 0, 0, 0, 0, 6, 0, 0, 0, 6
+_bin\soltest\data\shaders\dust.fx, HLSL, 0, 0, 0, 0, 0, 0, 81, 46, 11, 138
+_bin\soltest\data\shaders\dust.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\dust.psc, Papyrus, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3
+_bin\soltest\data\shaders\eyes.fx, HLSL, 0, 0, 0, 0, 0, 0, 127, 84, 27, 238
+_bin\soltest\data\shaders\eyes.json, JSON, 56, 0, 0, 0, 0, 0, 0, 0, 2, 58
+_bin\soltest\data\shaders\eyes.psc, Papyrus, 0, 0, 0, 0, 0, 1972, 0, 0, 0, 1972
+_bin\soltest\data\shaders\ftexture.fx, HLSL, 0, 0, 0, 0, 0, 0, 68, 2, 14, 84
+_bin\soltest\data\shaders\halo.fx, HLSL, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3
+_bin\soltest\data\shaders\headers\atmosphere.fxh, HLSL, 0, 0, 0, 0, 0, 0, 21, 13, 7, 41
+_bin\soltest\data\shaders\headers\clip.fxh, HLSL, 0, 0, 0, 0, 0, 0, 10, 0, 3, 13
+_bin\soltest\data\shaders\headers\effect_pen.fxh, HLSL, 0, 0, 0, 0, 0, 0, 43, 4, 2, 49
+_bin\soltest\data\shaders\headers\effect_ssao.fxh, HLSL, 0, 0, 0, 0, 0, 0, 307, 20, 18, 345
+_bin\soltest\data\shaders\headers\enviroment.fxh, HLSL, 0, 0, 0, 0, 0, 0, 22, 0, 4, 26
+_bin\soltest\data\shaders\headers\hdr.fxh, HLSL, 0, 0, 0, 0, 0, 0, 12, 0, 1, 13
+_bin\soltest\data\shaders\headers\lightning.fxh, HLSL, 0, 0, 0, 0, 0, 0, 145, 190, 23, 358
+_bin\soltest\data\shaders\headers\skin.fxh, HLSL, 0, 0, 0, 0, 0, 0, 12, 0, 3, 15
+_bin\soltest\data\shaders\headers\utils.fxh, HLSL, 0, 0, 0, 0, 0, 0, 22, 2, 6, 30
+_bin\soltest\data\shaders\linear.fx, HLSL, 0, 0, 0, 0, 0, 0, 110, 15, 41, 166
+_bin\soltest\data\shaders\linear.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\linear.psc, Papyrus, 0, 0, 0, 0, 0, 6, 0, 0, 0, 6
+_bin\soltest\data\shaders\model.fx, HLSL, 0, 0, 0, 0, 0, 0, 236, 714, 56, 1006
+_bin\soltest\data\shaders\model.json, JSON, 60, 0, 0, 0, 0, 0, 0, 0, 3, 63
+_bin\soltest\data\shaders\model.psc, Papyrus, 0, 0, 0, 0, 0, 3346, 0, 0, 0, 3346
+_bin\soltest\data\shaders\model_star.fx, HLSL, 0, 0, 0, 0, 0, 0, 167, 54, 45, 266
+_bin\soltest\data\shaders\model_star.json, JSON, 35, 0, 0, 0, 0, 0, 0, 0, 0, 35
+_bin\soltest\data\shaders\model_star.psc, Papyrus, 0, 0, 0, 0, 0, 32, 0, 0, 0, 32
+_bin\soltest\data\shaders\particle.fx, HLSL, 0, 0, 0, 0, 0, 0, 109, 25, 17, 151
+_bin\soltest\data\shaders\planet_surface_t1_gen.fx, HLSL, 0, 0, 0, 0, 0, 0, 62, 58, 18, 138
+_bin\soltest\data\shaders\post_process\render.json, JSON, 41, 0, 0, 0, 0, 0, 0, 0, 1, 42
+_bin\soltest\data\shaders\pp_basic.fx, HLSL, 0, 0, 0, 0, 0, 0, 318, 93, 61, 472
+_bin\soltest\data\shaders\pp_basic.json, JSON, 34, 0, 0, 0, 0, 0, 0, 0, 0, 34
+_bin\soltest\data\shaders\pp_basic.psc, Papyrus, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1
+_bin\soltest\data\shaders\pp_bloom.fx, HLSL, 0, 0, 0, 0, 0, 0, 82, 8, 18, 108
+_bin\soltest\data\shaders\pp_bloom.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\pp_fog.fx, HLSL, 0, 0, 0, 0, 0, 0, 102, 66, 32, 200
+_bin\soltest\data\shaders\pp_fog.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\pp_fog.psc, Papyrus, 0, 0, 0, 0, 0, 24, 0, 0, 0, 24
+_bin\soltest\data\shaders\pp_light.fx, HLSL, 0, 0, 0, 0, 0, 0, 144, 394, 18, 556
+_bin\soltest\data\shaders\pp_light.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\pp_light_gridtest.fx, HLSL, 0, 0, 0, 0, 0, 0, 116, 196, 19, 331
+_bin\soltest\data\shaders\pp_light_gridtest.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\shadow.fx, HLSL, 0, 0, 0, 0, 0, 0, 52, 3, 18, 73
+_bin\soltest\data\shaders\shadow.json, JSON, 33, 0, 0, 0, 0, 0, 0, 0, 0, 33
+_bin\soltest\data\shaders\skybox.fx, HLSL, 0, 0, 0, 0, 0, 0, 47, 73, 12, 132
+_bin\soltest\data\shaders\skybox.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\skybox.psc, Papyrus, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3
+_bin\soltest\data\shaders\sprite.fx, HLSL, 0, 0, 0, 0, 0, 0, 63, 1, 7, 71
+_bin\soltest\data\shaders\sprite.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\sprite.psc, Papyrus, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7
+_bin\soltest\data\shaders\stars.fx, HLSL, 0, 0, 0, 0, 0, 0, 118, 123, 23, 264
+_bin\soltest\data\shaders\stars.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\stars.psc, Papyrus, 0, 0, 0, 0, 0, 9, 0, 0, 0, 9
+_bin\soltest\data\shaders\strend.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\strend.psc, Papyrus, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7
+_bin\soltest\data\shaders\surface.fx, HLSL, 0, 0, 0, 0, 0, 0, 356, 692, 94, 1142
+_bin\soltest\data\shaders\surface.json, JSON, 61, 0, 0, 0, 0, 0, 0, 0, 0, 61
+_bin\soltest\data\shaders\surface.psc, Papyrus, 0, 0, 0, 0, 0, 288, 0, 0, 1, 289
+_bin\soltest\data\shaders\surface_builder.fx, HLSL, 0, 0, 0, 0, 0, 0, 41, 0, 13, 54
+_bin\soltest\data\shaders\textured.fx, HLSL, 0, 0, 0, 0, 0, 0, 55, 0, 11, 66
+_bin\soltest\data\shaders\textured.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\volumetric.fx, HLSL, 0, 0, 0, 0, 0, 0, 49, 2, 13, 64
+_bin\soltest\data\shaders\volumetric.json, JSON, 32, 0, 0, 0, 0, 0, 0, 0, 0, 32
+_bin\soltest\data\shaders\volumetric.psc, Papyrus, 0, 0, 0, 0, 0, 6, 0, 0, 0, 6
+_bin\soltest\data\shaders\water.fx, HLSL, 0, 0, 0, 0, 0, 0, 200, 153, 65, 418
+_bin\soltest\data\shaders\water.json, JSON, 46, 0, 0, 0, 0, 0, 0, 0, 0, 46
+_bin\soltest\data\shaders\water.psc, Papyrus, 0, 0, 0, 0, 0, 220, 0, 0, 0, 220
+_bin\soltest\data\textures\atmosphere\clouds.json, JSON, 9, 0, 0, 0, 0, 0, 0, 3, 2, 14
+_bin\soltest\data\textures\debug\beige.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\black.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\debug\blue.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\bluearrow.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\brightrim.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\textures\debug\darkgray.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\fullbright.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\debug\fulldark.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\debug\gray.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\green.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\greenarrow.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\light_blue.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\light_red.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\med_blue.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\med_green.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\med_red.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\normalmap.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\red.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\redarrow.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\stencil1.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\target01.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\target02.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+_bin\soltest\data\textures\debug\teal.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\tile.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\debug\uv_checker.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\debug\white.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\debug\white_5.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\debug\wireframe.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\textures\debug\wireframe_orange.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\textures\debug\yellow.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+_bin\soltest\data\textures\engine\material_template.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6
+_bin\soltest\data\textures\engine\notexture.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\engine\sky.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\nature\branch\green.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 1, 16
+_bin\soltest\data\textures\nature\branch\pine.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 1, 16
+_bin\soltest\data\textures\nature\branch\sakura.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 1, 16
+_bin\soltest\data\textures\nature\trunk\cherry.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\nature\trunk\deciduous.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\nature\trunk\deciduous_pine.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\nature\trunk\white.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\single\painting\darkness.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\dawn.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\dome.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\field.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\flare.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\flight.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\hall.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\hills.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\horizon.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\horizon2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\lake.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\mountainside.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\mountainside2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\night.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\night2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\orb.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\single\painting\outer.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+_bin\soltest\data\textures\space\distanceplanet.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+_bin\soltest\data\textures\space\galaxies\01.json, JSON, 7, 0, 0, 0, 0, 0, 0, 1, 1, 9
+_bin\soltest\data\textures\space\galaxies\02.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\textures\space\galaxies\03.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\textures\space\rings_test.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 4, 21
+_bin\soltest\data\textures\space\star\blackhole.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 1, 5
+_bin\soltest\data\textures\space\star\teststar.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+_bin\soltest\data\textures\space\warp\warp.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\stdif\bricks11.json, JSON, 12, 0, 0, 0, 0, 0, 0, 1, 1, 14
+_bin\soltest\data\textures\stdif\ceiling31.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\stdif\concrete06.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\stdif\facade01.json, JSON, 13, 0, 0, 0, 0, 0, 0, 1, 1, 15
+_bin\soltest\data\textures\stdif\grass01.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\stdif\rock01.json, JSON, 15, 0, 0, 0, 0, 0, 0, 0, 1, 16
+_bin\soltest\data\textures\stdif\sand01.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\stdif\water01.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\surface\mat\forest.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\textures\surface\mat\grass2.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\textures\surface\mat\sand.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\textures\surface\mat\sand3.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\textures\surface\mat\water.json, JSON, 8, 0, 0, 0, 0, 0, 0, 0, 1, 9
+_bin\soltest\data\textures\surface\space\surface.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 0, 18
+_bin\soltest\data\textures\symbol\touhou\y.json, JSON, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4
+_bin\soltest\data\textures\target\maprt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\textures\target\mirrorrt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 1, 2, 10
+_bin\soltest\data\textures\target\portalrt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\textures\target\screen.json, JSON, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+_bin\soltest\data\textures\target\webrt.json, JSON, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+_bin\soltest\data\textures\tile\ceiling\ceil_01.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\tile\floor\lam_01.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+_bin\soltest\data\textures\tile\mat\blackmetal.json, JSON, 18, 0, 0, 0, 0, 0, 0, 0, 2, 20
+_bin\soltest\data\textures\tile\mat\carbon.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
+_bin\soltest\data\textures\tile\mat\copper.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 2, 19
+_bin\soltest\data\textures\tile\mat\ebony.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 3, 21
+_bin\soltest\data\textures\tile\mat\fur01.json, JSON, 5, 0, 0, 0, 0, 0, 0, 3, 0, 8
+_bin\soltest\data\textures\tile\mat\fur02.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\tile\mat\fur03.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\tile\mat\fur04.json, JSON, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+_bin\soltest\data\textures\tile\mat\fur_base.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 3, 22
+_bin\soltest\data\textures\tile\mat\glass.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 0, 11
+_bin\soltest\data\textures\tile\mat\gold.json, JSON, 21, 0, 0, 0, 0, 0, 0, 0, 2, 23
+_bin\soltest\data\textures\tile\mat\marble.json, JSON, 16, 0, 0, 0, 0, 0, 0, 2, 3, 21
+_bin\soltest\data\textures\tile\mat\plastic_g.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\mat\plastic_y.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\mat\redleather.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\mat\shinymetal.json, JSON, 17, 0, 0, 0, 0, 0, 0, 0, 2, 19
+_bin\soltest\data\textures\tile\mat\silver.json, JSON, 19, 0, 0, 0, 0, 0, 0, 0, 3, 22
+_bin\soltest\data\textures\tile\mat\wood.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\tile\road\asphalt.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\tile\road\concrete.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\tile\road\dirt.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\road\grass.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\road\road.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\tile\tilt\brick.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\tilt\concrete.json, JSON, 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+_bin\soltest\data\textures\tile\tilt\fen.json, JSON, 14, 0, 0, 0, 0, 0, 0, 0, 1, 15
+_bin\soltest\data\textures\tile\tilt\roofm.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+_bin\soltest\data\textures\tile\tilt\spring.json, JSON, 13, 0, 0, 0, 0, 0, 0, 0, 0, 13
+_bin\soltest\data\textures\tile\wall\tile_01.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+_bin\soltest\data\textures\tile\wall\wood_01.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\textures\tile\wall\wpaper_01.json, JSON, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+_bin\soltest\data\textures\tile\wall\wpaper_02.json, JSON, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+Total, -, 11035, 47049, 3, 38661, 29, 5968, 6613, 11574, 11891, 132823

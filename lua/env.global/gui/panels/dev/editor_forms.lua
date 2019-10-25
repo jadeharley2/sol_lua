@@ -166,7 +166,7 @@ function PANEL:LoadFormList(lst,lsf,typ)
 			text = k,
 			dock = DOCK_TOP,  
 			OnClick = function(s)
-				local path = forms.GetForm(typ,k)
+				local path = typ..'.'..k--forms.GetForm(typ,k)
 				self:LoadForm(path)
 				--lsf:SetScroll(0)
 			end
@@ -175,16 +175,16 @@ function PANEL:LoadFormList(lst,lsf,typ)
 	
 end
 
-function PANEL:LoadForm(path)
-	local data = json.Read(path)
+function PANEL:LoadForm(formid)
+	local data = forms.ReadForm(formid)
 	if not data then return end
-	self.curpath = path 
+	self.curpath = formid 
 	self.curdata = data 
 	
 	local c = self.formcontainer
 	
 	c:Clear()
-	self:NewProperty(c,"form: "..path,data) 
+	self:NewProperty(c,"form: "..formid,data) 
 	self:UpdateLayout()
 end 
 function PANEL:ReloadForm()

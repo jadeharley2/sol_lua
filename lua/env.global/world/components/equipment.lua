@@ -62,7 +62,9 @@ function component:GetEquipped(slot)
 		return lst
 	end
 end
-
+function component:SetLock(slot,lock)
+	self.list[slot].lock = lock
+end
 function component:UneqipAll() 
 	local node = self:GetNode()
 	if node then
@@ -135,7 +137,9 @@ end
 
 function component:TransferItem(from_slot,to,to_id,count)
 	local node = self:GetNode()
-	if from_slot and to and to_id and count then
+	count = count or 1
+	to_id = to_id or to:GetFreeSlot()
+	if from_slot and to then 
 		local item = self:GetEquipped(from_slot)
 		MsgN(self:GetNode(),from_slot,to:GetNode(),to_id,count)
 		if item and to:GetNode() then
@@ -212,11 +216,19 @@ function component:_clear()
 	end
 	self.list = {}
 end
-function component:_unequipslot(slot)   
+function component:_unequipslot(slot,remove)   
 	local node = self:GetNode()
 	local eqslt = self.list[slot] 
-	if eqslt and eqslt.entity and IsValidEnt(eqslt.entity) then 
+	if eqslt and not eqslt.lock and eqslt.entity and IsValidEnt(eqslt.entity) then 
 		local e = eqslt.entity
+
+
+		if e.subitems then 
+			for k,v in pairs(e.subitems) do
+				self:SetLock(k,false)
+				self:_unequipslot(k,true)
+			end
+		end
 
 		local unhideray = e.hideby
 		if unhideray then
@@ -235,9 +247,11 @@ function component:_unequipslot(slot)
 		end
 
 		if not eqslt.transfered then
-			local storage = node.storage
-			if storage then
-				storage:PutItemAsData(storage:GetFreeSlot(),eqslt.data)
+			if not remove then
+				local storage = node.storage
+				if storage then
+					storage:PutItemAsData(storage:GetFreeSlot(),eqslt.data)
+				end
 			end
 		else
 			eqslt.transfered = nil
@@ -276,11 +290,12 @@ function component:_equip(data,nosave)
 
 			--MsgN("slot",model,scale,seed)
 			--PrintTable(formdata)
-			if model then
-				self:_unequipslot(slot)
-
+			if model then 
 				local eqslt = self.list[slot]  
-				if eqslt then
+				if eqslt and not eqslt.lock then
+					self:_unequipslot(slot)
+
+
 					local e = SpawnBP(model,node,scale,GetFreeUID())
 					if e then
 						eqslt.data = data 
@@ -351,6 +366,14 @@ function component:_equip(data,nosave)
 								else
 									nametable[#nametable+1] = ee
 								end
+							end
+						end
+						if formdata.subitems then
+							e.subitems = {}
+							for k,v in pairs(formdata.subitems) do
+								self:GetNode():Give(v,1,true) 
+								e.subitems[k] = true
+								self:SetLock(k,true)
 							end
 						end
 						--MsgN("names")
@@ -466,10 +489,10 @@ component._typeevents = {
 			end 
 		end
 	end}, 
-	[EVENT_UNEQUIPSLOT]={networked=true,f = function(self,slot)   
+	[EVENT_UNEQUIPSLOT]={networked=true,f = function(self,slot,remove)   
 		local node = self:GetNode()
 		if node then 
-			self:_unequipslot(slot) 
+			self:_unequipslot(slot,remove) 
 			if CLIENT then
 				node:EmitSound("physics/cloth/rustle_0"..table.Random({1,2,3,4,5,6})..".ogg",1)
 			end 

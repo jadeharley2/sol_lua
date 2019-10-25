@@ -50,5 +50,27 @@ function hook.Call(eventid,...)
 		end
 	end
 end
+function hook.Collect(eventid,...)
+	--if eventid ~= "main.update" then MsgN("hook call: "..tostring(eventid)) MsgN(...) end
+	local case = lua_hooks[eventid]
+	local results = {}
+	if case then
+		for k,v in pairs(case.functions) do
+			local success, result, value2 = xpcall(v,onerror,...)
+			if success then
+				if result then
+					if value2 then
+						results[result] = value2 
+					else
+						results[#results+1] = result 
+					end
+				end
+			else
+				MsgN("Error in hook: ",eventid,".",k," -> ",result)
+			end
+		end
+	end
+	return results
+end
 
 _SetNativeCallFunc(hook.Call)

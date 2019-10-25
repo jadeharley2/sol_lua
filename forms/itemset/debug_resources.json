@@ -1,0 +1,19 @@
+{ 
+    "subsets" :{
+        "gas":["resource.air","resource.hydrogen","resource.oxygen"],
+        "liquid":["resource.water"],
+        "metal":["resource.copper","resource.iron", "resource.steel",  "resource.silver","resource.gold"],
+        "solid":["resource.chalk","resource.clay","resource.coal","resource.silicon","resource.salt", 
+            "resource.sand", "resource.soil",  "resource.stone", "resource.water_ice","resource.wood"  ],
+        "fabric":["resource.cloth","resource.fur","resource.leather","resource.electrofiber",
+            "resource.nanofiber","resource.synthskin"],
+        "complex":["resource.concrete","resource.ceramic","resource.electronic_components","resource.glass", 
+            "resource.paper", "resource.plastic", "resource.rubber","resource.paper",  
+        ],
+        "dyes":["resource.dye_black","resource.dye_blue","resource.dye_brown",
+            "resource.dye_cyan","resource.dye_darkgray","resource.dye_gray",
+            "resource.dye_green","resource.dye_lightblue","resource.dye_lightgray",
+            "resource.dye_lime","resource.dye_magenta","resource.dye_orange","resource.dye_pink",
+            "resource.dye_purple","resource.dye_red","resource.dye_white","resource.dye_yellow"],
+    } 
+}

@@ -1300,12 +1300,10 @@ function ENT:GestureStart(layer, name)
 			local gesttype = gest.type or "overlay" 
 			gest.active = true
 			if gesttype == 'overlay' then
-				m:PlayLayeredSequence(layer,name,0)
-				local t = 0 
-				self:Timer("gesture",0,10,15,function()
-					t = t + 1/15 
-					m:SetLayerBlend(layer,t)
-				end)
+				m:PlayLayeredSequence(layer,name) 
+				local fadein = gest.fadein or gest.fade or 0.02
+				local fadeout = gest.fadeout or gest.fade or 0.02
+				m:SetLayerFade(layer,fadein,fadeout)
 			elseif gesttype == 'normal' then
 				self.graph:SetState("gesture") 
 				local time = m:SetAnimation(name,gest.stepstart or false)
@@ -1337,14 +1335,8 @@ function ENT:GestureEnd(layer, name)
 			local t = 1 
 			local gesttype = gest.type or "overlay" 
 			if gesttype == 'overlay' then
-				self:Timer("gesture",0,10,16,function()
-					t = t - 1/15 
-					m:SetLayerBlend(layer,t)
-					if(t<0)then
-						m:StopLayeredSequence(layer)
-						gest.active = false
-					end
-				end)
+				m:StopLayeredSequence(layer)
+				gest.active = false
 			elseif gesttype == 'normal' then
 				self.graph:SetState("idle") 
 				m:SetAnimation("idle")
@@ -1417,6 +1409,12 @@ function ENT:EyeLookAtLerped(dir)
 		end
 	end)
 	
+end
+function ENT:SetHeadAngles(pitch,yaw) 
+	self.headangles = {yaw,pitch}
+	local m = self.model
+	m:SetPoseParameter("head_yaw",yaw,true) 
+	m:SetPoseParameter("head_pitch",pitch,true) 
 end
 function ENT:SetEyeAngles(pitch,yaw,forced,nopred) 
 	if not math.bad(pitch) then pitch = 0 end
@@ -1591,7 +1589,7 @@ end
 
 --[[ ######## ITEMS ######## ]]--
 
-function ENT:Give(formid,count)
+function ENT:Give(formid,count,silent)
  MsgN(formid)
 	local s = self.storage
 	if s and s:HasFreeSlot() then
@@ -1604,6 +1602,9 @@ function ENT:Give(formid,count)
 			else
 				s:PutItemAsData(nil,item,count) 
 				hook.Call("inventory_update",self)
+			end
+			if CLIENT and not silent and self == LocalPlayer() then
+				MsgInfo("new item: "..forms.GetName(formid)) 
 			end
 		end
 		--local p = forms.GetForm("apparel",type) or forms.GetForm(type)
@@ -2205,3 +2206,8 @@ console.AddCmd("hideplayer",function()
 		end
 	end
 end)
+if CLIENT then
+	console.AddCmd("setcharacter",function(char)
+		LocalPlayer():SetCharacter(char)
+	end)
+end

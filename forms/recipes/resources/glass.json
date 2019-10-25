@@ -1,0 +1,16 @@
+{
+    "tags" : ["test"],
+    "station" : {
+        "type" : "furnace"
+    },
+    "output" : { 
+        "item":"resource.glass",
+        "count":1 
+    },
+    "input" : [
+        {
+            "item":"resource.sand",
+            "count":1
+        } 
+    ]
+}

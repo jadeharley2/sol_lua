@@ -22,7 +22,25 @@ function CreateWeapon(type,parent,pos,seed)
 	e:Create()
 	return e
 end
-
+function ItemTOOL(type,seed,modtable)
+	local j = forms.ReadForm(type)--json.Read(type) 
+	MsgN("tool item",j)
+	if not j then return nil end 
+	local t = {
+		sizepower=1, 
+		seed= seed, 
+		updatespace= 0,
+		parameters =  {
+			luaenttype = "base_tool",
+			name = j.name,
+			form = type,
+			icon = j.icon,
+		},  
+	}
+	if modtable then table.Merge(modtable,t,true) end
+	return json.ToJson(t)
+end
+ 
 ENT.holdtype = "th_low"
 
 function ENT:Init()  
@@ -43,7 +61,21 @@ function ENT:Init()
 end
 
 function ENT:Spawn()
-	self:SpawnWorldModel(0.03)
+
+	self:SetType(self[VARTYPE_FORM])
+	local data =  forms.ReadForm(self[VARTYPE_FORM])
+	self.data = data
+	if data then
+		self:SetParameter(VARTYPE_MODEL,data.appearance.model)
+		self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+		MsgN("read ok")
+		if data.firedelay then
+			self.firedelay = data.firedelay
+		end
+	end
+	self:LoadGraph()
+--	self:SpawnWorldModel(0.03)
+	self:SpawnWorldModel2(self[VARTYPE_MODELSCALE] or 1)--0.03)
 	--self.model:SetMaterial("textures/debug/white.json") 
 	--self:SpawnWorldModel(self.dmodel,self.phymodel,self.mscale)
 	
@@ -54,7 +86,7 @@ function ENT:Spawn()
 	self:AddTag(TAG_WEAPON)
 	self:AddTag(TAG_PHYSSIMULATED)
 	
-	self.phys:Enable()
+--	self.phys:Enable()
 
 	if SERVER then
 		network.AddNodeImmediate(self)
@@ -75,27 +107,23 @@ end
 
 function ENT:SetType(type)
 	if type then
-		self.type = type
-		self:SetParameter(VARTYPE_CHARACTER,type)
-		
-		local path = forms.GetForm("tool",type)
-		if path then
-			local data = json.Read(path)
-			if data then 
-				self:SetName(data.name)
-				
-				if data.appearance then
-					self:SetParameter(VARTYPE_MODEL,data.appearance.model)
-					self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
-				end
-				self.basetype = data.type
-				local bt = TOOL
-				TOOL = self
-				include("lua/env.global/world/tools/"..data.type..".lua") 
-				TOOL = bt
-				if self.OnSet then self:OnSet(data) end
+		self.type = type  
+		local data = forms.ReadForm(type)
+		self.data = data 
+		if data then 
+			self:SetName(data.name)
+			
+			if data.appearance then
+				self:SetParameter(VARTYPE_MODEL,data.appearance.model)
+				self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
 			end
-		end
+			self.basetype = data.type
+			local bt = TOOL
+			TOOL = self
+			include("lua/env.global/world/tools/"..data.type..".lua") 
+			TOOL = bt
+			if self.OnSet then self:OnSet(data) end
+		end 
 	end
 end
 
@@ -192,44 +220,66 @@ end
 function ENT:IsReady(id)
 	local ct = CurTime()
 	local nft = self.nextfiretime or ct
-	return ct >= nft  
+	return ct >= nft   
+end
+function ENT:LoadGraph()
+
+	local graph = BehaviorGraph(self,tab) 
+	self.graph = graph
+
+	
+	local data = self.data 
+
+	local hdt = data.appearance.holdtype  
+	graph:NewState("idle",function(s,e) e:GetParent().model:PlayLayeredSequence(1,hdt.idle,hdt.model) end)
+	graph:NewState("fire",function(s,e) 
+		local owner = e:GetParent()
+		owner.model:PlayLayeredSequence(1,hdt.fire,hdt.model) 
+		owner.nomovement = true
+		owner.norotation = true
+		return hdt.fire_duration or 1
+	end)
+	graph:NewState("fireend",function(s,e) 
+		local owner = e:GetParent() 
+		owner.nomovement = false
+		owner.norotation = false
+		return 0
+	end)
+	graph:NewTransition("idle","fire",BEH_CND_ONCALL,"fire")
+	graph:NewTransition("fire","fireend",BEH_CND_ONEND)
+	graph:NewTransition("fireend","idle",BEH_CND_ONEND)
+
+	graph:SetState("idle")
+	graph.debug = true
+end
+function ENT:Think()
+	local graph = self.graph
+	if graph then 
+		graph:Run() 
+	end
 end
 function ENT:Fire() 
 	local nft = self.nextfiretime
 	local ct = CurTime()
 	local fd = self.firedelay
+	--MsgN("fired")
 	if ct > nft then 
 		self.nextfiretime = ct + fd
 		
-		local parentphysnode = cam:GetParentWithComponent(CTYPE_PHYSSPACE)
-		if parentphysnode then
-		--local tr = GetCameraPhysTrace()
-		--MsgN(tr.Hit)
-		--if tr and tr.Hit then 
-		local lw = parentphysnode:GetLocalSpace(cam)
-		--local mpos = --self.model:GetAttachmentPos("muzzle")
-			local sz = parentphysnode:GetSizepower()
-			local forw = lw:Forward()--:TransformC(matrix.AxisRotation(lw:Right(),math.random(-30,30)))
-			
-			local tr = GetCameraPhysTrace()
-			if tr and tr.Hit then 
-				self:HitEffect(parentphysnode,tr.Position+tr.Normal*(0.2/sz))
-			end
-			---local ent = self:CreateLight(parentphysnode,lw:Position()+forw*(1.4/sz),
-			---Vector(math.random(0,255),math.random(0,255),math.random(0,255))/255*1,forw*50000*1)--*150)
-			-----ent.phys:SetGravity(Vector(0,-9,0))
-			-----local ent = ents.Create("base_tool")
-			-----ent:SetParent(tr.Node)
-			-----ent:SetPos(tr.Position+tr.Normal*(0.2/sz))
-			-----ent.type = "testweap"
-			-----ent:SetParameter(VARTYPE_MODEL,"test/phtgun/phtgun.json")
-			-----ent:SpawnWorldModel(0.03)
-			-----ent:SetSizepower(1)
-			-----ent:SetParent(parent) 
-			-----ent:Spawn()
-			-----ent:Set
-			---debug.Delayed(6000,function() ent:Despawn() end)
-		end
+		 
+		self.graph:Call("fire")
+	--local data = self.data 
+	--if data then
+	--	local actor = self:GetParent()
+	--	local actor_model = actor.model 
+	--	if data.appearance then 
+	--		if  data.appearance.holdtype then
+	--			local hdt = data.appearance.holdtype  
+	--			actor_model:PlayLayeredSequence(1,hdt.fire,hdt.model,1)
+	--		end
+	--	end
+	--end
+
 		return true
 	else
 		return false
@@ -262,8 +312,7 @@ function ENT:SpawnWorldModel(scale)
 	
 	--lua_run SpawnWeapon("kindred/bow.json",LocalPlayer(),Vector(0,0,0))
 	model:SetMatrix( matrix.Rotation(90,0,0)*(self.mworld or matrix.Identity())* world)--*matrix.Translation(-phys:GetMassCenter()*100)) 
-	
-	self:SetUpdating(true,100)
+	 
 end 
 
 function ENT:SpawnWorldModel2(scale)
@@ -286,20 +335,39 @@ function ENT:SpawnWorldModel2(scale)
 	 
 	
 	--lua_run SpawnWeapon("kindred/bow.json",LocalPlayer(),Vector(0,0,0))
-	model:SetMatrix( matrix.Rotation(90,0,0)*(self.mworld or matrix.Identity())* world)--*matrix.Translation(-phys:GetMassCenter()*100)) 
+	model:SetMatrix(world)-- matrix.Rotation(90,0,0)*(self.mworld or matrix.Identity())* world)--*matrix.Translation(-phys:GetMassCenter()*100)) 
 	
-	self:SetUpdating(true,100)
 end 
 
 function ENT:Equip(actor)
+	actor.activeweapon = self 
+
 	local actor_model = actor.model
-	if actor_model then
-		actor_model:Attach(self,self.attachname or "weapon1",true,self.attachworld or matrix.Identity())
-		actor_model:PlayLayeredSequence(1,"weapon_hold_test")
-		actor_model:PlayLayeredSequence(2,"weapon_aim")
+	--if actor_model and self.attachname then
+	--	actor_model:Attach(self,self.attachname or "weapon1",true,self.attachworld or matrix.Identity())
+	--	actor_model:PlayLayeredSequence(1,"weapon_hold_test")
+	--	actor_model:PlayLayeredSequence(2,"weapon_aim")
+	--end
+	local data = self.data 
+	if data then
+		if data.appearance then
+			if data.appearance.attach then
+				local at = data.appearance.attach
+				-- at.world  
+				actor_model:Attach(self,at.name,true,matrix.Rotation(JMatrix(at.world)) or matrix.Identity())
+			end
+			--if  data.appearance.holdtype then
+			--	local hdt = data.appearance.holdtype  
+			--	actor_model:PlayLayeredSequence(1,hdt.idle,hdt.model,1)
+			--end
+		end
 	end
+	self.graph:SetState("idle")
+	self:SetUpdating(true,20)
 end
 function ENT:Unequip(actor)
+	self:SetUpdating(false)
+	actor.activeweapon = nil
 	local actor_model = actor.model 
 	if actor_model then
 		actor_model:Detach(self)

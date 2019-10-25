@@ -69,6 +69,10 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif k == 'textonly' then node:SetTextOnly(v)
 		elseif k == 'textcolor' then node:SetTextColor(Vector(v[1],v[2],v[3]))  
 		elseif k == 'textalignment' then node:SetTextAlignment(v)
+		elseif k == 'multiline' then node:SetMultiline(v)
+		elseif k == 'lineheight' or k == 'fontsize' then node:SetLineHeight(v)
+		elseif k == 'linespacing' then node:SetLineSpacing(v)
+		elseif k == 'autowrap' then node:SetAutowrap(v)
 		
 		elseif k == 'font' then node:SetFont(LoadFont(v))
 		
@@ -102,6 +106,9 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 								info.add(node,v2)
 							end
 						end 
+					elseif info.type == "children_single" then
+						MsgN('gen')
+						info.add(node,gui.FromTable(v,nil,style,namedtable,tablekey)) 
 					end
 				else
 					node[k] = v

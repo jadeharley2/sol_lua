@@ -10,12 +10,13 @@ function PANEL:Set(actor)
 	local asp = actor.species
 	if asp then
 		self:AddGroup("General")
+		self:AddRecord("Name:", actor:GetName() or "unknown")
 		self:AddRecord("Species:", asp.name or "unknown")
 		self:AddRecord("Race:", asp.racename or "none")
 	end
 	self:AddGroup("Attributes")
 	self:AddRecord("Strength:", 0) 
-	self:AddRecord("Mass:", actor.phys:GetMass()) 
+	self:AddRecord("Mass:", actor.phys:GetMass()*10 .. " kg") 
 	self:AddRecord("Ground Speed:",tostring(actor.walkspeed).."-"..tostring(actor.runspeed)) 
 	self:AddRecord("Flight Speed:", actor.flyspeed) 
 	self:UpdateLayout()

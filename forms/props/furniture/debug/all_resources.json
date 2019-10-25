@@ -1,0 +1,19 @@
+{
+	"group" : "furniture",
+	"tags" : ["debug"],
+	"model" : "forms/levels/sdm/furn/cupboard01.dnmd", 
+	"scale" : 0.75,
+	"rotation" : [0,0,0], 
+	//"phys" : true,
+	//"mass" : 40, 
+	"container":{ 
+		"size":100,
+		"itemsets" :{
+			"debug_resources" : { "mode":"all","count":100 }
+		}
+	},
+	"composition" :{
+		"resource.wood" : 4,    
+		"resource.glass" : 2,  
+	}
+}

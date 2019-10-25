@@ -30,22 +30,61 @@ component._typeevents = {
 
 				local data = nil
 
-				if to:SlotIsFree(to_id) then
-					local item = self.list[from_id]
-					if item then 
-						item.count = item.count - 1
-						if item.count <=0 then self.list[from_id] = nil end 
-						local data = item.data
-						
-						to.list[to_id] = {data = data, count = 1}  
-						self:GetNode()[VARTYPE_STORAGE] = self:ToData() 
-						MsgN("item transfer: valid")
+				local item = self.list[from_id]
+				if item then 
+					count = count or item.count
+
+					local data = item.data
+					local isoccupied = false
+
+					if to_id then
+						if not to:SlotIsFree(to_id) then 
+							MsgN("item transfer: invalid - target slot occupied")
+							return false
+						end 
 					else 
-						MsgN("item transfer: invalid - item nonexistent")
-					end 
+						local formid = data:Read('/parameters/form')
+						if formid then
+							for k,v in pairs(to.list) do 
+								--MsgN(k,v.formid,formid,v.formid==formid)
+								if v.formid == formid then
+									to_id = k
+									isoccupied = true
+									MsgN("item transfer: target slot found",to_id)
+									break
+								end
+							end
+						end
+						if not isoccupied then
+							to_id = to:GetFreeSlot() 
+							if not to_id then
+								MsgN("item transfer: invalid - target is full")
+								return false
+							end
+						end
+					end
+
+  
+					
+					if to_id then
+						if isoccupied then
+							local v = to.list[to_id]
+							v.count = v.count + count
+						else
+							to.list[to_id] = {data = data, count = count, formid = item.formid}  
+						end
+
+						item.count = item.count - count
+						if item.count <=0 then self.list[from_id] = nil end 
+
+						self:GetNode()[VARTYPE_STORAGE] = self:ToData() 
+						ent_to[VARTYPE_STORAGE] = to:ToData() 
+						MsgN("item transfer: valid",count)
+					end
 				else 
-					MsgN("item transfer: invalid - target slot occupied")
+					MsgN("item transfer: invalid - item nonexistent")
 				end 
+
 			end
 		end
 	end},
@@ -86,9 +125,9 @@ component._typeevents = {
 		node[VARTYPE_STORAGE] = self:ToData()
 		hook.Call("inventory_update",node)
 	end}, 
-	[EVENT_ITEM_DESTROY] = {networked = true, f = function(self,id) 
-		MsgN(self:GetNode(),"item destroyed at",id)
-		self:DestroyItem(id) 
+	[EVENT_ITEM_DESTROY] = {networked = true, f = function(self,id,count) 
+		MsgN(self:GetNode(),"item destroyed at",id,count)
+		self:DestroyItem(id,count) 
 		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end},  
 	--client->server - request
@@ -111,15 +150,16 @@ component._typeevents = {
 	end} 
 }
  
-function component:OnLoad()
+function component:OnLoad()  
 	local itms = self:GetNode()[VARTYPE_STORAGE]
 	if itms then
 		self:FromData(itms)
 	end
 end
 
-function component:Init()
+function component:Init() 
 	self.list = {}
+	self.size = 30
 end
    
 function component:OnAttach(node)
@@ -209,7 +249,7 @@ function component:PutItemAsData(index,data,count)  -- local function
 		else
 			if formid then
 				for k,v in pairs(self.list) do
-					MsgN(v.formid, formid)
+					--MsgN(v.formid, formid)
 					if v.formid == formid then
 						v.count = v.count + count
 						--MsgN("cc",index,formid,data)
@@ -227,10 +267,14 @@ function component:PutItemAsData(index,data,count)  -- local function
 	return false
 end
 function component:SlotIsFree(index)
-	return not self.list[index]
+	if index<=self.size then
+		return not self.list[index]
+	else
+		return false
+	end
 end
 function component:TransferItem(from_id,to,to_id,count)
-	if from_id and to and to_id and count then
+	if from_id and to then
 		self:GetNode():SendEvent(EVENT_ITEM_TRANSFER,from_id,to:GetNode(),to_id,count) 
 	end
 end
@@ -254,18 +298,18 @@ function component:TakeItem(index)
 	end
 	return false
 end
-function component:DestroyItem(index)
+function component:DestroyItem(index,count)
 	local n = self:GetNode()
 	if n then
-		local item = self:TakeItemAsData(index) 
+		local item = self:TakeItemAsData(index,count) 
 		return true
 	end
 	return false
 end
 function component:TakeItemAsData(index,count) 
-	count = count or 1
 	local item = self.list[index]
 	if item then 
+		count = count or item.count or 1
 		self:GetNode():SendEvent(EVENT_ITEM_TAKEN,index,count) 
 		return item.data
 	end 
@@ -370,8 +414,16 @@ function component:FormIdCounts()
 	end
 	return fids
 end
+function component:SetSize(n)
+	self.size = n
+end
+function component:GetSize()
+	return self.size
+end
 function component:GetFreeSlot() 
-	for k=1,100 do 
+	--MsgN("sro",self,'1',self.list,'2',self.size,'3')
+	--MsgN(debug.traceback())
+	for k=1,self.size do 
 		if not self:HasItemAt(k) then
 			return k
 		end
@@ -379,7 +431,7 @@ function component:GetFreeSlot()
 	return nil
 end
 function component:HasFreeSlot(count)
-	return true
+	return self:GetFreeSlot()~=nil
 end
 function component:ContainsItemOfType(itemtype)
 	return false--return self.list:Contains(item)

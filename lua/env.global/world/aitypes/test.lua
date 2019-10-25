@@ -466,6 +466,14 @@ function ai:OpenMenu(ply)
 								e._spcom.antr_systems:PowerUp()
 							return false
 						end}  
+						main[#main+1] =
+						{t="Open inventory",f=function(ai,dialog)    
+							actor_panels.OpenInventory(ply,ALIGN_BOTTOM,nil)
+							actor_panels.OpenCharacterInfo(ply,ALIGN_LEFT,nil) 
+							actor_panels.OpenInventory(e,ALIGN_TOP,nil)
+							actor_panels.OpenCharacterInfo(e,ALIGN_RIGHT,nil)  
+							return false
+						end}  
 					end
 					p:Open("...",main)
 					self.dialog = p 

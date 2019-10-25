@@ -254,10 +254,10 @@ function ENT:Spawn()
 	wep_b.usetype = "ability teacher"
 	------
 	
-	local ambient = ents.Create("ambient_sound")
-	ambient:SetParent(space)
-	ambient:Spawn()
-	self.ambient = ambient
+--	local ambient = ents.Create("ambient_sound")
+--	ambient:SetParent(space)
+--	ambient:Spawn()
+--	self.ambient = ambient
 	
 	SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
 
@@ -326,10 +326,10 @@ function ENT:Spawn()
 		
 		space:AddNativeEventListener(EVENT_ENTER,"cubmapset",function() 
 			--GlobalSetCubemap(cbm,true) 
-			ambient:Start()
+--			ambient:Start()
 		end)
 		space:AddNativeEventListener(EVENT_LEAVE,"dt",function()   
-			ambient:Stop()
+--			ambient:Stop()
 		end)
 		--debug.Delayed(3000,function()
 		--MsgN("RENDER!")

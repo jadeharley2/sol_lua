@@ -25,6 +25,7 @@ float brightness=1;
 float ssao_mul=1;
 
 float global_scale=1;
+float distanceMultiplier=1;
 float mindist = 0;
 float maxdist = 999999999;
 float fadewidth = 0.1;
@@ -202,6 +203,25 @@ struct PS_OUT
 	float stencil : SV_StencilRef; 
 };
 
+float3x3 MInv(float3x3 A) 
+{
+	float determinant =    +A._m00*(A._m11*A._m22-A._m21*A._m12)
+                        -A._m01*(A._m10*A._m22-A._m12*A._m20)
+                        +A._m02*(A._m10*A._m21-A._m11*A._m20);
+	float invdet = 1/determinant;
+	float3x3 r = 0;
+	r._m00 =  (A._m11*A._m22-A._m21*A._m12)*invdet;
+	r._m10 = -(A._m01*A._m22-A._m02*A._m21)*invdet;
+	r._m20 =  (A._m01*A._m12-A._m02*A._m11)*invdet;
+	r._m01 = -(A._m10*A._m22-A._m12*A._m20)*invdet;
+	r._m11 =  (A._m00*A._m22-A._m02*A._m20)*invdet;
+	r._m21 = -(A._m00*A._m12-A._m10*A._m02)*invdet;
+	r._m02 =  (A._m10*A._m21-A._m20*A._m11)*invdet;
+	r._m12 = -(A._m00*A._m21-A._m20*A._m01)*invdet;
+	r._m22 =  (A._m00*A._m11-A._m10*A._m01)*invdet;
+	return r;
+}
+
 PS_IN VSI( VSS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
@@ -214,6 +234,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	float4x4 VP =mul(transpose(View),transpose(Projection));
 	
 	float3x3 nworld = (float3x3)(InstWorld);
+	nworld = MInv(nworld);
 	
 	output.pos =  mul(wpos,VP);
 	output.wpos = wpos.xyz;
@@ -236,6 +257,7 @@ PS_IN VS( VSS_IN input)
 	float4x4 VP =mul(transpose(View),transpose(Projection));
 	
 	float3x3 nworld = (float3x3)(transpose(World));
+	nworld = MInv(nworld);
 	
 	output.pos = wpos;// mul(wpos,VP);
 	output.wpos = wpos.xyz;
@@ -259,6 +281,7 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 	float4x4 VP =mul(transpose(View),transpose(Projection));
 	
 	float3x3 nworld = (float3x3)(InstWorld);
+	nworld = MInv(nworld);
 	
 	output.pos = wpos;// mul(wpos,VP);
 	output.wpos = wpos.xyz;
@@ -286,6 +309,7 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	float4 wpos = mul(input.pos,transpose(World));
 	float4x4 VP =mul(transpose(View),transpose(Projection)); 
 	float3x3 nworld = (float3x3)(transpose(World));
+	nworld = MInv(nworld);
 	
 	output.pos = wpos; mul(wpos,VP);
 	output.wpos = wpos.xyz;
@@ -389,11 +413,12 @@ void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStre
 	OutputStream.RestartStrip();
 
 	if(_DrawGSFur && furLen>0)
-	{
+	{//0.000001*
+		float wl =  0.001*furLen/distanceMultiplier;
 		[unroll]
 		for (int x = 1; x < 12; x++)
 		{
-			float w = 0.000001*x*furLen;  
+			float w =x*wl;  
 			input[0].pos = mul(float4(pos1+input[0].norm.xyz*w*input[0].spos.x,1),mx);
 			input[1].pos = mul(float4(pos2+input[1].norm.xyz*w*input[1].spos.x,1),mx);
 			input[2].pos = mul(float4(pos3+input[2].norm.xyz*w*input[2].spos.x,1),mx); 

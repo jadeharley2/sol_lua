@@ -18,43 +18,51 @@ end
 function PANEL:UpdateContext()  
 	local topel = panel.GetTopElement() 
 	if topel and topel.contextinfo then
-		local ci = topel.contextinfo
 
 		local vsize = GetViewportSize()
 		local impos = input.getInterfaceMousePos()
 		local mpos =  impos*vsize
 
-		if isstring(ci) then
-			self:SetAutoSize(true,false)
-			self:SetText(topel.contextinfo)
-			self:SetTextColor(Vector(1,1,1))
-			self:SetTexture()
-			self:SetColor(Vector(0,0,0))
-			self:SetTextOnly(false)
-			self:SetSize(300,30) 
-			self:UpdateLayout()
-			self:SetPos(mpos+self:GetSize()*Point(1,-1)+Point(10,-10)) 
-			self:Show()
-		
-		elseif istable(ci) then
-			if(ci[1]=='image') then
-				self:SetAutoSize(false,false)
-				self:SetText("")
-				self:SetTexture(ci[2])
-				self:SetSize(300,300)
-				self:SetColor(Vector(1,1,1))
-				self:SetTextOnly(false) 
-				local direction = -1
-				if impos.y<-0.3 then
-					direction = 1
-				end
+		if self.tel ~= topel then
+			self.tel = topel
+			local ci = topel.contextinfo
+			--MsgN("udp",type(ci))
 
-				self:SetPos(mpos+self:GetSize()*Point(1,direction)+Point(10,-10)) 
-				self:Show()
-			end
+			self:Clear() 
+			self:SetAutoSize(false,false)
+
+			if isstring(ci) then
+				self:SetAutoSize(true,false)
+				self:SetText(ci)
+				self:SetTextColor(Vector(1,1,1))
+				self:SetTexture()
+				self:SetColor(Vector(0,0,0)) 
+				self:SetTextOnly(false)
+				self:SetSize(300,30)   
+			elseif istable(ci) then
+				if(ci[1]=='image') then
+					self:SetAutoSize(false,false)
+					self:SetText("")
+					self:SetTexture(ci[2])
+					self:SetSize(300,300)
+					self:SetColor(Vector(1,1,1))
+					self:SetTextOnly(false)   
+				end
+			elseif isfunction(ci) then
+				ci(self)  
+			end 
+			self:Show() 
+			self:UpdateLayout()
 		end
+
+		local direction = -1
+		if impos.y<-0.3 then
+			direction = 1
+		end
+		self:SetPos(mpos+self:GetSize()*Point(1,direction)+Point(30,-10)) 
 	else
 		self:Close()
+		self.tel = nil
 	end
 end 
 

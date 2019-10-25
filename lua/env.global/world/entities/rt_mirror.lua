@@ -33,7 +33,7 @@ function ENT:Spawn()
 	model:SetRasterizerMode(RASTER_DETPHSOLID) 
 	model:SetDepthStencillMode(DEPTH_ENABLED)  
 	model:SetBrightness(1)
-	model:SetFadeBounds(0,9e20,0)  
+	model:SetFadeBounds(0,0.1,0)  
 	model:SetMatrix(world)
 	
 	

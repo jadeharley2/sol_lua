@@ -36,6 +36,7 @@ Texture2D tNoise;
 Texture2D tNoise2;  
 
 Texture2D cTexture;  
+Texture2D tGradient;  
 
 //TextureCube g_EnvTexture;  
  
@@ -189,7 +190,7 @@ float4 BlendTilesetSpace(float4 data, float2 texCoord)
 	// temperate = height: rock<1000|200>forest<200|100>grass<20|0>sand
 	float4 temperate_all = BlendB(BlendB(rock,BlendB(forest,grass,100,200,height),200,1000,height),sand,0,20,height);
 	// result = temp: tundra<-0.2|-0.1>temperate<0.08|0.12>desert 
-	float4 result =BlendB( desert_all, BlendB(temperate_all,tundra_all,-0.2,-0.1,temp) ,0.08,0.12,temp); 
+	float4 result =BlendB( desert_all, BlendB(temperate_all,tundra_all,-0.1,0,temp) ,0.08,0.12,temp); 
 	return result;
 }
  //data : x = height, y = humidity, z = temperature, w = none
@@ -649,7 +650,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	//////	 specular_intensity =  (specular_intensity - clouds_dencity*0.3);
 	//////}
 	 
-	if(input.data.w>1000)
+	if(input.data.w>10)
 	{
 		if(input.data.w>10000)
 		{   
@@ -661,13 +662,14 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 			surface_rampcolor *=forest.r*0.8;
 		}
 		else
-		{
+		{ 
 			float2 grassTcrd =input.tnormal.yx;/// float2(input.data.w-10000,(tcrdSmall.x+tcrdSmall.y));  
 			float4 grass = sTexture.Sample(MeshTextureSampler,grassTcrd);
 		//	float4 forest2 = tNoise.Sample(NoiseTextureSampler,tcrdBig*10000); 
 			//surface_rampcolor *= saturate(grass*8*grassTcrd.y);
-			//surface_rampcolor *= forest2.r;
-			clip(grass.a-0.5);//-forest2.r
+			surface_rampcolor *=lerp(grass.r*2,1, saturate(grassTcrd.y*grassTcrd.y*grassTcrd.y));
+			//surface_rampcolor =grassTcrd.y*grassTcrd.y*grassTcrd.y;
+			clip(grass.a-0.5);//-forest2.r 
 		}
 	}
 	  
@@ -850,6 +852,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	{
 		output.diffuse = color_space;//float4(lerp(color_nearby,color_space.rgb,blend_space)*hdrMultiplier,1);
 	}
+	//float4 sacolor = tGradient.Sample(MeshTextureSampler,float2(input.color.x,0)); 
+	//output.diffuse=sacolor;//float4(input.color,1);
 	//output.color +=output.diffuse/4;
 	//output.mask = 0; 
 	return output; 
@@ -1032,8 +1036,7 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 		}
 	}
 
- //grass  height*1000000>1, topDot>098
-
+ 	//grass  height*1000000>1, topDot>098 
 	if(  _DrawGSGrass && !gdc && hasAtmoshphere && nearMode && input[0].data.x*1000000>0.7 )
 	{
 		float height = 1;
@@ -1047,7 +1050,6 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 		}  
 		else
 		{
-		
 			float3 dn =input[1].normal ;
 			float3 n = dn/distanceMultiplier*4*height+float3(
 				cos(time+fpp1.x*1000+fpp1.z*3000)*0.3,
@@ -1057,42 +1059,46 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 			
 			if(dot(input[0].normal,float3(0,1,0))>0.9 && dot(dn,float3(0,1,0))>0.9) 
 			{ 
-				input[0].data.w = 10000;
-				input[1].data.w = 10000;
-				PS_IN b2 = input[0];
-				PS_IN b4 = input[1];
-				b2.data.w = 1001;
-				b4.data.w = 1001;
-				
-				input[0].tnormal = float3(1,0.2,0);
-				input[1].tnormal = float3(1,0.8,0);
-				b2.tnormal = float3(0,0.2,0);
-				b4.tnormal = float3(0,0.8,0);
-				b2.tcrd += float4(0,0,0,0.01);
-				b4.tcrd += float4(0,0,0,0.01);
-				
-				b2.pos = mul(float4(fpp1.xyz+n*0.0001,1),mx); 
-				b4.pos = mul(float4(fpp2.xyz+n*0.0001,1),mx); 
-				
-				OutputStream.Append( input[0] ); 
-				OutputStream.Append( b2 );
-				OutputStream.Append( input[1] );  
-				OutputStream.RestartStrip();
-				
-				OutputStream.Append( input[1] ); 
-				OutputStream.Append( b2 ); 
-				OutputStream.Append( input[0] ); 
-				OutputStream.RestartStrip();
-				
-				OutputStream.Append( input[1] ); 
-				OutputStream.Append( b2 ); 
-				OutputStream.Append( b4 ); 
-				OutputStream.RestartStrip();
-				
-				OutputStream.Append( b4 ); 
-				OutputStream.Append( b2 ); 
-				OutputStream.Append( input[1] ); 
-				OutputStream.RestartStrip();
+				float nval = tNoise.SampleLevel(NoiseTextureSampler,input[0].tcrd*10000,0).x;
+				if(nval>0.3)
+				{
+					input[0].data.w = 10000;
+					input[1].data.w = 10000;
+					PS_IN b2 = input[0];
+					PS_IN b4 = input[1];
+					b2.data.w = 1001;
+					b4.data.w = 1001;
+					
+					input[0].tnormal = float3(1,0.2,0);
+					input[1].tnormal = float3(1,0.8,0);
+					b2.tnormal = float3(0,0.2,0);
+					b4.tnormal = float3(0,0.8,0);
+					b2.tcrd += float4(0,0,0,0.01);
+					b4.tcrd += float4(0,0,0,0.01);
+					
+					b2.pos = mul(float4(fpp1.xyz+n*0.0001,1),mx); 
+					b4.pos = mul(float4(fpp2.xyz+n*0.0001,1),mx); 
+					
+					OutputStream.Append( input[0] ); 
+					OutputStream.Append( b2 );
+					OutputStream.Append( input[1] );  
+					OutputStream.RestartStrip();
+					
+					OutputStream.Append( input[1] ); 
+					OutputStream.Append( b2 ); 
+					OutputStream.Append( input[0] ); 
+					OutputStream.RestartStrip();
+					
+					OutputStream.Append( input[1] ); 
+					OutputStream.Append( b2 ); 
+					OutputStream.Append( b4 ); 
+					OutputStream.RestartStrip();
+					
+					OutputStream.Append( b4 ); 
+					OutputStream.Append( b2 ); 
+					OutputStream.Append( input[1] ); 
+					OutputStream.RestartStrip();
+				}
 			}
 		}
 	}

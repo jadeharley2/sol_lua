@@ -285,6 +285,8 @@ function ItemsetSpawn(storage,k,v,rnd)
 	local its = forms.ReadForm('itemset.'..k) 
 	--MsgN("itemsetspawn",its)
 	if its then
+		local count = v.count or 1
+
 		if not v.mode or v.mode == "all" then
 			for kk,vv in pairs(its.subsets) do -- groups 
 				for k3,v3 in pairs(vv) do -- items
@@ -292,7 +294,7 @@ function ItemsetSpawn(storage,k,v,rnd)
 					local item = forms.GetItem(v3,0) 
 					if item then
 						MsgN("is_item",v3,item)
-						storage:PutItemAsData(nil,item)
+						storage:PutItemAsData(nil,item,count)
 					end
 				end
 			end
@@ -305,7 +307,7 @@ function ItemsetSpawn(storage,k,v,rnd)
 					local item = forms.GetItem(v3,0) 
 					if item then
 						MsgN("is_item2",v3,item)
-						storage:PutItemAsData(nil,item)
+						storage:PutItemAsData(nil,item,count)
 					end
 				end
 			end
@@ -332,7 +334,9 @@ function ENT:LoadData()
 		self:AddTag(TAG_USEABLE)
 		self:AddEventListener(EVENT_USE,"a",ContainerUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
-
+		if j.container.size then
+			storage:SetSize(j.container.size or 30)
+		end
 		--local itemc = r:NextInt(0,3)
 		--local items = table.Keys(forms.GetList("apparel"))
 		--for k=1,itemc do

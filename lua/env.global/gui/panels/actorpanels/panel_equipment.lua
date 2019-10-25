@@ -145,7 +145,9 @@ function PANEL:AddSlot(text,slotkey)
 	if equipped then
 		--MsgN(slotkey,equipped)
 		--PrintTable(equipped)
-		slot:Add(Item(equipment,slotkey,{data =  equipped.data, count = 1},node )) 
+		MsgN(slotkey,equipped.lock)
+		local item = Item(equipment,slotkey,{data =  equipped.data, count = 1,lock = equipped.lock},node )
+		slot:Add(item) 
 	end
 
 	local rt = panel.Create()

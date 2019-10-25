@@ -2,6 +2,7 @@
 
 local registry = debug.getregistry()
 local ENTITY = registry.Entity
+ 
 
 -- do for all items in table or for one
 function tableq(t)

@@ -1,0 +1,24 @@
+{	
+	"type" : "tool_shovel",
+	"name" : "Pickaxe",
+	"description" : "Regular pickaxe",
+	"icon" : "tool/pickaxe",
+	"appearance" : {
+		//"model": "models/primitives/box.stmd",
+		"model":"models/tools/pickaxe/pickaxe.stmd",
+		"scale":0.03,
+		"holdtype" : {
+			"model" : "models/tools/pickaxe/pickaxe_anim.stmd",
+			"idle" : "idle_b",
+			"fire" : "work",
+			"fire_loop" : "workloop",
+			"fire_duration" : 0.8
+		}, 
+		"attach":{ 
+			"name" : "hand_R",
+			"world":{"ang":[90,0,0],"sca":1,"pos":[-5,2.5,-0.5]}
+		}
+	},
+	"resource" : "resource.stone",
+	"firedelay" : 0,
+}

@@ -21,17 +21,42 @@ SETTINGS_VALUES = {
 				{type = "number", name = "FOV", var = "engine/fov", default = 90, proc = function(n)
 					return math.Clamp(n,45,110) end},
 				--{type = "separator", name = "PostProcessing"},
-				{type = "bool", name = "PostProcess enabled", var = "engine/pp_enabled", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessEnabled(v) end},
-				{type = "bool", name = "SSAO", var = "engine/pp_ssao", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAO(v) end},
-				{type = "number", name = "SSAO samples", var = "engine/pp_ssao_samples", default = 128, proc = function(n)
-					return math.Clamp(n,16,256) end, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAOSamples(v) end},
-				{type = "bool", name = "SSLR", var = "engine/pp_sslr", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessSSLR(v) end},
-				{type = "bool", name = "Bloom enabled", var = "engine/pp_bloom", default = true, apply = function(v) render.GlobalRenderParameters():SetPostprocessBloom(v) end},
-				{type = "bool", name = "Grass enabled", var = "engine/gsh_grass", default = true, apply = function(v) render.GlobalRenderParameters():SetDrawGSGrass(v) end},
-				{type = "bool", name = "Fur enabled", var = "engine/fur", default = true, apply = function(v) render.GlobalRenderParameters():SetDrawGSFur(v) end},
+				{type = "bool", name = "PostProcess enabled", var = "engine/pp_enabled", default = true, 
+					--apply = function(v) render.GlobalRenderParameters():SetPostprocessEnabled(v) end
+					apply = function(v) render.GlobalRenderParameters():SetPostProcessEnabled(v) end
+				},
+				{type = "bool", name = "SSAO", var = "engine/pp_ssao", default = true,  
+					--apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAO(v) end
+					apply = function(v) render.GlobalRenderParameters():SetPostProcessSSAO(v) end
+				},
+				{type = "number", name = "SSAO samples", var = "engine/pp_ssao_samples", default = 128, 
+					proc = function(n) return math.Clamp(n,16,256) end, 
+					--apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAOSamples(v) end
+					apply = function(v) render.GlobalRenderParameters():SetPostProcessSSAOSampleCount(v) end 
+				},
+				{type = "bool", name = "SSLR", var = "engine/pp_sslr", default = true, 
+					--apply = function(v) render.GlobalRenderParameters():SetPostprocessSSLR(v) end
+					apply = function(v) render.GlobalRenderParameters():SetPostProcessSSLR(v) end
+				},
+				{type = "bool", name = "Bloom enabled", var = "engine/pp_bloom", default = true, 
+					--apply = function(v) render.GlobalRenderParameters():SetPostprocessBloom(v) end
+					apply = function(v) render.GlobalRenderParameters():SetPostProcessBloom(v) end
+				},
+				{type = "bool", name = "Grass enabled", var = "engine/gsh_grass", default = true, 
+					apply = function(v) render.GlobalRenderParameters():SetDrawGSGrass(v) end
+				},
+				{type = "bool", name = "Fur enabled", var = "engine/fur", default = true, 
+					apply = function(v) render.GlobalRenderParameters():SetDrawGSFur(v) end
+				},
 				
-				{type = "bool", name = "Volume clouds top", var = "engine/cheapclouds_top", default = true, apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsTop(v) end},
-				{type = "bool", name = "Volume clouds bot", var = "engine/cheapclouds_bot", default = true, apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsBot(v) end},
+				{type = "bool", name = "Volume clouds top", var = "engine/cheapclouds_top", default = true, 
+					--apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsTop(v) end
+					apply = function(v) render.GlobalRenderParameters():SetDrawVolumeCloudsTop(v) end
+				},
+				{type = "bool", name = "Volume clouds bot", var = "engine/cheapclouds_bot", default = true, 
+					--apply = function(v) render.GlobalRenderParameters():SetVolumeCloudsBot(v) end
+					apply = function(v) render.GlobalRenderParameters():SetDrawVolumeCloudsBot(v) end
+				},
 
 			}
 		},
@@ -125,6 +150,11 @@ function settings.Save()
 	profile.Save()
 end
 
+function  settings_error(e)
+	MsgN("settings apply error:", e) 
+	MsgN(debug.traceback())
+end
+  
 function settings.Apply() 
 	for k2,v2 in pairs(SETTINGS_VALUES.List) do
 		if v2.apply then
@@ -134,7 +164,12 @@ function settings.Apply()
 			elseif v2.type =="number" then
 				val = settings.GetNumber(v2.var,v2.default) 
 			end
-			if val ~= nil then v2.apply(val) Msg("s_apply ",v2.name," to ",val) end 
+			if val ~= nil then 
+				local success, result = xpcall(v2.apply,settings_error,val) 
+				if success then
+					Msg("s_apply ",v2.name," to ",val) 
+				end
+			end 
 		end
 	end 
 end

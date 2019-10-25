@@ -159,18 +159,28 @@ function crafting.GetCombineOptions(item_data_a,item_data_b)
         local formid_a = item_data_a:Read("/parameters/form")
         local formid_b = item_data_b:Read("/parameters/form")
         
-        if(forms.HasTag(formid_a,'dyeable') and forms.HasTag(formid_b,'dye')) then
-            return {dye="dye"}
-        end
+        return hook.Collect('craft.can_combine',formid_a,formid_b)
+
+        --if(forms.HasTag(formid_a,'dyeable') and forms.HasTag(formid_b,'dye')) then
+        --    return {dye="dye"}
+        --end
 
         --hook.Call("itemcombine")
     end
     return {}
 end
+
+crafting.combination_types = crafting.combination_types or {}
+function crafting.AddCombination(type,func)
+    crafting.combination_types[type] = func
+end
+
+
 function crafting.Combine(item_data_a,item_data_b,type,storage)
     if item_data_a and item_data_b then
-        MsgN("combine:",type)
-        if type =='dye' then
+        local combofunc = crafting.combination_types[type]
+        MsgN("combine:",type,combofunc)
+        if combofunc then
             local formid_a = item_data_a:Read("/parameters/form")
             local formid_b = item_data_b:Read("/parameters/form")
             local data_a = forms.ReadForm(formid_a)
@@ -180,42 +190,30 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
             local slotA = storage:GetItemSlot(formid_a)
             local slotB = storage:GetItemSlot(formid_b)
             if slotA and slotB then 
-                local d = data_a.dye
-                if d then 
-                    data_a.dye = nil
-                    
-                    if d.type == 'modmaterial' then
-                        data_a.modmaterial = data_a.modmaterial or {{hold=true},{hold=true},{hold=true},{hold=true}}
-                        if d.vartype =='vec3' then
-                            data_a.modmaterial[d.matid][d.variable] = data_b.tint
-                        elseif d.vartype =='vec4' then
-                            data_a.modmaterial[d.matid][d.variable] = {data_b.tint[1],data_b.tint[2],data_b.tint[3],1}
-                        end
-                    end
-                   -- PrintTable(data_a.modmaterial)
-                    data_a.name = (data_a.name or formid_a)  .. " | " .. (data_b.suffix or data_b.name)
-
-                    --storage:PutItemAsData(nil,json.ToJson(data_a), 1)
-
+               
+                local newid, newdata, newcount = combofunc(formid_a,data_a,formid_b,data_b)
+                if newid then 
                     local idparts = string.split(formid_a,'.')
-
-                    local newid = string.join('.',idparts,1).."_"..(data_b.suffix or string.join('.',string.split(formid_b,'.'),1))
-                    MsgN("new form id:",newid)
-                    if forms.Create(idparts[1],newid) then
-                        forms.SetData(idparts[1],newid,json.ToJson(data_a))
-
-                        local critem = forms.GetItem(idparts[1]..'.'..newid,0)
-                       -- MsgN("ni",newid,critem)
-                        if critem then
-                            storage:PutItemAsData(nil,critem,1)
-                            storage:TakeItemAsData(slotA,1)
-                            storage:TakeItemAsData(slotB,1)
-                            return true
+                    local critem = false
+                    if newdata then
+                        MsgN("new form id:",newid)
+                        if forms.Create(idparts[1],newid) then
+                            forms.SetData(idparts[1],newid,json.ToJson(newdata))
                         end
+                        critem = forms.GetItem(idparts[1]..'.'..newid,0)
+                    else
+                        critem = forms.GetItem(newid,0)
+                    end 
+                        
+                    -- MsgN("ni",newid,critem)
+                    if critem then
+                        storage:PutItemAsData(nil,critem,newcount or 1)
+                        storage:TakeItemAsData(slotA,1)
+                        storage:TakeItemAsData(slotB,1)
+                        return true
                     end
 
-                end
-                --PrintTable(data_a,56)
+                end 
             end
         end
     end

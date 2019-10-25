@@ -28,6 +28,23 @@ function VectorJ(vec)
 	end
 	return {0,0,0} 
 end
+function JMatrix(tab)
+	local r = matrix.Identity()
+	if tab.sca then
+		if istable(tab.sca) then
+			r = matrix.Scaling(Vector(tab.sca[1],tab.sca[2],tab.sca[3]))
+		else
+			r = matrix.Scaling(tab.sca)
+		end
+	end
+	if tab.ang then
+		r = r * matrix.Rotation(Vector(tab.ang[1],tab.ang[2],tab.ang[3]))
+	end
+	if tab.pos then
+		r = r * matrix.Translation(Vector(tab.pos[1],tab.pos[2],tab.pos[3]))
+	end
+	return r
+end
 
 function Multicall(tab_obj,func,...)
 	for k,v in pairs(tab_obj) do

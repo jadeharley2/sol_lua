@@ -81,7 +81,17 @@ function PANEL:LoadRecipes(category)
 								texture = forms.GetIcon(resultid) or "textures/gui/icons/unknown.png",
 								color = (forms.GetTint(resultid) or {1,1,1}),
 								size = {42,42}, 
-								dock = DOCK_LEFT
+								dock = DOCK_LEFT,
+								contextinfo = function(ci)
+									ci:Clear()
+									ci:SetSize(200,200)
+									ci:SetAutoSize(false,true)
+						
+									local cc = panel.Create('iteminfo')
+									cc:SetForm(resultid)
+									cc:Dock(DOCK_TOP)
+									ci:Add(cc)
+								end
 							},
 							{
 								size = {20,20},

@@ -61,7 +61,7 @@ function ENT:UpdateShadowMap()
 end
 function ENT:UpdatePos() 
 	local c = GetCamera()
-	if not IsValidEnt(self) or not self.camera then 
+	if not IsValidEnt(self) or not self.camera or not IsValidEnt(self.light) then 
 		hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate"..tostring(self.seed))
 	else
 		--self:SetPos(Vector(0,0,0)) 

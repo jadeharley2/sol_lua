@@ -89,6 +89,7 @@ function PANEL:Init()
 end
 
 function PANEL:MouseDown(fid)
+	if self.lock then return end
 	if not panel.current_drag and fid == 1 then
 	
 		if self.original == nil then 
@@ -112,6 +113,7 @@ function PANEL:MouseDown(fid)
 end
 function PANEL:MouseClick(fid) 
 	if not panel.current_drag and fid==1 then
+		if self.lock then return end
 		if input.KeyPressed(KEYS_SHIFTKEY) then
 			local source = self.storage
 			local node = source:GetNode()
@@ -131,7 +133,10 @@ function PANEL:MouseClick(fid)
 			if target then
 				local fs = target:GetFreeSlot()
 				if fs then
-					source:TransferItem(self.storeslot,target,fs,1)
+					local count = nil
+					if input.KeyPressed(KEYS_CONTROLKEY) then count = 1 end
+
+					source:TransferItem(self.storeslot,target,nil,count)
 				--	MsgN("sclick!")  
 				--	InvRefreshAll()
 					debug.Delayed(100,function()
@@ -156,7 +161,7 @@ function PANEL:MouseClick(fid)
 		local itemi = self.item
 		--local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
 		local context = {
-			{text = ""..self.title:GetText()},
+			--{text = ""..self.title:GetText()},
 			--{text = "use",action = ACT_USE},
 			{text = "drop",action = function(item) 
 				item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) 
@@ -168,6 +173,7 @@ function PANEL:MouseClick(fid)
 				self:GetParent():Remove(self)  
 			end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data),5)  end},--hook.Call("event.item.droprequest",item) return false end},
+			{text = "forminfo",action = function(item)  PrintTable(forms.ReadForm(item.storage.list[item.storeslot].formid),5)  end},--hook.Call("event.item.droprequest",item) return false end},
 			{text = "edit",action = function(item)  EIT = json.FromJson(item.storage.list[item.storeslot].data) end},
 			{text = "save",action = function(item)  item.storage.list[item.storeslot].data = json.ToJson(EIT) end},
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
@@ -192,7 +198,8 @@ function PANEL:MouseClick(fid)
 			local node = self.storage:GetNode()
 			local fenf = setmetatable({
 				storage = self.storage, 
-				node = node
+				node = node,
+				item = json.FromJson(self.item.data)
 			},{__index = _G})
 			for k,v in pairs(self.customactions) do
 				local condvalue = true
@@ -247,6 +254,7 @@ function PANEL:Set(slot,item,node)
 
 	
 	self.item = item
+	self.lock = item.lock
 
 	if item.reference and item.table then
 		--local actor = self.storage:GetNode() 
@@ -267,6 +275,16 @@ function PANEL:Set(slot,item,node)
 		--MsgN(icon)
 		self.title:SetText(title or class or luatype or "???")
 		self.contextinfo = title or class or luatype or "???"
+		self.contextinfo = function(ci)
+			ci:Clear()
+			ci:SetSize(200,200)
+			ci:SetAutoSize(false,true)
+
+			local cc = panel.Create('iteminfo')
+			cc:SetForm(class)
+			cc:Dock(DOCK_TOP)
+			ci:Add(cc)
+		end
 		--MsgN(title,luatype,class,amount,icon)
 		--PrintTable(class)   
  
@@ -356,6 +374,9 @@ function PANEL:Set(slot,item,node)
 		else 
 			sel:SetAlpha(0)
 		end
+	end
+	if self.lock then  
+		self.base.SetColorAuto(self,Vector(0.1,0.1,0.1),0.1) 
 	end
 	self.item = item
 	

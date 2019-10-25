@@ -20,15 +20,33 @@ function PANEL:Init()
 	infopanel_header:SetSize(600,20) 
 	infopanel_header:Dock(DOCK_TOP)
 	infopanel:Add(infopanel_header)
+	self.infopanel_header = infopanel_header
+
 	local infopanel_text = panel.Create()
 	infopanel_text:SetColor(Vector(0,0,0))
 	infopanel_text:SetTextColor(Vector(0.8,0.8,0.8))
 	infopanel_text:SetSize(600,20) 
 	infopanel_text:Dock(DOCK_FILL)
 	infopanel:Add(infopanel_text)
+	self.infopanel_text = infopanel_text
 	
-	
-	
+	local infopanel_brefresh = panel.Create('button') 
+	infopanel_brefresh:SetSize(600,20) 
+	infopanel_brefresh:Dock(DOCK_TOP)
+	infopanel_brefresh:SetText("Refresh")
+	infopanel_brefresh.OnClick = function(s)
+		self:Refresh()
+	end
+	self:Add(infopanel_brefresh)
+
+	self:Refresh()
+end
+
+function PANEL:Refresh()
+	if self.dirtree then
+		self:Remove(self.dirtree) 
+		self.dirtree = nil
+	end
 	local dirtree = panel.Create("tree")
 	dirtree:SetSize(600,600)
 	dirtree:Dock(DOCK_FILL)
@@ -56,7 +74,7 @@ function PANEL:Init()
 					end
 				end
 				local poststr = ""
-				if info._returns then
+				if info._returns and istable(info._returns) then
 					for k,v in pairs(info._returns) do
 						local vname = v._name
 						if vname then vname = vname..":"..v._valuetype else vname = v._valuetype  end
@@ -68,7 +86,11 @@ function PANEL:Init()
 					end
 				end
 				info._name = key
-				tab[#tab+1] = {key.."("..argstr..")"..poststr,tag=info}
+				if info._type=='function' then
+					tab[#tab+1] = {key.."("..argstr..")"..poststr,tag=info}
+				else
+					tab[#tab+1] = {key..poststr,tag=info}
+				end
 			elseif isfunction(value) then
 				local argstr = "" 
 				for k=1,30 do
@@ -92,7 +114,7 @@ function PANEL:Init()
 			end
 		end
 	end
-	
+	local used_modules = {}
 	local rtb1 = {"module"} 
 	for k,v in SortedPairs(reg._LOADED,UniversalSort) do
 		if isstring(k) and not string.starts(k,"_") then
@@ -104,6 +126,7 @@ function PANEL:Init()
 				end
 			end
 			rtb1[#rtb1+1] = rtl 
+			used_modules[k] = true
 		end
 	end 
 	
@@ -192,18 +215,30 @@ function PANEL:Init()
 		rtb4[#rtb4+1] = rtl  
 	end 
 	
+
+	local rtb5 = {"global"}
+	local globlist = {}
+	for k,v in pairs(api.globals) do 
+		if not used_modules[k] then
+			globlist[k] = v 
+		end
+	end
+	for k,v in SortedPairs(globlist) do  
+		ParseVal(api.globals,k,v,rtb5) 
+	end 
+	
 	
 	
 	--PrintTable(rtb)
 	dirtree:SetTableType(2) 
-	dirtree:FromTable({"*",rtb1,rtb2,rtb3,rtb4})
+	dirtree:FromTable({"*",rtb1,rtb2,rtb3,rtb4,rtb5})
 	dirtree.root:SetSize(600,dirtree.root:GetSize().x)
 	dirtree.grid:SetColor(Vector(0.1,0.1,0.1))
 	
 	dirtree.OnItemClick = function(tree,element)
-		infopanel_text:Clear()
+		self.infopanel_text:Clear()
 		if element and element.tag then
-			infopanel_header:SetText(element.tag._type .." ".. element.tag._name)
+			self.infopanel_header:SetText(element.tag._type .." ".. element.tag._name)
 			if element.tag._arguments then
 				local tth = panel.Create()
 				tth:SetColor(Vector(0,0,0))
@@ -211,7 +246,7 @@ function PANEL:Init()
 				tth:SetText("Arguments:")
 				tth:SetSize(600,20) 
 				tth:Dock(DOCK_TOP)
-				infopanel_text:Add(tth)
+				self.infopanel_text:Add(tth)
 				for k,v in pairs(element.tag._arguments) do 
 					local vname = v._name
 					if vname then vname = "  "..vname..":"..v._valuetype else vname = "  "..v._valuetype  end
@@ -224,7 +259,7 @@ function PANEL:Init()
 					l:SetText(vname)
 					l:SetSize(600,20) 
 					l:Dock(DOCK_TOP)
-					infopanel_text:Add(l)
+					self.infopanel_text:Add(l)
 				end
 			end
 			if element.tag._returns then
@@ -232,7 +267,7 @@ function PANEL:Init()
 				splitter:SetColor(Vector(0.1,0.1,0.1)) 
 				splitter:SetSize(600,5) 
 				splitter:Dock(DOCK_TOP)
-				infopanel_text:Add(splitter)
+				self.infopanel_text:Add(splitter)
 				
 				local tth = panel.Create()
 				tth:SetColor(Vector(0,0,0))
@@ -240,7 +275,7 @@ function PANEL:Init()
 				tth:SetText("Returns:")
 				tth:SetSize(600,20) 
 				tth:Dock(DOCK_TOP)
-				infopanel_text:Add(tth)
+				self.infopanel_text:Add(tth)
 				for k,v in pairs(element.tag._returns) do 
 					local vname = v._name
 					if vname then vname = "  "..vname..":"..v._valuetype else vname = "  "..v._valuetype  end
@@ -253,7 +288,7 @@ function PANEL:Init()
 					l:SetText(vname)
 					l:SetSize(600,20) 
 					l:Dock(DOCK_TOP)
-					infopanel_text:Add(l)
+					self.infopanel_text:Add(l)
 				end
 			end
 			if element.tag._description then
@@ -261,7 +296,7 @@ function PANEL:Init()
 				splitter:SetColor(Vector(0.1,0.1,0.1)) 
 				splitter:SetSize(600,5) 
 				splitter:Dock(DOCK_TOP)
-				infopanel_text:Add(splitter)
+				self.infopanel_text:Add(splitter)
 				
 				local tth = panel.Create()
 				tth:SetColor(Vector(0,0,0))
@@ -269,15 +304,15 @@ function PANEL:Init()
 				tth:SetText(element.tag._description)
 				tth:SetSize(600,20) 
 				tth:Dock(DOCK_TOP)
-				infopanel_text:Add(tth)
+				self.infopanel_text:Add(tth)
 			end
-			infopanel_text:UpdateLayout()
+			self.infopanel_text:UpdateLayout()
 		else
-			infopanel_header:SetText("") 
+			self.infopanel_header:SetText("") 
 		end
 	end
 	
-	
+	self:UpdateLayout()
 	
 end 
 

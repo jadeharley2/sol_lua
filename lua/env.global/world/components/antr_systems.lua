@@ -129,15 +129,22 @@ end
 function component:Shutdown()
     local it = 0
     local node = self:GetNode()
-    node:Timer("antrcheck",0,50,4,function()
-        self:SetState(nil,1-it)
-        it = it + 0.25
-    end)
-    node:Delayed("antr",250,function()
-        local node = self:GetNode()
-        self:SetState('off')
-        node.model:SetPlaybackRate(0)
-        node:SetUpdating(false) 
+    node.model:PlayLayeredSequence(32,"idle","models/anthroid_anim.stmd")
+    node.model:SetLayerFade(32,0.02,0.01)
+    node:SetEyeAngles(0,0,true,true) 
+    node:SetHeadAngles(0,0)
+    self:SetState('check',1)
+    node:Delayed("sitw",1000,function()
+        node:Timer("antrcheck",0,50,4,function()
+            self:SetState(nil,1-it)
+            it = it + 0.25
+        end)
+        node:Delayed("antr",250,function()
+            local node = self:GetNode()
+            self:SetState('off')
+            node.model:SetPlaybackRate(0)
+            node:SetUpdating(false) 
+        end)
     end)
 end
 function component:PowerUp()
@@ -152,6 +159,7 @@ function component:PowerUp()
         node:Delayed("antr",2100,function()
             node:SetUpdating(true) 
             node.model:SetPlaybackRate(1)
+            node.model:StopLayeredSequence(32)
             self:SetState('standby',0.8)
             node:Delayed("antr",50,function() 
                 self:SetState('standby')
@@ -159,3 +167,7 @@ function component:PowerUp()
         end)
     end)
 end
+COMRegFunctions(component,{
+	Shutdown = function(node) return node:GetComponent(CTYPE_ANTR_SYSTEMS):Shutdown() end, 
+	PowerUp = function(node) return node:GetComponent(CTYPE_ANTR_SYSTEMS):PowerUp() end, 
+}) 

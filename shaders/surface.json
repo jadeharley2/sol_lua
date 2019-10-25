@@ -40,6 +40,7 @@
 		"tLightRamp" 				: {"type":"texture"},
 		"tileSpaceTexture_d" 		: {"type":"texture"},
 		"tileSpaceTexture_n" 		: {"type":"texture"},
+		"tGradient" 				: {"type":"texture"}, 
 		"time" 						: {"type":"float"},
 	},
 	"onload" : {
@@ -54,6 +55,7 @@
 			"tLightRamp" 			: "textures/atmosphere/skyramp.png",
 			"tileSpaceTexture_d" 	: "textures/surface/space/surface_d.dds",
 			"tileSpaceTexture_n" 	: "textures/surface/space/surface_n.dds",
+			"tGradient" 			: "textures/grad/thermal.png", 
 		},
 	},
 	"onframe" : { },

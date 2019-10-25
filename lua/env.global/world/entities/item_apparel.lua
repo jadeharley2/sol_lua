@@ -185,24 +185,25 @@ end
 
 
 
-hook.Add("item_properties","item_apparel",function(data,context,storage,item) 
-	if data.data:Read("/parameters/luaenttype") == "item_apparel" then
-		node = storage:GetNode()
-		if node and node.equipment then 
-			local iseq = node.equipment:IsEquipped(data.data)--data.data:Read("/parameters/isequipped") or false 
-			if iseq then 
-				context[#context+1] = {text = "unequip",action = function(i) 
-					node:SendEvent(EVENT_UNEQUIP,data.data) 
-					--data.data:Write("/parameters/isequipped",false) 
-					MsgN(i)
-				end}
-			else
-				context[#context+1] = {text = "equip",action = function(i) 
-					node:SendEvent(EVENT_EQUIP,data.data)
-					--data.data:Write("/parameters/isequipped",true) 
-					MsgN(i)
-				end}
-			end
-		end
-	end
-end) 
+hook.Remove("item_properties","item_apparel")
+--hook.Add("item_properties","item_apparel",function(data,context,storage,item) 
+--	if data.data:Read("/parameters/luaenttype") == "item_apparel" then
+--		node = storage:GetNode()
+--		if node and node.equipment then 
+--			local iseq = node.equipment:IsEquipped(data.data)--data.data:Read("/parameters/isequipped") or false 
+--			if iseq then 
+--				context[#context+1] = {text = "unequip",action = function(i) 
+--					node:SendEvent(EVENT_UNEQUIP,data.data) 
+--					--data.data:Write("/parameters/isequipped",false) 
+--					MsgN(i)
+--				end}
+--			else
+--				context[#context+1] = {text = "equip",action = function(i) 
+--					node:SendEvent(EVENT_EQUIP,data.data)
+--					--data.data:Write("/parameters/isequipped",true) 
+--					MsgN(i)
+--				end}
+--			end
+--		end
+--	end
+--end) 

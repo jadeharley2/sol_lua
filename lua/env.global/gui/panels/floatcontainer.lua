@@ -18,7 +18,8 @@ function PANEL:SetFloater(floater)
 	local bar2 = self.hbar
 	if bar then bar:SetScroll(-1) end
 	if bar2 then bar2:SetScroll(-1) end
-end
+end  
+PANEL.floater_info = {type = 'children_single',add = PANEL.SetFloater}
 -- 0 = NONE, 1 = VERTICAL, 2 = HORISONTAL, 3 = BOTH
 function PANEL:SetScrollbars(type)
 		

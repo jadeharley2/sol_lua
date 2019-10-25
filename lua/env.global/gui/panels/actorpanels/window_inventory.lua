@@ -94,12 +94,14 @@ function PANEL:ReloadTabs()
 	temp_allinvwindows[seed] = self
 	 
 	self.inner:Clear()
-	
+
+	--if true then return end 
+
 	local tabs = panel.Create("tabmenu")
 	
 	self.tabs = tabs
 	tabs:Dock(DOCK_FILL)
-	self:Add(tabs) 
+	self.inner:Add(tabs) 
 	
 	--local grid = panel.Create("icongrid") 
 	--local inv = Inventory(30)
@@ -123,9 +125,26 @@ function PANEL:ReloadTabs()
 	local ply = self.node or LocalPlayer()
 	local storage = self.storage or ply:GetComponent(CTYPE_STORAGE)
 	if storage then
-		local grid2 = panel.Create("grid") 
-		tabs:AddTab("INV",grid2)
-		self.grid2 = grid2
+		gui.FromTable({type='floatcontainer', name = 'xgrid',
+			dock = DOCK_FILL,
+			color = {0,0,0},
+			Scrollbars = 1,
+			floater = {
+				color = {0,0,0},
+				size = {150,1000},
+				autosize = {false,true},
+				subs = {
+					{type = 'grid', name = 'grid2',
+						size = {150,1000},
+						autosize = {false,true},
+						dock = DOCK_TOP,
+					}
+				}
+			}, 
+		},nil,{},self) 
+
+		tabs:AddTab("INV",self.xgrid)
+		--self.grid2 = grid2
 		self.storage = storage
 		self:RefreshINV()
 	end
@@ -224,7 +243,10 @@ function PANEL:Open()
 	self:ReloadTabs() 
 	self:UpdateLayout()
 	self:Show() 
- 
+	if not self.first then
+		self.xgrid:Scroll(-10000)
+		self.first = true
+	end
 end
 function PANEL:RefreshINV() 
 	local storage = self.storage 
@@ -236,7 +258,8 @@ function PANEL:RefreshINV()
 			--MsgN(debug.traceback())
 			grid2:Clear()
 			local items = storage:GetItems() 
-			for k=1,10*3 do
+			local storagesize = storage:GetSize()
+			for k=1,storagesize do
 				local slot = panel.Create("slot",{size={48,48},color = {0.1,0.1,0.1}})
 				slot.storage = storage
 				slot.storeslot = k
@@ -247,6 +270,9 @@ function PANEL:RefreshINV()
 				grid2:AddPanel(slot)
 			end 
 			self:UpdateLayout() 
+			debug.Delayed(100,function()
+				self.xgrid:Scroll(-2000)
+			end)
 		end) 
 	end
 end

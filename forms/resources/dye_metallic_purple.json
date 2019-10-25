@@ -1,0 +1,9 @@
+{
+    "tags":["dye"],
+    "icon":"res/liquid_metallic",
+    "tint":[0.4862745,0.1960784,0.7529412],
+    "metalness":1,
+    "smooth" :0.8,
+    "name":"Purple metallic dye",
+    "suffix":"metallic_purple"
+}

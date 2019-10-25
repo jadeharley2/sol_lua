@@ -77,10 +77,36 @@ function PANEL:Select(actor,index)
 		if slot then 
 			slot:Select(actor)
 			self.selector:SetPos(slot:GetPos()+Point(0,-slot:GetSize().y+0.5))
+			if slot.item and slot.item.item then
+				hook.Call("quickmenu.item_select",slot.item.item,index)
+			else
+				hook.Call("quickmenu.item_select",nil,index) 
+			end
 		end
 	--end
 	self.selector:SetVisible(true)
 end
+hook.Add("quickmenu.item_select","test",function(item,id)
+	local _ctool = LocalPlayer()._ctool
+	if _ctool then
+		_ctool:Unequip(LocalPlayer())
+		_ctool:Despawn()
+		LocalPlayer()._ctool = nil
+	end
+
+	if item then
+		MsgN(item)
+		if(item.data:Read("/parameters/luaenttype") == 'base_tool') then
+			MsgN("istool")
+			PrintTable(json.FromJson(item.data))
+			local tool = ents.FromData(item.data,LocalPlayer())
+			if tool then
+				LocalPlayer()._ctool = tool
+				tool:Equip(LocalPlayer())
+			end
+		end
+	end
+end)
 function PANEL:SelectNext(actor)
 	self:Select(actor,((self.cslot or 1) + 1)%10)
 end

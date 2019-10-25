@@ -72,10 +72,10 @@ function PANEL:CheckCombo()
 		
 		for k,v in pairs(crafting.GetCombineOptions(itemA.data,itemB.data)) do
 			cl:Add(gui.FromTable({type="button",
-				text = k,
+				text = v,
 				size = {22,22},
 				dock=DOCK_TOP,
-				ctype = k,
+				ctype = v,
 				OnClick = function(s)
 					self:Combine(itemA.data,itemB.data,s.ctype)
 				end})) 
@@ -88,12 +88,12 @@ function PANEL:Combine(A,B,T)
 	--crafting.CanCraft(formid,storage)
 	--MsgN(crafting.Craft(s.formid,s.recipeid,LocalPlayer().storage)) 
 	if crafting.Combine(A,B,T,LocalPlayer().storage) then
-		self.itemA:Remove(self.itemA.item)
-		self.itemB:Remove(self.itemB.item)
-		self.itemA.item = nil
-		self.itemB.item = nil
-		self.items = {}
-		self.combolist:Clear()
+		--self.itemA:Remove(self.itemA.item)
+		--self.itemB:Remove(self.itemB.item)
+		--self.itemA.item = nil
+		--self.itemB.item = nil
+		--self.items = {}
+		--self.combolist:Clear()
 	end
 	hook.Call("inventory_update",LocalPlayer())
 end

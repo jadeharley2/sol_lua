@@ -9,7 +9,7 @@
 		"run" : { "speed" : 4 }
 	},
 	"equipment":{
-		"slots" : ["skin","head.top","head.eyes","head.mouth","neck","torso",
+		"slots" : ["skin","skin.head","head.top","head.eyes","head.mouth","neck","torso",
 			"torso.top","tail", "legs", "arms","hands","torso.under.top","torso.under.bot","feet" ],
 		"groups" : { 
 			"head" : ["head.top","head.eyes","head.mouth"], 

@@ -221,6 +221,28 @@ function fcall(func,args)
 end
 
 
+function rgbToHex(rgb,mul)
+	local value = ''
+
+	for k, v in pairs(rgb) do
+		local hex = ''
+		local val = v*mul
+		while(val > 0)do
+			local index = math.fmod(val, 16) + 1
+			val = math.floor(val / 16)
+			hex = string.sub('0123456789ABCDEF', index, index) .. hex
+		end
+
+		if(string.len(hex) == 0)then hex = '00' 
+		elseif (string.len(hex) == 1) then hex = '0' .. hex
+		end 
+		value = value .. hex
+	end
+
+	return value
+end
+
+
 
 
 

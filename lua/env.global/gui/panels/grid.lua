@@ -7,7 +7,7 @@ function PANEL:Init()
 	self.rows = {} 
 	self:SetColor(Vector(0,0,0)) 
 	self.rowcounter = 0
-	 
+	self:SetAutoSize(false,true)
 end
 function PANEL:NewRow() 
 	local newrow = panel.Create("panel",{color = {0,0,0},size={100,self.rowheight}})

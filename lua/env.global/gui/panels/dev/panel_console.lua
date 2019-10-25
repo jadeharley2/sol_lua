@@ -270,7 +270,7 @@ function PANEL:TextChanged(n,text)
 			function(b)
 				b:SetSize(w,30)
 				b:SetTextColor(Vector(0.8,0.8,1))
-				b:SetColor(Vector(0,0,0))
+				b:SetColorAuto(Vector(0,0,0))
 			end) 
 	else
 		ContextMenu(self,nil)
@@ -278,42 +278,6 @@ function PANEL:TextChanged(n,text)
 end
 
 
-FunctionIsSafeToGet = function(text)
-	if string.starts(text,'Entity(') then
-		return true
-	end	 
-	if string.starts(text,'Vector(') then
-		return true
-	end	 
-	if string.starts(text,'LocalPlayer(') then
-		return true
-	end	 
-	if string.starts(text,'Get') then
-		return true
-	end	 
-end
-
-LuaFunctionAutocomplete = function(parent,key)
-	local r = {}  
-	if parent then
-		if type(parent)=='userdata' then
-			parent = getmetatable(parent)
-		end
-		
-		if type(parent)=='table' then
-			for k,v in pairs(parent) do
-				if string.starts(k,key) then 
-					r[#r+1] = k
-				end
-			end
-		end
-	end
-	return r
-
-end
-LuaApiGetSub = function(parent,key)
-
-end
 
 console.AddCmd("debug",function()
 	local debugp = panel.Create("window_debug")  
@@ -328,17 +292,14 @@ console.AddCmd("testgui",function()
 	debugp:SetSize(400,800)
 	debugp:Show()     
 	debugp:UpdateLayout()  
-end)
+end) 
 console.AddCmd("testcolors",function()
 	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
 	.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
-	.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")   
-end)
-console.AddCmd("testcolors",function()
-	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"
-	.."\a[yellow]YELLOW\a[cyan]CYAN\a[magenta]MAGENTA"
-	.."\a[#556677]a?\a[#552388]a?\a[#AABBCC]a?")   
+	.."\a[#556677]#556677\a[#552388]#552388\a[#AABBCC]#AABBCC")   
 end)
 
 --placeholder
 console.AddCmd("filter",function() end)
+
+

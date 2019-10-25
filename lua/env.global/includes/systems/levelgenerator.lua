@@ -40,3 +40,11 @@ end
 function meta:GenerateGrid(seed)
 	
 end
+
+
+
+
+
+function TEMP_SurfaceEntSpawn(type,node,pos,ang,scale)
+
+end

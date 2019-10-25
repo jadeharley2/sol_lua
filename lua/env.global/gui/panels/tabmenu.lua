@@ -9,7 +9,7 @@ function PANEL:Init()
 	framePanel:Dock(DOCK_FILL)
 	
 	--local bordcol = gui.style:GetColor("Border")
-	local backcol = gui.style:GetColor("WindowBack")
+	local backcol =Vector(0,0,0)-- gui.style:GetColor("WindowBack")
 	framePanel:SetColor(backcol)
 	tabButtonPanel:SetColor(gui.style:GetColor("Header"))
 	

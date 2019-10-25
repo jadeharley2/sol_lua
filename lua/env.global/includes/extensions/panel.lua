@@ -158,7 +158,7 @@ end
 	function panel.function_drag()
 		local node = panel.current_drag
 		local dragover = panel.current_drag_over
-		if node then  
+		if node then   
 			local nparent = node:GetParent() 
 			local scalemul = 1
 			if nparent then scalemul = nparent:GetTotalScaleMul() end

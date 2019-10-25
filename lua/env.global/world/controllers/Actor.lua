@@ -116,7 +116,6 @@ function OBJ:UnInit()
 		end
 	end
 	cam:SetUpdateSpace(true)
-	cam:Eject()
 	--cam:SetParent(actor:GetParent())
 	if actor and IsValidEnt(actor) then  
 		RemoveOrigin(actor)
@@ -145,6 +144,8 @@ function OBJ:UnInit()
 	actor_panels.CloseAll()
 	actor_panels.FreePersistent() 
 	
+	cam:Eject()
+
 	local healthbar = self.healthbar
 	local infobar = self.infobar
 	local quickmenu = self.quickmenu
@@ -704,7 +705,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 					cam:TRotateAroundAxis(inUp, -tcr2*asc.z)
 					actor:TRotateAroundAxis(Up, tcr2) 
 					self.totalCamRotationY = self.totalCamRotationY - tcr2 
-					if  math.abs(tcr2)<0.001 then
+					if  math.abs(tcr2)<0.0001 then
 						self.rmode = false 
 						self.totalCamRotationY = 0
 						local tgt = ( (self.totalCamRotationX or 0) / 3.1415926 * 180)
@@ -1278,7 +1279,13 @@ function OBJ:HandleCameraMovement(actor)
 		cam:SetPos(rt)
 		]] 
 		
-		cam:SetPos( (Up*tps_height  - Forward * self.camZoom  + Right* 0.5 )* ascale    )
+		local m = actor.model
+		local thirdpersonatt = actor.thirdattachment 
+		local tpcp = Up*tps_height
+		if thirdpersonatt and m:HasAttachment(thirdpersonatt) then 
+			tpcp = m:GetAttachmentPos(thirdpersonatt)   
+		end
+		cam:SetPos( (tpcp  - Forward * self.camZoom  + Right* 0.5 )* ascale    )
 	end
 	
 	--for i=0,50 do

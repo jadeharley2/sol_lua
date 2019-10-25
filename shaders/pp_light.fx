@@ -119,7 +119,34 @@ struct PS_IN
             }
         } 
     }
-
+    float3 ShadowViewIndex(float4 worldposition, float4x4 viewProj)
+    {
+        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix)); 
+        if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
+        {
+            return float3(1,0,0);
+        }
+        else 
+        {
+            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
+            { 
+                return float3(0,1,0);
+            }
+            else
+            {
+                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
+                { 
+                    return float3(0,0,1);
+                }
+                else
+                {
+                    return float3(1,1,1);
+                }
+            }
+        } 
+    }
     float2 poissonDisk[4] = {
     float2( -0.94201624, -0.39906216 ) ,
     float2( 0.94558609, -0.76890725 ) ,
@@ -466,7 +493,11 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     if ( applyShadow) 
     {  
 		float dotNLS = min(dotNL,0.99);
-        LIGHT *= saturate(SampleForShadow(float4(pos-camera_pos,1),dotNLS));//*dotNL; 
+        float4 pp = float4(pos-camera_pos,1);
+        
+        LIGHT *= saturate(SampleForShadow(pp,dotNLS)
+           //  * ShadowViewIndex(pp,dotNLS)
+             );//*dotNL; 
     }
     if (isspotlight)
     {

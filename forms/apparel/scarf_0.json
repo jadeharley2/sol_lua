@@ -1,9 +1,13 @@
 {
 	"name" : "Scarf", 
+	"description":"Warm scarf",
+	"tags" : ["dyeable"],
+	"features" : {
+		"color" : ["red",[1,0,0]]
+	},
 	"filter" :{ 
 		"character" : ["vikna"],
 	},
-	"tags" : ["dyeable"],
 	"slot" : "neck",
 	"model" : "apparel/scarf.stmd",
 	"icon" : "apparel/fk/scarf", 

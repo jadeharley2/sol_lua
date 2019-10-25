@@ -1,0 +1,10 @@
+{
+    "name":"forest",
+    "surface" : {
+        "type" : [
+            "if(angle>30) return rock",
+            "if(height>30) return sand", 
+            "return soil"
+        ]
+    }
+}

@@ -37,7 +37,7 @@ function ENT:Spawn()
 		else
 			MsgN("no model specified for body part at spawn time")
 		end
-	end
+	end 
 end
 function ENT:SetVisible(v)
 	self.model:Enable(v or false)
