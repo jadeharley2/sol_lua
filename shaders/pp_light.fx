@@ -394,6 +394,7 @@ PS_IN VS( VS_IN input )
 	output.pos =  mul(wpos,VP); 
 	return output;
 } 
+/*
 float4 PS( PS_IN input ) : SV_Target
 {  
 	//return float4(1,1,1,1);
@@ -448,8 +449,9 @@ float4 PS( PS_IN input ) : SV_Target
 	return float4(lresult,1)*mask.x;
 
 }
+*/
 float4 PS_PBR( PS_IN input ) : SV_Target
-{   
+{    
     float2 uv = getUV(input.pos);
     float3 normal = getNormal(uv);
     float3 pos = SS_GetPosition(uv);

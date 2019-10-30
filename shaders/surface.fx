@@ -674,7 +674,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	}
 	  
 	 
-	float4 ambient = (1-blend_nearfog)* EnvSampleLevel(input.normal,0);
+	float4 ambient = (1-blend_nearfog) * saturate(EnvSampleLevel(input.normal,0));
   
 	
 

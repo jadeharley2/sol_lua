@@ -231,6 +231,7 @@ function OnStartup()
 	render.ClearShadowMaps()
 	
 	
+	
 	cam:SetFOV(settings.GetNumber("engine.fov"))
 	settings.Apply() 
 	

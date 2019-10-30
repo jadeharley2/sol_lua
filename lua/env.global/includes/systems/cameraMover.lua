@@ -49,6 +49,12 @@ function record:Stop()
     self.updater:SetEnabled(false) 
     self.updater:SetPath(self.track,1,2,0)
 end
+function record:Save(fn) 
+    self.track:Save(fn)
+end
+function record:Load(fn) 
+    self.track:Load(fn)
+end
 
 
 record.__index = record

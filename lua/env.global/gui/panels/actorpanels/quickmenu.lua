@@ -168,3 +168,6 @@ function PANEL:GMouseWheel()
 	self.wheelpos = nwp
 end
 
+console.AddCmd("qm_set",function(num,itemtype)
+
+end)

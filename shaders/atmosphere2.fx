@@ -322,7 +322,11 @@ PS_OUT PS(PS_IN input) : SV_Target
 	
 	if (mode==1)//clouds from top
 	{
-		float density =1;// saturate((rheight-1.001)*100);
+		//float rpdepth =SS_GetDepth(screenPosition) 
+		//	*sqrt(distanceMultiplier)/1000;
+
+		float density =1;//saturate(rpdepth/horisonDistance*300000*1);
+		//float density =1;// saturate((rheight-1.001)*100);
 		//float density = saturate((rheight-1.01)*100);
 		
 		float dotpd = saturate(pow(saturate(dot(input.Normal,normalize(input.Pos))),1.0/4));//6

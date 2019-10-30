@@ -29,6 +29,11 @@ function ENT:Enter()
 			self.cubemap = cubemap
 			skybox:SetRenderGroup(RENDERGROUP_STARSYSTEM) 
 			skybox:SetBrightness(1)
+			local rparams = render.RenderParameters()
+			rparams:SetRenderGroups({
+				{RENDERGROUP_DEEPSPACE,RENDERMODE_BACKGROUND,1,1E10}
+			})
+			cubemap:SetParameters(rparams)
 			cubemap:SetTarget(skybox,self)
 			--cubemap:RequestDraw(skybox,function() render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) end)
 			--skybox:SetTexture("data/textures/test/sky_day02.png")
@@ -155,13 +160,14 @@ end
 if CLIENT then
 	function ENT:ReloadSkybox()
 		MsgN("reload star sky")
-		render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED)
-		render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_DISABLED)
+		--render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_ENABLED)
+		--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_DISABLED)
 		--self.skybox
 		self.cubemap:RequestDraw(nil,function() 
-			render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
-			render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
-			render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
+			--render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
+			--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
+			--render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
+			MsgN('sky render finished')
 		end)
 	end 
 end

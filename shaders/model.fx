@@ -782,10 +782,10 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		 
 		 
 		float3 ambmapEnv =  mul(float4(input.norm,1),EnvInverse).xyz;
-		float3 ambmap = EnvSampleLevel(ambmapEnv,0);
+		float3 ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
 
 		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
-		float3 envmap = EnvSampleLevel(reflectEnv,_mask.x);
+		float3 envmap = saturate(EnvSampleLevel(reflectEnv,_mask.x));
 		emissive+=
 		lerp(
 			diffuse*ambmap,

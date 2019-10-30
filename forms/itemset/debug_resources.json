@@ -14,6 +14,7 @@
             "resource.dye_cyan","resource.dye_darkgray","resource.dye_gray",
             "resource.dye_green","resource.dye_lightblue","resource.dye_lightgray",
             "resource.dye_lime","resource.dye_magenta","resource.dye_orange","resource.dye_pink",
-            "resource.dye_purple","resource.dye_red","resource.dye_white","resource.dye_yellow"],
+            "resource.dye_purple","resource.dye_red","resource.dye_white","resource.dye_yellow",
+            "resource.dye_luminous","resource.dye_metallic"],
     } 
 }

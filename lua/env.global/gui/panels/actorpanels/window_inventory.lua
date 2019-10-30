@@ -95,7 +95,6 @@ function PANEL:ReloadTabs()
 	 
 	self.inner:Clear()
 
-	--if true then return end 
 
 	local tabs = panel.Create("tabmenu")
 	

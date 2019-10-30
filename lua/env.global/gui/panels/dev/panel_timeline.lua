@@ -14,16 +14,16 @@ function PANEL:Init()
                         size = {30,30},
                         texture = 'textures/gui/panel_icons/new.png',
                         OnClick = function(s)
-                            E_REC = cameramover.NewRecord(E_FS)
+                            E_REC = cameramover.NewRecord(E_FS or GetCamera())
                             E_REC:BeginPath()
                         end 
                     },
-                    { type = 'button',name = 'bsave',
+                    { type = 'button',name = 'bapply',
                         dock = DOCK_LEFT,
                         size = {30,30},
                         texture = 'textures/gui/panel_icons/save.png',
                         OnClick = function(s)
-                            E_REC:EndPath(true)
+                            E_REC:EndPath(false)
                         end 
                     },
                     { type = 'button',name = 'bstop',
@@ -41,7 +41,8 @@ function PANEL:Init()
                         texture = 'textures/gui/panel_icons/play.png',
                         rotation = 180,
                         OnClick = function(s)
-                            local spd = tonumber(self.tspeed:GetText())
+                            local spd = tonumber(self.tspeed:GetText());
+                            (E_FS or GetCamera()):SetUpdating(true)
                             E_REC:Play(-spd,true)
                         end 
                     },
@@ -58,8 +59,8 @@ function PANEL:Init()
                         size = {30,30},
                         texture = 'textures/gui/panel_icons/play.png',
                         OnClick = function(s)
-                            local spd = tonumber(self.tspeed:GetText())
-                            E_FS:SetUpdating(true)
+                            local spd = tonumber(self.tspeed:GetText());
+                            (E_FS or GetCamera()):SetUpdating(true)
                             E_REC:Play(spd,true)
                         end 
                     },
@@ -76,6 +77,28 @@ function PANEL:Init()
                         size = {100,30}, 
                         text = '0.01',
                         rest_numbers = true,
+                    },
+
+                    { type = 'button',name = 'bsave',
+                        dock = DOCK_LEFT,
+                        size = {30,30},
+                        texture = 'textures/gui/panel_icons/save.png',
+                        OnClick = function(s)
+                            E_REC:Save(self.tfile:GetText())
+                        end 
+                    },
+                    { type = 'button',name = 'bload',
+                        dock = DOCK_LEFT,
+                        size = {30,30},
+                        texture = 'textures/gui/panel_icons/load.png',
+                        OnClick = function(s)
+                            E_REC:Load(self.tfile:GetText())
+                        end 
+                    },
+                    { type = 'input_text', name = 'tfile',
+                        dock = DOCK_LEFT,
+                        size = {200,30}, 
+                        text = 'test0', 
                     },
                 }
             }
@@ -96,6 +119,6 @@ console.AddCmd("timeline",function()
 		debugp:SetPos(0,-wsize.y+100)
         PANEL.gtimeline = debugp
         debugp:Show()      
-         
+         MsgN(debugp.tspeed)
     end
 end)
