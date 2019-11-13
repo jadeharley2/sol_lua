@@ -319,7 +319,7 @@ struct PS_IN
         l = normalize(l);
         float3 h = normalize(v+l);
         //precompute dots
-        float NL1 = dot(n, l); //default
+        float NL1 = saturate(dot(n, l)); //default
         float NL2 = pow(dot(n, l)/2+0.5,2);//halflambert mod
         float NL = lerp(NL1,NL2,subsurface_coeff);// diffuse intencity
         if (NL <= 0.01) NL=0.01;//return 0.0;

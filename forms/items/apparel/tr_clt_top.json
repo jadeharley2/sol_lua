@@ -1,0 +1,13 @@
+{
+	"name" : "Leather top",  
+	"slot" : "torso",
+	"model" : "apparel/clt_top.stmd",
+	"icon" : "apparel/clt/top", 
+	"worldmodelscale" : 0.014,
+	"hide":["arm"],
+	"furmasks":{"body":"models/apparel/submaps/clt_top.png"},
+	"composition" :{
+		"resource.cloth" : 1,     
+		"resource.leather" : 1,     
+	} 
+}

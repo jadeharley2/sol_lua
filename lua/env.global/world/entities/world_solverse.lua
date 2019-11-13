@@ -6,7 +6,9 @@ function ENT:Init()
 	self:SetSizepower(math.pow(2,88))
 	self:SetSeed(1000001)
 	self:SetGlobalName("u1") 
-
+	local time = self:AddComponent(CTYPE_TIME)
+	time:SetDeltaTime(1)
+	self.time = time
 
 end
 function ENT:Spawn()
@@ -23,6 +25,7 @@ function ENT:Spawn()
 	end
  
 	self.space = space
+	self:SetUpdating(true,10)
 end
 function ENT:LoadSpawnpoint()
 	

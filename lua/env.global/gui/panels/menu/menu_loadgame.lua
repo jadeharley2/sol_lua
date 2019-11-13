@@ -32,13 +32,15 @@ function PANEL:Init()
 	sp_text:SetPos(300,50)
 	sp_text:SetSize(250,20)  
 	self:Add(sp_text)
+	self.sp_text= sp_text
 	
 	local sp_load = panel.Create("button")
 	sp_load:SetText("Load") 
 	sp_load:SetPos(150,-450)
 	sp_load:SetSize(50,20)
 	sp_load.OnClick = function()   
-		LoadSingleplayer("testmap",sp_text:GetText())
+		--LoadSingleplayer("testmap",sp_text:GetText())
+		self:Load()
 	end
 	self:SetupStyle(sp_load)
 	self:Add(sp_load)
@@ -58,6 +60,9 @@ function PANEL:Init()
 	end
 	
 	self:RefreshList()
+end
+function PANEL:Load()
+	LoadSingleplayerSave(self.sp_text:GetText())
 end
 
 function PANEL:OnShow()

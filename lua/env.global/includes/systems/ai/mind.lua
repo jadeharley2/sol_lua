@@ -15,11 +15,22 @@ local action = cla:AddStage('action','!',0,function(action,...)
         end
 	end    
 end)  
+local action = cla:AddStage('action','$',0,function(action,...)
+	--MsgN("act:",action,...)
+	if action then
+		local env = {}
+		env.msg = MsgN
+		env.pt = PrintTable
+		env.a = {...}
+		local f = assert(load(action,"x","bt",env)) 
+		f()    
+	end   
+end)   
 cla:LearnFile('input/ta.txt')
 
 hook.Add("lisen","cla",function(text)
 	cla:Query(text)
-end)
+end) 
 console.AddCmd("lis",function(...)
 	cla:Query(table.concat({...}," "))
-end)      
+end)           

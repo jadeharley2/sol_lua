@@ -38,6 +38,7 @@
 			{"name":"g_DetailTexture_m", "type":"texture","default":"","description":""},
 			{"name":"g_MeshTexture_f", "type":"texture","default":"","description":""},
 			{"name":"g_MeshTexture_g", "type":"texture","default":"textures/debug/white.png","description":""},
+			{"name":"g_MeshTexture_x", "type":"texture","default":"textures/debug/white.png","description":""}, 
 			{"name":"emissionTint", "type":"float3","default":[1,1,1],"description":""},
 			{"name":"rimfadeEmission","type":"float2","default":[1,2],"description":"x - intensity, y - power"} ,
 			{"name":"base_subsurface_intencity", "type":"float","default":0,"description":"subsurface intensity"},
@@ -55,6 +56,7 @@
 			{"name":"furShift", "type":"float2", "description":"fur shift"},
 			
 			{"name":"stencil", "type":"float","default":0,"description":"stencil buffer write value"},
+			{"name":"detail_nonormal", "type":"bool","default":false,"description":"disable detail normal blending"},
 		],
 	},
 	"onload" : { },

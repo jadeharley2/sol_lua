@@ -207,6 +207,27 @@ local on_dt_click = function(b,cdtype)
 			end
 			worldeditor:Select(e)
 		end
+	else--form spawn
+		local type = string.join('.',aparts)
+		local node = GetCamera():GetParent()
+ 
+		if not worldeditor then return nil end
+		local wtr = worldeditor.wtrace
+		if wtr and wtr.Hit then 
+			local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+	
+			MsgN("form spawn",type)
+			local e = forms.Spawn(type,node,{pos = pos})
+			if e then 
+				e:AddTag(TAG_EDITORNODE)
+				
+				local edt = e.editor
+				if edt and edt.onSpawn then
+					edt.onSpawn(e)
+				end
+				worldeditor:Select(e)
+			end
+		end
 	end 
 end
  

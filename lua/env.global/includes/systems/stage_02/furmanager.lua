@@ -82,7 +82,9 @@ hook.Add("actor.setcharacter","furm",function(node,char)
             local nfrm =  node._furmasks
             if nfrm then
                 nfrm.mat = matv 
-                furmanager.UpdateMaterials(nfrm,node)
+                debug.Delayed(100,function()
+                    furmanager.UpdateMaterials(nfrm,node)
+                end)
             else
                 node._furmasks = {masks={},mat = matv}
             end 
@@ -109,5 +111,16 @@ hook.Add("equipment.unequip","furm",function(node,slot)
         debug.Delayed(100,function()
             furmanager.UpdateMaterials(n,node) 
         end)
+    end
+end)
+
+
+console.AddCmd("fur_update",function()
+    local node = LocalPlayer()
+    if node then
+        local n = node._furmasks
+        if n then 
+            furmanager.UpdateMaterials(n,node) 
+        end
     end
 end)

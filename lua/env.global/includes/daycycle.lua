@@ -60,9 +60,13 @@ daycycle.GetLocalTime = function()
 		local hours = math.floor(aa)
 		local minutes = math.floor((aa-hours)*60)
 		local seconds = math.floor(((aa-hours)*60-minutes)*60)
-		MsgN(lp,";",cp,";",aa,";",hours,":",minutes,":",seconds)
+		--MsgN(lp,";",cp,";",aa,";",hours,":",minutes,":",seconds)
 		--MsgInfo(tostring(hours)..":"..tostring(minutes)..":"..tostring(seconds))--lp:Angle(cp))) 
 		return tostring(hours)..":"..tostring(minutes)..":"..tostring(seconds)
 	end    
 	return ""  
 end 
+
+console.AddCmd("localtime",function()
+	MsgN(daycycle.GetLocalTime())
+end)

@@ -2145,6 +2145,21 @@ debug.AddAPIInfo("/userclass/Entity/base_actor",{
 	
 })
 
+hook.Add('formspawn.character','spawn',function(form,parent,arguments) 
+	local aparts = string.split(form,'.')
+	local loctype = string.join('.',table.Skip(aparts,1)) 
+
+	local actorD = ents.Create("base_actor")
+	actorD:SetSizepower(1000)
+	actorD:SetParent(parent)
+	actorD:AddTag(TAG_EDITORNODE)
+	actorD:SetSeed(arguments.seed or 0)
+	actorD:SetCharacter(loctype)
+	actorD:Spawn()
+	actorD:SetPos(arguments.pos or Vector(0,0,0)) 
+	return actorD
+end)
+
 if SERVER then
 	local function _GetCharacter(plr,sender,id)
 		MsgN(a,plr,sender,id)

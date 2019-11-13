@@ -44,9 +44,11 @@ crafting.AddCombination('dye',function(formid_a,data_a,formid_b,data_b)
         -- data_a.name = (data_a.name or formid_a)  .. " | " .. (data_b.suffix or data_b.name)
         data_a.tags[#data_a.tags+1] = 'dyed'
         data_a.features = data_a.features or {}
-        for k,v in pairs(data_b.features) do
-            data_a.features[k] = v
-        end 
+        if data_b.features then
+            for k,v in pairs(data_b.features) do
+                data_a.features[k] = v
+            end 
+        end
         --data_a.features.color = {(data_b.suffix or data_b.name),data_b.tint} 
 
         local idparts = string.split(formid_a,'.')

@@ -44,13 +44,14 @@ float2 rimfadeEmission = float2(1,2);
 float furLen =0;
 float2 furShift =float2(0,0);
  
-Texture2D g_MeshTexture;   // albedo
-Texture2D g_MeshTexture_n; // normal map 
-Texture2D g_MeshTexture_s; // TODO: MERGE WITH g_MeshTexture_f
-Texture2D g_MeshTexture_m; //r - smootheness, g - deprecated, b - metallness, a - deprecated 
-Texture2D g_MeshTexture_e; // emissive
-Texture2D g_MeshTexture_f; // materials mask
-Texture2D g_MeshTexture_g; // fur len --TEST--
+Texture2D g_MeshTexture;   // albedo (r,g,b,a - alpha|cutoff)
+Texture2D g_MeshTexture_n; // normal map (r,g,b)
+Texture2D g_MeshTexture_s; // TODO: MERGE WITH g_MeshTexture_f (old material mask map)
+Texture2D g_MeshTexture_m; // mask map (r - smootheness, g - deprecated, b - metallness, a - deprecated)
+Texture2D g_MeshTexture_e; // emissive (r,g,b) colored
+Texture2D g_MeshTexture_f; // materials mask (r,g,b,a) layers
+Texture2D g_MeshTexture_g; // fur len  (x)
+Texture2D g_MeshTexture_x; // fur mask (x-fur length)--TEST--
 
 Texture2D g_NoiseTexture; 
 
@@ -109,6 +110,7 @@ float noiseclipedge = 0;
 float noiseclipmul = 1;
 int detailblendmode = 0;
 float detailblendfactor = 1;
+bool detail_nonormal = false;
  
 bool clipenabled = false;
 float4 clipplane;
@@ -243,7 +245,10 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color*Color;//((float3)input.inds.xyz);
-	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
+	output.spos =  
+		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0) 
+		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
+		;//mul(wpos,transpose(View)); 
 	return output;
 }
 PS_IN VS( VSS_IN input) 
@@ -291,7 +296,10 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 	output.tcrd = input.tcrd; 
 	output.color = input.color*inst.color.xyz*tint*Color;//((float3)input.inds.xyz);
 	//output.spos = mul(wpos,transpose(View)); 
-	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
+	output.spos =  
+		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0)
+		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
+		;//mul(wpos,transpose(View)); 
 	return output;
 }
 PS_IN VSIM( VSS_IN input, MORPH_IN morph ) 
@@ -319,7 +327,10 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	output.tcrd = input.tcrd; 
 	output.color = input.color*tint*Color;//((float3)input.inds.xyz);
 	//output.spos = mul(wpos,transpose(View));
-	output.spos =  g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0);//mul(wpos,transpose(View)); 
+	output.spos =  
+		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0)
+		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
+		;//mul(wpos,transpose(View)); 
 	return output;
 }
 
@@ -622,7 +633,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float4 detailmap = g_MeshTexture_s.Sample(MeshTextureSampler, texCoord);//) ;	
 		float blendd =1-detailmap.x; 
 
-		if (DetailEnabled) 
+		if (DetailEnabled&&!detail_nonormal) 
 		{	
 			if (detailblend>0)
 			{
@@ -748,7 +759,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 						//clip(detailmap.x-0.5);
 						if(sMasksEnabled)
 						{
-							if(detailmap.x>0.1)
+							if(detailmap.x>0.001)
 							{
 								clip(0.1-input.layer);
 							}

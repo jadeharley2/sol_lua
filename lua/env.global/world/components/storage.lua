@@ -475,7 +475,7 @@ end
 function component:UpdateData()
 	local n = self:GetNode()
 	if n then
-		
+		n[VARTYPE_STORAGE] = self:ToData() 
 	end
 end
 
@@ -484,7 +484,7 @@ function component:ToData()
 
 	local datar = {}
 	for k,v in pairs(list) do
-		datar[#datar+1] = {slot = k, count = v.count, data = json.FromJson(v.data)}
+		datar[#datar+1] = {slot = k, count = v.count, formid = v.formid, data = json.FromJson(v.data)}
 	end  
 	return json.ToJson(datar)
 end
@@ -494,7 +494,7 @@ function component:FromData(data)
 		local datar = json.FromJson(data) 
 		for k,v in pairs(datar) do
 			if(v.data) then
-				list[v.slot] = {count = v.count, data = json.ToJson(v.data)}
+				list[v.slot] = {count = v.count, formid = v.formid, data = json.ToJson(v.data)}
 			end
 		end
 	end

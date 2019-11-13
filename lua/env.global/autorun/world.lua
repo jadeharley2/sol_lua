@@ -23,7 +23,7 @@ function world.LoadWorld(id,mode,onComplete,onFail)
 			U:Create() 
 
 			local opttable = false
-			if mode and isstring(mode) then 
+			if mode and isstring(mode) and U.options then 
 				opttable = U.options[mode] 
 			else
 				opttable = mode

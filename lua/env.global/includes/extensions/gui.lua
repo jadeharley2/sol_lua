@@ -42,6 +42,31 @@ function UnlockMouse()
 	MOUSE_LOCKED = false 
 end
 
+function FSTR_Dock(v)
+	if isnumber(v) then return v else
+		if v=='bottom' then return 3 
+		elseif v=='top' then return 2 
+		elseif v=='fill' then return 4
+		elseif v=='left' then return 1
+		elseif v=='right' then return 0 
+		end
+		return -1
+	end
+end
+function FSTR_Alignment(v)
+	if isnumber(v) then return v else
+		if v=='bottom' then return 3
+		elseif v=='bottomleft' then return 7
+		elseif v=='bottomright' then return 8
+		elseif v=='top' then return 2
+		elseif v=='topleft' then return 5
+		elseif v=='topright' then return 6
+		elseif v=='center' then return 4
+		elseif v=='left' then return 0
+		elseif v=='right' then return 1 
+		end
+	end
+end
 
 function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 	for k,v in pairs(t) do
@@ -51,7 +76,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			node:SetSize(v[1]*vsize.x,v[2]*vsize.y) 
 		elseif k == 'pos' then node:SetPos(v[1],v[2])
 		elseif k == 'rotation' then node:SetRotation(v)
-		elseif k == 'dock' then node:Dock(v)
+		elseif k == 'dock' then node:Dock(FSTR_Dock(v))
 		elseif k == 'padding' then node:SetPadding(v[1],v[2],v[3],v[4])
 		elseif k == 'margin' then node:SetMargin(v[1],v[2],v[3],v[4])
 		elseif k == 'anchors' then node:SetAnchors(v)
@@ -78,7 +103,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		
 		elseif k == 'autosize' then node:SetAutoSize(v[1],v[2])
 		elseif k == 'value' and node.SetValue then node:SetValue(v)
-		
+		elseif k == 'align' then --skip
 		elseif k == 'states' then  
 			for kk,vv in pairs(v) do 
 				node:AddState(kk,vv)
@@ -87,7 +112,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif string.starts( k,'_sub_') then
 			local subkey = string.sub(k,6)
 			local subnode = node[subkey]
-			MsgN(subkey,subnode)
+			--MsgN(subkey,subnode)
 			if subnode and isuserdata(subnode) then
 				gui.ApplyParameters(subnode,v,style,namedtable,tablekey)
 			end
@@ -146,7 +171,17 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 	if t.subs then
 		for k,v in ipairs(t.subs) do 
 			if istable(v) then
-				node:Add(gui.FromTable(v,nil,style,namedtable,tablekey)) 
+				local x = gui.FromTable(v,nil,style,namedtable,tablekey)
+				if x then
+					node:Add(x) 
+					if v.align then 
+						local alignment =FSTR_Alignment(v.align[1])
+						
+						local offsetx = v.align[2]
+						local offsety = v.align[3] 
+						x:AlignTo(node,alignment,alignment,offsetx,offsety)
+					end 
+				end
 			elseif isuserdata(v) then
 				node:Add(v)
 			end

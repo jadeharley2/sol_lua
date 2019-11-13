@@ -22,7 +22,8 @@
 	},
 	"abilities" : ["shipremotecontrol"],
 	"materials" : {
-		"mat:body": {   
+		"mat:body":  "models/species/anthro/materials/ara_body.json"
+		/*{   
 			"#include" : "models/species/anthro/materials/body.json", 
 			"g_MeshTexture" : "models/species/anthro/materials/ara_body.png",  
 			"g_MeshTexture_e" : "models/species/anthro/materials/ara_body_e.png",  
@@ -35,8 +36,10 @@
 			"detailblendfactor" : 1,  
 			"furLen":1,
 			"furShift":[-0.0,-0.01],
+			"g_MeshTexture_x" :  "models/species/anthro/materials/body_furlen.png",    
+			"g_MeshTexture_s" :  "textures/debug/black.png",  
  
-		}, 
+		}, */
 	///	"body:0" : {   
 	///		"#include" : "models/species/anthro/materials/body_base.json", 
 	///		"g_MeshTexture" : "models/species/anthro/materials/ara_body.png",  

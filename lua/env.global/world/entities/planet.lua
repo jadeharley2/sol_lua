@@ -67,6 +67,7 @@ function ENT:Spawn()
 end
 function ENT:Enter()  
 	self.left = false
+	self:SetUpdating(true,10)
 	-- TEMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if not self.loaded  then
 		--for k=1,5 do
@@ -133,11 +134,11 @@ end
 --
 function ENT:Leave() 
 	self.left = true
+	self:SetUpdating(true,1000)
 	self.model:Enable(true)
 	if self.partition then self.partition:SetUpdating(false) end
 	 
-	--if self.loaded then
-		MsgN("asdasdasdad")
+	--if self.loaded then 
 		for k,v in pairs(self:GetChildren()) do
 			if not v.iscelestialbody then
 				v:Despawn()

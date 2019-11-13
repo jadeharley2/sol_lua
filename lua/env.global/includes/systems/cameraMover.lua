@@ -41,19 +41,30 @@ function record:Play(speed,continue)
     self.updater:SetSpeed(speed)
     self.updater:SetAngSlerp(0.03) 
     self.updater:SetUseOrientation(true)
+    --hook.Add(EVENT_GLOBAL_PREDRAW,'camerarec',function()
+    --    self:Think()
+    --end)
 end
 function record:Pause() 
     self.updater:SetEnabled(false) 
+    hook.Remove(EVENT_GLOBAL_PREDRAW,'camerarec')
 end
 function record:Stop() 
     self.updater:SetEnabled(false) 
     self.updater:SetPath(self.track,1,2,0)
+    hook.Remove(EVENT_GLOBAL_PREDRAW,'camerarec')
 end
 function record:Save(fn) 
     self.track:Save(fn)
 end
 function record:Load(fn) 
     self.track:Load(fn)
+end
+function record:OnPathNode(id) 
+    MsgN('reach',id)
+end
+function record:Think() 
+    
 end
 
 
@@ -62,5 +73,9 @@ record.__index = record
 function cameramover.NewRecord(ent)
     local pth = ent:GetComponent(CTYPE_PATHFOLLOW) or ent:AddComponent(CTYPE_PATHFOLLOW) 
     local cpp = ent:GetComponent(CTYPE_PATH) or ent:AddComponent(CTYPE_PATH)
-    return setmetatable({ent = ent,track = cpp,updater = pth},record)
+    local e = setmetatable({ent = ent,track = cpp,updater = pth},record)
+    pth:SetOnReach(function(nodeid)
+        e:OnPathNode(nodeid)
+    end)
+    return e
 end

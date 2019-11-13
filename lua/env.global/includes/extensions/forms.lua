@@ -34,35 +34,11 @@ function forms.Spawn(form,parent,arguments)
 	local aparts = string.split(form,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
 --	MsgN(aparts[1],loctype)
-	if aparts[1]=='prop' then 
-		local fn = form --forms.GetForm('prop',loctype) 
-		return SpawnPV(fn,parent,
-			arguments.pos or Vector(0,0,0),
-			arguments.ang or Vector(0,0,0),
-			arguments.seed or 0)
-	elseif aparts[1]=='character' then 
- 
-		local actorD = ents.Create("base_actor")
-		actorD:SetSizepower(1000)
-		actorD:SetParent(parent)
-		actorD:AddTag(TAG_EDITORNODE)
-		actorD:SetSeed(arguments.seed or 0)
-		actorD:SetCharacter(loctype)
-		actorD:Spawn()
-		actorD:SetPos(arguments.pos or Vector(0,0,0))
-
-		return actorD
-	elseif aparts[1]=='apparel' then  -- warning: thumbnail use only
-		
-		local fn =form-- forms.GetForm('apparel',loctype)
-
-		return SpawnPV(fn,parent,
-			arguments.pos or Vector(0,0,0),
-			arguments.ang or Vector(0,0,0),
-			arguments.seed or 0)
-	
+	local r = hook.Call("formspawn."..aparts[1],form,parent,arguments) 
+	if not r then
+		MsgN("unable to spawn ", form,"formspawn."..aparts[1])
 	end
-	--for k,v in pairs(arguments)
+	return r
 end
 CreateFORM = forms.Spawn
 
@@ -85,40 +61,12 @@ function ItemRES(formid)
 end 
 
 
-hook.Add('newitem.prop',"prop",function(formid,seed)
-	return ItemPV(formid,seed)
-end)
-hook.Add('newitem.apparel',"new",function(formid,seed)
-	return ItemIA(formid,seed)
-end)
-hook.Add('newitem.resource',"new",function(formid,seed)
-	return ItemRES(formid)
-end)
-hook.Add('newitem.tool',"new",function(formid,seed)
-	return ItemTOOL(formid)
-end)
-
 function forms.GetItem(formid,seed)
 	local aparts = string.split(formid,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
 	seed = seed or GetFreeUID()
 
-	return hook.Call('newitem.'..aparts[1],formid,seed)
-
-	--if aparts[1]=='prop' then 
-	--	local fn = formid --forms.GetForm('prop',loctype)
-	--	return ItemPV(fn,seed)
-	--elseif aparts[1]=='character' then 
- --
-	--elseif aparts[1]=='apparel' then    
-	--	local fn = formid-- forms.GetForm('apparel',loctype)
-	--	return ItemIA(fn,seed)
-	--elseif aparts[1]=='resource' then    
-	--	return ItemRES(formid)
-	--elseif aparts[1]=='tool' then    
-	--	return ItemTOOL(formid)
-	--	
-	--end
+	return hook.Call('newitem.'..aparts[1],formid,seed) 
 end
 function forms.GetIcon(formid)
 	local data = forms.LoadForm(formid)
@@ -179,3 +127,10 @@ function forms._checkIcon(name)
 		return nil
 	end
 end
+
+
+
+
+hook.Add('newitem.resource',"new",function(formid,seed)
+	return ItemRES(formid)
+end)

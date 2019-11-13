@@ -1,0 +1,34 @@
+{
+    "name":"Profile: ARA",
+    "description":"",
+    "tags":[], 
+    "lines":[
+        "ARTIFICIAL",
+        "RELAY",
+        "ADMINISTRATOR",
+        "<br>",
+        "SPECIES:",
+        "<tab><a>[cyan]FELINE<a>[clear]",
+        "HEIGHT:",
+        "<tab><a>[cyan]162cm<a>[clear]",
+        "WEIGHT:",
+        "<tab><a>[cyan]53kg<a>[clear]",
+        "ABILITIES:",
+        "<tab><a>[cyan]technomancy<a>[clear]",
+        "<tab><a>[cyan]bio-electronic integration<a>[clear]",
+        "<tab><a>[cyan]electrokinesis<a>[clear]",
+    ],
+    "surface":{
+        "texture":"textures/gui/mgrid.png",
+        "_sub_text" :{
+            "textcolor" :[1,1,1]
+        },
+        "subs" :[ 
+            {
+                "texture" : "textures/gui/icons/ara.png",
+                "size" : [100,100],
+                "align" : ["topright",-50,-90],
+            },
+        ]
+    }
+}

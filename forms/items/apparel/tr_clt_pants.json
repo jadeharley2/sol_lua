@@ -1,0 +1,24 @@
+{
+	"name" : "Leather pants",  
+	"slot" : "legs",
+	"model" : "apparel/clt_ud.stmd",
+	"icon" : "apparel/clt/pants", 
+	"worldmodelscale" : 0.014,
+	"hide":["calf","thigh"],
+	"furmasks":{"body":"models/apparel/submaps/pants.png"},
+	"composition" :{
+		"resource.cloth" : 2,     
+	},
+	"materials" : {
+		"mat:pants" : "models/apparel/tex4/clt_pants.json",
+		"mat:belt" : "models/apparel/tex4/clt_belt.json"
+	}
+	//"modmaterial" :  [{ 
+	//		"tint":[0,0,0],
+	//		"mul_emissive_intencity":0,
+	//		"base_specular_intencity" : 0.56,
+	//		"base_specular_tint" : 0,
+	//		"freshnelRanges" : [0.7,0.8,1], 
+	//	}
+	//],
+}

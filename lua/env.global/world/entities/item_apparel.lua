@@ -184,8 +184,17 @@ function ENT:OnDrop()
 end
 
 
+hook.Add('formspawn.apparel','spawn',function(form,parent,arguments) -- thumbnail use
+	return SpawnPV(form,parent,
+		arguments.pos or Vector(0,0,0),
+		arguments.ang or Vector(0,0,0),
+		arguments.seed or 0)
+end)
+hook.Add('newitem.apparel',"new",function(formid,seed)
+	return ItemIA(formid,seed)
+end)
 
-hook.Remove("item_properties","item_apparel")
+--hook.Remove("item_properties","item_apparel")
 --hook.Add("item_properties","item_apparel",function(data,context,storage,item) 
 --	if data.data:Read("/parameters/luaenttype") == "item_apparel" then
 --		node = storage:GetNode()

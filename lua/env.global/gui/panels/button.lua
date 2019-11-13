@@ -99,12 +99,24 @@ function PANEL:MouseDown(pulse)
 				newstate = false
 			else 
 				self:SetState("pressed") 
-				newstate = true
+				newstate = true 
 			end
 		else  
 			self:SetState("pressed")
 			newstate = true
 		end
+
+		local group = self.group
+		if group then -- unpress others
+			local parent = self:GetParent()
+			for k,v in pairs(parent:GetChildren()) do
+				if v~=self and v.group == group then 
+					v:SetState("idle")  
+				end
+			end
+		end
+
+
 		if self.flashtext then self:SetTextColor( self.textdowncolor) end
 		local OnClick = self.OnClick
 		if OnClick then

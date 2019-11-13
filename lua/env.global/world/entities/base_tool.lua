@@ -390,3 +390,7 @@ ENT._typeevents = {
 	end},
 }
  
+
+hook.Add('newitem.tool',"new",function(formid,seed)
+	return ItemTOOL(formid)
+end)

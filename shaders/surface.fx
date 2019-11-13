@@ -667,7 +667,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 			float4 grass = sTexture.Sample(MeshTextureSampler,grassTcrd);
 		//	float4 forest2 = tNoise.Sample(NoiseTextureSampler,tcrdBig*10000); 
 			//surface_rampcolor *= saturate(grass*8*grassTcrd.y);
-			surface_rampcolor *=lerp(grass.r*2,1, saturate(grassTcrd.y*grassTcrd.y*grassTcrd.y));
+//UPDATE//surface_rampcolor *=lerp(grass.r*2,1, saturate(grassTcrd.y*grassTcrd.y*grassTcrd.y));
 			//surface_rampcolor =grassTcrd.y*grassTcrd.y*grassTcrd.y;
 			clip(grass.a-0.5);//-forest2.r 
 		}
@@ -987,15 +987,16 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 	OutputStream.Append( input[2] ); 
 	OutputStream.RestartStrip();
 
-	// forest "fur"
 	bool gdc = false;
+	// forest "fur"
+	///*
 	if(_DrawGSGrass && hasAtmoshphere && input[0].data.x*1000000>0.7)
 	{
 		float3 dn =input[1].normal ;
 		if(dot(dn,float3(0,1,0))>0.95) 
 		{ 
 			float dist = length(fpp1)*distanceMultiplier;
-			if(dist>0.3&&dist<15)//dist>0.4&&
+			if(dist>0.6&&dist<15)//dist>0.4&&
 			{
 				gdc = true;
 				if(dist<3)
@@ -1035,6 +1036,7 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 			}
 		}
 	}
+	//*/
 
  	//grass  height*1000000>1, topDot>098 
 	if(  _DrawGSGrass && !gdc && hasAtmoshphere && nearMode && input[0].data.x*1000000>0.7 )

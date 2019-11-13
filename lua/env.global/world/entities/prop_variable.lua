@@ -514,3 +514,12 @@ ENT.editor = {
 	
 }
  
+hook.Add('formspawn.prop','spawn',function(form,parent,arguments)
+	return SpawnPV(form,parent,
+		arguments.pos or Vector(0,0,0),
+		arguments.ang or Vector(0,0,0),
+		arguments.seed or 0)
+end)
+hook.Add('newitem.prop',"prop",function(formid,seed)
+	return ItemPV(formid,seed)
+end)

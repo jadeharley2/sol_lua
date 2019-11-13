@@ -1,8 +1,13 @@
 
 DeclareEnumValue("event","ANTRSYS_STATE",		332134)  
- 
- 
-local hurttexture = LoadTexture("gui/hurt.dds")
+
+if CLIENT then
+    ANTR_SYS_CBAR = ANTR_SYS_CBAR or gui.FromTable({
+        texture = "textures/gui/hurt.dds",
+        canraisemouseevents = false
+    })
+end 
+
 local cvadz = {}
 
 component.uid = DeclareEnumValue("CTYPE","ANTR_SYSTEMS", 3244)
@@ -48,19 +53,18 @@ function cvadz.Viz(col,tex)
     local node = cam:GetParent()
     local antr =  node:GetComponent(CTYPE_ANTR_SYSTEMS)
     if antr then 
-        local bar = component.vbar or panel.Create() 
-        component.vbar = bar
+        local bar = ANTR_SYS_CBAR  
         local vsize = GetViewportSize()
         bar:SetPos(0,0)
         bar:SetColor(col) 
-        bar:SetTexture(tex or hurttexture)
+        bar:SetTexture(tex or "textures/gui/hurt.dds")
         bar:SetSize(vsize.x,vsize.y)
         bar:SetCanRaiseMouseEvents(false)
         bar:Show()
     end
 end
 function cvadz.Unviz() 
-    local bar = component.vbar 
+    local bar = ANTR_SYS_CBAR
     if bar then
         bar:Close() 
     end 

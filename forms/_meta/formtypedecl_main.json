@@ -24,7 +24,7 @@
 		{
 			"name":"apparel", 		
 			"shortname":"APPA", 	
-			"directory":"apparel", 
+			"directory":"items/apparel", 
 			"group":"items",	 
 		},
 		//add baseclass
@@ -37,6 +37,14 @@
 			"recursive":true,
 			"group":"items",	 
 		}, 
+		{
+			"name":"book", 		
+			"shortname":"BOOK", 	
+			"directory":"items/books",
+			"baseclass":"book", 
+			"recursive":true,
+			"group":"items",	 
+		},
 		{
 			"name":"prop", 		
 			"shortname":"PROP", 	
