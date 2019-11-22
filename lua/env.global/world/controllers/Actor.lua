@@ -1013,7 +1013,7 @@ function NEARESTUSEABLE(actor)
 						ndist = edist
 					end
 				end
-
+--
 				for kk,vv in pairs(v:GetChildren()) do
 					if vv~=actor and vv:HasTag(TAG_USEABLE) then 
 						local edist = actor:GetDistanceSq(vv)   

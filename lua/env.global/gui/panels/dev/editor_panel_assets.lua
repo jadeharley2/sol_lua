@@ -342,10 +342,20 @@ function PANEL:Init()
 				color = {0,0,0},
 				dock = DOCK_RIGHT, 
 			},
-			{ type = "editor_panel_node",name = "pnode",
+			{ name = "xpanel", type = 'tabmenu',
 				size = {300,100},
-				dock = DOCK_LEFT
+				dock = DOCK_LEFT,
+				tabs = {
+					NODE = { type = "editor_panel_node",name = "pnode",
+						size = {300,100}, 
+					}, 
+					TERRAIN = { type = "editor_panel_terrain",name = "pterr",
+						size = {300,100}, 
+					},
+					
+				}
 			},
+			
 			{ type = "panel", --assets
 				color = {0,0,0},
 				size = {200,300},
@@ -411,6 +421,9 @@ function PANEL:Init()
 	self.vp:InitializeFromTexture(1,"@main_final")  
 	self.dirtree2:SetVisible(true)
 	self.dirtree3:SetVisible(false)
+
+	--self.pnode:UpdateLayout()
+ 	--self.pterr:UpdateLayout()
 
 	self:UpdateLayout()
 	self.classtree:ScrollToTop()

@@ -14,8 +14,8 @@
 			},
 			"l1_hall":{
 				"props" : [ 
-					{"type":"forms/props/active/futur/button.json","pos":[-0.0009849225, -0.0008214328, 0.02827399],"ang":[0,-90,0],"name":"l1btn","seed":333003}, 
-					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-2.716709E-05, 1.38788E-05, 0.03081206],"ang":[0,180,0],"name":"l1lamp","seed":333002},
+					{"type":"prop.active.futur.button","pos":[-0.0009849225, -0.0008214328, 0.02827399],"ang":[0,-90,0],"name":"l1btn","seed":333003}, 
+					{"type":"prop.furniture.futur.wall_lamp","pos":[-2.716709E-05, 1.38788E-05, 0.03081206],"ang":[0,180,0],"name":"l1lamp","seed":333002},
 				],
 				"wire" : [
 					["l1btn","out","l1lamp","toggle"],
@@ -26,7 +26,7 @@
 					{"model":"space/ships/libra/teleport_door.stmd","pos":[-0.002956, -0.002193, 0.0308513],"ang":[0,0,0],"scale":0.5,"seed":2329929,"name":"door"},
 				],
 				"props" : [
-					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.006145914, -9.995489E-05, 0.03275942],"ang":[0,45,0],"name":"tel_lamp","seed":333001},
+					{"type":"prop.furniture.futur.wall_lamp","pos":[-0.006145914, -9.995489E-05, 0.03275942],"ang":[0,45,0],"name":"tel_lamp","seed":333001},
 				],
 				"wire" : [
 					["door","closed","tel_lamp","off"],
@@ -40,9 +40,9 @@
 			},
 			"l2_hall" : { 
 				"props" : [
-					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.001653643, 0.002596355, 0.01789307],"ang":[0,90,0],"name":"l2lamp1","seed":333005},
-					{"type":"forms/props/furniture/futur/wall_lamp.json","pos":[-0.002346269, 0.002596355, 0.007363375],"ang":[0,-90,0],"name":"l2lamp2","seed":333006},
-					{"type":"forms/props/active/futur/button.json","pos":[-0.001653643, 0.0020, 0.01789307],"ang":[0,90,0],"name":"l2btn","seed":333007}, 
+					{"type":"prop.furniture.futur.wall_lamp","pos":[-0.001653643, 0.002596355, 0.01789307],"ang":[0,90,0],"name":"l2lamp1","seed":333005},
+					{"type":"prop.furniture.futur.wall_lamp","pos":[-0.002346269, 0.002596355, 0.007363375],"ang":[0,-90,0],"name":"l2lamp2","seed":333006},
+					{"type":"prop.active.futur.button","pos":[-0.001653643, 0.0020, 0.01789307],"ang":[0,90,0],"name":"l2btn","seed":333007}, 
 				],
 				"wire" : [
 					["l2btn","out","l2lamp1","toggle"],
@@ -51,7 +51,7 @@
 			},
 			"l2_cabin" : { 
 				"props":[
-					{"type":"forms/props/active/vendor_character.json",
+					{"type":"prop.active.vendor_character",
 						//"pos":[0.001362961, 0.001649592, 0.01667164],
 						"pos":[0.001817281, 0.002199456, 0.02222885],
 						"ang":[0,0,0],
@@ -64,21 +64,21 @@
 				"props" : [
 					{
 						"name":"l3lamp1",
-						"type":"forms/props/furniture/futur/wall_lamp.json",
+						"type":"prop.furniture.futur.wall_lamp",
 						"pos":[-0.001730114, 0.004756389, 0.02332595],
 						"ang":[0,-90,0],
 						"seed":333008
 					},
 					{
 						"name":"l3lamp2",
-						"type":"forms/props/furniture/futur/wall_lamp.json",
+						"type":"prop.furniture.futur.wall_lamp",
 						"pos":[ 0.001730114, 0.004756389, 0.02332595],
 						"ang":[0,-90,0],
 						"seed":333009
 					},
 					{
 						"name":"l3btn",
-						"type":"forms/props/active/futur/button.json",
+						"type":"prop.active.futur.button",
 						"pos":[ 0.001730114, 0.004356389, 0.02332595],
 						"ang":[0,-90,0],
 						"seed":333010

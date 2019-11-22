@@ -128,23 +128,25 @@ function PANEL:ReloadTabs()
 			dock = DOCK_FILL,
 			color = {0,0,0},
 			Scrollbars = 1,
-			floater = {
-				color = {0,0,0},
-				size = {150,1000},
-				autosize = {false,true},
-				subs = {
-					{type = 'grid', name = 'grid2',
-						size = {150,1000},
-						autosize = {false,true},
-						dock = DOCK_TOP,
-					}
-				}
-			}, 
+			size = {150,150}, 
 		},nil,{},self) 
 
+		self.xgrid:SetFloater(gui.FromTable({ 
+			color = {0,1,0},
+			size = {150,1000},
+			autosize = {false,true},
+			subs = {
+				{type = 'grid', name = 'grid2',
+					size = {150,1000},
+					color = {1,0,0},
+					autosize = {false,true},
+					dock = DOCK_TOP,
+				}
+			}
+		},nil,{},self))
 		tabs:AddTab("INV",self.xgrid)
 		--self.grid2 = grid2
-		self.storage = storage
+		self.storage = storage 
 		self:RefreshINV()
 	end
 	

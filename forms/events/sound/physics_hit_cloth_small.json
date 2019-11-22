@@ -1,0 +1,11 @@
+{ 
+    "sounds" : [
+        "physics/cloth/small_hit_01.ogg",
+        "physics/cloth/small_hit_02.ogg",
+        "physics/cloth/small_hit_03.ogg",
+        "physics/cloth/small_hit_04.ogg",
+        "physics/cloth/small_hit_05.ogg", 
+    ],
+    "channel" : "physics",
+    "volume" : 0.5
+}

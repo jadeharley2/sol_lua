@@ -200,9 +200,9 @@ function ENT:LoadGraph(tab)
 		graph:NewState("soar_in",function(s,e) return e.model:SetAnimation("soar_in")  end)
 		graph:NewState("soar_out",function(s,e) return e.model:SetAnimation("soar_out")  end)
 		
-		graph:NewState("jump",function(s,e) return e.model:SetAnimation("jump") end)
+		graph:NewState("jump",function(s,e) e.model:InvokeEvent('step','') return e.model:SetAnimation("jump") end)
 		graph:NewState("jump_inair",function(s,e) return e.model:SetAnimation("jump_inair") end)
-		graph:NewState("land",function(s,e)  MsgN("MVD: ", e.phys:GetMovementDirection()) return e.model:SetAnimation("land") end)
+		graph:NewState("land",function(s,e) e.model:InvokeEvent('step','') return e.model:SetAnimation("land") end)
 		
 		graph:NewState("sit",function(s,e) 
 			e.phys:SetMovementDirection(Vector(0,0,0)) 
@@ -335,8 +335,8 @@ function ENT:LoadGraph(tab)
 		--graph:NewTransition("soar_in","soar_idle",BEH_CND_ONEND)
 		--graph:NewTransition("soar_idle","soar_out",function(s,e) return e.move end)
 		--graph:NewTransition("soar_out","idle",BEH_CND_ONEND)
-		graph:NewTransition("jump","idle", BEH_CND_ONGROUND)
-		graph:NewTransition("jump_inair","idle",BEH_CND_ONGROUND) 
+		graph:NewTransition("jump","land", BEH_CND_ONGROUND)
+		graph:NewTransition("jump_inair","land",BEH_CND_ONGROUND) 
 		graph:NewTransition("jump","jump_inair",BEH_CND_ONEND)
 		graph:NewTransition("land","idle",BEH_CND_ONEND)
 		
@@ -732,6 +732,10 @@ function ENT:SetCharacter(id)
 					end
 				end
 				
+				if data.bodytype then 
+					self:SetBodytype(data.bodytype)
+				end
+
 				hook.Call("actor.setcharacter",self,id) 
 
 				if SERVER or not network.IsConnected() and not self.equipment_asquired then
@@ -783,6 +787,7 @@ function ENT:SetCharacter(id)
 		end
 	end
 end
+
 function ENT:SetSpecies(spstr) 
 	if spstr then 
 		local spd = spstr:split(':')
@@ -803,6 +808,16 @@ function ENT:SetSpecies(spstr)
 			self.tpsheight = nvariation.tpscamheight or 0.5
 			self.fpsheight = nvariation.fpscamheight or 1
 		end
+	end
+end
+function ENT:SetBodytype(formid)
+	if isstring(formid) then
+		local d = forms.ReadForm('bodytype.'..formid)
+		if d and d.bones then
+			self.model:SetBoneData(json.ToJson(d.bones or {}))
+		end
+	elseif istable(formid) and formid.bones then 
+		self.model:SetBoneData(json.ToJson(formid.bones or {}))
 	end
 end
 function ENT:Config(data,species,variation)
@@ -2224,5 +2239,8 @@ end)
 if CLIENT then
 	console.AddCmd("setcharacter",function(char)
 		LocalPlayer():SetCharacter(char)
+	end)
+	console.AddCmd("setbodytype",function(bdtp)
+		LocalPlayer():SetBodytype(bdtp)
 	end)
 end

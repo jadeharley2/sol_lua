@@ -136,7 +136,8 @@ function PANEL:MouseClick(fid)
 					local count = nil
 					if input.KeyPressed(KEYS_CONTROLKEY) then count = 1 end
 
-					source:TransferItem(self.storeslot,target,nil,count)
+					source:TransferItem(self.storeslot,target,nil,count) 
+					self:GetParent().parenteq:RefreshINV()
 				--	MsgN("sclick!")  
 				--	InvRefreshAll()
 					debug.Delayed(100,function()
@@ -151,7 +152,8 @@ function PANEL:MouseClick(fid)
 					if GLOBAL_CEQPANEL:EquipItem(self) then 
 					end
 					debug.Delayed(100,function()
-						hook.Call("inventory_update",LocalPlayer()) 
+						hook.Call("inventory_update",LocalPlayer())  
+						GLOBAL_CEQPANEL:RefreshINV()
 					end)
 				end 
 			end
@@ -164,7 +166,7 @@ function PANEL:MouseClick(fid)
 			--{text = ""..self.title:GetText()},
 			--{text = "use",action = ACT_USE},
 			{text = "drop",action = function(item) 
-				item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot) 
+				item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot,1) 
 				--self:GetParent():Remove(self)  
 
 			end},--hook.Call("event.item.droprequest",item) return false end},
@@ -213,10 +215,20 @@ function PANEL:MouseClick(fid)
 					end
 				end
 				if condvalue then
-					local f,e1,e2,e3 = load(v.action,nil,nil,fenf)
+					local act = v.action 
+					if istable(act) then
+						act = ''
+						for kk,vv in ipairs(v.action) do
+							act = act ..' '.. vv
+						end
+					end
+					local f,e1,e2,e3 = load(act,nil,nil,fenf)
 					if f and isfunction(f) then 
 						context[#context+1] = {text = v.text, action = function(item) 
-							pcall(f)
+							local rez = pcall(f)
+							
+							if rez == 'inv' then self:GetParent().parenteq:RefreshINV() 
+							elseif rez then self:Refresh() end
 						end}
 					else
 						MsgN(f,e1,e2,e3)

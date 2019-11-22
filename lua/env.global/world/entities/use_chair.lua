@@ -76,9 +76,9 @@ function ENT:SetModel(mdl,scale)
 	 
 	local coll =  self.coll 
 	if(model:HasCollision()) then
-		coll:SetShapeFromModel(matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+		coll:SetShapeFromModel(matrix.Scaling(scale) * matrix.Rotation(-90,0,0) ) --/0.75 
 	else
-		coll:SetShape(mdl,matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+		coll:SetShape(mdl,matrix.Scaling(scale  ) * matrix.Rotation(-90,0,0) ) 
 	end
 	self.modelcom = true
 end 

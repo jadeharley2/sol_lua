@@ -146,6 +146,7 @@ function PANEL:MouseEnter()
 	
 	if(not self.toggleable or not self:IsPressed()) then
 		self:SetState("hover")
+		sound.Start('interface/click.ogg',0.3) 
 	end
 	
 	

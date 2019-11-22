@@ -460,6 +460,7 @@ function ENT:SetupPhysics(world,scale)
 			phys:SetMass(data.mass or 10)  
 			phys:SoundCallbacks()
 			phys:SetMaterial(data.physmaterial or "wood")
+			self:AddTag(TAG_PHYSSIMULATED)
 		else 
 			local coll =  self.coll 
 			if norotation then
@@ -507,9 +508,40 @@ ENT.editor = {
 			for k,v in pairs(ent:GetComponents()) do
 				ent:RemoveComponent(v)
 			end
-			ent:_spawn()
-			MsgN('te')
+			ent:_spawn() 
 		end},
+		chunknode_display = {text = "is chunk node",type="indicator",value = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					return chtr:IsChunkNode(ent)
+				end
+			end
+			return false
+		end},
+		chunknode_set = {text = "set chunk node",type="action",action = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					chtr:AddNode(ent)
+					return true
+				end
+			end
+		end},
+		chunknode_unset = {text = "unset chunk node",type="action",action = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					chtr:DelNode(ent)
+					return true
+				end
+			end
+		end},
+		
+		
 	},  
 	
 }
@@ -522,4 +554,21 @@ hook.Add('formspawn.prop','spawn',function(form,parent,arguments)
 end)
 hook.Add('newitem.prop',"prop",function(formid,seed)
 	return ItemPV(formid,seed)
+end)
+
+hook.Add('item_features','propvfeatures',function(formid,data,addfeature)
+    if data.container then
+        addfeature("container size:"..tostring(data.container.size or 30),{1,1,1},'textures/gui/features/container.png')  
+    end
+	if data.light then
+		local c = data.light.color or {1,1,1}
+        addfeature("light: #"..rgbToHex(c,255),c,'textures/gui/features/light.png')  
+    end
+	if data.button then 
+        addfeature("button",{1,1,1},'textures/gui/features/active.png')  
+    end
+    if data.variables and data.variables.mountpoints then
+        addfeature("mount",{1,1,1},'textures/gui/features/mount.png')  
+	end
+	
 end)

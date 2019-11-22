@@ -1,0 +1,16 @@
+{
+    "tags" : ["furniture"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"prop.clutter.industrial.pallet",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.wood",
+            "count":8
+        },  
+    ]
+}

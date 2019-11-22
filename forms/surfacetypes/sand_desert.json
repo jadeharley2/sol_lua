@@ -1,0 +1,31 @@
+{ 
+    "name" : "Desert sand",
+    "top" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/sand_01.png",
+            "normal" : "textures/surface/terrain2/sand_01n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.1,
+            "metalness" : 0, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.sand"
+        }
+    },
+    "slope" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/rock_04.png",
+            "normal" :"textures/surface/terrain2/rock_04n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.1,
+            "metalness" : 0.2, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.stone"
+        }
+    }
+}

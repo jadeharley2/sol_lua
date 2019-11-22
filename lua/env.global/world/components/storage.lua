@@ -112,8 +112,9 @@ component._typeevents = {
 			self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 		end
 	end},
-	[EVENT_ITEM_DROP] = {networked = true, f = function(self,id) 
-		local e = self:TakeItem(id)
+	[EVENT_ITEM_DROP] = {networked = true, f = function(self,id,count) 
+		count = count or 1
+		local e = self:TakeItem(id,count)
 		local node = self:GetNode()
 		if e then
 			--e:Spawn()
@@ -283,10 +284,10 @@ end
 				hook.Call("event.drop",actor,item)
 				hook.Call("event.inventory.update",self,actor)
 ]]
-function component:TakeItem(index)
+function component:TakeItem(index,count)
 	local n = self:GetNode()
 	if n then
-		local item = self:TakeItemAsData(index)
+		local item = self:TakeItemAsData(index,count)
 		if item then
 			local parent = n:GetParent()
 			local pos = n:GetPos()   

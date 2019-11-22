@@ -1,0 +1,34 @@
+{ 
+    "name" : "Unknown",
+    "top" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/metal_01.png",
+            "normal" : "textures/surface/terrain2/metal_01n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 1,
+            "metalness" : 0.2, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.metal"
+        }
+    },
+    "slope" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/crystal_01.png",
+            "normal" : "textures/surface/terrain2/crystal_01n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.2,
+            "metalness" : 0.8, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.metal"
+        }
+    }
+    // [1,0.2,0,0],
+	// [0.2,0.8,0,0],
+
+}

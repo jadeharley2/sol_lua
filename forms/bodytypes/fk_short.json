@@ -1,0 +1,29 @@
+{
+    "name" : "Compact form",
+    "species" : ["anthro","anthroid"],
+    "bones" : { 
+        "pre" :
+        {
+            "tail0" : { "sca" : 0.7 },
+            "thigh.L" : { "sca" : 0.8, "pos" : [0.5, 0, 0] },
+            "thigh.R" : { "sca" : 0.8, "pos" : [-0.5, 0, 0] },
+            "hand.L" : { "sca" : 0.8 }, 
+            "spine2" : { "pos" : [0, 3, 0] },
+            "calf.L" : { "sca" : 0.5 },
+            "calf.R" : { "sca" : 0.5 },
+            "spine3" : { "sca" : 0.8 },
+            "spine1" : { "sca" : 0.7 },
+            "neck" : { "sca" : 1 }, // 0.8
+            "foot.R" : { "sca" : 2 },
+            "foot.L" : { "sca" : 2 },
+            "toe.L" : { "sca" : 0.7 },
+            "toe.R" : { "sca" : 0.7 },
+            "head" : { "sca" : 1.55, "pos" : [0, 1, 0] }//2
+        },
+        "post":
+        { 
+            "pelvis" : { "sca" : 0.85, "pos" : [0, 0, -8] }
+        }
+    }
+ 
+}

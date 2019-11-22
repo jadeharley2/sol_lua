@@ -1,0 +1,16 @@
+{ 
+    "sounds" : [
+        "physics/metal/small_hit_01.ogg",
+        "physics/metal/small_hit_02.ogg",
+        "physics/metal/small_hit_03.ogg",
+        "physics/metal/small_hit_04.ogg",
+        "physics/metal/small_hit_05.ogg",
+        "physics/metal/small_hit_06.ogg",
+        "physics/metal/small_hit_07.ogg",
+        "physics/metal/small_hit_08.ogg",
+        "physics/metal/small_hit_09.ogg",
+        "physics/metal/small_hit_10.ogg", 
+    ],
+    "channel" : "physics",
+    "volume" : 0.5
+}

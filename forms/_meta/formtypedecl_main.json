@@ -22,6 +22,12 @@
 			"group":"actor",
 		},
 		{
+			"name":"bodytype", 		
+			"shortname":"BDTP", 	
+			"directory":"bodytypes",
+			"group":"actor",	 
+		}, 
+		{
 			"name":"apparel", 		
 			"shortname":"APPA", 	
 			"directory":"items/apparel", 
@@ -100,6 +106,21 @@
 			"directory":"resources", 
 			"recursive":true,
 			"group":"items",	 
-		}
+		},
+		
+		{
+			"name":"soundevent", 		
+			"shortname":"SNDE", 	
+			"directory":"events/sound", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
+			"name":"surfacetype", 		
+			"shortname":"SFTP", 	
+			"directory":"surfacetypes", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
 	]
 }

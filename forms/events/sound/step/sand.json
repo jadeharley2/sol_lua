@@ -1,0 +1,16 @@
+{ 
+    "name" : "step.sand",
+    "sounds" : [
+        "step/sand-01.ogg",
+        "step/sand-02.ogg",
+        "step/sand-03.ogg",
+        "step/sand-04.ogg",
+        "step/sand-05.ogg",
+        "step/sand-06.ogg",
+        "step/sand-07.ogg",
+        "step/sand-08.ogg",
+        "step/sand-09.ogg"
+    ],
+    "channel" : "step",
+    "volume" : 0.2
+}

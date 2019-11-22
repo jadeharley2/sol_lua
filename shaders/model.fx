@@ -618,9 +618,9 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	}
 	if(SkyboxMode)
 	{
-		float3 envdir = mul(input.wpos,WorldInv);
+		float3 envdir = mul(float4(input.wpos,1),  (WorldInv)).xyz;
 		float3 envmap =// EnvSampleLevel(envdir,1);// 
-		g_SkyTexture.SampleLevel(MeshTextureSampler,envdir,0);
+			g_SkyTexture.SampleLevel(MeshTextureSampler,envdir,0);
 		output.light = float4(pow(envmap,pow_skybox_mul)*TBrightness,1);
 		output.diffuse =output.light;
 		output.mask = 0;
@@ -801,7 +801,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		lerp(
 			diffuse*ambmap,
 			lerp(envmap,diffuse*envmap, _mask.z),
-			_mask.x)*fren;
+			_mask.y)*fren;
 		
 		//emissive+=diffuse*ambmap*1+ lerp(envmap,diffuse*envmap, _mask.z)*0.5*_mask.x;
 		float3 result = diffuse;

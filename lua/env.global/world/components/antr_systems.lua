@@ -16,7 +16,7 @@ component.editor = {
 	properties = { 
 	}, 
 	
-} 
+}  
 component._typeevents = {  
 	[EVENT_ANTRSYS_STATE]={networked=true,f = function(self,state)   
 	end}, 

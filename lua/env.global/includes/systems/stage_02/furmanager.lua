@@ -39,7 +39,7 @@ end
 furmanager.PrepareMaterials = function(node) 
     local nmat = {}
     furmanager.PrepareModel(node.model,nmat)
-    for k,v in pairs(node:GetChildren(true)) do
+    for k,v in pairs(node:GetChildren(true)) do 
         if v:GetClass()=='body_part' and not v.iscloth then
            furmanager.PrepareModel(v.model,nmat)
         end
@@ -55,6 +55,7 @@ furmanager.UpdateMaterials = function(node,ent)
                 renderdata[#renderdata+1] = { size = {128,128}, texture = texvalue}
             end 
         end
+       -- PrintTable(renderdata)
         if #renderdata==0 then
             SetMaterialProperty(material,'g_MeshTexture_g','textures/debug/white.png')
             hook.Call("fur_update",ent,matname,'textures/debug/white.png')
@@ -65,6 +66,12 @@ furmanager.UpdateMaterials = function(node,ent)
                 SetMaterialProperty(material,'g_MeshTexture_g',tex)
                 hook.Call("fur_update",ent,matname,tex)
             end)
+
+            --local x = gui.FromTable({subs = renderdata})
+            --x:Show()
+            --debug.Delayed(1000,function()
+            --    x:Close()
+            --end)
         end
     end  
 end
@@ -97,6 +104,14 @@ hook.Add("equipment.equip","furm",function(node,slot,data)
         if n then 
             --MsgN("##EQUIP",slot)
             n.masks[slot] = data.furmasks 
+
+           -- local mats = furmanager.PrepareMaterials(node)
+           -- local matv = {}
+           -- for k,v in pairs(mats) do 
+           --     matv[file.GetFileNameWE(k)] = v 
+           -- end
+           -- n.mat = matv
+
             debug.Delayed(100,function()
                 furmanager.UpdateMaterials(n,node) 
             end)
@@ -108,6 +123,14 @@ hook.Add("equipment.unequip","furm",function(node,slot)
     if n then
         --MsgN("##UNEQUIP",slot)
         n.masks[slot] = nil
+ 
+       -- local mats = furmanager.PrepareMaterials(node)
+       -- local matv = {}
+       -- for k,v in pairs(mats) do 
+       --     matv[file.GetFileNameWE(k)] = v 
+       -- end
+       -- n.mat = matv
+
         debug.Delayed(100,function()
             furmanager.UpdateMaterials(n,node) 
         end)
@@ -120,6 +143,13 @@ console.AddCmd("fur_update",function()
     if node then
         local n = node._furmasks
         if n then 
+          --  local mats = furmanager.PrepareMaterials(node)
+          --  local matv = {}
+          --  for k,v in pairs(mats) do 
+          --      matv[file.GetFileNameWE(k)] = v 
+          --  end
+          --  n.mat = matv
+
             furmanager.UpdateMaterials(n,node) 
         end
     end

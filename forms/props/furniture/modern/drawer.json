@@ -1,4 +1,5 @@
 {
+	"name" : "Drawer",
 	"group" : "furniture",
 	"tags" : ["modern"],
 	"model" : "furniture/modern/drawer.stmd",

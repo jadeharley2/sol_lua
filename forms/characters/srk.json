@@ -1,0 +1,49 @@
+{
+	"name": "SRK",
+	"species" : "anthroid:default",  
+	"health" : 300,  
+	"bodytype" : "fk_short",
+	"movement" :{
+		"walk": { "speed" : 1 },
+		"run" : { "speed" : 3.4 }
+	},  
+	
+	"parts" : { 
+		//"body" : "body_feline",
+		"torso_top":"bp_torso_top",
+		"torso_bot":"bp_torso_bot",
+		"arm"  : "bp_arm",
+		"hand" : "bp_hand",
+		"thigh": "bp_thigh",
+		"calf" : "bp_calf",
+		"foot" : "bp_foot",
+		"toe"  : "bp_toe",
+		"neck"  : "bp_neck",
+		"head" : "head_ara",
+		"hair" : "hair_vikna",
+		"tail" : "tail_ara"
+	},  
+	"flexes":{
+		"head:9": 1
+	},
+	"abilities" : ["shipremotecontrol"],
+	"materials" : {
+		"mat:body":  "models/species/anthro/materials/srk_body.json",
+		"mat:tail":  "models/species/anthro/materials/srk_tail.json",
+		"mat:head":  "models/species/anthro/materials/head_srk.json",
+		"mat:hair":  "models/species/anthro/materials/hairwhite.json",
+		"mat:eye_b_l":  "models/species/anthro/materials/eye_s_l.json",
+		"mat:eye_b_r":  "models/species/anthro/materials/eye_s_r.json" 
+	}, 
+	"basematdir" : "models/species/anthro/materials/", 
+	"variables" :{ 
+		"tpsheight" : 0.9,
+		"fpsheight" : 0.9, 
+	},
+	"equipment":{
+		"items":["apparel.uniform_1","apparel.collar"]
+	}, 
+	"items":[ 
+	] 
+}
+ 

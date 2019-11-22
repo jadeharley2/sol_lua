@@ -1,0 +1,8 @@
+{
+	"group" : "nature",
+	"tags" : [],
+	"model" : "models/nature/default/tree_dead.stmd",
+	"scale" : 4,
+	"rotation" : [90,0,0]
+	
+}

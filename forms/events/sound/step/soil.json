@@ -1,0 +1,16 @@
+{ 
+    "name" : "step.soil",
+    "sounds" : [
+        "step/soil-01.ogg",
+        "step/soil-02.ogg",
+        "step/soil-03.ogg",
+        "step/soil-04.ogg",
+        "step/soil-05.ogg",
+        "step/soil-06.ogg",
+        "step/soil-07.ogg",
+        "step/soil-08.ogg",
+        "step/soil-09.ogg", 
+    ],
+    "channel" : "step",
+    "volume" : 0.5
+}

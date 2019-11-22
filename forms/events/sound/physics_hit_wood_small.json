@@ -1,0 +1,20 @@
+{ 
+    "sounds" : [
+        "physics/wood/small_hit_01.ogg",
+        "physics/wood/small_hit_02.ogg",
+        "physics/wood/small_hit_03.ogg",
+        "physics/wood/small_hit_04.ogg",
+        "physics/wood/small_hit_05.ogg",
+        "physics/wood/small_hit_06.ogg",
+        "physics/wood/small_hit_07.ogg",
+        "physics/wood/small_hit_08.ogg",
+        "physics/wood/small_hit_09.ogg",
+        "physics/wood/small_hit_10.ogg",
+        "physics/wood/small_hit_11.ogg",
+        "physics/wood/small_hit_12.ogg",
+        "physics/wood/small_hit_13.ogg",
+        "physics/wood/small_hit_14.ogg", 
+    ],
+    "channel" : "physics",
+    "volume" : 0.5
+}

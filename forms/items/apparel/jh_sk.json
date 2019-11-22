@@ -9,5 +9,6 @@
 	"hide":["calf","foot","toe"],
 	"composition" :{
 		"resource.cloth" : 1,     
-	} 
+	},
+	"furmasks":{"body":"models/apparel/submaps/legw.png"},
 }

@@ -43,7 +43,9 @@
 			{"name":"rimfadeEmission","type":"float2","default":[1,2],"description":"x - intensity, y - power"} ,
 			{"name":"base_subsurface_intencity", "type":"float","default":0,"description":"subsurface intensity"},
 			{"name":"mul_subsurface_intencity", "type":"float","default":0,"description":"subsurface multiplier"},
+			{"name":"alphatestreference", "type":"float","default":0.5,"description":"clip reference value"},
 			
+
 			{"name":"sMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matColors0", "type":"float4","default":[1,0,0,1],"description":""},

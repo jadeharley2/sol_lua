@@ -1,0 +1,26 @@
+{ 
+    "name" : "step.metal",
+    "sounds" : [
+        "step/metal-01.ogg",
+        "step/metal-02.ogg",
+        "step/metal-03.ogg",
+        "step/metal-04.ogg",
+        "step/metal-05.ogg",
+        "step/metal-06.ogg",
+        "step/metal-07.ogg",
+        "step/metal-08.ogg",
+        "step/metal-09.ogg",
+        "step/metal-10.ogg",
+        "step/metal-11.ogg",
+        "step/metal-12.ogg",
+        "step/metal-13.ogg",
+        "step/metal-14.ogg",
+        "step/metal-15.ogg",
+        "step/metal-16.ogg",
+        "step/metal-17.ogg",
+        "step/metal-18.ogg",
+        "step/metal-19.ogg"  
+    ],
+    "channel" : "step",
+    "volume" : 0.5
+}

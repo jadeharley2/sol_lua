@@ -231,10 +231,12 @@ function ENT:LoadGraph()
 	local data = self.data 
 
 	local hdt = data.appearance.holdtype  
-	graph:NewState("idle",function(s,e) e:GetParent().model:PlayLayeredSequence(1,hdt.idle,hdt.model) end)
+	graph:NewState("idle",function(s,e) 
+		if hdt then e:GetParent().model:PlayLayeredSequence(1,hdt.idle,hdt.model) end
+	end)
 	graph:NewState("fire",function(s,e) 
 		local owner = e:GetParent()
-		owner.model:PlayLayeredSequence(1,hdt.fire,hdt.model) 
+		if hdt then owner.model:PlayLayeredSequence(1,hdt.fire,hdt.model) end
 		owner.nomovement = true
 		owner.norotation = true
 		return hdt.fire_duration or 1

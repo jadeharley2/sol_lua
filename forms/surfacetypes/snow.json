@@ -1,0 +1,31 @@
+{ 
+    "name" : "Snow",
+    "top" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/snow_01.png",
+            "normal" : "textures/surface/terrain2/snow_01n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.4,
+            "metalness" : 0, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.snow"
+        }
+    },
+    "slope" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/rock_03.png",
+            "normal" :"textures/surface/terrain2/rock_03n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.1,
+            "metalness" : 0.2, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.stone"
+        }
+    }
+}

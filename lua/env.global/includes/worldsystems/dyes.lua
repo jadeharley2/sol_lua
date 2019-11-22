@@ -13,6 +13,9 @@ hook.Add('craft.can_combine','blend',function(formid_a,formid_b)
     if(forms.HasTag(formid_a,'dye') and forms.HasTag(formid_b,'dye')) then
         return 'blend' 
     end
+    if(forms.HasTag(formid_a,'dye') and formid_b == 'resource.iron') then
+        return 'blend' 
+    end
 end)
 
 crafting.AddCombination('dye',function(formid_a,data_a,formid_b,data_b) 
@@ -65,11 +68,15 @@ crafting.AddCombination('clean',function(formid_a,data_a,formid_b,data_b)
         return data_a.source_id
     end 
 end)
-
-
+ 
 crafting.AddCombination('blend',function(formid_a,data_a,formid_b,data_b) 
     local t1 = data_a.tint
     local t2 = data_b.tint 
+    if formid_b == 'resource.iron' then
+        t2 = t1  
+        data_b = {tint = t1, metalness = 1, smooth = 0.8}
+    end
+
     if t1 and t2 then 
         local mix = {(t1[1]+t2[1])/2, (t1[2]+t2[2])/2, (t1[3]+t2[3])/2}
         local hex = '#'..rgbToHex(mix,255)
@@ -109,8 +116,37 @@ crafting.AddCombination('blend',function(formid_a,data_a,formid_b,data_b)
             data_a.name = 'Generic dye'
             data_a.icon = "res/liquid" 
         end
-        local newid = 'resource.dye_'..id 
-        return newid, data_a, 2
+        local newid = 'dye_'..id 
+        return newid, data_a, 2 
+        
     end
     --PrintTable(data_a,56)
+end)
+--[[
+hook.Remove('item_features','dye')
+hook.Add('item_features','dye',function(formid,data,addfeature)
+	if string.starts(formid,'resource.dye_') then  
+        if data.tint then    
+            local hex = '#'..rgbToHex(data.tint,255)
+            addfeature("color: "..hex,data.tint,'textures/gui/nodes/banchor.png') 
+        end
+        if data.glow then   
+            local g = data.glow or 0
+            addfeature("glow: "..tostring(data.glow),{g,g,g},'textures/gui/nodes/aanchor.png') 
+        end
+        if data.metalness then  
+            local g = data.metalness or 0 
+            addfeature("metalness: "..tostring(data.metalness),{g,g,g},'textures/gui/nodes/aanchor.png') 
+        end
+        --if data.smooth then  
+        --    local g = data.smooth or 0 
+        --    addfeature("smooth: "..tostring(data.smooth),{g,g,g},'textures/gui/nodes/aanchor.png')  
+        --end
+	end
+end)
+]]
+hook.Add('item_features','dyeable',function(formid,data,addfeature)
+    if forms.HasTag(formid,'dyeable') and not forms.HasTag(formid,'dyed') then
+        addfeature("dyeable",{1,1,1},'textures/gui/features/dyeable.png')  
+    end
 end)

@@ -1,4 +1,5 @@
 {
+	"name": "Vertical lamp",
 	"group" : "clutter",
 	"tags" : ["lab","lamp"],
 	"model" : "clutter/lab/lamp_a.stmd",

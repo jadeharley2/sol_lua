@@ -1,0 +1,19 @@
+{ 
+    "name" : "step.snow",
+    "sounds" : [
+        "step/snow-01.ogg",
+        "step/snow-02.ogg",
+        "step/snow-03.ogg",
+        "step/snow-04.ogg",
+        "step/snow-05.ogg",
+        "step/snow-06.ogg",
+        "step/snow-07.ogg",
+        "step/snow-08.ogg",
+        "step/snow-09.ogg",
+        "step/snow-10.ogg",
+        "step/snow-11.ogg",
+        "step/snow-12.ogg" 
+    ],
+    "channel" : "step",
+    "volume" : 0.5
+}

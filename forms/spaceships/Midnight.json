@@ -12,6 +12,7 @@
 		"rooms" : {
 			"bridge" : {
 				"static" : [
+					{"model":"space/ships/midnight/maproom.stmd","pos":[0,26.197,197.172],"scale":0.75},
 					{"model":"space/ships/midnight/bridge_floor.stmd","pos":[0,15.789,255.621],"scale":0.75},
 					{"model":"space/ships/midnight/bridge_walls.stmd","pos":[0,22.12,251.181],"scale":0.75},
 					{"model":"space/ships/midnight/bridge_second_chairs.stmd","pos":[0,0,0],"scale":0.75},

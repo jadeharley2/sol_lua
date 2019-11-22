@@ -2,6 +2,7 @@
 function PANEL:Init()
 	
 	self.value = false
+	self.active = true
 	
 	self:SetSize(22,22) 
 	self:SetColor(Vector(0,0,0)) 
@@ -11,10 +12,12 @@ function PANEL:Init()
 	inp:SetSize(18,18) 
 	inp:SetToggleable(true)
 	inp.OnClick = function(b)
-		self.value = not self.value 
-		--self:UpdateColor()
-		if self.OnValueChanged then
-			self.OnValueChanged(self,self.value)
+		if self.active then
+			self.value = not self.value 
+			--self:UpdateColor()
+			if self.OnValueChanged then
+				self.OnValueChanged(self,self.value)
+			end
 		end
 	end
 	self.inp = inp
@@ -34,6 +37,7 @@ end
 function PANEL:GetValue()
 	return self.value
 end
+
 
 --function PANEL:UpdateColor()
 --	local color = Vector(50,150,50)/256

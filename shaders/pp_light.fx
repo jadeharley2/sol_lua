@@ -518,7 +518,8 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     }
     else
     {
-        LIGHT *=light_power;
+        LIGHT *=saturate(light_power/100)*100;
+        //LIGHT *=light_power;
     }
 
 	float3 output  = lerp(LIGHT,LIGHT*surfcolor,metallness); 

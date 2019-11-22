@@ -74,7 +74,21 @@ hook.Add('formspawn.book','spawn',function(form,parent,arguments)
 	return ent
 end)
 hook.Add('newitem.book',"new",function(formid,seed)
-	return nil
+	local j = forms.ReadForm(formid)--json.Read(type) 
+	if not j then return nil end 
+	local t = {
+		sizepower=1, 
+		seed= seed, 
+		updatespace= 0,
+		parameters =  {
+			luaenttype = "book",
+			name = j.name,
+			form = formid,
+			icon = j.icon, 
+			seed = seed, 
+		}, 
+	}
+	return  json.ToJson(t)
 end)
 hook.Add('itemuse.book','use',function(user,formid,data)
 	local book = panel.Create('book_page')

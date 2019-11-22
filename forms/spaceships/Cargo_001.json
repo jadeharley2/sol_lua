@@ -1,0 +1,6 @@
+{
+	"name" : "Cargo_001",
+	"sizepower" : 750,
+	"posmul":0.75,
+	"hull" : {"model":"space/ships/cargo1/hull.stmd",	"scale":0.5,},   
+}

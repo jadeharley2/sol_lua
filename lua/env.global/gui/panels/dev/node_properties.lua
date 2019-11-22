@@ -436,7 +436,19 @@ function PANEL:ConstructParams(node,meta,parent,com)
 			elseif v.type == "action" then 
 				pva:SetColorAuto(Vector(0.6,0.6,0.8))
 				pva:SetText("click to "..v.text)
-				pva.OnClick = function(b) v.action(node,b) end 
+				pva.OnClick = function(b) 
+					if v.action(node,b) then
+						self:SelectNode(self.cnode)
+					end
+				end 
+			elseif v.type == "indicator" then 
+				pva:SetColorAuto(Vector(0.6,0.6,0.8))
+				pva:SetText(v.text)   
+				inp = panel.Create('checkbox') 
+				inp.active = false
+				inp:SetValue(v.value(node))
+				inp:Dock(DOCK_RIGHT)
+				pva:Add(inp)
 			elseif v.type == "scripted" then  
 				if v.getvalue then pva:SetText(v.text..":"..tostring(v.getvalue(node,com) or "")) end
 			end

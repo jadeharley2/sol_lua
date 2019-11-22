@@ -1,0 +1,14 @@
+{ 
+    "name" : "step.stone",
+    "sounds" : [
+        "step/stone-01.ogg",
+        "step/stone-02.ogg",
+        "step/stone-03.ogg",
+        "step/stone-04.ogg",
+        "step/stone-05.ogg",
+        "step/stone-06.ogg",
+        "step/stone-07.ogg"
+    ],
+    "channel" : "step",
+    "volume" : 0.5
+}

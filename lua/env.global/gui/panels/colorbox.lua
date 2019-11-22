@@ -1,5 +1,5 @@
 
-PANEL.basetype = "slider"
+PANEL.basetype = "slider_2d"
 
 function PANEL:Init()
 	self:SetSize(128,128)  

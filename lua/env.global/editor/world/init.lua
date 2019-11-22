@@ -273,7 +273,7 @@ end
 
 function editor:Update()
 	render.DCIRequestRedraw()
-	if not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport then
+	if not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport and not EDITOR_TERRAIN_MODE then
 	 
 		if self.mousedowntime and input.leftMouseButton() and CurTime()>self.mousedowntime+0.2 then
 			self.mousedowntime = nil 

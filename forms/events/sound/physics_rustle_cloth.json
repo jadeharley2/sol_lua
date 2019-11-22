@@ -1,0 +1,12 @@
+{ 
+    "sounds" : [
+        "physics/cloth/rustle_01.ogg",
+        "physics/cloth/rustle_02.ogg",
+        "physics/cloth/rustle_03.ogg",
+        "physics/cloth/rustle_04.ogg",
+        "physics/cloth/rustle_05.ogg", 
+        "physics/cloth/rustle_06.ogg", 
+    ],
+    "channel" : "physics",
+    "volume" : 0.5
+}

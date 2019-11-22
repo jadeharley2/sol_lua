@@ -22,7 +22,7 @@ function PANEL:Init()
 end
 
 function PANEL:AddTab(name,sub,btnmodt)
-
+MsgN("tTAb",name,sub)
 	local b = panel.Create("button") 
 	local plist = self.plist
 	b:SetText(name or "Tab")
@@ -45,12 +45,13 @@ function PANEL:AddTab(name,sub,btnmodt)
 	if btnmodt then
 		gui.FromTable(btnmodt,b)
 	end
-	
+	self:ShowTab(lid)
 end
 function PANEL:ShowTab(id)
 	local plist = self.plist
 	local framePanel = self.framePanel
 	local pp = plist[id]
+	MsgN("AA",id,pp)
 	if pp then
 		framePanel:Clear()
 		framePanel:Add(pp)
@@ -60,3 +61,5 @@ function PANEL:ShowTab(id)
 		self:UpdateLayout()
 	end
 end 
+
+PANEL.tabs_info = {type = 'children_dict',add = PANEL.AddTab}

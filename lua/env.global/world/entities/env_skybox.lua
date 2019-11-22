@@ -1,11 +1,11 @@
 function SpawnSkybox(parent,texture) 
-	local cubemap = ents.Create("env_skybox")
-	cubemap.texture = texture
-	cubemap:SetSizepower(1000)
-	cubemap:SetParent(parent) 
-	cubemap:SetAng(matrix.AxisRotation(Vector(1,0,0),180))
-	cubemap:Spawn()
-	return cubemap
+	local e = ents.Create("env_skybox")
+	e.texture = texture
+	e:SetSizepower(1000)
+	e:SetParent(parent) 
+	e:SetAng(matrix.AxisRotation(Vector(1,0,0),180))
+	e:Spawn()
+	return e
 end
 --ex: "textures/skybox/spacedefault/space.png"
 
@@ -20,6 +20,10 @@ function ENT:Spawn()
 			skybox:SetTexture(tex)
 		end
 	end
+end
+
+function ENT:SetWorld(w)
+	self.skybox:SetMatrix(matrix.Scaling(10000)*w)
 end
  
  

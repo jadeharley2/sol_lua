@@ -1,0 +1,540 @@
+[
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000045,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000045,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0599426850676537, -0.0208625514060259, -0.0913794487714767, "vec3"],
+			"rotation" : [0, 0.22797754406929, 0, 0.973666489124298, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "dyntest/test_road.dnmd",
+			"modelscale" : 0.75,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.architecture.test_rails"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000050,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000050,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0667553395032883, -0.0171486102044582, -0.131418347358704, "vec3"],
+			"rotation" : [0.715038299560547, 0.283012449741364, -0.315378397703171, 0.556022346019745, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/tree_dead.stmd",
+			"modelscale" : 4,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.tree_dead"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000051,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000051,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0577920898795128, -0.0160758029669523, -0.133495390415192, "vec3"],
+			"rotation" : [0.70710676908493, 0, 0, 0.70710676908493, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/tree_dead.stmd",
+			"modelscale" : 4,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.tree_dead"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000052,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000052,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0653776377439499, -0.0160758029669523, -0.136312305927277, "vec3"],
+			"rotation" : [0.0781846046447754, 0.702771008014679, -0.702771008014679, 0.0781846046447754, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/tree_dead.stmd",
+			"modelscale" : 4,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.tree_dead"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000053,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000053,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0590768419206142, -0.0171486102044582, -0.124545872211456, "vec3"],
+			"rotation" : [0.497693777084351, 0.502295732498169, -0.602531492710114, 0.370075583457947, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/tree_dead.stmd",
+			"modelscale" : 4,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.tree_dead"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000056,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000056,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0460882782936096, -0.0252947919070721, -0.122983455657959, "vec3"],
+			"rotation" : [0.543095946311951, 0.452820926904678, -0.452820867300034, 0.543095946311951, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000057,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000057,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0295766331255436, -0.0252947937697172, -0.114822514355183, "vec3"],
+			"rotation" : [0.617123544216156, 0.345193475484848, -0.345193445682526, 0.617123544216156, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000058,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000058,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0817118734121323, -0.0252947937697172, -0.111359402537346, "vec3"],
+			"rotation" : [0.298492878675461, -0.641016960144043, 0.402175843715668, 0.581597208976746, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000059,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000059,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0267948769032955, -0.0252947919070721, -0.0831151232123375, "vec3"],
+			"rotation" : [-0.33851084113121, 0.620814204216003, -0.620814263820648, -0.338510900735855, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000060,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000060,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.039407305419445, -0.0252947919070721, -0.10664826631546, "vec3"],
+			"rotation" : [0.405539870262146, 0.579255938529968, -0.579255938529968, 0.405539810657501, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000061,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000061,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0436711758375168, -0.0252947919070721, -0.0807363986968994, "vec3"],
+			"rotation" : [0.692300915718079, -0.143943697214127, 0.143943846225739, 0.692300856113434, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000062,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000062,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0755833238363266, -0.0252947937697172, -0.0651371702551842, "vec3"],
+			"rotation" : [0.540825366973877, 0.455530852079391, -0.455530792474747, 0.540825247764587, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000063,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000063,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0990985259413719, -0.0207559429109097, -0.1464923620224, "vec3"],
+			"rotation" : [0.312758684158325, -0.737995862960815, 0.173285722732544, 0.572291314601898, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000064,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000064,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.0874563753604889, -0.0252947937697172, -0.0917876958847046, "vec3"],
+			"rotation" : [0.610096991062164, -0.357466191053391, 0.35746631026268, 0.610097050666809, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1,
+		"seed" : 1000065,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000065,
+			"abssize" : 1,
+			"name" : null,
+			"position" : [-0.121894747018814, -0.0207559447735548, -0.115133911371231, "vec3"],
+			"rotation" : [0.319743275642395, 0.0548862032592297, -0.160031825304031, 0.932278215885162, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 0,
+			"model" : "models/nature/default/rock01.stmd",
+			"modelscale" : 0.1,
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [0, 0, 0, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "prop_variable",
+			"form" : "prop.nature.rock_medium"
+		},
+		"flags" : ["editornode"]
+	},
+
+	{
+		"sizepower" : 1000,
+		"seed" : 1000066,
+		"updatespace" : 0,
+		"parameters" : 
+		{
+			"type" : 0,
+			"typename" : "none",
+			"seed" : 1000066,
+			"abssize" : 1000,
+			"name" : "ARA",
+			"position" : [-0.0355765260756016, -0.0166638158261776, -0.137612760066986, "vec3"],
+			"rotation" : [0, 0.606677711009979, 0, -0.794947803020477, "quat"],
+			"scale" : [1, 1, 1, "vec3"],
+			"mass" : 10,
+			"model" : "models/species/anthro/base_anthro.stmd",
+			"state" : "idle",
+			"gravity" : [0, 0, 0, "vec3"],
+			"velocity" : [-4.5278056859388E-09, -0.000399340060539544, -7.48910178316464E-09, "vec3"],
+			"angvelocity" : [0, 0, 0, "vec3"],
+			"luaenttype" : "base_actor",
+			"character" : "ara",
+			"health" : 300,
+			"maxhealth" : 300,
+			"viewtarget" : [-0.0180797632783651, -0.016025373712182, -0.073629766702652, "vec3"],
+			"equipment" : 
+			{
+				"torso.under.top" : 
+				{
+					"data" : false
+				},
+				"head.top" : 
+				{
+					"data" : false
+				},
+				"neck" : 
+				{
+					"data" : 
+					{
+						"seed" : 1000069,
+						"updatespace" : 0,
+						"parameters" : 
+						{
+							"luaenttype" : "item_apparel",
+							"slot" : "neck",
+							"form" : "apparel.collar",
+							"seed" : 1000069,
+							"icon" : "apparel/fk/collar",
+							"name" : "Kaltag uniform collar"
+						},
+						"sizepower" : 1
+					}
+				},
+				"arms" : 
+				{
+					"data" : 
+					{
+						"seed" : 1000071,
+						"updatespace" : 0,
+						"parameters" : 
+						{
+							"luaenttype" : "item_apparel",
+							"slot" : "arms",
+							"form" : "apparel.armw",
+							"seed" : 1000071,
+							"icon" : "apparel/fk/kt_wrm",
+							"name" : "Kaltag uniform arms"
+						},
+						"sizepower" : 1
+					}
+				},
+				"hands" : 
+				{
+					"data" : false
+				},
+				"skin.head" : 
+				{
+					"data" : false
+				},
+				"head.eyes" : 
+				{
+					"data" : false
+				},
+				"torso.under.bot" : 
+				{
+					"data" : false
+				},
+				"torso" : 
+				{
+					"data" : 
+					{
+						"seed" : 1000067,
+						"updatespace" : 0,
+						"parameters" : 
+						{
+							"luaenttype" : "item_apparel",
+							"slot" : "torso",
+							"form" : "apparel.uniform_1",
+							"seed" : 1000067,
+							"icon" : "apparel/fk/uniform1",
+							"name" : "Kaltag uniform"
+						},
+						"sizepower" : 1
+					}
+				},
+				"skin" : 
+				{
+					"data" : false
+				},
+				"head.mouth" : 
+				{
+					"data" : false
+				},
+				"legs" : 
+				{
+					"data" : 
+					{
+						"seed" : 1000073,
+						"updatespace" : 0,
+						"parameters" : 
+						{
+							"luaenttype" : "item_apparel",
+							"slot" : "legs",
+							"form" : "apparel.legw",
+							"seed" : 1000073,
+							"icon" : "apparel/fk/kt_wrm",
+							"name" : "Kaltag uniform legs"
+						},
+						"sizepower" : 1
+					}
+				},
+				"feet" : 
+				{
+					"data" : false
+				},
+				"tail" : 
+				{
+					"data" : false
+				},
+				"torso.top" : 
+				{
+					"data" : false
+				}
+			}
+		},
+		"flags" : ["actor", "physsimulated", "editornode"]
+	}
+]

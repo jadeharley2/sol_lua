@@ -121,6 +121,9 @@ end
 function PANEL:ClearItems() 
 	self.floater:Clear()
 end
+function PANEL:GetItems()
+	return self.floater:GetChildren()
+end
 PANEL.items_info = {type="children_array",add = PANEL.AddItem}
 
 function PANEL:SetAlpha(a)

@@ -551,37 +551,37 @@ function ENT:GetSpawn()
 	local space = self.space
  
 	
-	local space2 = ents.Create()
-	space2:SetLoadMode(1)
-	space2:SetSeed(9900033)
-	space2:SetPos(Vector(0.00748269, 0.0012758673, 0.003352003))
-	space2:SetParent(space) 
-	space2:SetSizepower(1000)
-	space2:SetGlobalName("u1_room.space2")
-	space2:SetScale(Vector(0.0005, 0.4, 0.4))
-	space2:SetSpaceEnabled(false)
-	space2:Spawn()  
-	local sspace = space2:AddComponent(CTYPE_PHYSSPACE)  
-	sspace:SetGravity(Vector(0,-2,0))
-	space2.space = sspace
-	self.space2 = space2
-
-	if CLIENT then
-		env.Microphone(space2,function(s,n,p,d) self:LSMicro(s,n,p,d) end)
-	end
-
-	local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75/4) 
-	instr.model:SetMaterial("textures/gui/test.json")
-	
-	instr:AddEventListener(EVENT_USE,"use_event",function(s,user) 
-		self:CFR(user,space2)
-	end)
-	instr:AddTag(TAG_USEABLE) 
-	
-	space2:AddEventListener(EVENT_USE,"use_event",function(s,user)
-		self:CTO(user,space2)
-	end)
-	space2:AddTag(TAG_USEABLE) 
+--	local space2 = ents.Create()
+--	space2:SetLoadMode(1)
+--	space2:SetSeed(9900033)
+--	space2:SetPos(Vector(0.00748269, 0.0012758673, 0.003352003))
+--	space2:SetParent(space) 
+--	space2:SetSizepower(1000)
+--	space2:SetGlobalName("u1_room.space2")
+--	space2:SetScale(Vector(0.0005, 0.4, 0.4))
+--	space2:SetSpaceEnabled(false)
+--	space2:Spawn()  
+--	local sspace = space2:AddComponent(CTYPE_PHYSSPACE)  
+--	sspace:SetGravity(Vector(0,-2,0))
+--	space2.space = sspace
+--	self.space2 = space2
+--
+--	if CLIENT then
+--		env.Microphone(space2,function(s,n,p,d) self:LSMicro(s,n,p,d) end)
+--	end
+--
+--	local instr = SpawnSO("test/r_room.stmd",space2,Vector(0,0,0),0.75/4) 
+--	instr.model:SetMaterial("textures/gui/test.json")
+--	
+--	instr:AddEventListener(EVENT_USE,"use_event",function(s,user) 
+--		self:CFR(user,space2)
+--	end)
+--	instr:AddTag(TAG_USEABLE) 
+--	
+--	space2:AddEventListener(EVENT_USE,"use_event",function(s,user)
+--		self:CTO(user,space2)
+--	end)
+--	space2:AddTag(TAG_USEABLE) 
 
 
 

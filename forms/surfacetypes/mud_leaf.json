@@ -1,0 +1,31 @@
+{ 
+    "name" : "Mud with leaves",
+    "top" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/mud_01.png",
+            "normal" : "textures/surface/terrain2/mud_01n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.1,
+            "metalness" : 0, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.grass"
+        }
+    },
+    "slope" : { 
+        "texture" : {
+            "diffuse" : "textures/surface/terrain2/rock_05.png",
+            "normal" : "textures/surface/terrain2/rock_05n.png",
+            "mask" :"textures/debug/white.png",
+            "smooth" : 0.1,
+            "metalness" : 0.2, 
+        },
+        "sounds":{
+            "impact" : "",
+            "drag" : "",
+            "step" : "step.stone"
+        }
+    }
+}

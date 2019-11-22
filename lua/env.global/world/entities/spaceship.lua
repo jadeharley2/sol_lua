@@ -136,7 +136,7 @@ function ENT:Spawn()
 	self:SetUpdating(true,15)
 
 	
-	self.ambientsnd = sound.Start("ambient/space/deepspace.ogg",0.8) 
+	--self.ambientsnd = sound.Start("ambient/space/deepspace.ogg",0.8) 
 	self.thrustersnd = sound.Start("ambient/space/thruster_loop.ogg",1) 
 	self.warpsnd = sound.Start("ambient/space/warp_loop.ogg",1) 
 	self.thrustersnd:SetVolume(-10)
@@ -173,7 +173,7 @@ function ENT:Despawn()
 	--MsgN("ship despawn!")
 	--MsgN(debug.traceback())
 	--brk()
-	self.ambientsnd:Stop()
+	--self.ambientsnd:Stop()
 	self.thrustersnd:Stop()
 	self.warpsnd:Stop()
 end
@@ -621,11 +621,11 @@ function ENT:SEnter()
 		self.cubemap:SetAng(Vector(0,180,0))
 		self.cubemap:RequestDraw() 
 
-		self:Timer("cubemap_refresh",1100,1100,-1,function()
-			if self and self.cubemap then
-				self.cubemap:RequestDraw() 
-			end
-		end)
+		--self:Timer("cubemap_refresh",1100,1100,-1,function()
+		--	if self and self.cubemap then
+		--		self.cubemap:RequestDraw() 
+		--	end
+		--end)
 	end 
 end
 
@@ -799,7 +799,7 @@ function ENT:Throttle(dir,warp_mode,ovrFwd)
 		end
 	end
 	
-	local speed = self.speed or 0
+	local speed = self.speed or 1--0.000001
 
 	
 	--local Forward = Vector(1,0,0)---self:Forward():Normalized()
@@ -1411,3 +1411,9 @@ ENT._typeevents = {
 	[EVENT_DOCK_FINISH] = {networked = true, f = ENT.DockLinkAirlocks},
 }
  
+
+hook.Add('formspawn.spaceship','spawn',function(form,parent,arguments)  
+	local aparts = string.split(form,'.') 
+	local ship = SpawnSS(aparts[2],parent,arguments.pos or Vector(0,0,0),arguments.seed or 0)
+	return ship
+end)

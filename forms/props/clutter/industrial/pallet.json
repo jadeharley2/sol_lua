@@ -1,4 +1,5 @@
 {
+	"name" : "Wooden pallet",
 	"group" : "clutter",
 	"tags" : ["lab","item"],
 	"model" : "clutter/industrial/pallet.stmd",

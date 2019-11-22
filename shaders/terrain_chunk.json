@@ -1,0 +1,53 @@
+{
+	"name" : "terrain_chunk",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"terrain_chunk.fx" 
+	],
+	"output" :  
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	], 
+	
+	"parameters" : {
+		//"SurfaceTextures_d" 					: {"type":"texture"}, 
+		//"SurfaceTextures_n" 					: {"type":"texture"}, 
+		"NoiseTexture" 						 	: {"type":"texture"},  
+  
+		"SurfaceTextures_d" 					: {"type":"texture"}, 
+		"SurfaceTextures_n" 					: {"type":"texture"}, 
+		"SurfaceTextures_m" 					: {"type":"texture"}, 
+		"SurfaceParameters" 					: {"type":"vector4[]"}, 
+	},
+	"onload" : {
+		"tech" : "Render", 
+		"layout" :["VertexTerrain","InstanceTransformColor"],
+		"values" : { 
+			//"SurfaceTextures_d" 				: "textures/surface/terrain/test/surface_d.dds",//nearsurface_d
+			//"SurfaceTextures_n" 				: "textures/surface/terrain/test/surface_n.dds",//"textures/surface/8649-normal.jpg",
+			"NoiseTexture" 						: "textures/noise/perlin_4d.dds",
+			 
+		},
+	},
+}            

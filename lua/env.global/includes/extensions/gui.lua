@@ -131,8 +131,16 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 								info.add(node,v2)
 							end
 						end 
-					elseif info.type == "children_single" then
-						MsgN('gen')
+					elseif info.type == "children_dict" then
+						for k2,v2 in pairs(v) do 
+							MsgN("CHD",k2,v2)
+							if istable(v2) then
+								info.add(node,k2,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
+							elseif isuserdata(v2) then
+								info.add(node,k2,v2)
+							end
+						end 
+					elseif info.type == "children_single" then 
 						info.add(node,gui.FromTable(v,nil,style,namedtable,tablekey)) 
 					end
 				else
@@ -149,7 +157,12 @@ end
 
 function gui.FromTable(t,node,style,namedtable,tablekey)
 	local ptype = t.type 
-	if not ptype and style and t.class then ptype = style[t.class].type end 
+	if not ptype and style and t.class then
+		local pstyle = style[t.class] 
+		if pstyle then
+		 	ptype = pstyle.type 
+		end
+	end 
 	node = node or panel.Create(ptype or "panel")
 	
 	if style and t.class then

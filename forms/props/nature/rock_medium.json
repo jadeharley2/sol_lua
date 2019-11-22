@@ -1,0 +1,8 @@
+{
+	"group" : "nature",
+	"tags" : [],
+	"model" : "models/nature/default/rock01.stmd",
+	"scale" : 0.1,
+	"rotation" : [90,0,0]
+	
+}

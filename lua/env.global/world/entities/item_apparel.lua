@@ -193,7 +193,19 @@ end)
 hook.Add('newitem.apparel',"new",function(formid,seed)
 	return ItemIA(formid,seed)
 end)
-
+hook.Add('item_features','apparel',function(formid,formdata,addfeature)
+	if string.starts(formid,'apparel') and formdata.slot then
+		local slt = "slot: "
+		if istable(formdata.slot) then
+			for k,v in pairs(formdata.slot) do
+				slt = slt .. ', ' .. v
+			end
+		else
+			slt = slt .. tostring(formdata.slot)
+		end
+		addfeature(slt,{1,1,1},'textures/gui/features/slot.png')
+	end
+end)
 --hook.Remove("item_properties","item_apparel")
 --hook.Add("item_properties","item_apparel",function(data,context,storage,item) 
 --	if data.data:Read("/parameters/luaenttype") == "item_apparel" then

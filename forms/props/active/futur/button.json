@@ -1,4 +1,5 @@
 {
+	"name":"Button",
 	"group" : "active",
 	"tags" : ["futur"],
 	"model" : "active/button.stmd",

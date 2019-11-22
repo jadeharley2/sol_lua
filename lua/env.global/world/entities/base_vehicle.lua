@@ -18,23 +18,23 @@ end
 ENT.mountpoints = {
 	{pos = Vector(0.02,0.06,0),ang = Vector(0,0,0)}
 }
-function ENT:Init()   
-	function self:Trottle(dir)
-		local pp = self:GetParent()
-		local sz = pp:GetSizepower()
-		local f = self:Right()*10000*dir
-		self.phys:ApplyImpulse(f/sz) 
-	end
-	function self:Turn(dir) 
-		local f = self:Up()*dir*100-- Vector(0,0,dir*100)
-		self.phys:ApplyAngularImpulse(f) 
-	end
-	function self:Turn2(dir) 
-		local f = self:Right()*dir*100-- Vector(0,0,dir*100)
-		self.phys:ApplyAngularImpulse(f) 
-	end
+function ENT:Init()  
 	self:SetSizepower(10) 
 	self:AddTag(TAG_PHYSSIMULATED)
+end 
+function self:Trottle(dir)
+	local pp = self:GetParent()
+	local sz = pp:GetSizepower()
+	local f = self:Right()*10000*dir
+	self.phys:ApplyImpulse(f/sz) 
+end
+function self:Turn(dir) 
+	local f = self:Up()*dir*100-- Vector(0,0,dir*100)
+	self.phys:ApplyAngularImpulse(f) 
+end
+function self:Turn2(dir) 
+	local f = self:Right()*dir*100-- Vector(0,0,dir*100)
+	self.phys:ApplyAngularImpulse(f) 
 end
 
 function ENT:Spawn(c)  

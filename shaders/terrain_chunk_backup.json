@@ -1,0 +1,139 @@
+{
+	"name" : "terrain_chunk",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"terrain_chunk.fx" 
+	],
+	"output" :  
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	], 
+	
+	"parameters" : {
+		//"SurfaceTextures_d" 					: {"type":"texture"}, 
+		//"SurfaceTextures_n" 					: {"type":"texture"}, 
+		"NoiseTexture" 						 	: {"type":"texture"},  
+ 
+
+		"SurfaceTextures2_d" 					: {"type":"texture[]"}, 
+		"SurfaceTextures2_n" 					: {"type":"texture[]"}, 
+		"SurfaceTextures2_m" 					: {"type":"texture[]"}, 
+		"SurfaceParameters" 					: {"type":"vector4[]"}, 
+	},
+	"onload" : {
+		"tech" : "Render", 
+		"layout" :["VertexTerrain","InstanceTransformColor"],
+		"values" : { 
+			//"SurfaceTextures_d" 				: "textures/surface/terrain/test/surface_d.dds",//nearsurface_d
+			//"SurfaceTextures_n" 				: "textures/surface/terrain/test/surface_n.dds",//"textures/surface/8649-normal.jpg",
+			"NoiseTexture" 						: "textures/noise/perlin_4d.dds",
+
+			"SurfaceTextures2_d" : [
+				"textures/surface/terrain/grass_01.jpg",
+				"textures/surface/terrain/rock_02.jpg",
+
+				"textures/surface/1324-v2.jpg",
+				"textures/surface/caustics.png",
+
+				"textures/surface/8649.jpg",
+				"textures/surface/7723.jpg",
+				
+				"textures/surface/terrain/sand_01.jpg",
+				"textures/surface/terrain/rock_04.jpg",
+				
+				"textures/engine/null_n.png",
+				"textures/engine/null_n.png",
+				
+				"textures/engine/null_n.png",
+				"textures/engine/null_n.png", 
+			],
+			"SurfaceTextures2_n" : [
+				"textures/surface/terrain/grass_01n.png",
+				"textures/engine/null_n.png",
+				
+				"textures/surface/1324-normal.jpg", 
+				"textures/surface/caustics_n.png",
+
+				"textures/surface/8649-normal.jpg",
+				"textures/surface/7723-normal.jpg",
+
+				"textures/surface/terrain/sand_01n.png",
+				"textures/surface/terrain/rock_02n.dds",
+				
+				"textures/engine/null_n.png",
+				"textures/engine/null_n.png",
+				
+				"textures/engine/null_n.png",
+				"textures/engine/null_n.png", 
+			], 
+			"SurfaceTextures2_m" : [
+				"textures/debug/white.png",
+				"textures/debug/white.png",
+				
+				"textures/debug/white.png",
+				"textures/debug/white.png",
+
+				"textures/surface/8649-normal.dds",
+				"textures/debug/white.png",
+
+				"textures/debug/white.png",
+				"textures/debug/white.png",
+				
+				"textures/debug/white.png",
+				"textures/debug/white.png",
+				
+				"textures/debug/white.png",
+				"textures/debug/white.png",
+			], 
+			"SurfaceParameters" : [
+				[0.1,0,0,0],
+				[0.1,0.2,0,0], 
+
+				[0.2,0,0,0],
+				[1,0.8,0,0],
+
+				[1,0.2,0,0],
+				[0.2,0.8,0,0],
+
+				[0,0,0,0],
+				[0,0,0,0],
+				
+				[0,0,0,0],
+				[0,0,0,0],
+
+				[0,0,0,0],
+				[0,0,0,0],
+			], 
+   
+			//"SurfaceTexture_07_d" 				: "textures/surface/terrain/deadgr_01.jpg",
+			//"SurfaceTexture_07_n" 				: "textures/surface/terrain/grass_01n.png", 
+//
+			//"SurfaceTexture_08_d" 				: "textures/surface/terrain/sand_01.jpg",
+			//"SurfaceTexture_08_n" 				: "textures/surface/terrain/sand_01n.png", 
+			//
+			//"SurfaceTexture_09_d" 				: "textures/surface/terrain/rock_02.jpg",
+			//"SurfaceTexture_09_n" 				: "textures/surface/terrain/rock_02n.dds", 
+		},
+	},
+}            

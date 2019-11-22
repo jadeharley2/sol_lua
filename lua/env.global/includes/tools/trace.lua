@@ -10,9 +10,9 @@ function GetCameraPhysTrace(cam,actorphys)
 	end
 	return nil
 end
-function GetMousePhysTrace(cam,actorphys)
+function GetMousePhysTrace(cam,actorphys,mpos)
 	cam = cam or GetCamera()
-	local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
+	mpos = mpos or (input.getInterfaceMousePos()+Vector(0,0,0.1))
 	local wdir = cam:Unproject(mpos):Normalized()
 	local parentphysnode = cam:GetParentWithComponent(CTYPE_PHYSSPACE)
 	if parentphysnode then

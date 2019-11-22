@@ -1,5 +1,5 @@
 {
-	"name": "Ara",
+	"name": "ARA",
 	"species" : "anthroid:default",  
 	"health" : 300,  
 	"parts" : { 
@@ -22,43 +22,7 @@
 	},
 	"abilities" : ["shipremotecontrol"],
 	"materials" : {
-		"mat:body":  "models/species/anthro/materials/ara_body.json"
-		/*{   
-			"#include" : "models/species/anthro/materials/body.json", 
-			"g_MeshTexture" : "models/species/anthro/materials/ara_body.png",  
-			"g_MeshTexture_e" : "models/species/anthro/materials/ara_body_e.png",  
-			"g_MeshTexture_g" : "textures/debug/white.png",  
-			"rimfadeEmission":[1,2],
-			"g_DetailTexture" : "textures/detail/noise0.png", 
-			"g_DetailTexture_n" : "", 
-			"detailscale" : [20,20], 
-			"detailblendmode" : 0,   
-			"detailblendfactor" : 1,  
-			"furLen":1,
-			"furShift":[-0.0,-0.01],
-			"g_MeshTexture_x" :  "models/species/anthro/materials/body_furlen.png",    
-			"g_MeshTexture_s" :  "textures/debug/black.png",  
- 
-		}, */
-	///	"body:0" : {   
-	///		"#include" : "models/species/anthro/materials/body_base.json", 
-	///		"g_MeshTexture" : "models/species/anthro/materials/ara_body.png",  
-	///		"g_MeshTexture_e" : "models/species/anthro/materials/ara_body_e.png",  
-	///	}, 
-		//"head:0" : {   
-		//	"#include" : "models/species/anthro/materials/body_base.json", 
-		//	"g_MeshTexture" : "models/species/anthro/materials/body_colors_b.png",  
-		//}, 
-		//"head:1" : {   
-		//	"#include" : "models/species/anthro/materials/eye_l.json",  
-		//	"g_MeshTexture" : "models/species/anthro/materials/white.png",  
-		//	"g_IrisTexture" : "models/species/anthro/materials/iris_b.dds",  
-		//}, 
-		//"head:2" : {   
-		//	"#include" : "models/species/anthro/materials/eye_r.json",  
-		//	"g_MeshTexture" : "models/species/anthro/materials/white.png",  
-		//	"g_IrisTexture" : "models/species/anthro/materials/iris_b.dds",  
-		//}, 
+		"mat:body":  "models/species/anthro/materials/ara_body.json" 
 	}, 
 	"basematdir" : "models/species/anthro/materials/", 
 

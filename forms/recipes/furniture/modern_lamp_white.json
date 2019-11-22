@@ -1,0 +1,20 @@
+{
+    "tags" : ["furniture"],
+    "station" : {
+        "type" : "sewing_machine"
+    },
+    "output" : { 
+        "item":"prop.clutter.lab.lamp_a",
+        "count":1 
+    },
+    "input" : [ 
+        {
+            "item":"resource.plastic",
+            "count":2
+        }, 
+        {
+            "item":"resource.electronic_components",
+            "count":1
+        }, 
+    ]
+}
