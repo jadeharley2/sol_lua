@@ -1,5 +1,6 @@
 {
 	"name" : "Neon arm warmers",  
+	"tags":["vendor_small"],
 	"slot" : "arms",
 	"model" : "apparel/arm.stmd",
 	"icon" : "apparel/fk/kt_wrm", 

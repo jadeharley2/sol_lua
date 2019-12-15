@@ -8,10 +8,17 @@
             "smooth" : 0.1,
             "metalness" : 0, 
         },
+        "material" : "sand",
         "sounds":{
             "impact" : "",
             "drag" : "",
             "step" : "step.sand"
+        },
+        "particles":{
+            "type":"dust",
+            "size":0.1,
+            "speed":1,
+            "time":1
         }
     },
     "slope" : { 
@@ -22,6 +29,7 @@
             "smooth" : 0.1,
             "metalness" : 0.2, 
         },
+        "material" : "stone",
         "sounds":{
             "impact" : "",
             "drag" : "",

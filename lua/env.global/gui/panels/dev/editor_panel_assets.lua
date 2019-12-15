@@ -190,7 +190,7 @@ local on_dt_display2 = function(files,item,data,isdir)
 		end
 	end
 end 
-local on_dt_click = function(b,cdtype) 
+local on_dt_click = function(b,cdtype)  
 	cdtype = PREFIX..'/'..cdtype
 	MsgN("SPAWN REQUEST?",cdtype)
 	local aparts = string.split(cdtype,'/')
@@ -352,8 +352,13 @@ function PANEL:Init()
 					TERRAIN = { type = "editor_panel_terrain",name = "pterr",
 						size = {300,100}, 
 					},
-					
-				}
+					MESH = { type = "editor_panel_edmesh",name = "pmesh",
+						size = {300,100}, 
+					}
+				},
+				OnTabChanged = function(s,id,name)
+					worldeditor:SetMode(name)
+				end
 			},
 			
 			{ type = "panel", --assets

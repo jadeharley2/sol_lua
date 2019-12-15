@@ -2,6 +2,6 @@
     "tags":["flammable"],
     "icon":"res/plank",
     "tint":[0.8117647,0.6980392,0.5411765],
-    "name":"Wood planks",
+    "name":"Wood planks", 
 
 }

@@ -227,11 +227,20 @@ function PANEL:Refresh()
 		ParseVal(api.globals,k,v,rtb5) 
 	end 
 	
-	
+	local rtb6 = {"hook"}
+	local hooklist = {}
+	if api.hooks then
+		for k,v in pairs(api.hooks) do 
+			hooklist[k] = v 
+		end
+		for k,v in SortedPairs(hooklist) do  
+			ParseVal(api.hooks,k,v,rtb6) 
+		end 
+	end
 	
 	--PrintTable(rtb)
 	dirtree:SetTableType(2) 
-	dirtree:FromTable({"*",rtb1,rtb2,rtb3,rtb4,rtb5})
+	dirtree:FromTable({"*",rtb1,rtb2,rtb3,rtb4,rtb5,rtb6})
 	dirtree.root:SetSize(600,dirtree.root:GetSize().x)
 	dirtree.grid:SetColor(Vector(0.1,0.1,0.1))
 	

@@ -65,7 +65,7 @@ function forms.GetItem(formid,seed)
 	local aparts = string.split(formid,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
 	seed = seed or GetFreeUID()
-
+ 
 	return hook.Call('newitem.'..aparts[1],formid,seed) 
 end
 function forms.GetIcon(formid)

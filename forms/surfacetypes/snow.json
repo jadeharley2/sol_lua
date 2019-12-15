@@ -8,6 +8,7 @@
             "smooth" : 0.4,
             "metalness" : 0, 
         },
+        "material" : "snow",
         "sounds":{
             "impact" : "",
             "drag" : "",
@@ -22,6 +23,7 @@
             "smooth" : 0.1,
             "metalness" : 0.2, 
         },
+        "material" : "stone",
         "sounds":{
             "impact" : "",
             "drag" : "",

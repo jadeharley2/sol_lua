@@ -50,6 +50,55 @@ float4 PS( PS_IN input ) : SV_Target
 	return input.color*(Color*saturate(50/input.z_depth)+Color2*saturate(1-50/input.z_depth));
 }
 
+struct CVS_IN
+{
+	float4 pos : SV_POSITION; 
+	float4 normal : NORMAL;
+	float4 color : COLOR;
+}; 
+ 
+struct CPS_IN
+{ 
+	float4 pos : SV_POSITION; 
+	float3 normal : TEXCOORD0;
+	float3 color : TEXCOORD1;
+};
+struct CPS_OUT
+{ 
+    float4 light: SV_Target0;
+    float4 normal: SV_Target1; 
+    float depth: SV_Target2;
+    float4 mask: SV_Target3;// r - deferred_intensity, g - smootheness, b - metallness, a - subsurface_scattering_transparency
+    float4 diffuse: SV_Target4; 
+};
+
+CPS_IN CVSI( CVS_IN input, I_IN inst ) 
+{
+	CPS_IN output = (CPS_IN)0;
+	float4x4 world =  mul( transpose(inst.transform),transpose(World));
+	float4x4 vp = mul(transpose(View),	transpose(Projection));
+	
+	float3x3 mxr = (float3x3)world;
+
+	float4x4 mx = mul(mul(transpose(World) ,	transpose(View)),	transpose(Projection));
+	output.pos =  mul( input.pos,	mx) ;
+	//output.pos =  mul(mul(input.pos,world), vp); 
+	output.normal = mul(input.normal,mxr);
+	output.color = inst.color.xyz*input.color.xyz;
+	
+	return output;
+}
+  
+CPS_OUT CPS( CPS_IN input )  
+{
+	CPS_OUT output = (CPS_OUT)0;
+	output.diffuse =float4( input.color*Color.xyz,1);
+	output.normal = float4(input.normal,1);
+	output.depth = input.pos.z;
+	output.mask = float4(1,0,0,0);
+	output.light = output.diffuse*0.1;
+	return output;
+}
 
 technique10 Instanced
 {
@@ -69,3 +118,12 @@ technique10 Normal
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 }
+technique10 ComplexInstanced
+{
+	pass P0
+	{
+		SetGeometryShader( 0 );
+		SetVertexShader( CompileShader( vs_4_0, CVSI() ) );
+		SetPixelShader( CompileShader( ps_4_0, CPS() ) );
+	}
+}  

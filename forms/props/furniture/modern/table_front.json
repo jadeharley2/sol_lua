@@ -1,0 +1,12 @@
+{
+	"name" : "Table",
+	"group" : "furniture",
+	"tags" : ["modern"],
+	"model" : "furniture/modern/table_front.stmd",
+	"scale" : 0.25,
+	"rotation" : [0,0,0], 
+	"composition" :{
+		"resource.wood" : 3, 
+	}
+	
+}

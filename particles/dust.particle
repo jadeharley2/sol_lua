@@ -1,0 +1,28 @@
+{
+	"name" : "dust",
+	
+	"emitters": [ 
+		{"type":"once","count":4}
+	],
+	"initializers": [
+		{"type":"positionrandomsphere","pos":[0,0,0],"max":1},
+		//{"type":"positionrandombox","min":[0,0,0],"max":[1,1,1]},
+		{"type":"attractor","dir":[0,1,0],"power":-0.3,"mode":0}, 
+		{"type":"rotationrand"}, 
+		
+	],
+	"updaters": [
+		//{"type":"movement","dir":[0,-100,0],"drag":0.2},
+		{"type":"movement","dir":[0,0,0],"drag":0.2},
+		{"type":"scale","startscale":0,"endscale":3,"starttime":0,"endtime":0.2},
+		{"type":"scale","startscale":3,"endscale":0,"starttime":0.2,"endtime":1},
+	],
+	
+	"renderers": [ 
+		{ "type":"stars", "blend" : 1, "depth" : "read", "texture":"textures/space/spcloud1.dds","tint":[0.2,0.199,0.199,0.3] },//"tint":[0.05,0.07,0.1,1] },
+	],
+	
+	"forces": [
+		
+	], 
+}

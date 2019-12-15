@@ -299,6 +299,7 @@ function component:_equip(data,nosave)
 					local e = SpawnBP(model,node,scale,GetFreeUID())
 					if e then
 						eqslt.data = data 
+						eqslt.formid = data.parameters.form
 						eqslt.entity = e
 						e:SetName('ap'..slot)
 						e:SetPos(Vector(0,0,0))

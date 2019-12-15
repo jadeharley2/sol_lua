@@ -1,5 +1,6 @@
 
 
+
 local function gettags(key)
 	local taginfo = table.KVSwitch(debug.GetAPIInfo(key) or {})
 	local fntemp = {}
@@ -87,6 +88,7 @@ local style = {
 		} 
 	}
 }
+
 function PANEL:SelectNode(node) 
 	self.cnode = node
 	
@@ -118,6 +120,11 @@ function PANEL:SelectNode(node)
 				self:ConstructParams(node,meta,peditor.luabase.contents,node)
 			end
 			self:ConstructParams(node,self.ent_meta_base,peditor.entbase.contents,node)
+
+			local proc_params = {}
+			hook.Call("node_properties",node,proc_params)
+			PrintTable(proc_params)
+			self:ConstructParams(node,{editor = {properties = proc_params}},peditor.entbase.contents,node)
 		end
 		 
 		local contents = peditor.tags.contents 
@@ -491,6 +498,7 @@ PANEL.ent_meta_base = {
 					return n:GetScale()
 				end 
 			},
+			
 		}
 	}
 }

@@ -24,7 +24,22 @@ function TOOL:LoadGraph()
 		local owner = e:GetParent() 
 		owner.nomovement = false
 		owner.norotation = false
-		if data.resource then owner:Give(data.resource) end
+		--if data.resource then 
+		--	owner:Give(data.resource) 
+		--end
+		local p = owner.phys
+		if p and p.GetGroundMaterial then
+			local submat = owner.phys:GetGroundMaterial()
+			if submat and submat~='unknown' then
+				if submat == 'grass' then submat = 'soil' end
+				local res = 'resource.'..submat
+				if forms.GetForm(res)  then
+					if forms.HasTag(res,'powder') then
+						owner:Give(res)  
+					end
+				end
+			end
+		end
 		return 0
 	end)
 	graph:NewTransition("idle","fire",BEH_CND_ONCALL,"fire")

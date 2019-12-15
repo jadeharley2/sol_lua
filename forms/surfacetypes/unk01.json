@@ -7,7 +7,7 @@
             "mask" :"textures/debug/white.png",
             "smooth" : 1,
             "metalness" : 0.2, 
-        },
+        }, 
         "sounds":{
             "impact" : "",
             "drag" : "",
@@ -21,7 +21,7 @@
             "mask" :"textures/debug/white.png",
             "smooth" : 0.2,
             "metalness" : 0.8, 
-        },
+        }, 
         "sounds":{
             "impact" : "",
             "drag" : "",

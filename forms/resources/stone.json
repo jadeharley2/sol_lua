@@ -2,5 +2,5 @@
     "tags":["solid"],
     "icon":"res/solid",
     "tint":[0.8,0.8,0.8],
-    "name":"Stone"
+    "name":"Stone", 
 }

@@ -60,6 +60,14 @@
 			"group":"world",	 
 		}, 
 		{
+			"name":"dynmeshprop", 		
+			"shortname":"DNPP", 	
+			"directory":"dynprops", 		
+			"baseclass":"prop_editable", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
 			"name":"spaceship", 	
 			"shortname":"SPSH", 	
 			"directory":"spaceships", 

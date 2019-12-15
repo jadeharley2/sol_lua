@@ -34,6 +34,8 @@ local onerror = function(err)
 	MsgN(debug.traceback())
 end
 
+---call all registered functions
+---@param eventid string|number
 function hook.Call(eventid,...)
 	--if eventid ~= "main.update" then MsgN("hook call: "..tostring(eventid)) MsgN(...) end
 	local case = lua_hooks[eventid]
@@ -50,6 +52,7 @@ function hook.Call(eventid,...)
 		end
 	end
 end
+-- >a, >b, >f, >{g,d} => {a,b,f,{g,d}}
 function hook.Collect(eventid,...)
 	--if eventid ~= "main.update" then MsgN("hook call: "..tostring(eventid)) MsgN(...) end
 	local case = lua_hooks[eventid]
@@ -72,5 +75,39 @@ function hook.Collect(eventid,...)
 	end
 	return results
 end
+-- >{ a,b,c }, >{f,e}, >{g} => {a,b,c,f,e,g}
+function hook.CollectElements(eventid,...) 
+	local results = hook.Collect(eventid,...) 
+	local nr = {}
+	for _,v in ipairs(results) do
+		if istable(v) then
+			for k2,v2 in pairs(v) do
+				if(isnumber(k2)) then
+					nr[#nr+1] = v2;
+				else
+					nr[k2] = v2;
+				end
+			end
+		end
+	end
+	return nr
+end
+
+---@param id string|number
+---@param description string|nil
+---@param arguments string|nil
+function hook.RegisterHook(id,description,arguments)
+	debug.AddAPIInfo("/hooks/"..id,{_type="hook",_description = description,_argumets = arguments})
+end
 
 _SetNativeCallFunc(hook.Call)
+
+
+
+hook.RegisterHook("input.keydown",		"")
+hook.RegisterHook("input.keyup",		"")
+hook.RegisterHook("input.keypressed",	"")
+hook.RegisterHook("input.mousedown",	"")
+hook.RegisterHook("input.mouseup",		"")
+hook.RegisterHook("input.mousewheel",	"")
+hook.RegisterHook("input.doubleclick",	"")

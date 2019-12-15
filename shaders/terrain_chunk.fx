@@ -54,6 +54,7 @@ struct PS_IN
     float3 tnorm : TANGENT; 
     float3 color : TEXCOORD4; 
     float3 wpos : TEXCOORD5; 
+    float updot : TEXCOORD6;
     
     int3 index: INDC;
     float3 weight: WGHT; 
@@ -92,6 +93,7 @@ PS_IN VS( VS_IN input, I_IN inst )
 	output.tcrd = input.tcrd;
     output.color = input.colr; 
     output.wpos = wpos;
+    output.updot =  saturate(pow(dot(normalize(input.norm),float3(0,1,0)),20));
 	return output; 
 } 
 
@@ -135,7 +137,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
     PS_OUT output = (PS_OUT)0;
     float4 noise = NoiseTexture.Sample(MeshTextureSampler,input.tcrd/4); 
     //(noise.xyz-float3(0.5,0.5,0.5))*0.1
-    float dtTop = saturate(pow(dot(input.norm,float3(0,1,0)),20));
+    float dtTop = input.updot;
     float dtSide = 1-dtTop;
     
 

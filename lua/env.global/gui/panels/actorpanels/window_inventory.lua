@@ -95,7 +95,16 @@ function PANEL:ReloadTabs()
 	 
 	self.inner:Clear()
 
-
+	local statusbar = gui.FromTable({
+		color = {0,0,0},
+		textcolor = {1,1,1},
+		textalignment = ALIGN_RIGHT,
+		size = {20,20},
+		dock = DOCK_BOTTOM,
+		text = "balance"
+	})
+	self.statusbar = statusbar
+	self.inner:Add(statusbar)
 	local tabs = panel.Create("tabmenu")
 	
 	self.tabs = tabs
@@ -254,6 +263,13 @@ function PANEL:RefreshINV()
 	local grid2 = self.grid2
 	if storage and grid2 then
 		local ply = self.node or LocalPlayer()
+
+		local plbalance = currency.GetBalance(ply) or 0
+		if plbalance>0 then
+			self.statusbar:SetText(plbalance.." cr ")
+		else
+			self.statusbar:SetText("")
+		end
 		storage:Synchronize(function(s)
 			MsgN("sync",storage,storage:GetNode())
 			--MsgN(debug.traceback())

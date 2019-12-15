@@ -14,6 +14,8 @@ function PANEL:Init()
 	tabButtonPanel:SetColor(gui.style:GetColor("Header"))
 	
 	self.plist = {}
+	self.pnames = {}
+	self.pbtns = {}
 	self.tabButtonPanel = tabButtonPanel
 	self.framePanel = framePanel
 	
@@ -25,14 +27,20 @@ function PANEL:AddTab(name,sub,btnmodt)
 MsgN("tTAb",name,sub)
 	local b = panel.Create("button") 
 	local plist = self.plist
+	local pnames = self.pnames
+	local pbtns = self.pbtns
 	b:SetText(name or "Tab")
 	local tabButtonPanel = self.tabButtonPanel
 	b:SetSize(100,30)
 	b:Dock(DOCK_LEFT)
+	b.toggleable = true
+	b.group = 'tabs'
 	tabButtonPanel:Add(b)
 
 	local lid = #plist+1
 	plist[lid] = sub 
+	pnames[lid] = name
+	pbtns[lid] = b
 	b.OnClick = function() self:ShowTab(lid) end
 	
 	local bordcol = gui.style:GetColor("Border")
@@ -59,6 +67,18 @@ function PANEL:ShowTab(id)
 		pp:Dock(DOCK_FILL)
 		framePanel:UpdateLayout()
 		self:UpdateLayout()
+		if self.pbtns then
+			for k,v in pairs(self.pbtns) do
+				if k==id then v:SetState('pressed')
+				else
+					v:SetState('idle')
+				end
+			end
+		end
+		local OnTabChanged = self.OnTabChanged 
+		if OnTabChanged then
+			OnTabChanged(self,id,self.pnames[id])
+		end
 	end
 end 
 

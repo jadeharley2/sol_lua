@@ -194,7 +194,7 @@ function editor:GetNodeUnderCursor(lp)
 end
 function editor:DoubleClick() 
 	self.mousedowntime = nil
-	if not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport then
+	if EDITOR_MODE == 'NODE' and not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport then
 		local LMB = input.leftMouseButton() 
 		local RMB = input.rightMouseButton()
 		local MMB = input.middleMouseButton()
@@ -270,11 +270,20 @@ function editor:KeyDown(k)
 end
 
 --{ent,-group,ent,ent,-ent}
+EDITOR_MODE = EDITOR_MODE or false
+function editor:SetMode(mode)  
+	EDITOR_MODE = mode
+	MsgN("world editor mode:",mode)
+	if mode~='NODE' then
+		self:Select(nil) 
+	end
+end
+
 
 function editor:Update()
-	render.DCIRequestRedraw()
-	if not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport and not EDITOR_TERRAIN_MODE then
-	 
+	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport) then 
+		render.DCIRequestRedraw()
+
 		if self.mousedowntime and input.leftMouseButton() and CurTime()>self.mousedowntime+0.2 then
 			self.mousedowntime = nil 
 			self.selector:BeginSelection(self.selectortemp,1,self.mousedownpos)
@@ -431,11 +440,12 @@ function editor:Select(node,multiselect)
 	--multiselect = multiselect or false
 	if not IsValidEnt(node) then
 		self:ClearSelectionModels() 
-		self.selected:Clear()
-		local gizmo = self.gizmo
+		self.selected:Clear()  
+		local gizmo = self.gizmo 
 		if gizmo then
-			gizmo:SetPos(Vector(0,0,99999999999))
-		end
+			gizmo:Despawn()
+			self.gizmo = nil
+		end  
 		SELECTION = {}
 		return nil
 	end
@@ -489,7 +499,7 @@ function editor:AddSelectionModel(ent)
 	models[ent] = id
 	models._count = id
 	local m = ent.model
-	if m then
+	if m and m.GetVisBox then
 		local vpos,vsize = m:GetVisBox()
 		debug.ShapeBoxCreate(100+id,ent,matrix.Translation(Vector(-0.5,-0.5,-0.5))*matrix.Scaling(vsize*2)*matrix.Translation(vpos))
 	else

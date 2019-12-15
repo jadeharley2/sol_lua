@@ -90,7 +90,7 @@ component._typeevents = {
 	end},
 	[EVENT_ITEM_ADDED]={networked=true,f = function(self,id,data,count)  
 		MsgN(self:GetNode(),"item added at",id) 
-		self.list[id] = {data = data,count = 1}   
+		self.list[id] = {data = data,count = 1,formid = data.parameters.form}   
 		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
 	end},
 	[EVENT_ITEM_TAKEN]={networked=true,f = function(self,id,count) 
@@ -240,12 +240,11 @@ function component:PutItemAsData(index,data,count)  -- local function
 		local formid = data:Read('/parameters/form')
 		count = count or 1
 		if index then
-			if not self.list[index] then
-				if data then 
-					self.list[index] = {data = data, count = count, formid = formid} 
-					--self:GetNode():SendEvent(EVENT_ITEM_ADDED,index,data,count) 
-					return true 
-				end
+			if data and not self.list[index] then 
+				MsgN("FORMID",formid)
+				self.list[index] = {data = data, count = count, formid = formid} 
+				--self:GetNode():SendEvent(EVENT_ITEM_ADDED,index,data,count) 
+				return true  
 			end 
 		else
 			if formid then
@@ -391,6 +390,15 @@ function component:GetItemSlot(formid)
 	end
 	return false
 end
+function component:FormIdCount(formid)
+	local fids = 0
+	for k,v in pairs(self.list) do
+		if v and v.formid == formid then
+			fids = fids + (v.count or 1)
+		end
+	end
+	return fids
+end
 function component:FormIdCounts()
 	local fids = {}
 	for k,v in pairs(self.list) do
@@ -444,6 +452,7 @@ function component:Select(func)
 	end
 	return retk
 end
+--- returns list of {formid,count,data}
 function component:GetItems() 
 	return self.list
 end

@@ -38,6 +38,19 @@
 				"fileMatch": ["/textures/*.json","*.mat"],
 				"url": "/_meta/schema/material.json"
 			}
-		]
+		],
+		"lua.targetVersion": "5.2",
+		"Lua.diagnostics.globals": [
+
+			"_msg","_msgn",
+			"MsgN","Include",
+			"_SetNativeCallFunc",
+
+			
+
+			"SERVER","CLIENT",
+ 
+		],
+		"Lua.runtime.version": "Lua 5.2"
 	}
 }

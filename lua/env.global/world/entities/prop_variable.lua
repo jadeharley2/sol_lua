@@ -509,38 +509,7 @@ ENT.editor = {
 				ent:RemoveComponent(v)
 			end
 			ent:_spawn() 
-		end},
-		chunknode_display = {text = "is chunk node",type="indicator",value = function(ent)  
-			local p = ent:GetParent()
-			if p then
-				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
-				if chtr then
-					return chtr:IsChunkNode(ent)
-				end
-			end
-			return false
-		end},
-		chunknode_set = {text = "set chunk node",type="action",action = function(ent)  
-			local p = ent:GetParent()
-			if p then
-				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
-				if chtr then
-					chtr:AddNode(ent)
-					return true
-				end
-			end
-		end},
-		chunknode_unset = {text = "unset chunk node",type="action",action = function(ent)  
-			local p = ent:GetParent()
-			if p then
-				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
-				if chtr then
-					chtr:DelNode(ent)
-					return true
-				end
-			end
-		end},
-		
+		end} 
 		
 	},  
 	
@@ -571,4 +540,4 @@ hook.Add('item_features','propvfeatures',function(formid,data,addfeature)
         addfeature("mount",{1,1,1},'textures/gui/features/mount.png')  
 	end
 	
-end)
+end) 

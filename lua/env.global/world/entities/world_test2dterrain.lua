@@ -43,17 +43,22 @@ function ENT:Spawn()
 	space:SetSeed(9900002)
 	space:SetParent(self) 
 	space:SetSizepower(1000)
-	space:SetGlobalName("u1_city.space")
+	space:SetGlobalName("u_grid.space")
 	space:Spawn()  
 	local sspace = space:AddComponent(CTYPE_PHYSSPACE)  
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
-	self.skybox = SpawnSkybox(space,"textures/cubemap/daysky.dds")
-	self.skybox:SetWorld(matrix.Rotation(Vector(180,0,0)))
+	local name = 'testworld01'--'unnamedworld_131'
+	local data = json.Read('chunkdata/'..name..'/info.json')
+	if(not data) then return end
 
+	if data.sky and data.sky.texture then
+		self.skybox = SpawnSkybox(space,data.sky.texture or "textures/cubemap/daysky.dds")
+		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
+	end
 	--def:1900000000
-	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,Vector(140,161,178)/255,50500000000*8)
+	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,Vector(255,255,255)/255,50500000000*8)
 	light.light:SetShadow(true)  
 	SpawnPV('prop.other.prim_box',space,Vector(0,0,0),Vector(0,0,0),0) 
 	self.space = space
@@ -61,7 +66,7 @@ function ENT:Spawn()
 	local grid = space:AddComponent(CTYPE_CHUNKTERRAIN)
 	self.grid = grid
 	grid:SetRenderGroup(RENDERGROUP_LOCAL)
-	grid:Generate()
+	grid:SetWorldName(name)
 
 	if CLIENT then
 
@@ -96,3 +101,40 @@ function ENT:GetSpawn()
 	end
 	return self.space, Vector(0,0.01,0)
 end
+
+
+hook.Add("node_properties","chunk_node_params",function(node,params)
+	local p = node:GetParent()
+	if p:GetComponent(CTYPE_CHUNKTERRAIN) then 
+		params.chunknode_display = {text = "is chunk node",type="indicator",value = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					return chtr:IsChunkNode(ent)
+				end
+			end
+			return false
+		end}
+		params.chunknode_set = {text = "set chunk node",type="action",action = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					chtr:AddNode(ent)
+					return true
+				end
+			end
+		end}
+		params.chunknode_unset = {text = "unset chunk node",type="action",action = function(ent)  
+			local p = ent:GetParent()
+			if p then
+				local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+				if chtr then
+					chtr:DelNode(ent)
+					return true
+				end
+			end
+		end}
+	end
+end)

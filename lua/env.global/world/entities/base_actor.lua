@@ -33,6 +33,8 @@ DeclareEnumValue("event","LERP_HEAD",				85001)
 DeclareEnumValue("event","LOOK_AT",					85002)  
  
 DeclareEnumValue("event","SET_AI",					85011)  
+
+DeclareEnumValue("vartype","AITYPE",				85031)  
 --EVENT_SET_VEHICLE = 80002
 --
 --EVENT_HEALTH_CHANGED = 81003
@@ -105,6 +107,14 @@ function ENT:Spawn()
 			self:SetVehicle(par,1)
 		end)
 	end 
+	self:Delayed("ai",1100,function()
+		local aitype = self[VARTYPE_AITYPE]
+		MsgN(self,aitype,"ai")
+		if aitype then
+			self:SetAi(aitype)
+		end
+	end)
+
 end
 function ENT:Load()
 	self:SetPos(self:GetPos())
@@ -912,8 +922,10 @@ function ENT:SetAi(id)
 		if ai then
 			self.controller = ai
 		end
+		self[VARTYPE_AITYPE] = id
 	else
 		self.controller = nil
+		self[VARTYPE_AITYPE] = nil
 	end
 end
 function ENT:Say(text) 

@@ -23,7 +23,7 @@ component._typeevents = {
 }
 component.statecolors = {
     off = Vector(0,0,0),
-    on = Vector(1,1,1),
+    on = Vector(1,1,1), 
     standby = Vector(0.01960784,0.227451,0.5607843),
     error = Vector(250,91,255)/255,
     check = Vector(122,252,129)/255,
