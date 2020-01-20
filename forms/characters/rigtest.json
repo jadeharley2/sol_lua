@@ -1,0 +1,124 @@
+{
+	"name": "RigTestModel", 
+	"health" : 100,  
+
+	"model" : "_temp/iktest2_real.stmd",
+	"attributes" : [ "humanoid" ],
+	"movement" :
+	{
+		"walk": { "speed" : 1.2 },
+		"run" : { "speed" : 4 },
+		"rotspeed" : 0.5,
+	},
+	"mass" : 10,
+	"variables" :
+	{
+		"model_scale":2, 
+		"directmove" : true,
+		"turn_sharp_in" : true,
+		"turn_angle" : 90, 
+		"eyemul":[1,-1],
+		"gestures":{
+			"greet":{},  
+			"pstand":{ 
+				"variables" :
+				{
+					"norotation":true,
+					"nomovement":true
+				}
+			},   
+			"pstand2":{ 
+				"variables" : {  }
+			},   
+			
+		},
+		"needs":{ 
+			"list":{
+				"sleep" : {
+					"value":0,
+					"rate":0.001,
+					"replenishaction":{
+						"range":1.5,
+						"time":30,
+						"use":true,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"fatigue": {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1.5,
+						"time":10,
+						"use":true,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"hunger" : {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"thirst" :{
+					"value":0,
+					"rate":0.02,
+					"replenishaction":{
+						"range":1,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"entertainment" :{
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":2,
+						"time":20,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+				"social" : {
+					"value":0,
+					"rate":0.01,
+					"replenishaction":{
+						"range":1.2,
+						"time":10,
+						"use":false,	
+					},
+					"critical":500,
+					"critaction":{ }
+				},
+			}, 
+			"delta":{
+				"social":1
+			}
+		},
+
+		"environment":{ 
+			"air" : {
+				"pressure" : [0.5,2],
+				"composition" : {
+					"oxygen" : [7,99],
+					"c2o" : [0.1,7]
+				}
+			}
+		},
+		"composition":{
+			"flesh" : 90,
+			"bone" : 10,
+		},
+	},
+}
+ 

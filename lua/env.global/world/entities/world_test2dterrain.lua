@@ -34,6 +34,20 @@ function ENT:Init()
 	self:SetGlobalName("u_grid") 
 
 end
+function ENT:LoadWorld(name)
+	local data = json.Read('chunkdata/'..name..'/info.json')
+	if(not data) then return end
+
+	if data.sky and data.sky.texture then
+		if self.skybox  then
+			self.skybox:Despawn()
+		end 
+		self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/daysky.dds")
+		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
+	end
+	self.grid:SetWorldName(name)
+
+end
 function ENT:Spawn()
 
 	-- all worlds must have minimum 1 subspace 
@@ -49,24 +63,20 @@ function ENT:Spawn()
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
-	local name = 'testworld01'--'unnamedworld_131'
-	local data = json.Read('chunkdata/'..name..'/info.json')
-	if(not data) then return end
-
-	if data.sky and data.sky.texture then
-		self.skybox = SpawnSkybox(space,data.sky.texture or "textures/cubemap/daysky.dds")
-		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
-	end
+	
 	--def:1900000000
 	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,Vector(255,255,255)/255,50500000000*8)
 	light.light:SetShadow(true)  
-	SpawnPV('prop.other.prim_box',space,Vector(0,0,0),Vector(0,0,0),0) 
+	SpawnPV('prop.other.prim_box',space,Vector(0,0,0),Vector(0,0,0),0)
 	self.space = space
 	 
 	local grid = space:AddComponent(CTYPE_CHUNKTERRAIN)
 	self.grid = grid
 	grid:SetRenderGroup(RENDERGROUP_LOCAL)
-	grid:SetWorldName(name)
+
+	local name = 'testworld01'--'unnamedworld_131'
+
+	self:LoadWorld(name)
 
 	if CLIENT then
 
@@ -102,6 +112,18 @@ function ENT:GetSpawn()
 	return self.space, Vector(0,0.01,0)
 end
 
+console.AddCmd("changedim",function(dim)
+	local pl = LocalPlayer()
+	if pl then
+		local top = pl:GetTop()
+		if top and top.LoadWorld then
+			top:LoadWorld(dim)
+			--debug.Delayed(function()
+			--	top.grid:GetHeight()
+			--end)
+		end
+	end
+end)
 
 hook.Add("node_properties","chunk_node_params",function(node,params)
 	local p = node:GetParent()

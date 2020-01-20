@@ -90,7 +90,7 @@ function _CLASS_META:Create(type)
 			m._base = b 
 			setmetatable(m,self.meta)  
 		else
-			MsgN( self.name .." "..type.." not found!\n" )
+			MsgN( self.name .." "..tostring(type).." not found!\n" )
 			return nil
 		end 
 	else  

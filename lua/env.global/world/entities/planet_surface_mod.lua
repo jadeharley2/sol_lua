@@ -1,10 +1,10 @@
 
-DeclareEnumValue("vartype","MINLEVEL",					1210001) 
-DeclareEnumValue("vartype","MAXLEVEL",					1210002) 
-DeclareEnumValue("vartype","SURFADD",					1210003)  
-DeclareEnumValue("vartype","SURFMUL",					1210004)
-DeclareEnumValue("vartype","SURFMODE",					1210005)
-DeclareEnumValue("vartype","SURFMAP",					1210006)
+DeclareVartype("MINLEVEL",1210001,"int","minimal visible level")
+DeclareVartype("MAXLEVEL",1210002,"int","maximal visible level")
+DeclareVartype("SURFADD" ,1210003,"float","value add mod")
+DeclareVartype("SURFMUL" ,1210004,"float","value mul mod")
+DeclareVartype("SURFMODE",1210005,"string","modifier mode")
+DeclareVartype("SURFMAP" ,1210006,"string","data reference") 
   
 function ENT:Init() 
 	self:SetSpaceEnabled(false)

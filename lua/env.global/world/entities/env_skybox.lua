@@ -14,7 +14,7 @@ function ENT:Spawn()
 	if CLIENT then
 		local skybox = self:AddComponent(CTYPE_SKYBOX)  
 		self.skybox = skybox 
-		skybox:SetRenderGroup(RENDERGROUP_LOCAL) 
+		skybox:SetRenderGroup(RENDERGROUP_BACKDROP) 
 		local tex = self.texture 
 		if tex then
 			skybox:SetTexture(tex)

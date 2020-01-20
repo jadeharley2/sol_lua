@@ -423,7 +423,7 @@ end
 function PANEL:Select(actor)
 	local ent = self.item  
 	if ent then
-		if istable(ent) then 
+		if istable(ent) then  
 			actor:SetActiveAbility(ent.reference)
 			--local rit = actor[ent.table][ent.reference]
 			--if rit then

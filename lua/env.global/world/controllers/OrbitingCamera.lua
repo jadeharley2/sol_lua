@@ -5,7 +5,10 @@ local VEC_UP = Vector(0,1,0)
 
 OBJ.mouse_lastpos = {0,0}
 OBJ.zoom = 0.01
- 
+OBJ.zoom_max = 10
+OBJ.zoom_min = 0
+OBJ.zoom_div =1000
+OBJ.zoom_power = 1
 
 OBJ.mouseWheelValue = 0
 OBJ.mouseWheelDelta = 0
@@ -16,6 +19,7 @@ function OBJ:Init()
 	cam:SetAng(Vector(0,0,0))
 	self.center = cam:GetPos() 
 	self.mode = "unrestricted"
+	self._first = true
 end
 function OBJ:UnInit()  
 end
@@ -24,7 +28,7 @@ function OBJ:MouseWheel()
 	if not input.MouseIsHoveringAboveGui() then
 		local mWVal = input.MouseWheel()  
 		
-		self.zoom = math.Clamp( self.zoom + (mWVal-self.mouseWheelValue)/1000,0,10)
+		self.zoom = math.Clamp( self.zoom + (mWVal-self.mouseWheelValue)/self.zoom_div,self.zoom_min,self.zoom_max)
 		
 		self.mouseWheelValue = mWVal 
 	end
@@ -35,6 +39,9 @@ function OBJ:KeyDown(key)
 	
 end
 
+function OBJ:MouseUp() 
+	self.firstp = 0 
+end
 function OBJ:Update() 
 	
 	if input.GetKeyboardBusy() then return nil end
@@ -52,7 +59,7 @@ function OBJ:Update()
 		
 		
 	local mhag = input.MouseIsHoveringAboveGui()
-	local rmb = input.rightMouseButton()
+	local rmb = input.rightMouseButton() 
 	if not mhag and rmb then
 		if not self.lms_active then
 			input.SetCursorHidden(true)
@@ -65,14 +72,17 @@ function OBJ:Update()
 		center = Point(math.floor( center.x),math.floor(center.y))
 		local offset = mousePos - center
 		self.mouse_lastpos = mousePos
+		if self.firstp>4 then
+			if self.mode == "unrestricted" then
+				cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
+				cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
+			else
+				cam:TRotateAroundAxis(Right, (offset.y / -1000))
+				cam:TRotateAroundAxis(VEC_UP, (offset.x / -1000))
+			end 
+		end 
 		input.setMousePosition(center)
-		if self.mode == "unrestricted" then
-			cam:RotateAroundAxis(VEC_RIGHT, (offset.y / -1000))
-			cam:RotateAroundAxis(VEC_UP, (offset.x / -1000))
-		else
-			cam:TRotateAroundAxis(Right, (offset.y / -1000))
-			cam:TRotateAroundAxis(VEC_UP, (offset.x / -1000))
-		end
+		self.firstp = self.firstp+1
 	end 
 	if self.lms_active and (not rmb or mhag) then
 		input.SetCursorHidden(false)
@@ -80,6 +90,6 @@ function OBJ:Update()
 	end
 	
 	local Forward = cam:Forward():Normalized()
-	cam:SetPos( Center - Forward * self.zoom / parent_sz)
+	cam:SetPos( Center - Forward * math.pow(self.zoom,self.zoom_power) / parent_sz)
 		
 end

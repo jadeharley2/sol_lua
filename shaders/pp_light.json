@@ -28,5 +28,17 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []
 		}
-	]      
+	],
+	"parameters":{ 
+		"ShadowMapVPMatrix"			: { "type" : "matrix", "global": "ShadowMapVPMatrix"},
+		"g_ShadowMap" 				: { "type" : "texture", "global": "g_ShadowMap"},
+		"ShadowMapVPMatrix_c2"		: { "type" : "matrix", "global": "ShadowMapVPMatrix_c2"},
+		"g_ShadowMap_c2" 			: { "type" : "texture", "global": "g_ShadowMap_c2"},
+		"ShadowMapVPMatrix_c3"		: { "type" : "matrix", "global": "ShadowMapVPMatrix_c3"},
+		"g_ShadowMap_c3" 			: { "type" : "texture", "global": "g_ShadowMap_c3"},
+
+		"dshift"			: { "type" : "float", "global": "shadow_shift"},
+		"dshiftdg"			: { "type" : "float", "global": "shadow_shiftdg"},
+		"bias_slopemul"		: { "type" : "float", "global": "shadow_bias_slopemul"}
+	}
 }               

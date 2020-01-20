@@ -17,7 +17,7 @@ function PANEL:Load(valtype)
 	self.btext = btext
 	
 	
-	self:AddAnchor(1,"value",valtype)
+	self:AddAnchor(1,"output",valtype)
 	self.bcolor = self.anchors[1].bcolor
 	self:Deselect()
 end
@@ -30,7 +30,7 @@ function PANEL:FromData(data,mapping,posoffset)
 	PANEL.base.FromData(self,data,mapping,posoffset) 
 	local valtype = data.valtype or "float"
 	self.valtype = valtype
-	self.anchors[1]:Attach(self,1,"value",valtype) 
+	self.anchors[1]:Attach(self,1,"output",valtype) 
 end
  
 function PANEL:Select(selector) 

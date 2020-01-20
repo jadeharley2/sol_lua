@@ -130,5 +130,27 @@
 			"recursive":true,
 			"group":"world",	 
 		}, 
+		
+		{
+			"name":"starsystem", 		
+			"shortname":"STSY", 	
+			"directory":"space/systems", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
+			"name":"planet", 		
+			"shortname":"PLNT", 	
+			"directory":"space/planets", 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
+			"name":"ikrig", 		
+			"shortname":"IKRI", 	
+			"directory":"ikrigs", 
+			"recursive":true,
+			"group":"actor",	 
+		}, 
 	]
 }

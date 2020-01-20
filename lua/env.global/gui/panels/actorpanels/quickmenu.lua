@@ -94,7 +94,7 @@ hook.Add("quickmenu.item_select","test",function(item,id)
 		LocalPlayer()._ctool = nil
 	end
 
-	if item then
+	if item and item.data then
 		MsgN(item)
 		if(item.data:Read("/parameters/luaenttype") == 'base_tool') then
 			MsgN("istool")

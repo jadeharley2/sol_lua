@@ -56,6 +56,7 @@ end
 function SpawnPV(type,ent,pos,ang,seed)
 	local e = InitPV(type,ent,pos,ang,seed)
 	e:Spawn()
+	e:SetPos(pos) 
 	return e
 end
 

@@ -146,7 +146,7 @@ hook.Add(EVENT_GLOBAL_UPDATE,"pctest",function()
 	if lp then
 		local l = lp.model
 		local ang = debug.PC_Orientation()
-		l:SetIKTarget("",Vector(15,48,14),Vector(-90,-70,-90))
+		--l:SetIKTarget("",Vector(15,48,14),Vector(-90,-70,-90))
 		--l:SetIKTarget("",Vector(0,18,14),Vector(-90,0,-90))--Vector(ang.z-90,ang.y,-ang.x))
 		--l:SetIKTarget("",Vector(10,48,14),Vector(ang.z-90,ang.y,-ang.x)) 
 	end

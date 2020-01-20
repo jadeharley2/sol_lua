@@ -1,5 +1,8 @@
 
 
+ovspace = nil
+ovtonnel = nil 
+
 function ENT:Init()  
 	local coll = self:AddComponent(CTYPE_STATICCOLLISION)  
 	local model = self:AddComponent(CTYPE_MODEL)  
@@ -20,6 +23,21 @@ function ENT:Load()
 	--MsgN("dfa")
 end  
 function ENT:Spawn() 
+
+	-- spawn middlespace
+	if not ovspace then
+		ovspace = ents.Create()
+		ovspace:SetSizepower(1000)
+		ovspace:Spawn() 
+		local sspace = ovspace:AddComponent(CTYPE_PHYSSPACE)  
+		sspace:SetGravity(Vector(0,-4,0))
+		ovspace.space = sspace
+	
+		ovtonnel = SpawnSO("forms/levels/city/sst/sst_corridor.dnmd",ovspace,Vector(0,0,0),1)
+		ovtonnel:SetAng(Vector(90,0,0))
+	end 
+
+
 	--MsgN("spawning static object at ",self:GetPos())
 	local modelcom = self.modelcom
 	if not modelcom then
@@ -78,20 +96,7 @@ end
 if ovtonnel and IsValidEnt(ovtonnel) then
 	ovtonnel:Despawn()
 end
-ovspace = nil
-ovtonnel = nil 
-  
-if not ovspace then
-	ovspace = ents.Create()
-	ovspace:SetSizepower(1000)
-	ovspace:Spawn() 
-	local sspace = ovspace:AddComponent(CTYPE_PHYSSPACE)  
-	sspace:SetGravity(Vector(0,-4,0))
-	ovspace.space = sspace
-
-	ovtonnel = SpawnSO("forms/levels/city/sst/sst_corridor.dnmd",ovspace,Vector(0,0,0),1)
-	ovtonnel:SetAng(Vector(90,0,0))
-end 
+   
 
 function ENT:SetModel(mdl,scale,norotation) 
 	scale = (scale or 1)*0.001

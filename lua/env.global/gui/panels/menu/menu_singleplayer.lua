@@ -31,7 +31,7 @@ local layout = {
 			OnClick = function() hook.Call("menu","main") end,
 		}, 
 		{name = "bedt",type="button", class = "btn",
-			text = "Editor", 
+			text = "Void", 
 			size = {100,20}, 
 			pos = {300,-150}, 
 			OnClick = function() LoadSingleplayer("editor_template") end,

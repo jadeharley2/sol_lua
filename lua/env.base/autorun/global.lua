@@ -184,12 +184,20 @@ function UniversalSort(a,b)
 end
 
 
-function DeclareEnumValue(type,name,id)
-	type = string.upper(type)
-	local key = string.upper(type.."_"..name)
+function DeclareEnumValue(etype,name,id)
+	etype = string.upper(etype)
+	local key = string.upper(etype.."_"..name)
 	_G[key] = id
-	debug.AddAPIInfo("/"..type.."_/"..key,id)
-	engine.AddDEnumValue(type,name,id)
+	debug.AddAPIInfo("/"..etype.."_/"..key,id)
+	engine.AddDEnumValue(etype,name,id)
+	return id
+end
+function DeclareVartype(name,id,valtype,description)
+	local etype = 'VARTYPE'
+	local key = string.upper(etype.."_"..name)
+	_G[key] = id
+	debug.AddAPIInfo("/"..etype.."_/"..key,id)
+	engine.DeclareVariable(name,id,valtype,description)
 	return id
 end
 

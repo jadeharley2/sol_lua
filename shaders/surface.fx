@@ -206,17 +206,18 @@ struct blendProcess
 	float unused1;
 };
 int sourceIndex[12];
+//float4 blendMul[12];
 blendProcess blendIndex[12];
 float4 BlendTilesetTest(float4 data, float2 texCoord)
 { 
-	float temp = data.z;
-	float height = data.x*1000000;
+	float temp = data.z;  
+	//float height = data.x*1000000;
 	
 	float4 data1[12];
 	[unroll] 
 	for(int i=0;i<12;i++)
-	{
-		data1[i] = SampleTileS(texCoord, tileSpaceTexture_d, i);//sourceIndex[i]);
+	{ 
+		data1[i] = SampleTileSM(texCoord, tileSpaceTexture_d, i);//sourceIndex[i]); *blendMul[i].x
 	}
 	[unroll]
 	for(int i=0;i<12;i++)
@@ -592,15 +593,17 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 		surface_rampcolor = BlendTilesetTest(input.data,tcrdBig*4*2);
 	}
 	else
-	{
+	{ 
 		//float noise_bigA = SampleNoise(tcrdBig*0.005);
 		//float noise_bigB = SampleNoise(tcrdBig*0.005+0.24);
 		//+float2(noise_bigA,noise_bigB)
 		//float angle22 =   1-pow(dot(-globalNormal,-input.normal),10);
-		surface_rampcolor = BlendTilesetSpace(input.data,tcrdBig*4*2 );
+		surface_rampcolor =BlendTilesetSpace (input.data,tcrdBig*4*2 );
+		//BlendTilesetSpace
+		
 		//surface_rampcolor = lerp(surface_rampcolor,surface_rampcolor*float4(1,0.6,0.6,1),angle22); 
 	//	return float4(noise_bigA,noise_bigB,0,1);
-	//surface_rampcolor = angle22;
+	//surface_rampcolor = angle22; 
 	}
 	
 	

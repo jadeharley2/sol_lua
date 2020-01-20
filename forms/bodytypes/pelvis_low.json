@@ -1,0 +1,15 @@
+{
+    "name" : "debug low pelvis",
+    "species" : ["anthro","anthroid"],
+    "bones" : { 
+        "pre" :
+        {
+            "pelvis" : { "pos" : [0, -8, 0] }
+        },
+        "post":
+        { 
+            //"pelvis" : { "sca" : 0.85, "pos" : [0, 0, -8] }
+        }
+    }
+ 
+}

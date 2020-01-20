@@ -7,8 +7,8 @@ DeclareEnumValue("event","ITEM_DESTROY",    8270)
 
 DeclareEnumValue("event","CONTAINER_SYNC",		8271) 
 DeclareEnumValue("event","CONTAINER_SYNC_DATA",	8272) 
-
-DeclareEnumValue("vartype","STORAGE",		88010)
+ 
+DeclareVartype("STORAGE",88010,"json","inventory data")
 
 component.uid = DeclareEnumValue("CTYPE","STORAGE", 1314)
 component.editor = {

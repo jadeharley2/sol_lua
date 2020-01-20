@@ -1,0 +1,40 @@
+{
+    "name" : "Create box",
+    "icon" : "omnilight",
+    "archetype" : "target_point",
+    "max_range": 5,
+    "cooldown":0.1,
+    "effects" : [
+        { 
+            "effect" : "particle",
+            "targeton" : "target",
+            "type" : "lightning",
+            "time" : 1,
+            "size" : 1,
+            "speed" : 1
+        },
+        { 
+            "effect" : "particle",
+            "targeton" : "target",
+            "type" : "explosion",
+            "time" : 1,
+            "size" : 0.1,
+            "speed" : 1
+        },
+        {
+            "effect" : "delay",
+            "delay" : 0.1,
+            "data" : [
+                {
+                    "effect" : "spawn_form",
+                    "form" : "prop.other.phys_box"
+                }, 
+            ]
+        },
+        {
+            "effect" : "sound",
+            "targeton" : "target",
+            "path" : ".thunder"
+        }
+    ]  
+}

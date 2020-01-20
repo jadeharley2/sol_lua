@@ -1,0 +1,35 @@
+{
+    "name":"New Feor",
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[
+                {
+                    "name":"Feor A",
+                    "type":"star",
+                    "class":"K",
+                    "radius":543345.0E3,
+                    "mass":1.52E30,
+                    "subs":[
+                    
+                    ]
+
+                },
+                {
+                    "name":"Feor B",
+                    "type":"star",
+                    "class":"M",
+                    "radius":543345.0E3,
+                    "mass":1.52E30,
+                    "subs":[
+                    
+                    ]
+
+                }
+            ]
+        }
+        
+    ]
+}

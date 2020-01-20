@@ -42,6 +42,7 @@
 		"tileSpaceTexture_n" 		: {"type":"texture"},
 		"tGradient" 				: {"type":"texture"}, 
 		"time" 						: {"type":"float"},
+   
 	},
 	"onload" : {
 		"tech" : "Render",

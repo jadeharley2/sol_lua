@@ -439,12 +439,12 @@ float4 PS( PS_IN input ) : SV_Target
 
 
 
-	//float gamma = 0.5;
-	//float exposure = 0.01; 
+	float gamma = 1;
+	//float exposure = 0.5; 
     float3 mapped = 1 - exp(-result * exposure); //exposure
     result = pow(mapped, 1.0 / gamma)*2;
 	//result += (result-length(result))*0.3;
-	float darken = saturate(1-distance(float2(0.5,0.5),input.tcrd));
+	//float darken = saturate(1-distance(float2(0.5,0.5),input.tcrd));
 	//result = result + FogSample(input.tcrd,pDepth);
 	//result = result * darken;
 	

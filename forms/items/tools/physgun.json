@@ -2,8 +2,8 @@
 	"type" : "tool_physgun",
 	"name" : "Physics manipulator",
 	"description" : "",
-	"appearance" : {
-		"model":"tools/phtgun.stmd",
-		"scale":1
-	}
+	//"appearance" : {
+	//	"model":"tools/phtgun.stmd",
+	//	"scale":1
+	//}
 }

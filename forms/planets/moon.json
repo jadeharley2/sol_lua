@@ -1,6 +1,32 @@
 { 
 	"name" : "moon",
 	"class" : "planetarchetype",
-	"surface" : {  
-	}, 
+	"surface" : {
+		"landramp":"gen_barren/ramp200.png", 
+		"searamp":"gen_barren/ramp2.png",
+		"data" : {
+			"channels" : [ 
+			],
+			"biomes" : {
+				"none" : {
+					"surface.color" : [255,255,255], 
+				}, 
+			},
+			"instances": [
+				{
+					"id":0, //rocks
+					"model":"models/debris/rock01.stmd",
+					"world":{"sca":1 },
+					"levelrange":[0,7],
+					"scalemul":1000,
+					"scale":[0.2,2],
+					"leveledscale":true,
+					"rndchance" : 90,
+					"rndamount" : [2,50],
+					"tint" : [0.703125,0.7703125,0.30859375,1],
+				},
+			],
+		},
+	},
+	"noHydrosphere" : true
 }

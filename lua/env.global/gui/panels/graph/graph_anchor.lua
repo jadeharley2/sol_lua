@@ -24,8 +24,12 @@ function PANEL:GetTypeColor(type)
 		return Vector(0.7,0.2,0.7)--magenta   
 	elseif type=="scriptednode" or type=="snode" or type=="scomplexobject" then 
 		return Vector(0.2,0.2,0.7)--blue  
+	elseif type=="vector2" then 
+		return Vector(0.7,0.4,0.2)  
 	elseif type=="vector3" then 
 		return Vector(0.7,0.7,0.2)--yellow  
+	elseif type=="vector4" then 
+		return Vector(0.7,0.7,0.9)   
 	elseif type=="quaternion" then 
 		return Vector(0.5,0.5,0.7)--light blue  
 	elseif type=="matrix" then 

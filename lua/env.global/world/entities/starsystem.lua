@@ -183,3 +183,22 @@ end
 --		render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 --	end)
 --end
+
+function SpawnStarsystem(parent,sysclass,seed,form)
+	local g = ents.Create("starsystem")
+	--g:SetName(NameGenerator.GenerateStarName(id))
+	g[VARTYPE_COLOR]  = Vector(1,1,1)
+	g[VARTYPE_GENERATOR] = sysclass
+	g[VARTYPE_FORM] = form
+	g:SetSeed(seed); 
+	g:SetSizepower(9.46073E16 / 5 * 0.03 ) 
+	g:SetParent(parent); 
+	g:Spawn();
+	return g
+end 
+
+
+hook.Add('formspawn.starsystem','spawn',function(form,parent,arguments)  
+	local s =  SpawnStarsystem(parent,"com.system.custom",arguments.seed or 0,form)
+	return s
+end)

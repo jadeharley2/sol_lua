@@ -33,8 +33,8 @@ DeclareEnumValue("event","LERP_HEAD",				85001)
 DeclareEnumValue("event","LOOK_AT",					85002)  
  
 DeclareEnumValue("event","SET_AI",					85011)  
-
-DeclareEnumValue("vartype","AITYPE",				85031)  
+ 
+DeclareVartype("AITYPE",85031,"string","ai type name")
 --EVENT_SET_VEHICLE = 80002
 --
 --EVENT_HEALTH_CHANGED = 81003

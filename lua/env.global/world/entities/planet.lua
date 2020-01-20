@@ -29,6 +29,26 @@ function ENT:Spawn()
 	model:SetFadeBounds(0.01,99999,0.005) 
 	model:SetMaxRenderDistance(10000) 
 	self.model = model
+
+	if true then
+		local model = self:AddComponent(CTYPE_MODEL) 
+		model:SetRenderGroup(RENDERGROUP_PLANET)
+		model:SetModel("engine/csphere_36_cylproj.stmd") 
+		model:SetMaterial("textures/space/distanceplanet.json") 
+		model:SetBlendMode(BLEND_OPAQUE) 
+		model:SetRasterizerMode(RASTER_DETPHSOLID) 
+		model:SetDepthStencillMode(DEPTH_ENABLED) 
+		local szdiff = self.szdiff or 100
+		local sz = self:GetSizepower()
+		local radius = self:GetParameter(VARTYPE_RADIUS) 
+		--model:SetMatrix(matrix.Scaling( 0.9086/szdiff * 2) * matrix.Rotation(90,0,0))
+		model:SetMatrix(matrix.Scaling( 0.09386*2*(radius/sz)) * matrix.Rotation(90,0,0))
+		model:SetBrightness(0.8)
+		model:SetFadeBounds(0.01,99999,0.005) 
+		model:SetMaxRenderDistance(10000) 
+		self.model2 = model
+
+	end
 	 
 	if not self.orbitIsSet then
 	
@@ -38,31 +58,36 @@ function ENT:Spawn()
 	--if self.ismoon then
 	--	self:Enter()
 	--end
-	
-	if false then--
-		local radius = self:GetParameter(VARTYPE_RADIUS) 
-		local seed = self:GetSeed()
-		 
-		--self:GetSeed()==361001 then --saturn test
+	 
+
+	local ringdata = self.ringsdata
+	if ringdata then 
+		local targetSZ = radius / 0.909090909090909
+		local minr = ringdata.minr/targetSZ
+		local maxr = ringdata.maxr/targetSZ
+		local colr = JVector(ringdata.color or {255,255,255})/255
+		local brght = ringdata.brightness or 1
+
 		local ringsEnt = ents.Create() 
-		ringsEnt:SetSizepower(radius / 0.909090909090909)
+		ringsEnt:SetSizepower(targetSZ)
 		ringsEnt:SetParent(self)
 		ringsEnt:SetSpaceEnabled(false)
-		ringsEnt:Spawn()
-		ringsEnt.iscelestialbody=true
-		
+
 		local model2 = ringsEnt:AddComponent(CTYPE_MODEL) 
 		model2:SetRenderGroup(RENDERGROUP_PLANET)
-		model2:SetModel("space/rings3.SMD") 
-		model2:SetMaterial("textures/space/rings_test.json") 
+		model2:SetModel("space/dynrings.dnmd?a="..minr..'&b='..maxr)  
 		model2:SetBlendMode(BLEND_OPAQUE) 
 		model2:SetRasterizerMode(RASTER_DETPHSOLID) 
 		model2:SetDepthStencillMode(DEPTH_ENABLED)  
-		model2:SetMatrix(matrix.Scaling(1)*matrix.Rotation(90+10,0,20))
-		model2:SetBrightness(4)
+		model2:SetMatrix(matrix.Scaling(1)*matrix.Rotation(90,0,0))
+		model2:SetBrightness(brght)
+		model2:SetColor(colr)
 		model2:SetFadeBounds(0.01,99999,0.05)  
 		model2:SetMaxRenderDistance(99999)
-		--self.modelR = model2
+
+		ringsEnt:Spawn()
+		ringsEnt.iscelestialbody=true
+		self.rings = ringsEnt
 	end
 end
 function ENT:Enter()  
@@ -118,10 +143,15 @@ function ENT:SpawnSurface()
 				if arch then
 					surface:SetParameter(VARTYPE_ARCHETYPE,arch)
 				end 
+				local archdata = self:GetParameter(VARTYPE_ARCHDATA)
+				if archdata then
+					surface:SetParameter(VARTYPE_ARCHDATA,archdata)
+				end
 				surface.surfacenodelevel = self.surfacenodelevel
 				surface:Spawn()  
 			--end
 			self.surface = surface
+			self.model2:Enable(false)
 		end
 		
 		
@@ -136,6 +166,7 @@ function ENT:Leave()
 	self.left = true
 	self:SetUpdating(true,1000)
 	self.model:Enable(true)
+	self.model2:Enable(true)
 	if self.partition then self.partition:SetUpdating(false) end
 	 
 	--if self.loaded then 

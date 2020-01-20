@@ -57,6 +57,7 @@ function SetController(name)
 				if prev.Update then hook.Remove(EVENT_GLOBAL_PREDRAW, "controller") end
 				if prev.MouseWheel then hook.Remove("input.mousewheel", "controller" ) end 
 				if prev.MouseDown then hook.Remove("input.mousedown", "controller") end
+				if prev.MouseUp then hook.Remove("input.mouseup", "controller") end
 				if prev.KeyDown then hook.Remove("input.keydown", "controller" ) end
 			end      
 			ts.name = name
@@ -68,6 +69,7 @@ function SetController(name)
 				end) end   
 				if ts.MouseWheel then hook.Add("input.mousewheel", "controller", function() ts:MouseWheel() end) end
 				if ts.MouseDown then hook.Add("input.mousedown", "controller", function() ts:MouseDown() end) end
+				if ts.MouseUp then hook.Add("input.mouseup", "controller", function() ts:MouseUp() end) end
 				if ts.KeyDown then hook.Add("input.keydown", "controller", function(key) ts:KeyDown(key) end) end
 				            
 				global_controller = ts
@@ -81,7 +83,7 @@ function SetController(name)
 			else                         
 				MsgN("Controller change to ",  ts._name, " is failed, revert initiated.") 
 				
-				local result = prev:Init() 
+				local result = prev:Init()  
 				if result ~= false then
 					if prev.Update then hook.Add(EVENT_GLOBAL_PREDRAW, "controller", function() 
 						prev:Update()  
@@ -89,6 +91,7 @@ function SetController(name)
 					end) end
 					if prev.MouseWheel then hook.Add("input.mousewheel", "controller", function() prev:MouseWheel() end) end
 					if prev.MouseDown then hook.Add("input.mousedown", "controller", function() prev:MouseDown() end) end 
+					if prev.MouseUp then hook.Add("input.mouseup", "controller", function() prev:MouseUp() end) end 
 					if prev.KeyDown then hook.Add("input.keydown", "controller", function(key) prev:KeyDown(key) end) end              
 					                
 					global_controller = prev 
@@ -101,6 +104,7 @@ function SetController(name)
 			if global_controller.Update then hook.Remove(EVENT_GLOBAL_PREDRAW, "controller") end
 			if global_controller.MouseWheel then hook.Remove("input.mousewheel", "controller" ) end
 			if global_controller.MouseDown then hook.Remove("input.mousedown", "controller") end
+			if global_controller.MouseUp then hook.Remove("input.mouseup", "controller") end
 			if global_controller.KeyDown then hook.Remove("input.keydown", "controller" ) end
 		end
 	end 

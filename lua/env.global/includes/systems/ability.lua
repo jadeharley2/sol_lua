@@ -14,7 +14,7 @@ local AB = {}
 --self:Think(ent)
 --self:End(ent)   
 
-function AB:Cast(ent)  
+function AB:Cast(ent)   
 	self.nextcast = self.nextcast or 0
 	if self.Begin and self.nextcast<CurTime() then
 		--local trace = ent:GetEyeTrace()--= 0
@@ -30,8 +30,10 @@ function AB:Cast(ent)
 			ent.activeAbilities[self._name] = self 
 			         
 			self.target = ent
-			if self.cooldownDelay then
-				self.nextcast = CurTime()+self.cooldownDelay
+
+			local cooldown = self.cooldown or self.cooldownDelay 
+			if cooldown then
+				self.nextcast = CurTime()+cooldown
 			end   
 			if self.Think then
 				self.task_think = debug.DelayedTimer(0,(self.thinkDelay or 1)*1000,-1, function()
@@ -73,13 +75,52 @@ function AB:CastAnimation(ent)
 	ent.abilityanim = self.animation
 	ent.graph:SetState("ability") 
 end
+function AB:ApplyEffects(caster,target,pos)
+
+	local result = false
+	for k,v in pairs(self.effects) do
+		local eff = Effect(v.effect or k,v)
+		if eff then
+			if eff.targeton=='caster' then
+				result = eff:Start(caster,caster,pos) 
+			else
+				result = eff:Start(caster,target,pos) 
+			end
+		end 
+		--if not result then return false end
+	end
+	return true 
+end
+function AB:ApplyVisuals(caster,target,pos)
+	if self.viseffects then
+		local cparent = caster:GetParent()
+		local parent = target:GetParent()
+		for k,v in pairs(self.viseffects) do
+			if v.effect=='particle' then
+				if v.target == 'caster' then
+					SpawnParticles(cparent,v.type,caster:GetPos(),v.time,v.size,v.speed)
+				else --if v.target == 'target' then 
+					SpawnParticles(parent,v.type,pos,v.time,v.size,v.speed)
+				end 
+			elseif v.effect=='sound' then
+				if v.target == 'caster' then
+					caster:EmitSound(v.path, v.volume or 1, v.pitch or 1)
+				else --if v.target == 'target' then 
+					target:EmitSound(v.path, v.volume or 1, v.pitch or 1)
+				end 
+			end
+		end
+	end
+end
  
 local ab_class = DefineClass("Ability","ability","lua/env.global/world/abilities/",AB)
     
 function Ability(type) 
-	local path = "forms/abilities/"..type..".json"
-	if file.Exists(path) then
-		local data = json.Read(path)
+	local abform = forms.GetForm("ability."..type)
+
+	--local path = "forms/abilities/"..type..".json"
+	if abform then --file.Exists(path) then
+		local data = forms.ReadForm('ability.'..type)-- json.Read(path)
 		if data and data.archetype then
 			data.id = type
 			local archetype = ab_class:Create(data.archetype)

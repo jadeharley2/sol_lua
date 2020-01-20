@@ -172,7 +172,7 @@ end
 
 function ENT:CreateLaser(p1,p2,p3,p4,s,w)
 	local dmesh = self.dmesh
-	if not dmesh then
+	if not dmesh then 
 		dmesh = self:AddComponent(CTYPE_DYNAMICMESH)  
 		dmesh:SetRenderGroup(RENDERGROUP_LOCAL) 
 		dmesh:SetBlendMode(BLEND_ADD) 

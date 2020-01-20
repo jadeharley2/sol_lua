@@ -39,7 +39,7 @@ local layout = {
 			text = "",
 			color = {0.1,0.1,0.1}, 
 			textcolor = {1,1,1}
-		},
+		}, 
 		{type="list", name = "propcontainer",
 			size = {200,200},
             dock = DOCK_FILL, 
@@ -52,7 +52,12 @@ function PANEL:Init()
     gui.FromTable(layout,self,{},self)
 	--self.propcontainer = self.list.floater--ff_grid_floater
 	
-	
+	hook.Add("editor_select","node_props",function(node)
+		self:SelectNode(node)
+	end)
+	hook.Add("editor_deselect","node_props",function()
+		self:SelectNode(nil)
+	end)
 end 
  
 function PANEL:RefreshPanel() 

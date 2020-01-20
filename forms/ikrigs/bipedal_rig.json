@@ -1,0 +1,97 @@
+{
+    "source":"models/species/anthro/base_anthro.stmd",
+    "nodes":[
+        { "name":"pelvis",      "bone":"pelvis",	"transformation":{ "ang":[0,135,0] }},
+        { "name":"chest",       "bone":"spine2",	"transformation":{ "ang":[0,180,0] }},
+        { "name":"neck",        "bone":"spine3"},//,"parent":"chest"
+        { "name":"head",        "bone":"head",	    "transformation":{ "ang":[0,30,0] }},
+        { "name":"leg.L",       "bone":"thigh.L","parent":"pelvis"},
+        { "name":"leg.R",       "bone":"thigh.R","parent":"pelvis"},
+        { "name":"foot.L",      "bone":"toe.L"},
+        { "name":"foot.R",      "bone":"toe.R"},
+        { "name":"clavicle.L",  "bone":"clavicle.L","parent":"chest",	    "transformation":{ "ang":[90,90,0] } },
+        { "name":"clavicle.R",  "bone":"clavicle.R","parent":"chest",	    "transformation":{ "ang":[90,-90,0] } },
+        { "name":"arm.L",       "bone":"upperarm.L","parent":"clavicle.L" },
+        { "name":"arm.R",       "bone":"upperarm.R","parent":"clavicle.R" },
+        { "name":"hand.L",      "bone":"hand.L"   },
+        { "name":"hand.R",      "bone":"hand.R"  },
+        
+        { "name":"finger00.L",      "bone":"finger00.L" ,"parent":"hand.L"},
+        { "name":"finger01.L",      "bone":"finger01.L" ,"parent":"finger00.L"},
+        { "name":"finger02.L",      "bone":"finger02.L" ,"parent":"finger01.L"},
+
+        { "name":"finger10.L",      "bone":"finger10.L" ,"parent":"hand.L"},
+        { "name":"finger11.L",      "bone":"finger11.L" ,"parent":"finger10.L"},
+        { "name":"finger12.L",      "bone":"finger12.L" ,"parent":"finger11.L"},
+
+        { "name":"finger20.L",      "bone":"finger20.L" ,"parent":"hand.L"},
+        { "name":"finger21.L",      "bone":"finger21.L" ,"parent":"finger20.L"},
+        { "name":"finger22.L",      "bone":"finger22.L" ,"parent":"finger21.L"},
+
+        { "name":"finger30.L",      "bone":"finger30.L" ,"parent":"hand.L"},
+        { "name":"finger31.L",      "bone":"finger31.L" ,"parent":"finger30.L"},
+        { "name":"finger32.L",      "bone":"finger32.L" ,"parent":"finger31.L"},
+
+        { "name":"finger40.L",      "bone":"finger40.L" ,"parent":"hand.L"},
+        { "name":"finger41.L",      "bone":"finger41.L" ,"parent":"finger40.L"},
+        { "name":"finger42.L",      "bone":"finger42.L" ,"parent":"finger41.L"},
+
+        { "name":"finger00.R",      "bone":"finger00.R" ,"parent":"hand.R"},
+        { "name":"finger01.R",      "bone":"finger01.R" ,"parent":"finger00.R"},
+        { "name":"finger02.R",      "bone":"finger02.R" ,"parent":"finger01.R"},
+
+        { "name":"finger10.R",      "bone":"finger10.R" ,"parent":"hand.R"},
+        { "name":"finger11.R",      "bone":"finger11.R" ,"parent":"finger10.R"},
+        { "name":"finger12.R",      "bone":"finger12.R" ,"parent":"finger11.R"},
+
+        { "name":"finger20.R",      "bone":"finger20.R" ,"parent":"hand.R"},
+        { "name":"finger21.R",      "bone":"finger21.R" ,"parent":"finger20.R"},
+        { "name":"finger22.R",      "bone":"finger22.R" ,"parent":"finger21.R"},
+
+        { "name":"finger30.R",      "bone":"finger30.R" ,"parent":"hand.R"},
+        { "name":"finger31.R",      "bone":"finger31.R" ,"parent":"finger30.R"},
+        { "name":"finger32.R",      "bone":"finger32.R" ,"parent":"finger31.R"},
+        
+        { "name":"finger40.R",      "bone":"finger40.R" ,"parent":"hand.R"},
+        { "name":"finger41.R",      "bone":"finger41.R" ,"parent":"finger40.R"},
+        { "name":"finger42.R",      "bone":"finger42.R" ,"parent":"finger41.R"},
+    ],
+    "chains":[ 
+        {
+            "name":"legl",
+            "start":"leg.L",
+            "end":"foot.L",
+            "forwardBone":"calf.L"
+        }, 
+        {
+            "name":"legr",
+            "start":"leg.R",
+            "end":"foot.R",
+            "forwardBone":"calf.R"
+        },
+        {
+            "name":"arml",
+            "start":"arm.L",
+            "end":"hand.L",
+            "forwardBone":"forearm.L"
+        },
+        {
+            "name":"armr",
+            "start":"arm.R",
+            "end":"hand.R",
+            "forwardBone":"forearm.R"
+        },
+        {
+            "name":"spine",
+            "start":"pelvis",
+            "end":"neck"
+        },
+        {
+            "name":"neck",
+            "start":"neck",
+            "end":"head"
+        }
+    ],
+    
+    
+}

@@ -4,7 +4,7 @@ DeclareEnumValue("event","UNEQUIP",	331012)
 DeclareEnumValue("event","UNEQUIPALL",331013) 
 DeclareEnumValue("event","UNEQUIPSLOT",	331014) 
 
-DeclareEnumValue("vartype","EQUIPMENT",		88020)
+DeclareVartype("EQUIPMENT",88020,"json","equipped items data")
 
 
 component.uid = DeclareEnumValue("CTYPE","EQUIPMENT", 1324)

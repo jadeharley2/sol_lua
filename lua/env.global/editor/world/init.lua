@@ -66,12 +66,7 @@ function editor:Open()
 	local vsize = GetViewportSize()
 	
 	local nsi = 430
-	 
-	--self.node = panel.Create("editor_panel_node")
-	--self.node:Dock(DOCK_RIGHT)
-	--self.node:SetSize(nsi-2,vsize.y-2)
-	--self.node:SetPos(vsize.x-nsi,0)
-	--self.node:Show()
+	  
 	
 	self.selectortemp = panel.Create()
 	self.selectortemp:SetSize(vsize.x,vsize.y)
@@ -99,12 +94,12 @@ function editor:Open()
 		end
 	end
 	
-	self.assets = panel.Create("editor_panel_assets")
+	self.assets = panel.Create("world_editor")
 	self.assets:Dock(DOCK_LEFT)
 	self.assets:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
 	self.assets:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
 	self.assets:Show()
-	self.node = self.assets.node_props--pnode
+	
 	
 	render.DCISetEnabled(true)
 	
@@ -122,8 +117,8 @@ end
 function editor:Close()  
 	render.DCISetEnabled(false)
 	
-		self.selected:Clear()
-	--if self.node then self.node:Close() self.node = nil end
+	self.selected:Clear()
+		
 	if self.assets then 
 		if not isfunction(self.assets) then self.assets:Close() end
 		self.assets = nil 
@@ -252,7 +247,7 @@ function editor:KeyDown(k)
 		end
 		self.selected:Clear()
 		self:ClearSelectionModels()  
-		self.node:SelectNode(nil)
+		hook.Call("editor_deselect");
 		local gizmo = self.gizmo 
 		if gizmo then
 			gizmo:Despawn()
@@ -488,7 +483,8 @@ function editor:Select(node,multiselect)
 	--for k,v in pairs(self.selected) do
 	--	MsgN(k,v)
 	--end
-	self.node:SelectNode(node)
+	
+	hook.Call("editor_select",node);
 	E_SELECTION = self.selected:ToTable()
 	E_FS = E_SELECTION[1] -- first selected
 end
@@ -573,8 +569,7 @@ end
 function WireEditorOpen() 
 	WireEditorClose()
 	local pnls = {}
-	W.wireeditor.panels = pnls
-	MsgN("open!")
+	W.wireeditor.panels = pnls 
 	local cpr = GetCamera():GetParent()
 	if cpr == LocalPlayer() then cpr = cpr:GetParent() end
 	for k,v in pairs(cpr:GetChildren()) do
@@ -583,8 +578,7 @@ function WireEditorOpen()
 			btn:SetSize(15,15)
 			btn:SetNode( v)
 			btn:Show()
-			pnls[#pnls+1] = btn 
-			MsgN("asd!")
+			pnls[#pnls+1] = btn  
 		end
 	end 
 	hook.Add(EVENT_GLOBAL_PREDRAW,"editor_wire",function() WireEditorUpdate() end)

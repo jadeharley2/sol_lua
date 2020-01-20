@@ -1,0 +1,332 @@
+{
+    "name":"Epsilon Canis",
+    "hierarchy":[
+        {
+            "name":"Epsilon Canis",
+            "type":"star",
+            "class":"G",
+            "radius":543345.0E3,
+            "mass":1.52E30,
+            "subs":[
+                {
+                    "name":"Resmov",
+                    "type":"planet",//molten
+                    "archetype" : "gen_barren",
+                    "radius":4254.0E3,
+                    "mass":5.97237E24,
+                    "orbit" : { 
+                        "a" : 5081690.0E3, 
+                        "b" : 4981690.0E3,
+                        "i" : 0.04,
+                        "pa" : 3.1,
+                        "al" : 3,
+                        "ma" : 0,
+                        "mos" : 0.1
+                    }
+                },
+                {
+                    "type":"asteroidfield",
+                    "min_a":0,
+                    "max_a":1,
+                },
+                {
+                    "name":"Cheratum",
+                    "type":"planet",//rock
+                    "archetype" : "gen_barren",
+                    "meansurftemp":[300,"c"],
+                    "radius":3532.0E3,
+                    "mass":3.97237E24,
+                    "orbit" : { 
+						"a" : 7081690.0E3, 
+						"b" : 7041690.0E3,
+						"i" : 0.03,
+						"pa" : 0.8,
+						"al" : -4,
+						"ma" : 0,
+						"mos" : 0.05,
+                    }
+                },
+                {
+                    "name":"Maonerth",
+                    "type":"planet",//iron
+                    "archetype" : "gen_barren",
+                    "meansurftemp":[245,"c"],
+                    "radius":5125.0E3,
+                    "mass":5.97237E24,
+                    "orbit" : { 
+						"a" : 11081690.0E3, 
+						"b" : 10881690.0E3,
+						"i" : 0.02,
+						"pa" : 0.1,
+						"al" : -10,
+						"ma" : 0,
+						"mos" : 0.025,
+                    }
+                },
+                {
+                    "name":"Toskora",
+                    "type":"planet",//terra
+                    "archetype" : "default",
+                    "meansurftemp":[17,"c"],
+                    "radius":8435.0E3,
+                    "mass":7.97237E24,
+                    "orbit" : { 
+						"a" : 15010000.0E3, 
+						"b" : 14999500.0E3,
+						"i" : 0.01,
+						"pa" : 1.3,
+						"al" : -100,
+						"ma" : 0,
+						"mos" : 0.005,
+                    },
+                    "subs":[
+                        {
+                            "name":"Marum",
+                            "type":"planet",//rock
+                            "archetype" : "moon",
+                            "radius":1245.0E3,
+                            "mass":7.342E22,
+                            "orbit" : { 
+								"a" : 40600.0E3, 
+								"b" : 39600.0E3,
+								"i" : 0.01,
+								"pa" : 0.3,
+								"al" : -100,
+								"ma" : 0,
+								"mos" : 0.05,
+                            }
+
+                        },
+                        {
+                            "name":"Alleyn",
+                            "type":"planet",//rock
+                            "archetype" : "moon",
+                            "radius":857.0E3,
+                            "mass":2.342E22,
+                            "orbit" : { 
+								"a" : 100060.0E3, 
+								"b" : 93600.0E3,
+								"i" : 0.4,
+								"pa" : 2,
+								"al" : 10,
+								"ma" : 0,
+								"mos" : 0.05,
+                            }
+
+                        }
+                    ]
+                },
+                {
+                    "name":"Pleopra",
+                    "type":"planet",//gasgiant
+                    "archetype" : "gen_gas", 
+                    "archdata":{
+                        "atmosphere":{
+                            "color" : [69.7266, 37.8516, 5.97656],
+                            "hazecolor" : [69.7266, 37.8516, 5.97656],
+                            "clouds":{
+                                "texture":"textures/atmosphere/jupiter.jpg",
+                                "color":[255,150,100]
+                            }
+                        },
+                        "noHydrosphere" : 1,
+                    },
+                    "radius":75542.0E3,
+                    "mass":1.8982E27,
+                    "rotation":[56,0,0],
+                    "orbit" : { 
+						"a" : 30010000.0E3, 
+						"b" : 30110000.0E3,
+						"i" : 0.02,
+						"pa" : 2.4,
+						"al" : -10,
+						"ma" : 0,
+						"mos" : 0.0025,
+                    },
+                    "rings" : {
+                        "minr" :85542.0E3,
+                        "maxr" :125542.0E3,
+                        "color":[255,190,150]
+                    } 
+                },
+                {
+                    "type":"asteroidfield",
+                    "min_a":0,
+                    "max_a":1,
+                },
+                {
+                    "name":"Gradus SX",
+                    "type":"planet",//ice
+                    "archetype" : "gen_barren", 
+                    "meansurftemp":[-100,"c"],
+                    "radius":8032.0E3,
+                    "mass":5.97237E24,
+                    "orbit" : { 
+						"a" : 50523000.0E3, 
+						"b" : 50023000.0E3,
+						"i" : 0.02,
+						"pa" : 0.7,
+						"al" : -10,
+						"ma" : 0,
+						"mos" : 0.00125,
+                    }, 
+                },
+                {
+                    "name":"Shogobos",
+                    "type":"planet",//gasgiant
+                    "archetype" : "gen_gas", 
+                    "archdata":{
+                        "atmosphere":{
+                            "color" :  [97, 78, 216],
+                            "hazecolor" : [97, 78, 216],
+                            "clouds":{
+                                "texture":"textures/atmosphere/jupiter.jpg",
+                                "color":[36,22,116]
+                            }
+                        },
+                        "noHydrosphere" : true, 
+                    },
+                    "radius":45325.0E3,
+                    "mass":0.4982E27,
+                    "rotation":[14,10,0],
+                    "orbit" : { 
+						"a" : 90523000.0E3, 
+						"b" : 90110000.0E3,
+						"i" : 0.02,
+						"pa" : 3,
+						"al" : -10,
+						"ma" : 0,
+						"mos" : 0.000125,
+                    },
+                    "rings" : {
+                        "minr" :75542.0E3,
+                        "maxr" :80000.0E3,
+                        "color":[116,116,216]
+                    },
+                    "subs":[
+                        {
+                            "type" :"asteroidfield.ring"
+                        },
+                        {
+                            "name":"Slagurus",
+                            "type":"planet",//rock
+                            "archetype" : "gen_barren",
+                            "radius":1254.0E3,
+                            "mass":7.342E22,
+                            "orbit" : { 
+								"a" : 390325.0E3, 
+								"b" : 394325.0E3,
+								"i" : 0.01,
+								"pa" : 0.1,
+								"al" : -100,
+								"ma" : 0.1,
+								"mos" : 0.05,
+                            }
+
+                        },
+                        {
+                            "name":"Leblichi",
+                            "type":"planet",//rock
+                            "archetype" : "gen_barren",
+                            "radius":846.0E3,
+                            "mass":2.342E22,
+                            "orbit" : { 
+								"a" : 600325.0E3, 
+								"b" : 604325.0E3,
+								"i" : 0.04,
+								"pa" : 0.8,
+								"al" : -100,
+								"ma" : 0.8,
+								"mos" : 0.05,
+                            }
+
+                        },
+                        {
+                            "name":"Peslara",
+                            "type":"planet",//rock
+                            "archetype" : "gen_barren",
+                            "radius":2146.0E3,
+                            "mass":13.342E22,
+                            "orbit" : { 
+								"a" : 1000325.0E3, 
+								"b" : 1004325.0E3,
+								"i" : 0.02,
+								"pa" : 0.4,
+								"al" : -100,
+								"ma" : 0.4,
+								"mos" : 0.05,
+                            }
+
+                        },
+                        {
+                            "name":"Oehiri",
+                            "type":"masscenter",  
+                            "mass":0.642E22,
+                            "orbit" : { 
+								"a" : 1800325.0E3, 
+								"b" : 1800325.0E3,
+								"i" : -0.03,
+								"pa" : 0.3,
+								"al" : -100,
+								"ma" : 0.3,
+								"mos" : 0.05,
+                            },
+                            "subs":[
+                                {
+                                    "name":"Oehiri 1",
+                                    "type":"planet",//rock
+                                    "archetype" : "gen_barren",
+                                    "radius":453.0E3,
+                                    "mass":0.342E22,
+                                    "orbit" : { 
+                                        "a" : 17325.0E3, 
+                                        "b" : 17325.0E3,
+                                        "i" : 0.01,
+                                        "pa" : 0,
+                                        "al" : -100,
+                                        "ma" : 0.5,
+                                        "mos" : 0.05,
+                                    } 
+                                },
+                                {
+                                    "name":"Oehiri 2",
+                                    "type":"planet",//rock
+                                    "archetype" : "gen_barren",
+                                    "radius":453.0E3,
+                                    "mass":0.342E22,
+                                    "orbit" : { 
+                                        "a" : 17325.0E3, 
+                                        "b" : 17325.0E3,
+                                        "i" : 0.01,
+                                        "pa" : 3.1415926,
+                                        "al" : -100,
+                                        "ma" : 0.5,
+                                        "mos" : 0.05,
+                                    } 
+                                },
+                            ]
+                        },
+                        {
+                            "name":"Zeshoria",
+                            "type":"planet",//rock
+                            "archetype" : "gen_barren",
+                            "radius":857.0E3,
+                            "mass":2.342E22,
+                            "orbit" : { 
+								"a" : 2700325.0E3, 
+								"b" : 2700325.0E3,
+								"i" : 0.01,
+								"pa" : 0.5,
+								"al" : -100,
+								"ma" : 0.5,
+								"mos" : 0.05,
+                            }
+
+                        },
+                    ]
+                },
+            ]
+        },
+       
+    ] 
+}

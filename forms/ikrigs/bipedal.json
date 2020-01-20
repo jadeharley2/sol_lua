@@ -1,0 +1,442 @@
+{
+    "nodes":{
+
+        "pelvis":{
+            "mass":10,
+        },
+        "leg_l":{
+            
+        },
+        "leg_r":{
+
+        }
+    },
+    "chains":{
+        "leg_r":{
+            "type":"leg",
+            "bones":[
+                "pelvis",
+                "thigh.R",
+                "calf.R",
+                "foot.R",
+                "toe.R",
+            // "toe1.R"
+            ],
+            "angle":[-90,0,-90],
+            "active":true,
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[
+                {
+                    "bones":["pelvis","thigh.R"],
+                    "type":"ballsocket_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        }
+                    ], 
+                },
+                {
+                    "bones":["thigh.R","calf.R"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-130,-5], 
+                            "axis":"bend"
+                        }
+                    ]
+                // "axis":[1,0,0]
+                },
+                {
+                    "bones":["calf.R","foot.R"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-130,0], 
+                            "axis":"bend"
+                        }
+                    ]
+                // "axis":[1,0,0]
+                },
+                {
+                    "bones":["foot.R","toe.R"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-90,0], 
+                            "axis":"bend"
+                        }
+                    ]
+                // "axis":[1,0,0]
+                } ,
+            // {
+            //     "bones":["toe.R","toe1.R"],
+            //     "type":"revolute_joint",
+            //     "limit": [
+            //         {
+            //             "type":"swing",
+            //             "angle":[-90,0], 
+            //             "axis":"bend"
+            //         }
+            //     ] 
+            // } 
+            ]
+        },
+        "leg_l":{
+            "type":"leg",
+            "bones":[
+                "pelvis",
+                "thigh.L",
+                "calf.L",
+                "foot.L",
+                "toe.L",
+            ///  "toe1.L"
+            ],
+            "angle":[-90,0,-90], 
+            "active":true,
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[
+                {
+                    "bones":["pelvis","thigh.L"],
+                    "type":"ballsocket_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        } 
+                    ], 
+                },
+                {
+                    "bones":["thigh.L","calf.L"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-130,-5], 
+                            "axis":"bend"
+                        },
+                    ]
+                // "axis":[1,0,0]
+                },
+                {
+                    "bones":["calf.L","foot.L"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-130,0], 
+                            "axis":"bend"
+                        }
+                    ]
+                // "axis":[1,0,0]
+                },
+                {
+                    "bones":["foot.L","toe.L"],
+                    "type":"revolute_joint",
+                    "limit": [
+                        {
+                            "type":"swing",
+                            "angle":[-90,0], 
+                            "axis":"bend"
+                        }
+                    ]
+                // "axis":[1,0,0]
+                } ,
+                //{
+                //    "bones":["toe.L","toe1.L"],
+                //    "type":"revolute_joint",
+                //    "limit": [
+                //        {
+                //            "type":"swing",
+                //            "angle":[-90,0], 
+                //            "axis":"bend"
+                //        }
+                //    ] 
+                //} 
+            ]
+        },
+        "arm_l":{ 
+            "type":"arm",
+            "bones":[
+                //"spine2",
+                "clavicle.L",
+                "upperarm.L",
+                "forearm.L",
+                "hand.L",
+            // "toe1.R"
+            ],
+            "angle":[-90,0,-90],
+            "active":true,
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[
+                //{
+                //    "bones":["spine2","clavicle.L"],
+                //    "type":"ballsocket_joint",
+                //    "limit": [ 
+                //        {
+                //            "type":"twist",
+                //            "mode": "along_b",
+                //            "angle":30
+                //        }
+                //    ], 
+                //},
+                {
+                    "bones":["clavicle.L","upperarm.L"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":90, 
+                            "axis":"global",
+                            "axisa":[1,0,0],
+                            "axisb":[1,0,0],
+                        },
+                    ], 
+                },
+                {
+                    "bones":["upperarm.L","forearm.L"],
+                    "type":"revolute_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        //{
+                        //    "type":"swing",
+                        //    "angle":[-130,0], 
+                        //    "axis":"bend"
+                        //}
+                    ], //
+                },
+                {
+                    "bones":["forearm.L","hand.L"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[-1,0,0],
+                            "axisb":[-1,0,0],
+                        },
+                    ], 
+                },
+            ]
+        },
+        "arm_r":{ 
+            "type":"arm",
+            "bones":[
+                //"spine2",
+                "clavicle.R",
+                "upperarm.R",
+                "forearm.R",
+                "hand.R",
+            // "toe1.R"
+            ],
+            "angle":[-90,0,-90],
+            "active":true,
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[
+                //{
+                //    "bones":["spine2","clavicle.L"],
+                //    "type":"ballsocket_joint",
+                //    "limit": [ 
+                //        {
+                //            "type":"twist",
+                //            "mode": "along_b",
+                //            "angle":30
+                //        }
+                //    ], 
+                //},
+                {
+                    "bones":["clavicle.R","upperarm.R"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":90, 
+                            "axis":"global",
+                            "axisa":[1,0,0],
+                            "axisb":[1,0,0],
+                        },
+                    ], 
+                },
+                {
+                    "bones":["upperarm.R","forearm.R"],
+                    "type":"revolute_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":[-130,130], 
+                            "axis":"bend"
+                        }
+                    ], 
+                },
+                {
+                    "bones":["forearm.R","hand.R"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[1,0,0],
+                            "axisb":[1,0,0],
+                        },
+                    ], 
+                },
+            ]
+        },
+        /*
+        "spine":{
+            "type":"spine",
+            "bones":[
+                "pelvis",
+                "spine1",
+                "spine2"
+            ],
+            "active":true,
+            "angle":[0,90,0],
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[ 
+                {
+                    "bones":["pelvis","spine1"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                    ], 
+                },
+                {
+                    "bones":["spine1","spine2"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":30
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                    ], 
+                },
+            ]
+        },
+        "neck":{
+            "type":"neck",
+            "bones":[
+                "spine3",
+                "neck",
+                "head"
+            ],
+            "active":true,
+            "angle":[-90,0,-90],
+            "linear_rigidity": 0.01,
+            "angular_rigidity":0.01,
+            "joints":[ 
+                {
+                    "bones":["spine3","neck"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":45
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                    ], 
+                },
+                {
+                    "bones":["neck","head"],
+                    "type":"ballsocket_joint",
+                    "limit": [ 
+                        {
+                            "type":"twist",
+                            "mode": "along_b",
+                            "angle":45
+                        },
+                        {
+                            "type":"swing",
+                            "angle":40, 
+                            "axis":"global",
+                            "axisa":[0,0,1],
+                            "axisb":[0,0,1],
+                        },
+                    ], 
+                },
+            ]
+        }*/
+    }
+    
+}

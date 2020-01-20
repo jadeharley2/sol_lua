@@ -59,7 +59,10 @@
 			
 			{"name":"stencil", "type":"float","default":0,"description":"stencil buffer write value"},
 			{"name":"detail_nonormal", "type":"bool","default":false,"description":"disable detail normal blending"},
+
 		],
+	},
+	"parameters":{ 
 	},
 	"onload" : { },
 	"onframe" : { },

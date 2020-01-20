@@ -70,7 +70,7 @@ function OBJ:Init()
 	end
 	 
 	
-	if healthbar and actor:HasTag(TAG_ACTOR) then
+	if healthbar and actor:HasTag(TAG_ACTOR) and actor.GetHealth then
 		healthbar:UpdateHealth(actor:GetHealth(),actor:GetMaxHealth())
 	end
 	if self.camZoom==0 then 

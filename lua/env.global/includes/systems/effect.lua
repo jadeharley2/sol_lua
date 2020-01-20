@@ -20,19 +20,21 @@ function EF:Start(source,target,position)
 	self._source = source
 	self._target = target
 	if self:Begin(source,target,position) then 
-		target._active_effects = target._active_effects or {}
-		target._active_effects[self._type] = self
-		if self.Think then
-			self.task_think = debug.DelayedTimer(0,(self.thinkDelay or 1)*1000,-1, function() 
-				if not self:Think(ent) then 
-					self:Dispel()
-				end
-			end)
-		end
-		if (self.dispelDelay and self.dispelDelay>0) then 
-			self.task_dispel = debug.Delayed(self.dispelDelay*1000,function()
-				self:Dispel() 
-			end)
+		if(not self.singlecast)then 
+			target._active_effects = target._active_effects or {}
+			target._active_effects[self._type] = self
+			if self.Think then
+				self.task_think = debug.DelayedTimer(0,(self.thinkDelay or 1)*1000,-1, function() 
+					if not self:Think(ent) then 
+						self:Dispel()
+					end
+				end)
+			end
+			if (self.dispelDelay and self.dispelDelay>0) then 
+				self.task_dispel = debug.Delayed(self.dispelDelay*1000,function()
+					self:Dispel() 
+				end)
+			end
 		end
 		hook.Call("effect.cast",self,ent)
 	end
@@ -48,7 +50,7 @@ EF.Dispel = EF.Dispell
 
 local ef_class = DefineClass("Effect","effect","lua/env.global/world/effects/",EF)
       
-function Effect(type) 
+function Effect(type,modtable) 
 	local path = "forms/effects/"..type..".json"
 	if file.Exists(path) then
 		local data = json.Read(path)
@@ -59,6 +61,11 @@ function Effect(type)
 				for k,v in pairs(data) do
 					archetype[k] = v
 				end 
+				if modtable then
+					for k,v in pairs(modtable) do
+						archetype[k] = v
+					end
+				end
 				archetype._type = type
 				if archetype.OnLoad then archetype:OnLoad() end
 				return archetype

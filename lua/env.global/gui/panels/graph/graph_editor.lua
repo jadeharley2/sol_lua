@@ -185,8 +185,8 @@ function PANEL:Init()
 	
 	local tab = {
 		flow = {event = {"startup","input.keydown"},"branch","assign","sequence","join","while","for"},
-		constants = {"string","boolean","int","float","vector3","quaternion"},
-		variables = {"string","boolean","int","float","vector3","quaternion","scriptednode"},
+		constants = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","Tex2DArray"},
+		variables = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","scriptednode"},
 		functions = functlist,
 		compounds = comlist,
 		"group",

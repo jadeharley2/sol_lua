@@ -20,7 +20,7 @@ function ENT:Spawn()
 		local scolor =  self:GetParameter(VARTYPE_COLOR) or self.color or Vector(0.2,0.6,1.2)
 		local starlum = self:GetParameter(VARTYPE_BRIGHTNESS) or 2.23e22 
 		
-		
+		MsgN("<<docl",scolor)
 		local scolorlen = scolor:Length()
 		
 		local light = self:AddComponent(CTYPE_LIGHT)  
@@ -40,6 +40,10 @@ function ENT:SetBrightness(b)
 	if self.light then
 		self.light:SetBrightness(b) 
 	end
+end
+function ENT:SetMass(m)
+	self.mass = m
+	self[VARTYPE_MASS] = m
 end
 function ENT:SetColor(color)  
 	self:SetParameter(VARTYPE_COLOR,color)

@@ -1,0 +1,11 @@
+{ 
+    "name" : "thunder",
+    "sounds" : [
+        "events/thunder_s1.ogg",
+        "events/thunder_s2.ogg",
+        "events/thunder_s3.ogg", 
+        "events/thunder_s4.ogg", 
+    ],
+    "channel" : "ambient",
+    "volume" : 0.5
+}

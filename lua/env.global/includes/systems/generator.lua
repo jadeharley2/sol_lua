@@ -29,4 +29,6 @@ hook.Add("script.reload","generator", function(filename)
 		generator = _tempvar  
 		return true
 	end 
-end)
+end)  
+
+scriptgen.Reload() 

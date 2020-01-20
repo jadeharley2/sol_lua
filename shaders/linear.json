@@ -28,5 +28,10 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []
 		}
-	]      
+	],
+	"definition" :
+	{ 
+		"description":"rope shader",
+		"stage":"backward", 
+	}, 
 }            

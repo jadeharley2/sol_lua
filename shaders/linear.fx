@@ -31,9 +31,12 @@ struct GSPS_INPUT
 
 struct PS_OUT
 {
-    float4 diffuse: SV_Target0; //rgba 
+    float4 emission: SV_Target0;
+    float4 normal: SV_Target1; 
+    float depth: SV_Target2;
+    float4 mask: SV_Target3;
+    float4 color : SV_Target4;
 };
- 
 
 
 void Plane( inout TriangleStream<GSPS_INPUT> TriStream,float4x4 mx, float3 p1,float3 p2,float3 p3,float3 p4)
@@ -148,9 +151,9 @@ PS_OUT PS( GSPS_INPUT input )
 	
 	float4 texIn = g_MeshTexture.Sample(TextureSampler,input.Tex) ;
 	
-	output.diffuse =texIn*tint;// float4(0.5,0,0,1);
-	clip(output.diffuse.a-0.5);
-	output.diffuse.a=1; 
+	output.emission =texIn*tint;// float4(0.5,0,0,1);
+	clip(output.emission.a-0.5);
+	output.emission.a=1; 
 	return output;//float4(abs(input.Norm)*l,1);
 }
 
