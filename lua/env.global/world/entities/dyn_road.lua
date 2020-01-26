@@ -199,7 +199,7 @@ ENT.editor = {
                     local daf = false
                     local fd = false 
                     for k,v in pairs(ent.points ) do
-                        local ee = SpawnEHANDLE("primitives/sphere.stmd",spp,ent,v,0.8) 
+                        local ee = SpawnEHANDLE("primitives/sphere.stmd",spp,ent,v,0.8,Vector(1,0,0)) 
                         ee.rnod = true 
                         if daf then daf.next = ee ee.prev = daf end
                         if not fd then fd = ee end
@@ -213,6 +213,15 @@ ENT.editor = {
             ent.pathloop = not (ent.pathloop or false)
             ent:UpdateModel(true)   
         end},
+        testEdit2 = {text = "toggle edit2",type="action",action = function (ent)
+            ent:Hook("physhandle.click","dyn_road",function(point,node,trace)
+                local pts = ent.points
+                if pts then  
+                    pts[#pts+1] = point 
+                    ent:UpdateModel(true)
+                end
+            end)
+        end}
 	},  
 	onSpawn =  function(ent) --in editor spawn
         local spo = ent:GetPos()

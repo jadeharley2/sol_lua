@@ -5,12 +5,8 @@ local layout = {
     color = {0,0,0},
     size = {200,200},
     subs = {
-		{ name = "header",
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Node materials",
-			color = {0.3,0.6,0.9}, 
+		{ name = "header",  class = "header_0",  
+			text = "Node materials", 
 		},
 		{ name = "nodename",
 			size = {100,16},
@@ -20,7 +16,7 @@ local layout = {
 			color = {0.1,0.1,0.1}, 
 			textcolor = {1,1,1}
 		}, 
-		{type="list", name = "matcontainer",
+		{type="list", name = "matcontainer", class = "back",  
 			size = {200,200},
             dock = DOCK_FILL, 
         }
@@ -29,7 +25,7 @@ local layout = {
 
 function PANEL:Init()  
 
-	gui.FromTable(layout,self,{},self) 
+	gui.FromTable(layout,self,global_editor_style,self) 
 	
 	hook.Add("editor_select","node_mats",function(node)
 		self:SelectNode(node)

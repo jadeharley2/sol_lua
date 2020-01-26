@@ -21,16 +21,13 @@ comtypeinfo = table.KVSwitch(gettags('CTYPE_'))
 
 
 
+local textsize = 16 
 local layout = {
     color = {0,0,0},
     size = {200,200},
     subs = {
-		{ name = "header",
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Node properties",
-			color = {0.3,0.6,0.9}, 
+		{ name = "header", class = "header_0", 
+			text = "Node properties",  
 		},
 		{ name = "nodename",
 			size = {100,16},
@@ -40,7 +37,7 @@ local layout = {
 			color = {0.1,0.1,0.1}, 
 			textcolor = {1,1,1}
 		}, 
-		{type="list", name = "propcontainer",
+		{type="list", name = "propcontainer", class = "back",  
 			size = {200,200},
             dock = DOCK_FILL, 
         }
@@ -49,7 +46,7 @@ local layout = {
 
 function PANEL:Init()  
 
-    gui.FromTable(layout,self,{},self)
+    gui.FromTable(layout,self,global_editor_style,self)
 	--self.propcontainer = self.list.floater--ff_grid_floater
 	
 	hook.Add("editor_select","node_props",function(node)
@@ -65,34 +62,6 @@ function PANEL:RefreshPanel()
 		self:SelectNode(self.cnode)
 	end  
 end
-local textsize = 16
-local style = {
-	btitle = { type = "button",
-		dock=DOCK_RIGHT,
-		size = {20,textsize},
-		margin = {1,1,1,1},
-		textcolor = {1,0.3,0.3},
-		ColorAuto = Vector(0,0,0),
-		textalignment = ALIGN_CENTER,
-	},
-	bgroup = { type="group",  
-		dock=DOCK_TOP,
-		_sub_header = {
-			color = {0,0,0},
-			size = {20,textsize},
-			textcolor = {0.3,0.9,0.7}
-		} 
-	},
-	cgroup = { type="group",  
-		dock=DOCK_TOP,
-		_sub_header = {
-			color = {0.2,0.1,0},
-			textcolor = {0.9,0.6,0.3},
-			size = {20,textsize},
-			textalignment = ALIGN_LEFT
-		} 
-	}
-}
 
 function PANEL:SelectNode(node) 
 	self.cnode = node
@@ -113,7 +82,7 @@ function PANEL:SelectNode(node)
 					{ class="bgroup", name = "tags", Title="Tags"},
 					{ class="bgroup", name = "com", Title="Components" }
 				}
-			},peditor,style,peditor)
+			},peditor,global_editor_style,peditor)
 		--peditor:Add(grouptest)
  
  
@@ -150,7 +119,7 @@ function PANEL:SelectNode(node)
 							OnClick =  function(s) s.node:RemoveTag(v) contents.populateTags() self:UpdateLayout()  end
 						}
 					}
-				},nil,style))  
+				},nil,global_editor_style))  
 			end 
 			contents:Add(gui.FromTable({ type = "enum_selector",
 				dock=DOCK_TOP,
@@ -165,7 +134,7 @@ function PANEL:SelectNode(node)
 						self:UpdateLayout()
 					end
 				end 
-			},nil,style))
+			},nil,global_editor_style))
 		end
 		contents.populateTags()
 
@@ -181,7 +150,7 @@ function PANEL:SelectNode(node)
 				buttons = {
 					{class = "btitle",text="x",OnClick=function() node:RemoveComponent(v) self:RefreshPanel() end}
 				}  
-			},nil,style)
+			},nil,global_editor_style)
 			con_contents:Add(con_grp)  
 			   
 			
@@ -203,7 +172,7 @@ function PANEL:SelectNode(node)
 					self:RefreshPanel()
 				end
 			end 
-		},nil,style))
+		},nil,global_editor_style))
 		 
 		
 			
@@ -306,7 +275,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 
 					local mgr = gui.FromTable({class = 'cgroup', Title = 'arguments',margin = {5,2,0,0},
 						_sub_header = { color = {0.1,0.1,0.1} } 
-					},nil,style) 
+					},nil,global_editor_style) 
 
 					local fApply =  function(n)
 						local path = n:GetText()
@@ -350,17 +319,17 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					if vargs[2] then
 						for k,v in pairs(string.split(vargs[2],'&')) do
 							local it = {}
-							mgr:AddItem(gui.FromTable(arg_template,nil,style,it))
+							mgr:AddItem(gui.FromTable(arg_template,nil,global_editor_style,it))
 							it.val:SetText(v)
 						end
 					end
 					
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
 						text = 'add', ColorAuto = Vector(0.2,1,0.2)/10, textcolor = {0.2,1,0.2}, OnClick = function()
-							mgr:AddItem(gui.FromTable(arg_template,nil,style))
+							mgr:AddItem(gui.FromTable(arg_template,nil,global_editor_style))
 							self:UpdateLayout()
 						end
-					},nil,style))
+					},nil,global_editor_style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
 						text = 'sel', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							local lp = file.GetDirectory(inp:GetText())
@@ -369,13 +338,13 @@ function PANEL:ConstructParams(node,meta,parent,com)
 								fApply(inp)
 							end)
 						end
-					},nil,style))
+					},nil,global_editor_style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
 						text = 'clr', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							inp:SetText('')
 							fApply(inp)
 						end
-					},nil,style))
+					},nil,global_editor_style))
 
 					--mgr:Add(gui.FromTable({ type = "button",
 					--	dock=DOCK_TOP,
@@ -385,10 +354,10 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					--	textalignment = ALIGN_CENTER,
 					--	text = "+", 
 					--	OnClick = function() 
-					--		mgr:AddItem(gui.FromTable(arg_template,nil,style))
+					--		mgr:AddItem(gui.FromTable(arg_template,nil,global_editor_style))
 					--		self:UpdateLayout()
 					--	end
-					--},nil,style))
+					--},nil,global_editor_style))
 
 					--mgr:SetVisible(false)
 					parent:Add(mgr)

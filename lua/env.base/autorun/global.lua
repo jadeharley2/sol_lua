@@ -155,7 +155,7 @@ function IsOfType(obj,ttype)
 			ttype = FindMetaTable(ttype)
 		end
 		if ttype then
-			return getmetatable(obj) == type
+			return getmetatable(obj) == ttype
 		end
 	end
 	return false

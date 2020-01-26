@@ -28,5 +28,8 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []
 		}
-	]      
+	],
+	"parameters":{ 
+		"time"			: { "type" : "float", "global": "frametime"},
+	}
 }            

@@ -3,12 +3,9 @@ local layout = {
 	color = {0,0,0},
 	size = {200,200},
 	subs = {
-		{ name = "header",
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "World outliner",
-			color = {0.3,0.6,0.9},
+		{ name = "header",  class = "header_0",    
+			dock = DOCK_TOP, 
+			text = "World outliner", 
 			subs = {
 				{type='button', name = "refcom",
 					size = {20,20},
@@ -18,29 +15,22 @@ local layout = {
 				}
 			}
 		},
-		{ name = "header",
-			size = {100,16},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Hierarchy",
-			color = {0.3,0.9,0.7}, 
+		{ name = "header", class = "header_1",   
+			dock = DOCK_TOP, 
+			text = "Hierarchy",  
 		},
-		{ type = "list",name = "hierarchy",
+		{ type = "list",name = "hierarchy", class = "back",
 			size = {200,200},
 			dock = DOCK_TOP,
 			itemheight = 16
 		},
-		{ name = "header",
-			size = {100,16},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Nodes",
-			color = {0.3,0.9,0.7}, 
+		{ name = "header", class = "header_1",  
+			dock = DOCK_TOP, 
+			text = "Nodes",  
 		},
-		{ name = "action_panel",
+		{ name = "action_panel", class = "back",
 			size = {200,200},
-			dock = DOCK_BOTTOM,  
-			color = {0,0,0}, 
+			dock = DOCK_BOTTOM,   
 			subs = {
 				{type='button', name = "bnodeadd",
 					size = {20,20},
@@ -50,14 +40,11 @@ local layout = {
 				}
 			}
 		},
-		{ name = "header",
-			size = {100,16},
-			dock = DOCK_BOTTOM,
-			textalignment = ALIGN_CENTER,
-			text = "Actions",
-			color = {0.3,0.9,0.7}, 
+		{ name = "header", class = "header_1", 
+			dock = DOCK_BOTTOM, 
+			text = "Actions",  
 		},
-		{ type = "tree",name = "nodetree",
+		{ type = "tree",name = "nodetree", class = "back",
 			dock = DOCK_FILL,
 			itemheight = 16
 		},
@@ -65,7 +52,7 @@ local layout = {
 } 
 
 function PANEL:Init() 
-	gui.FromTable(layout,self,{},self) 
+	gui.FromTable(layout,self,global_editor_style,self) 
 	self.refcom.OnClick = function() self:UpdateCnodes() end  
 	self:UpdateCnodes() 
 	self:UpdateHierarchy() 

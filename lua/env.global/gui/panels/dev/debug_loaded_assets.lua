@@ -54,7 +54,7 @@ function PANEL:Init()
 		sup:SetCanRaiseMouseEvents(false)
 		p:Add(sup)
 		
-		if(text=="texture")then
+		if( string.match(text,"texture"))then
 			local t = LoadTexture(f)
 			if t then
 				p:SetTexture(t)

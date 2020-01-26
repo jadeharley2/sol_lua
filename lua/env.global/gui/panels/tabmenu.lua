@@ -24,7 +24,6 @@ function PANEL:Init()
 end
 
 function PANEL:AddTab(name,sub,btnmodt)
-MsgN("tTAb",name,sub)
 	local b = panel.Create("button") 
 	local plist = self.plist
 	local pnames = self.pnames

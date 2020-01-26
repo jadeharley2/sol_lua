@@ -231,18 +231,32 @@ local on_dt_click = function(b,cdtype)
 	end 
 end
  
+local on_static_spawn = function(b,cdtype)   
+	MsgN("STATIC REQUEST?",cdtype) 
+	local node = GetCamera():GetParent()
+
+	if not worldeditor then return nil end
+	local wtr = worldeditor.wtrace
+	if wtr and wtr.Hit then 
+		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+		local e = SpawnSO(cdtype,node,pos,1)
+		if e then
+			local edt = e.editor
+			if edt and edt.onSpawn then
+				edt.onSpawn(e)
+			end
+			worldeditor:Select(e)
+		end
+	end
+end
+ 
 function PANEL:Init()   
-	gui.FromTable({ 
-        color = {0,0,0},
+	gui.FromTable({  class = "back",   
         size = {200,300},
         dock = DOCK_BOTTOM,
         subs = {
-            { name = "header",
-                size = {100,20},
-                dock = DOCK_TOP,
-                textalignment = ALIGN_CENTER,
-                text = "Asset browser",
-                color = {0.3,0.6,0.9}
+            { name = "header", class = "header_0", 
+                text = "Asset browser", 
             },
             {type="tree",name = "classtree",
                 size = {200,400},
@@ -259,10 +273,11 @@ function PANEL:Init()
             {type="files",name = "dirtree3",
                 size = {500,400},
                 dock = DOCK_LEFT,
-                OnDisplay = on_dt_display2
+				OnDisplay = on_dt_display2,
+				OnItemClick = on_static_spawn
             }
         }
-    },self,sty,self)
+    },self,global_editor_style,self)
 	   
  
 	local flist = forms.GetList()

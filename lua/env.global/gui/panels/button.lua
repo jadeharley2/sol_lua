@@ -6,10 +6,15 @@ function PANEL:Init()
 	--self.downcolor = gui.style:GetColor("Button")-- Vector(1,0,0)
 	--self:SetColor( self.upcolor) 
 	
-	
-	self:AddState("idle",{color = gui.style:GetColor("ButtonActive"):ToTable()})
+	local bactive = gui.style:GetColor("ButtonActive"):ToTable()
+	local bpressed = gui.style:GetColor("Button"):ToTable()
+	self:AddState("idle",{ 
+		color = bactive,
+		color2 = bpressed,
+		gradangle = -45
+	})
 	self:AddState("hover",{color = gui.style:GetColor("ButtonHovered"):ToTable()})
-	self:AddState("pressed",{color = gui.style:GetColor("Button"):ToTable()}) 
+	self:AddState("pressed",{color = bpressed}) 
 	self:SetState("idle")
 	
 end
@@ -23,7 +28,11 @@ function PANEL:SetColors(down,up,hover)
 	--self.downcolor = down or  gui.style:GetColor("Button")-- Vector(1,0,0)
 	--self:SetColor( self.upcolor) 
 	
-	self:AddState("idle",{color = (up or gui.style:GetColor("ButtonActive")):ToTable()})
+	self:AddState("idle",{
+		color = (up or gui.style:GetColor("ButtonActive")):ToTable(),
+		color2 = (up or gui.style:GetColor("Button")):ToTable(),
+		gradangle = -45
+	})
 	self:AddState("hover",{color = (hover or gui.style:GetColor("ButtonHovered")):ToTable()})
 	self:AddState("pressed",{color = (down or gui.style:GetColor("Button")):ToTable()})
 	self:SetState("idle")
@@ -43,7 +52,11 @@ function PANEL:SetColorAuto(color,mul)
 	--self.downcolor = color*(1-mul)
 	--self:SetColor( self.upcolor) 
 	
-	self:AddState("idle",{color = (color):ToTable()})
+	self:AddState("idle",{
+		color = (color):ToTable(),
+		color2 = (color*(1-mul)):ToTable(),
+		gradangle = -45
+	})
 	self:AddState("hover",{color = (color*(1+mul)):ToTable()})
 	self:AddState("pressed",{color = (color*(1-mul)):ToTable()})
 	self:SetState("idle")

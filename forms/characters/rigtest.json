@@ -11,6 +11,8 @@
 		"rotspeed" : 0.5,
 	},
 	"mass" : 10,
+	"height" : 1.4,
+	"radius" : 0.4,
 	"variables" :
 	{
 		"model_scale":2, 
@@ -18,6 +20,7 @@
 		"turn_sharp_in" : true,
 		"turn_angle" : 90, 
 		"eyemul":[1,-1],
+		"tpsheight":0.8,
 		"gestures":{
 			"greet":{},  
 			"pstand":{ 

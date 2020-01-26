@@ -85,6 +85,13 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			if v[4] then
 				node:SetAlpha(v[4])
 			end
+		elseif k == 'gradient' then 
+			local c1 = v[1]
+			local c2 = v[2]
+			local a = v[3] or 0
+			node:SetColor(JVector(c1))
+			node:SetColor2(JVector(c2))
+			node:SetGradAngle(a)  
 		elseif k == 'visible' then node:SetVisible(v)
 		elseif k == 'texture' then node:SetTexture(v)--LoadTexture(v))
 

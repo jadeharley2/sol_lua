@@ -6,6 +6,7 @@ function PANEL:Init()
 	self:SetColor(Vector(0,0,0))
 	local floater = panel.Create() 
 	floater:SetColor(Vector(0,0.1,0))
+	floater:SetColor2(Vector(0,0,0))
 	floater:SetTextOnly(true)
 	self.floater = floater
 	
@@ -16,6 +17,7 @@ function PANEL:Init()
 	ff_grid:SetScrollbars(1) 
 	ff_grid:SetFloater(floater) 
 	ff_grid:SetColor(Vector(0.1,0,0))
+	ff_grid:SetColor2(Vector(0,0,0))
 	ff_grid:SetTextOnly(true)
 	ff_grid.inner:SetTextOnly(true)
 	self.ff_grid = ff_grid

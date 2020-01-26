@@ -1,3 +1,5 @@
+
+local textsize = 16 
 local sty = {
     bmenu = {type = "button", 
         size = {40,40},
@@ -24,14 +26,110 @@ local sty = {
         size = {2,2},
         dock = DOCK_LEFT,
         color = {83/255, 164/255, 255/255}
-    }
+	},
+    bmenu_op = {type = "button", 
+        size = {40,40},
+        dock = DOCK_LEFT,
+        states = {
+            pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
+            hover   = {color = {100/255,200/255, 255/255}},
+            idle = {color = {53/255, 104/255, 205/255}},
+        }, 
+        state = 'idle',
+        margin = {2,2,2,2},
+    },
+	header_0 = {
+		size = {100,20},
+		dock = DOCK_TOP,
+		textalignment = ALIGN_CENTER, 
+		--textcolor = {2,2,2},
+		gradient = {
+			{0.3,0.6,0.9}, {0.1,0.2,0.4}, -45
+		},
+	},
+	header_1 = {
+		size = {100,16},
+		dock = DOCK_TOP,
+		textalignment = ALIGN_CENTER, 
+		--textcolor = {2,2,2},
+		gradient = {
+			{0.3,0.9,0.7}, {0.1,0.4,0.2}, -45
+		},
+	},
+	back = { 
+		gradient = {
+			{0,0,0}, {0.1,0.1,0.1}, 0
+		},
+	},
+	btitle = { type = "button",
+		dock=DOCK_RIGHT,
+		size = {20,textsize},
+		margin = {1,1,1,1},
+		textcolor = {1,0.3,0.3},
+		ColorAuto = Vector(0,0,0),
+		textalignment = ALIGN_CENTER,
+	},
+	bgroup = { type="group",  
+		dock=DOCK_TOP,
+		_sub_header = {
+			color = {0,0,0},
+			size = {20,textsize},
+			textcolor = {0.3,0.9,0.7}
+		} 
+	},
+	cgroup = { type="group",  
+		dock=DOCK_TOP,
+		_sub_header = {
+			color = {0.2,0.1,0},
+			textcolor = {0.9,0.6,0.3},
+			size = {20,textsize},
+			textalignment = ALIGN_LEFT
+		} 
+	}
 }
+global_editor_style = sty
 
 function PANEL:Init()  
 	
 	gui.FromTable({ 
 		color = {0,0,0},
 		subs = {
+			{ name = "rightpanel", type = 'tabmenu',
+				size = {300,100},
+				dock = DOCK_RIGHT, 
+				tabs = {
+					PROPERTIES = { type = "node_properties",name = "node_props",
+						size = {300,100}, 
+					}, 
+					MATERIALS = { type = "node_materials",name = "node_mats",
+						size = {300,100}, 
+					}, 
+				}, 
+			},
+			{ name = "xpanel", type = 'tabmenu',
+				size = {300,100},
+				dock = DOCK_LEFT,
+				tabs = {
+					NODE = { type = "editor_panel_node",name = "pnode",
+						size = {300,100}, 
+					}, 
+					TERRAIN = { type = "editor_panel_terrain",name = "pterr",
+						size = {300,100}, 
+					},
+					MESH = { type = "editor_panel_edmesh",name = "pmesh",
+						size = {300,100}, 
+					}
+				},
+				OnTabChanged = function(s,id,name)
+					worldeditor:SetMode(name)
+				end
+			},
+			
+			{ type = "panel_assets", class = "back",   
+				color = {0,0,0},
+				size = {200,300},
+				dock = DOCK_BOTTOM, 
+			},
 			{ name = "menus",
 				size = {40,40},
 				color = {0,0,0},
@@ -106,42 +204,6 @@ function PANEL:Init()
 					{class="menu_separator"},
 				}
 			}, 
-			{ name = "rightpanel", type = 'tabmenu',
-				size = {300,100},
-				dock = DOCK_RIGHT, 
-				tabs = {
-					PROPERTIES = { type = "node_properties",name = "node_props",
-						size = {300,100}, 
-					}, 
-					MATERIALS = { type = "node_materials",name = "node_mats",
-						size = {300,100}, 
-					}, 
-				}, 
-			},
-			{ name = "xpanel", type = 'tabmenu',
-				size = {300,100},
-				dock = DOCK_LEFT,
-				tabs = {
-					NODE = { type = "editor_panel_node",name = "pnode",
-						size = {300,100}, 
-					}, 
-					TERRAIN = { type = "editor_panel_terrain",name = "pterr",
-						size = {300,100}, 
-					},
-					MESH = { type = "editor_panel_edmesh",name = "pmesh",
-						size = {300,100}, 
-					}
-				},
-				OnTabChanged = function(s,id,name)
-					worldeditor:SetMode(name)
-				end
-			},
-			
-			{ type = "panel_assets",  
-				color = {0,0,0},
-				size = {200,300},
-				dock = DOCK_BOTTOM, 
-			},
 			{type='viewport',name="vp",dock=DOCK_FILL}
 		} 
     },self,sty,self)
@@ -149,3 +211,16 @@ function PANEL:Init()
     
 	self.vp:InitializeFromTexture(1,"@main_final") 
 end 
+
+
+function ViewportGetMousePos()
+	local top = panel.GetTopElement()
+	if top and top.isviewport then
+		local vsz = top:GetSize()
+		local vmp = top:GetLocalCursorPos()
+		local vsr = (vmp/vsz) 
+		return Vector(vsr.x,vsr.y,0)
+	else
+		return input.getInterfaceMousePos()
+	end
+end

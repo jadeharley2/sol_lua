@@ -94,11 +94,11 @@ function editor:Open()
 		end
 	end
 	
-	self.assets = panel.Create("world_editor")
-	self.assets:Dock(DOCK_LEFT)
-	self.assets:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
-	self.assets:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
-	self.assets:Show()
+	self.gui = panel.Create("world_editor")
+	self.gui:Dock(DOCK_LEFT)
+	self.gui:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
+	self.gui:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
+	self.gui:Show()
 	
 	
 	render.DCISetEnabled(true)
@@ -119,9 +119,9 @@ function editor:Close()
 	
 	self.selected:Clear()
 		
-	if self.assets then 
-		if not isfunction(self.assets) then self.assets:Close() end
-		self.assets = nil 
+	if self.gui then 
+		if not isfunction(self.gui) then self.gui:Close() end
+		self.gui = nil 
 	end
 	if self.selectortemp then 
 		if not isfunction(self.selectortemp) then self.selectortemp:Close() end
@@ -189,7 +189,7 @@ function editor:GetNodeUnderCursor(lp)
 end
 function editor:DoubleClick() 
 	self.mousedowntime = nil
-	if EDITOR_MODE == 'NODE' and not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport then
+	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport) then
 		local LMB = input.leftMouseButton() 
 		local RMB = input.rightMouseButton()
 		local MMB = input.middleMouseButton()
@@ -198,7 +198,7 @@ function editor:DoubleClick()
 			--MsgInfo("CLICL!")
 			if LMB and not RMD and not MMB then 
 				
-				local vp = self.assets.vp
+				local vp = self.gui.vp
 				local vsz = vp:GetSize()
 				local vmp = vp:GetLocalCursorPos()
 				local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
@@ -226,14 +226,15 @@ function editor:KeyDown(k)
 	if k==KEYS_TAB then
 		self.tabtoggle = not (self.tabtoggle or false)
 		if self.tabtoggle then
-			self.assets.vp:Close()
-			self.assets:Show()
+			--self.gui.vp:Close()
+			self.gui:Show()
+			self.gui:UpdateLayout()
 		else
-			self.assets:Close()
-			self.assets.vp:Show()
-			self.assets.vp:SetPos(0,0) 
-			self.assets.vp:SetSize(GetViewportSize())
-			self.assets.vp:Close()
+			self.gui:Close()
+			--self.gui.vp:Show()
+			--self.gui.vp:SetPos(0,0) 
+			--self.gui.vp:SetSize(GetViewportSize())
+			--self.gui.vp:Close()
 		end
 	end 
 	if (input.KeyPressed(KEYS_F)) then  
@@ -306,7 +307,7 @@ function editor:Update()
 		end
 		
 		
-		local vp = self.assets.vp
+		local vp = self.gui.vp
 		local vsz = vp:GetSize()
 		local vmp = vp:GetLocalCursorPos()
 

@@ -1,7 +1,9 @@
 {
 	"name": "ARA",
 	"species" : "anthroid:default",  
-	"health" : 300,  
+	"health" : 300, 
+	"height" : 2.15,
+	"radius" : 0.5, 
 	"parts" : { 
 		//"body" : "body_feline",
 		"torso_top":"bp_torso_top",

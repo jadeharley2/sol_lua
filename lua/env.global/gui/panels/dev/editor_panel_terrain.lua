@@ -1,42 +1,10 @@
-
-local sty = {
-    bmenu = {type = "button", 
-        size = {40,40},
-        dock = DOCK_LEFT,
-        states = {
-            pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
-            hover   = {color = {100/255,200/255, 255/255}},
-            idle = {color = {53/255, 104/255, 205/255}},
-        }, 
-        state = 'idle'
-    },
-    bmenutoggle = {type = "button", 
-        size = {40,40},
-        dock = DOCK_LEFT,
-        states = {
-            pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
-            hover   = {color = {100/255,200/255, 255/255}},
-            idle = {color = {53/255, 104/255, 205/255}},
-        }, 
-        state = 'idle',
-        toggleable = true,
-    },
-    menu_separator = {type = "panel", 
-        size = {2,2},
-        dock = DOCK_LEFT,
-        color = {83/255, 164/255, 255/255}
-    }
-}
+ 
 local layout = {
     color = {0,0,0},
     size = {200,200},
     subs = {
-		{ name = "header",
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Terrain editor",
-			color = {0.3,0.6,0.9}, 
+		{ name = "header",class = "header_0",  
+			text = "Terrain editor", 
 		},
 		{  
 			size = {100,40},
@@ -101,34 +69,25 @@ local layout = {
             Maximum = 100,
             Value = 10
 		},
-		{ 
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Brush color",
-            color = {0.3,0.6,0.9}
+		{ class = "header_0",  
+			text = "Brush color", 
 		},
 		{ type = 'colorpicker', name = "cpick",
 			size = {200,200},
 			dock = DOCK_TOP
 		},
-		{ 
-			size = {100,20},
-			dock = DOCK_TOP,
-			textalignment = ALIGN_CENTER,
-			text = "Surface type",
-			color = {0.3,0.6,0.9}, 
+		{ class = "header_0", 
+            text = "Surface type", 
 		},
-		{ type="list", name = "surfacetypelist",
-			dock = DOCK_FILL, 
-			color = {0.1,0.1,0.1}, 
+		{ type="list", name = "surfacetypelist", class = "back",
+			dock = DOCK_FILL,  
 		},
     }   
 }
 
 function PANEL:Init()  
 
-    gui.FromTable(layout,self,sty,self) 
+    gui.FromTable(layout,self,global_editor_style,self) 
     self:PopulateSurfaceTypeList()
     self:UpdateLayout()
     self.mode = false
