@@ -137,7 +137,7 @@ function PANEL:MouseClick(fid)
 					if input.KeyPressed(KEYS_CONTROLKEY) then count = 1 end
 
 					source:TransferItem(self.storeslot,target,nil,count) 
-					self:GetParent().parenteq:RefreshINV()
+				--	self:GetParent().parenteq:RefreshINV()
 				--	MsgN("sclick!")  
 				--	InvRefreshAll()
 					debug.Delayed(100,function()

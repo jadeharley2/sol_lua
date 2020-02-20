@@ -40,7 +40,7 @@ function ENT:Spawn()
 	self.rcamera = rcamera
 	
 	self:AddNativeEventListener(EVENT_RENDERER_FINISH,"event",function(s,e,c) 
-		MsgN("thumbnail render finished",self.form)
+		--MsgN("thumbnail render finished",self.form)
 		self.busy = false    
 		self.cooldowntime = CurTime() + 0.001
 		local newTexture = self.rt:Copy() 
@@ -107,7 +107,7 @@ function ENT:SetForm(form)
 
 			end
 		else
-			MsgN("spawnform ",form)
+			--MsgN("spawnform ",form)
 			p = forms.Spawn(form,self,{})-- 
 		end
 
@@ -137,6 +137,10 @@ function ENT:SetForm(form)
 				end
 			end 
 			return true
+		else 
+			if self.callback then self.callback(false) end 
+			self:ClearStage()
+			return false
 		end
 	end 
 end
@@ -149,7 +153,7 @@ function ENT:Update()
 			local ln = self.rqu:Pop() 
 			if ln then
 				local form,callback = ln[1],ln[2]
-				MsgN("render start",form)
+				--MsgN("render start",form)
 
 				self.form = form
 				self.callback = callback

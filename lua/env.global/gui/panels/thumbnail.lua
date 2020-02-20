@@ -16,10 +16,14 @@ function PANEL:SetForm(formid,usecontext)
 		if usecontext then  usecontext.contextinfo = {"image",t} end
 	else 
 		RenderThumbnail(formid,function(tex) 
-			self:SetTexture(tex)
-            if usecontext then 	usecontext.contextinfo = {"image",tex} end
+            if tex then
+                self:SetTexture(tex)
+                if usecontext then 	usecontext.contextinfo = {"image",tex} end
 
-			tex:Save('data/textures/thumb/'..formid..'.png')
+                tex:Save('data/textures/thumb/'..formid..'.png')
+            else
+                self:SetTextOnly(true) 
+            end
 		end)
 	end 
 end
@@ -35,8 +39,12 @@ function PANEL:SetPath(path,usecontext)
             if usecontext then usecontext.contextinfo = {"image",tex} end 
         else
             RenderThumbnail(path,function(tex) 
-                self:SetTexture(tex)
-                if usecontext then usecontext.contextinfo = {"image",tex} end 
+                if tex then
+                    self:SetTexture(tex)
+                    if usecontext then usecontext.contextinfo = {"image",tex} end 
+                else
+                    self:SetTextOnly(true) 
+                end
             end) 
         end
     end

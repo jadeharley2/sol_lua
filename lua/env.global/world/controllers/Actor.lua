@@ -1,5 +1,7 @@
 BLOCK_MOUSE = false
 
+global_infobar = global_infobar or panel.Create("infobar") 
+
 local HIDE_CHAR_IN_FIRST_PERSON = function() return settings.GetBool("player.fpmode2",true) end
 
 local MODE_FIRSTPERSON = 1
@@ -41,8 +43,8 @@ function OBJ:Init()
 	healthbar:Show()
 	healthbar:UpdatePos()  
 	healthbar:UpdateHealth(actor:GetParameter(VARTYPE_HEALTH),actor:GetParameter(VARTYPE_MAXHEALTH))
-	
-	infobar = panel.Create("infobar")  
+	 
+	infobar = global_infobar
 	infobar:SetPos(0,-180) --+csize.x +csize.y 
 	infobar:Show()
 	
@@ -496,9 +498,12 @@ function OBJ:HandleThirdPersonMovement(actor)
 	
 	local result = Vector(0,0,0)
 	
-	local W,A,S,D = input.KeyPressed(KEYS_W),input.KeyPressed(KEYS_A),input.KeyPressed(KEYS_S),input.KeyPressed(KEYS_D)
+	local W = input.ActionActive(ACT_MOVE_FORWARD)
+	local A = input.ActionActive(ACT_MOVE_LEFT)
+	local S = input.ActionActive(ACT_MOVE_BACK)
+	local D = input.ActionActive(ACT_MOVE_RIGHT)
 	 
-	local IsRunning =  input.KeyPressed(KEYS_SHIFTKEY)
+	local IsRunning = input.ActionActive(ACT_SPRINT)
 	local asc = actor:GetScale()
 	asc = Vector(asc.z,asc.y,asc.x)
 	 
@@ -507,8 +512,8 @@ function OBJ:HandleThirdPersonMovement(actor)
 	if D then result = result - Vector(1,0,0)*asc end
 	if A then result = result + Vector(1,0,0)*asc end
 	if actor:IsFlying() then 
-		if input.KeyPressed(KEYS_SPACE) then result = result + Vector(0,1,0) actor:Jump() end
-		if input.KeyPressed(KEYS_CONTROLKEY) then result = result - Vector(0,1,0) end
+		if input.ActionActive(ACT_MOVE_UP) then result = result + Vector(0,1,0) actor:Jump() end
+		if input.ActionActive(ACT_MOVE_DOWN) then result = result - Vector(0,1,0) end
 		--if input.KeyPressed(KEYS_ALTKEY) then result = result - Vector(0,1,0) end
 		--actor.viewForward = Forward
 		--actor.viewRight = Right
@@ -552,7 +557,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 		self.wasmoving = false
 	end
 	if not aibusy and not SHOWINV then
-		if input.KeyPressed(KEYS_CONTROLKEY) then
+		if input.ActionActive(ACT_DUCK) then
 			actor:Duck()
 			if not actor:Crouching() then actor:SetCrouching(true) end
 		else 
@@ -735,8 +740,7 @@ function OBJ:HandleThirdPersonMovement(actor)
 			div = 5
 		end
 		
-		local downInLocal = Vector(0,0,1)
-		:TransformN(sp)
+		local downInLocal = Vector(0,0,1):TransformN(sp)
 		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
 		
 		actor:TRotateAroundAxis(sForward , dd_e/div) 

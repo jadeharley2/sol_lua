@@ -28,6 +28,7 @@ Entity = ents.GetById
 
 
 function ENTITY:Delayed(name,delay,action)
+	if not isstring(name) then error("ENT:Delayed(name,delay,action) name is "..type(name).." must be string") end
 	--MsgN("DDDelayed",self,name)
 	local ddtasks = self._ddtasks or {}
 	

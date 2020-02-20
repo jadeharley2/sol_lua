@@ -23,6 +23,7 @@
         "_sub_text" :{
             "textcolor" :[1,1,1]
         },
+        "gradient":[[1,1,1],[4,0,0],0],
         "subs" :[ 
             {
                 "texture" : "textures/gui/icons/ara.png",

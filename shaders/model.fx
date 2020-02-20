@@ -742,6 +742,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 					{
 						dtexIn = (dtexIn-0.5)*detailblendfactor*blendd+1;
 						diffuse = diffuse * dtexIn.rgb;
+						emissive *= dtexIn.rgb; 
 						//alpha = alpha*dtexIn.a;
 					}
 					else if(detailblendmode ==1)
@@ -752,6 +753,10 @@ PS_OUT PS( PS_IN input ) : SV_Target
 					else if(detailblendmode ==2)
 					{
 						diffuse = dtexIn.rgb;//lerp(diffuse, dtexIn.rgb,blend); 
+					}
+					else if(detailblendmode ==3)
+					{
+						emissive *= dtexIn.rgb; 
 					}
 
 					if(furLen>0)
@@ -984,7 +989,7 @@ technique10 shadow
 technique10 shadow_color
 {
 	pass P0
-	{
+	{ 
 		SetGeometryShader( 0 );
 		SetVertexShader( CompileShader( vs_4_0, CI_VSI() ) );
 		SetPixelShader( CompileShader( ps_4_0, SHADOW_PS_COLOR() ) );
@@ -1007,7 +1012,7 @@ technique10 Normal
 		SetGeometryShader(  CompileShader( gs_4_0, GSSceneFUR() )  );
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
-}
+} 
 //technique10 InstancedColor
 //{
 //	pass P0

@@ -543,6 +543,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     //}
 //
 //output = surfcolor*0.1;
+//return float4(surfcolor,1); 
 	return float4(output,1)*mask.x*0.1;
 
 }

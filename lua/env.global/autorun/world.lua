@@ -119,14 +119,16 @@ function world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
 	hook.Call("engine.location.loaded", e, "local")
 end
 
-function world.UnloadWorld()
-	if CLIENT and network.IsConnected() then
+function world.UnloadWorld(nodisconnect)
+	if CLIENT and network.IsConnected() and not nodisconnect then
 		network.Disconnect()
 		SetController()  
 	end
-	local cam = GetCamera()
-	cam:SetParent(LOBBY) 
-	
+	if CLIENT then
+		local cam = GetCamera()
+		cam:SetParent(LOBBY) 
+	end
+
 	if U then
 		if istable(U) then
 			for k,v in pairs(U) do v:Despawn() end
@@ -136,23 +138,26 @@ function world.UnloadWorld()
 		U = nil 
 	end
 	engine.ClearState()
-	if CLIENT and chat then chat:Close() end
+	if CLIENT and chat and not nodisconnect then chat:Close() end
 end 
 
 function world.LoadSave(savedgamestate,onComplete,onFail)
-	if not savedgamestate then hook.Call("menu") return error("save worldstate is empty") end
-	local cam = GetCamera()
-	cam:SetUpdateSpace(true)
-	
+	if not savedgamestate then 
+		if CLIENT then hook.Call("menu")  end
+		return error("save worldstate is empty") 
+	end
+	if CLIENT then
+		local cam = GetCamera()
+		cam:SetUpdateSpace(true)
+	end
+
 	MsgN("[WORLD] load sequence begun")
 
-	hook.Add("engine.location.loaded","spawner",function(origin) 
-		hook.Remove("engine.location.loaded","spawner")
-		if onComplete then onComplete() end
+	hook.AddOneshot("engine.location.loaded","spawner",function(origin)  
+		if onComplete then onComplete(origin) end
 	end)
-	hook.Add("engine.location.loadfailed","spawner",function(origin) 
-		MsgN("[WORLD] load error")
-		hook.Remove("engine.location.loadfailed","spawner")
+	hook.AddOneshot("engine.location.loadfailed","spawner",function(origin) 
+		MsgN("[WORLD] load error") 
 		world.UnloadWorld()
 		if onFail then onFail() end
 	end)
@@ -162,8 +167,9 @@ function world.LoadSave(savedgamestate,onComplete,onFail)
 	else
 		
 	end
-	cam:SetGlobalName("player_cam")
-
+	if CLIENT then
+		cam:SetGlobalName("player_cam")
+	end
 end
 
 function world.LoadLocation(target,onComplete,onFail)
@@ -185,3 +191,47 @@ function world.LoadLocation(target,onComplete,onFail)
 		engine.SendToAnchor(origin_loader,target,onComplete,onFail)
 	end
 end
+
+function world.GetList(filter)
+	local files = file.GetFiles("lua/env.global/world/entities",".lua")
+	local result = {}
+	for k,v in pairs(files) do
+		if string.match(v,'entities/world.*') then
+			if not filter or string.match(v,filter) then
+				result[#result+1]= string.sub(v,37,-5) 
+			end
+		end
+	end 
+	return result
+end
+function world.GetModes(world)
+	local meta = ents.GetType("world_"..world)
+	if meta then
+		if meta.GetOptions then
+			local opts = meta.GetOptions({})
+			if opts then 
+				local rez = {}
+				for k,v in pairs(opts) do
+					rez[#rez+1] = k
+				end
+				return rez
+			end
+		else
+			local opts = meta.options
+			if opts then 
+				local rez = {}
+				for k,v in pairs(opts) do
+					rez[#rez+1] = k
+				end
+				return rez
+			end
+		end
+	end 
+end 
+
+console.AddCmd("maps",function(filter)
+	PrintTable( world.GetList(filter))
+end)
+console.AddCmd("modes",function(w)
+	PrintTable( world.GetModes(w))
+end)

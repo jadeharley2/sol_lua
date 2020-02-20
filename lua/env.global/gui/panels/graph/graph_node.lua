@@ -3,6 +3,7 @@
 local t_mpanel = LoadTexture("gui/nodes/cnode.png")  
 function PANEL:Init() 
 	--self.base.Init(self)
+	self.xvalues = {}
 	self.isnode = true
 	
 	self:SetSize(256,128)
@@ -34,14 +35,14 @@ function PANEL:Init()
 	--self.ebtn = ebtn
 	--self:Add(ebtn)
 end
-function PANEL:AddAnchor(id,name,type)
+function PANEL:AddAnchor(id,name,valtype)
 	local a = panel.Create("graph_anchor")
-	a:Attach(self,id,name,type)
+	a:Attach(self,id,name,valtype)
 	self.anchors[id] = a
 	 
 	
-	local atext = panel.Create()
-	atext:SetSize(50,10)
+	local atext = panel.Create("button")
+	atext:SetSize(100,10)
 	atext:SetParent(self)
 	if id<0 then
 		atext:AlignTo(a,ALIGN_LEFT,ALIGN_RIGHT) 
@@ -54,7 +55,60 @@ function PANEL:AddAnchor(id,name,type)
 	atext:SetText(name)
 	atext:SetTextColor(Vector(0.5,0.8,1)*2)
 	atext:SetTextOnly(true)
-	atext:SetAnchors(ALIGN_TOPLEFT)
+	atext:SetAnchors(ALIGN_TOPLEFT) 
+	atext:SetAutoSize(true,false)
+	if id<0 then --is input
+		if valtype=="int32" or valtype=="float" or valtype=="double" or valtype=="int64" then
+			local xvalue = 0 
+			atext:SetCanRaiseMouseEvents(true)
+			atext.OnClick = function()
+				MsgBox({
+					name = "valinput",
+					type = "input_text",
+					restnumbers = true,
+					text = tostring(xvalue),
+					size = {20,20},
+					dock = DOCK_TOP 
+				},"Set value: "..valtype,{"set","cancel","clear"},function(val,s)
+					if val == "set" then
+						xvalue = tonumber(s.valinput:GetText()) 
+						a:SetInnerValue(xvalue)
+						self.xvalues[id] = {"VALUE",valtype,xvalue}
+						atext:SetText(name..': '..xvalue)
+					elseif val == 'clear' then
+						xvalue = ""
+						a:SetInnerValue(nil)
+						self.xvalues[id] = nil
+						atext:SetText(name) 
+					end
+				end)	
+			end
+		elseif valtype=="string" then 
+			local xvalue = ""
+			atext:SetCanRaiseMouseEvents(true)
+			atext.OnClick = function()
+				MsgBox({
+					name = "valinput",
+					type = "input_text",
+					text = xvalue,
+					size = {20,20},
+					dock = DOCK_TOP 
+				},"Set value: "..valtype,{"set","cancel","clear"},function(val,s)
+					if val == "set" then
+						xvalue = s.valinput:GetText()
+						a:SetInnerValue(xvalue)
+						self.xvalues[id] = {"VALUE",valtype,xvalue}
+						atext:SetText(name..': '..xvalue)
+					elseif val == 'clear' then
+						xvalue = ""
+						a:SetInnerValue(nil)
+						self.xvalues[id] = nil
+						atext:SetText(name) 
+					end
+				end)	
+			end
+		end
+	end
 	
 	a:SetAnchors(ALIGN_TOPLEFT) 
 	a.atext = atext
@@ -143,6 +197,12 @@ end
 
 function PANEL:GetInputData(id)
 	local a = self.inputs[id]
+	if self.xvalues then  
+		local xvalue = self.xvalues[-id] 
+		if xvalue then 
+			return xvalue
+		end
+	end
 	if a and a.node then
 		return {a.node.id,a.id,a.name}
 	end

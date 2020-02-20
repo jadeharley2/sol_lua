@@ -1,0 +1,55 @@
+{
+	"name":"Screen",
+	"group" : "active",
+	"tags" : ["wired"],
+	"model" : "gmod/models/cheeze/wires/mini_chip.mdl",//"active/button.stmd",
+	"scale" : 6,
+    "rotation" : [0,0,0],
+    
+	"screen" : {
+        "size":[256,256],
+        "modmaterial":{
+            "g_MeshTexture":"textures/debug/black.png",
+            
+            "g_DetailTexture" : "textures/detail/led.png", 
+            "g_DetailTexture_n" : "", 
+            "detailscale" : [5,5],  
+            "detailblendmode" : 3,   
+            "detailblendfactor" : 1,  
+	
+        },
+        "root":{
+            "size":[256,256],
+            "gradient":[[1,0,0],[0,0,1],45],
+            "subs":[
+                {
+                    "size":[30,100],
+                    "dock":"top",
+                    "text":"рыр",
+                    "textonly":true,
+                },
+                {
+                    "size":[30,100],
+                    "dock":"top",
+                    "text":"фырка",
+                    "textonly":true,
+                },
+                {
+                    "size":[30,30],
+                    "dock":"left",
+                    "gradient":[[1,0.4,0],[0,1,0.4],-90],
+                },
+                {
+                    "size":[30,30],
+                    "dock":"left",
+                    "gradient":[[0,1,0.4],[0,0.4,1],-90],
+                },
+                {
+                    "size":[30,30],
+                    "dock":"left",
+                    "gradient":[[0,0.4,1],[1,0,0.8],-90],
+                }
+            ]
+        }, 
+    }
+}

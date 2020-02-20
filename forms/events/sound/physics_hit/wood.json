@@ -1,0 +1,26 @@
+{ 
+    "name" : "step.wood",
+    "sounds" : [
+        "step/wood-01.ogg",
+        "step/wood-02.ogg",
+        "step/wood-03.ogg",
+        "step/wood-04.ogg",
+        "step/wood-05.ogg",
+        "step/wood-06.ogg",
+        "step/wood-07.ogg",
+        "step/wood-08.ogg",
+        "step/wood-09.ogg",
+        "step/wood-10.ogg",
+        "step/wood-11.ogg",
+        "step/wood-12.ogg",
+        "step/wood-13.ogg",
+        "step/wood-14.ogg",
+        "step/wood-15.ogg",
+        "step/wood-16.ogg",
+        "step/wood-17.ogg",
+        "step/wood-18.ogg",
+       // "step/wood-19.ogg"
+    ],
+    "channel" : "physics",
+    "volume" : 1
+}

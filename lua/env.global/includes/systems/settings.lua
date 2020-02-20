@@ -146,6 +146,19 @@ function settings.SetString(name,value)
 	name = string.Replace(name,'%.','/')
 	profile.SetString(name,value)
 end
+function settings.GetData(name,default)
+	name = string.Replace(name,'%.','/')
+	local p = SETTINGS_VALUES.Index[name]
+	if p then
+		return profile.GetValue(name,p.default)
+	else 
+		return profile.GetValue(name,default)
+	end
+end
+function settings.SetData(name,value) 
+	name = string.Replace(name,'%.','/')
+	profile.SetValue(name,value)
+end
 function settings.Save() 
 	profile.Save()
 end

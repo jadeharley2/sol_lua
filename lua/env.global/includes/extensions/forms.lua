@@ -30,13 +30,36 @@ function forms.LoadForm(form)
 end
 
 function forms.Spawn(form,parent,arguments) 
+	if(form==nil) then
+		error("no form specified!")
+	end
 	arguments = arguments or {} 
 	local aparts = string.split(form,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 
+	if(loctype==nil) then
+		error("no formid specified!")
+	end
 --	MsgN(aparts[1],loctype)
 	local r = hook.Call("formspawn."..aparts[1],form,parent,arguments) 
 	if not r then
 		MsgN("unable to spawn ", form,"formspawn."..aparts[1])
+	end
+	return r
+end
+function forms.Create(form,parent,arguments) 
+	if(form==nil) then
+		error("no form specified!")
+	end
+	arguments = arguments or {} 
+	local aparts = string.split(form,'.')
+	local loctype = string.join('.',table.Skip(aparts,1)) 
+	if(loctype==nil) then
+		error("no formid specified!")
+	end
+--	MsgN(aparts[1],loctype)
+	local r = hook.Call("formcreate."..aparts[1],form,parent,arguments) 
+	if not r then
+		MsgN("unable to create ", form,"formcreate."..aparts[1])
 	end
 	return r
 end

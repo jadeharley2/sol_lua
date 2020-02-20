@@ -8,6 +8,10 @@ editor.action_deselect = function(node) worldeditor.selected:Remove(node) worlde
 editor.action_move = function(from,to) node:SetPos(to) end 
 editor.action_moveundo = function(from,to) node:SetPos(from) end 
 
+editor.ent_worldeditor = editor.ent_worldeditor or ents.Create()
+editor.ent_worldeditor:SetSeed(55667722)
+editor.ent_worldeditor._events = editor.ent_worldeditor._events or {}
+ent_worldeditor = editor.ent_worldeditor
 
 DeclareEnumValue("event","EDITOR_MOVE",				224980)
 DeclareEnumValue("event","EDITOR_ROTATE",			224981)
@@ -16,6 +20,29 @@ DeclareEnumValue("event","EDITOR_SCALE",			224982)
 DeclareEnumValue("event","EDITOR_COPY",				224983)
 DeclareEnumValue("event","EDITOR_REMOVE",			224984)
 
+DeclareEnumValue("event","EDITOR_SPAWN_FORM",		224985)
+
+DeclareEnumValue("event","EDITOR_WIRE",				225991)
+DeclareEnumValue("event","EDITOR_UNWIRE",			225992)
+
+local geventlist = editor.ent_worldeditor._events
+geventlist[EVENT_EDITOR_SPAWN_FORM] = {networked = true, f = function(_,form,node,pos,seed)  
+	MsgN("FORM CREATE "..form)
+	 
+--	--[[
+	local e = forms.Create(form,node,{pos = pos, seed = seed})
+	if e then 
+		e:AddTag(TAG_EDITORNODE)
+		
+		local edt = e.editor
+		if edt and edt.onSpawn then
+			edt.onSpawn(e)
+		end
+	end
+	return e
+--	]]
+end}
+ 
 local _metaevents = debug.getregistry().Entity._metaevents 
 
 _metaevents[EVENT_EDITOR_MOVE]   = {networked = true, f = function(self,pos)  self:SetPos(pos) end}
@@ -54,6 +81,7 @@ end}
 _metaevents[EVENT_EDITOR_REMOVE]  = {networked = true, f = function(self)  
 	self:Despawn() 
 end}
+
 
 
 
@@ -555,14 +583,17 @@ function WireEditorUpdate()
 		local vsize = GetViewportSize()  
 	 
 		for k,v in pairs(pnls) do
-			local wpos = cparent:GetLocalCoordinates( v.node)-cpos
-			local spos = camera:Project(wpos)*Vector(vsize.x,vsize.y,1)
-			if spos.z>1 then
-				v:SetPos(Point(-10000,0))
-			else
-				v:SetPos(spos)
+			if IsValidEnt(v.node) then
+				local wpos = cparent:GetLocalCoordinates( v.node)-cpos
+				local spos = camera:Project(wpos)*Vector(vsize.x,vsize.y,1)
+				if spos.z>1 then
+					v:SetPos(Point(-10000,0))
+				else
+					v:SetPos(spos)
+				end
+				v:UpdateValues()
+				--MsgN(v.node," : ",wpos," => ",spos)
 			end
-			--MsgN(v.node," : ",wpos," => ",spos)
 		end
 	end
 	
@@ -607,7 +638,8 @@ function WireEditorSetOutput(outnode,outkey)
 	local inkey = W.wireeditor.output
 	if outnode and outkey and innode and inkey then
 		MsgN(outnode,":",outkey," => ",innode,":",inkey)
-		WireLink(outnode,outkey,innode,inkey) 
+		--WireLink(outnode,outkey,innode,inkey) 
+		ent_worldeditor:SendEvent(EVENT_EDITOR_WIRE,outnode,outkey,innode,inkey)
 	end
 	
 	pnls = W.wireeditor.panels
@@ -630,4 +662,18 @@ function WireEditorSetInput(innode,inkey)
 end
 hook.Add("ed_wire_setout","ed",WireEditorSetOutput)
 hook.Add("ed_wire_setin","ed",WireEditorSetInput)
+hook.Add("ed_wire_unlink","ed",function (n,k) 
+	ent_worldeditor:SendEvent(EVENT_EDITOR_UNWIRE,n,k)
+end)
 console.AddCmd("ed_wire",WireEditorToggle)
+
+
+
+geventlist[EVENT_EDITOR_UNWIRE] = {networked = true, f = function(_,n,k) 
+	MsgN("dad",n,k) 
+	WireUnLink(n,k)
+end}
+geventlist[EVENT_EDITOR_WIRE] = {networked = true, f = function(_,outnode,outkey,innode,inkey)  
+	MsgN("asd",outnode,":",outkey," => ",innode,":",inkey)
+	WireLink(outnode,outkey,innode,inkey) 
+end}

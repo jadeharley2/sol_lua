@@ -40,19 +40,20 @@ if CLIENT then
 		return v
 	end
 
-
-	local TACTOR = false
-	local lastPlayerUid = 0
+	player._TACTOR = player._TACTOR or false
+	player._lastPlayerUid = player._lastPlayerUid or 0
+	--local TACTOR = player._TACTOR 
+	--local lastPlayerUid = player._lastPlayerUid 
 	function LocalPlayer(returncheck)
-		if TACTOR and IsValidEnt(TACTOR) then
-			lastPlayerUid = TACTOR:GetSeed()
-			return TACTOR
+		if  player._TACTOR and IsValidEnt( player._TACTOR) then
+			player._lastPlayerUid =  player._TACTOR:GetSeed()
+			return player._TACTOR
 		else
-			if returncheck and lastPlayerUid~=0 then
-				local ply = Entity(lastPlayerUid)
+			if returncheck and player._lastPlayerUid~=0 then
+				local ply = Entity( player._lastPlayerUid)
 				if ply and IsValidEnt(ply) then
-					TACTOR = ply
-					return TACTOR
+					player._TACTOR = ply
+					return player._TACTOR
 				end
 			end
 			return nil
@@ -60,8 +61,8 @@ if CLIENT then
 	end
 	function SetLocalPlayer(actor)
 		if actor and IsValidEnt(actor) then
-			TACTOR = actor 
-			lastPlayerUid = TACTOR:GetSeed()
+			player._TACTOR = actor 
+			player._lastPlayerUid =  player._TACTOR:GetSeed()
 			if not network.IsConnected() then
 				player_list[1] = actor
 			end
@@ -130,8 +131,10 @@ if SERVER then
 	local onClientFinishedLoad = function(client, id) 
 		client:SendLua("console.Call('lua_reloadents')") 
 		client:SendStartupNodes()
+		local model = client:GetModel()
 		local actor = ents.Create("base_actor")
-
+		MsgN("MODEL",model)
+		actor[VARTYPE_CHARACTER] = model
 		actor:AddTag(TAG_PLAYER)
 		actor:SetSizepower(1000)
 		actor:SetParent(GLOBAL_SPAWN_node)
@@ -176,4 +179,62 @@ if SERVER then
 	hook.Add("server.client.loadfinish", "playerspawn",onClientFinishedLoad)
 	hook.Add("server.client.disconnected", "playerspawn",onClientDisconnected)
 
+	function player.ReloadAll()
+		for k,cli in pairs(player.GetAllClients()) do 
+			cli:SendLua('world.UnloadWorld(true)')
+			onClientFinishedLoad(cli,cli:Id())
+		end 
+	end
+	console.AddCmd("reload_clients",function ()
+		player.ReloadAll()
+	end)
+ 
+ 
 end
+
+function player.Count()
+	local c = 0
+	for k,v in pairs(player.GetAll()) do
+		if IsValidEnt(v) then
+			c = c + 1
+		end
+	end
+	return c
+end
+function player.GetByName(name) 
+	for k,v in pairs(player.GetAll()) do
+		if IsValidEnt(v) and string.match(v:GetName(),name) then
+			return v
+		end
+	end
+end
+console.AddCmd("respawn_all",function ()
+	for k,ply in pairs(player.GetAll()) do 
+		if IsValidEnt(ply) then
+			network.BroadcastCall("player.onspawn",ply)
+			hook.Call("player.onspawn",ply)
+		end
+	end 
+end)
+if CLIENT then
+	hook.Add("umsg.player.onspawn","-",function (ply)
+		MsgN("AX",ply)
+		hook.Call("player.onspawn",ply)
+	end)
+end
+console.AddCmd("players",function ()
+	for k,ply in pairs(player.GetAll()) do
+		if IsValidEnt(ply) then
+			MsgN(k,ply) 
+		end 
+	end 
+end)
+console.AddCmd("bring",function (who, to) 
+	local a = player.GetByName(who)
+	local b = player.GetByName(to)
+	MsgN("bring",a,"to",b)
+	if a and b then
+		a:SetParent(b:GetParent())
+		a:SetPos(b:GetPos())	
+	end
+end)

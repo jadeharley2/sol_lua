@@ -7,7 +7,7 @@ local sty = {
         states = {
             pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
             hover   = {color = {100/255,200/255, 255/255}},
-            idle = {color = {53/255, 104/255, 205/255}},
+            idle = {color = {53/255, 204/255, 205/255}},
         }, 
         state = 'idle'
     },
@@ -17,7 +17,7 @@ local sty = {
         states = {
             pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
             hover   = {color = {100/255,200/255, 255/255}},
-            idle = {color = {53/255, 104/255, 205/255}},
+            idle = {color = {53/255, 204/255, 205/255}},
         }, 
         state = 'idle',
         toggleable = true,

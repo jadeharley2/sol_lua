@@ -61,14 +61,14 @@ function TOOL:PGPick(ent)
 		self.mlight:TurnOn() 
 		self.flight:TurnOn()
 		if not self.snd then
-			self.snd = self:EmitSoundLoop("energy/loop_01_mono.ogg",1,0.5)
+			--self.snd = self:EmitSoundLoop("energy/loop_01_mono.ogg",1,0.5)
 		end
 		
 		hook.Add(EVENT_GLOBAL_PREDRAW, "physgun.dropcheck", function() 
 			
 			local ent = self.targetEntity
 			if ent then
-				local p1 = self.model:GetAttachmentPos("muzzle")
+				local p1 = Vector(0,0,0)-- self.model:GetAttachmentPos("muzzle")
 				local forw = Vector(0,-1,0)
 				local p2 = self:ToLocal(ent,Vector(0,0,0))
 				self:CreateLaser(p1,p1+forw*2,p2+(p1-p2)*0.5,p2,20,0.1)
@@ -155,9 +155,13 @@ function TOOL:Fire(dir)
 			local tr = self:Trace(lwp,dir)
 			if tr and tr.Hit then 
 				MsgN("hit: ",tr.Position,tr.Entity)
-				local p1 = self.model:GetAttachmentPos("muzzle")
+				local p1 = Vector(0,0,0)-- self.model:GetAttachmentPos("muzzle")
 				local p2 = self:ToLocal(parentphysnode,tr.Position)
 				--self:CreateLaser(p1,p2,10,0.1)
+
+				local forw = Vector(0,-1,0)
+				self:CreateLaser(p1,p1+forw*2,p2+(p1-p2)*0.5,p2,20,0.1)
+
 				if tr.Entity and tr.Entity:HasTag(TAG_PHYSSIMULATED) then
 					self:PGPick(tr.Entity)
 				end

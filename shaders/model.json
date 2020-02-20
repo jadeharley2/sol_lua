@@ -16,20 +16,26 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []   
 		},
+		//{
+		//	"type" : "DX11.vertexShader", 
+		//	"profile" : "vs_5_0",
+		//	"entryPoint" : "VSI",
+		//	"shaderFlags" : [ "Debug" ],
+		//	"effectFlags" : [] 
+		//}, 
+		//{
+		//	"type" : "DX11.pixelShader",
+		//	"profile" : "ps_5_0",
+		//	"entryPoint" : "PS",
+		//	"shaderFlags" : [ "Debug" ],
+		//	"effectFlags" : []
+		//},
 		{
-			"type" : "DX11.vertexShader", 
-			"profile" : "vs_5_0",
-			"entryPoint" : "VSI",
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : [] 
-		}, 
-		{
-			"type" : "DX11.pixelShader",
-			"profile" : "ps_5_0",
-			"entryPoint" : "PS",
-			"shaderFlags" : [ "Debug" ],
-			"effectFlags" : []
-		}     
+		}  
 	],
 	"definition":{
 		"stage":"backward",
@@ -63,6 +69,7 @@
 		],
 	},
 	"parameters":{ 
+		"time"			: { "type" : "float", "global": "time"},
 	},
 	"onload" : { },
 	"onframe" : { },

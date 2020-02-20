@@ -505,6 +505,8 @@ function ENT:Spawn()
 	
 	self.lift = SpawnLift(space,325402,pn)--'forms/levels/train/carriage.dnmd')
  
+	CreateSpawnpoint(space,Vector(0,0.0013627,0) )
+
 end 
 function ENT:CTO(user,ss)
 	user:SetParent(ss)

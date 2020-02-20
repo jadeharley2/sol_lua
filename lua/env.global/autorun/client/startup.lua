@@ -89,6 +89,14 @@ function ConnectTo(ip)
 	return network.Connect(ip)
 end
 
+console.AddCmd("connect",function(ip)
+	ConnectTo(ip)
+end)
+console.AddCmd("disconnect",function(ip)
+	network.Disconnect()
+end)
+
+
 function CreateTestShadowMapRenderer(ent, pos)
 	local e = ents.Create("test_shadowmap")  
 	--e.target = ent.rt1

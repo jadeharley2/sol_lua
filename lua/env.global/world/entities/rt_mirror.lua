@@ -19,9 +19,6 @@ function ENT:Init()
 end
 
 function ENT:Spawn()  
-	local cc = ents.CreateCamera()
-	cc:SetParent(self) 
-	cc:Spawn()
 	local world = matrix.Scaling(Vector(-1,1,1)) * matrix.Scaling(0.75*0.001) * matrix.Rotation(-90,0,0)
 	
 	local model = self:AddComponent(CTYPE_MODEL)  
@@ -36,24 +33,28 @@ function ENT:Spawn()
 	model:SetFadeBounds(0,0.1,0)  
 	model:SetMatrix(world)
 	
-	
-	local rparam = render.RenderParameters()
-	rparam:SetCullMode(CULLMODE_FRONT)
-	rparam:SetDrawSurfaces(false)
-	--rparam:SetDrawSprites(false)
-	
-	local rcamera = self:AddComponent(CTYPE_CAMERA) 
-	rcamera:SetCamera(cc) 
-	rcamera:SetParameters(rparam)
-	rcamera:AddForceDisabled(model)
-	
-
-	self.rparam = rparam 
-	self.rcamera = rcamera 
-	self.cc = cc 
 	self:SetScale(Vector(-1,1,1))
-	
 	if CLIENT then
+	
+		local cc = ents.CreateCamera()
+		cc:SetParent(self) 
+		cc:Spawn()
+
+		local rparam = render.RenderParameters()
+		rparam:SetCullMode(CULLMODE_FRONT)
+		rparam:SetDrawSurfaces(false)
+		--rparam:SetDrawSprites(false)
+		
+		local rcamera = self:AddComponent(CTYPE_CAMERA) 
+		rcamera:SetCamera(cc) 
+		rcamera:SetParameters(rparam)
+		rcamera:AddForceDisabled(model)
+
+		self.rparam = rparam 
+		self.rcamera = rcamera 
+
+		self.cc = cc 
+		
 		local vsize = GetViewportSize()  
 		local rt = CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt")
 		self.rt = rt

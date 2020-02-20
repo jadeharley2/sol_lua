@@ -1079,7 +1079,7 @@ function ENT:Move(dir,run,updatespeed)
 		local lworld = self:GetWorld():Inversed()
 		veldir = veldir:TransformN(lworld)/(self.scale or 1)
 		model:SetPoseParameter("move_x",veldir.z*100)
-		model:SetPoseParameter("move_y",veldir.x*100) 
+		model:SetPoseParameter("move_y",veldir.x*100)  
 	else 
 		self:Stop()
 	end
@@ -1499,7 +1499,7 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		
 		local mountpoint = veh.mountpoints[mountpointid]
 		if not mountpoint then return false end
-		if mountpoint.ent then return false end
+		if IsValidEnt(mountpoint.ent) then MsgN("OCCUPIED",mountpoint.ent) return false end
 		
 		
 		local phys = self.phys
@@ -2183,6 +2183,20 @@ hook.Add('formspawn.character','spawn',function(form,parent,arguments)
 	actorD:SetSeed(arguments.seed or 0)
 	actorD:SetCharacter(loctype)
 	actorD:Spawn()
+	actorD:SetPos(arguments.pos or Vector(0,0,0)) 
+	return actorD
+end)
+hook.Add('formcreate.character','spawn',function(form,parent,arguments) 
+	local aparts = string.split(form,'.')
+	local loctype = string.join('.',table.Skip(aparts,1)) 
+
+	local actorD = ents.Create("base_actor")
+	actorD:SetSizepower(1000)
+	actorD:SetParent(parent)
+	actorD:AddTag(TAG_EDITORNODE)
+	actorD:SetSeed(arguments.seed or 0)
+	actorD:SetCharacter(loctype)
+	actorD:Create()
 	actorD:SetPos(arguments.pos or Vector(0,0,0)) 
 	return actorD
 end)

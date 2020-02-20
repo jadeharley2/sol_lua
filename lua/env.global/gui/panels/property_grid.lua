@@ -28,7 +28,7 @@ function PANEL:SetObject(obj,info)
                         end
                     elseif proptype == 'table' then
                         if #value ==3 then 
-                            proptype = 'vector'
+                            proptype = 'array'
                         else 
                             proptype = 'array'
                         end
@@ -148,50 +148,98 @@ function PANEL:SetObject(obj,info)
                     end
                     pva:Add(inpx) 
                 elseif proptype == "array" then  
-                        local changed = function (s)
-                            local newv = tonumber(s:GetText())
-                            obj[k][s.index] = newv
-                            self:OnUpdate(k,obj[k]) 
-                        end
-                        local fieldnum = #value
-                        gui.FromTable({
-                            size = {20,textsize*fieldnum},
-                            text = "",
-                            subs = {
-                                { name = "fields",
-                                    textonly = true,
-                                    size = {220,220},
-                                    dock = DOCK_RIGHT,
-                                },
-                                {
-                                    textonly = true,
-                                    size = {20,textsize},
-                                    dock = DOCK_TOP,
-                                    text = k..":",
-                                    textaligment = ALIGN_LEFT
-                                }
-                            }
-                        },pva,{},pva)
-                        inpx = panel.Create("input_text")  
-                        local fieldray = {}
-                        for k=1,fieldnum do
-                            local field = gui.FromTable({ type = 'input_text',
-                                size = {20,textsize-2},
+                    local changed = function (s)
+                        local newv = tonumber(s:GetText())
+                        obj[k][s.index] = newv
+                        self:OnUpdate(k,obj[k]) 
+                    end
+                    local fieldnum = #value
+                    gui.FromTable({
+                        size = {20,textsize*fieldnum},
+                        text = "",
+                        subs = {
+                            { name = "fields",
+                                textonly = true,
+                                size = {220,220},
+                                dock = DOCK_RIGHT,
+                            },
+                            {
+                                textonly = true,
+                                size = {20,textsize},
                                 dock = DOCK_TOP,
-                                margin = {2,2,2,2},
-                                index = k,
-                                OnTextChanged = changed
-                            })
-                            fieldray[k] = field
-                            pva.fields:Add(field)
-                        end 
-                        
-                        self.valtable[k] = function(v) 
-                            for kk,vv in pairs(v) do
-                                fieldray[kk] = tostring(vv)
-                            end  
-                        end
-                        pva:Add(inpx)
+                                text = k..":",
+                                textaligment = ALIGN_LEFT
+                            }
+                        }
+                    },pva,{},pva)
+                    inpx = panel.Create("input_text")  
+                    local fieldray = {}
+                    for k=1,fieldnum do
+                        local field = gui.FromTable({ type = 'input_text',
+                            size = {20,textsize-2},
+                            dock = DOCK_TOP,
+                            margin = {2,2,2,2},
+                            index = k,
+                            OnTextChanged = changed
+                        })
+                        fieldray[k] = field
+                        pva.fields:Add(field)
+                    end 
+                    
+                    self.valtable[k] = function(v) 
+                        for kk,vv in pairs(v) do
+                            fieldray[kk]:SetText(tostring(vv))
+                        end  
+                    end
+                    pva:Add(inpx)
+                elseif proptype == "table" then  
+                    local changed = function (s)
+                        local newv = tonumber(s:GetText())
+                        obj[k][s.index] = newv
+                        self:OnUpdate(k,obj[k]) 
+                    end
+                    local height = 0 
+                    local fieldray = {}
+                    for k,v in pairs(value) do
+                        local field = gui.FromTable({ type = 'input_text',
+                            size = {20,textsize-2},
+                            dock = DOCK_TOP,
+                            margin = {2,2,2,2},
+                            index = k,
+                            OnTextChanged = changed
+                        })
+                        fieldray[k] = field
+                        height= height + textsize
+                    end 
+
+                    gui.FromTable({
+                        size = {20,height},
+                        text = "",
+                        subs = {
+                            { name = "fields",
+                                textonly = true,
+                                size = {220,220},
+                                dock = DOCK_RIGHT,
+                            },
+                            {
+                                textonly = true,
+                                size = {20,textsize},
+                                dock = DOCK_TOP,
+                                text = k..":",
+                                textaligment = ALIGN_LEFT
+                            }
+                        }
+                    },pva,{},pva)  
+                    for k,v in pairs(fieldray) do 
+                        pva.fields:Add(v)
+                    end
+                    
+                    self.valtable[k] = function(v) 
+                        for kk,vv in pairs(v) do
+                            fieldray[kk]:SetText(tostring(vv))
+                        end  
+                    end
+                    pva:Add(inpx)
                 end
 
                 if inp then

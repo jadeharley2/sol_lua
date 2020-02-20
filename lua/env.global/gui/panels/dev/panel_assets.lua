@@ -1,25 +1,25 @@
 
 local assettypes = {
-	prop = {directory = "forms/props/", recursive=true, spawn = function(type,node,fulltype) 
-		--local j = json.Read(fulltype)--"forms/props/"..type..".json")
-		if not worldeditor then return nil end
-		local wtr = worldeditor.wtrace
-
-		local pos = Vector(0,0,0)
-		if not wtr or not wtr.Hit then --return nil
-		else pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) end
-
-		local fpath = "prop."..type-- forms.GetForm("prop",type)
-		if fpath then
-		 	MsgN("spawnprop:",fpath)
-			local p = SpawnPV(fpath,node,pos,nil,GetFreeUID())--,j.scale,false,false)
-			if p then
-				p:AddTag(TAG_EDITORNODE) 
-			end
-			return p
-		end 
-		return nil
-	end}, 
+	--prop = {directory = "forms/props/", recursive=true, spawn = function(type,node,fulltype) 
+	--	--local j = json.Read(fulltype)--"forms/props/"..type..".json")
+	--	if not worldeditor then return nil end
+	--	local wtr = worldeditor.wtrace
+--
+	--	local pos = Vector(0,0,0)
+	--	if not wtr or not wtr.Hit then --return nil
+	--	else pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) end
+--
+	--	local fpath = "prop."..type-- forms.GetForm("prop",type)
+	--	if fpath then
+	--	 	MsgN("spawnprop:",fpath)
+	--		local p = SpawnPV(fpath,node,pos,nil,GetFreeUID())--,j.scale,false,false)
+	--		if p then
+	--			p:AddTag(TAG_EDITORNODE) 
+	--		end
+	--		return p
+	--	end 
+	--	return nil
+	--end}, 
 	particle = {directory = "particles/",spawn = function(type,node,fulltype) 
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
@@ -35,36 +35,36 @@ local assettypes = {
 	end},
 	font = {directory = "fonts/"},
 	
-	species = {directory = "forms/species/"},
-	character = {directory = "forms/characters/", spawn = function(type,node)  
-	
-		if not worldeditor then return nil end
-		local wtr = worldeditor.wtrace
-		if not wtr or not wtr.Hit then return nil end
-		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
-		  
-		
-		local actorD = ents.Create("base_actor")
-		actorD:SetSizepower(1000)
-		actorD:SetParent(node)
-		actorD:AddTag(TAG_EDITORNODE)
-		actorD:SetSeed(GetFreeUID())
-		actorD:SetCharacter(type)
-		actorD:Spawn() 
-		actorD:SetPos(pos)
-		return actorD 
-	end},
-	apparel = {directory = "forms/apparel/", spawn = function(type,node)
-		if not worldeditor then return nil end
-		local wtr = worldeditor.wtrace
-		if not wtr or not wtr.Hit then return nil end
-		local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
-
-		local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
-		ap:AddTag(TAG_EDITORNODE)
-		ap:SetPos(pos+Vector(0,1/node:GetSizepower(),0))
-		return ap
-	end},
+	--species = {directory = "forms/species/"},
+	--character = {directory = "forms/characters/", spawn = function(type,node)  
+	--
+	--	if not worldeditor then return nil end
+	--	local wtr = worldeditor.wtrace
+	--	if not wtr or not wtr.Hit then return nil end
+	--	local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+	--	  
+	--	
+	--	local actorD = ents.Create("base_actor")
+	--	actorD:SetSizepower(1000)
+	--	actorD:SetParent(node)
+	--	actorD:AddTag(TAG_EDITORNODE)
+	--	actorD:SetSeed(GetFreeUID())
+	--	actorD:SetCharacter(type)
+	--	actorD:Spawn() 
+	--	actorD:SetPos(pos)
+	--	return actorD 
+	--end},
+	--apparel = {directory = "forms/apparel/", spawn = function(type,node)
+	--	if not worldeditor then return nil end
+	--	local wtr = worldeditor.wtrace
+	--	if not wtr or not wtr.Hit then return nil end
+	--	local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+--
+	--	local ap = SpawnIA(type,node,Vector(0,0,0),GetFreeUID())
+	--	ap:AddTag(TAG_EDITORNODE)
+	--	ap:SetPos(pos+Vector(0,1/node:GetSizepower(),0))
+	--	return ap
+	--end},
 	surfacemod = {directory = "forms/surfacemods/", spawn = function(type,node)
 		if not worldeditor then return nil end
 		local wtr = worldeditor.wtrace
@@ -171,12 +171,14 @@ local on_dt_display = function(files,item,data,isdir)
 		end
 	end
 end 
+local whitelisted_ext = Set('.dds','.png','.smd','.stmd','.dnmd','.mdl','.jpg','.tga')
 local on_dt_display2 = function(files,item,data,isdir) 
 	if data then 
 		if isdir then
 			item:SetSize(20,20)
 		else 
-			if data:ends('.vvd') or data:ends('.vtx') or data:ends('.phy') or data:ends('.smd') then
+			local ext = file.GetExtension(data) 
+			if not whitelisted_ext:Contains(ext) then
 				return false
 			else
 				item:SetSize(32,32)  
@@ -215,16 +217,11 @@ local on_dt_click = function(b,cdtype)
 		local wtr = worldeditor.wtrace
 		if wtr and wtr.Hit then 
 			local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
+			local uid = GetFreeUID()
 	
-			MsgN("form spawn",type)
-			local e = forms.Spawn(type,node,{pos = pos})
-			if e then 
-				e:AddTag(TAG_EDITORNODE)
-				
-				local edt = e.editor
-				if edt and edt.onSpawn then
-					edt.onSpawn(e)
-				end
+			--MsgN("form spawn",type)
+			local e = ent_worldeditor:SendEvent(EVENT_EDITOR_SPAWN_FORM,type,node, pos, uid)
+			if e then
 				worldeditor:Select(e)
 			end
 		end

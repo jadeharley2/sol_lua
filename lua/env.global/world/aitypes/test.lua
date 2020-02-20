@@ -701,6 +701,7 @@ if CLIENT then
 	end
 
 	console.AddCmd("csay",function(text,speed,power)
+		MsgN("say",text)
 		facial.say(LocalPlayer(),text,tonumber(speed or '1'),tonumber(power or '1'))
 	end)
 	console.AddCmd("cmood",function(mood,power)

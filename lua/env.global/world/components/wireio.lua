@@ -7,8 +7,11 @@ component._typeevents = {
 	[EVENT_WIRE_SIGNAL]={networked=true,f = function(self,from,key,value)
 		local node = self:GetNode()
 		inp = self.inputs[key]
-		if inp and inp.f then
-			inp.f(node,from,key,value)
+		if inp then
+			inp.v = value
+			if inp.f then 
+				inp.f(node,from,key,value)
+			end
 		end   
 	end}, 
 } 
@@ -79,6 +82,10 @@ function WireLink(from,fname,to,tname)
 			end
 			out.targets[to:GetSeed()] = {to,tname}
 			ins.target = out
+
+			if out.v then 
+				to:SendEvent(EVENT_WIRE_SIGNAL,nil,tname,out.v)
+			end
 			--MsgN("wirelink! ",from,fname,to,".",tname)
 			--PrintTable(tw)
 			--MsgN("---")

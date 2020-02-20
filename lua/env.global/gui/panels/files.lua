@@ -116,12 +116,19 @@ function PANEL:SetFormFS(formtype)
 end
 local selectpath = function(s)
 	--MsgN(s.dpath)
+	s.dmenu.filepath = s.dpath
 	s.dmenu:OpenPath(s.dpath)
 end
 local selectfile = function(s) 
 	--MsgN(s.dpath)
+	s.dmenu.filepath = s.dpath
 	s.dmenu:OnItemClick(s.dpath)
 end
+local selectfile2 = function(s) 
+	--MsgN(s.dpath)
+	s.dmenu.filepath = s.dpath
+	s.dmenu:OnItemDoubleClick(s.dpath)
+end 
 local getfolder = function(pth)
 	local pts = string.split(pth,"/") 
 	return string.join("/",table.Take(pts,math.max(0,#pts-1))) 
@@ -144,6 +151,8 @@ function PANEL:OpenPath(pth)
 	--self.path.text = fpth
 	local items = self.items.floater
 	items:Clear() 
+	self.items:SetColor(Vector(0,0,0)) 
+	self.items:SetColor2(Vector(0.5,0.5,0.5))    
 	--items:Add(gui.FromTable({class="btn",text = ".." ,size = {20,16},dock = DOCK_TOP, 
 	--TextColorAuto = Vector(0.1,0.7,1),
 	--ColorAuto = Vector(0.2,0.2,0.2),
@@ -169,14 +178,16 @@ function PANEL:OpenPath(pth)
 		if r~=false then items:Add(item) end
 	end
 	local filter = self.filter
-	for k,v in SortedPairs(ufls) do 
+	for k,v in SortedPairs(ufls) do  
 		local sb = getfilename(k) 
 		if not filter or sb:match(filter) then 
 			local item = gui.FromTable({class="btn",text = sb,size = {20,16},dock = DOCK_TOP, 
 			TextColorAuto = Vector(1,1,1),
 			ColorAuto = Vector(0.2,0.2,0.2),
 			margin = {1,1,1,1},
-			dpath = k, dmenu = self,OnClick = selectfile },nil,itemstyle)
+			group = "x",
+			toggleable = true,
+			dpath = k, dmenu = self,OnClick = selectfile, OnDoubleClick = selectfile2 },nil,itemstyle)
 			local r = self:OnDisplay(item,k,false)
 			if r~=false then items:Add(item) end
 		end 
@@ -190,31 +201,61 @@ end
 function PANEL:OnItemClick(s) 
 
 end
+function PANEL:OnItemDoubleClick(s) 
+
+end
 
 function PANEL:OnDisplay(item,data,isdirectory) 
 end
 
  
-function OpenFileDialog(cpath,filter,callback)
+function OpenFileDialog(cpath,filter,callback,title)
+	FileDialog(cpath,filter,callback,title or "Open file", "Open")
+end
+function SaveFileDialog(cpath,filter,callback,title)
+	FileDialog(cpath,filter,function (path)
+		if file.Exists(path) then 
+			MsgBox("Override existing file?","Override",{"yes","no"},function(r)  
+				if r=='yes' then
+					callback(path) 
+				end
+			end) 
+		else
+			callback(path) 
+		end
+	end, title or "Save file", "Save")
+end
+function FileDialog(cpath,filter,callback,title, buttontext)
 	if abstract_filepanel then
 		abstract_filepanel:Close() 
 		abstract_filepanel = nil
 	end
-	local pp = {}
-	local p = gui.FromTable({
+	local pp = {curdir = cpath or ""}
+	local p = gui.FromTable({ 
+		type = "window",
+		Title = title or "Open file",
 		size = {500,500},
-		subs = {
+		contents = {
 			{
 				size = {20,20},
 				dock = DOCK_BOTTOM,
 				color = {0,0,0},
 				subs = {
 					{ type = 'button', name = 'bclose',
-						text = 'cancel',
+						text = 'Cancel',
 						size = {200,200},
 						dock = DOCK_RIGHT
 					}, 
-				}
+					{ type = 'button', name = 'bopen',
+						text = buttontext or 'Select',
+						size = {200,200},
+						dock = DOCK_LEFT
+					}, 
+				}  
+			},
+			{ type = "input_text", name = "filename",
+				size = {20,20},
+				dock = DOCK_BOTTOM
 			},
 			{ type = 'files', name = 'files',
 				dock = DOCK_FILL,
@@ -227,8 +268,32 @@ function OpenFileDialog(cpath,filter,callback)
 		p:Close()
 		abstract_filepanel = nil
 	end
+	pp.bopen.OnClick = function()
+		local filepath = pp.curdir
+		if filepath~='' then 
+			filepath = filepath..'/'..pp.filename:GetText()
+		else
+			filepath = filepath..pp.filename:GetText()
+		end   
+		p:Close() 
+		abstract_filepanel = nil
+	    if callback then callback(filepath) end   
+	end 
+	pp.filename.OnKeyDown = function(n,key)
+		if key == KEYS_ENTER then
+			pp.bopen.OnClick()
+		end
+	end
 	pp.files.OnItemClick = function(s,item)
-		p:Close()
+		local fn = file.GetFileName(item)
+		pp.filename:SetText(fn)
+		pp.curdir = file.GetDirectory(item)
+		--p:Close()
+		--abstract_filepanel = nil
+	    --if callback then callback(item) end
+	end
+	pp.files.OnItemDoubleClick = function(s,item)
+		p:Close() 
 		abstract_filepanel = nil
 	    if callback then callback(item) end
 	end
@@ -236,4 +301,11 @@ function OpenFileDialog(cpath,filter,callback)
 	p:Show()
 	pp.files.items:Scroll(-9999999)
 
-end
+end 
+
+--test dialog
+console.AddCmd("test_openfile",function (a, b) 
+	FileDialog(a or "", b,function(path)
+		MsgInfo(path)
+	end) 
+end)  

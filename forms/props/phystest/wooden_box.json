@@ -1,0 +1,12 @@
+{
+	"group" : "debug",
+	"tags" : [],
+	"model" : "primitives/box.stmd",
+	"material":"textures/tile/wall/wood_01.json",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 10, 
+	"physmaterial" : "wood"
+	
+}

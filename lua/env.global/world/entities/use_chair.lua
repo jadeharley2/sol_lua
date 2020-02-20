@@ -94,7 +94,7 @@ function ENT:HandleDriving(actor)
 end 
 function ENT:GetFreeMountpoint() 
 	for k,v in pairs(self.mountpoints) do
-		if v.ent == nil then
+		if not IsValidEnt(v.ent) then
 			return k
 		end
 	end
@@ -108,7 +108,7 @@ ENT._typeevents = {
 			user:SendEvent(EVENT_SET_VEHICLE,self,mp)
 		else
 			local oump = self.mountpoints[1]
-			if oump then 
+			if IsValidEnt(oump) then 
 				if oump.ent:HasTag(TAG_USEABLE) then
 					oump.ent:SendEvent(EVENT_USE,user)
 				end

@@ -36,6 +36,7 @@ function PANEL:Load(funcname,enableSignal)
 			toggle_signal:SetPos(-ssz.x+10,-ssz.y+10)   
 			toggle_signal:SetTexture(t_xtoggle) 
 			toggle_signal:SetColorAuto(self:GetColor())
+			toggle_signal.contextinfo = "Toggle signal mode"
 			local s = self 
 			function toggle_signal:OnClick() s:ToggleSignal() end
 			self:Add(toggle_signal)
@@ -83,6 +84,10 @@ end
 function PANEL:ToData() 
 	local args = {}
 	local signaled = self.signaled
+	for k,v in pairs(self.xvalues) do
+		local a = self.anchors[k]
+		args[a.name] = self:GetInputData(-k)
+	end
 	for k,v in pairs(self.inputs) do
 		if not signaled or k~=1 then
 			local a = self.anchors[-k]
@@ -121,10 +126,18 @@ function PANEL:FromData(data,mapping,posoffset)
 	if data.args then
 		for k,v in pairs(data.args) do
 			local e = self.editor.editor 
-			local f = e.named[mapping(v[1])].anchors[v[2]] 
-			local t = namedAnchors[k]
-			if f and t then
-				f:CreateLink(f,t)
+			if( v[1]=='VALUE')then
+				local xval = v[3]
+				local an = namedAnchors[k] 
+				self.xvalues[an.id] =v
+				an:SetInnerValue(xval)
+				an.atext:SetText(an.name..':'..tostring(xval))
+			else
+				local f = e.named[mapping(v[1])].anchors[v[2]] 
+				local t = namedAnchors[k]
+				if f and t then
+					f:CreateLink(f,t)
+				end
 			end
 		end
 	end

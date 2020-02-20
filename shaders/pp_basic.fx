@@ -358,6 +358,7 @@ float4 PS( PS_IN input ) : SV_Target
 	float pDepth = tDepthView.Sample(sView, input.tcrd);
 	float4 pMask = tMaskView.Sample(sView, input.tcrd);
 	 
+	//return pMask;
 	// return isfinite(pDiffuse);
 	//return float4(pDiffuse.rgb*(1-pMask.x),1);
 	

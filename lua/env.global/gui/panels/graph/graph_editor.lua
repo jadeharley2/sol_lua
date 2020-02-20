@@ -23,7 +23,77 @@ end
 
 hook.Add(EVENT_GLOBAL_PREDRAW, "gui.curve.update", GUI_CURVE_UPDATE)
 
-
+local layout = { 
+	
+	color = {0,0,0},
+	subs = {
+		{
+			name = "curfile",
+			gradient = {{0,0,0},{0.5,0.5,0.7},90},
+			textcolor = {100,1,1},
+			size = {30,30},
+			text = "///////////////////",
+			dock = DOCK_TOP
+		},
+		{ --rightpanel
+			size = {300,300},
+			dock = DOCK_RIGHT,
+			subs = {
+				{ 
+					size = {40,40},
+					dock = DOCK_TOP,
+					color = {0,0,0},
+					subs = { 
+						{ class = "bmenu", name = "bnew", texture = "textures/gui/panel_icons/new.png", 
+							contextinfo='Clear nodes'
+						},
+						{ class = "bmenu",  name = "bsave", texture = "textures/gui/panel_icons/save.png",  
+							contextinfo = 'Save'
+						},
+						{ class = "bmenu", name = "bsaveas", texture = "textures/gui/panel_icons/save.png",  
+							contextinfo = 'Save as'
+						}, 
+						{ class = "bmenu",  name = "bload", texture = "textures/gui/panel_icons/load.png",   
+							contextinfo = 'Load'
+						}, 
+						{ class = "bmenu",  name = "bcompile", texture = "textures/gui/panel_icons/craft.png",   
+							contextinfo = 'Compile'
+						}, 
+					}
+				},
+				{ 
+					type = "tree", 
+					name = "trpanel",
+					size = {300,300},
+					dock = DOCK_FILL 
+				}
+			}
+		},
+		{
+			name = "floater",
+			size = {300,300},
+			dock = DOCK_FILL,
+			color = {0,0,0},
+			clip = true,
+			subs = {
+				{
+					type = "graph_grid",
+					name = "nodelayer",
+					size ={20000,20000},
+					TextureScale = (Point(1,1)*(20000/256)),
+					subs = {
+						{
+							name = "curvelayer",
+							textonly = true, 
+							dock = DOCK_FILL,
+							mouseenabled = false
+						}
+					}
+				}
+			}
+		}
+	}
+}
 function PANEL:Init()  
 	if CURRENT_DEBUG_FLOW then
 		CURRENT_DEBUG_FLOW:Dispose()
@@ -36,106 +106,75 @@ function PANEL:Init()
 	self:SetSize(vsize.x,vsize.y)
 	self:SetPos(0,-10)
 	
-	local floater = panel.Create()
-	floater:SetSize(vsize.x - 300,vsize.y)
-	floater:Dock(DOCK_LEFT)
-	floater:SetColor(Vector(0,0,0))
-	floater:SetClipEnabled(true)
-	self:Add(floater)
-	
-	local nodelayer = panel.Create("graph_grid")
-	nodelayer.editor = self
-	nodelayer:SetSize(20000,20000)
-	nodelayer:SetTextureScale(Point(1,1)*(20000/256))
-	floater:Add(nodelayer)
-	
-	self.nodelayer = nodelayer
-	
-	
-	
-	local curvelayer = panel.Create()
-	nodelayer:Add(curvelayer)
-	nodelayer.curvelayer = curvelayer
+	gui.FromTable(layout,self,global_editor_style,self)
+
+	--local floater = panel.Create()
+	--floater:SetSize(vsize.x - 300,vsize.y)
+	--floater:Dock(DOCK_LEFT)
+	--floater:SetColor(Vector(0,0,0))
+	--floater:SetClipEnabled(true)
+	--self:Add(floater)
+	--
+	--local nodelayer = panel.Create("graph_grid")
+	--nodelayer.editor = self
+	--nodelayer:SetSize(20000,20000)
+	--nodelayer:SetTextureScale(Point(1,1)*(20000/256))
+	--floater:Add(nodelayer)
+	--
+	--self.nodelayer = nodelayer
+	--
+	--
+	--
+	--local curvelayer = panel.Create()
+	--nodelayer:Add(curvelayer)
+	--nodelayer.curvelayer = curvelayer
+	--self.nodelayer  = nodelayer
+
+	self.nodelayer.curvelayer = self.curvelayer
+	self.nodelayer.editor = self
 	
 	local ED = self 
 	
-	function self:GetFreeId()
-		local notfree = {}
-		for k,v in pairs(self.nodelayer:GetChildren()) do
-			if v.id then
-				notfree[v.id] = true  
-				if v.nodegroup then
-					for kk,vv in pairs(v:GetChildren()) do 
-						if vv.id then
-							notfree[vv.id] = true  
-						end
-					end
-				end
-			end
-		end 
-		local id = 1
-		while notfree[id] do 
-			id = id + 1
+	  
+	self.bnew.OnClick = function(s) 
+		self:ClearNodes()
+	end
+	 
+	local lastpath = "forms/flow"
+	local curfilepath = false
+	self.bload.OnClick = function(s)  
+		OpenFileDialog(lastpath,".json",function(path)
+			lastpath = file.GetDirectory(path)
+			self:Open(path)
+			curfilepath= path
+			self.curfile:SetText(path)
+		end) 
+	end
+	 
+	self.bsave.OnClick = function(s)  
+		if curfilepath then
+			json.Write(curfilepath,self:ToData())
+			MsgInfo("Saved! "..curfilepath)
+		else
+			self.bsaveas.OnClick()
 		end
-		 
-		return id
 	end
-	
-	function self:AddNode(n,idoverride) 
-		n.editor = nodelayer 
-		local ml = nodelayer:GetScaleMul()
-		n:SetPos(-nodelayer:GetPos()/ml)
-		nodelayer:Add(n)
-		
-		local id = self:GetFreeId() 
-		n.id = id
-		self.named[n.id] = n
-		MsgN("CreateNode",n.id)
-	end 
-	 
-	local edpanel = panel.Create("list")
-	edpanel:SetSize(300,vsize.y/4)
-	edpanel:Dock(DOCK_TOP)
-	self:Add(edpanel) 
-	 
-	local edNew = panel.Create("button") 
-	edNew:SetSize(50,50)
-	edNew:SetText("New")
-	function edNew:OnClick() 
-		ED:Clear()
-	end
-	
-	
-	local edOpen = panel.Create("button") 
-	edOpen:SetSize(50,50)
-	edOpen:SetText("Open")
-	function edOpen:OnClick()  
-		ED:Open("output/aaaaout.json")
-	end
-	
-	local edSave = panel.Create("button") 
-	edSave:SetSize(50,50)
-	edSave:SetText("Save")
-	function edSave:OnClick() 
-		json.Write("output/aaaaout.json",ED:ToData())
+	  
+	self.bsaveas.OnClick = function(s)  
+		SaveFileDialog(lastpath,".json",function(path)
+			json.Write(path,self:ToData())
+			MsgInfo("Saved! "..path)
+			curfilepath = path
+			self.curfile:SetText(path)
+		end)
 	end
 	 
-	local edSaveAs = panel.Create("button") 
-	edSaveAs:SetSize(50,50)
-	edSaveAs:SetText("SaveAs")
-	function edSaveAs:OnClick() 
-		json.Write("output/aaaaout.json",ED:ToData())
-	end
-	
-	local edCompile = panel.Create("button") 
-	edCompile:SetSize(50,50)
-	edCompile:SetText("Compile")
-	function edCompile:OnClick() 
+	self.bcompile.OnClick = function(s)  
 		if CURRENT_DEBUG_FLOW then
 			CURRENT_DEBUG_FLOW:Dispose()
 			CURRENT_DEBUG_FLOW = false
 		end
-		local j = json.ToJson(ED:ToData())
+		local j = json.ToJson(self:ToData())
 		local result, error = flowbase.CompileJson(j) 
 		if result then
 			MsgN("Compilation successful")
@@ -148,22 +187,10 @@ function PANEL:Init()
 			MsgInfo("Compilation failed")
 		end
 	end
-	
-	edpanel.lines = {edNew,edOpen,edSave,edSaveAs,edCompile}
-	  
-	for	k,v in pairs(edpanel.lines) do
-		v:SetSize(280,25)
-	end
-	edpanel:Refresh() 
-	
+	 
 	
 	 
-	local trpanel = panel.Create("tree")
-	trpanel:SetSize(300,vsize.y*(3.0/4))
-	trpanel:Dock(DOCK_TOP)
-	self:Add(trpanel)
-	
-	
+	local trpanel = self.trpanel  
 	local functlist = {}
 	local comlist = {}
 	
@@ -313,8 +340,7 @@ function PANEL:Init()
 			
 			end
 		end
-	end
-	self.trpanel= trpanel
+	end 
 	
 	
 	
@@ -368,9 +394,45 @@ function PANEL:Init()
 	
 	
 	self:UpdateLayout()
+
+	trpanel:ScrollToTop()
 	
 end
-function PANEL:Clear(node)
+function PANEL:GetFreeId()
+	local notfree = {}
+	for k,v in pairs(self.nodelayer:GetChildren()) do
+		if v.id then
+			notfree[v.id] = true  
+			if v.nodegroup then
+				for kk,vv in pairs(v:GetChildren()) do 
+					if vv.id then
+						notfree[vv.id] = true  
+					end
+				end
+			end
+		end
+	end 
+	local id = 1
+	while notfree[id] do 
+		id = id + 1
+	end
+	 
+	return id
+end
+
+function PANEL:AddNode(n,idoverride) 
+	local nodelayer = self.nodelayer 
+	n.editor = nodelayer
+	local ml = nodelayer:GetScaleMul()
+	n:SetPos(-nodelayer:GetPos()/ml)
+	nodelayer:Add(n)
+	
+	local id = self:GetFreeId() 
+	n.id = id
+	self.named[n.id] = n
+	MsgN("CreateNode",n.id)
+end 
+function PANEL:ClearNodes(node)
 	node = node or self.nodelayer
 	for k,v in pairs(node:GetChildren()) do
 		if v and v.ToData then
@@ -382,7 +444,7 @@ function PANEL:Clear(node)
 	end
 end
 function PANEL:Open(filename) 
-	self:Clear()
+	self:ClearNodes()
 	self:FromData(json.Read(filename))
 end
 

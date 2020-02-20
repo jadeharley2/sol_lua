@@ -36,6 +36,30 @@ local layout = {
 		},
 		{ class = "header_0", 
 			dock = DOCK_TOP, 
+			text = "Post process operations",
+            subs = {
+                {type="button", name = "bpopadd",
+                    texture = "textures/gui/panel_icons/new.png",
+                    contextinfo = "Add modifier",
+                    size = {20,20},
+                    dock = DOCK_RIGHT,
+                    ColorAuto =Vector(0,0.5,0)
+                } ,
+                {type="button", name = "bpoprefresh",
+                    texture = "textures/gui/panel_icons/refresh.png",
+                    contextinfo = "Refresh",
+                    size = {20,20},
+                    dock = DOCK_RIGHT,
+                    ColorAuto =Vector(0,0.5,0)
+                }
+            }
+        },
+        { type="list", name = "postlist", class = "back",
+            dock = DOCK_TOP, 
+			size = {100,200}
+		},
+		{ class = "header_0", 
+			dock = DOCK_TOP, 
 			text = "Operation parameters", 
         },
         {
@@ -113,8 +137,13 @@ function PANEL:Init()
     
     self.params.OnUpdate = function () 
         local c = static.curedit.model
-        c:Cancel()
-        c:Operate(static.coptype,json.ToJson(static.curop))
+        if static.cur_pop then 
+            c:SetPostOperation(static.cur_pid, static.cur_poptype , json.ToJson( static.cur_pop ))
+            c:BuildModel()
+        elseif static.curop then
+            c:Cancel()
+            c:Operate(static.coptype,json.ToJson(static.curop))
+        end
     end
 
     self.bfrotcl.OnClick = function(s)
@@ -147,6 +176,13 @@ function PANEL:Init()
         c:Redo()  
     end
 
+    self.bpopadd.OnClick = function (s)
+        self:AddPostOp()
+    end
+    self.bpoprefresh.OnClick = function(s)
+        self:RefreshPostOps()
+    end
+
     self:PopulateOperations()
     self:RefreshLayers()
 end  
@@ -161,8 +197,11 @@ function PANEL:AddLayer()
             x:SetName(table.Random({"a","b","c","d","e","f","g","x","y","z","t"}))
             --worldeditor.Select(x)
         end
+    else
+        local x = SpawnPE(p,Vector(0,0,0)) 
+        x:SetName(table.Random({"a","b","c","d","e","f","g","x","y","z","t"}))
     end
-end
+end 
 function PANEL:RefreshLayers()
     local c = GetCamera()
     local p = c:GetParent()
@@ -172,7 +211,7 @@ function PANEL:RefreshLayers()
         if v:GetClass()=='prop_editable' then
             l:AddItem(gui.FromTable({
                 type="button",
-                size = {20,20},
+                size = {32,32},
                 text = v:GetName(),
                 dock = DOCK_TOP,
                 ent = v,
@@ -183,14 +222,41 @@ function PANEL:RefreshLayers()
                 end,
                 subs = {
                     {type="button",
-                        text = "X",
+                        texture = "textures/gui/panel_icons/delete.png",
                         contextinfo = "Delete layer",
-                        size = {20,20},
+                        size = {32,32},
                         dock = DOCK_RIGHT,
                         ColorAuto =Vector(1,0,0),
                         OnClick = function (s)
                             s:GetParent().ent:Despawn()
                             self:RefreshLayers()
+                        end
+                    },
+                    {type="button",
+                        texture = "textures/gui/panel_icons/save.png",
+                        contextinfo = "Save layer",
+                        size = {32,32},
+                        dock = DOCK_RIGHT,
+                        ColorAuto =Vector(0,1,1),
+                        OnClick = function (s)
+                            local e = s:GetParent().ent
+                            SaveFileDialog("models/dynmesh", ".json",function(path) 
+                                e.model:Save(path)
+                                MsgInfo("Saved!")
+                            end) 
+                        end
+                    }, 
+                    {type="button",
+                        texture = "textures/gui/panel_icons/load.png",
+                        contextinfo = "Load layer",
+                        size = {32,32},
+                        dock = DOCK_RIGHT,
+                        ColorAuto =Vector(0,1,1),
+                        OnClick = function (s) 
+                            local e = s:GetParent().ent
+                            OpenFileDialog("models/dynmesh", ".json",function(path)  
+                                e:SetModelPath(path)
+                            end) 
                         end
                     }
                 }
@@ -199,6 +265,7 @@ function PANEL:RefreshLayers()
     end
 end
 function PANEL:SetMode(mode)
+    static.cur_pop = false
     static.enabledposupdate = false
     static.mode = mode
     local opt = static.optypes[mode]
@@ -215,6 +282,124 @@ function PANEL:SetMode(mode)
         end
     end
 end
+function PANEL:AddPostOp()
+    local c = static.curedit.model
+    if c and static.mode then
+        local pop = { }
+        local opt = static.optypes[static.mode]
+        if opt then 
+            for k,v in pairs(opt.params) do
+                if(v.default~=nil) then
+                    pop[k] = v.default
+                end
+            end
+            c:SetPostOperation((self.maxpostid or 0) + 1,static.mode,json.ToJson(pop))
+            self:RefreshPostOps()
+            c:BuildModel()
+        end
+    end
+end
+function PANEL:SwapPostOps(id1,id2)
+    local c = static.curedit.model
+    if c then
+        local data1 = c:GetPostOperation(id1)
+        local data2 = c:GetPostOperation(id2) 
+        if data1 and data2 then
+            local t1 = data1:Read('type')
+            local t2 = data2:Read('type')
+            if t1 and t2 then
+                c:SetPostOperation(id1,t2,data2)
+                c:SetPostOperation(id2,t1,data1)
+                c:BuildModel()
+            end
+        end
+    end
+end
+function PANEL:RefreshPostOps()
+    local c = static.curedit.model
+    local ops = self.postlist
+    ops:ClearItems() 
+    local maxid = 0
+    for k,ID in pairs(c:GetPostOpIndices()) do 
+        maxid = math.max(ID,maxid)
+
+        local data = json.FromJson(c:GetPostOperation(ID))
+
+        local optype = data.type or "unknown"
+
+        ops:AddItem(gui.FromTable({
+            type="button",
+            size = {32,32},
+            text = tostring(ID).." op ",
+            dock = DOCK_TOP,
+            index = ID,
+            group = "f",
+            toggleable = true,
+            OnClick = function (s)
+                --self:SelectMesh(s.ent)
+                static.cur_pid = s.index
+                static.cur_pop = data
+                static.cur_poptype = optype
+                self.params:SetObject(static.cur_pop)
+            end,
+            subs = {
+                {type="button",
+                    texture = "textures/gui/panel_icons/delete.png",
+                    contextinfo = "Delete op",
+                    size = {32,32},
+                    dock = DOCK_RIGHT,
+                    ColorAuto =Vector(1,0,0),
+                    OnClick = function (s)
+                        c:RemovePostOperation(s:GetParent().index)
+                        c:BuildModel()
+                        self:RefreshPostOps()
+                    end
+                },
+                {
+                    textonly = true,
+                    size = {16,32},
+                    dock = DOCK_RIGHT,
+                    subs = { 
+                        {type="button",
+                            texture = "textures/gui/panel_icons/play.png",
+                            rotation = 90,
+                            contextinfo = "Raise",
+                            size = {16,16},
+                            dock = DOCK_TOP,
+                            ColorAuto =Vector(0,0,1),
+                            OnClick = function (s) 
+                                local cid = s:GetParent():GetParent().index
+                                self:SwapPostOps(cid,cid-1)
+                                self:RefreshPostOps()
+                            end
+                        },
+                        {type="button",
+                            texture = "textures/gui/panel_icons/play.png",
+                            rotation = -90,
+                            contextinfo = "Lower",
+                            size = {16,16},
+                            dock = DOCK_FILL,
+                            ColorAuto =Vector(0,0,1),
+                            OnClick = function (s) 
+                                local cid = s:GetParent():GetParent().index
+                                self:SwapPostOps(cid,cid+1)
+                                self:RefreshPostOps()
+                            end
+                        },
+                    }
+                }, 
+                { 
+                    size = {40,40},
+                    dock = DOCK_RIGHT,
+                    texture = static.optypes[optype].icon,
+                    contextinfo = optype,
+                }
+            }
+        }))
+    end 
+    self.maxpostid = maxid
+end
+
 function PANEL:AppendRow(parent)
     local row = gui.FromTable({ 
         size = {40,40},
@@ -265,6 +450,7 @@ function PANEL:PopulateOperations()
 end
 function PANEL:SelectMesh(ent)
 	static.curedit = ent
+    self:RefreshPostOps()
 end
 function PANEL:InitOp(mode) 
     local opt = static.optypes[mode]
@@ -307,22 +493,24 @@ end
      
 function PANEL:Apply()
 
-    local c = static.curedit.model
-    
-    c:Apply()
+    if static.coptype then
+        local c = static.curedit.model
+        
+        c:Apply()
 
-    -- save parameters
-    for k,v in pairs(static.curop) do
-        --MsgN("set def",k,v)
-        local vartab = static.curopt.params[k]
-        if vartab then vartab.default = v end
+        -- save parameters
+        for k,v in pairs(static.curop) do
+            --MsgN("set def",k,v)
+            local vartab = static.curopt.params[k]
+            if vartab then vartab.default = v end
+        end
+        static.optypes[static.coptype] = static.curopt
+        --PrintTable( static.curopt,3)
+
+
+        static.coptype = nil 
+        static.curop = {}
     end
-    static.optypes[static.coptype] = static.curopt
-    --PrintTable( static.curopt,3)
-
-
-    static.coptype = nil 
-    static.curop = {}
 end
 
 hook.Add("input.mousedown","testaselect",function() 

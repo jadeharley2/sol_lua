@@ -17,10 +17,12 @@ end
 function PANEL:ToData()  
 	local j = PANEL.base.ToData(self)
 	j.type = "for" 
-	local count = self.inputs[2]
-	if count and count.node then
-		j.count = (count.node.id or "")
-	end
+	j.count = self:GetInputData(2)
+	MsgN("Inputx2",j.count)
+	--local count = self.inputs[2]
+	--if count and count.node then
+	--	j.count = (count.node.id or "")
+	--end
 	
 	j['do'] = self:GetOutputData(1) 
 	j.next = self:GetOutputData(2) 

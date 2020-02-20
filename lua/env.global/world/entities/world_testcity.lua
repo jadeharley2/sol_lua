@@ -107,6 +107,7 @@ function ENT:Spawn()
 		self.shadow = eshadow
 	end
 	--SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
+	CreateSpawnpoint(space,Vector(0,0.01,0) )
 end
 
 function ENT:GetSpawn() 

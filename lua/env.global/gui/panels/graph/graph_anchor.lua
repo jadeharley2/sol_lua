@@ -44,6 +44,7 @@ function PANEL:Attach(node,id,name,type)
 	self.id = id
 	self.name = name
 	self.type = type
+	self.contextinfo = type
 	
 	self.bcolor = self:GetTypeColor(type)
 	
@@ -198,6 +199,12 @@ function PANEL:CreateLink(a,b)
 	
 	from:SetTexture(t_banchor)
 	to:SetTexture(t_banchor)
+end
+function PANEL:SetInnerValue(val)
+	self.xvalue = val
+	if val~=nil then
+		self:SetTexture(t_canchor)
+	end
 end
 function PANEL:RemoveLink(a,b)
 

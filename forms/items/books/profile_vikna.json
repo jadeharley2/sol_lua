@@ -21,6 +21,7 @@
         "_sub_text" :{
             "textcolor" :[1,1,1]
         },
+        "gradient":[[1,1,1],[0,0,4],0],
         "subs" :[ 
             {
                 "texture" : "textures/gui/icons/vikna.png",

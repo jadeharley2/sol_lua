@@ -1,0 +1,17 @@
+{
+	"name":"Powered button",
+	"group" : "active",
+	"tags" : ["futur"],
+	"model" : "active/wire/switch.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"button" : {
+		"value":1,
+		"animated":{
+			"on":["SetAnimation","on"],
+			"off":["SetAnimation","off"]
+		}
+	}, 
+	
+	
+}

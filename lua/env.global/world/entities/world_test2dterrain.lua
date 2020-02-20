@@ -38,14 +38,23 @@ function ENT:LoadWorld(name)
 	local data = json.Read('chunkdata/'..name..'/info.json')
 	if(not data) then return end
 
+	if IsValidEnt(self.skybox) then
+		self.skybox:Despawn()
+		self.skybox = nil
+	end  
 	if data.sky and data.sky.texture then
-		if self.skybox  then
-			self.skybox:Despawn()
-		end 
 		self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/daysky.dds")
 		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
 	end
 	self.grid:SetWorldName(name)
+	if CLIENT then 
+		self:Delayed("cubemapdraw",1000,function()
+			if IsValidEnt(self) then
+				self.cubemap:RequestDraw()
+			end
+			
+		end)
+	end
 
 end
 function ENT:Spawn()
@@ -102,6 +111,7 @@ function ENT:Spawn()
 
 		
 	end 
+	CreateSpawnpoint(space,Vector(0,0.0013627,0) )
 end
 
 function ENT:GetSpawn() 
@@ -122,6 +132,12 @@ console.AddCmd("changedim",function(dim)
 			--	top.grid:GetHeight()
 			--end)
 		end
+	end
+end)
+console.AddCmd("listdim",function ()
+	local dims = file.GetDirectories("chunkdata")
+	for k,v in pairs(dims) do
+		MsgN(k, string.sub(v,11))
 	end
 end)
 

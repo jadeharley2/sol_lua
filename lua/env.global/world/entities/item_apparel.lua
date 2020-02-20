@@ -190,6 +190,12 @@ hook.Add('formspawn.apparel','spawn',function(form,parent,arguments) -- thumbnai
 		arguments.ang or Vector(0,0,0),
 		arguments.seed or 0)
 end)
+hook.Add('formcreate.apparel','spawn',function(form,parent,arguments) -- thumbnail use
+	return CreatePV(form,parent,
+		arguments.pos or Vector(0,0,0),
+		arguments.ang or Vector(0,0,0),
+		arguments.seed or 0)
+end)
 hook.Add('newitem.apparel',"new",function(formid,seed)
 	return ItemIA(formid,seed)
 end)

@@ -84,7 +84,7 @@ local layout = {
 		{name = "editor"        ,type="menu_editors",      class = "submenu"},
 	}
 }
-	
+	 
 function PANEL:Init()   
 	
 	local nt = {}
@@ -169,3 +169,11 @@ function PANEL:SetWorldLoaded(b)
 		self.nodes.bexit:SetVisible(true)  
 	end
 end
+
+console.AddCmd("mainmenu.reload",function ()
+	local self = MAIN_MENU
+	self:Clear()
+	local nt = {}
+	gui.FromTable(layout,self,style,nt,"menu") 
+	self.nodes = nt
+end)

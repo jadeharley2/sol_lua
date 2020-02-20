@@ -1,5 +1,10 @@
 crafting = crafting or {}
 crafting.recipes =  {}
+crafting.ent_craft = crafting.ent_craft or ents.Create()
+crafting.ent_craft:SetSeed(3838104)
+crafting.ent_craft._events = crafting.ent_craft._events or {}
+local ent_craft = crafting.ent_craft
+local events = crafting.ent_craft._events
 
 function crafting.LoadRecipes()
     local lst = forms.GetList('recipe')
@@ -196,8 +201,8 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
                     local idparts = string.split(formid_a,'.')
                     local critem = false
                     if newdata then
-                        MsgN("new form id:",newid)
-                        if forms.Create(idparts[1],newid) then
+                        MsgN("new form id:",idparts[1],newid)
+                        if forms.CreateForm(idparts[1],newid) then
                             forms.SetData(idparts[1],newid,json.ToJson(newdata))
                         end
                         critem = forms.GetItem(idparts[1]..'.'..newid,0)
@@ -207,7 +212,8 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
                         
                     -- MsgN("ni",newid,critem)
                     if critem then
-                        storage:PutItemAsData(nil,critem,newcount or 1)
+                        --storage:PutItemAsData(nil,critem,newcount or 1)
+                        storage:GetNode():SendEvent(EVENT_ITEM_ADDED,10,critem,newcount or 1)
                         storage:TakeItemAsData(slotA,1)
                         storage:TakeItemAsData(slotB,1)
                         return true

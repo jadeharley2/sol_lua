@@ -1,0 +1,11 @@
+{
+	"name":"Multiplication gate",
+	"group" : "active",
+	"tags" : ["gate"],
+	"model" : "models/active/wire/chip.stmd",//"active/button.stmd",
+	"scale" : 1,
+    "rotation" : [0,0,0],
+    
+	"wiregate" : "mul"
+	
+}

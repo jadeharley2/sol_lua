@@ -1,0 +1,12 @@
+{ 
+    "name" : "physics_hit.metal",
+    "sounds" : [
+        "physics/metal_sheet/metalsheet-01.ogg",
+        "physics/metal_sheet/metalsheet-02.ogg",
+        "physics/metal_sheet/metalsheet-03.ogg",
+        "physics/metal_sheet/metalsheet-04.ogg",
+        "physics/metal_sheet/metalsheet-05.ogg", 
+    ],
+    "channel" : "physics",
+    "volume" : 1
+}

@@ -105,11 +105,13 @@ component._typeevents = {
 		else
 			MsgN(self:GetNode(),"item taken at",id,count)
 			local item = self.list[id]
-			item.count = item.count - count
-			if item.count <=0 then
-				self.list[id] = nil
-			end 
-			self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+			if item then
+				item.count = item.count - count
+				if item.count <=0 then
+					self.list[id] = nil
+				end 
+				self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+			end
 		end
 	end},
 	[EVENT_ITEM_DROP] = {networked = true, f = function(self,id,count) 
@@ -237,6 +239,7 @@ function component:PutItem(index,item,count) -- local function
 end
 function component:PutItemAsData(index,data,count)  -- local function
 	if data then
+		--MsgN(index,data,count)
 		local formid = data:Read('/parameters/form')
 		count = count or 1
 		if index then

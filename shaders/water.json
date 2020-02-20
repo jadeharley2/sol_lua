@@ -17,6 +17,12 @@
 			"effectFlags" : [] 
 		},
 		{
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
 			"type" : "DX11.vertexShader",
 			"profile" : "vs_5_0",
 			"entryPoint" : "VS",
@@ -34,6 +40,7 @@
 	"parameters" : {
 		"tNoise" 					: {"type":"texture"}, 
 		"tFoam" 					: {"type":"texture"}, 
+		"time"			: { "type" : "float", "global": "time"},
  
 	},
 	"onload" : {

@@ -28,6 +28,13 @@ function ENT:Load()
 	end
 	--MsgN("dfa")
 end  
+function ENT:SetModelPath(path)
+	self[VARTYPE_FORM] = path
+	self.model:Load(path)
+end
+function ENT:GetModelPath()
+	return self[VARTYPE_FORM] 
+end
 function ENT:Spawn() 
 	--MsgN("spawning static object at ",self:GetPos())
 	local modelcom = self.modelcom
@@ -39,7 +46,12 @@ end
 function ENT:SetModel(mdl,scale,norotation)  
 	local model = self.model  
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:CreateBase() 
+	local path = self[VARTYPE_FORM]
+	if path then
+		model:Load(path)
+	else
+		model:CreateBase() 
+	end
 end 
 function ENT:UpdateCollision()
 	self.coll:SetShapeFromModel(matrix.Identity())  

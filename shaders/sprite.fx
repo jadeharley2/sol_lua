@@ -9,7 +9,7 @@ float time = 0;
 
 SamplerState sView
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    Filter = ANISOTROPIC;
     AddressU = Wrap;
     AddressV = Wrap;
 };

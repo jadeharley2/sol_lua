@@ -40,6 +40,7 @@ function PANEL:Load(func,signalenabled)
 		toggle_signal:SetPos(-ssz.x+10,-ssz.y+10)   
 		toggle_signal:SetTexture(t_xtoggle) 
 		toggle_signal:SetColorAuto(self:GetColor())
+		toggle_signal.contextinfo = "Toggle signal mode"
 		function toggle_signal:OnClick() s:ToggleSignal() end
 		self:Add(toggle_signal)
 		self.toggle_signal = toggle_signal
@@ -50,6 +51,7 @@ function PANEL:Load(func,signalenabled)
 		open_compound:SetPos(-ssz.x+50,-ssz.y+10)   
 		open_compound:SetTexture(t_xtoggle) 
 		open_compound:SetColorAuto(self:GetColor()) 
+		open_compound.contextinfo = "Open compound flow"
 		function open_compound:OnClick() s.editor.editor:Open("forms/flow/functions/"..func..".json") end
 		self:Add(open_compound)
 		self.open_compound = open_compound

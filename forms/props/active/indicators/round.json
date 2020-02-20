@@ -1,0 +1,15 @@
+{
+	"name":"Round indicator",
+	"group" : "active",
+	"tags" : ["gate"],
+	"model" : "models/active/wire/indicator.stmd",//"active/button.stmd",
+	"scale" : 1,
+    "rotation" : [0,0,0],
+    
+    "wireindicator":{
+        "material_index":1,
+        "material_on" :"models/active/wire/tex/indicator.json",
+        "material_off" :"models/active/wire/tex/indicator_off.json"
+    }
+
+} 

@@ -182,7 +182,12 @@ function PANEL:MouseLeave()
 	local OnLeave = self.OnLeave 
 	if OnLeave then OnLeave(self) end
 end
-
+function PANEL:DoubleClick(buttons)
+	local OnDoubleClick = self.OnDoubleClick
+	if OnDoubleClick then
+		OnDoubleClick(self,buttons)
+	end
+end
 function PANEL:IsPressed()
 	return self:GetState() == "pressed"
 end 

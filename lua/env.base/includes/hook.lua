@@ -25,6 +25,13 @@ function hook.Remove(type, id)
 		end
 	end
 end
+---add selfdestructing hook
+function hook.AddOneshot(type,id,func)
+	hook.Add(type,id,function(...)
+		hook.Remove(type,id)
+		func(...)
+	end)
+end
 function hook.GetTable()
 	return table.Copy(lua_hooks)
 end
@@ -93,6 +100,7 @@ function hook.CollectElements(eventid,...)
 	return nr
 end
 
+
 ---@param id string|number
 ---@param description string|nil
 ---@param arguments string|nil
@@ -111,3 +119,19 @@ hook.RegisterHook("input.mousedown",	"")
 hook.RegisterHook("input.mouseup",		"")
 hook.RegisterHook("input.mousewheel",	"")
 hook.RegisterHook("input.doubleclick",	"")
+
+
+console.AddCmd("listhooks",function (id)
+	if id then
+		local case = lua_hooks[id]
+		if case then
+			for k,v in SortedPairs(case.functions) do
+				MsgN("  ",k)
+			end
+		end
+	else
+		for k,v in SortedPairs(lua_hooks,UniversalSort) do
+			MsgN("  ",k)
+		end
+	end
+end)

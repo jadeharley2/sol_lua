@@ -83,50 +83,19 @@ function PANEL:Open(npc,text,options,callback_buy,callback_sell)
     local form_type = "apparel"
     local filter = nil --"vendor_small"
 	local flist = forms.GetList(form_type,filter)  
-	for k,v in SortedPairs(flist) do    
-        
-        local formid = 'apparel.'..k
-        --sp_new.OnClick = givefunc
-        local price = self:GetPrice(formid)
-        local tcolor = {0,0.6,0}
-        if price>plbalance then
-            tcolor = {0.6,0,0}
-        end
-        
-		self.list:AddItem(gui.FromTable({  type = "button",
-            dock = DOCK_TOP,
-            text_alignment = ALIGN_LEFT,
-            size = {150,60},
-            item = formid,
-            price = price,
-            subs = {
-                {
-                    texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
-                    size = {60,60},
-                    dock = DOCK_LEFT,
-                    mouseenabled = false
-                },
-                {
-                    text = v,
-                    textonly = true,
-                    size = {20,30},
-                    dock = DOCK_TOP,
-                    mouseenabled = false
-                },
-                {
-                    text = "price: "..tostring(price).." cr",
-                    textonly = true,
-                    textcolor = tcolor,
-                    size = {20,20},
-                    textalignment = ALIGN_LEFT,
-                    dock = DOCK_BOTTOM,
-                    mouseenabled = false
-                }, 
-            },
-            OnClick = clc_buy
-        })) 
-			
+	for k,v in SortedPairs(flist) do     
+        local formid = 'apparel.'..k 
+        self:AddItem(formid,v,plbalance,clc_buy) 
     end
+
+    local form_type = "tool"
+    local filter = nil --"vendor_small"
+	local flist = forms.GetList(form_type,filter)  
+	for k,v in SortedPairs(flist) do     
+        local formid = 'tool.'..k 
+        self:AddItem(formid,v,plbalance,clc_buy) 
+    end
+
 
     for k,v in pairs(player.storage:GetItems()) do
         if v and v.formid then 
@@ -197,4 +166,45 @@ end
 function PANEL:MouseEnter() 
 end
 function PANEL:MouseLeave() 
+end
+
+function PANEL:AddItem(formid,v,plbalance,clc_buy)
+    local price = self:GetPrice(formid)
+    local tcolor = {0,0.6,0}
+    if price>plbalance then
+        tcolor = {0.6,0,0}
+    end
+    
+    self.list:AddItem(gui.FromTable({  type = "button",
+        dock = DOCK_TOP,
+        text_alignment = ALIGN_LEFT,
+        size = {150,60},
+        item = formid,
+        price = price,
+        subs = {
+            {
+                texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
+                size = {60,60},
+                dock = DOCK_LEFT,
+                mouseenabled = false
+            },
+            {
+                text = v,
+                textonly = true,
+                size = {20,30},
+                dock = DOCK_TOP,
+                mouseenabled = false
+            },
+            {
+                text = "price: "..tostring(price).." cr",
+                textonly = true,
+                textcolor = tcolor,
+                size = {20,20},
+                textalignment = ALIGN_LEFT,
+                dock = DOCK_BOTTOM,
+                mouseenabled = false
+            }, 
+        },
+        OnClick = clc_buy
+    })) 
 end

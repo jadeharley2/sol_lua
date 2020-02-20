@@ -48,16 +48,16 @@ SPAWNORIGIN = ship
 SPAWNPOS = targetpos
 
 ]]
-
-function ServerStartup()
+function ServerStartup(wmap,mode,callback)
 	--U = ents.Create("world_testmap")--"world_solverse")--"world_flatcity")--"world_testmap") 
 	--network.AddNodeImmediate(U)
 	--U:Create() 
 	--SPAWNORIGIN,SPAWNPOS = U:GetSpawn()
 	world.UnloadWorld()
-	world.LoadWorld("testmap",mode,function()
+	world.LoadWorld(wmap,mode,function()
 		AddOrigin(SPAWNORIGIN)
 		MsgN("loaded world at: ",SPAWNORIGIN)
+		if callback then callback(wmap,mode) end
 	end,function()
 		MsgN("error")
 	end)
@@ -102,6 +102,7 @@ local function OnPlayerSpawn(ply)
 	--ply.player:LoadAddress(SPAWNORIGIN,ply)
 	ply:SetParent(SPAWNORIGIN)
 	ply:SetPos(SPAWNPOS)
+	hook.Call("player.onspawn",ply)
 
 	AddOrigin(ply)
 	
@@ -159,6 +160,47 @@ for k,v in pairs(file.GetFiles("forms/characters")) do
 	AddCSLuaFile(v)  
 end
 
+local loadworld =  "testmap"
+local loadmode = false
 if not U then  
-	ServerStartup() 
+	ServerStartup(loadworld,loadmode) 
 end
+
+console.AddCmd("status",function()
+	MsgN("world:",U)
+	MsgN("spawn:",SPAWNORIGIN,"at",SPAWNPOS)
+	MsgN("player count:",player.Count()) 
+	for key, value in pairs(player.GetAll()) do
+		if IsValidEnt(value) then
+			MsgN(key,value)
+		end
+	end
+end) 
+console.AddCmd("restart",function()
+	ServerStartup(loadworld,loadmode)
+end) 
+console.AddCmd("changelevel",function(world,mode)
+	loadworld = world
+	loadmode = mode or false
+	ServerStartup(loadworld,loadmode,function()
+		player.ReloadAll()
+	end)
+end)
+console.AddCmd("save",function (save)
+	engine.SaveState(save)
+end)
+console.AddCmd("load",function (save)
+	
+	world.UnloadWorld()
+	world.LoadSave(save,function(origin)
+		SPAWNORIGIN = origin:GetParent()
+		SPAWNPOS = origin:GetPos()
+		AddOrigin(SPAWNORIGIN)
+		MsgN("loaded world at: ",SPAWNORIGIN)
+		player.ReloadAll()
+		if callback then callback(wmap,mode) end
+	end,function()
+		MsgN("error")
+	end)
+
+end)

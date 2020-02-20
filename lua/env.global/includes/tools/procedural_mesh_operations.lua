@@ -3,6 +3,7 @@ local optypes = {
     extrude = {
         icon = "textures/gui/panel_icons/extrude.png",
         name = "Extrude",
+        type = "extrude",
         params = {
             shift = {
                 type = "float",
@@ -24,6 +25,7 @@ local optypes = {
     inset = {
         icon = "textures/gui/panel_icons/inset.png",
         name = "Inset",
+        type = "inset",
         params = {
             amount = {
                 type = "float",
@@ -65,6 +67,7 @@ local optypes = {
     tesselate = {
         icon = "textures/gui/panel_icons/tesselate.png",
         name = "Tesselate",
+        type = "tesselate",
         params = {
             times = {
                 type = "float",
@@ -79,6 +82,7 @@ local optypes = {
     stairs = {
         icon = "textures/gui/panel_icons/staircase.png",
         name = "Create stairs",
+        type = "stairs",
         params = {
             stepheight = {
                 type = "float",
@@ -114,6 +118,7 @@ local optypes = {
     ngon = {
         icon = "textures/gui/panel_icons/ngon.png",
         name = "Place N-Gon",
+        type = "ngon",
         params = {
             pos = {
                 type = "vector",
@@ -145,6 +150,7 @@ local optypes = {
     material = { 
         icon = "textures/gui/panel_icons/texture.png",
         name = "Set material",
+        type = "material",
         params = {
             material = {
                 type = "string",
@@ -156,6 +162,7 @@ local optypes = {
     merge = { 
         icon = "textures/gui/panel_icons/merge.png",
         name = "Merge faces",
+        type = "merge",
         params = { 
             placeholder = {
                 default = 0
@@ -166,6 +173,7 @@ local optypes = {
     remove = { 
         icon = "textures/gui/panel_icons/delete.png",
         name = "Remove faces",
+        type = "remove",
         params = { 
             placeholder = {
                 default = 0
@@ -177,30 +185,56 @@ local optypes = {
         
         icon = "textures/gui/panel_icons/split.png",
         name = "Split faces",
-        params = { 
-            steps = {
-                type = "float",
-                default = 1
+        type = "split",
+        defaultmode = "binary",
+        modes = {
+            even = {
+                params = { 
+                    steps = {
+                        type = "float",
+                        default = 1
+                    },
+                    stype = {
+                        default = "constant"
+                    }, 
+                    side = {
+                         default ="first", 
+                    }
+                    
+                },
+                operate = function(model, cam, wdir, op)  
+                    local dv = model:GetVNPDrag(cam,wdir) 
+                    op.steps =  math.Clamp(dv,1,100)
+                end
             },
-            stype = {
-                default = "constant"
-            },
-            size = {
-                default =  {0,0}
-            },
-            side = {
-                 default ="first", 
+            binary = {
+                params = { 
+                    steps = {
+                        type = "float",
+                        default = 1
+                    },
+                    stype = {
+                        default = "constant"
+                    },
+                    size = {
+                        default =  {0,0}
+                    },
+                    side = {
+                         default ="first", 
+                    }
+                    
+                },
+                operate = function(model, cam, wdir, op)  
+                    local dv = model:GetVNPDrag(cam,wdir) 
+                    op.size =  {-math.Clamp(dv,0.000001,1),0}
+                end
             }
-            
         },
-        operate = function(model, cam, wdir, op)  
-            local dv = model:GetVNPDrag(cam,wdir) 
-            op.size =  {-math.Clamp(dv,0.000001,1),0}
-        end
-    },
+    }, 
     bridge = {
-        icon = "textures/gui/panel_icons/split.png",
+        icon = "textures/gui/panel_icons/bridge.png",
         name = "Make bridge between selected faces",
+        type = "bridge",
         params = { 
             rotate = {
                 type = "float",
@@ -210,8 +244,9 @@ local optypes = {
         applyonclick = true
     },
     structure = {
-        icon = "textures/gui/panel_icons/split.png",
+        icon = "textures/gui/panel_icons/structure.png",
         name = "Apply structure to faces",
+        type = "structure",
         params = { 
             path = {
                 type = "string",
@@ -223,6 +258,37 @@ local optypes = {
             }
         },
         applyonclick = true
+    },
+    uvmap = {
+        icon = "textures/gui/panel_icons/uv.png",
+        name = "Map texture coordinates",
+        type = "uvmap",
+        params = { 
+            edge = {
+                type = "float",
+                default = 0,
+                description = "Base edge"
+            },
+            scale = {
+                type = "float",
+                default = 1
+            },
+            shift = { 
+                default = {0,0}
+            },
+            mul = { 
+                default = {1,1,1}
+            },
+            mode = { 
+                type = "string",
+                default = "face"
+            },
+            ortogonal= { 
+                type = "bool",
+                default = true
+            },
+        },
+        applyonclick = true 
     }
 } 
 

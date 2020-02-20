@@ -167,6 +167,10 @@ function PANEL:Init()
 	self:SetMinSize(40,40)
 	self:SetSize(400,400) --Resize(Point(400,400))
 end
+function PANEL:SetContents(panel)
+	self.inner:Add(panel)
+end
+PANEL.contents_info = {type = 'children_array',add = PANEL.SetContents}
 
 function PANEL:Resize() 
 end

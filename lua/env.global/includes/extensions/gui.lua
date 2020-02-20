@@ -97,6 +97,8 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 
 		elseif k == 'mouseenabled' then node:SetCanRaiseMouseEvents(v)
 		
+		elseif k == 'clip' then node:SetClipEnabled(v)
+
 		elseif k == 'text' then node:SetText(v)
 		elseif k == 'textonly' then node:SetTextOnly(v)
 		elseif k == 'textcolor' then node:SetTextColor(Vector(v[1],v[2],v[3]))  
