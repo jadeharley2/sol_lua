@@ -86,7 +86,7 @@ function PANEL:Refresh()
 					end
 				end
 				info._name = key
-				if info._type=='function' then
+				if info._type=='function' or true then
 					tab[#tab+1] = {key.."("..argstr..")"..poststr,tag=info}
 				else
 					tab[#tab+1] = {key..poststr,tag=info}
@@ -229,14 +229,19 @@ function PANEL:Refresh()
 	
 	local rtb6 = {"hook"}
 	local hooklist = {}
+	for k,v in pairs(hook.GetTable()) do
+		if isstring(k) then
+			hooklist[k] = {}
+		end
+	end
 	if api.hooks then
 		for k,v in pairs(api.hooks) do 
 			hooklist[k] = v 
 		end
-		for k,v in SortedPairs(hooklist) do  
-			ParseVal(api.hooks,k,v,rtb6) 
-		end 
 	end
+	for k,v in SortedPairs(hooklist) do  
+		ParseVal(hooklist,k,v,rtb6) 
+	end 
 	
 	--PrintTable(rtb)
 	dirtree:SetTableType(2) 

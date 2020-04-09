@@ -221,6 +221,50 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 	return node
 end
 
+local registry = debug.getregistry()
+local PANEL = registry.Panel
+function PANEL:MoveTo(target,time,easingfunc)
+	local pos = pos or self:GetPos()
+	time = time or 1
+	easingfunc = easingfunc or easing.linear
+	local t = 0
+	local iters = time*50
+	debug.DelayedTimer(0,20,iters, function()  
+		t = t + 1
+		if t==iters then
+			self:SetPos(target) 
+		else
+			self:SetPos(LerpVector(pos,target,easingfunc(t/iters))) 
+		end
+	end)
+end
+
+easing = {
+	linear = function (x)
+		return x
+	end,
+	bezier = function (t, x0, x1,x2,x3)
+		return	x0 * (1 - t) ^3 +
+		x1 * 3 * t * ((1 - t) ^ 2) +
+		x2 * 3 * (t ^ 2) * (1 - t) +
+		x3 * (t ^ 3)
+	end,
+	easein = function (x)
+		return x*x
+	end,
+	easeout = function (x)
+		return 1-(x-1)^2
+	end,
+	ease = function (x)
+		return easing.bezier(x,0,0,1,1)
+	end,
+	easeinout = easing.ease,
+	easeinoutback = function (x)
+		return easing.bezier(x,0,-0.2,1.2,1)
+	end,
+
+}
+
 --function gui.FromLayout(root,layout,style)
 --	local nodetable = {}
 --	for k,v in pairs(layout) do

@@ -1,0 +1,13 @@
+{
+	"name": "Circular Atomic Regulator",
+	"group" : "furniture",
+	"tags" : ["space"],
+	"model" : "furniture/space/reactor.stmd",
+	"scale" : 0.3,
+	"rotation" : [0,0,0],  
+	"composition" :{
+		"resource.steel" : 20,  
+		"resource.plastic" : 5,   
+	}
+ 
+}

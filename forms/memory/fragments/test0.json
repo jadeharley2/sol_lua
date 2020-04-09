@@ -1,0 +1,24 @@
+{
+    "fragments":[
+        {
+            "name":"ARA",
+            "nodes":[
+        
+            ],
+            "links_add":[
+        
+            ],
+            "links":[
+                {"a":"ARA","t":"is","b":"robot"},
+                {"a":"ARA","t":"name","b":"Artificial Relay Administrator"},
+                {"a":"ARA","t":"owner","b":"Kaltag"},
+            ]
+        },
+        {
+            "name":"Kaltag",
+            "links":[
+                {"a":"Kaltag","t":"is","b":"Company"},
+            ]
+        }
+    ]
+}

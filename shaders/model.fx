@@ -52,8 +52,11 @@ Texture2D g_MeshTexture_e; // emissive (r,g,b) colored
 Texture2D g_MeshTexture_f; // materials mask (r,g,b,a) layers
 Texture2D g_MeshTexture_g; // fur len  (x)
 Texture2D g_MeshTexture_x; // fur mask (x-fur length)--TEST--
+Texture2D g_MeshTexture_a; // ambient occlusion
 
-Texture2D g_NoiseTexture; 
+Texture2D g_NoiseTexture;  
+
+bool ao_enabled = false;
 
 bool _DrawGSFur = true;
 bool sMasksEnabled = false;
@@ -65,7 +68,7 @@ float4 matColors3 = float4(0,0,0,1);
 
 Texture2D g_DetailTexture;   
 Texture2D g_DetailTexture_n;   
-Texture2D g_DetailTexture_m;   
+Texture2D g_DetailTexture_m;    
 
 Texture2D g_tDiffuseView;     
 Texture2D g_tNormalView;    
@@ -802,12 +805,18 @@ PS_OUT PS( PS_IN input ) : SV_Target
 
 		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
 		float3 envmap = saturate(EnvSampleLevel(reflectEnv,_mask.x));
+
+		float ao_mul = 1;
+		if(ao_enabled){
+			ao_mul = g_MeshTexture_a.Sample(MeshTextureSampler, texCoord).r ; 
+		}
+
 		emissive+=
 		lerp(
 			diffuse*ambmap,
 			lerp(envmap,diffuse*envmap, _mask.z),
-			_mask.y)*fren;
-		
+			_mask.y)*fren*ao_mul;
+		//emissive = ao_mul*float3(1,1,1);
 		//emissive+=diffuse*ambmap*1+ lerp(envmap,diffuse*envmap, _mask.z)*0.5*_mask.x;
 		float3 result = diffuse;
 		output.light = float4(emissive,1);

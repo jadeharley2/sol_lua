@@ -71,7 +71,7 @@ local layout = {
 						s.menu.self:SetWorldLoaded(false)  
 					end,
 					visible = false
-				},
+				}, 
 			},
 		}, 
 		{name = "loadscreen"    ,type="menu_loadscreen",   class = "submenu"},
@@ -82,6 +82,8 @@ local layout = {
 		{name = "save"          ,type="menu_savegame",     class = "submenu"},
 		{name = "load"          ,type="menu_loadgame",     class = "submenu"},
 		{name = "editor"        ,type="menu_editors",      class = "submenu"},
+
+		{name = "discord"        ,type="menu_discord"},
 	}
 }
 	 
@@ -117,7 +119,10 @@ function PANEL:Init()
 		end
 	end)
 	
+
 	MAIN_MENU = self
+end
+function PANEL:Update()  
 end
 
 function PANEL:ReVis(n)
@@ -176,4 +181,5 @@ console.AddCmd("mainmenu.reload",function ()
 	local nt = {}
 	gui.FromTable(layout,self,style,nt,"menu") 
 	self.nodes = nt
+	self:Update()
 end)

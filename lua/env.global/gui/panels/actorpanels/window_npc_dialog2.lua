@@ -1,4 +1,4 @@
-﻿PANEL.basetype = "menu_dialog"
+PANEL.basetype = "menu_dialog"
 
 function PANEL:Init()
 	--PrintTable(self)
@@ -50,8 +50,9 @@ end
 function PANEL:Open(text,options) 
 
 	self.dialtext:SetText(text)
-	self:ClearOptions() 
+	--self:ClearOptions() 
 	if options then
+        self.anslst:ClearItems()
 		local opt = {}
 		for k,v in pairs(options) do
 			local bopt = panel.Create("button")
@@ -77,6 +78,7 @@ function PANEL:Open(text,options)
 	self:UpdateLayout()  
 	self:Show()
 	self:SetPos(0,-700)
+    self.anslst:Scroll(-99999)
 	facecontroller.Vocalize(self.npc.ent,string.lower( text))
 end
 function PANEL:SetDialogText(str) 

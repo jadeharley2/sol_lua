@@ -202,6 +202,27 @@ function PANEL:Init()
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/medorigin.png", contextinfo='Median origin'},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/otherorigin.png", contextinfo='Point origin'},
 					{class="menu_separator"},
+					{ class = "bmenu",  name = "bsetchunk", texture = "textures/gui/panel_icons/load.png",  
+						OnClick = function()
+							for node,v in pairs(worldeditor.selected) do
+								if IsValidEnt(node) then
+									terrain_NodeSetChunk(node,true)
+								end
+							end
+						end,
+						contextinfo = 'Set as chunk nodes'
+					}, 
+					{ class = "bmenu",  name = "bunsetchunk", texture = "textures/gui/panel_icons/load.png",  
+						OnClick = function()
+							for node,v in pairs(worldeditor.selected) do
+								if IsValidEnt(node) then
+									terrain_NodeSetChunk(node,false)
+								end
+							end
+						end,
+						contextinfo = 'Remove from chunk nodes'
+					}, 
+					{class="menu_separator"},
 				}
 			}, 
 			{type='viewport',name="vp",dock=DOCK_FILL}

@@ -45,13 +45,15 @@
 			{"name":"g_MeshTexture_f", "type":"texture","default":"","description":""},
 			{"name":"g_MeshTexture_g", "type":"texture","default":"textures/debug/white.png","description":""},
 			{"name":"g_MeshTexture_x", "type":"texture","default":"textures/debug/white.png","description":""}, 
+			{"name":"g_MeshTexture_a", "type":"texture","default":"textures/debug/white.png","description":"ambient occlustion map"}, 
 			{"name":"emissionTint", "type":"float3","default":[1,1,1],"description":""},
 			{"name":"rimfadeEmission","type":"float2","default":[1,2],"description":"x - intensity, y - power"} ,
 			{"name":"base_subsurface_intencity", "type":"float","default":0,"description":"subsurface intensity"},
 			{"name":"mul_subsurface_intencity", "type":"float","default":0,"description":"subsurface multiplier"},
 			{"name":"alphatestreference", "type":"float","default":0.5,"description":"clip reference value"},
 			
-
+			
+			{"name":"ao_enabled", "type":"bool","default":false,"description":"enable ambient occlusion map"},
 			{"name":"sMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matMasksEnabled", "type":"bool","default":false,"description":""},
 			{"name":"matColors0", "type":"float4","default":[1,0,0,1],"description":""},

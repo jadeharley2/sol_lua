@@ -42,10 +42,11 @@ function ENT:LoadWorld(name)
 		self.skybox:Despawn()
 		self.skybox = nil
 	end  
-	if data.sky and data.sky.texture then
-		self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/daysky.dds")
-		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
-	end
+	self.skybox = SpawnDynsky(self.space)
+	--if data.sky and data.sky.texture then
+	--	self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/daysky.dds")
+	--	if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
+	--end
 	self.grid:SetWorldName(name)
 	if CLIENT then 
 		self:Delayed("cubemapdraw",1000,function()
@@ -76,7 +77,7 @@ function ENT:Spawn()
 	--def:1900000000
 	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,Vector(255,255,255)/255,50500000000*8)
 	light.light:SetShadow(true)  
-	SpawnPV('prop.other.prim_box',space,Vector(0,0,0),Vector(0,0,0),0)
+	SpawnPV('prop.furniture.space.spawn',space,Vector(0,-1,0)*0.001,Vector(0,0,0),0)
 	self.space = space
 	 
 	local grid = space:AddComponent(CTYPE_CHUNKTERRAIN)
@@ -141,6 +142,20 @@ console.AddCmd("listdim",function ()
 	end
 end)
 
+function terrain_NodeSetChunk(ent,set)
+	local p = ent:GetParent()
+	if p then
+		local chtr = p:GetComponent(CTYPE_CHUNKTERRAIN)
+		if chtr then
+			if set then
+				chtr:AddNode(ent)
+			else
+				chtr:DelNode(ent)
+			end
+			return true
+		end
+	end
+end
 hook.Add("node_properties","chunk_node_params",function(node,params)
 	local p = node:GetParent()
 	if p:GetComponent(CTYPE_CHUNKTERRAIN) then 

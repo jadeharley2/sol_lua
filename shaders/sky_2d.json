@@ -1,12 +1,10 @@
 {
-	"name" : "water",
+	"name" : "sky_2d",
 	"type" : "asset",
 	"assettype" : "shader",
 	"input" :  
 	[ 
-		"water.fx", 
-		"headers/lightning.fxh",
-		"headers/atmosphere.fxh"
+		"sky_2d.fx", 
 	],
 	"output" : 
 	[
@@ -37,23 +35,14 @@
 			"effectFlags" : []
 		}
 	],
-	"parameters" : {
-		"tNoise" 					: {"type":"texture"},  
-		"tFoam" 					: {"type":"texture"}, 
+	"parameters" : { 
 		"time"			: { "type" : "float", "global": "time"},
- 
 	},
 	"onload" : {
-		"tech" : "Render",
-		"layout" :"VertexNBTTexture",
-		"values" : {
-			"tNoise" 				: "textures/noise/perlin1.jpg", 
-			"tFoam" 				: "textures/surface/foam.jpg", 
-		},
-	},
-	"definition":{
-		"stage":"backward",
-		"variables" : [ 
-		],
-	},
-}             
+		"tech" : "DefaultTech",
+		"layout" :"VertexNBTTextureSkin",
+		"values" : { 
+			
+		}
+	} 
+}            

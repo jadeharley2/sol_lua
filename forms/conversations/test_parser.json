@@ -1,0 +1,82 @@
+[
+	{
+		"title": "Hello",
+		"tags": "",
+		"body": "{$player}: Hello, {$self}. \n<<if not met($player)>> \n    <<setmet($player)>>\n    {$self}: Hello.  \n    [[Need something?.|WhatNeed]]\n<<else>> \n    {$self}: Hello, {$player}.\n    [[how are you?|HowThings]]\n<<end>>\n",
+		"position": {
+			"x": -78,
+			"y": -159
+		},
+		"colorID": 1
+	},
+	{
+		"title": "WhatNeed",
+		"tags": "",
+		"body": "{$player}: Could you help me?.\n|{$self}: Yes.\n    [[Actions]]\n|{$self}: No.\n    [[CouldHelpNo]]\n",
+		"position": {
+			"x": 341,
+			"y": -87
+		},
+		"colorID": 4
+	},
+	{
+		"title": "HowThings",
+		"tags": "",
+		"body": "{$player}: How your things?  \n|{$self}: Good.  \n|{$self}: Not bad.  \n|{$self}: Bad.  \n{$self}: Yours?\n[[PlayerThings]]",
+		"position": {
+			"x": 252,
+			"y": -402
+		},
+		"colorID": 3
+	},
+	{
+		"title": "PlayerThings",
+		"tags": "",
+		"body": "-> Good\n    {$self}: Good!\n-> Okay\n    {$self}: Ok\n    [[So|Actions]]\n-> Bad\n    {$self}: Why?\n    [[Ask]]\n",
+		"position": {
+			"x": 604,
+			"y": -398
+		},
+		"colorID": 0
+	},
+	{
+		"title": "Actions",
+		"tags": "",
+		"body": "someone:NICE",
+		"position": {
+			"x": 610,
+			"y": -90
+		},
+		"colorID": 0
+	},
+	{
+		"title": "CouldHelpNo",
+		"tags": "",
+		"body": "someone:NOT NICE",
+		"position": {
+			"x": 385,
+			"y": 184
+		},
+		"colorID": 0
+	},
+	{
+		"title": "Ask",
+		"tags": "",
+		"body": "someone: idk",
+		"position": {
+			"x": 898,
+			"y": -281
+		},
+		"colorID": 0
+	},
+	{
+		"title": "start",
+		"tags": "",
+		"body": "initiator.name:\"ara\"\n[[Hello]]",
+		"position": {
+			"x": -426,
+			"y": -162
+		},
+		"colorID": 0
+	}
+]

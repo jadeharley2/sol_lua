@@ -139,6 +139,7 @@ function world.UnloadWorld(nodisconnect)
 	end
 	engine.ClearState()
 	if CLIENT and chat and not nodisconnect then chat:Close() end
+	engine.SetGameState("menu")
 end 
 
 function world.LoadSave(savedgamestate,onComplete,onFail)
@@ -234,4 +235,8 @@ console.AddCmd("maps",function(filter)
 end)
 console.AddCmd("modes",function(w)
 	PrintTable( world.GetModes(w))
+end)
+
+hook.Add("engine.location.loaded","engine.hook",function() 
+	engine.SetGameState("singleplayer")
 end)

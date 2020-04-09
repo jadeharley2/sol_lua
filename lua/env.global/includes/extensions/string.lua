@@ -1,5 +1,6 @@
 
 function string.split(self, sep)
+   if self==nil then return nil end
    local sep, fields = sep or " ", {}
    local pattern = string.format("([^%s]+)", sep)
    self:gsub(pattern, function(c) fields[#fields+1] = c end)
@@ -14,7 +15,7 @@ end
 
 function string.trim(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
+end 
 
 function string.Replace(s, oldValue, newValue)
    return string.gsub(s, oldValue, newValue) 

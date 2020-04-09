@@ -16,20 +16,20 @@ static.cwinput = function(key)
 		local cp = CI.caretpos
 		 
 		if key==KEYS_BACK then
-			local tleft =CStringSub(ctext,1,cp)
+			local tleft =CStringSub(ctext,1,cp-1)
 			local tright =CStringSub(ctext,cp+1)
 			--MsgInfo(tleft.." - "..tright) 
 			text = tleft..tright--CStringSub(text,1,CStringLen(text)-1)
 			CI:CaretUpdate(-1)
 		elseif key==KEYS_DELETE then 
-			local tleft =CStringSub(ctext,1,cp+1)
+			local tleft =CStringSub(ctext,1,cp)
 			local tright =CStringSub(ctext,cp+2) 
 			text = tleft..tright 
 			CI:CaretUpdate()
 		else 
 			if input.KeyPressed(KEYS_CONTROLKEY) then
 				if key==KEYS_V then  
-					local tleft =CStringSub(text,1,cp+1)
+					local tleft =CStringSub(text,1,cp)
 					local tright =CStringSub(text,cp+1)
 					local ctext = ClipboardGetText()
 					text = tleft .. ctext .. tright
@@ -91,14 +91,14 @@ static.cwinput2 = function(char)
 		if CI.rest_numbers then
 			if static.NUMBER_CHARS:Contains(char) or  static.NUMBER_ADD_CHARS:Contains(char) then 
 				local cp = CI.caretpos
-				local tleft =CStringSub(text,1,cp+1)
+				local tleft =CStringSub(text,1,cp)
 				local tright =CStringSub(text,cp+1)
 				text = tleft .. char .. tright
 				--text = text .. char
 			end
 		else
 			local cp = CI.caretpos
-			local tleft =CStringSub(text,1,cp+1)
+			local tleft =CStringSub(text,1,cp)
 			local tright =CStringSub(text,cp+1)
 			text = tleft .. char .. tright
 		end

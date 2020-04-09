@@ -152,5 +152,13 @@
 			"recursive":true,
 			"group":"actor",	 
 		}, 
+		{
+			"name":"conversation", 		
+			"shortname":"CONV", 	
+			"directory":"conversations", 
+			"recursive":true,
+			"group":"actor",
+			"json_novariables":true 
+		}, 
 	]
 }

@@ -105,15 +105,23 @@ end
 ---@param description string|nil
 ---@param arguments string|nil
 function hook.RegisterHook(id,description,arguments)
-	debug.AddAPIInfo("/hooks/"..id,{_type="hook",_description = description,_argumets = arguments})
+	local argtab = nil
+	if arguments then
+		argtab = {}
+		for i1,v1 in ipairs(arguments:split(',')) do
+			local name, vtype = unpack(v1:split(':'))
+			argtab[i1] = {_name = name,_valuetype = vtype}
+		end
+	end
+	debug.AddAPIInfo("/hooks/"..id,{_type="hook",_description = description,_arguments = argtab})
 end
 
 _SetNativeCallFunc(hook.Call)
 
 
 
-hook.RegisterHook("input.keydown",		"")
-hook.RegisterHook("input.keyup",		"")
+hook.RegisterHook("input.keydown",		"","key:number")
+hook.RegisterHook("input.keyup",		"","key:number")
 hook.RegisterHook("input.keypressed",	"")
 hook.RegisterHook("input.mousedown",	"")
 hook.RegisterHook("input.mouseup",		"")
@@ -135,3 +143,6 @@ console.AddCmd("listhooks",function (id)
 		end
 	end
 end)
+
+
+--json.Write("blah.json",debug.GetAPIInfo())

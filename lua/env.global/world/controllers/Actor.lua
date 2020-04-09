@@ -94,9 +94,12 @@ function OBJ:Init()
 	--end
 	
 	
-	self.healthbar = healthbar
-	self.infobar = infobar
-	self.quickmenu = quickmenu
+	if healthbar then healthbar:Close() GLOBAL_healthbar=nil end
+	if infobar then infobar:UpdateBar(nil) infobar:Close() GLOBAL_infobar=nil end
+	if quickmenu then quickmenu:Close() GLOBAL_quickmenu=nil end 
+	GLOBAL_healthbar = healthbar
+	GLOBAL_infobar = infobar
+	GLOBAL_quickmenu = quickmenu
 	
 	self:CreateCharacterPanels(actor)
 	 
@@ -148,12 +151,12 @@ function OBJ:UnInit()
 	
 	cam:Eject()
 
-	local healthbar = self.healthbar
-	local infobar = self.infobar
-	local quickmenu = self.quickmenu
-	if healthbar then healthbar:Close() self.healthbar=nil end
-	if infobar then infobar:UpdateBar(nil) infobar:Close() self.infobar=nil end
-	if quickmenu then quickmenu:Close() self.quickmenu=nil end 
+	local healthbar = GLOBAL_healthbar
+	local infobar = GLOBAL_infobar
+	local quickmenu = GLOBAL_quickmenu
+	if healthbar then healthbar:Close() GLOBAL_healthbar=nil end
+	if infobar then infobar:UpdateBar(nil) infobar:Close() GLOBAL_infobar=nil end
+	if quickmenu then quickmenu:Close() GLOBAL_quickmenu=nil end 
 end
 
 function OBJ:MouseWheel()

@@ -62,6 +62,8 @@ function PANEL:Expand()
 	self:AddSeparator()
 	self:AddControl("toggle_channels","button","TC",Vector(0.7,0.3,0.4),function() console.Call("debug_toggle pp_channels") end,true)
 	self:AddControl("toggle_light","button","TL",Vector(0.6,0.6,0.6),function() console.Call("debug_toggle light") end,true) 
+	self:AddControl("toggle_dci","button","TD",Vector(0.9,0.6,0.6),function() console.Call("debug_toggle dci") end,true) 
+	self:AddControl("toggle_batching","button","TD",Vector(0.9,0.9,0.6),function() console.Call("debug_toggle batching") end,true)  
 	--local exposure = 1;
 	self:AddControl("set_exposure_1","button","E1",Vector(0.7,0.4,0.8),function() 
 		debug_panel.exposure = 1 console.Call("r_exposure "..debug_panel.exposure) end) 
