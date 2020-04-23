@@ -80,7 +80,7 @@ function PANEL:Init()
 	self.rs_tl = rs_tl
 	self.rs_tr = rs_tr
 	self.rs_bl = rs_bl
-	self.rs_br = rs_br
+	self.rs_br = rs_br 
 	self.borders = {rs_b,rs_t,rs_l,rs_r,rs_tl,rs_tr,rs_bl,rs_br}
 	
 	for k,v in pairs(self.borders) do
@@ -92,6 +92,7 @@ function PANEL:Init()
 	
 	mv.OnClick = function(s)  
 		if not self.fixedpos then
+			self:Show()
 			panel.start_drag(self,1) 
 		end 
 	end

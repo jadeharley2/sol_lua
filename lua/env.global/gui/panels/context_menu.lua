@@ -79,6 +79,7 @@ function PANEL:SetData(base,data,crtbtn)
 				local sp = b:GetScreenPos()*2+b:GetSize()*Point(1,1)--*GetViewportSize()
 				ContextMenu(base,v.sub,sp,self.level+1)
 			end
+			b:Add(gui.FromTable({ text = ">",textonly=true, mouseenabled=false,size = {hperrow,hperrow},dock = DOCK_RIGHT }))
 		else
 			if v.action then
 				b.action = v.action

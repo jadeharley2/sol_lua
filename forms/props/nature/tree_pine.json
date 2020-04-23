@@ -3,6 +3,7 @@
 	"tags" : [],
 	"model" : "models/nature/default/tree_pine.dnmd",
 	"scale" : 2,
-	"rotation" : [0,0,0]
+	"rotation" : [0,0,0],
+	"nophys":true
 	
 }

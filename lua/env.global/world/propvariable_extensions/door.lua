@@ -30,6 +30,9 @@ hook.Add("prop.variable.load","door",function (self,j,tags)
 		self:AddEventListener(EVENT_USE,"a",DoorUse)
 		self:SetNetworkedEvent(EVENT_USE,true)
 		self:SetUpdating(true)
+ 
+		self:AddInteraction("opendoor",{text="open",action=DoorUse})
+
 		self.model:SetDynamic()
 		self.model:SetAnimation('idle')
 		self.model:ForceUpdate()
@@ -38,3 +41,9 @@ hook.Add("prop.variable.load","door",function (self,j,tags)
 		wio:AddOutput("out")
 	end
 end)
+
+
+
+
+
+

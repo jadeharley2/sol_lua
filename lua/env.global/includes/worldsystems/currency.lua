@@ -51,7 +51,7 @@ function currency.GetAvailable(entity)
     end
     return {}
 end 
-
+ 
 currency.defaultprices = json.Read("forms/pricelists/default.json")
 function currency.GetBasePrice(formid) 
     local defprice = currency.defaultprices[formid]

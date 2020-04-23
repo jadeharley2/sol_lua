@@ -52,4 +52,6 @@
     "resource.water_ice"    : 5,  
     "resource.wood"         : 50,  
     "resource.wool"         : 200, 
+    
+    "resource.active.tranlique"         : 98000, 
 }

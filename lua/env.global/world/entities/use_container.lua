@@ -12,9 +12,11 @@ function SpawnCONT(model,parent,pos)
 	return e
 end
 
-ENT.usetype = "open container"
+ENT.info = "Container"
 ENT._interact = {
-	open={text="open container"},
+	open={text="open container",action= function (self,user)
+		self:Open(user)
+	end},
 }
 
 function ENT:Init()  
@@ -96,42 +98,44 @@ function ENT:Synchronize(onCompleted)
 	self:SendEvent(EVENT_CONTAINER_SYNC)
 end
 
-
+function ENT:Open(user)
+	if not self.isopened then
+		self.user = user
+		self:EmitSound("events/storage-open.ogg",1)
+		--if(CLIENT and network.IsConnected()) then
+		--	MsgN("a?")
+		--	self:Synchronize(function(s)
+		--		if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
+		--	end)
+		--else
+			if CLIENT and LocalPlayer() == user then --OpenInventoryWindow(self) 
+				actor_panels.OpenInventory(self,ALIGN_TOP,nil)
+				actor_panels.OpenInventory(user,ALIGN_BOTTOM,nil)
+				actor_panels.OpenCharacterInfo(user,ALIGN_LEFT,nil) 
+				
+				hook.Add("actor_panels.closed","container_closed",function()
+					hook.Remove("actor_panels.closed","container_closed")
+					self.user = nil
+					self.isopened = false
+					self:EmitSound("events/storage-close.ogg",1)
+				end)
+			end
+		--end
+		self.isopened = true
+	else
+		if self.user == user then
+			self.user = nil
+			if CLIENT and LocalPlayer() == user then --CloseInventoryWindow(self) 
+				actor_panels.CloseAll()
+			end
+			self.isopened = false
+		end
+	end	
+end
 
 ENT._typeevents = { 
 	[EVENT_USE] = {networked = true, f = function(self,user)   
-		if not self.isopened then
-			self.user = user
-			self:EmitSound("events/storage-open.ogg",1)
-			--if(CLIENT and network.IsConnected()) then
-			--	MsgN("a?")
-			--	self:Synchronize(function(s)
-			--		if CLIENT and LocalPlayer() == user then OpenInventoryWindow(self) end
-			--	end)
-			--else
-				if CLIENT and LocalPlayer() == user then --OpenInventoryWindow(self) 
-					actor_panels.OpenInventory(self,ALIGN_TOP,nil)
-					actor_panels.OpenInventory(user,ALIGN_BOTTOM,nil)
-					actor_panels.OpenCharacterInfo(user,ALIGN_LEFT,nil) 
-					
-					hook.Add("actor_panels.closed","container_closed",function()
-						hook.Remove("actor_panels.closed","container_closed")
-						self.user = nil
-						self.isopened = false
-						self:EmitSound("events/storage-close.ogg",1)
-					end)
-				end
-			--end
-			self.isopened = true
-		else
-			if self.user == user then
-				self.user = nil
-				if CLIENT and LocalPlayer() == user then --CloseInventoryWindow(self) 
-					actor_panels.CloseAll()
-				end
-				self.isopened = false
-			end
-		end
+		self:Open(user)
 	end}, 
 }  
 --DeclareEnumValue("event","ITEM_ADDED",		8267) 

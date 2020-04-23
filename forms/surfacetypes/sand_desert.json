@@ -26,7 +26,7 @@
             "diffuse" : "textures/surface/terrain2/rock_04.png",
             "normal" :"textures/surface/terrain2/rock_04n.png",
             "mask" :"textures/debug/white.png",
-            "smooth" : 0.1,
+            "smooth" : 0,
             "metalness" : 0.2, 
         },
         "material" : "stone",

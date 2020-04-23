@@ -14,7 +14,7 @@ static.cwinput = function(key)
 		
 		local ctext = text
 		local cp = CI.caretpos
-		 
+		local ismultiline = CI:GetMultiline()
 		if key==KEYS_BACK then
 			local tleft =CStringSub(ctext,1,cp-1)
 			local tright =CStringSub(ctext,cp+1)
@@ -26,6 +26,12 @@ static.cwinput = function(key)
 			local tright =CStringSub(ctext,cp+2) 
 			text = tleft..tright 
 			CI:CaretUpdate()
+		elseif ismultiline and key==KEYS_ENTER then
+			text = text .. "\n"
+			CI:CaretUpdate(1)
+		elseif ismultiline and key==KEYS_TAB then 
+			text = text .. "\t"
+			CI:CaretUpdate(1)
 		else 
 			if input.KeyPressed(KEYS_CONTROLKEY) then
 				if key==KEYS_V then  
@@ -191,8 +197,11 @@ function PANEL:CaretUpdate(lenchange,nocollapse)
 			cp = lsp
 		end 
 	end
-	self.caretpos = cp
-	self.caretoverlay:SetText(string.rep(" ", cp)..self.caret or "")
+	self.caretpos = cp 
+	local text = cstring.sub(self.text or "",1,cp) --string.rep("X", cp)
+	text = cstring.regreplace(text,"\a\\[[\\w\\W]*?\\]","") -- remove special commands
+	text = cstring.replace(text,"\n\t","_",true) --replace
+	self.caretoverlay:SetText(text..(self.caret or ""))
 end
 function PANEL:CaretCycle() 
 	debug.Delayed(400,function() 

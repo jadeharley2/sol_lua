@@ -37,11 +37,14 @@
 	],
 	"parameters" : { 
 		"time"			: { "type" : "float", "global": "time"},
+		"distanceMultiplier"	: { "type" : "float", "global": "distance_multiplier"},
+		"tSkyRamp" 				: {"type":"texture"}, 
 	},
 	"onload" : {
 		"tech" : "DefaultTech",
 		"layout" :"VertexNBTTextureSkin",
 		"values" : { 
+			"tSkyRamp" 				: "textures/atmosphere/skyramp.png",
 			
 		}
 	} 

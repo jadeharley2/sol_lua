@@ -138,21 +138,21 @@ function PANEL:MouseClick(fid)
 
 					source:TransferItem(self.storeslot,target,nil,count) 
 				--	self:GetParent().parenteq:RefreshINV()
-				--	MsgN("sclick!")  
+					MsgN("sclick!")  
 				--	InvRefreshAll()
 					debug.Delayed(100,function()
-						hook.Call("inventory_update",target:GetNode()) 
-						hook.Call("inventory_update",source:GetNode()) 
+						hook.Call("storage.update",target,target:GetNode()) 
+						hook.Call("storage.update",source,source:GetNode()) 
 					end)
 				end
 			elseif GLOBAL_CEQPANEL then
 				local data = self.item.data
 				if data.parameters.luaenttype == "item_apparel" then
-					MsgN("uu", self.slot,self.item) 
+					--MsgN("uu", self.slot,self.item) 
 					if GLOBAL_CEQPANEL:EquipItem(self) then 
 					end
 					debug.Delayed(100,function()
-						hook.Call("inventory_update",LocalPlayer())  
+						hook.Call("storage.update",nil,LocalPlayer())  
 						GLOBAL_CEQPANEL:RefreshINV()
 					end)
 				end 
@@ -162,22 +162,30 @@ function PANEL:MouseClick(fid)
 	if not panel.current_drag and fid==2 then 
 		local itemi = self.item
 		--local ACT_USE = function(item) if item.item then item.item:SendEvent(EVENT_USE,LocalPlayer()) end return false end
-		local context = {
+		local context = {}
+		if itemi then
+			hook.Call("item_properties",itemi,context,self.storage,self)
+		end
 			--{text = ""..self.title:GetText()},
 			--{text = "use",action = ACT_USE},
-			{text = "drop",action = function(item) 
+		context[#context+1] =	{text = "drop",action = function(item) 
 				item.storage:GetNode():SendEvent(EVENT_ITEM_DROP,item.storeslot,1) 
 				--self:GetParent():Remove(self)  
 
-			end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "destroy",action = function(item) 
+			end}--hook.Call("event.item.droprequest",item) return false end},
+		context[#context+1] =	{text = "destroy",action = function(item) 
 				item.storage:GetNode():SendEvent(EVENT_ITEM_DESTROY,item.storeslot) 
 				self:GetParent():Remove(self)  
-			end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "info",action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data),5)  end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "forminfo",action = function(item)  PrintTable(forms.ReadForm(item.storage.list[item.storeslot].formid),5)  end},--hook.Call("event.item.droprequest",item) return false end},
-			{text = "edit",action = function(item)  EIT = json.FromJson(item.storage.list[item.storeslot].data) end},
-			{text = "save",action = function(item)  item.storage.list[item.storeslot].data = json.ToJson(EIT) end},
+			end}--hook.Call("event.item.droprequest",item) return false end},
+		context[#context+1] = {
+			text = "debug",
+			sub = {
+				{text = "info", action = function(item)  PrintTable(json.FromJson(item.storage.list[item.storeslot].data),5)  end},
+				{text = "forminfo",action = function(item)  PrintTable(forms.ReadForm(item.storage.list[item.storeslot].formid),5)  end},
+				{text = "edit", action = function(item)  EIT = json.FromJson(item.storage.list[item.storeslot].data) end},
+				{text = "save", action = function(item)  item.storage.list[item.storeslot].data = json.ToJson(EIT) end}
+			}
+		}
 			--{text = "B",action = function(item,context) MsgN("ho!") end},
 			--{text = "CCC",sub={
 			--	{text = "lel"},
@@ -185,10 +193,7 @@ function PANEL:MouseClick(fid)
 			--	{text = "2"},
 			--	{text = "3",action = function(item,context) MsgN("JA!") end},
 			--}},
-		}
-		if itemi then
-			hook.Call("item_properties",itemi,context,self.storage,self)
-		end
+		 
 		--if itemi and itemi.IsEquipped then
 		--	if itemi:IsEquipped() then
 		--		context[#context+1] = {text = "unequip",action = function(i) ACT_USE(i) i:Refresh() end}

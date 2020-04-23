@@ -19,6 +19,7 @@ Texture2DArray SurfaceTextures_n;
 Texture2DArray SurfaceTextures_m;
 
 float4 SurfaceParameters[16];
+int holeid = 9999;
 
 SamplerState MeshTextureSampler
 {
@@ -84,7 +85,7 @@ PS_IN VS( VS_IN input, I_IN inst )
 	output.pos =  wpos;// mul(wpos,VP);
 
 	output.norm = normalize(mul(input.norm,nworld)); 
-	output.bnorm = normalize(mul(input.bnorm,nworld)); 
+	output.bnorm = -normalize(mul(input.bnorm,nworld)); 
 	output.tnorm = cross(output.norm,output.bnorm ); 
 
     output.index = input.index; 
@@ -108,28 +109,29 @@ void GS( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 	float3 pos3 = input[2].pos;
 
     //float3 center = (pos1+pos2+pos3)/3;
-
     int3 ids = float3(input[0].index.x,input[1].index.x,input[2].index.x);
-    //weights
-    input[0].weight = float3(1,0,0);
-    input[1].weight = float3(0,1,0);
-    input[2].weight = float3(0,0,1);
-    
-    input[0].index = ids;//,ids.x);
-    input[1].index = ids;//,ids.y);
-    input[2].index = ids;//,ids.z);
+    if(ids.x!=holeid||ids.y!=holeid||ids.z!=holeid)
+    {
+        //weights
+        input[0].weight = float3(1,0,0);
+        input[1].weight = float3(0,1,0);
+        input[2].weight = float3(0,0,1);
+        
+        input[0].index = ids;//,ids.x);
+        input[1].index = ids;//,ids.y);
+        input[2].index = ids;//,ids.z);
 
-//float4(step(ids.x,input[0].id0.x),step(ids.y,input[0].id0.x),step(ids.z,input[0].id0.x),1);
-//float4(step(ids.x,input[1].id0.x),step(ids.y,input[1].id0.x),step(ids.z,input[1].id0.x),1);
-//float4(step(ids.x,input[2].id0.x),step(ids.y,input[2].id0.x),step(ids.z,input[2].id0.x),1);
-	input[0].pos = mul(  input[0].pos  ,mx);//+(center-pos1)/10
-	input[1].pos = mul(  input[1].pos  ,mx);//+(center-pos2)/10
-	input[2].pos = mul(  input[2].pos  ,mx);//+(center-pos3)/10
-	OutputStream.Append( input[0] );
-	OutputStream.Append( input[1] );
-	OutputStream.Append( input[2] ); 
-	OutputStream.RestartStrip();
- 
+    //float4(step(ids.x,input[0].id0.x),step(ids.y,input[0].id0.x),step(ids.z,input[0].id0.x),1);
+    //float4(step(ids.x,input[1].id0.x),step(ids.y,input[1].id0.x),step(ids.z,input[1].id0.x),1);
+    //float4(step(ids.x,input[2].id0.x),step(ids.y,input[2].id0.x),step(ids.z,input[2].id0.x),1);
+        input[0].pos = mul(  input[0].pos  ,mx);//+(center-pos1)/10
+        input[1].pos = mul(  input[1].pos  ,mx);//+(center-pos2)/10
+        input[2].pos = mul(  input[2].pos  ,mx);//+(center-pos3)/10
+        OutputStream.Append( input[0] );
+        OutputStream.Append( input[1] );
+        OutputStream.Append( input[2] ); 
+        OutputStream.RestartStrip();
+    }
 }
  
 PS_OUT PS( PS_IN input ) : SV_Target
@@ -213,8 +215,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
     //color = surfpar;
     bump = bump*2-1;
     float3 bumpNormal = 
-        (bump.x * input.tnorm) 
-        - (bump.y * input.bnorm) 
+        - (bump.y * input.tnorm) 
+        - (bump.x * input.bnorm) 
         + (bump.z * input.norm);
 
     if(!isnan(bumpNormal.x))

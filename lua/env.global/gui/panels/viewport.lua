@@ -74,3 +74,7 @@ function PANEL:EnableRendering(b)
 		hook.Remove(EVENT_GLOBAL_UPDATE,"viewport."..self.id)
 	end
 end
+function PANEL:MouseDown(c)
+	local onclick = self.OnClick
+	if onclick then onclick(c) end
+end

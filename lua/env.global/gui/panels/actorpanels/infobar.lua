@@ -121,40 +121,46 @@ function PANEL:UpdateBar(ent)
 					end
 					self.lnd = nil
 				end
-				local selected = self.sid 
-				local options = GetInteractOptions(LocalPlayer(),ent)--._interact--{test={text='test'},huh={text="huh?"}}--Interact(LocalPlayer(),ent)
-				if options and istable(options) then
-					local lnd = {}
-					self.lnd = lnd
-					local cn = 1
-					for k,v in pairs(options) do cn= cn + 1 end
-					for k,v in pairs(options) do
-						local id =  #lnd + 1
-						local line = panel.Create()
-						line:SetSize(200,20)
-						line:SetPos(0,self:GetPos().y + id*40-20-40*cn)
-						line:SetCanRaiseMouseEvents(false)
-						line:SetTexture(testtexture) 
-						line:SetTextColor(Vector(255,255,255)/255) 
-						line:SetText(' '..(v.text or k))
-						if selected == id then 
-							if isUseP then
-								line:SetTextColor(Vector(0,0,0)) 
-								line:SetTexture(nil) 
-							end 
-							line:SetText('>'..(v.text or k))
+				local user = LocalPlayer()
+				local dist = ent:GetDistance(user)
+				if dist<(user.userange or 2) then
+
+					local selected = self.sid 
+					local options = GetInteractOptions(user,ent)--._interact--{test={text='test'},huh={text="huh?"}}--Interact(LocalPlayer(),ent)
+					if options and istable(options) then
+						local lnd = {}
+						self.lnd = lnd
+						local cn = 1
+						for k,v in pairs(options) do cn= cn + 1 end
+						for k,v in pairs(options) do
+							local id =  #lnd + 1
+							local line = panel.Create()
+							line:SetSize(200,20)
+							line:SetPos(0,self:GetPos().y + id*40-20-40*cn)
+							line:SetCanRaiseMouseEvents(false)
+							line:SetTexture(testtexture) 
+							line:SetTextColor(Vector(255,255,255)/255) 
+							line:SetText(' '..(v.text or k))
+							if selected == id then 
+								if isUseP then
+									line:SetTextColor(Vector(0,0,0)) 
+									line:SetTexture(nil) 
+								end 
+								line:SetText('>'..(v.text or k))
+								LocalPlayer().intent = k
+							end
+							line:Show()
+							lnd[id] = line
 						end
-						line:Show()
-						lnd[id] = line
+						self.maxid = #lnd
+					else
+						self.maxid = 1
+						--self.sid = 1
 					end
-					self.maxid = #lnd
-				else
-					self.maxid = 1
-					self.sid = 1
 				end
 			else
 				self.maxid = 1
-				self.sid = 1
+				--self.sid = 1
 			end 
 		--self.back:SetText(tostring(ent))
 		end
@@ -179,3 +185,12 @@ function PANEL:MouseEnter()
 end
 function PANEL:MouseLeave() 
 end
+
+console.AddCmd("interact_options",function()
+	local p = LocalPlayer()
+	local t = p.viewEntity
+	if IsValidEnt(t) then
+		local opts = GetInteractOptions(p,t)
+		PrintTable(opts)
+	end
+end)

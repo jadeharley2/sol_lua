@@ -33,7 +33,7 @@ function hook.AddOneshot(type,id,func)
 	end)
 end
 function hook.GetTable()
-	return table.Copy(lua_hooks)
+	return table.DeepCopy(lua_hooks)
 end
 
 local onerror = function(err)

@@ -66,12 +66,28 @@ end
 
 table.get = function(t,key,separator) 
    local n = t
-   for k,v in pairs(string.split(key,separator or '.')) do 
+   for k,v in ipairs(string.split(key,separator or '.')) do 
       n = n[v]
       if n==nil then return nil end
    end
    return n
 end
+table.set = function(t,key,separator,value) 
+   local n = t
+   local parts = string.split(key,separator or '.')
+   for k,v in ipairs(parts) do 
+      local xn = n[v]
+      if k == #parts then
+         n[v] = value
+      elseif xn==nil then 
+         xn = {}
+         n[v] = xn
+         n = xn
+      end
+   end
+   
+end
+
 
 table.count = function(t)
    local c = 0

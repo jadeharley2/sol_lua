@@ -155,8 +155,8 @@ function ENT:Spawn()
 			end
 		end
 	end
-	local app_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,32542389,0.8)
-	app_b.usetype = "apparel spawner"
+	local app_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,32542389,0.8) 
+	app_b.info = "apparel spawner"
 	------
 	 
 	-- tool dispenser
@@ -186,7 +186,7 @@ function ENT:Spawn()
 		end
 	end
 	local wep_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,231632412,0.8)
-	wep_b.usetype = "weapon spawner"
+	wep_b.info = "weapon spawner" 
 	------
 	
 	-- character changer
@@ -251,7 +251,7 @@ function ENT:Spawn()
 		end
 	end
 	local wep_b = SpawnButton(space,"primitives/box.stmd",dpos,nil,dfunc,4352342623,0.8)
-	wep_b.usetype = "ability teacher"
+	wep_b.info = "ability teacher"
 	------
 	
 --	local ambient = ents.Create("ambient_sound")

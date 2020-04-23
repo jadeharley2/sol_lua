@@ -1009,7 +1009,7 @@ function ENT:Jump()
 		end
 	end
 end
-function ENT:Move(dir,run,updatespeed)
+function ENT:Move(dir,run,updatespeed,speedmul)
 	if self.nomovement then return false end
 	local phys = self.phys
 	local graph = self.graph
@@ -1017,29 +1017,31 @@ function ENT:Move(dir,run,updatespeed)
 	local spmul = self.speedmul or 1
 	local spscale = scale*spmul
 	
+	speedmul = math.Clamp(speedmul or 1,0,1)
+
 	self.lastdir = dir
 	self.lastrun = run
 	if dir then
 		if self:IsFlying() then 
 			if run then
-				phys:SetAirSpeed(self.flyfastspeed*spscale) 
+				phys:SetAirSpeed(self.flyfastspeed*spscale*speedmul) 
 			else
-				phys:SetAirSpeed(self.flyspeed*spscale) 
+				phys:SetAirSpeed(self.flyspeed*spscale*speedmul) 
 			end 
 			graph:Call("flight_move")   
 		else 
 			if self:Crouching() then
 				if graph:Call("cwalk") or updatespeed  then 
-					phys:SetCrouchingSpeed(self.walkspeed*spscale) 
+					phys:SetCrouchingSpeed(self.walkspeed*spscale*speedmul) 
 				end
 			else
 				if run then 
 					if graph:Call("run") or updatespeed then 
-						phys:SetStandingSpeed(self.runspeed*spscale) 
+						phys:SetStandingSpeed(self.runspeed*spscale*speedmul) 
 					end
 				else  
 					if graph:Call("walk") or updatespeed  then 
-						phys:SetStandingSpeed(self.walkspeed*spscale)  
+						phys:SetStandingSpeed(self.walkspeed*spscale*speedmul)  
 					end
 				end
 			end
@@ -1970,7 +1972,29 @@ function ENT:SetSkin(str)
 	end
 end
 
-
+hook.Add('interact.options','pickup',function(u,e,t)
+    if e:HasTag(TAG_STOREABLE) then
+        t.pickup = {text = "pick up"}
+    end
+end) 
+hook.Add('interact','pickup',function(user,e,t)
+    if t=='pickup' then
+        local inv = user:GetComponent(CTYPE_STORAGE)
+        if inv then 
+            local freeslot = inv:GetFreeSlot()
+            if e:HasTag(TAG_STOREABLE) then
+                MsgN("pickup",user, e)
+                e:SendEvent(EVENT_PICKUP,user)
+                if inv:PutItem(freeslot,e) then
+                    if CLIENT then
+                        user:EmitSound("events/lamp-switch.ogg",1)
+                    end
+                    return freeslot
+                end
+            end
+        end
+    end
+end) 
 function ENT:PickupNearest()
 	local inv = self:GetComponent(CTYPE_STORAGE)
 	if inv then 
@@ -2091,7 +2115,8 @@ ENT._typeevents = {
 		if m and m:HasAnimation("capchair.exit") then
 			self.graph:SetState("vehicle_exit_start") 
 		else
-			self.graph:SetState("vehicle_exit_end") 
+			self.graph:SetState("idle") 
+			self:SetVehicle()
 		end
 	end},
 	

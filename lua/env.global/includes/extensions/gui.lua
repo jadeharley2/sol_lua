@@ -84,7 +84,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif k == 'color' then node:SetColor(Vector(v[1],v[2],v[3]))
 			if v[4] then
 				node:SetAlpha(v[4])
-			end
+			end 
 		elseif k == 'gradient' then 
 			local c1 = v[1]
 			local c2 = v[2]
@@ -197,11 +197,16 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 				if x then
 					node:Add(x) 
 					if v.align then 
-						local alignment =FSTR_Alignment(v.align[1])
-						
-						local offsetx = v.align[2]
-						local offsety = v.align[3] 
-						x:AlignTo(node,alignment,alignment,offsetx,offsety)
+						if istable(v.align) then
+							local alignment =FSTR_Alignment(v.align[1])
+							
+							local offsetx = v.align[2]
+							local offsety = v.align[3] 
+							x:AlignTo(node,alignment,alignment,offsetx,offsety)
+						else
+							local alignment =FSTR_Alignment(v.align) 
+							x:AlignTo(node,alignment,alignment,0,0)
+						end
 					end 
 				end
 			elseif isuserdata(v) then
@@ -237,6 +242,41 @@ function PANEL:MoveTo(target,time,easingfunc)
 			self:SetPos(LerpVector(pos,target,easingfunc(t/iters))) 
 		end
 	end)
+end 
+function PANEL:RotateTo(target,time,easingfunc)
+	local ang = self:GetRotation()
+	time = time or 1
+	easingfunc = easingfunc or easing.linear
+	local t = 0
+	local iters = time*50
+	debug.DelayedTimer(0,20,iters, function()  
+		t = t + 1
+		if t==iters then
+			self:SetRotation(target) 
+		else
+			self:SetRotation(math.lerp(ang,target,easingfunc(t/iters))) 
+		end
+	end)
+end 
+function PANEL:AnimateColor(var,target,time,easingfunc)
+	local getfunc = self['Get'..var]
+	local setfunc = self['Set'..var]
+	if getfunc and setfunc then
+		time = time or 1
+		easingfunc = easingfunc or easing.linear
+		local startcolor = getfunc(self)
+			
+		local t = 0
+		local iters = time*50
+		debug.DelayedTimer(0,20,iters, function()  
+			t = t + 1
+			if t==iters then
+				setfunc(self,target) 
+			else
+				setfunc(self,LerpVector(startcolor,target,easingfunc(t/iters))) 
+			end
+		end) 
+	end
 end
 
 easing = {
@@ -254,16 +294,15 @@ easing = {
 	end,
 	easeout = function (x)
 		return 1-(x-1)^2
-	end,
-	ease = function (x)
-		return easing.bezier(x,0,0,1,1)
-	end,
-	easeinout = easing.ease,
-	easeinoutback = function (x)
-		return easing.bezier(x,0,-0.2,1.2,1)
-	end,
-
+	end, 
 }
+easing.ease = function (x)
+	return easing.bezier(x,0,0,1,1)
+end
+easing.easeinoutback = function (x)
+	return easing.bezier(x,0,-0.2,1.2,1)
+end
+easing.easeinout = easing.ease 
 
 --function gui.FromLayout(root,layout,style)
 --	local nodetable = {}

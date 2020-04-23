@@ -15,7 +15,14 @@ local function deepcopy(orig)
     return copy
 end
 
-table.Copy = deepcopy
+table.DeepCopy = deepcopy
+table.Copy = function (orig)
+	local newt = {}
+	for k,v in pairs(orig) do
+		newt[k] = v
+	end
+	return newt
+end
 
 
 table.Random = function(t,rnd)

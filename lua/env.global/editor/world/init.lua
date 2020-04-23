@@ -31,9 +31,12 @@ geventlist[EVENT_EDITOR_SPAWN_FORM] = {networked = true, f = function(_,form,nod
 	 
 --	--[[
 	local e = forms.Create(form,node,{pos = pos, seed = seed})
-	if e then 
-		e:AddTag(TAG_EDITORNODE)
-		
+	if IsValidEnt(e) then 
+		if worldeditor.autochunknode then
+			terrain_NodeSetChunk(e,true) 
+		else
+			e:AddTag(TAG_EDITORNODE)
+		end
 		local edt = e.editor
 		if edt and edt.onSpawn then
 			edt.onSpawn(e)
@@ -204,9 +207,15 @@ function editor:SetGridMode(str)
 			self.gizmo:SetAng(matrix.Identity())
 		end
 	end
+end 
+function editor:GetGridMode()
+	return self.gridmode  
 end
 function editor:SetPosSnap(enable)
 	self.possnap = enable or false
+end
+function editor:GetPosSnap()
+	return self.possnap 
 end
 function editor:GetNodeUnderCursor(lp)
 	local drw = false
@@ -302,6 +311,10 @@ function editor:SetMode(mode)
 		self:Select(nil) 
 	end
 end
+function editor:GetMode()  
+	return EDITOR_MODE
+end
+
 
 
 function editor:Update()

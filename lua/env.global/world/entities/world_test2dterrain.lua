@@ -1,7 +1,7 @@
 ENT.name = "Test 2d terrain"
 
 local rdtex = LoadTexture("space/star_sprites.png")
-function ENT:CreateStaticLight( pos, color,power)
+function ENT:CreateStaticLight( pos, color,power,glname,seed)
 
 	local lighttest = ents.Create("omnilight") 
 	local world = matrix.Scaling(2) 
@@ -11,11 +11,13 @@ function ENT:CreateStaticLight( pos, color,power)
 	lighttest:SetSpaceEnabled(false)
 	lighttest:Spawn() 
 	if power then lighttest:SetBrightness(power) end
-	lighttest:SetPos(pos)  
-
+	lighttest:SetPos(pos) 
+	if glname then lighttest:SetGlobalName(glname) end
+	if seed then lighttest:SetSeed(seed) end
+	
 
 	local particlesys = lighttest:AddComponent(CTYPE_PARTICLESYSTEM) 
-	particlesys:SetRenderGroup(RENDERGROUP_DEEPSPACE)
+	particlesys:SetRenderGroup(RENDERGROUP_LOCAL)
 	particlesys:SetNodeMode(false)
 	particlesys:AddNode(8)
 	particlesys:SetNodeStates(8,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
@@ -32,7 +34,7 @@ function ENT:Init()
 	self:SetSizepower(10000)
 	self:SetSeed(9900001)
 	self:SetGlobalName("u_grid") 
-
+	self:SetUpdating(true,16)
 end
 function ENT:LoadWorld(name)
 	local data = json.Read('chunkdata/'..name..'/info.json')
@@ -42,11 +44,17 @@ function ENT:LoadWorld(name)
 		self.skybox:Despawn()
 		self.skybox = nil
 	end  
-	self.skybox = SpawnDynsky(self.space)
-	--if data.sky and data.sky.texture then
-	--	self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/daysky.dds")
-	--	if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
-	--end
+	if IsValidEnt(self.dynsky) then
+		self.dynsky:Despawn()
+		self.dynsky = nil
+	end  
+	if data.sky and data.sky.texture then
+		self.skybox = SpawnSkybox(self.space,data.sky.texture or "textures/cubemap/bluespace.dds")
+		if data.sky.rotation then self.skybox:SetWorld(matrix.Rotation(JVector(data.sky.rotation))) end--Vector(180,0,0)))
+	end
+	if data.atmosphere then
+		self.dynsky = SpawnDynsky(self.space)
+	end
 	self.grid:SetWorldName(name)
 	if CLIENT then 
 		self:Delayed("cubemapdraw",1000,function()
@@ -75,7 +83,8 @@ function ENT:Spawn()
 
 	
 	--def:1900000000
-	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,Vector(255,255,255)/255,50500000000*8)
+	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,
+		Vector(255,255,255)/255,50500000000*8,"dgl_star0",33244285)
 	light.light:SetShadow(true)  
 	SpawnPV('prop.furniture.space.spawn',space,Vector(0,-1,0)*0.001,Vector(0,0,0),0)
 	self.space = space
@@ -110,11 +119,36 @@ function ENT:Spawn()
 		cubemap:SetTarget(nil,self)  
 		cubemap:RequestDraw()
 
+		GlobalSetCubemap(cubemap)
 		
 	end 
 	CreateSpawnpoint(space,Vector(0,0.0013627,0) )
 end
+function ENT:Think()
+	local time = CurTime()
+	self:SetTime(time)
+	return true
+end
+function ENT:SetTime(time)
+	local dt = time - (self.time or 0)
+	self.time = time
+	local dgl_star0 = ents.GetByName("dgl_star0")
+	if dgl_star0 then
+		local lpos = dgl_star0:GetPos()
+		local dbase = Vector(0,70,0)
+		-- 0 = -180
+		-- 6 = -90
+		-- 12= 0 
+		-- 16= 90
+		local angle = dt/100--(time/10/12-1)*180
 
+		dgl_star0:SetPos(lpos:Rotate(Vector(angle,0,0)))
+		local alpos =  dgl_star0:GetPos():Normalized().y
+		local mulb = math.min(math.max(alpos*20,0),1)
+		--MsgN(alpos,mulb)
+		dgl_star0:SetBrightness(50500000000*8*mulb,1)--
+	end
+end
 function ENT:GetSpawn() 
 	if CLIENT then
 		local c = SpawnPlayerChar( Vector(0,0.0013627,0),self.space) 

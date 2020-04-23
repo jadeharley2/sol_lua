@@ -97,7 +97,7 @@ function PANEL:UpdateCnodes(root)
 		end
 	end}  
 	rtb[#rtb+1] = tb2
-	local maxnodecount = 100
+	local maxnodecount = 500
 	for k,v in SortedPairs(chp) do 
 		if v then
 			maxnodecount = maxnodecount - 1

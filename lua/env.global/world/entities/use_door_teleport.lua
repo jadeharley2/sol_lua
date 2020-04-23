@@ -14,7 +14,13 @@ function SpawnDT(model,parent,pos,ang,sca)
 	return e
 end
 
-ENT.usetype = "enter"
+--ENT.usetype = "enter"
+ENT.info = "Door"
+ENT._interact = {
+	open={text="enter",action= function (self,user)
+		self:Press(user)
+	end},
+}
 
 function ENT:Init()  
 	local phys = self:AddComponent(CTYPE_STATICCOLLISION)  

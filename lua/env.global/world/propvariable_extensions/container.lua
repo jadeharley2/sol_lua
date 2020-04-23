@@ -68,10 +68,16 @@ hook.Add("prop.variable.load","container",function (self,j,tags)
 		local storage = self:AddComponent(CTYPE_STORAGE)  
 		self.storage = storage
 		self.isopened = false 
-		self.usetype = "open container"
-		self:AddTag(TAG_USEABLE)
-		self:AddEventListener(EVENT_USE,"a",ContainerUse)
-		self:SetNetworkedEvent(EVENT_USE,true)
+		self.info = "Container"
+		
+		--ENT.info = "Door"
+		self:AddInteraction("open",
+			{text="open",action= function (self,user)
+				ContainerUse(self,user)
+			end})
+		--self:AddTag(TAG_USEABLE)
+		--self:AddEventListener(EVENT_USE,"a",ContainerUse)
+		--self:SetNetworkedEvent(EVENT_USE,true)
 		if j.container.size then
 			storage:SetSize(j.container.size or 30)
 		end

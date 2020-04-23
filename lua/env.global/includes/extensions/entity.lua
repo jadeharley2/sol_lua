@@ -166,3 +166,4 @@ function ENTITY:UnregisterComponent(com)
 		end
 	end
 end
+

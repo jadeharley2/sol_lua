@@ -143,6 +143,7 @@ function PANEL:Init()
 									v:Despawn()
 								end
 							end
+							MsgInfo("Editor nodes removed!")
 						end,
 						contextinfo='Clear nodes'
 					},
@@ -152,6 +153,9 @@ function PANEL:Init()
 							local cseed = cparent:GetSeed()
 							if cseed ~= 0 then
 								engine.SaveNode(cparent, tostring(cseed), TAG_EDITORNODE)
+								MsgInfo("Nodes saved!")
+							else
+								MsgInfo("Unable to save nodes! Current node seed is 0!")
 							end
 						end,
 						contextinfo = 'Load nodes by current seed'
@@ -163,12 +167,30 @@ function PANEL:Init()
 								local s = panel.Create("window_save")
 								s:SetTitle("Save node") 
 								s:SetButtons("Save","Back") 
-								s.OnAccept = function(s,name) engine.SaveNode(cparent, "manual/"..name, TAG_EDITORNODE) end
+								s.OnAccept = function(s,name) 
+									engine.SaveNode(cparent, "manual/"..name, TAG_EDITORNODE) 
+									MsgInfo("Nodes saved!")
+								end
 								s:Show() 
 							end
 						end,
 						contextinfo = 'Save nodes as'
 					}, 
+					--{ class = "bmenu", name = "bsavechunks", texture = "textures/gui/panel_icons/save.png", 
+					--	OnClick = function()
+					--		local cparent = GetCamera():GetParent()
+					--		if cparent then
+					--			local terrain = cparent:GetComponent(CTYPE_CHUNKTERRAIN)
+					--			if terrain then
+					--				terrain:SaveChunks()
+					--				MsgInfo("Chunks saved!")
+					--				return true
+					--			end
+					--		end
+					--		MsgInfo("Unable to save nonexistant terrain!")
+					--	end,
+					--	contextinfo = 'Save chunks'
+					--}, 
 					{ class = "bmenu",  name = "bload", texture = "textures/gui/panel_icons/load.png",  
 						OnClick = function()
 							local cparent = GetCamera():GetParent() 
@@ -176,7 +198,10 @@ function PANEL:Init()
 								local s = panel.Create("window_save")
 								s:SetTitle("Load node") 
 								s:SetButtons("Load","Back") 
-								s.OnAccept = function(s,name) engine.LoadNode(cparent, "manual/"..name) end
+								s.OnAccept = function(s,name) 
+									engine.LoadNode(cparent, "manual/"..name) 
+									MsgInfo("Nodes loaded!")
+								end
 								s:Show() 
 							end 
 						end,
@@ -191,11 +216,14 @@ function PANEL:Init()
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/scale.png", contextinfo='Scailing mode'},
 					{class="menu_separator"},
 					{ class = "bmenu", texture = "textures/gui/panel_icons/localspace.png", contextinfo='Local grid',
-						OnClick = function() worldeditor:SetGridMode("local") end},
+						OnClick = function() worldeditor:SetGridMode("local") end,
+						Pressed = worldeditor:GetGridMode()=="local"},
 					{ class = "bmenu", texture = "textures/gui/panel_icons/parentspace.png", contextinfo='Parent grid',
-						OnClick = function() worldeditor:SetGridMode("parent") end},
+						OnClick = function() worldeditor:SetGridMode("parent") end,
+						Pressed = worldeditor:GetGridMode()=="parent"},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/possnap.png", contextinfo='Position snap',
-						OnClick = function(s,val) worldeditor:SetPosSnap(val) end},
+						OnClick = function(s,val) worldeditor:SetPosSnap(val) end,
+						Pressed = worldeditor:GetPosSnap()},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/anglesnap.png", contextinfo='Angle snap'},
 					{class="menu_separator"},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/localorigin.png", contextinfo='Local origin'},
@@ -223,9 +251,34 @@ function PANEL:Init()
 						contextinfo = 'Remove from chunk nodes'
 					}, 
 					{class="menu_separator"},
+					{ class = "bmenutoggle",  name = "bplacementauto", texture = "textures/gui/panel_icons/star.png",  
+						OnClick = function(s)  
+							worldeditor.bplacementauto = s:IsPressed()
+						end,
+						Pressed = worldeditor.bplacementauto,
+						contextinfo = 'Place object on click'
+					}, 
+					{ class = "bmenutoggle",  name = "bplacementrandyaw", texture = "textures/gui/panel_icons/rotate.png",  
+						OnClick = function(s)  
+							worldeditor.bplacementrandyaw = s:IsPressed()
+						end,
+						Pressed = worldeditor.bplacementrandyaw,
+						contextinfo = 'Use random Yaw rotation'
+					}, 
+					{ class = "bmenutoggle",  name = "bautochunknode", texture = "textures/gui/panel_icons/image.png",  
+						OnClick = function(s)  
+							worldeditor.autochunknode = s:IsPressed()
+						end,
+						Pressed = worldeditor.autochunknode,
+						contextinfo = 'Make chunknode on spawn'
+					}, 
 				}
 			}, 
-			{type='viewport',name="vp",dock=DOCK_FILL}
+			{type='viewport',name="vp",dock=DOCK_FILL, OnClick = function ()
+				if input.leftMouseButton() and self.bplacementauto:IsPressed() then
+					WE_SpawnOnMouse(self.bplacementrandyaw:IsPressed())
+				end
+			end}
 		} 
     },self,sty,self)
     

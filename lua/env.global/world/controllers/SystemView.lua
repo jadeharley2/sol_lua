@@ -98,7 +98,7 @@ function OBJ:PanelsCreate()
 	
 	local panels = {}
 	if system then
-		local subs = table.Copy(system.planets or system.moons)
+		local subs = table.DeepCopy(system.planets or system.moons)
 		if system.moons then
 			subs[#subs+1] = system
 		end

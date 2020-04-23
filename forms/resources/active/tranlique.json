@@ -1,0 +1,19 @@
+{
+    "name":"Tranlique",
+    "tags":["active"],
+    "icon":"res/liquid_metallic",
+    "tint":[0.8,0.4,0.8], 
+    "effects":[
+        {
+            "effect" : "delay",
+            "delay" : 1,
+            "data" : [
+                { 
+                    "effect" : "transform", 
+                    "dispelDelay" : 20, 
+                    "character":"midna"
+                }, 
+            ]
+        },
+    ]
+}

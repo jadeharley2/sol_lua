@@ -1,4 +1,16 @@
  
+ENT.info = "Book"
+ENT._interact = {
+	read={text="read",action= function (self,user)
+		if CLIENT and user==LocalPlayer() then
+			local formid = self[VARTYPE_FORM] 
+			local book = panel.Create('book_page')
+			book:SetForm(formid)
+			actor_panels.AddPanel(book,true)
+			book:Show()
+		end
+	end},
+}
 
 function ENT:Init()  
 	self:SetSizepower(1)
@@ -13,7 +25,7 @@ end
 function ENT:LoadData() 
 	local data =  forms.ReadForm(self[VARTYPE_FORM])
 	self.data = data
-	if data.name then self:SetName(data.name) end
+	if data.name then self:SetName(data.name) self.info = data.name end
 
 end
 
@@ -70,6 +82,17 @@ hook.Add('formspawn.book','spawn',function(form,parent,arguments)
 	ent:SetParent(parent) 
 	ent:SetSeed(arguments.seed or 0)
 	ent:Spawn()
+	ent:SetPos(arguments.pos or Vector(0,0,0))  
+	return ent
+end)
+hook.Add('formcreate.book','create',function(form,parent,arguments)  
+
+	local ent = ents.Create("book") 
+	ent[VARTYPE_MODELSCALE] = 0.03
+	ent[VARTYPE_FORM] = form 
+	ent:SetParent(parent) 
+	ent:SetSeed(arguments.seed or 0)
+	ent:Create()
 	ent:SetPos(arguments.pos or Vector(0,0,0))  
 	return ent
 end)

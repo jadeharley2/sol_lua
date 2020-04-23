@@ -12,7 +12,7 @@ local onerror = function(err)
 	MsgN(err)  
 	MsgN(debug.traceback())
 end
-function MsgTextBox(text,title, buttons, callback)
+function MsgTextBox(text,title, buttons, callback, size)
     MsgBox({
         textonly = true,
         dock = DOCK_FILL,
@@ -31,14 +31,14 @@ function MsgTextBox(text,title, buttons, callback)
         }
     },title,buttons,function(rez,x)
         callback(rez,x.field:GetText(),x)
-    end)
+    end, size)
 end
-function MsgBox(text, title, buttons, callback)
+function MsgBox(text, title, buttons, callback, size)
     buttons = buttons or {"Ok"}
     local x = {}
     local layout = {
         type = "messagebox", 
-        size = {250,150},
+        size = size or {250,150},
         Title = title or "Message",
         contents = {
             { name = "buttonpanel",

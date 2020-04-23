@@ -99,7 +99,9 @@ function ENT:SetForm(form)
 	self:ClearStage() 
 	if true then  
 		local p = false
-		if form:find('/') then 
+		if isjson(form) then
+			p = ents.FromData(form,self) 
+		elseif form:find('/') then 
 			local ext = file.GetExtension(form)
 			if ext =='.stmd' or ext == '.dnmd' or ext == '.mdl' then -- or ext == '.smd'
 				p = SpawnSO(form,self,Vector(0,0,0),1,NO_COLLISION)

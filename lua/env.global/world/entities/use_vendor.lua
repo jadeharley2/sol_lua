@@ -1,6 +1,15 @@
 
  
-ENT.usetype = "button"
+--ENT.usetype = "button"
+ENT.info = "vendor"
+ENT._interact = {
+	open={
+		text="open",
+		action = function (self, user)
+			self:Press(user)
+		end
+	},
+}
 
 function ENT:Init()   
 	local model = self:AddComponent(CTYPE_MODEL)  
@@ -39,7 +48,7 @@ end
 function ENT:SetModel(mdl,scale) 
 	scale = scale or 1
 	local model = self.model
-	local world = matrix.Scaling(scale) * matrix.Rotation(-90,0,0)
+	local world = matrix.Scaling(scale)  
 	
 	self:SetParameter(VARTYPE_MODEL,mdl)
 	self:SetParameter(VARTYPE_MODELSCALE,scale)
@@ -87,7 +96,7 @@ function ENT:SetMode(mode)
 			end
 		end 
 		self.OnPress = dfunc
-		self.usetype = "character morpher"
+		self.info = "character morpher"
 	elseif mode == "ability" then 
 		local current_abv = false
 		local dfunc = function(button,user) 
@@ -114,7 +123,7 @@ function ENT:SetMode(mode)
 			end
 		end
 		self.OnPress = dfunc
-		self.usetype = "ability teacher"
+		self.info = "ability teacher"
 	elseif mode == "item" then
 		local current_wepv = false
 		local dfunc = function(button,user) 
@@ -141,7 +150,7 @@ function ENT:SetMode(mode)
 			end
 		end
 		self.OnPress = dfunc
-		self.usetype = "item spawner"
+		self.info = "item spawner"
 	end
 end
 

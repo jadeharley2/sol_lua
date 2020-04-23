@@ -6,7 +6,7 @@ function ENT:Init()
 	self.model = model
 	self.coll = coll 
 	self.space = space
-	self:SetSizepower(100)
+	self:SetSizepower(1000)
 	self:SetSpaceEnabled(true,1)  
 	
 end
@@ -20,6 +20,8 @@ function ENT:Spawn()
 	self.space:SetRadialGravity(-1)
 
 	self.cc = SpawnSO('primitives/sphere.stmd',self,Vector(0,0,0),19) 
+	self.cc.model:SetMaxRenderDistance(100*19)
+	--self.cc.phys:UpdateSpace()
 	--self.coll:SetupNodeTransfer()
 	MsgN("huh?") 
 end   

@@ -1,9 +1,0 @@
-{
-	"group" : "clutter",
-	"tags" : ["lab","lamp"],
-	"model" : "clutter/lab/lamp_a.stmd",
-	"scale" : 0.03,
-	"rotation" : [0,0,0],
-	"light" : { "pos" : [0,0.3,0], "color" :[0.1,0.3,1],"brightness":0.1 },
-	"modmaterial" :  [ {}, {"tint":[0.1,0.3,1]}, ]
-}

@@ -1,12 +1,22 @@
 
 hook.Add("prop.variable.load","misc",function (self,j,tags)  
-	if tags.item then
-		self:AddTag(TAG_STOREABLE) 
-	end
-	if j.viewdistance then
-		--MsgN("mvd",j.viewdistance)
-		self.model:SetMaxRenderDistance(j.viewdistance)
-	end
+	
+	--if tags.item then
+	--	self:AddTag(TAG_STOREABLE) 
+	--	--self.info = "button"
+	--	self._interact = {
+	--		pickup={
+	--			text="pick up",
+	--			action = function (self, user)
+	--				self:Press(user)
+	--			end
+	--		},
+	--	} 
+	--end
+	--if j.viewdistance then
+	--	--MsgN("mvd",j.viewdistance)
+	--	self.model:SetMaxRenderDistance(j.viewdistance)
+	--end
 end)
 
 

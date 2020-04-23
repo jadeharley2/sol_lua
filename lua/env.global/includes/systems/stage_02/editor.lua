@@ -14,4 +14,4 @@ local editor_class = DefineClass("Editor","editor","lua/env.global/editor/",EDIT
           
 function Editor(type)  
 	return editor_class:Create(type)
-end     
+end      

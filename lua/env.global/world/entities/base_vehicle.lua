@@ -18,6 +18,14 @@ end
 
 ENT.mountpoints = {
 	{pos = Vector(-2.9,0.5,0.815532),ang = Vector(0,180,0)}
+} 
+ENT.info = "vehicle"
+ENT._interact = {
+	sit={text="sit",
+	action = function (self,user) 
+		MsgN(self," is used by aaa: ",user)
+		user:SendEvent(EVENT_SET_VEHICLE,self,1,self)--SetVehicle(self,1,self) 
+	end},
 }
 function ENT:Init()  
 	self:SetSizepower(1) 

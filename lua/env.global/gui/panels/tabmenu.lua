@@ -15,6 +15,7 @@ function PANEL:Init()
 	
 	self.plist = {}
 	self.pnames = {}
+	self.pids = {}
 	self.pbtns = {}
 	self.tabButtonPanel = tabButtonPanel
 	self.framePanel = framePanel
@@ -28,6 +29,7 @@ function PANEL:AddTab(name,sub,btnmodt)
 	local plist = self.plist
 	local pnames = self.pnames
 	local pbtns = self.pbtns
+	local pids = self.pids
 	b:SetText(name or "Tab")
 	local tabButtonPanel = self.tabButtonPanel
 	b:SetSize(100,30)
@@ -39,15 +41,12 @@ function PANEL:AddTab(name,sub,btnmodt)
 	local lid = #plist+1
 	plist[lid] = sub 
 	pnames[lid] = name
+	pids[name] = lid
 	pbtns[lid] = b
 	b.OnClick = function() self:ShowTab(lid) end
 	
 	local bordcol = gui.style:GetColor("Border")
-	local separator = panel.Create()
-	separator:SetSize(3,3) 
-	separator:Dock(DOCK_LEFT)
-	separator:SetColor(bordcol)
-	tabButtonPanel:Add(separator)
+	
 
 	if btnmodt then
 		gui.FromTable(btnmodt,b)
@@ -80,5 +79,14 @@ function PANEL:ShowTab(id)
 		end
 	end
 end 
+function PANEL:SetTabVisible(id,val)
+	if isstring(id) then
+		id = self.pids[id]
+	end
+	if self.plist[id] then
+		self.plist[id]:SetVisible(val) 
+		self.pbtns[id]:SetVisible(val)
+	end
+end
 
 PANEL.tabs_info = {type = 'children_dict',add = PANEL.AddTab}

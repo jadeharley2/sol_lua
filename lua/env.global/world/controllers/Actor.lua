@@ -94,9 +94,9 @@ function OBJ:Init()
 	--end
 	
 	
-	if healthbar then healthbar:Close() GLOBAL_healthbar=nil end
-	if infobar then infobar:UpdateBar(nil) infobar:Close() GLOBAL_infobar=nil end
-	if quickmenu then quickmenu:Close() GLOBAL_quickmenu=nil end 
+	if GLOBAL_healthbar then GLOBAL_healthbar:Close() GLOBAL_healthbar=nil end
+	if GLOBAL_infobar then GLOBAL_infobar:UpdateBar(nil) GLOBAL_infobar:Close() GLOBAL_infobar=nil end
+	if GLOBAL_quickmenu then GLOBAL_quickmenu:Close() GLOBAL_quickmenu=nil end 
 	GLOBAL_healthbar = healthbar
 	GLOBAL_infobar = infobar
 	GLOBAL_quickmenu = quickmenu
@@ -742,15 +742,16 @@ function OBJ:HandleThirdPersonMovement(actor)
 		if actor.phys:OnGround() then
 			div = 5
 		end
-		
-		local downInLocal = Vector(0,0,1):TransformN(sp)
+		local downvector =  Vector(0,0,1)--actor:GetPos():Normalized()--
+		local rinlocal =  Vector(1,0,0)
+		local downInLocal = downvector:TransformN(sp)
 		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
 		
 		actor:TRotateAroundAxis(sForward , dd_e/div) 
 		
 		local sRight = actor:Forward():Normalized()
 		--local sr2 = Vector(sForward.x,0,sForward.z):Normalized()
-		local downInLocal = Vector(1,0,0):TransformN(sp)
+		local downInLocal = rinlocal:TransformN(sp)
 		local dd_r,dd_p,dd_e = actor:GetHeadingElevation(downInLocal)
 		
 		actor:TRotateAroundAxis(sRight, dd_e/div/vel) 
@@ -1043,7 +1044,14 @@ function USE_ITEM(actor,item)
 	end 
 end
 function OBJ:HandleUse(actor)
-	USE(actor) 
+	local target = self.viewEntity 
+	if IsValidEnt(target) then
+		local intent = actor.intent
+		if intent then	
+			Interact(actor,target,intent)
+		end
+	end
+	--USE(actor) 
 end
 function OBJ:HandlePickup(actor) 
 	actor:SendEvent(EVENT_PICKUP)-- PickupNearest()    
@@ -1382,11 +1390,17 @@ function OBJ:HandleGetInfo(actor)
 			if tr and tr.Hit then 
 				local nn = tr.Entity--GetNearestNode(actor:GetParent(),tr.Position) 
 				if nn ~= actor then
+					self.viewEntity = nn
+					actor.viewEntity = nn
 					infobar:UpdateBar(nn)
 				else
+					self.viewEntity = nil
+					actor.viewEntity = nil
 					infobar:UpdateBar()
 				end
 			else
+				self.viewEntity = nil
+				actor.viewEntity = nil
 				infobar:UpdateBar()
 			end
 		end

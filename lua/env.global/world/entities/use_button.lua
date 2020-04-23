@@ -12,9 +12,15 @@ function SpawnButton(parent,model,pos,ang,action,seed,scale)
 	return e
 end
 
-ENT.usetype = "button"
+--ENT.usetype = "button"
+ENT.info = "button"
 ENT._interact = {
-	press={text="press button"},
+	press={
+		text="press",
+		action = function (self, user)
+			self:Press(user)
+		end
+	},
 }
 
 function ENT:Init()   
@@ -68,8 +74,11 @@ function ENT:SetModel(mdl,scale)
 	model:SetFadeBounds(0,9e20,0)  
 	model:SetMatrix(world)
 	 
-	self.coll:SetShapeFromModel(matrix.Scaling(scale) ) 
-	
+	if model:HasCollision()  then
+		self.coll:SetShapeFromModel(matrix.Scaling(scale) ) 
+	else
+		self.coll:SetShape("models/primitives/box.stmd",matrix.Scaling(scale))
+	end
 	self.modelcom = true
 end 
 
@@ -83,5 +92,5 @@ function ENT:Press(user)
 end
 
 ENT._typeevents = {
-	[EVENT_USE] = {networked = true, f = ENT.Press},
+	[EVENT_USE] = {networked = true, f = ENT.Press}, 
 }

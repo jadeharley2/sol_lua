@@ -1,0 +1,14 @@
+{ 
+	"name":"Lift mirror",
+	"tags" : [],
+	"model" : "lift/lift_mirror.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+	"luatype":"rt_mirror", 
+	"variables":{
+		"mirrorlight":false
+	},
+	"composition" :{
+		"resource.glass" : 8,     
+	}
+}

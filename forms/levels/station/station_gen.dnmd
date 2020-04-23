@@ -1,0 +1,264 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"textures/tile/wall", 
+		"textures/tile/floor", 
+		"textures/tile/ceiling", 
+		"textures/tile/mat", 
+		"textures/tile/tilt", 
+		"modules/tex",  
+		"textures/models/station/"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+		"$floors":2,
+		"$sections":2,
+		"$align":[0,-1,0],
+		"$colorw":"glass", 
+		"$colorf":"wood",
+		"$colorr":"roofm",
+		"$colorb":"concrete",
+		"$tint":[1,1,1],
+		"$iscorner":false
+	}, 
+	"input_operations": [        
+	],
+	"operations" : [        
+		{ "type" : "obj","out":"%",
+		//"out" : { 
+		//	"default":"default", 
+		//	"floor_def":"floor_def",
+		//	"door_def":"door_def",
+		//	"wall_bend":"wall_bend", 
+		//	"wall_plain":"wall_plain",
+		//	"floor_tri":"floor_tri", 
+		//},     
+			"mode":"materials",   
+			"file": "interiors_modular.obj"//"building_generator_test.obj"
+		},     
+		{"type": "material","in": ["*"],
+			"material":"default",
+			"smooth":false
+		},     
+		{ "type" : "uvmap", "in":["default"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face",  
+		},  
+		{"type": "substitute","from": "floor_def","out": {
+				"default":"defaultf", 
+			}, 
+			"obj":"modules/floor_01.obj",
+			"zscale": -1
+		}, 
+		{ "type" : "uvmap", "in":["defaultf","window"], 
+			"mode":"vertex",  
+		},  
+		{"type": "material","in": ["defaultf"],
+			"material":"default",
+			"smooth":false
+		}, 
+		{"type": "frotate","in": ["wall_bend*","door_def","wall_plain","window"], 
+			"align":[0,1,0],
+		},   
+		{"type": "frotate","in": ["wall_plain"], 
+			"add":1,
+		},   
+
+		{ "type" : "uvmap", "in":["floor_tri"], 
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face",  
+		},  
+
+		
+		{"type":"clone","in":"wall_bend_l","out":"wall_bend"},
+		{"type":"clone","in":"wall_bend_r","out":"wall_bend"},
+		{"type":"clone","in":"wall_bend_c","out":"wall_bend_l"},
+		{"type":"clone","in":"wall_bend_c","out":"wall_bend_r"},
+		{"type":"clone","from":"wall_bend_c","out":"wall_bend"},
+		{"type": "substitute","from": "wall_bend","out": {
+				"wall_bend_mat":"wall_bend_mat", 
+				"subcells":"subcells",
+			}, 
+			"obj":"modules/wall_bend_01.obj",
+			"zscale": -1
+		},    
+		{ "type" : "uvmap", "in":["wall_bend_mat"], 
+			"mode":"vertex",  
+		},  
+		{"type": "material","in": ["wall_bend_mat"],
+			"material":"wall_bend_mat",
+			"smooth":false
+		}, 
+
+		{"type": "frotate","in": ["wall_bend_l"], 
+			"add":2,
+		},   
+		{"type": "substitute","from": ["wall_bend_l","wall_bend_r"],"out": {
+				"default":"defaultst",  
+			}, 
+			"obj":"modules/wall_bend_clamp_l.obj",
+			"zscale": -1
+		},   
+		{ "type" : "uvmap", "in":["defaultst"], 
+			"mode":"vertex",  
+		},  
+
+
+
+		{"type": "substitute","from": "door_def","out": {
+				"door":"door",  
+			}, 
+			"obj":"modules/door_01.obj",
+			"zscale": -1
+		},  
+		{ "type" : "uvmap", "in":["door"], 
+			"mode":"vertex",  
+		},  
+		{"type": "material","in": ["door"],
+			"material":"door",
+			"smooth":false
+		},   
+
+
+		{"type": "frotate","in": ["ladder"], 
+			"add":1,
+		},   
+		{"type": "substitute","from": "ladder","out": "ladder", 
+			"obj":"modules/stairs.obj",
+			"zscale": -1.15
+		},    
+		//{ "type" : "uvmap", "in":["wall_bend_mat"], 
+		//	"mode":"vertex",  
+		//},  
+		//{"type": "material","in": ["wall_bend_mat"],
+		//	"material":"wall_bend_mat",
+		//	"smooth":false
+		//}, 
+		{"type": "frotate","in": ["rail"], 
+			"align":[0,1,0], "add":1
+		},   
+		{"type": "substitute","from": "rail","out": "rail", 
+			"obj":"modules/rail.obj",
+			"zscale": -1
+		},  
+		{"type": "frotate","in": ["inset"], 
+			"align":[0,1,0], "add":1
+		},   
+		{"type": "substitute","from": "inset","out": "inset", 
+			"obj":"modules/inset.obj",
+			"zscale": -1
+		},   
+		{"type": "substitute","from": "window","out": "window", 
+			"obj":"modules/window.obj",
+			"zscale": -1
+		},  
+
+
+		{"type": "foreach","from": "subcells","var":"subcell",
+			"out":["subcells_00","subcells_01"],
+			"operations":[ 
+				{"type":"random","variants":
+					[
+						[
+							{"type":"tesselate","from":"subcell","out":["subcells_00"],  
+								"iterations":1   
+							},    
+						],
+						[
+							{"type":"split","from":"subcell","out":["subcells_01"],  
+								"size" :[0,0],    
+								"stype":"constant",  
+								"side":"third"
+							},    
+						],
+						[ 
+							{"type":"clone","from":"subcell","out":"wall_plain"}
+						]
+					]
+				}
+			]
+		},
+		{"type": "substitute","from": "wall_plain","out": "flatwall", 
+			"obj":"modules/wall_flat_01.obj",
+			"zscale": -1
+		}, 
+		{ "type" : "uvmap", "in":["flatwall"], 
+			"mode":"vertex",  
+		},  
+		{"type": "material","in": ["flatwall"],
+			"material":"flatwall",
+			"smooth":false
+		}, 
+		{"type": "frotate","in": ["subcells_00"], 
+			"align":[0,1,0],
+		},
+		{"type": "substitute","from": "subcells_01","out": {
+				"default":"wall_panel_2_01",  
+			}, 
+			"obj":"modules/wall_panel_2_01.obj",
+			"zscale": -1
+		},   
+		{ "type" : "uvmap", "in":["wall_panel_2_01"], 
+			"mode":"vertex",  
+		},  
+		{"type": "material","in": ["wall_panel_2_01"],
+			"material":"wall_panel_2_01",
+			"smooth":false
+		},      
+		{"type": "foreach","from": "subcells_00","var":"cell","operations":[
+			{"type":"random","variants":
+				[
+					[
+						{"type": "substitute","from": "cell","out": "wp02", 
+							"obj":"modules/wall_panel_1_02.obj",
+							"zscale": -1
+						}, 
+						{ "type" : "uvmap", "in":["wp02"], 
+							"mode":"vertex",  
+						},  
+						{"type": "material","in": ["wp02"],
+							"material":"hbox",
+							"smooth":false
+						}, 
+						{"type":"union","in":"wp02","out":"default"}
+					],
+					[
+						{"type": "substitute","from": "cell","out": "wp01", 
+							"obj":"modules/wall_panel_1_01.obj",
+							"zscale": -1
+						},
+						{ "type" : "uvmap", "in":["wp01"], 
+							"mode":"vertex",  
+						},  
+						{"type": "material","in": ["wp01"],
+							"material":"box_cyl",
+							"smooth":false
+						}, 
+						{"type":"union","in":"wp01","out":"default"}
+					],
+					[
+						{ "type" : "uvmap", "in":["cell"], 
+							"edge" : 1,     
+							"scale" : 5 ,
+							"shift" : [0.0 ,0.0], 
+							"mul" : [1,1,1], 
+							"mode":"face",  
+						},   
+						{"type":"union","in":"cell","out":"default"}
+					]
+				]
+			},
+		]}
+		
+	]   
+} 

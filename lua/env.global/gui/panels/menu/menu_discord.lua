@@ -3,12 +3,12 @@ local style = {
 
 }
 local layout = { 
-    size = {128*2+10,128+10},
+    size = {256+10,128/2+10},
     color = {0.1,0.1,0.1},
 	subs = {  
 		{type="panel",name = "avatar",  -- class = "submenu",
 			 
-            size = {128,128},
+            size = {128/2,128/2},
             margin = {5,5,5,5},
             dock = DOCK_LEFT,
             color = {1,1,1}

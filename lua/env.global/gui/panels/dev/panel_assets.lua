@@ -192,7 +192,12 @@ local on_dt_display2 = function(files,item,data,isdir)
 		end
 	end
 end 
-local on_dt_click = function(b,cdtype)  
+local select_form = function(b,cdtype)   
+	if not worldeditor then return nil end
+	MsgN("SELECT FORM:",cdtype) 
+	worldeditor.selected_formid = cdtype 
+end
+local on_dt_click = function(b,cdtype,mousespawn,randomYaw)  
 	cdtype = PREFIX..'/'..cdtype
 	MsgN("SPAWN REQUEST?",cdtype)
 	local aparts = string.split(cdtype,'/')
@@ -214,7 +219,12 @@ local on_dt_click = function(b,cdtype)
 		local node = GetCamera():GetParent()
  
 		if not worldeditor then return nil end
+		
 		local wtr = worldeditor.wtrace
+		if mousespawn then
+			local vp = ViewportGetMousePos()
+			wtr = GetMousePhysTrace(cam,nil,vp)
+		end
 		if wtr and wtr.Hit then 
 			local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 			local uid = GetFreeUID()
@@ -223,11 +233,19 @@ local on_dt_click = function(b,cdtype)
 			local e = ent_worldeditor:SendEvent(EVENT_EDITOR_SPAWN_FORM,type,node, pos, uid)
 			if e then
 				worldeditor:Select(e)
+				if randomYaw then
+					e:TRotateAroundAxis(Vector(0,1,0),math.random()*360)
+				end
 			end
 		end
 	end 
 end
- 
+WE_SpawnOnMouse = function(randomYaw)
+	local form = worldeditor.selected_formid
+	if form then
+		on_dt_click(nil,form,true,randomYaw)
+	end
+end
 local on_static_spawn = function(b,cdtype)   
 	MsgN("STATIC REQUEST?",cdtype) 
 	local node = GetCamera():GetParent()
@@ -265,13 +283,15 @@ function PANEL:Init()
                 size = {500,400},
                 dock = DOCK_LEFT,
                 OnDisplay = on_dt_display,
-                OnItemClick = on_dt_click
+                OnItemDoubleClick = on_dt_click,
+				OnItemClick = select_form 
             },
             {type="files",name = "dirtree3",
                 size = {500,400},
                 dock = DOCK_LEFT,
 				OnDisplay = on_dt_display2,
-				OnItemClick = on_static_spawn
+				OnItemDoubleClick = on_static_spawn,
+				--OnItemClick = select_form 
             }
         }
     },self,global_editor_style,self)

@@ -64,6 +64,10 @@ hook.Add("prop.variable.load","button",function (self,j,tags)
             util_static.ButtonUse(...)
         end)
 		self:SetNetworkedEvent(EVENT_USE,true)
+		self:AddInteraction("press", 
+			{text="press",action= function (...)
+				util_static.ButtonUse(...)
+			end})
         wio:AddOutput("out")
          
 	end

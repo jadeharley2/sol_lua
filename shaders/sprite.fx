@@ -68,8 +68,9 @@ float4 PS( PS_IN input ) : SV_Target
 	{
 		pDiffuse = tSpritesheetFont.Sample(sView, -input.tcrd);
 		pDiffuse.a = (pDiffuse.r+pDiffuse.g+pDiffuse.b)/3;
+		clip(pDiffuse.a-0.2);
+		pDiffuse.a=saturate(pDiffuse.a*1.2); 
 	}
-	
 	 
 	return   pDiffuse * input.tint;
 }

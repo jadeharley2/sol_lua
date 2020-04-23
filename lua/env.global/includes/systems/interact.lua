@@ -65,9 +65,13 @@
 --    return nil
 --end
 EVENT_INTERACT = DeclareEnumValue("event","INTERACT",				101032) 
-function Interact(USER,ENT,intent,...)
-    if ENT and USER then 
-        ENT:SendEvent(EVENT_INTERACT,USER,intent,...)  
+function Interact(USER,TARGET,intent,...)
+    if IsValidEnt(TARGET) and IsValidEnt(USER) then  
+        local dist = TARGET:GetDistance(USER)
+        if dist<(USER.userange or 2) then
+        TARGET:SendEvent(EVENT_INTERACT,USER,intent,...)  
+        MsgN("[interact] ",intent,USER,TARGET)
+        end
     end 
 end
 function GetInteractOptions(USER,ENT)
@@ -75,11 +79,40 @@ function GetInteractOptions(USER,ENT)
     local et = ENT._interact
     if et and istable(et) then
         for k,v in pairs(et) do
-            t[k] = v
+            if v.text and isfunction(v.text) then
+                local vnew = table.Copy(v)
+                vnew.text = CALL(v.text,ENT,USER)  
+                if isstring(vnew.text) then
+                    t[k] = vnew
+                end
+            else
+                t[k] = v
+            end
         end
     end
     hook.Call('interact.options',USER,ENT,t)
     return t
+end
+local registry = debug.getregistry()
+local ENTITY = registry.Entity
+
+ENTITY._metaevents[EVENT_INTERACT] = {
+    networked = true,
+    f = function (self,user,intent,...)
+        local i = self._interact
+        if i then
+            local interacttype = i[intent]
+            if interacttype and interacttype.action then
+                interacttype.action(self,user,...)
+                return true
+            end
+        end
+        hook.Call("interact",user,self,intent,...)
+    end
+}
+function ENTITY:AddInteraction(itype,table) 
+    self._interact = self._interact or {}
+    self._interact[itype] = table
 end
 --- player->vendor Interact()
 --- vendor->player Interact('options',...)
@@ -89,8 +122,3 @@ end
 --- vendor->player Interact('trade_options',...)
 --- player->vendor Interact('buy_item',...)
 --- vendor->player Interact('result','ok')
-hook.Add('interact.options','pickup',function(u,e,t)
-    if e:HasTag(TAG_STOREABLE) then
-        t.pickup = {text = "pick up"}
-    end
-end) 

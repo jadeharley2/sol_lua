@@ -12,7 +12,7 @@
 			"shortname":"ABIL", 	
 			"directory":"abilities", 	
 			"recursive":true,
-			"group":"items",
+			"group":"actor",
 		}, 
 		{
 			"name":"character", 	
@@ -40,6 +40,14 @@
 			"shortname":"TOOL", 	
 			"directory":"items/tools",
 			"baseclass":"base_tool", 
+			"recursive":true,
+			"group":"items",	 
+		}, 
+		{
+			"name":"consumable", 		
+			"shortname":"CONS", 	
+			"directory":"items/consumable",
+			"baseclass":"consumable", 
 			"recursive":true,
 			"group":"items",	 
 		}, 

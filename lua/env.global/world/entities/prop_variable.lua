@@ -2,8 +2,8 @@ local NO_COLLISION = NO_COLLISION or 2
 local COLLISION_ONLY = COLLISION_ONLY or 1 
  
 
-function ItemPV(type,seed,modtable)
-	local j = forms.ReadForm(type)--json.Read(type) 
+function ItemPV(itype,seed,modtable)
+	local j = forms.ReadForm(itype)--json.Read(type) 
 	if not j then return nil end 
 	local t = {
 		sizepower=1, 
@@ -12,12 +12,13 @@ function ItemPV(type,seed,modtable)
 		parameters =  {
 			luaenttype = "prop_variable",
 			name = j.name,
-			form = type,
+			form = itype,
 			icon = j.icon,
 		}, 
 		flags = {"storeable"}
 	}
 	if modtable then table.Merge(modtable,t,true) end
+	hook.Call("prop.variable.newitem",itype,t,j)
 	return json.ToJson(t)
 end
 function InitPV(type,ent,pos,ang,seed,e)
@@ -251,30 +252,38 @@ function ENT:SetupPhysics(world,scale)
 	if self.collonly ~= NO_COLLISION then 
 		local model = self.model
 		local data = self.data
-		if data.phys then
-			local phys =  self.phys 
-		
-			if(model:HasCollision()) then
-				phys:SetShapeFromModel(world)  
-			end 
-			phys:SetMass(data.mass or 10)  
-			phys:SoundCallbacks()
-			phys:SetMaterial(data.physmaterial or "wood")
-			self:AddTag(TAG_PHYSSIMULATED)
-		else 
-			local coll =  self.coll 
-			if norotation then
-				if(model:HasCollision()) then
-					coll:SetShapeFromModel(matrix.Scaling(scale))--matrix.Scaling(scale/0.75 )  ) 
-				end
-			else
-				if(model:HasCollision()) then
-					coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0))--matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
-				end 
-			end
+		if not data.nophys then
+			if data.phys then
+				local phys =  self.phys 
 			
-			if self.collonly then
-				model:Enable(false)
+				if(model:HasCollision()) then
+					phys:SetShapeFromModel(world)  
+				end 
+				phys:SetMass(data.mass or 10)  
+				phys:SoundCallbacks()
+				phys:SetMaterial(data.physmaterial or "wood")
+				if self:HasTag(TAG_CHUNKNODE) then
+					phys:Enable(false)
+					--self:Delayed("phys_resume",1000,function()
+					--	phys:Enable(true)
+					--end)
+				end
+				self:AddTag(TAG_PHYSSIMULATED)
+			else 
+				local coll =  self.coll 
+				if norotation then
+					if(model:HasCollision()) then
+						coll:SetShapeFromModel(matrix.Scaling(scale))--matrix.Scaling(scale/0.75 )  ) 
+					end
+				else
+					if(model:HasCollision()) then
+						coll:SetShapeFromModel(matrix.Scaling(scale)* matrix.Rotation(-90,0,0))--matrix.Scaling(scale/0.75 ) * matrix.Rotation(-90,0,0) ) 
+					end 
+				end
+				
+				if self.collonly then
+					model:Enable(false)
+				end
 			end
 		end
 	end
@@ -293,6 +302,7 @@ function ENT:SetModel(mdl,scale,norotation)
 	self:SetupModelParams()
 	model:SetModel(mdl)   
 	model:SetMatrix(world) 
+	
 	self:SetupPhysics(world,scale)	
 	self.modelcom = true
 end 

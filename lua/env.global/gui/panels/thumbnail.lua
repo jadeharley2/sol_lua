@@ -8,23 +8,56 @@ function PANEL:Init()
     self:SetCanRaiseMouseEvents(false)
 end
 
-function PANEL:SetForm(formid,usecontext) 
+function PANEL:SetForm(formid,usecontext,entdata) 
+    if isjson(entdata) then  
+        RenderThumbnail(formid,function(tex) 
+            if tex then
+                self:SetTexture(tex)
+                if usecontext then 	usecontext.contextinfo = {"image",tex} end 
+            else
+                self:SetForm(formid,usecontext,nil) --fallback to form icon
+            end
+        end)
+        return 
+    end
+    if self._prefericons then
+        local icon = forms.GetIcon(formid)
+        if icon then
+            self:SetTexture(icon)
+            local data = forms.LoadForm(formid) 
+            local tint = data:Read("tint") or data:Read("/parameters/tint")
+            if tint then
+                self:SetColor(JVector(tint))
+            end 
+            return nil
+        end
+    end 
 	local fn = 'textures/thumb/'..formid..'.png'
 	if file.Exists(fn) then
 		local t = LoadTexture(fn)
 		self:SetTexture(t)
 		if usecontext then  usecontext.contextinfo = {"image",t} end
-	else 
-		RenderThumbnail(formid,function(tex) 
-            if tex then
-                self:SetTexture(tex)
-                if usecontext then 	usecontext.contextinfo = {"image",tex} end
+    else 
+        local icon = forms.GetIcon(formid)
+        if icon then
+            self:SetTexture(icon)
+            local data = forms.LoadForm(formid) 
+            local tint = data:Read("tint") or data:Read("/parameters/tint")
+            if tint then
+                self:SetColor(JVector(tint))
+            end 
+        else
+            RenderThumbnail(formid,function(tex) 
+                if tex then
+                    self:SetTexture(tex)
+                    if usecontext then 	usecontext.contextinfo = {"image",tex} end
 
-                tex:Save('data/textures/thumb/'..formid..'.png')
-            else
-                self:SetTextOnly(true) 
-            end
-		end)
+                    tex:Save('data/textures/thumb/'..formid..'.png')
+                else
+                    self:SetTextOnly(true) 
+                end
+            end)
+        end
 	end 
 end
 

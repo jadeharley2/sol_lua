@@ -183,6 +183,8 @@ function ai:OnInit()
 	self:AddReaction("aa-1",CND_ONCHAT,ACT_SAY,{msg={"киндред","kindred"},say="что?"})
 	
 	local e = self.ent
+	--ENT.usetype = "sit"
+	
 	e:AddTag(TAG_USEABLE)
 	e:AddTag(TAG_NPC)
 	e:RemoveTag(TAG_PLAYER)
@@ -190,17 +192,14 @@ function ai:OnInit()
 	local cpath, cname = self.cname or  forms.GetForm("character",char)-- json.Read("forms/characters/"..char..".json")
 	self.cname = cname
 	if cname then e:SetName(cname) end
-	e.usetype = "talk"
-	e:AddEventListener(EVENT_USE,"e",function(s,user)
-		--if self:Alive() then
+	
+	e.info = self.name
+	e._interact = {
+		talk={text="talk",
+		action = function (s,user) 
 			self:OpenMenu(user)
-		--end
-	end)  
-	e:AddEventListener(EVENT_CCOMMAND,"e",function(s,user,com)
-		--if self:Alive() then
-			self:OpenMenu(user)
-		--end
-	end) 
+		end},
+	}
 	
 	self.seen = Set()
 end
@@ -232,9 +231,9 @@ function ai:OpenMenu(ply)
 				if not self.seen:Contains(ply) then
 					self.seen:Add(ply)
 					greettext = "Hello. ".. greettext
-					self:Mood(MOOD_SURPRISED,0.5,0.5)
+					facecontroller.Mood(e,MOOD_SURPRISED,0.5,0.5)
 				else 
-					self:Mood(MOOD_HAPPY,0.5)
+					facecontroller.Mood(e,MOOD_HAPPY,0.5)
 					greettext = table.Random({"Yes?","Need something?","Hm?","Im listening"})
 				end
 				self.task = nil
@@ -251,9 +250,9 @@ function ai:OpenMenu(ply)
 						{t="How are you?",f=function(ai,dialog) 
 							dialog:Open("Im fine. You?",
 							{
-								{t="Good",f= function() dialog:Open("That's good") self:Mood(MOOD_HAPPY,0.5) end},
-								{t="Ok",f= function() dialog:Open("*sigh*") self:Mood(MOOD_NEUTRAL) end},
-								{t="Bad",f= function() dialog:Open(":(") self:Mood(MOOD_SAD,0.5) end},
+								{t="Good",f= function() dialog:Open("That's good") facecontroller.Mood(e,MOOD_HAPPY,0.5) end},
+								{t="Ok",f= function() dialog:Open("*sigh*") facecontroller.Mood(e,MOOD_NEUTRAL) end},
+								{t="Bad",f= function() dialog:Open(":(") facecontroller.Mood(e,MOOD_SAD,0.5) end},
 							})
 							return true;
 						end},

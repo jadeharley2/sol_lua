@@ -6,10 +6,18 @@ function ai:OnInit()
 	e:AddTag(TAG_USEABLE)
     e:AddTag(TAG_NPC) 
     
-	e.usetype = "trade"
-	e:AddEventListener(EVENT_USE,"e",function(s,user)
-        self:OpenMenu(user)
-	end)  
+	--e.usetype = "trade"
+	--e:AddEventListener(EVENT_USE,"e",function(s,user)
+    --    self:OpenMenu(user)
+	--end)  
+    --ENT.usetype = "sit"
+    e.info = e:GetName()-- "chair"
+    e._interact = {
+        trade={text="trade",
+        action = function (s,user) 
+            self:OpenMenu(user)
+        end},
+    }
 end
 
 function ai:DoTrade(ply,item,count,price)

@@ -4,7 +4,8 @@ function EmitParticles(ent,type,time,size,speed)
 	time = time or 1 
 	size = size or 1
 	
-	local particlesys2 = ent:GetComponent(CTYPE_PARTICLESYSTEM2) or ent:AddComponent(CTYPE_PARTICLESYSTEM2) 
+	local particlesys2 = --ent:GetComponent(CTYPE_PARTICLESYSTEM2) or
+	 ent:AddComponent(CTYPE_PARTICLESYSTEM2) 
 	particlesys2:SetSpeed(speed or 1)
 
 	particlesys2:SetRenderGroup(RENDERGROUP_LOCAL)
@@ -15,6 +16,11 @@ function EmitParticles(ent,type,time,size,speed)
  
 	particlesys2:Set("particles/"..type..".particle")
    
+	if time>0 then
+		debug.Delayed(time*1000, function()
+			ent:RemoveComponent(particlesys2)
+		end)
+	end
 	return particlesys2
 end  
 
@@ -112,8 +118,10 @@ function ENT:Spawn(c)
 	if customtype then
 		particlesys2:Set(customtype)
 	else
-		local type = self:GetParameter(VARTYPE_CHARACTER,"magic_explosion")
-		particlesys2:Set("particles/"..type..".particle")
+		local ptype = self:GetParameter(VARTYPE_CHARACTER,"magic_explosion") --or "magic_explosion" 
+		if ptype then
+			particlesys2:Set("particles/"..ptype..".particle")
+		end
 	end
 	self.particlesys2 = particlesys2 
 	
@@ -122,7 +130,8 @@ console.AddCmd("spawnparticles",function(type,size,time)
 	SpawnParticles(LocalPlayer(),type,Vector(0,1/LocalPlayer():GetSizepower(),0),tonumber(time or 1),tonumber(size or 1),1) 
 end)
 console.AddCmd("emit",function(type,name,size,time)
-	local ent = LocalPlayer():GetByName(name or'head')
+	local ent = LocalPlayer()
+	if name then ent = LocalPlayer():GetByName(name) or ent end
 	if not type or type == "stop" then
 		local particlesys2 = ent:GetComponent(CTYPE_PARTICLESYSTEM2)
 		if particlesys2 then

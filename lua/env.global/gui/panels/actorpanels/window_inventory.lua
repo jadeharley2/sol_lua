@@ -6,7 +6,8 @@ function InvRefreshAll()
 		v:RefreshINV()
 	end
 end
-hook.Add("inventory_update","refr_all",function(node)
+hook.Add("storage.update","refr_all",function(storage, node)
+	MsgN("REF",storage,node)
 	for k,v in pairs(temp_allinvwindows) do
 		if v.node==node then
 			v:RefreshINV()

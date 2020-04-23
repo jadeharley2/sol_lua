@@ -1,0 +1,12 @@
+{
+    "name":"Station0C",
+	"group" : "building",
+	"tags" : [],
+	"model" : "forms/levels/station/station_gen.dnmd",
+	"scale" : 1.5,
+	"rotation" : [90,0,0], 
+	"navigation":{
+		"navmesh":"data/forms/levels/station/navtest.obj",
+		//"world":{"sca":1.5,"ang":[90,0,0]}
+	}
+}

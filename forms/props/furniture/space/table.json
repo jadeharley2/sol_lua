@@ -1,0 +1,13 @@
+{
+	"name":"Table",
+	"group" : "furniture",
+	"tags" : ["space"],
+	"model" : "furniture/space/table.stmd",
+	"scale" : 0.5,
+	"rotation" : [0,0,0],  
+	"composition" :{
+		"resource.iron" : 10,    
+		"resource.plastic" : 4,     
+	}
+ 
+}

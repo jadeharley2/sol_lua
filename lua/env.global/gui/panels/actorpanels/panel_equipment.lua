@@ -6,7 +6,7 @@ end
 
 function PANEL:Set(actor)
 	self.actor = actor
-
+	self.node = actor
 	local bcol = Vector(20,20,20)/100
 
 	if not self.inner then
@@ -41,6 +41,7 @@ function PANEL:Set(actor)
 	end
 	self:UpdateLayout()
 	xgrid:Scroll(0)
+	
 end
 function PANEL:RefreshINV()
 	self:Set(self.actor)

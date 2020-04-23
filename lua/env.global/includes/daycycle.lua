@@ -34,7 +34,21 @@ daycycle.SetLocalTime = function(time,transition)
 				conr:SetParams(cs,co,cm)
 			end
 		end
+	else --2d worlds
+		local dgl_star0 = ents.GetByName("dgl_star0")
+		if dgl_star0 then
+			local lpos = dgl_star0:GetPos()
+			local dbase = Vector(0,70,0)
+			-- 0 = -180
+			-- 6 = -90
+			-- 12= 0 
+			-- 16= 90
+			local angle = (time/12-1)*180
+
+			dgl_star0:SetPos(dbase:Rotate(Vector(angle,0,0)))
+		end
 	end 
+	
 end
 daycycle.GetLocalSunAngle = function(ply,surface,star)
 	if ply and surface and star then

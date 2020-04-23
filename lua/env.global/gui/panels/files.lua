@@ -142,6 +142,7 @@ function PANEL:OpenParentDirectory()
 	self:OpenPath(pth)
 end
 function PANEL:OpenPath(pth)
+	local itemheight = self.itemheight or 16
 	local file = self.filesystem or file
 	pth = pth or ""
 	self.cpath = pth
@@ -169,7 +170,7 @@ function PANEL:OpenPath(pth)
 		local sb = getfilename(k).."/"
 		local uk = k 
 		if string.sub(uk,1,1)=='/' then uk = string.sub(uk,2) end
-		local item =gui.FromTable({class="btn",text = sb,size = {20,16},dock = DOCK_TOP, 
+		local item =gui.FromTable({class="btn",text = sb,size = {20,itemheight},dock = DOCK_TOP, 
 		TextColorAuto = Vector(0.1,0.7,1),
 		ColorAuto = Vector(0.2,0.2,0.2),
 		margin = {1,1,1,1},
@@ -181,7 +182,7 @@ function PANEL:OpenPath(pth)
 	for k,v in SortedPairs(ufls) do  
 		local sb = getfilename(k) 
 		if not filter or sb:match(filter) then 
-			local item = gui.FromTable({class="btn",text = sb,size = {20,16},dock = DOCK_TOP, 
+			local item = gui.FromTable({class="btn",text = sb,size = {20,itemheight},dock = DOCK_TOP, 
 			TextColorAuto = Vector(1,1,1),
 			ColorAuto = Vector(0.2,0.2,0.2),
 			margin = {1,1,1,1},

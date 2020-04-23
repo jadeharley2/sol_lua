@@ -191,3 +191,10 @@ end
 function PANEL:IsPressed()
 	return self:GetState() == "pressed"
 end 
+function PANEL:SetPressed(val)
+	if val then 
+		self:SetState("pressed")  
+	else 
+		self:SetState("idle")  
+	end
+end 

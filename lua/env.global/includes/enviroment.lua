@@ -45,7 +45,8 @@ env.AtmPressure = function()
 		end
 	end
 end
-env.Gravity = function()
+env.Gravity = function(ent)
+	
 	return Vector(0,0,-1)
 end
 env.EMField = function()

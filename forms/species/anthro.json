@@ -151,18 +151,136 @@
 			"flesh" : 90,
 			"bone" : 10,
 		},
-	},
-	"statemachine":{
-		"mood":{
-			"neutral":{},
-			"happy":{},
-			"sad":{},
-			"angry":{
-				"flex" : {
-					"f0":-1
-				}
+		"face":{ 
+			"bodypart":"head",
+			"moodflexes":{
+				"eyes_upper_ang" :{"id":0}, 
+				"eyes_lower_hep" :{"id":1}, 
+		
+				"eyes_a"         :{"id":2}, 
+				"eyes_b"         :{"id":3}, 
+		
+				"brow_nerw"      :{"id":4}, 
+				"brow_surpr"     :{"id":5}, 
+				"brow_angry"     :{"id":6},  
+		
+				"mouth_smile"    :{"id":17},  
+				"lip_open"       :{"id":16}, 
 			},
-			"surprised":{}, 
+			"moods":{
+				"neutral":{
+					"eyes_upper_ang":0.3,
+					"eyes_lower_hep":0.3,
+				},
+				"happy":{
+					"eyes_lower_hep":1,
+					"brow_surpr":1,
+					"mouth_smile":1,
+				},
+				"sad":{
+					"eyes_upper_ang":-0.2,
+					"eyes_b":0.4,
+					"brow_nerw":0.5,
+					"mouth_smile":-0.1,
+				},
+				"angry":{
+					"eyes_upper_ang":1,
+					"eyes_lower_hep":1,
+					"brow_angry":1,
+					"mouth_smile":-1,
+				},
+				"surprised":{
+					"brow_nerw":0.5,
+					"brow_surpr":1,
+					"mouth_smile":-0.5,
+					"lip_open":1,
+				},
+				"nervous":{
+					"eyes_upper_ang":-0.2,
+					"brow_nerw":1,
+					"brow_surpr":0.5,
+					"mouth_smile":-0.5,
+				},
+			},
+			"vocflexes":{
+				"a" :{"id":10},   // flex_vo_a    	
+				"e" :{"id":11},   // flex_vo_e    	
+				"o" :{"id":12},   // flex_vo_o    	
+		
+				"p" :{"id":13},   // flex_vo_p    	
+				"th":{"id":14},   // flex_vo_th 	
+		
+				"tu":{"id":15},   // flex_tng_up 	
+				"lo":{"id":16},   // flex_lip_open 
+				//"lp":{"id":17}, // flex_lip_pt  	
+			},
+			"syllables":{
+				" ":{ },
+		
+				"a":{ "a":1 },
+				"e":{ "e":0.5 },
+				"o":{ "e":0.5, "o":0.5 },
+				"u":{ "o":1 },
+				"i":{ "a":0.1, "tu":1} ,
+				
+				"j":{ "th":0.5, "tu":1, "lo":1 },
+				"z":{ "th":0.5, "tu":1, "lo":1 },
+				
+				"n":{ "tu":1, "lo":1 },
+				"s":{ "tu":1, "lo":1 },
+				"t":{ "tu":1, "lo":1 },
+				"k":{ "tu":1, "lo":1 },
+				"d":{ "tu":1, "lo":1 },
+				"q":{ "tu":1, "lo":1 },
+				"r":{ "tu":1, "lo":1 },
+				"g":{ "tu":1, "lo":1 },
+				
+				"b":{ "p":1 },
+				"p":{ "p":1 },
+				"m":{ "p":1 },
+				
+				"v":{ "th":1, "lo":0.9 },
+				"f":{ "th":1, "lo":0.9 },
+				"w":{ "th":1, "lo":0.9 },
+				
+				"h":{ "a":0.5, "tu":0.5 },
+		
+				//cyrrilic
+				
+				"а":{ "a":1 },
+				"я":{ "a":1 },
+		
+				"е":{ "e":0.5 },
+				"э":{ "e":1 },
+		
+				"у":{ "o":1 },
+				"ю":{ "o":1 },
+		
+				"о":{ "e":0.5, "o":0.5 },
+				"ё":{ "e":0.5, "o":0.5 },
+		
+				"и":{ "a":0.1, "tu":1 },
+		
+				"ж":{ "th":0.5, "tu":1, "lo":1 },
+				"з":{ "th":0.5, "tu":1, "lo":1 },
+				
+				"н":{ "tu":1, "lo":1 },
+				"с":{ "tu":1, "lo":1 },
+				"т":{ "tu":1, "lo":1 },
+				"к":{ "tu":1, "lo":1 },
+				"д":{ "tu":1, "lo":1 },
+				"р":{ "tu":1, "lo":1 },
+				"г":{ "tu":1, "lo":1 },
+				
+				"б":{ "p":1 },
+				"п":{ "p":1 },
+				"м":{ "p":1 },
+				
+				"в":{ "th":1, "lo":0.9 },
+				"ф":{ "th":1, "lo":0.9 },
+		
+				"х":{ "a":0.5, "tu":0.5 },
+			} 
 		}
-	}
+	}, 
 }

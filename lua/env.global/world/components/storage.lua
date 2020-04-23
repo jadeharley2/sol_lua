@@ -76,9 +76,9 @@ component._typeevents = {
 
 						item.count = item.count - count
 						if item.count <=0 then self.list[from_id] = nil end 
-
-						self:GetNode()[VARTYPE_STORAGE] = self:ToData() 
-						ent_to[VARTYPE_STORAGE] = to:ToData() 
+ 
+						self:Refresh()
+						to:Refresh()
 						MsgN("item transfer: valid",count)
 					end
 				else 
@@ -91,7 +91,7 @@ component._typeevents = {
 	[EVENT_ITEM_ADDED]={networked=true,f = function(self,id,data,count)  
 		MsgN(self:GetNode(),"item added at",id) 
 		self.list[id] = {data = data,count = 1,formid = data.parameters.form}   
-		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+		self:Refresh()
 	end},
 	[EVENT_ITEM_TAKEN]={networked=true,f = function(self,id,count) 
 		count = count or 1
@@ -100,8 +100,8 @@ component._typeevents = {
 
 			for k,v in pairs(self.list) do
 				self.list[k] = nil
-			end 
-			self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+			end  
+			self:Refresh()
 		else
 			MsgN(self:GetNode(),"item taken at",id,count)
 			local item = self.list[id]
@@ -109,8 +109,8 @@ component._typeevents = {
 				item.count = item.count - count
 				if item.count <=0 then
 					self.list[id] = nil
-				end 
-				self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+				end  
+				self:Refresh()
 			end
 		end
 	end},
@@ -124,14 +124,13 @@ component._typeevents = {
 				MsgN(node,"item dropped at",id)
 				network.AddNodeImmediate(e)
 			end
-		end
-		node[VARTYPE_STORAGE] = self:ToData()
-		hook.Call("inventory_update",node)
+		end 
+		self:Refresh()
 	end}, 
 	[EVENT_ITEM_DESTROY] = {networked = true, f = function(self,id,count) 
 		MsgN(self:GetNode(),"item destroyed at",id,count)
-		self:DestroyItem(id,count) 
-		self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+		self:DestroyItem(id,count)  
+		self:Refresh()
 	end},  
 	--client->server - request
 	--server->client - data
@@ -147,8 +146,8 @@ component._typeevents = {
 			if self.pending_event then
 				self:pending_event()
 				self.pending_event = nil
-			end
-			self:GetNode()[VARTYPE_STORAGE] = self:ToData()
+			end 
+			self:Refresh()
 		end
 	end} 
 }
@@ -218,12 +217,14 @@ function component:AddFormItem(ftype,fname) -- local function
 			end
 			if data then
 				self.list[index] = {data = data, count = 1} 
+				self:Refresh()
 				return true 
 			end
 		end
 	end
 	return false
 end
+
 function component:PutItem(index,item,count) -- local function
 	if not self.list[index] then
 		if item and IsValidEnt(item) then
@@ -247,6 +248,7 @@ function component:PutItemAsData(index,data,count)  -- local function
 				MsgN("FORMID",formid)
 				self.list[index] = {data = data, count = count, formid = formid} 
 				--self:GetNode():SendEvent(EVENT_ITEM_ADDED,index,data,count) 
+				self:Refresh()
 				return true  
 			end 
 		else
@@ -257,6 +259,7 @@ function component:PutItemAsData(index,data,count)  -- local function
 						v.count = v.count + count
 						--MsgN("cc",index,formid,data)
 						--PrintTable(v)
+						self:Refresh()
 						return true 
 					end
 				end
@@ -278,7 +281,7 @@ function component:SlotIsFree(index)
 end
 function component:TransferItem(from_id,to,to_id,count)
 	if from_id and to then
-		self:GetNode():SendEvent(EVENT_ITEM_TRANSFER,from_id,to:GetNode(),to_id,count) 
+		self:GetNode():SendEvent(EVENT_ITEM_TRANSFER,from_id,to:GetNode(),to_id,count)  
 	end
 end
 --[[
@@ -292,9 +295,9 @@ function component:TakeItem(index,count)
 		local item = self:TakeItemAsData(index,count)
 		if item then
 			local parent = n:GetParent()
-			local pos = n:GetPos()   
+			local pos = n:GetPos()  
 			local e = ents.FromData(item,parent,pos)
-			e:SetPos(pos)
+			e:SetPos(pos+Vector(0,1/parent:GetSizepower(),0))
 			e:CopyAng(n)
 			return e
 		end 
@@ -313,7 +316,7 @@ function component:TakeItemAsData(index,count)
 	local item = self.list[index]
 	if item then 
 		count = count or item.count or 1
-		self:GetNode():SendEvent(EVENT_ITEM_TAKEN,index,count) 
+		self:GetNode():SendEvent(EVENT_ITEM_TAKEN,index,count)  
 		return item.data
 	end 
 	return false
@@ -373,7 +376,29 @@ function component:GetItem(formid)
 	end
 	return false
 end
-
+function component:RemoveFormItem(formid,count)
+	while true do
+		if count<=0 then 
+			self:Refresh()
+			return true 
+		end
+		local slot = self:GetItemSlot(formid)
+		if slot then
+			local data = self.list[slot]
+			if data.count>=count then
+				local mcount =  math.min(data.count, count) 
+				data.count = data.count - mcount
+				count = count - mcount
+			end
+			if data.count <= 0 then
+				self.list[slot] = nil
+			end 
+		else
+			self:Refresh()
+			return false
+		end
+	end 
+end
 function component:GetItemSlot(formid)
 	for k,v in pairs(self.list) do
 		if v and v.data then
@@ -466,7 +491,8 @@ function component:MoveItem(index,otherstorage,otheridex,count)
 	if self:HasItemAt(index) and not otherstorage:HasItemAt(otheridex) then
 		local item = self:TakeItemAsData(index)
 		if item then  
-			return otherstorage:PutItemAsData(otheridex,item)
+			local op = otherstorage:PutItemAsData(otheridex,item)  
+			return op
 		end
 	end 
 	return false
@@ -475,6 +501,7 @@ end
 function component:Clear()
 	self.list = {}
 	self:GetNode():SendEvent(EVENT_ITEM_TAKEN,"all") 
+	self:Refresh()
 end
 
 function component:ItemCount()
@@ -512,15 +539,23 @@ function component:FromData(data)
 		end
 	end
 	self.list = list
+	self:Refresh()
 	return list
+end
+
+function component:Refresh()
+	local n = self:GetNode()
+	if n then
+		n[VARTYPE_STORAGE] = self:ToData() 
+	end
+	hook.Call("storage.update",self,self:GetNode())
 end
 
 if CLIENT then
 	console.AddCmd("storage_clear",function()
 		local l = LocalPlayer()
 		if l then
-			l:SendEvent(EVENT_ITEM_TAKEN,"all")
-			hook.Call("inventory_update",LocalPlayer())
+			l:SendEvent(EVENT_ITEM_TAKEN,"all") 
 		end
 	end)
 	console.AddCmd("storage_list",function()

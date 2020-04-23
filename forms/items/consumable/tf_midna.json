@@ -1,0 +1,36 @@
+{
+    "name":"Test potion",
+    "type":"liquid",
+    "model":"models/clutter/lab/vase.stmd",
+	"rotation" : [-90,0,0], 
+    "contents":[
+        //{
+        //    "type":"resource.active.tranlique",
+        //    "amount":10
+        //},
+    ],
+	"composition" :{
+		"resource.glass" : 3,   
+		"resource.active.tranlique" : 2,
+	},
+    "effects":[
+        { 
+            "effect" : "particle",
+            "emit":true,  
+            "type":"tfglow",
+            "time":1,
+            "children":true
+        }, 
+        {
+            "effect" : "delay",
+            "delay" : 1,
+            "data" : [
+                { 
+                    "effect" : "transform", 
+                    "dispelDelay" : 0, 
+                    "character":"midna"
+                }, 
+            ]
+        },
+    ]
+}

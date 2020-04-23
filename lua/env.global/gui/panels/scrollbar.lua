@@ -50,16 +50,16 @@ function PANEL:SetType(type)
 	if type == 1 then
 		b1:Dock(DOCK_TOP)
 		b2:Dock(DOCK_BOTTOM)
-		b1:SetTexture(LoadTexture("gui/bar_up.png")) 
-		b2:SetTexture(LoadTexture("gui/bar_down.png")) 
-		self:SetTexture(LoadTexture("gui/bar_h.png")) 
+		b1:SetTexture("textures/gui/bar_up.png") 
+		b2:SetTexture("textures/gui/bar_down.png")
+		self:SetTexture("textures/gui/bar_h.png")
 		bdrag.lockx = true
 	else
 		b1:Dock(DOCK_RIGHT)
 		b2:Dock(DOCK_LEFT)
-		b1:SetTexture(LoadTexture("gui/bar_right.png")) 
-		b2:SetTexture(LoadTexture("gui/bar_left.png")) 
-		self:SetTexture(LoadTexture("gui/bar_v.png")) 
+		b1:SetTexture("textures/gui/bar_right.png")
+		b2:SetTexture("textures/gui/bar_left.png")
+		self:SetTexture("textures/gui/bar_v.png")
 		bdrag.locky = true
 	end
 	local drawerrorfix = panel.Create()

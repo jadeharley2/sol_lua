@@ -35,11 +35,21 @@ end
 function PANEL:Open() 
 	self.test:Refresh()
 	self:UpdateLayout() 
-	self:Show()
+	self:Show() 
 end
 function PANEL:Set(actor) 
+	local islocal = actor ==LocalPlayer()
 	self.stats:Set(actor) 
 	self.equip:Set(actor)
+	if islocal then
+		self.tabs:SetTabVisible("Deconstruct",true)
+		self.tabs:SetTabVisible("Combine",true)
+		self.tabs:SetTabVisible("Craft",true)
+	else
+		self.tabs:SetTabVisible("Deconstruct",false)
+		self.tabs:SetTabVisible("Combine",false)
+		self.tabs:SetTabVisible("Craft",false)
+	end
 	GLOBAL_CEQPANEL = self.equip
 end
 

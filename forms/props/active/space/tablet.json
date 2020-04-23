@@ -1,0 +1,35 @@
+{ 
+	"name":"Tablet",
+	"tags" : ["space","item"],
+	"model" : "items/space/tablet.stmd",
+	"scale" : 0.3,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 1,
+	//"icon" : "lab/book", 
+	"composition" :{
+		"resource.steel" : 1,    
+		"resource.electronic_components" : 1,    
+	},
+	"computer":{ 
+		"memory":{
+			"records":{
+				"profiles":{
+					"ARA":{
+						"_type":"book",
+						"formid":"book.profile_ara"
+					},
+					"Vikna Ramenskaya":{ 
+						"_type":"book",
+						"formid":"book.profile_vikna"
+					}
+				},
+				"Unknown":{ 
+					"_type":"book",
+					"formid":"book.testbook"
+				}
+			}
+		}
+	}
+	
+}

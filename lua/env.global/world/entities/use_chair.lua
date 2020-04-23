@@ -14,9 +14,23 @@ ENT.mountpoints = {
 	{pos = Vector(0,13,0)/10,ang = Vector(0,-90,0),state="sit.capchair"}
 }
 
-ENT.usetype = "sit"
+--ENT.usetype = "sit"
+ENT.info = "chair"
 ENT._interact = {
-	sit={text="sit"},
+	sit={text="sit",
+	action = function (self,user) 
+		local mp = self:GetFreeMountpoint()
+		if mp then
+			user:SendEvent(EVENT_SET_VEHICLE,self,mp)
+		else
+			local oump = self.mountpoints[1]
+			if IsValidEnt(oump) then 
+				if oump.ent:HasTag(TAG_USEABLE) then
+					oump.ent:SendEvent(EVENT_USE,user)
+				end
+			end
+		end 
+	end},
 }
 
 function ENT:Init()   
@@ -114,5 +128,5 @@ ENT._typeevents = {
 				end
 			end
 		end
-	end},
+	end}, 
 } 

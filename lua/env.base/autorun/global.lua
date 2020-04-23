@@ -131,6 +131,16 @@ function ErrorNoHalt(...)
 	MsgN(debug.traceback())
 end
 
+local onerror = function(err)
+	MsgN(err)  
+	MsgN(debug.traceback())
+end
+
+function CALL(func,...)
+	local s, a,b,c,d,e,f = xpcall(func,onerror,...)
+	return a,b,c,d,e,f
+end
+
 function isnil(arg) return type(arg) == "nil" end
 function istable(arg) return type(arg) == "table" end
 function isstring(arg) return type(arg) == "string" end

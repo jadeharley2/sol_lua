@@ -92,11 +92,12 @@ function ENT:Spawn()
 		--self:SetUpdating(true,15)
 		self:_UpdateEnabled()
 	end
-	
-	local light = self:AddComponent(CTYPE_LIGHT)  
-	light:SetColor(Vector(1,1,1))
-	light:SetBrightness(0.1) 
-	self.light = light
+	if self.mirrorlight~=nil then
+		local light = self:AddComponent(CTYPE_LIGHT)  
+		light:SetColor(Vector(1,1,1))
+		light:SetBrightness(0.1) 
+		self.light = light
+	end
 	--self:AddTag(TAG_USEABLE)
 end
 function ENT:Despawn() 

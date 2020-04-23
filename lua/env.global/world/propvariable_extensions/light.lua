@@ -13,6 +13,12 @@ local function LampInputs(self,f,k,v)
         end
 	end
 end
+local function ToggleLight(self,user)
+	local light = self.light;
+	if light then
+		light:Enable(not light:IsEnabled()) 
+	end
+end
 
 hook.Add("prop.variable.load","light",function (self,j,tags)  
     if j.light then 
@@ -26,13 +32,16 @@ hook.Add("prop.variable.load","light",function (self,j,tags)
 		end
 		light:SetDirectional(j.light.isdirectional or false)
 		self.light = light
-		 
+		
 		if tags.lamp then
 			local wio = self:RequireComponent(CTYPE_WIREIO)-- Component("wireio",self)
 			wio:AddInput("toggle",LampInputs)
 			wio:AddInput("on",LampInputs)
 			wio:AddInput("off",LampInputs)
 			wio:AddInput("enabled",LampInputs)
+		end
+		if j.light.hasbutton then 
+			self:AddInteraction("togglelight",{text="toggle light",action=ToggleLight})
 		end
 	end 
 end)

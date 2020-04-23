@@ -634,7 +634,7 @@ end
  
 --TEST END
 if CLIENT then
-	local stai = table.Copy(ai)
+	local stai = table.DeepCopy(ai)
 	stai.__index = stai
 	facial = {}
 	facial.say = function(ent, text,speed,power,enable_commands)

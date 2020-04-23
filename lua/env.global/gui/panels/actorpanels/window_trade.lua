@@ -112,7 +112,10 @@ function PANEL:Open(npc,text,options,callback_buy,callback_sell)
                 price = price,
                 subs = {
                     {
-                        texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
+                        type = "thumbnail",
+                        prefericons = true,
+                        Form = formid,
+                        --texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
                         size = {60,60},
                         dock = DOCK_LEFT,
                         mouseenabled = false,
@@ -183,7 +186,10 @@ function PANEL:AddItem(formid,v,plbalance,clc_buy)
         price = price,
         subs = {
             {
-                texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
+                type = "thumbnail",
+                _prefericons = true,
+                Form = formid,
+                --texture =  forms.GetIcon(formid) or "textures/gui/icons/unknown.png",
                 size = {60,60},
                 dock = DOCK_LEFT,
                 mouseenabled = false

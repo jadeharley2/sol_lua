@@ -1,0 +1,238 @@
+{
+	"name" : "map",
+	"matpath" : [ 
+		"models/dyntest/mat", 
+		"textures/debug", 
+		"textures/stdif", 
+		"forms/levels/city"
+	],   
+	"variables" : {  
+		"$rbsize":3,
+		"$rbheight":0.2,
+	},
+	"operations" : [ 
+		
+		{ "type" : "obj","out" : {
+				"white":"city",
+				"white.001":"city",
+				"road":"roads",
+				"subroad":"subroads",
+				"green":"grass",
+				"sand":"sand",
+				"blue":"water",
+				"facade":"fac1", 
+				"facade2f":"fac2",
+				//"frame":"fac3", 
+				//"frgrid":"frgrid",  
+				"finsert":"finsert",
+				"frame":"finsert",   
+				"lot":"lot", 
+			},    
+			"mode":"materials",   
+			"file": "lottest2.obj"//"building_generator_test.obj"
+		},          
+		
+		{"type": "material","in": ["city"],
+			"material":"rock01",
+			"smooth":false
+		},    
+		{"type": "material","in": ["roads"],
+			"material":"concrete06", 
+			"smooth":false    
+		},          
+		{"type": "material","in": ["subroads"], 
+			"material":"concrete06",     
+			"smooth":false     
+		},      
+		{"type": "material","in": ["grass"],
+			"material":"grass01", 
+			"smooth":true
+		},     
+		{"type": "material","in": ["sand"],
+			"material":"sand01",
+			"smooth":true
+		},     
+		{"type": "material","in": ["water"],
+			"material":"water01",
+			"smooth":true
+		}, 
+		{ "type" : "uvmap", "in":["grass","sand","city","roads","subroads"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},     
+		{"type":"tesselate","from":["grass"] ,"out" :"grass", 
+			"joinall":true,
+			"times" : 1   ,    
+			"mode"  : "linear",
+			"amount":1, 
+		},     
+
+		{ 	"type" : "structure", "out" : "roads2",
+			"path" : "roadtest.dnmd", 
+			"from" : {"roads":"subroads"},
+			"$rbsize":1.5,
+			"$rbheight":0.2, 
+		},   
+
+		//lot test
+		{ "type" : "uvmap", "in":["lot"],
+			"edge" : 1,     
+			"scale" : 5 ,
+			"shift" : [0.0 ,0.0], 
+			"mul" : [1,1,1], 
+			"mode":"face", 
+		},  
+		{"type": "material","in": ["lot"],
+			"material":"concrete06", 
+		},  
+		{"type": "tilesplit","from": "lot","out":  ["a","b","c","d","e"], 
+			//"split":false, 
+		},
+		//{"type": "material","in": ["a"],
+		//	"material":"redarrow", 
+		//}, 
+		//{"type": "material","in": ["b"],  
+		//	"material":"greenarrow", 
+		//}, 
+		//{"type": "material","in": ["c"],
+		//	"material":"bluearrow", 
+		//},  
+		//{"type": "material","in": ["d"],
+		//	"material":"redarrow", 
+		//},   
+		{"type": "foreach","from": ["b"],"var":"v","out": "ffb", 
+			"operations":[   
+				{ 	"type" : "structure", "out" : "ffb",
+					"path" : "building_gen.dnmd", 
+					"from" : {"base":"v"},  
+					"$align":[0,0,-1],
+				}, 
+			]   
+		},   
+		{"type": "foreach","from": ["a"],"var":"v","out": "ffb", 
+			"operations":[   
+				{ 	"type" : "structure", "out" : "ffb",
+					"path" : "building_gen.dnmd", 
+					"from" : {"base":"v"},  
+					"$align":[0,0,-1],
+					"$iscorner":true
+				}, 
+			]  
+		},  
+		 
+		//{"type": "stop"},//,"b"
+		{"type": "foreach","from": ["a"],"var":"v","out": "ffb",
+			"operations":[
+				{"type":"inset","from": "v","out":["fr1",["fsf","fs","fs","fs"]],
+					"amount":0,
+					"extrude":"@(rand(5,40))"
+				},
+				{ "type" : "uvmap", "in":["fsf","fs"],
+					"edge" : 1,     
+					"scale" : 5 ,
+					"shift" : [0.0 ,0.0], 
+					"mul" : [1,1,1], 
+					"mode":"face", 
+				},  
+				{"type": "frotate","in": ["fsf","fs"], 
+					"align":[0,1,0]
+				},
+				{"type":"split","from":"fsf","out":["fs1","fbd","fso"],
+					"size":[4,0.5,0],   
+					"stype":"constant",  
+					"side":"third"
+				},   
+				{"type": "material","in": ["fso"],
+					"material":"concrete06",
+					"smooth":false
+				}, 
+				{"type":"inset","from": "fbd","out":["fr","fr"],
+					"amount":0,
+					"extrude":0.6
+				},
+
+				//roof
+				
+				{"type":"inset","from": "fr1","out":["fr1","fr"],
+					"amount":0.2, "extrude":0.6
+				},
+				{"type":"inset","from": "fr1","out":["fr1","fr"],
+					"amount":0.5
+				},
+				{"type":"inset","from": "fr1","out":["fr","fr"],
+					"amount":0, "extrude":-0.6
+				},
+
+
+				//facade 1 level
+				{"type":"random","from":"fs1","var":"ff","out":["fs1","fs1d"],
+					"variants":[
+						[ 
+							{"type":"split","from":"ff","out":["fs1","fs1d","fs1"],
+								"size":[0,2,0],   
+								"stype":"constant",  
+								"side":"third"
+							},  
+						],
+						[ 
+							{"type":"split","from":"ff","out":["fs1","fs1d","fs1"],
+								"size":[1,2,0],   
+								"stype":"constant",  
+								"side":"third"
+							},  
+						],
+						[ 
+							{"type":"split","from":"ff","out":["fs1","fs1d","fs1"],
+								"size":[0,2,1],   
+								"stype":"constant",  
+								"side":"third"
+							},  
+						]
+					]
+				},
+				{"type":"inset","from": "fs1","out":["fsoE","fr"],
+					"amount":0.2,
+					"extrude":0
+				},
+				{"type":"inset","from": "fs1d","out":["fs1d","fr"],
+					"amount":[0.02,0.2,0.4,0.2],
+					"extrude":0
+				},
+				{"type":"inset","from": "fs1d","out":["fr","fr"],
+					"amount":0,
+					"extrude":-0.6
+				},
+				{"type":"material","in":["fs1"],"material":"windows_blue"}, 
+				//facade 2+ levels
+				{"type":"inset","from": "fso","out":["fso","fr"],
+					"amount":0,
+					"extrude":"@(rand(0,1))"
+				},
+				{"type":"inset","from": "fso","out":["fsoE","fr"],
+					"amount":0.2,
+					"extrude":0
+				},
+				{"type":"inset","from": "fsoE","out":["fsoE","fr"],
+					"amount":0,
+					"extrude":-0.1
+				},
+				{ "type" : "uvmap", "in":["fsoE"],
+					"edge" : 2,     
+					"scale" : 42 ,
+					"shift" : [0.0 ,0.0], 
+					"mul" : [1,1,1], 
+					"mode":"face", 
+				},  
+				{"type":"material","in":["fsoE"],"material":"windows_blue"}, 
+				//end
+
+				{"type":"union","from":["fr","fs","fs1","fso","fsoE"],"out":"ffb"}
+			]
+		}
+		
+	
+	]   
+} 
