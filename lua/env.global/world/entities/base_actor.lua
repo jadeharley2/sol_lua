@@ -1914,9 +1914,13 @@ function ENT:CastActiveAbility()
 	end
 end
 function ENT:GiveAbility(aname)
+	
 	local ab = Ability(aname)
 	if ab then
 		self.abilities[aname] = ab
+		if CLIENT and not silent and self == LocalPlayer() then
+			MsgInfo("new ability: "..ab.name) 
+		end
 	end
 end
 function ENT:TakeAbility(aname)

@@ -1,0 +1,7 @@
+{
+    "archetype" : "projectile",  
+    "model":"models/tools/projectiles/arrow.stmd",
+    "glow":false,
+    "freeze":true,
+    
+}

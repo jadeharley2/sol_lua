@@ -19,18 +19,42 @@ local function ToggleLight(self,user)
 		light:Enable(not light:IsEnabled()) 
 	end
 end
+local function DaylightTimer(self)
+	if IsValidEnt(self) then
+		local light = self:GetComponent(CTYPE_LIGHT) 
+		if light then
+			local time = daycycle.GetLocalTimeTable(self)
+			local turnon = 18
+			local turnoff = 9  
+			if light:IsEnabled() then
+				if time.hours > turnoff and time.hours < turnon then
+					light:Enable(false) 
+					MsgN("DExcE")
+				end
+			else
+				if time.hours < turnoff or time.hours > turnon then
+					light:Enable(true) 
+					MsgN("DE")
+				end
+			end
+			return true
+		end 
+	end
+	return false
+end
 
 hook.Add("prop.variable.load","light",function (self,j,tags)  
-    if j.light then 
-		local color = self[VARTYPE_COLOR] or JVector(j.light.color,Vector(1,1,1))
-		local brightness = self[VARTYPE_BRIGHTNESS] or j.light.brightness or 1
+	local L = j.light
+    if L then 
+		local color = self[VARTYPE_COLOR] or JVector(L.color,Vector(1,1,1))
+		local brightness = self[VARTYPE_BRIGHTNESS] or L.brightness or 1
 		local light = self:RequireComponent(CTYPE_LIGHT)  
 		light:SetColor(color)
 		light:SetBrightness(brightness) 
-		if j.light.pos then
-			light:SetOffset(JVector(j.light.pos)) 
+		if L.pos then
+			light:SetOffset(JVector(L.pos)) 
 		end
-		light:SetDirectional(j.light.isdirectional or false)
+		light:SetDirectional(L.isdirectional or false)
 		self.light = light
 		
 		if tags.lamp then
@@ -40,8 +64,14 @@ hook.Add("prop.variable.load","light",function (self,j,tags)
 			wio:AddInput("off",LampInputs)
 			wio:AddInput("enabled",LampInputs)
 		end
-		if j.light.hasbutton then 
+		if L.hasbutton then 
+			self.info = "lamp"
 			self:AddInteraction("togglelight",{text="toggle light",action=ToggleLight})
+		end
+		if L.daylight then 
+			self:Timer("daylight",100,1100,-1,function (x)
+				DaylightTimer(self)
+			end )
 		end
 	end 
 end)

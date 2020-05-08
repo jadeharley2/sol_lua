@@ -72,7 +72,7 @@ function ENT:UpdatePos()
 			cp = cp:GetParent()
 		end
 
-		self:SetParent(c:GetParent()) 
+		self:SetParent(cp) 
 		 
 		
 		local light = self.light

@@ -35,9 +35,9 @@ struct PS_IN
 PS_IN VS( VS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
-	float4x4 mx = mul(mul(transpose(World) ,	transpose(View)),	transpose(Projection));
+	float4x4 mx = mul(mul((World) ,	(View)),	(Projection));
 	
-	output.pos =  mul(	mul(input.pos,transpose(inst.transform)),		 mx); 
+	output.pos =  mul(	mul(input.pos,(inst.transform)),		 mx); 
 	output.tcrd = input.tcrd;
 	return output;
 } 

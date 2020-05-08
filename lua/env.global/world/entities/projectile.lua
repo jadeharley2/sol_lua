@@ -1,12 +1,13 @@
 
 local rdtex = LoadTexture("space/star_sprites.png")
-function SpawnProjectile(parent,pos,vel,radius,color,glow,model)
+function SpawnProjectile(parent,pos,vel,radius,color,glow,model,phys)
 	local e = ents.Create("projectile") 
 	if model then e:SetParameter(VARTYPE_MODEL,model) end
 	local ang = matrix.LookAt(Vector(0,0,0),vel:Normalized()*Vector(1,1,1),Vector(0,-1,0))
 	e.radius = radius 
 	e.color = color
 	e.glow = glow
+	e.cphys = phys
 	e:SetSizepower(1)
 	e:SetParent(parent)
 	e:SetPos(pos) 
@@ -35,7 +36,7 @@ function ENT:Spawn()
 	 
 	local model = self:AddComponent(CTYPE_MODEL)  
 	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetRenderOrder(RORDER_EFFECT)
+	--model:SetRenderOrder(RORDER_EFFECT)
 	model:SetModel(smodel) 
 	--model:SetMaterial("textures/debug/white.json") 
 	if glow then
@@ -76,7 +77,12 @@ function ENT:Spawn()
 	end
 	
 	local phys = self:AddComponent(CTYPE_PHYSOBJ) 
-	phys:SetShape("engine/gsphere_2.SMD", matrix.Scaling(1))
+	phys:SetupPhysics(json.ToJson(self.cphys or {
+		mass = 1,
+		type = "sphere",
+		radius = 0.3,
+		continuous = true
+	}))
 	phys:SetMass(1)  
 	phys:SetupCallbacks() 
 	 
@@ -96,22 +102,22 @@ function ENT:Hit(a,collider,pos,normal,depth)
 		if not self:OnHit(collider) then
 			self:Despawn()
 		else 
-			if not self.hitcompleted  then
-				local par = self:GetParent()
-				if par and collider and collider ~=par then
-					local lp = pos;--+self:Forward()*(self.radius*10/par:GetSizepower()) -- normal*depth
-					self:SetPos(lp)
-					self.phys:Disable()
-					self:SetPos(lp)
-					--local lp = collider:GetLocalCoordinates(self)
-					--self:SetParent(collider)
-					--self:SetPos(lp) 
-					MsgN("hit! ",collider,pos,normal,depth)
-				end
-				self:EmitSound("events/hit/"..table.Random({"arrow-01.ogg","arrow-02.ogg","arrow-03.ogg","arrow-04.ogg","arrow-05.ogg","arrow-06.ogg"}),1,1)
-				
-				self.hitcompleted = true
-			end
+			--if not self.hitcompleted  then
+			--	local par = self:GetParent()
+			--	if par and collider and collider ~=par then
+			--		local lp = pos;--+self:Forward()*(self.radius*10/par:GetSizepower()) -- normal*depth
+			--		self:SetPos(lp)
+			--		self.phys:Disable()
+			--		self:SetPos(lp)
+			--		--local lp = collider:GetLocalCoordinates(self)
+			--		--self:SetParent(collider)
+			--		--self:SetPos(lp) 
+			--		--MsgN("hit! ",collider,pos,normal,depth)
+			--	end
+			--	--self:EmitSound("events/hit/"..table.Random({"arrow-01.ogg","arrow-02.ogg","arrow-03.ogg","arrow-04.ogg","arrow-05.ogg","arrow-06.ogg"}),1,1)
+			--	
+			--	self.hitcompleted = true
+			--end
 		end
 	else
 		self:Despawn()

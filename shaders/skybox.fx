@@ -50,8 +50,8 @@ PS_IN VS( VS_IN input )
 	PS_IN output = (PS_IN)0;
 	
 	output.cpos = input.pos;
-	output.wpos = mul(input.pos,transpose(World));
-	output.pos =  mul(mul(output.wpos,transpose(View)),transpose(Projection));//mul(Proj, mul( input.pos,World));
+	output.wpos = mul(input.pos,(World));
+	output.pos =  mul(mul(output.wpos,(View)),(Projection));//mul(Proj, mul( input.pos,World));
 	output.tcrd = input.tcrd;
 	 
 	return output;
@@ -115,6 +115,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//result.a = 1;
 	if(isnan(result.x)) result=0;
 	output.color = result;
+	output.diffuse = result;
 	output.normal = float4(0.5,0.5,1,1);
 	output.depth =  1;
 	

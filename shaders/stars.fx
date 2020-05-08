@@ -77,7 +77,7 @@ float2 Clamp(float2 inp,float4 rect)
 PS_IN star_VSI( VS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
-	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),transpose(World));
+	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),(World));
 	
 	float camdist = length(camoffcetposition.xyz);
 	
@@ -121,7 +121,7 @@ PS_IN star_VSI( VS_IN input, I_IN inst )
 	output.tcrd = inst.tcrd;
 	camdist = camdist/global_scale*abs_scale;//(1666666);
 	
-	float4 vvp = mul(camoffcetposition,	transpose(View));
+	float4 vvp = mul(camoffcetposition,	(View));
 	float distmul = 1/(4*3.14159265*camdist*camdist) ; 
 	float scale = min(0.001, inst.lum  )*vvp.z*2*saturate(0.5+inst.lum);
 	;
@@ -130,7 +130,7 @@ PS_IN star_VSI( VS_IN input, I_IN inst )
 	if(input.tex.y<0.5) { 	vvp.xy-=float2(0,scale);	}
 	else	{				vvp.xy+=float2(0,scale);	} 
 	
-	output.pos =  mul(vvp,	transpose(Projection));
+	output.pos =  mul(vvp,	(Projection));
 	 
 	
 	//output.z_depth = sqlen(camoffcetposition.xyz);
@@ -171,7 +171,7 @@ PS_OUT star_PS( PS_IN input ) : SV_Target
 PS_IN particle_VSI( VS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
-	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),transpose(World));
+	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),(World));
 	
 	
 	float3 direction = normalize( camoffcetposition );
@@ -210,7 +210,7 @@ PS_IN particle_VSI( VS_IN input, I_IN inst )
 	//output.tex =Rotate(output.tex,inst.rot,1.0f/32+inst.tcrd.xy ); 
 	output.tex =Rotate(output.tex,inst.rot,inst.tcrd.zw/2+inst.tcrd.xy ); 
 	output.tcrd = inst.tcrd;
-	output.pos =  mul(mul(camoffcetposition,	transpose(View)),	transpose(Projection));
+	output.pos =  mul(mul(camoffcetposition,	(View)),	(Projection));
 	//output.z_depth = sqlen(camoffcetposition.xyz);
 	output.color =float4( inst.color*visible,1);
 	if(near_hide)

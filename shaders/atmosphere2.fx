@@ -198,7 +198,7 @@ float3 SS_GetPosition(float2 UV, float depth)
 	position.z = depth; 
  
 	//Transform Position from Homogenous Space to World Space 
-	position = mul(position, transpose(invWVP));  
+	position = mul(position, (invWVP));  
  
 	//position *= position.w;
 	position /= position.w;
@@ -263,10 +263,10 @@ PS_IN VS(VSS_IN input)
 {
     PS_IN output = (PS_IN)0;
 
-    float4 worldPosition = mul(input.Position, transpose(World));
-    float4 viewPosition = mul(worldPosition, transpose(View));
-    output.Position = mul(viewPosition, transpose(Projection));
-	output.Normal = normalize( mul(-input.Position,(float3x3)transpose(World)).xyz);
+    float4 worldPosition = mul(input.Position, (World));
+    float4 viewPosition = mul(worldPosition, (View));
+    output.Position = mul(viewPosition, (Projection));
+	output.Normal = normalize( mul(-input.Position,(float3x3)(World)).xyz);
 	output.Pos = worldPosition;
 	output.LPOS =worldPosition-planetpos;
 	output.tcrd = input.tcrd;

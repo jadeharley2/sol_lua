@@ -100,9 +100,9 @@ struct PS_OUT
 PS_IN VSI( VSS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0; 
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
@@ -121,7 +121,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 void GSS( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 {   
     PS_IN output = (PS_IN)0;
-	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	float4x4 mx =mul(View,	Projection);
 	
 	float3 pos1 = input[0].pos;
 	float3 pos2 = input[1].pos;
@@ -158,10 +158,10 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	PS_OUT output = (PS_OUT)0;
 	if(is_blackhole) 
 	{
-		float4x4 VP =mul(transpose(View),transpose(Projection));
+		float4x4 VP =mul(View,Projection);
 		//float3 localnorm = mul(float4(input.norm,1),VP);
 		//if below surface => normal from world pos
-		//input.norm = -normalize(transpose(World)._m30_m31_m32); 
+		//input.norm = -normalize(World._m30_m31_m32); 
 
 		//normalize(input.wpos)
 		float dpb = dot(normalize(input.spos),normalize(input.wpos));

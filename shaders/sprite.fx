@@ -44,7 +44,7 @@ float2 rotate(float2 value,float angle, float2 center)
 PS_IN VS( VS_IN input,I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0; 
-	output.pos = mul(mul(input.pos,transpose(inst.transform)),transpose(MVP));
+	output.pos = mul(mul(input.pos,inst.transform),MVP);
 	//output.pos =  mul(input.pos,transpose(inst.transform));
 	output.tcrd = input.tcrd * inst.tcrd.zw + inst.tcrd.xy;
 

@@ -59,6 +59,8 @@ struct VS_IN
 struct PS_IN
 { 
 	float4 pos : SV_POSITION; 
+	float norm : TEXCOORD; 
+	float wdp : TEXCOORD1; 
 }; 
 
 
@@ -93,21 +95,21 @@ struct PS_IN
 
     float GetIsInViewMatrix(float4 worldposition, float4x4 viewProj)
     {
-        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix)); 
+        float4 smpos = mul(worldposition,ShadowMapVPMatrix); 
         if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
         {
             return 1;
         }
         else 
         {
-            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            smpos = mul(worldposition,ShadowMapVPMatrix_c2); 
             if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
             { 
                 return 2;
             }
             else
             {
-                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                smpos = mul(worldposition,ShadowMapVPMatrix_c3); 
                 if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
                 { 
                     return 3;
@@ -121,21 +123,21 @@ struct PS_IN
     }
     float3 ShadowViewIndex(float4 worldposition, float4x4 viewProj)
     {
-        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix)); 
+        float4 smpos = mul(worldposition,ShadowMapVPMatrix); 
         if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
         {
             return float3(1,0,0);
         }
         else 
         {
-            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            smpos = mul(worldposition,ShadowMapVPMatrix_c2); 
             if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
             { 
                 return float3(0,1,0);
             }
             else
             {
-                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                smpos = mul(worldposition,ShadowMapVPMatrix_c3); 
                 if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
                 { 
                     return float3(0,0,1);
@@ -173,7 +175,7 @@ struct PS_IN
         bias = clamp(bias, 0,0.01); 
 
         //ShadowMap matrix VP space depth  
-        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix));
+        float4 smpos = mul(worldposition,ShadowMapVPMatrix);
         ///////////////////////////////////
         #ifdef SHADOWWARP_ENABLED
             smpos.x=smpos.x/(abs(smpos.x)+depth_shadow_bendadd);
@@ -190,7 +192,7 @@ struct PS_IN
         }
         else 
         {
-            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            smpos = mul(worldposition,ShadowMapVPMatrix_c2); 
             if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
             {
                 ShadowTexCoord = float2(0.5,-0.5) * smpos.xy /  smpos.w + float2( 0.5, 0.5 ); 
@@ -198,7 +200,7 @@ struct PS_IN
             }
             else
             {
-                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                smpos = mul(worldposition,ShadowMapVPMatrix_c3); 
                 if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
                 {
                     ShadowTexCoord = float2(0.5,-0.5) * smpos.xy /  smpos.w + float2( 0.5, 0.5 );  
@@ -210,6 +212,7 @@ struct PS_IN
         return 1;
         //return smdepth.xyz;
     }
+     
 //######## SHADOWS END ########
 
 
@@ -234,7 +237,7 @@ struct PS_IN
     {
         float depth =  tDepthView.Sample(sView, uv).x;
         depth = linearDepth(depth);
-        return mul( float4(camera_fovaspect * (uv * 2.0 - 1.0) * depth, -depth,1),transpose(InvWVP)).xyz;
+        return mul( float4(camera_fovaspect * (uv * 2.0 - 1.0) * depth, -depth,1),InvWVP).xyz;
     }
     float3 SS_GetPosition(float2 UV)
     {
@@ -247,7 +250,7 @@ struct PS_IN
         position.z = depth; 
     //position.w = 1;
         //Transform Position from Homogenous Space to World Space 
-        position = mul(position, transpose(InvWVP));  
+        position = mul(position, InvWVP);  
     
         //position *= position.w;
         position /= position.w;
@@ -387,11 +390,14 @@ struct PS_IN
 
 PS_IN VS( VS_IN input ) 
 {
-	float4x4 VP =mul(transpose(View),transpose(Projection)); 
-	float4 wpos = mul(input.pos,transpose(World));
+	float4x4 VP =mul(View,Projection); 
+	float4 wpos = mul(input.pos,World);
 
 	PS_IN output = (PS_IN)0; 
 	output.pos =  mul(wpos,VP); 
+    float3 xnrm = mul(input.norm,(float3x3)World);
+    output.wdp = length(wpos.xyz);
+    output.norm = dot(normalize(xnrm),(wpos.xyz)/output.wdp);
 	return output;
 } 
 /*
@@ -452,12 +458,17 @@ float4 PS( PS_IN input ) : SV_Target
 */
 float4 PS_PBR( PS_IN input ) : SV_Target
 {    
+    //return 1;
     float2 uv = getUV(input.pos);
     float3 normal = getNormal(uv);
     float3 pos = SS_GetPosition(uv);
     float4 mask =  tMaskView.Sample(sView, uv);
 	float3 surfcolor = tDiffuseView.Sample(sView, uv);
-    //return float4(1,1,1,1);
+    
+    float ndot =input.norm*input.norm*20;
+   // return float4(float3(1,1,1)*saturate(input.wdp),0.1);
+    //return float4(ndot,ndot,ndot,0.11);
+     //return float4( g_ShadowMap_c3.Sample(sView, uv).r/2*float3(1,1,1),1);
    // surfcolor *=surfcolor;
 	
 	float base_subsurface_val = 0;
@@ -478,32 +489,33 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 
 
 //return float4(N,1)/200;
-	//float roug_sqr = roughness*roughness;
-	//float G = GGX_PartialGeometry(dot(N,V), roug_sqr) 
-	//	* GGX_PartialGeometry(dot(N,L), roug_sqr);
-//
-	//float D = GGX_Distribution(dot(N,H), roughness*roughness);
+
 // 
-	float light_power = max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
+	float light_power =saturate(ndot)*saturate(input.wdp*20)*3*
+     max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
+    
+
     float3 LIGHT = CookTorrance_GGX(normal,lightPos-pos,camera_pos-pos,roughness,subsurface_coeff,
 		saturate(metallness),//saturate((smoothness+metallness)*0.75),//float3(0.24, 0.24, 0.24),
 		surfcolor)*lightColor*lightIntensity;
- 
+     
+     
     //eLIGHT = 1;
-//return float4(pos,1);
+//return float4(LIGHT,1);
     float dotNL = saturate(dot(N,L));
     if ( applyShadow) 
     {  
+        
 		float dotNLS = min(dotNL,0.99);
         float4 pp = float4(pos-camera_pos,1);
-        
-        LIGHT *= saturate(SampleForShadow(pp,dotNLS)
-           //  * ShadowViewIndex(pp,dotNLS)
-             );//*dotNL; 
+              
+        LIGHT *= saturate(SampleForShadow(pp,dotNLS));//*dotNL; 
+        //LIGHT *= ShadowViewIndex(pp,dotNLS);
+          
     }
     if (isspotlight)
     {
-        float3 invpos = mul(float4( pos,1),transpose(WorldInv)).xyz;
+        float3 invpos = mul(float4( pos,1),WorldInv).xyz;
         float3 lpos = invpos;
            // mul(float4(pos,1),transpose(projWorld)).xyz; 
 
@@ -523,27 +535,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     }
 
 	float3 output  = lerp(LIGHT,LIGHT*surfcolor,metallness); 
-	//float3 specColor = 0;
-	//float3 FK_summ = 0;
- 	//float LOD_Aparam = ComputeLOD_AParam();
-    //for (uint i=0; i<(uint)uSamplesCount; i++){
-    //    float3 H = GGX_Sample(uHammersleyPts[i], roughness*roughness);
-    //   // H = mul(H, HTransform);
-    //    float3 LightDir = reflect(-V, H);
-//
-    //    float3 specK; 
-    //    float pdf;
-    //    float3 FK;
-    //    specK = CookTorrance_GGX_sample(N, LightDir, V, roughness,float3(0.24, 0.24, 0.24), FK, pdf);
-    //    FK_summ += FK;
-    //    float LOD = ComputeLOD(LOD_Aparam, pdf, LightDir);
-    //    float3 LightColor = tEnvView.SampleLevel(sView,LightDir.xyz , LOD).rgb;//*LightInt;
-	//	// mul(LightDir.xyz, (float3x3)V_InverseMatrix)
-    //    specColor += specK * LightColor;
-    //}
-//
-//output = surfcolor*0.1;
-//return float4(surfcolor,1); 
+    
 	return float4(output,1)*mask.x*0.1;
 
 }

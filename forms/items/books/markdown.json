@@ -1,0 +1,6 @@
+{
+    "name":"Markdown test book",
+    "description":"Various markdown syntax examples",
+    "tags":["test"],
+    "text":"markdown.md"
+}

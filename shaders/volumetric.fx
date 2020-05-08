@@ -36,10 +36,10 @@ PS_IN VS( VS_IN input )
 	//viewspace mesh > get world coordinates values
 	PS_IN output = (PS_IN)0; 
 	
-	float4x4 VP = mul(transpose(View),transpose(Projection)); 
+	float4x4 VP = mul((View),(Projection)); 
 	  
-	output.wpos = mul(input.pos,transpose(World));
-	output.lpos =  mul(input.pos,transpose(WVPInverse));
+	output.wpos = mul(input.pos,(World));
+	output.lpos =  mul(input.pos,(WVPInverse));
 	output.pos =  mul( output.wpos,VP) ; 
 	return output; 
 }  

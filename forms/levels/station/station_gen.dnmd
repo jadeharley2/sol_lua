@@ -27,10 +27,11 @@
 	}, 
 	"input_operations": [        
 	],
+	"surface_material":"metal", 
 	"operations" : [        
 		{ "type" : "obj","out":"%",
 		//"out" : { 
-		//	"default":"default", 
+		//	"default":"default",  
 		//	"floor_def":"floor_def",
 		//	"door_def":"door_def",
 		//	"wall_bend":"wall_bend", 

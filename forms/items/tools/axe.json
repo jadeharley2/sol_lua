@@ -1,0 +1,24 @@
+{	
+	"type" : "tool_axe",
+	"name" : "Axe",
+	"description" : "Regular axe",
+	//"icon" : "tool/shovel",
+	"appearance" : {
+		//"model": "models/primitives/box.stmd",
+		"model":"models/tools/shovel/shovel.stmd",
+		"scale":0.03,
+		"holdtype" : {
+			"model" : "models/tools/shovel/shovel_anim.stmd",
+			"idle" : "idle_b",
+			"fire" : "work",
+			"fire_loop" : "workloop",
+			"fire_duration" : 1.6
+		}, 
+		"attach":{ 
+			"name" : "hand_R",
+			"world":{"ang":[-10,0,-85],"sca":1,"pos":[-3,32,-7]}
+		}
+	},
+	"resource" : "resource.wood",
+	"firedelay" : 0,
+}

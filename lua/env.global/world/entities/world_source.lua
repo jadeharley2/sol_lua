@@ -71,6 +71,7 @@ function ENT:Spawn()
 		cubemap:SetTarget(nil,space) 
 		local cbm =cubemap
 		
+		GlobalSetCubemap(cubemap)
 		
 		space:AddNativeEventListener(EVENT_ENTER,"cubmapset",function() 
 			--GlobalSetCubemap(cbm,true) 

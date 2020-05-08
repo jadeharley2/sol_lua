@@ -222,6 +222,8 @@ function OnStartup()
 	local cam = GetCamera() or ents.CreateCamera()
 	cam:SetSelfContained(true)
 	cam:SetParent(LOBBY)
+	cam:SetGlobalName("THECAM")
+	cam:SetName("thecam")
 	cam:Spawn()
 
 	AddOrigin(cam)

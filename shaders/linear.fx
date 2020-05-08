@@ -87,9 +87,9 @@ void GS( triangle GSPS_INPUT input[3], inout TriangleStream<GSPS_INPUT> TriStrea
 {
     GSPS_INPUT output;
 	
-	float4x4 tWorld = transpose(World);
-	float4x4 tView = transpose(View);
-	float4x4 mx = mul(tView,	transpose(Projection));
+	float4x4 tWorld = (World);
+	float4x4 tView = (View);
+	float4x4 mx = mul(tView,	(Projection));
    
 	
 	float3 p1 = mul(input[0].Pos,tWorld).xyz;

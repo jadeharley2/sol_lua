@@ -45,7 +45,9 @@ function EF:Start(source,target,position)
 end 
 function EF:Dispell()  
 	local target = self._target
-	self:End(self._source,target)
+	if self.End then
+		self:End(self._source,target)
+	end
 	target._active_effects = target._active_effects or {}
 	target._active_effects[self._type] = nil
 	hook.Call("effect.end",self,target)

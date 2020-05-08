@@ -93,21 +93,21 @@ struct PS_IN
 
     float GetIsInViewMatrix(float4 worldposition, float4x4 viewProj)
     {
-        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix)); 
+        float4 smpos = mul(worldposition,(ShadowMapVPMatrix)); 
         if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
         {
             return 1;
         }
         else 
         {
-            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            smpos = mul(worldposition,(ShadowMapVPMatrix_c2)); 
             if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
             { 
                 return 2;
             }
             else
             {
-                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                smpos = mul(worldposition,(ShadowMapVPMatrix_c3)); 
                 if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
                 { 
                     return 3;
@@ -146,7 +146,7 @@ struct PS_IN
         bias = clamp(bias, 0,0.01); 
 
         //ShadowMap matrix VP space depth  
-        float4 smpos = mul(worldposition,transpose(ShadowMapVPMatrix));
+        float4 smpos = mul(worldposition,(ShadowMapVPMatrix));
         ///////////////////////////////////
         #ifdef SHADOWWARP_ENABLED
             smpos.x=smpos.x/(abs(smpos.x)+depth_shadow_bendadd);
@@ -163,7 +163,7 @@ struct PS_IN
         }
         else 
         {
-            smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c2)); 
+            smpos = mul(worldposition,(ShadowMapVPMatrix_c2)); 
             if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
             {
                 ShadowTexCoord = float2(0.5,-0.5) * smpos.xy /  smpos.w + float2( 0.5, 0.5 ); 
@@ -171,7 +171,7 @@ struct PS_IN
             }
             else
             {
-                smpos = mul(worldposition,transpose(ShadowMapVPMatrix_c3)); 
+                smpos = mul(worldposition,(ShadowMapVPMatrix_c3)); 
                 if(smpos.x>-1&&smpos.x<1&&smpos.y>-1&&smpos.y<1)
                 {
                     ShadowTexCoord = float2(0.5,-0.5) * smpos.xy /  smpos.w + float2( 0.5, 0.5 );  
@@ -207,7 +207,7 @@ struct PS_IN
     {
         float depth =  tDepthView.Sample(sView, uv).x;
         depth = linearDepth(depth);
-        return mul( float4(camera_fovaspect * (uv * 2.0 - 1.0) * depth, -depth,1),transpose(InvWVP)).xyz;
+        return mul( float4(camera_fovaspect * (uv * 2.0 - 1.0) * depth, -depth,1),(InvWVP)).xyz;
     }
     float3 SS_GetPosition(float2 UV)
     {
@@ -220,7 +220,7 @@ struct PS_IN
         position.z = depth; 
     //position.w = 1;
         //Transform Position from Homogenous Space to World Space 
-        position = mul(position, transpose(InvWVP));  
+        position = mul(position, (InvWVP));  
     
         //position *= position.w;
         position /= position.w;
@@ -254,8 +254,8 @@ struct PS_IN
 
 PS_IN VS( VS_IN input ) 
 {
-	float4x4 VP =mul(transpose(View),transpose(Projection)); 
-	float4 wpos = mul(input.pos,transpose(World));
+	float4x4 VP =mul((View),(Projection)); 
+	float4 wpos = mul(input.pos,(World));
 
 	PS_IN output = (PS_IN)0; 
 	output.pos =  mul(wpos,VP); 
@@ -289,7 +289,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
     
 	float light_power = max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
     
-    float3 invpos = mul(float4( pos,1),transpose(WorldInv)).xyz;
+    float3 invpos = mul(float4( pos,1),(WorldInv)).xyz;
     float intensity =saturate( sqrt(invpos.y*invpos.y+invpos.z*invpos.z));
 
     float3 apos = abs(pos);

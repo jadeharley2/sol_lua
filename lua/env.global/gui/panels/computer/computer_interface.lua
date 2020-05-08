@@ -1,4 +1,4 @@
-LOCALTABLET = false
+LOCALTABLET = LOCALTABLET or false
 PANEL.basetype = "window"
 
 function PANEL:Init() 
@@ -307,6 +307,8 @@ function PANEL:Setup(formid, data)
 								size = {64,64}, 
 								margin = {0,5,0,5}, 
 								OnClick = function (s)  
+									--test 
+									json.Write("PROFILE@userdata/test.json",{a = 1,b = 2, c = 3})
 								end
 							},
 						}
@@ -434,10 +436,13 @@ function PANEL:MakeShot()
 		local filename = "shot"..tostring(math.floor(CurTime()))
 		local copy = orig:Copy('@'..filename)
 		if copy then
+			local path = "userdata/images/"..filename..".png"
+			copy:Save("PROFILE@"..path)
+
 			self.memory.camera = self.memory.camera or {}
 			self.memory.camera[filename] = {
 				_type = "image",
-				data = '@'..filename
+				data = path--'@'..filename
 			}
 			self.backcamv:SetColor(Vector(1,1,1))
 			self.backcamv:AnimateColor("Color",Vector(0,0,0),0.3,easing.easeout)
@@ -510,3 +515,14 @@ function PANEL:UploadFile(path,ftype,formid,data)
 		data = data
 	})
 end
+
+console.AddCmd("cp_load",function(formid)
+	if LOCALTABLET then
+		local name = forms.GetName(formid)
+		if name then
+			LOCALTABLET:UploadFile("download/"..name,"book",formid)
+		end
+	else
+		MsgN("computer not found!")
+	end
+end)

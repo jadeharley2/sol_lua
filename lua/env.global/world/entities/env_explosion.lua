@@ -45,7 +45,7 @@ function ENT:Spawn(c)
 	particlesys2:SetBlendMode(BLEND_ADD) 
 	particlesys2:SetRasterizerMode(RASTER_DETPHSOLID) 
 	particlesys2:SetDepthStencillMode(DEPTH_READ)  
-	particlesys2:SetSpeed(math.min(10/magn,6))
+	particlesys2:SetSpeed(math.min(10/math.log(magn),6))
 	particlesys2:Set("particles/explosion.particle")--lines_test.json")--explosion.json")
 	self.particlesys2 = particlesys2 
 	
@@ -72,7 +72,10 @@ function ENT:Spawn(c)
 				v:SendEvent(EVENT_DAMAGE,M)
 				local phys = v.phys
 				if phys then
-					phys:ApplyImpulse(dir*M*30)
+					if phys:GetMass()<=0 then
+						phys:SetMass(200)
+					end
+					phys:ApplyImpulse(dir*M*3000)
 				end
 				--MsgN("EXPLOSION DAMAGE to ",v," by ",M)
 			end

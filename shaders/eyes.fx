@@ -89,9 +89,9 @@ PS_IN VS( VSS_IN input)
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld =  transpose(World);
+	float4x4 InstWorld =  World;
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
@@ -102,7 +102,7 @@ PS_IN VS( VSS_IN input)
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color; 
-	output.spos = mul(wpos,transpose(View));
+	output.spos = mul(wpos,View);
 	return output;
 }
 PS_IN VSI( VSS_IN input, I_IN inst ) 
@@ -112,9 +112,9 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
@@ -125,7 +125,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd;
 	output.color = input.color; 
-	output.spos = mul(wpos,transpose(View));
+	output.spos = mul(wpos,View);
 	return output;
 }
 PS_OUT PS( PS_IN input ) : SV_Target
@@ -135,7 +135,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//ClipProcess(input.wpos);
 	float TBrightness = brightness * hdrMultiplier;
 	
-	//float4 wmpos = mul(float4(input.wpos,1),transpose(EyeWorld));
+	//float4 wmpos = mul(float4(input.wpos,1),EyeWorld);
 	//float2 wmTexCoord = float2(0.5,-0.5) *(wmpos.xy/  wmpos.w  + float2( 1, -1 )) ;// /  wmpos.w
 	float4 result =  g_MeshTexture.Sample(MeshTextureSampler, input.tcrd  )*float4(tint,1);
 	float4 emission =  g_MeshTexture_e.Sample(MeshTextureSampler, input.tcrd  );
@@ -186,9 +186,9 @@ DCI_PS_IN CI_VSI( VSS_IN input, I_IN inst )
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	

@@ -4,6 +4,11 @@
 	"model" : "models/nature/default/bush_green.dnmd",
 	"scale" : 1,
 	"rotation" : [0,0,0],
-	"nophys":true
-	
+	//"nophys":true
+	"phys":{
+		"custom":true,
+		"mass":-1,
+		"type":"sphere",
+		"radius":1,
+	}
 }

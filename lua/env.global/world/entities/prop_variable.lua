@@ -256,10 +256,14 @@ function ENT:SetupPhysics(world,scale)
 			if data.phys then
 				local phys =  self.phys 
 			
-				if(model:HasCollision()) then
-					phys:SetShapeFromModel(world)  
-				end 
-				phys:SetMass(data.mass or 10)  
+				if data.phys.custom then
+					phys:SetupPhysics(json.ToJson(data.phys))
+				else
+					if(model:HasCollision()) then
+						phys:SetShapeFromModel(world)  
+					end 
+					phys:SetMass(data.mass or 10)  
+				end
 				phys:SoundCallbacks()
 				phys:SetMaterial(data.physmaterial or "wood")
 				if self:HasTag(TAG_CHUNKNODE) then

@@ -56,6 +56,7 @@ struct PS_IN
     float3 color : TEXCOORD4; 
     float3 wpos : TEXCOORD5; 
     float updot : TEXCOORD6;
+    float3 ambmap : TEXCOORD7;
     
     int3 index: INDC;
     float3 weight: WGHT; 
@@ -78,7 +79,7 @@ PS_IN VS( VS_IN input, I_IN inst )
 	PS_IN output = (PS_IN)0;
 	//float4x4 VP =mul(transpose(View),transpose(Projection));
 
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul((inst.transform),(World));
 	float3x3 nworld = (float3x3)(InstWorld);
 	float4 wpos = mul(input.pos,InstWorld);
 
@@ -89,12 +90,17 @@ PS_IN VS( VS_IN input, I_IN inst )
 	output.tnorm = cross(output.norm,output.bnorm ); 
 
     output.index = input.index; 
-    output.weight= input.weight;
+    output.weight= input.weight; 
 
 	output.tcrd = input.tcrd;
     output.color = input.colr; 
     output.wpos = wpos;
     output.updot =  saturate(pow(dot(normalize(input.norm),float3(0,1,0)),20));
+ 
+    float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
+    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
+
 	return output; 
 } 
 
@@ -102,7 +108,7 @@ PS_IN VS( VS_IN input, I_IN inst )
 void GS( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 {   
     PS_IN output = (PS_IN)0;
-	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	float4x4 mx =mul((View) ,	(Projection));
 	
 	float3 pos1 = input[0].pos;
 	float3 pos2 = input[1].pos;
@@ -137,7 +143,8 @@ void GS( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 PS_OUT PS( PS_IN input ) : SV_Target
 {
     PS_OUT output = (PS_OUT)0;
-    float4 noise = NoiseTexture.Sample(MeshTextureSampler,input.tcrd/4); 
+
+    //float4 noise = NoiseTexture.Sample(MeshTextureSampler,input.tcrd/4); 
     //(noise.xyz-float3(0.5,0.5,0.5))*0.1
     float dtTop = input.updot;
     float dtSide = 1-dtTop;
@@ -180,7 +187,9 @@ PS_OUT PS( PS_IN input ) : SV_Target
         +lerp(
             SurfaceTextures_d.Sample(MeshTextureSampler,float3(input.tcrd/8,id.z*2)),
             SurfaceTextures_d.Sample(MeshTextureSampler,float3(input.tcrd/8,id.z*2+1)),dtSide) *weight.z 
-        ))/2
+        )
+        )
+        /2
     ;
     float4  bump = 
         lerp(
@@ -229,8 +238,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
     output.depth = input.pos.z; 
 	output.mask = float4(1,surfpar.x*mask.x,surfpar.y*mask.y,surfpar.z*mask.z);
 
-    float3 ambmapEnv = mul(float4(normal,1),EnvInverse).xyz;
-    float3 ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
+float3 ambmap= input.ambmap;
 
     float3 camdir = input.wpos;
     float3 reflectcam = reflect(camdir,input.norm);
@@ -272,9 +281,9 @@ struct DCI_PS_IN
 DCI_PS_IN CI_VSI( VS_IN input, I_IN inst ) 
 {
 	DCI_PS_IN output = (DCI_PS_IN)0; 
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul((inst.transform),(World));
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul((View),(Projection));
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	

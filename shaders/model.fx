@@ -187,6 +187,7 @@ struct PS_IN
 	float3 color : TEXCOORD5;
 	float3 spos : TEXCOORD6;
 	half layer : TEXCOORD7;
+	float3 ambmap : TEXCOORD8;
 	//float z_depth : TEXCOORD2;
 };
 
@@ -234,9 +235,9 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	nworld = MInv(nworld);
@@ -252,6 +253,10 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0) 
 		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
 		;//mul(wpos,transpose(View)); 
+
+    float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
+    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
 	return output;
 }
 PS_IN VS( VSS_IN input) 
@@ -261,10 +266,10 @@ PS_IN VS( VSS_IN input)
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	} 
-	float4 wpos = mul(input.pos,transpose(World));
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4 wpos = mul(input.pos,World);
+	float4x4 VP =mul(View,Projection);
 	
-	float3x3 nworld = (float3x3)(transpose(World));
+	float3x3 nworld = (float3x3)(World);
 	nworld = MInv(nworld);
 	
 	output.pos = wpos;// mul(wpos,VP);
@@ -274,7 +279,11 @@ PS_IN VS( VSS_IN input)
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
 	output.color = input.color*tint*Color;//((float3)input.inds.xyz);
-	output.spos = mul(wpos,transpose(View));
+	output.spos = mul(wpos,View);
+	
+    float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
+    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
 	return output;
 }
 PS_IN VSIC( VSS_IN input, IC_IN inst ) 
@@ -284,9 +293,9 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	nworld = MInv(nworld);
@@ -303,6 +312,10 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0)
 		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
 		;//mul(wpos,transpose(View)); 
+		
+    float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
+    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
 	return output;
 }
 PS_IN VSIM( VSS_IN input, MORPH_IN morph ) 
@@ -317,9 +330,9 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	{ 
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	} 
-	float4 wpos = mul(input.pos,transpose(World));
-	float4x4 VP =mul(transpose(View),transpose(Projection)); 
-	float3x3 nworld = (float3x3)(transpose(World));
+	float4 wpos = mul(input.pos,World);
+	float4x4 VP =mul(View,Projection); 
+	float3x3 nworld = (float3x3)(World);
 	nworld = MInv(nworld);
 	
 	output.pos = wpos; mul(wpos,VP);
@@ -334,6 +347,10 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 		g_MeshTexture_g.SampleLevel(MeshTextureSampler,input.tcrd,0)
 		* g_MeshTexture_x.SampleLevel(MeshTextureSampler,input.tcrd,0)
 		;//mul(wpos,transpose(View)); 
+		
+    float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
+    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+
 	return output;
 }
 
@@ -408,11 +425,11 @@ void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream 
 */
 
 
-[maxvertexcount(3+3*12)]//+3
+[maxvertexcount(3+3*10)]//+3
 void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 {   
     PS_IN output = (PS_IN)0;
-	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	float4x4 mx =mul(View,	Projection);
 	
 	float3 pos1 = input[0].pos;
 	float3 pos2 = input[1].pos;
@@ -430,7 +447,7 @@ void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStre
 	{//0.000001*
 		float wl =  0.001*furLen/distanceMultiplier;
 		[unroll]
-		for (int x = 1; x < 12; x++)
+		for (int x = 1; x < 10; x++)
 		{
 			float w =x*wl;  
 			input[0].pos = mul(float4(pos1+input[0].norm.xyz*w*input[0].spos.x,1),mx);
@@ -438,7 +455,7 @@ void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStre
 			input[2].pos = mul(float4(pos3+input[2].norm.xyz*w*input[2].spos.x,1),mx); 
 			input[0].layer = x;
 			input[1].layer = x;
-			input[2].layer = x;
+			input[2].layer = x; 
 			OutputStream.Append( input[0] );
 			OutputStream.Append( input[1] );
 			OutputStream.Append( input[2] ); 
@@ -594,7 +611,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//output.normal = float4(input.norm/2+float3(0.5,0.5,0.5),1);
 	//return output;
 	//input.pos.w;///input.pos.w;//float4(input.pos.z/input.pos.w,0,0,1);//*input.pos.w
-	
+	//return output;
 	if(clipenabled)
 	{
 		float val = dot(clipplane.xyz,input.wpos)+clipplane.w;
@@ -621,7 +638,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	}
 	if(SkyboxMode)
 	{
-		float3 envdir = mul(float4(input.wpos,1),  (WorldInv)).xyz;
+		float3 envdir = mul(float4(input.wpos,1),  transpose(WorldInv)).xyz;
 		float3 envmap =// EnvSampleLevel(envdir,1);// 
 			g_SkyTexture.SampleLevel(MeshTextureSampler,envdir,0);
 		output.light = float4(pow(envmap,pow_skybox_mul)*TBrightness,1);
@@ -773,12 +790,12 @@ PS_OUT PS( PS_IN input ) : SV_Target
 							}
 							else
 							{
-								clip(dtexIn-input.layer/13 );
+								clip(dtexIn-input.layer/11 );//13
 							}
 						}
 						else
 						{
-							clip(dtexIn-input.layer/13 );
+							clip(dtexIn-input.layer/11 );//13
 						}
 					}
 				}
@@ -788,7 +805,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 				clip(alpha-alphatestreference); 
 			}
 		}
-		else
+		else 
 		{
 			diffuse.xyz *= input.color;
 		}
@@ -800,8 +817,8 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float rimlight = pow(saturate(1-dot(input.norm,-camdir)),10);
 		 
 		 
-		float3 ambmapEnv =  mul(float4(input.norm,1),EnvInverse).xyz;
-		float3 ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+		//float3 ambmapEnv =  mul(float4(input.norm,1),EnvInverse).xyz;
+		float3 ambmap =input.ambmap;//saturate(EnvSampleLevel(ambmapEnv,0));
 
 		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
 		float3 envmap = saturate(EnvSampleLevel(reflectEnv,_mask.x));
@@ -851,7 +868,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		}
 		output.mask = float4(0,0,0,1);
 	}
-	float3x3 VP =(float3x3) mul(transpose(View),transpose(Projection));
+	float3x3 VP =(float3x3) mul(View,Projection);
 	float3 vv = mul(input.norm,VP);
 	float3 rer = normalize(input.norm);//vv.xyz);
 	output.normal = float4(rer.x/2+0.5,rer.y/2+0.5,rer.z/2+0.5,1); 
@@ -873,9 +890,9 @@ DCI_PS_IN CI_VSI( VSS_IN input, IC_IN inst )
 	{
 		Skin(input.pos,input.norm,input.wts,input.inds);
 	}
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul(inst.transform,World);
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul(View,Projection);
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
@@ -901,6 +918,130 @@ float4 CI_PS( DCI_PS_IN input ) : SV_Target
 	}
 	return float4(drawableColorIndex/255,1);
 }
+
+
+
+
+
+
+
+float4x4 Cascade0VP;
+float4x4 Cascade1VP;
+float4x4 Cascade2VP;
+
+struct DCI_C3
+{ 
+	float4 pos : SV_POSITION;  
+	float2 tcrd : TEXCOORD0;   
+	int layer : TEXCOORD1;
+};
+
+DCI_C3 SHADOW_C3_VSI( VSS_IN input, IC_IN inst ) 
+{
+	DCI_C3 output = (DCI_C3)0;
+	if(SkinningEnabled)
+	{
+		Skin(input.pos,input.norm,input.wts,input.inds);
+	}
+	float4x4 InstWorld = mul(inst.transform,World);
+	float4 wpos = mul(input.pos,InstWorld);
+	 
+	 
+	output.pos =  wpos; 
+	output.tcrd = input.tcrd;
+	return output;
+}
+
+[maxvertexcount(3)]
+void SHADOW_C3_GS( triangle DCI_C3 input[3], inout TriangleStream<DCI_C3> OutputStream )
+{   
+    DCI_C3 output = (DCI_C3)0;
+	float4x4 c0mx =mul(View,Projection);// transpose(Cascade0VP);
+	float4x4 c1mx = transpose(Cascade1VP);
+	float4x4 c2mx = transpose(Cascade2VP);
+	
+	float3 pos1 = input[0].pos;
+	float3 pos2 = input[1].pos;
+	float3 pos3 = input[2].pos;
+
+	input[0].pos = mul( pos1,c0mx);
+	input[1].pos = mul( pos2,c0mx);
+	input[2].pos = mul( pos3,c0mx);
+	input[0].layer = 0;
+	input[1].layer = 0;
+	input[2].layer = 0;
+	OutputStream.Append( input[0] );
+	OutputStream.Append( input[1] );
+	OutputStream.Append( input[2] ); 
+	OutputStream.RestartStrip();
+
+//input[0].pos = mul( pos1,c1mx);
+//input[1].pos = mul( pos2,c1mx);
+//input[2].pos = mul( pos3,c1mx);
+//input[0].layer = 1;
+//input[1].layer = 1;
+//input[2].layer = 1;
+//OutputStream.Append( input[0] );
+//OutputStream.Append( input[1] );
+//OutputStream.Append( input[2] ); 
+//OutputStream.RestartStrip();
+//
+//input[0].pos = mul( pos1,c2mx);
+//input[1].pos = mul( pos2,c2mx);
+//input[2].pos = mul( pos3,c2mx); 
+//input[0].layer = 2;
+//input[1].layer = 2;
+//input[2].layer = 2;
+//OutputStream.Append( input[0] );
+//OutputStream.Append( input[1] );
+//OutputStream.Append( input[2] ); 
+//OutputStream.RestartStrip();
+ 
+}
+struct SHADOWC3_PS_OUT
+{
+    float cascade0: SV_Target0; 
+    float cascade1: SV_Target1; 
+    float cascade2: SV_Target2; 
+};
+ 
+SHADOWC3_PS_OUT SHADOW_C3_PS( DCI_C3 input )  
+{  
+    SHADOWC3_PS_OUT output = (SHADOWC3_PS_OUT)0;
+	float dp = input.pos.z*input.pos.w;
+	if(SkyboxMode) 
+	{
+	 	clip(-1); 
+	}
+	else if(TextureEnabled && alphatest)
+	{
+		float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, input.tcrd) ;   
+		clip(texIn.a-alphatestreference); 
+	}
+		output.cascade0 = dp;
+//if(input.layer==0)
+//{
+//	output.cascade0 = dp;
+//}
+//else if(input.layer==1)
+//{
+//	output.cascade1 = dp;
+//}
+//else // if(input.layer==2)
+//{
+//	output.cascade2 = dp;
+//}
+	
+	return output;//-0.001f; 
+}
+
+
+
+
+
+
+
+
 
 //float4 SHADOW_PS( DCI_PS_IN input ) : SV_Target
 //{  
@@ -1022,6 +1163,15 @@ technique10 Normal
 		SetPixelShader( CompileShader( ps_4_0, PS() ) );
 	}
 } 
+technique10 shadow_cascade3
+{
+	pass P0
+	{
+		SetVertexShader( CompileShader( vs_4_0, SHADOW_C3_VSI() ) );
+		SetGeometryShader( CompileShader( gs_4_0, SHADOW_C3_GS() )  );
+		SetPixelShader( CompileShader( ps_4_0, SHADOW_C3_PS() ) );
+	}
+}
 //technique10 InstancedColor
 //{
 //	pass P0

@@ -10,6 +10,13 @@ float hdrMultiplier = 1;
 float exposure = 0.1;
 float gamma = 0.5;
 
+float brightness = 2;
+float pitch = 0;
+float contrast = 1;
+float3 modxR = float3(1,0,0);
+float3 modxG = float3(0,1,0);
+float3 modxB = float3(0,0,1);
+
 float camera_near=0.1;
 float camera_far=100;
 float camera_fovaspect;
@@ -84,7 +91,7 @@ float3 SS_GetPosition(float2 UV, float depth)
 	position.z =unlinearDepth( depth); 
  //position.w = 1;
 	//Transform Position from Homogenous Space to World Space 
-	position = mul(position, transpose(invWVP));  
+	position = mul(position, invWVP);  
  
 	//position *= position.w;
 	position /= position.w;
@@ -93,7 +100,7 @@ float3 SS_GetPosition(float2 UV, float depth)
 }
 float3 SS_GetUV(float3 position)
 {
-	 float4 pVP = mul(float4(position, 1.0f),transpose( VP));
+	 float4 pVP = mul(float4(position, 1.0f), VP);
 	 //pVP.w = 1;
 	 pVP.xy = float2(0.5f, 0.5f) + float2(0.5f, -0.5f) * pVP.xy/ pVP.w ;/// pVP.w
 	 return float3(pVP.xy, pVP.z/ pVP.w);// / pVP.w
@@ -347,13 +354,47 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 	}
 	return 0;
 }
- 
+
+float3 Hue(float H)
+{
+    float R = abs(H * 6 - 3) - 1;
+    float G = 2 - abs(H * 6 - 2);
+    float B = 2 - abs(H * 6 - 4);
+    return saturate(float3(R,G,B));
+}
+float3 HSVtoRGB(in float3 HSV)
+{
+    return ((Hue(HSV.x) - 1) * HSV.y + 1) * HSV.z;
+}
+
+float3 RGBtoHSV(in float3 RGB)
+{
+    float3 HSV = 0;
+    HSV.z = max(RGB.r, max(RGB.g, RGB.b));
+    float M = min(RGB.r, min(RGB.g, RGB.b));
+    float C = HSV.z - M;
+    if (C != 0)
+    {
+        HSV.y = C / HSV.z;
+        float3 Delta = (HSV.z - RGB) / C;
+        Delta.rgb -= Delta.brg;
+        Delta.rg += float2(2,4);
+        if (RGB.r >= HSV.z)
+            HSV.x = Delta.b;
+        else if (RGB.g >= HSV.z)
+            HSV.x = Delta.r;
+        else
+            HSV.x = Delta.g;
+        HSV.x = frac(HSV.x / 6);
+    }
+    return HSV;
+}
 float4 PS( PS_IN input ) : SV_Target
 {  
 	//return 1; 
 	if (debug_channels){return CHANNELS(input);}
 	//return 1;
-	float4 pDiffuse = tDiffuseView.Sample(sView, input.tcrd);
+	float4 pDiffuse =tDiffuseView.Sample(sView, input.tcrd);
 	float4 pNormal = tNormalView.Sample(sView, input.tcrd);//float4((tNormalView.Sample(sView, input.tcrd).xyz-float3(0.5,0.5,0.5))*2,1);
 	float pDepth = tDepthView.Sample(sView, input.tcrd);
 	float4 pMask = tMaskView.Sample(sView, input.tcrd);
@@ -366,7 +407,7 @@ float4 PS( PS_IN input ) : SV_Target
 	float3 wpos = SS_GetPosition(input.tcrd,d2/2);
 	//return float4(SS_GetUV(wpos)-float3(input.tcrd,0),1); 
 	//return float4(wpos*10000,1);
-	float3 shcolor = pDiffuse;
+	float3 shcolor =  pDiffuse;
 	//return pNormal.a;
 	//return float4(wpos*200000,1); 
 	if(enable_sslr&&pMask.y>0.01)
@@ -440,10 +481,19 @@ float4 PS( PS_IN input ) : SV_Target
 
 
 
+	result = RGBtoHSV(result);
+	result.z = log10(result.z+1)*brightness;
+	result.y = result.y * contrast;
+	result.x = result.x + pitch;
+	result = HSVtoRGB(result);
+
 	float gamma = 1;
 	//float exposure = 0.5; 
     float3 mapped = 1 - exp(-result * exposure); //exposure
     result = pow(mapped, 1.0 / gamma)*2;
+
+	result = result.r*modxR+result.g*modxG+result.b*modxB;
+	
 	//result += (result-length(result))*0.3;
 	//float darken = saturate(1-distance(float2(0.5,0.5),input.tcrd));
 	//result = result + FogSample(input.tcrd,pDepth);

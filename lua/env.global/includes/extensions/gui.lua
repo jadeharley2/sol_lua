@@ -81,10 +81,21 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif k == 'margin' then node:SetMargin(v[1],v[2],v[3],v[4])
 		elseif k == 'anchors' then node:SetAnchors(v)
 		
-		elseif k == 'color' then node:SetColor(Vector(v[1],v[2],v[3]))
-			if v[4] then
-				node:SetAlpha(v[4])
-			end 
+		elseif k == 'color' then 
+			if isjson(v) then
+				if v[0] then
+					node:SetColor(Vector(v[0],v[1],v[2]))
+				elseif v[1] then
+					node:SetColor(Vector(v[1],v[2],v[3]))
+				end 
+			elseif isuserdata(v) then
+				node:SetColor(v)
+			else
+				node:SetColor(Vector(v[1],v[2],v[3]))
+				if v[4] then
+					node:SetAlpha(v[4])
+				end 
+			end
 		elseif k == 'gradient' then 
 			local c1 = v[1]
 			local c2 = v[2]
@@ -320,5 +331,18 @@ hook.Add("script.reload","panel", function(filename)
 	if string.starts(filename,"env.global/gui/panels/") then 
 		panel.LoadType(filename)
 		return true
+	end
+end)
+
+console.AddCmd("gui_closetop",function ()
+	local top = panel.GetTopElement()
+	if top then
+		local ntop = top:GetParent()
+		while ntop do
+			top = ntop
+			ntop = top:GetParent()
+		end
+		MsgN("closing:",top)
+		top:Close()
 	end
 end)

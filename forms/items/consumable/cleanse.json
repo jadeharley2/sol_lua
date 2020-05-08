@@ -1,0 +1,32 @@
+{
+    "name":"Dleanse",
+    "description":"Clears all effects",
+    "type":"liquid",
+    "model":"models/clutter/lab/vase.stmd",
+	"rotation" : [-90,0,0], 
+    "contents":[ 
+    ],
+	"composition" :{
+		"resource.glass" : 3,   
+		"resource.active.tranlique" : 2,
+	},
+    "effects":[
+        { 
+            "effect" : "particle",
+            "emit":true,  
+            "type":"tfglow",
+            "time":1,
+            "children":true
+        }, 
+        {
+            "effect" : "delay",
+            "delay" : 1,
+            "data" : [
+                { 
+                    "effect" : "dispell", 
+                    "effects" : "all",  
+                }, 
+            ]
+        },
+    ]
+}

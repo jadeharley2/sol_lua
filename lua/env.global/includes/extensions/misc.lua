@@ -10,7 +10,12 @@ end
 
 function JVector(jvec,default)
 	if jvec then
-		return Vector(jvec[1],jvec[2],jvec[3])
+		local j3 = jvec[3]
+		if j3 then
+			return Vector(jvec[1],jvec[2],j3)
+		else
+			return Vector(jvec[0],jvec[1],jvec[2])
+		end
 	else
 		return default
 	end

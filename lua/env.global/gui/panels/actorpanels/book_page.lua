@@ -166,7 +166,7 @@ function PANEL:SetForm(formid,editmode)
 
 	local data = forms.ReadForm(formid)
 	if data and (data.text or data.lines) then
-		local txt = ""
+		local txt = false
 		--PrintTable(data.text)
 		local intr = data.surface
 		if intr then
@@ -178,11 +178,29 @@ function PANEL:SetForm(formid,editmode)
 			gui.FromTable(intr,self,{},self) 
 		end
 		if data.text then
-			for k,v in ipairs(data.text) do
-				if k == 1 then
-					txt = v
-				else
-					txt = txt .. v
+			if isstring(data.text) then
+				self.markdown = true
+				self:Remove(self.text)
+				ltex = { type = "markdown", name = "text",
+					dock = DOCK_FILL,
+					textonly = true,
+					margin = {4,4,4,4},
+				}
+				self:Add(gui.FromTable(ltex,nil,{},self)) 
+				local path = 'data/forms/items/books/'..data.text
+				local file = io.open( path, "r" )
+				if (file) then 
+					contents = file:read('*all')
+					file:close()
+					self.text:SetMarkdown(contents)
+				end
+			else
+				for k,v in ipairs(data.text) do
+					if k == 1 then
+						txt = v
+					else
+						txt = txt .. v
+					end
 				end
 			end
 		elseif data.lines then
@@ -194,11 +212,13 @@ function PANEL:SetForm(formid,editmode)
 				end
 			end
 		end
-		txt = string.replace(txt,'<a>','\a') 
-		txt = string.replace(txt,'<br>','\n') 
-		txt = string.replace(txt,'<line>','\n\n') 
-		txt = string.replace(txt,'<tab>','\t\t') 
-		self.text:SetText(txt)
+		if txt then
+			txt = string.replace(txt,'<a>','\a') 
+			txt = string.replace(txt,'<br>','\n') 
+			txt = string.replace(txt,'<line>','\n\n') 
+			txt = string.replace(txt,'<tab>','\t\t') 
+			self.text:SetText(txt)
+		end
 		self.header:SetText(data.name or "Untitled book")
 		self:UpdateLayout()
 		self:SetPage(1)

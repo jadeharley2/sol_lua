@@ -81,12 +81,13 @@ end
 
 
 
-function LoadSkybox(bpath)
+function LoadSkybox(bpath,brightness)
 	bpath = bpath or "sky_day01_05"
 	if string.ends(bpath,"_hdr") then
 		bpath = string.sub(bpath,1,#bpath-4)
 	end
 	bpath =  "gmod/materials/skybox/".. bpath
+	brightness = brightness or 1
 	
 	local amc = EnvmapFromTextures(
 		bpath.."ft.vtf", bpath.."bk.vtf",
@@ -96,14 +97,20 @@ function LoadSkybox(bpath)
 	if amc then
 		local mat = LoadMaterial("vlv.toolsskybox.vmt")
 		local mat2 = LoadMaterial("vlv.toolsskybox2d.vmt")
-		if mat then SetMaterialProperty(mat,"g_SkyTexture",amc) end
-		if mat2 then SetMaterialProperty(mat2,"g_SkyTexture",amc) end
+		if mat then 
+			SetMaterialProperty(mat,"g_SkyTexture",amc) 
+			SetMaterialProperty(mat,"brightness",brightness) 
+		end
+		if mat2 then 
+			SetMaterialProperty(mat2,"g_SkyTexture",amc) 
+			SetMaterialProperty(mat2,"brightness",brightness) 
+		end
 		return amc
 	end
 end
-console.AddCmd("source_sky",function (bpath)
-	LoadSkybox(bpath)
-end)
+console.AddCmd("source_sky",function (bpath,brightness)
+	LoadSkybox(bpath,tonumber(brightness or '1'))
+end) 
 console.AddCmd("source_sun",function (r,g,b)
 	sun = ents.GetByName("source.sun")
 	if sun then

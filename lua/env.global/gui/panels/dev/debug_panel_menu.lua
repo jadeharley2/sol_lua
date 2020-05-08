@@ -18,7 +18,7 @@ function PANEL:Init()
 		self:OnResize()  
 	end) 
 end 
-abstract_filepanel = false
+abstract_filepanel = abstract_filepanel or false
 function PANEL:Expand() 
 	self:Clear()
 	
@@ -35,6 +35,9 @@ function PANEL:Expand()
 	self:AddControl("file_browser","button","FB",Vector(0.4,0.5,0.8),function() 
 		if abstract_filepanel then abstract_filepanel:Close() abstract_filepanel = false 
 		else abstract_filepanel = panel.Create('files') abstract_filepanel:Show() end end)
+	self:AddControl("form_browser","button","FB",Vector(0.2,0.9,0.8),function() 
+		if abstract_filepanel then abstract_filepanel:Close() abstract_filepanel = false 
+		else abstract_filepanel = panel.Create('window_dforms') abstract_filepanel:Show() end end)
 	self:AddControl("asset_list","button","AL",Vector(0.4,0.8,0.4),function() console.Call("io_loadedassetlist") end)
 	self:AddControl("reload_iosystem","button","IO",Vector(0.3,0.3,0.8),function() console.Call("iosystem_restart") end)
 	self:AddControl("reload_ents","button","RE",Vector(0.8,0.3,0),function() console.Call("lua_reloadents") end)

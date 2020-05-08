@@ -29,8 +29,8 @@ SETTINGS_VALUES = {
 					--apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAO(v) end
 					apply = function(v) render.GlobalRenderParameters():SetPostProcessSSAO(v) end
 				},
-				{type = "number", name = "SSAO samples", var = "engine/pp_ssao_samples", default = 128, 
-					proc = function(n) return math.Clamp(n,16,256) end, 
+				{type = "number", name = "SSAO samples", var = "engine/pp_ssao_samples", default = 16, 
+					proc = function(n) return math.Clamp(n,8,128) end, 
 					--apply = function(v) render.GlobalRenderParameters():SetPostprocessSSAOSamples(v) end
 					apply = function(v) render.GlobalRenderParameters():SetPostProcessSSAOSampleCount(v) end 
 				},
@@ -68,17 +68,30 @@ SETTINGS_VALUES = {
 				{type = "key", name = "Move backward", 	var = "input/move/back", 		default = KEYS_S},
 				{type = "key", name = "Move right", 	var = "input/move/right", 		default = KEYS_D},
 				{type = "key", name = "Move up", 		var = "input/move/up", 			default = KEYS_SPACE},
-				{type = "key", name = "Move down", 		var = "input/move/down", 		default = KEYS_CONTROLKEY},
-				 
-
-				{type = "key", name = "Rotate left", 	var = "input/rotate/left", 		default = KEYS_Q},
-				{type = "key", name = "Rotate right", 	var = "input/rotate/right", 	default = KEYS_E},
+				{type = "key", name = "Move down", 		var = "input/move/down", 		default = KEYS_CONTROLKEY}, 
 				
 				{type = "key", name = "Inventory", 		var = "input/actor/inventory", 		default = KEYS_Q},
-				{type = "key", name = "Use", 			var = "input/actor/use", 			default = KEYS_E},
+				{type = "key", name = "Interact",    	var = "input/actor/use", 			default = KEYS_E},
 				{type = "key", name = "Pickup", 		var = "input/actor/pickup", 		default = KEYS_F},
 				{type = "key", name = "Jump", 			var = "input/actor/jump", 			default = KEYS_SPACE},
-				{type = "key", name = "Duck", 			var = "input/actor/duck", 			default = KEYS_CONTROLKEY},
+				{type = "key", name = "Duck", 			var = "input/actor/duck", 			default = KEYS_CONTROLKEY}, 
+				{type = "key", name = "Exit vehicle", 	var = "input/vehicle/exit", 	 	default = KEYS_V},
+
+
+				{type = "key", name = "Rotate left", 	var = "input/camera/rotateleft", 		default = KEYS_Q},
+				{type = "key", name = "Rotate right", 	var = "input/camera/rotateright", 		default = KEYS_E},
+				{type = "key", name = "Speed regulator",var = "input/camera/speedregulator", 	default = KEYS_X},
+
+				{type = "key", name = "Quick slot 1",var = "input/quik/slot1", 	default = KEYS_D1},
+				{type = "key", name = "Quick slot 2",var = "input/quik/slot2", 	default = KEYS_D2},
+				{type = "key", name = "Quick slot 3",var = "input/quik/slot3", 	default = KEYS_D3},
+				{type = "key", name = "Quick slot 4",var = "input/quik/slot4", 	default = KEYS_D4},
+				{type = "key", name = "Quick slot 5",var = "input/quik/slot5", 	default = KEYS_D5},
+				{type = "key", name = "Quick slot 6",var = "input/quik/slot6", 	default = KEYS_D6},
+				{type = "key", name = "Quick slot 7",var = "input/quik/slot7", 	default = KEYS_D7},
+				{type = "key", name = "Quick slot 8",var = "input/quik/slot8", 	default = KEYS_D8},
+				{type = "key", name = "Quick slot 9",var = "input/quik/slot9", 	default = KEYS_D9},
+				{type = "key", name = "Quick slot 0",var = "input/quik/slot0", 	default = KEYS_D0},
 			}
 		},
 		{

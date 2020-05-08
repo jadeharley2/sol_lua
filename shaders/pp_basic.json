@@ -36,5 +36,26 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : []
 		}
-	]      
+	],
+	"definition":{
+		"stage":"post",
+		"variables" : [ 
+			
+			{"name":"brightness", "type":"float","default":2},
+			{"name":"pitch",      "type":"float","default":0},
+			{"name":"contrast",   "type":"float","default":1},
+			{"name":"modxR",   "type":"float3","default":[1,0,0]},
+			{"name":"modxG",   "type":"float3","default":[0,1,0]},
+			{"name":"modxB",   "type":"float3","default":[0,0,1]},
+		],
+	},
+	"parameters" : {  
+		"tSSAONoise" 				: {"type":"texture"}, 
+	},
+	"onload" : { 
+		"values" : { 
+			"tSSAONoise" 				: "textures/noise/white.png",
+			
+		}
+	} 
 }               

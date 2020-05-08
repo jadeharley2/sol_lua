@@ -79,6 +79,7 @@ function PANEL:SetToggleable(tgl)
 end
 
 function PANEL:MouseDown(pulse) 
+	if self.disabled then return true end
 
 	if input.leftMouseButton() and 
 		( 
@@ -144,6 +145,7 @@ function PANEL:MouseDown(pulse)
 	end
 end
 function PANEL:MouseUp()
+	if self.disabled then return true end
 	---####---self:SetColor( self.upcolor) 
 	if self.flashtext then self:SetTextColor( self.textupcolor) end
 	--if not input.leftMouseButton() then
@@ -154,6 +156,7 @@ function PANEL:MouseUp()
 	end
 end
 function PANEL:MouseEnter() 
+	if self.disabled then return true end
 	---####---self:SetColor( self.hovercolor) 
 	if self.flashtext then self:SetTextColor( self.texthovercolor) end
 	
@@ -167,6 +170,8 @@ function PANEL:MouseEnter()
 	if OnEnter then OnEnter(self) end
 end
 function PANEL:MouseLeave() 
+	if self.disabled then return true end
+
 	if self.toggleable then 
 		if self:IsPressed() then
 			self:SetState("pressed")
@@ -198,3 +203,9 @@ function PANEL:SetPressed(val)
 		self:SetState("idle")  
 	end
 end 
+function PANEL:Disable()
+	self.disabled = true
+end
+function PANEL:Enable()
+	self.disabled = false
+end

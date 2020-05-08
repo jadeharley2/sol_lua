@@ -1,0 +1,24 @@
+{
+    "name" : "Create explosion",
+    "icon" : "omnilight",
+    "archetype" : "target_point",
+    "max_range": 5,
+    "cooldown":0.5,
+    "effects" : [
+        {
+            "effect" : "projectile", 
+            "speed":30,
+            "hiteffect":[ 
+                {
+                    "effect" : "explosion", 
+                    "magnitude":100
+                }, 
+            ]
+        }, 
+        //{
+        //    "effect" : "sound",
+        //    "targeton" : "target",
+        //    "path" : ".thunder"
+        //}
+    ]  
+}

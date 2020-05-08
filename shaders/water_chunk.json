@@ -1,0 +1,41 @@
+{
+	"name" : "water_chunk",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"water_chunk.fx",  
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+	],
+	"definition":{
+		"stage":"backward",
+		"variables" : [ 
+		],
+	},
+	"onload" : {
+		"tech" : "Render",
+		"layout" :["VertexNBTTextureSkin","InstanceTransform"], 
+		"values" : { 
+			"tNoise" 				: "textures/noise/perlin1.jpg", 
+		},
+	}, 
+	"parameters" : { 
+		"time"			: { "type" : "float", "global": "time"},
+		"tNoise" 					: {"type":"texture"},  
+ 
+	},
+}             

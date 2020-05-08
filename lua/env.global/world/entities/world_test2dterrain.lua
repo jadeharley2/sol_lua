@@ -35,6 +35,10 @@ function ENT:Init()
 	self:SetSeed(9900001)
 	self:SetGlobalName("u_grid") 
 	self:SetUpdating(true,16)
+	  
+	local ctime = self:AddComponent(CTYPE_TIME)
+	time:SetDeltaTime(1)
+	self.ctime = ctime
 end
 function ENT:LoadWorld(name)
 	local data = json.Read('chunkdata/'..name..'/info.json')
@@ -147,6 +151,11 @@ function ENT:SetTime(time)
 		local mulb = math.min(math.max(alpos*20,0),1)
 		--MsgN(alpos,mulb)
 		dgl_star0:SetBrightness(50500000000*8*mulb,1)--
+		if lpos.y<0 then
+			dgl_star0.light:SetShadow(false) 
+		else 
+			dgl_star0.light:SetShadow(true)  
+		end
 	end
 end
 function ENT:GetSpawn() 

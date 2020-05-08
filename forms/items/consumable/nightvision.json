@@ -1,0 +1,24 @@
+{
+    "name":"Nightvision",
+    "description":"Enhances light perception",
+    "type":"liquid",
+    "model":"models/clutter/lab/vase.stmd",
+	"rotation" : [-90,0,0], 
+    "contents":[ 
+    ],
+	"composition" :{
+		"resource.glass" : 3,    
+	},
+    "effects":[ 
+        {
+            "effect" : "delay",
+            "delay" : 1,
+            "data" : [
+                { 
+                    "effect" : "nightvision", 
+                    "dispelDelay":10
+                }, 
+            ]
+        },
+    ]
+}

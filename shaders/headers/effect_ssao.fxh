@@ -17,6 +17,7 @@ SamplerState sSampler
     AddressU = Wrap;
     AddressV = Wrap;
 };
+Texture2D tSSAONoise; 
 
 
 float3 ssao_sample_sphere[256] = {
@@ -298,9 +299,13 @@ float3 SSAO(float3 color,float2 tcrd)
 	float occlusion = 0.0;
 	// color = 1;
 	
+	float ssaomul = ssao_samples/128;
+
+	float ssaoOff = tSSAONoise.Sample(sSampler, tcrd*viewSize/512).r;	 //32
+
 	for(int i=0; i < ssao_samples; i++) 
 	{
-		float3 ray = radius_depth * ssao_sample_sphere[i];
+		float3 ray = radius_depth * ssao_sample_sphere[(i+ssaoOff*32)%256];
 		float dotD = dot(-normalize(ray),texelNormal);
 		
 		if(sign(dotD)<0)
@@ -320,7 +325,7 @@ float3 SSAO(float3 color,float2 tcrd)
 				//	max(0.0,dot(texelNormal,normalize(worldpos))-g_bias)
 				//	*(1.0/(1.0+d))
 				//	*g_intensity;
-				occlusion += difference*10*fadeout;
+				occlusion += difference*10*fadeout*30*8/ssao_samples;//*ssaoOff;
 				/////////occlusion += dot(texelNormal,normalize(worldpos))*1000;
 				//occlusion+=(-difference)*0.001;
 			}

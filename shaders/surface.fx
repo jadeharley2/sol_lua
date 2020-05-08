@@ -311,15 +311,15 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	float4 pos = input.pos;
 	
 	
-	float4 wpos = mul( pos,transpose(World));
-	output.normal = normalize(mul(input.normal,transpose(World)));
+	float4 wpos = mul( pos,(World));
+	output.normal = normalize(mul(input.normal,(World)));
 	
 	
 	
 	float3 tcol = float3(62,85,53)/255;
 	 
 	
-	output.pos =  mul(mul(wpos,transpose(View)),transpose(Projection));//mul(Proj, mul( input.pos,World));
+	output.pos =  mul(mul(wpos,(View)),(Projection));//mul(Proj, mul( input.pos,World));
 	
 	output.bnormal = input.bnormal;
 	output.tnormal = input.tnormal;
@@ -327,11 +327,11 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	output.color = input.color;
 	if(nearMode)
 	{
-		output.lpos = normalize(mul(input.bnormal,transpose(World))); 
+		output.lpos = normalize(mul(input.bnormal,(World))); 
 	}
 	else
 	{
-		output.lpos = normalize(mul(pos.xyz,transpose(World))); 
+		output.lpos = normalize(mul(pos.xyz,(World))); 
 	}
 	output.wpos = wpos.xyz;
 	 
@@ -347,11 +347,11 @@ PS_IN VSPGS( VS_IN input)//, IS_IN input2 )
 	PS_IN output = (PS_IN)0;
 	output.tcrd = float4(1- input.tcrd.y, input.tcrd.x, 1-input.tcrd.w, input.tcrd.z);//input.tcrd; 
 	float4 pos = input.pos; 
-	float4 wpos = mul( pos,transpose(World));
-	output.normal = normalize(mul(input.normal,transpose(World))); 
+	float4 wpos = mul( pos,(World));
+	output.normal = normalize(mul(input.normal,(World))); 
 	if(nearMode)
 	{
-		output.lpos = normalize(mul(input.bnormal,transpose(World))); 
+		output.lpos = normalize(mul(input.bnormal,(World))); 
 		//if(input.data.x<0)
 		//{
 		//	float surfaceDistance = length(wpos) * distanceMultiplier;
@@ -360,7 +360,7 @@ PS_IN VSPGS( VS_IN input)//, IS_IN input2 )
 	}
 	else
 	{
-		output.lpos = normalize(mul(pos.xyz,transpose(World))); 
+		output.lpos = normalize(mul(pos.xyz,(World))); 
 	}
 		if(input.data.x<0)
 		{
@@ -677,7 +677,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	}
 	  
 	 
-	float4 ambient = (1-blend_nearfog) * saturate(EnvSampleLevel(input.normal,0));
+	float3 ambient = (1-blend_nearfog) * saturate(EnvSampleLevel(input.normal,0));
   
 	
 
@@ -883,8 +883,8 @@ DCI_PS_IN SHADOW_VS( VS_IN input)//, IS_IN input2 )
  
 	float4 pos = input.pos;
 	 
-	float4 wpos = mul( pos,transpose(World));
-	output.pos =  mul(mul(wpos,transpose(View)),transpose(Projection));
+	float4 wpos = mul( pos,(World));
+	output.pos =  mul(mul(wpos,(View)),(Projection));
 	///////////////////////////////////
 	#ifdef SHADOWWARP_ENABLED
 	  output.pos.x=output.pos.x/(abs(output.pos.x)+depth_shadow_bendadd); 
@@ -955,7 +955,7 @@ void Plane( inout TriangleStream<PS_IN> TriStream,float4x4 mx, float3 p1,float3 
 void GSScene( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStream )
 {   
     PS_IN output = (PS_IN)0;
-	float4x4 mx =mul(transpose(View) ,	transpose(Projection));
+	float4x4 mx =mul((View) ,	(Projection));
 	//float4x4(
 	//1,0,0,0,
 	//0,1,0,0,

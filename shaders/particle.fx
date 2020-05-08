@@ -72,7 +72,7 @@ float2 Clamp(float2 inp,float4 rect)
 PS_IN VSI( VS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
-	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),transpose(World));
+	float4 camoffcetposition = mul(float4(inst.pos.xyz,1),(World));
 	
 	
 	float3 direction = normalize( camoffcetposition );
@@ -111,7 +111,7 @@ PS_IN VSI( VS_IN input, I_IN inst )
 	//output.tex =Rotate(output.tex,inst.rot,1.0f/32+inst.tcrd.xy ); 
 	output.tex =Rotate(output.tex,inst.rot,inst.tcrd.zw/2+inst.tcrd.xy ); 
 	output.tcrd = inst.tcrd;
-	output.pos =  mul(mul(camoffcetposition,	transpose(View)),	transpose(Projection));
+	output.pos =  mul(mul(camoffcetposition,	(View)),	(Projection));
 	//output.z_depth = sqlen(camoffcetposition.xyz);
 	output.color =float4( inst.color*visible,1);
 	if(near_hide)

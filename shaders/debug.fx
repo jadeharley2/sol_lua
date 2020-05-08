@@ -26,7 +26,7 @@ struct PS_IN
 PS_IN VS( VS_IN input) 
 {
 	PS_IN output = (PS_IN)0;
-	float4x4 mx = mul(mul(transpose(World) ,	transpose(View)),	transpose(Projection));
+	float4x4 mx = mul(mul((World) ,	(View)),	(Projection));
 	output.pos =  mul( input.pos,	mx) ;
 	output.color = float4(1,1,1,1);
 	
@@ -36,9 +36,9 @@ PS_IN VS( VS_IN input)
 PS_IN VSI( VS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0;
-	float4x4 mx = mul(mul(transpose(World) ,	transpose(View)),	transpose(Projection));
+	float4x4 mx = mul(mul((World) ,	(View)),	(Projection));
 	
-	output.pos =  mul(	mul(input.pos,transpose(inst.transform)),		 mx);
+	output.pos =  mul(	mul(input.pos,(inst.transform)),		 mx);
 	output.z_depth = output.pos.z;
 	output.color = inst.color;
 	
@@ -75,12 +75,12 @@ struct CPS_OUT
 CPS_IN CVSI( CVS_IN input, I_IN inst ) 
 {
 	CPS_IN output = (CPS_IN)0;
-	float4x4 world =  mul( transpose(inst.transform),transpose(World));
-	float4x4 vp = mul(transpose(View),	transpose(Projection));
+	float4x4 world =  mul( (inst.transform),(World));
+	float4x4 vp = mul((View),	(Projection));
 	
 	float3x3 mxr = (float3x3)world;
 
-	float4x4 mx = mul(mul(transpose(World) ,	transpose(View)),	transpose(Projection));
+	float4x4 mx = mul(mul((World) ,	(View)),	(Projection));
 	output.pos =  mul( input.pos,	mx) ;
 	//output.pos =  mul(mul(input.pos,world), vp); 
 	output.normal = mul(input.normal,mxr);

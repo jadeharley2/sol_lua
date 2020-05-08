@@ -70,8 +70,11 @@
 
 		],
 	},
-	"parameters":{ 
+	"parameters":{  
 		"time"			: { "type" : "float", "global": "time"},
+	//	"Cascade0VP"    : { "type" : "matrix", "global":"Cascade0VP"},
+	//	"Cascade2VP"    : { "type" : "matrix", "global":"Cascade2VP"},
+	//	"Cascade3VP"    : { "type" : "matrix", "global":"Cascade3VP"},
 	},
 	"onload" : { },
 	"onframe" : { },

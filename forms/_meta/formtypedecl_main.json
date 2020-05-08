@@ -32,6 +32,7 @@
 			"shortname":"APPA", 	
 			"directory":"items/apparel", 
 			"group":"items",	 
+			"recursive":true,
 		},
 		//add baseclass
 		//{"name":"item", 		"shortname":"ITEM", 	"dir":"items",		"baseclass":"base_tool", "subdir":true},//items|tools?

@@ -16,7 +16,7 @@
 				"sleep":1,
 			}
 		},
-		"usetype" : "lie down"
+		"info" : "bed"
 	},
 	"composition" :{
 		"resource.steel" : 10,   
