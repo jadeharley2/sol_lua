@@ -1,0 +1,37 @@
+{
+	"name" : "test_gshader",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"test_gshader.fx" 
+	],
+	"output" :  
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+	], 
+	
+	"parameters" : {
+		"g_Data" 			 	: {"type":"texture"},  
+  
+	},
+	"onload" : {
+		"tech" : "Render", 
+		"layout" : "VertexNormalTexture",
+		"values" : { 	
+			"g_Data" 	: "textures/debug/test3d.dds",
+		
+		},
+	},
+}            

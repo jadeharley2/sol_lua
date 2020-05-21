@@ -1,0 +1,17 @@
+{
+	"group" : "nature",
+	"tags" : [],
+	"model" : "models/nature/default/tree_green.dnmd",
+	"scale" : 2.5,
+	"rotation" : [0,0,0],
+	//"nophys":true
+	"phys":{
+		"custom":true,
+		"mass":-1,
+		"type":"cylinder",
+		"radius":0.7,
+		"height":22,
+		"translation":[0,-10,0]
+	}
+	
+}

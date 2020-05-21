@@ -1,0 +1,15 @@
+{
+	"name" : "Systems admin leg warmers", 
+	"filter" :{  
+	},
+	"slot" : "legs",
+	"model" : "apparel/zta_legw.stmd",
+	//"icon" : "apparel/fk/kt_wrm",
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03,
+	"hide":["calf","foot"],
+	"furmasks":{"body":"models/apparel/submaps/legw.png"},
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
+}

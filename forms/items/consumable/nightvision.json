@@ -16,7 +16,7 @@
             "data" : [
                 { 
                     "effect" : "nightvision", 
-                    "dispelDelay":10
+                    "dispelDelay":120
                 }, 
             ]
         },

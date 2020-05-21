@@ -1,0 +1,13 @@
+{
+	"name" : "Systems admin collar", 
+	"filter" :{  
+	},
+	"tags":[],
+	"slot" : "neck",
+	"model" : "apparel/zta_collar.stmd",
+	//"icon" : "apparel/fk/uniform3", 
+	"worldmodelscale" : 0.014,  
+	"composition" :{
+		"resource.metal" : 1,    
+	} 
+}

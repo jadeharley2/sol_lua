@@ -157,3 +157,6 @@ end
 function PANEL:Scroll(e)
 	self.ff_grid:Scroll(e or 0)
 end
+function PANEL:Resize()
+	self:Refresh()
+end

@@ -470,8 +470,8 @@ float4 PS( PS_IN input ) : SV_Target
 		for(int i=0;i<50;i++)
 		{
 			pw = pw*0.86;
-			float3 a = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(0.001*i,0))*pw);
-			float3 b = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(-0.001*i,0))*pw);
+			float3 a = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(0.001*i,0))*pw-2);
+			float3 b = saturate(tDiffuseView.Sample(sCC, input.tcrd+float2(-0.001*i,0))*pw-2);
 			ovb=ovb+a*a+b*b; 
 			
 		} 

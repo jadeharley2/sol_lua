@@ -1,0 +1,14 @@
+{
+	"name" : "Systems admin uniform", 
+	"filter" :{  
+	},
+	"tags":[],
+	"slot" : "torso",
+	"model" : "apparel/zta_form.stmd",
+	//"icon" : "apparel/fk/uniform3", 
+	"worldmodelscale" : 0.014, 
+	"furmasks":{"body":"models/apparel/submaps/uniform00.png"},
+	"composition" :{
+		"resource.cloth" : 2,    
+	} 
+}

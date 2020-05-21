@@ -5,9 +5,9 @@ local layout = {
     color = {0,0,0},
     size = {200,200},
     subs = {
-		{ name = "header",  class = "header_0",  
-			text = "Node materials", 
-		},
+		--{ name = "header",  class = "header_0",  
+		--	text = "Node materials", 
+		--},
 		{ name = "nodename",
 			size = {100,16},
 			dock = DOCK_TOP,

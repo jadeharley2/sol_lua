@@ -4,6 +4,8 @@ module.Require('render')
 
 SAVEDGAME = false 
 CONSOLE = CONSOLE or false
+GUI_MIDLAY = GUI_MIDLAY or false
+GUI_OVERLAY = GUI_OVERLAY or false
 	-- lua_run  TACTOR:GetParentWith(NTYPE_STARSYSTEM):ReloadSkybox()
 function LoadMenu() 
 	local t_start = CurTime()
@@ -37,30 +39,37 @@ function LoadMenu()
 	wn:SetPos(0,0)  
 	wn:Show()
 	
+	if( settings.GetBool("editor",false)) then
+		
+		debugmenu = panel.Create("debug_panel_menu")  
+		debugmenu:Dock(DOCK_TOP) 
+		debugmenu:Show()
+	end
+
+	GUI_MIDLAY = panel.Create()  
+	GUI_MIDLAY:Dock(DOCK_FIXEDFILL)
+	GUI_MIDLAY:SetTextOnly(true)
+	GUI_MIDLAY:SetInteractive(false)
+	GUI_MIDLAY:Show()
+	
+	GUI_OVERLAY = panel.Create()  
+	GUI_OVERLAY:Dock(DOCK_FIXEDFILL)
+	GUI_OVERLAY:SetTextOnly(true)
+	GUI_OVERLAY:SetInteractive(false)
+	GUI_OVERLAY:Show()
+
+
 	local console = CONSOLE or panel.Create("panel_console")  
 	local wsize = GetViewportSize()
 	console:SetPos(0,100000)	
 	console:SetSize(800,600)
 	console:Dock(DOCK_TOP)
 	console:UpdateLayout()  
+	console:SetVisible(false)
+	GUI_OVERLAY:Add(console)
+	GUI_OVERLAY:UpdateLayout()
 	CONSOLE = console
-	
-	hook.Add("input.keydown","console",function(key)   
-		if key == KEYS_OEMTILDE then 	 
-			if not settings.GetBool("server.noconsole") then
-				local console = CONSOLE   
-				
-				if console.enabled then
-					console:Close()
-					console.enabled = false 
-				else  
-					console:Show()
-					console.enabled = true
-					console:Select()
-				end 
-			end
-		end
-	end)
+	 
 	hook.Add("settings.changed","consolecheck",function()
 		local c = settings.GetBool("server.noconsole")
 		local console = CONSOLE
@@ -72,17 +81,31 @@ function LoadMenu()
 	end)
 	
 	
-	if( settings.GetBool("editor",false)) then
-		
-		debugmenu = panel.Create("debug_panel_menu")   
-		debugmenu:Show()
-	end
 
 	contextinfo = panel.Create('context_info')
 	
 	MsgN("Menu Load finished in:",CurTime()-t_start,"seconds. Total load time:",CurTime())
 end
-
+ 
+hook.Add("input.keydown","console",function(key)   
+	if key == KEYS_OEMTILDE then 	 
+		if not settings.GetBool("server.noconsole") then
+			local console = CONSOLE   
+			
+			if console.enabled then
+				--console:Close()
+				console:SetVisible(false)
+				console.enabled = false 
+			else  
+				--console:Show()
+				console:SetVisible(true)
+				console.enabled = true
+				console:Select()
+			end 
+			console:GetParent():UpdateLayout()
+		end
+	end
+end) 
 -- main menu shortcuts
 function ConnectTo(ip)
 	hook.Call("network.connect")

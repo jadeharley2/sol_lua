@@ -270,9 +270,9 @@ function PANEL:Init()
         size = {200,300},
         dock = DOCK_BOTTOM,
         subs = {
-            { name = "header", class = "header_0", 
-                text = "Asset browser", 
-            },
+            --{ name = "header", class = "header_0", 
+            --    text = "Asset browser", 
+            --},
             {type="tree",name = "classtree",
                 size = {200,400},
                 dock = DOCK_LEFT,

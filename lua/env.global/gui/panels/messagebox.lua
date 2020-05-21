@@ -109,6 +109,7 @@ function MsgBox(text, title, buttons, callback, size)
             
         end
     end
+    p:UpdateLayout()
     p:Show()
 end
 

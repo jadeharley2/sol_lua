@@ -201,7 +201,7 @@ function terrain_NodeSetChunk(ent,set)
 end
 hook.Add("node_properties","chunk_node_params",function(node,params)
 	local p = node:GetParent()
-	if p:GetComponent(CTYPE_CHUNKTERRAIN) then 
+	if IsValidEnt(p) and p:GetComponent(CTYPE_CHUNKTERRAIN) then 
 		params.chunknode_display = {text = "is chunk node",type="indicator",value = function(ent)  
 			local p = ent:GetParent()
 			if p then

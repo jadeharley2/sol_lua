@@ -10,83 +10,110 @@ end
 function task:OnBegin() 
 	self.ttt = 0
 	local actor = self.ent
+	if(actor.IsInVehicle) then
+		actor:SendEvent(EVENT_EXIT_VEHICLE) 
+	end 
+	--local target = self.target
+	--local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
+	--if e and nav then
+	--	self.navent = e
+--
+	--	local pos_from = actor:GetPos()
+	--	local pos_to = self.target
+	--	if pos_to.GetPos then pos_to = pos_to:GetPos() end
+	--	self._storedcon = actor.controller
+	--	--actor.controller = self
+	--	local path = nav:GetPath(pos_from,pos_to,0.001)
+	--	if path then
+	--		self.path = path
+	--		self.pid = 1
+	--		return true
+	--	else
+	--		return false, "nopath"
+	--	end
+	--else
+	--	local pos_from = actor:GetPos()
+	--	local pos_to = self.target 
+	--	if pos_to.GetPos then pos_to = pos_to:GetPos() end
+	--	self.path = {pos_from,pos_to}
+	--	self.navent = actor:GetParent()
+	--	self.pid = 1 
+	--	MsgN("true?")
+	--	return true
+	--end
+	--MsgN("False?")
+	local rez = self:FindPath()
+	MsgN("path:",rez)
+	return rez
+end 
+function task:FindPath()
+	local actor = self.ent
 	local target = self.target
+	local parent = actor:GetParent()
 	local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
 	if e and nav then
 		self.navent = e
+		actor.lastknownnav = nav
+		actor.lastknownnavent = e
+
 		local pos_from = actor:GetPos()
-		local pos_to = self.target
+		local pos_to = target
 		if pos_to.GetPos then pos_to = pos_to:GetPos() end
 		self._storedcon = actor.controller
 		--actor.controller = self
 		local path = nav:GetPath(pos_from,pos_to,0.001)
 		if path then
 			self.path = path
-			self.pid = 1
+			self.pid = 1 
 			return true
-		else
-			return false, "nopath"
-		end
-	else
-		local pos_from = actor:GetPos()
-		local pos_to = self.target 
-		if pos_to.GetPos then pos_to = pos_to:GetPos() end
-		self.path = {pos_from,pos_to}
-		self.navent = actor:GetParent()
-		self.pid = 1 
-		return true
+		end 
+	else 
+		local ground = actor.phys:GetGround()
+		if ground and ground[1] then
+			e = ground[1]
+			self.navent = e
+			local nav = e:GetComponent(CTYPE_NAVIGATION)
+			if nav then
+				local pos_from = actor:GetPos()
+				local pos_to = Vector(0,0,0)
+				if MetaType(target) then
+					pos_to = parent:GetLocalCoordinates(target)
+				else
+					pos_to = parent:GetLocalCoordinates(actor:GetParent(),target)
+				end
+				local local_posfrom = e:GetLocalCoordinates(parent,pos_from)
+				local local_posto= e:GetLocalCoordinates(parent,pos_to)
+				self._storedcon = actor.controller
+				--actor.controller = self
+				local path = nav:GetPath(local_posfrom,local_posto,0.001)
+				if path then
+					self.path = path
+					self.pid = 1 
+					return true
+				end 
+			end
+		end 
 	end
-	return false
-end 
+
+	local pos_from = actor:GetPos()
+	local pos_to = self.target 
+	if pos_to.GetPos then pos_to = pos_to:GetPos() end
+	self.path = {pos_from,pos_to}
+	self.navent = actor:GetParent()
+	self.pid = 1  
+	
+	return true
+
+	--return false
+	
+end
 function task:Step() 
 
 	local actor = self.ent
 	local parent = actor:GetParent()
 	self.ttt = self.ttt -1 
 	if self.ttt<0 then 
-		local actor = self.ent
-		local target = self.target
-		local e,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
-		if e and nav then
-			self.navent = e
-			local pos_from = actor:GetPos()
-			local pos_to = target
-			if pos_to.GetPos then pos_to = pos_to:GetPos() end
-			self._storedcon = actor.controller
-			--actor.controller = self
-			local path = nav:GetPath(pos_from,pos_to,0.001)
-			if path then
-				self.path = path
-				self.pid = 1 
-			end 
-		else 
-			local ground = actor.phys:GetGround()
-			if ground and ground[1] then
-				e = ground[1]
-				self.navent = e
-				local nav = e:GetComponent(CTYPE_NAVIGATION)
-				if nav then
-					local pos_from = actor:GetPos()
-					local pos_to = Vector(0,0,0)
-					if MetaType(target) then
-						pos_to = parent:GetLocalCoordinates(target)
-					else
-						pos_to = parent:GetLocalCoordinates(actor:GetParent(),target)
-					end
-					local local_posfrom = e:GetLocalCoordinates(parent,pos_from)
-					local local_posto= e:GetLocalCoordinates(parent,pos_to)
-					self._storedcon = actor.controller
-					--actor.controller = self
-					local path = nav:GetPath(local_posfrom,local_posto,0.001)
-					if path then
-						self.path = path
-						self.pid = 1 
-					end 
-				end
-			end
-
-		end
-		
+		self:FindPath()
 		self.ttt = 100
 	end
 	
@@ -176,15 +203,18 @@ function task:Step()
 				actor.model:SetPoseParameter("move_yaw",  0) 
 				actor:SetEyeAngles(0,0,true)
 				self.wasmoving = true
-			else
 				if lastdist and lastdist<=dist then
+					local times = self.jumptimes or 0
 					times = times + 1
-					if times > 10 then
+					self.jumptimes = times
+					if times > 3 then
+						Msg("DIST",times)
 						actor:SendEvent(EVENT_ACTOR_JUMP)
 						times = 0
-						USE(actor)
+						--USE(actor)
 					end
 				end
+			else
 			end
 		end
 	else

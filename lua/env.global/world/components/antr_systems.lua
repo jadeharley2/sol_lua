@@ -14,7 +14,7 @@ component.uid = DeclareEnumValue("CTYPE","ANTR_SYSTEMS", 3244)
 component.editor = {
 	name = "ANTR_SYSTEMS", 
 	properties = { 
-	}, 
+	},  
 	
 }  
 component._typeevents = {  
@@ -138,12 +138,13 @@ function component:Shutdown()
     node:SetEyeAngles(0,0,true,true) 
     node:SetHeadAngles(0,0)
     self:SetState('check',1)
+    
     node:Delayed("sitw",1000,function()
         node:Timer("antrcheck",0,50,4,function()
             self:SetState(nil,1-it)
             it = it + 0.25
         end)
-        node:Delayed("antr",250,function()
+        node:Delayed("antr",550,function()
             local node = self:GetNode()
             self:SetState('off')
             node.model:SetPlaybackRate(0)

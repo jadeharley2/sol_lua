@@ -1,7 +1,6 @@
 {
 	"name" : "Uniform", 
-	"filter" :{ 
-		"character" : ["vikna"],
+	"filter" :{  
 	},
 	"slot" : "torso",
 	"model" : "apparel/uniform.stmd",

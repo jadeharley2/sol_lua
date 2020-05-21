@@ -79,9 +79,9 @@ struct PS_OUT
 PS_IN VSI( VSS_IN input, I_IN inst ) 
 {
 	PS_IN output = (PS_IN)0; 
-	float4x4 InstWorld = mul(transpose(inst.transform),transpose(World));
+	float4x4 InstWorld = mul((inst.transform),(World));
 	float4 wpos = mul(input.pos,InstWorld);
-	float4x4 VP =mul(transpose(View),transpose(Projection));
+	float4x4 VP =mul((View),(Projection));
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	

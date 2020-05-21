@@ -1,7 +1,7 @@
   
-local t_mpanel = LoadTexture("gui/tab_70x30.png") 
-local activeTabColor = Vector(0.2,0.2,0.2)
-local activeTabTextColor = Vector(0.7,0.7,0.7)
+local t_mpanel = "textures/gui/tab_70x30.png" 
+local activeTabColor = Vector(0.2,0.2,0.2)*2
+local activeTabTextColor = Vector(0.7,0.7,0.7)*2
  
 function PANEL:Init()
 	--PrintTable(self) 
@@ -39,7 +39,7 @@ function PANEL:Init()
 	
 	local handle_safezone = panel.Create("button")   
 	handle_safezone:SetColorAuto(Vector(0.2,0.2,0.5),0)
-	handle_safezone:SetSize(25,10)
+	handle_safezone:SetSize(15,10)
 	handle_safezone:Dock(DOCK_LEFT)
 	handle_safezone.OnClick = function(s) self:StartDrag() end  
 	handle:Add(handle_safezone)
@@ -55,8 +55,12 @@ function PANEL:Init()
 	--handle_addtab:SetTextOnly(true)
 	handle_addtab.OnClick = function(s)  
 		local context = {
-			{text = "blank",action = function() local p = panel.Create() p:SetColor(Vector(0,0,0)) self:AddTab("blank",p) end},  
-			{text = "lua",action = function() local p = panel.Create("editor_panel_classtree") self:AddTab("lua",p) end},  
+			--{text = "blank",action = function() local p = panel.Create() p:SetColor(Vector(0,0,0)) self:AddTab("blank",p) end},  
+			{text = "materials",action = function() local p = panel.Create("node_materials") self:AddTab("materials",p) end},  
+			{text = "properties",action = function() local p = panel.Create("node_properties") self:AddTab("properties",p) end}, 
+			{text = "assets",action = function() local p = panel.Create("panel_assets") self:AddTab("assets",p) end}, 
+			{text = "outline",action = function() local p = panel.Create("editor_panel_node") self:AddTab("outline",p) end}, 
+			{text = "viewport",action = function() local p = panel.Create("viewport") self:AddTab("viewport",p) p:InitializeFromTexture(1,"@main_final")  end}, 
 		} 
 		
 		ContextMenu(self,context)
@@ -143,11 +147,15 @@ function PANEL:StartDrag()
 		--
 		
 		local p = self:GetParent()
-		p:Remove(self)
+		if p then 
+			p:Remove(self)
+		end
 		if p.DragDrop then
 			self:SetPos(self:GetPos()+p:GetPos())
+			--self:Show() --
 			p:GetParent():Add(self)
 		else
+			--self:Show() --
 			p:Add(self)
 		end 
 		if not panel.start_drag(self,1,true) then
@@ -162,7 +170,7 @@ function PANEL:AddTab(name,sub)
 	local slist = self.slist
 	local tabButtonPanel = self.tabButtonPanel
 	b:SetText(name or "Tab")
-	b:SetSize(70,30)
+	b:SetSize(100,30)
 	b:Dock(DOCK_LEFT)
 	tabButtonPanel:Add(b) 
 	plist[name] = sub 
@@ -179,6 +187,7 @@ function PANEL:AddTab(name,sub)
 				newn:SetSize(n:GetSize())
 				self:RemoveTab(name)
 				newn:AddTab(name,sub)
+				--newn:Show()
 				n:GetParent():Add(newn)
 				newn:ShowTab() 
 				newn:UpdateLayout()
@@ -201,8 +210,11 @@ function PANEL:AddTab(name,sub)
 		tabButtonPanel:Remove(ha)
 		tabButtonPanel:Add(ha) 
 	end
+	self:ShowTab(name)
 	self:UpdateLayout()
 end
+PANEL.tabs_info = {type = 'children_dict',add = PANEL.AddTab}
+
 function PANEL:RemoveTab(name) 
 	local plist = self.plist
 	local slist = self.slist
@@ -294,8 +306,8 @@ end
 function PANEL:OnDropped(onto)
 	self:SetCanRaiseMouseEvents(true)
 	self:SetColor(Vector(0.6,0.6,0.6)/7) 
-	self:SetAlpha(1)
-	MsgN("drop on ",onto)
+	self:SetAlpha(1) 
+	MsgN("drop on ",onto) 
 	
 	local side = self:GetDock()
 	for k,v in pairs(self.sides) do v:SetVisible(false) end
@@ -370,7 +382,7 @@ function PANEL:DragHover(node)
 	end
 end]]
 function PANEL:DragDrop(node) 
-	if self == node or not node.tdid then return end
+	if self == node or not node.tdid then return end 
 	MsgN("DROP!",node) 
 	for k,v in pairs(node.plist) do
 		self:AddTab(k,v)

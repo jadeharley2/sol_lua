@@ -1,0 +1,15 @@
+{
+	"name" : "Systems admin uniform", 
+	"filter" :{  
+	},
+	"tags":[],
+	"slot" : "torso.under.bot",
+	"model" : "apparel/zta_udform.stmd",
+	//"icon" : "apparel/fk/uniform3", 
+	"worldmodelscale" : 0.014, 
+	"hide":["torso_bot"],
+	"furmasks":{"body":"models/apparel/submaps/uniform00.png"},
+	"composition" :{
+		"resource.cloth" : 2,    
+	} 
+}

@@ -105,6 +105,7 @@ function PANEL:Init()
 	local vsize = GetViewportSize()-Point(0,20)
 	self:SetSize(vsize.x,vsize.y)
 	self:SetPos(0,-10)
+	self:Dock(DOCK_FILL)
 	
 	gui.FromTable(layout,self,global_editor_style,self)
 
@@ -169,23 +170,8 @@ function PANEL:Init()
 		end)
 	end
 	 
-	self.bcompile.OnClick = function(s)  
-		if CURRENT_DEBUG_FLOW then
-			CURRENT_DEBUG_FLOW:Dispose()
-			CURRENT_DEBUG_FLOW = false
-		end
-		local j = json.ToJson(self:ToData())
-		local result, error = flowbase.CompileJson(j) 
-		if result then
-			MsgN("Compilation successful")
-			MsgInfo("Compilation successful",Vector(0,1,0))
-			CURRENT_DEBUG_FLOW = result
-			result:SetupHooks()
-			result:TryRun("startup")
-		else
-			MsgN("Compilation failed")
-			MsgInfo("Compilation failed")
-		end
+	self.bcompile.OnClick = function(s) 
+		self:Compile()
 	end
 	 
 	
@@ -397,6 +383,45 @@ function PANEL:Init()
 
 	trpanel:ScrollToTop()
 	
+end
+function PANEL:Compile() 
+	if CURRENT_DEBUG_FLOW then
+		CURRENT_DEBUG_FLOW:Dispose()
+		CURRENT_DEBUG_FLOW = false
+	end
+	for k,v in pairs(self.named) do
+		v:SetError()
+	end
+	local j = json.ToJson(self:ToData())
+	local result, error = flowbase.CompileJson(j) 
+	if result then
+		if result:IsValid() then
+			MsgN("Compilation successful")
+			MsgInfo("Compilation successful",Vector(0,1,0))
+			CURRENT_DEBUG_FLOW = result
+			result:SetupHooks()
+			result:TryRun("startup")
+		else
+			MsgN("Compilation failed")
+			MsgInfo("Compilation failed")
+			local errors = json.FromJson(result:GetErrors())
+			for k,v in pairs(errors) do
+				if v and v.nodeid then
+					local nid = tonumber(v.nodeid)
+
+					local nod = self.named[nid] 
+					if nod then
+						nod:SetError(v.message)
+						MsgN(v.message)
+						MsgN(v.stacktrace)
+					end
+				end
+			end 
+		end
+	else
+		MsgN("Compilation failed")
+		MsgInfo("Compilation failed")
+	end
 end
 function PANEL:GetFreeId()
 	local notfree = {}

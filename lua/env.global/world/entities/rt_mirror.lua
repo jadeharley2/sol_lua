@@ -15,6 +15,9 @@ function ENT:Init()
 		self:Hook("settings.changed","mirror.update",function() 
 			self:_UpdateEnabled()  
 		end) 
+		self:Hook("camera.update","mirror.update",function() 
+			self:_UpdateEnabled()  
+		end) 
 	end
 end
 
@@ -111,6 +114,7 @@ function ENT:_UpdateEnabled()
 			model:SetMaterial("textures/target/mirrorrt.json")
 			local cam = GetCamera()
 			self.cc:SetFOV(cam:GetFOV())  
+			self.cc:SetAspectRatio(cam:GetAspectRatio())  
 			self:Hook("main.postcontroller","mirrorupdate", function() self:UpdatePos() end)
 		else
 			model:SetMaterial("textures/debug/black.json")

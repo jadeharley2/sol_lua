@@ -274,7 +274,7 @@ technique10 Render
 struct DCI_PS_IN
 { 
 	float4 pos : SV_POSITION;   
-	float3 wpos : TEXCOORD1; 
+	//float3 wpos : TEXCOORD1; 
 };
 
 
@@ -287,7 +287,7 @@ DCI_PS_IN CI_VSI( VS_IN input, I_IN inst )
 	
 	float3x3 nworld = (float3x3)(InstWorld);
 	
-	output.wpos = wpos.xyz;
+    //output.wpos = wpos.xyz;
 	output.pos =  mul(wpos,VP); 
  
 	return output;

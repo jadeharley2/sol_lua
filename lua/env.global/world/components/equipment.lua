@@ -239,7 +239,7 @@ function component:_unequipslot(slot,remove)
 					--if nn then
 					--	nn:UnhideBy(e) 
 					--end
-					for k,v in pairs(node:GetByName(v,true,true)) do
+					for k,v in pairs(SPECIES_GetParts(node,v)) do
 						v:UnhideBy(e)
 					end
 				end
@@ -262,12 +262,13 @@ function component:_unequipslot(slot,remove)
 		hook.Call("equipment.unequip",node,slot)
 	end
 end
+
 function component:_updatevisibility() 
 	local node = self:GetNode()
 	for k,e in pairs(node:GetChildren(true)) do
 		if e.hideby then  
 			for k,part in pairs(e.hideby) do
-				for k,v in pairs(node:GetByName(part,true,true)) do
+				for k,v in pairs(SPECIES_GetParts(node,part)) do
 					if v ~= e and v:GetParent() ~=e and v:GetSeed()==0 then
 						v:HideBy(e)
 						MsgN(v,"hidden by",e)

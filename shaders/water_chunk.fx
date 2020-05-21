@@ -11,7 +11,7 @@ float distanceMultiplier=1;
 
 float time=0;
 
-float3 tint = float3(0.5,0.6,0.7)*0.2;
+float3 tint = float3(35,97,144)/255*0.1;//float3(0.5,0.6,0.7)*0.2;
 
 #define TwoPi 6.28318530718
 
@@ -101,7 +101,7 @@ PS_IN VS( VS_IN input, I_IN inst )
  
 	 
 	float3 fwp =  ffpos*100000;
-	float fScale = (1-saturate(surfaceDistance/4))*0;
+	float fScale = (1-saturate(surfaceDistance/4))*0.4;
 	float rScale = 0.00001*fScale;
 
 	float3 waveDir =normalize(input.bnormal*float3(1,0,1));
@@ -234,7 +234,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float3 waterA = tint;
 
 
- 	output.light.rgb =waterA*ambmap+envmap; 
+ 	output.light.rgb =saturate(waterA*ambmap+camdot*2)+envmap*0.2;//*(tran)*2; 
 	
  	//output.light.rgb = surfaceDistance*10;
  	//output.light.rgb = reflectEnv*100;

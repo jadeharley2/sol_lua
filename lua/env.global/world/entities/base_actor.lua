@@ -591,6 +591,7 @@ function ENT:SetCharacter(id)
 				self.norotation = nil
 				self.nomovement = nil
 				self.saccadic = nil
+				self.base_scale = nil
 				 
 				if self._spcom then
 					for k,v in pairs(self._spcom) do
@@ -601,7 +602,6 @@ function ENT:SetCharacter(id)
 				if self.isflying then self:Land() end
 				self:SetParameter(VARTYPE_CHARACTER,id)
 				 
-				local model_scale = self.model_scale or 1
 				local world = matrix.Scaling(0.03) 
 				local model = self.model
 				local phys = self.phys
@@ -615,7 +615,9 @@ function ENT:SetCharacter(id)
 				self.abilities = {}
 				
 				self:Config(data)
-				
+				local model_scale = self.model_scale or 1
+				local base_scale = self.base_scale or 1
+				 
 				model:SetModel(self:GetParameter(VARTYPE_MODEL))
 				model:SetRenderGroup(RENDERGROUP_LOCAL) 
 				model:SetBlendMode(BLEND_OPAQUE) 
@@ -623,7 +625,7 @@ function ENT:SetCharacter(id)
 				model:SetDepthStencillMode(DEPTH_ENABLED)  
 				model:SetBrightness(1)
 				model:SetFadeBounds(0,99999,0)   
-				model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale))---*matrix.Scaling(0.0000001)
+				model:SetMatrix(world*matrix.Translation(-phys:GetFootOffset()*0.75)*matrix.Scaling(0.001*model_scale*base_scale))---*matrix.Scaling(0.0000001)
 				
 				model:SetDynamic(true)
 				model:SetUpdateRate(60)
@@ -784,6 +786,7 @@ function ENT:SetCharacter(id)
 				end
 				
 				self:SetUpdating(true,100)
+				self:SetSize()
 				--MsgN("faf ",self:GetPos())
 				--self:SetPos(self:GetPos()) 
 			else  
@@ -897,10 +900,15 @@ function ENT:Config(data,species,variation)
 		self.attributes = data.attributes
 		for k,v in pairs(data.attributes) do
 			if v == "mount" then 
-				self:AddEventListener(EVENT_USE,"use_event",function(self,user) 
+				--self:AddEventListener(EVENT_USE,"use_event",function(self,user) 
+				--	user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
+				--end)
+				--self:AddTag(TAG_USEABLE) 
+				self.info = self:GetName()
+				self:AddInteraction("mount",
+				{text="Mount",action= function (self,user)
 					user:SendEvent(EVENT_SET_VEHICLE,self,1,self)
-				end)
-				self:AddTag(TAG_USEABLE) 
+				end}) 
 			end
 		end
 	end
@@ -912,6 +920,9 @@ function ENT:Config(data,species,variation)
 	if data.health then
 		self:SetParameter(VARTYPE_MAXHEALTH,data.health)
 		self:SetParameter(VARTYPE_HEALTH,data.health)
+	end
+	if data.scale then 
+		self.base_scale = data.scale
 	end
 
 end
@@ -938,6 +949,7 @@ function ENT:SetModel(mdl)
 	self:SetParameter(VARTYPE_MODEL,mdl) 
 end
 function ENT:SetSize(val)
+	val = val or self.innerscale or 1
 	local model = self.model
 	local phys = self.phys
 	if model and phys then
@@ -948,7 +960,10 @@ function ENT:SetSize(val)
 		self.phys:SetJumpSpeed(4.5*val)
 		self.innerscale = val or 1
 
-		local nw = matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val)
+		local base_scale = self.base_scale or 1
+		local model_scale = self.model_scale or 1
+
+		local nw = matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val*base_scale*model_scale)
 		model:SetMatrix(nw)
 		for k,v in pairs(self:GetChildren(true)) do
 			if v and v.model then
@@ -1316,6 +1331,7 @@ function ENT:GestureToggle(layer, name)
 			else
 				self:SendEvent(EVENT_GESTURE_START ,layer,name)
 			end
+			return true
 		end
 	end
 end

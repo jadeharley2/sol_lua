@@ -246,8 +246,7 @@ PS_IN VSI( VS_IN input, I_IN inst )
 	else return particle_VSI(input,inst);
 }
 float4 PS( PS_IN input ) : SV_Target
-{ 
-	
+{  
 	if(star_mode) return star_PS(input).color;
 	else return particle_PS(input).color;
 }

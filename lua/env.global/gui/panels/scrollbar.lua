@@ -116,7 +116,15 @@ function PANEL:SetScroll(value)-- [-1...0...1]
 	
 	value = math.max(math.min(value,1),-1)
 	
-	local target = (floater:GetSize() - container:GetSize())*value
+	local fsize = floater:GetSize()
+	local csize = container:GetSize()
+	--if type == 1 then
+	--	if(fsize.x<=csize.x) then value = -1 end
+	--else
+	--	if(fsize.y<=csize.y) then value = -1 end
+	--end
+	--MsgN(fsize,csize)
+	local target = (fsize - csize)*value
 	
 	if type == 1 then
 		floater:SetPos(fpos.x,target.y)
@@ -147,10 +155,11 @@ function PANEL:Scroll(delta)
 	local sval = self:GetScroll()
 	if sval~=sval then sval =0 end -- anti nan value
 	
+	local fsize = floater:GetSize()
 	if type == 1 then
-		self:SetScroll(sval+delta / floater:GetSize().y)
+		self:SetScroll(sval+delta / fsize.y)
 	else
-		self:SetScroll(sval+delta / floater:GetSize().x)
+		self:SetScroll(sval+delta / fsize.x)
 	end
 	
 	self:Refresh()
@@ -158,21 +167,28 @@ end
 
 function PANEL:Refresh()
 	local fcon = self:GetParent()
-	local container = fcon.inner
-	local floater = fcon.floater
-	local ss = self:GetSize()
-	local w = self.width
-	local bdrag = self.bdrag
-	local type = self.stype
-	
-	local scrollH =math.min(ss.y - w*2, math.max(5, container:GetSize().y / floater:GetSize().y * (ss.y - w*2)))
-	local scrollS = floater:GetPos() / (floater:GetSize() - container:GetSize())
-	if type == 1 then
-		bdrag:SetSize(w,scrollH)
-		bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2 - scrollH ))--
-	else
-		bdrag:SetSize(scrollH,w)
-		bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH),0)
-	end 
+	if fcon then
+		local container = fcon.inner
+		local floater = fcon.floater
+		if container and floater then
+			local ss = self:GetSize()
+			local w = self.width
+			local bdrag = self.bdrag
+			local type = self.stype
+			
+			local scrollH =math.min(ss.y - w*2, math.max(5, container:GetSize().y / floater:GetSize().y * (ss.y - w*2)))
+			local scrollS = floater:GetPos() / (floater:GetSize() - container:GetSize())
+			if type == 1 then
+				bdrag:SetSize(w,scrollH)
+				bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2 - scrollH ))--
+			else
+				bdrag:SetSize(scrollH,w)
+				bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH),0)
+			end 
+		end
 	--fcon:UpdateLayout()
+	end
+end
+function PANEL:Resize()
+	self:Refresh()
 end

@@ -1,0 +1,52 @@
+{
+	"name": "ZTA",
+	"species" : "anthroid:default",  
+	"health" : 300, 
+	"height" : 2.4, 
+	"radius" : 0.5, 
+	"scale":1.1,
+	"bodytype" : "fk_slender",
+	"parts" : { 
+		//"body" : "body_feline",
+		"torso_top":"nbp_torso_top",
+		"torso_bot":"nbp_torso_bot",
+		"arm.l" : "nbp_arm_l",
+		"arm.r" : "nbp_arm_r",
+		"hand.l" : "nbp_hand_l",
+		"hand.r" : "nbp_hand_r",
+		"thigh.l" : "nbp_thigh_l",
+		"thigh.r" : "nbp_thigh_r",
+		"calf.l" : "nbp_calf_l",
+		"calf.r" : "nbp_calf_r",
+		"foot.l" : "nbp_foot_l",
+		"foot.r" : "nbp_foot_r",
+		"toe.l" : "nbp_toe_l",
+		"toe.r" : "nbp_toe_r",
+		"neck"  : "nbp_neck",
+		"head" : "head_zta",
+		"hair" : "hair_zta",
+		"tail" : "tail_zta"
+	},  
+	"flexes":{
+		"head:9": 1
+	},
+	"abilities" : ["shipremotecontrol"],
+	"materials" : {
+		"mat:head":  "models/characters/zta/zta_head.json",
+		"mat:body":  "models/characters/zta/zta_body.json", 
+		"mat:eye_b_l": "models/characters/zta/eye_l.json",  
+		"mat:eye_b_r": "models/characters/zta/eye_r.json",  
+	}, 
+	"basematdir" : "models/species/anthro/materials/", 
+
+	"equipment":{
+		"items":["apparel.zta.underform","apparel.zta.uniform","apparel.zta.legw","apparel.zta.armw","apparel.zta.collar"]
+	}, 
+	"items":[ 
+	], 
+	"variables" :{ 
+		"tpsheight" : 1.6,
+		"fpsheight" : 1.6, 
+	},
+}
+ 

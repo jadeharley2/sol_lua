@@ -200,7 +200,7 @@ function PANEL:CaretUpdate(lenchange,nocollapse)
 	self.caretpos = cp 
 	local text = cstring.sub(self.text or "",1,cp) --string.rep("X", cp)
 	text = cstring.regreplace(text,"\a\\[[\\w\\W]*?\\]","") -- remove special commands
-	text = cstring.replace(text,"\n\t","_",true) --replace
+	text = cstring.replace(text,"\n\t"," ",true) --replace
 	self.caretoverlay:SetText(text..(self.caret or ""))
 end
 function PANEL:CaretCycle() 
@@ -212,13 +212,15 @@ function PANEL:CaretCycle()
 	end)
 end
 function PANEL:Select()
-	if static.CURRENT_INPUT ~= self then
+	if static.CURRENT_INPUT ~= self then 
 		self.text = self:GetText() or ""
 		static.CURRENT_INPUT = self
 		input.SetKeyboardBusy(true)
 		hook.Add("input.mousedown", "gui.textinput.deselect", function()
-			self:Deselect()
-			hook.Remove("input.mousedown","gui.textinput.deselect") 
+			if panel.GetTopElement() ~= self then
+				self:Deselect()
+				hook.Remove("input.mousedown","gui.textinput.deselect") 
+			end
 		end)
 		local on = self.OnSelect
 		if on then on(self) end
@@ -226,7 +228,7 @@ function PANEL:Select()
 	end
 end
 function PANEL:Deselect()
-	if static.CURRENT_INPUT == self then
+	if static.CURRENT_INPUT == self then 
 		local cp = self.caretpos
 		self.caretoverlay:SetText(string.rep(" ", cp))
 		static.CURRENT_INPUT = false

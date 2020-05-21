@@ -18,17 +18,23 @@ function PANEL:Initialize(id,w,h)
 	self.rcam:SetRenderTarget(0,self.rt)
 	self:SetTexture(self.rt)
 end
-function PANEL:InitializeFromTexture(id,texname)
+function PANEL:InitializeFromTexture(id,texname,camera)
+	self.cam = camera
+	self.cameraupdate = IsValidEnt(camera) 
 	self.id = tostring(id)
 	self:SetTexture(texname) 
-end
+end 
 function PANEL:MouseEnter()
-	hook.Add(EVENT_GLOBAL_UPDATE,"viewport."..self.id,function()
-		self:Update() 
-	end)
+	if self.id then
+		hook.Add(EVENT_GLOBAL_UPDATE,"viewport."..self.id,function()
+			self:Update() 
+		end)
+	end
 end
 function PANEL:MouseExit()
-	hook.Remove(EVENT_GLOBAL_UPDATE,"viewport."..self.id)
+	if self.id then
+		hook.Remove(EVENT_GLOBAL_UPDATE,"viewport."..self.id)
+	end
 end
 
 function PANEL:Resize()
@@ -36,7 +42,7 @@ function PANEL:Resize()
 		local vsize = self:GetSize()
 		ResizeRenderTarget(self.rt, vsize.x,vsize.y) 
 	end
-	if self.cameraupdate then self:UpdateCamera() end
+	self:UpdateCamera()-- if self.cameraupdate then self:UpdateCamera() end
 end
 function PANEL:SetCamera(cam,cameraupdate)
 	self.cam = cam 
@@ -46,10 +52,11 @@ function PANEL:SetCamera(cam,cameraupdate)
 	self.rcam:RequestDraw()
 end
 function PANEL:UpdateCamera()
-	local cam = self.cam 
+	local cam = self.cam or GetCamera()
 	local vsize = self:GetSize()
 	local aspect = vsize.x/vsize.y 
 	cam:SetAspectRatio(aspect) 
+	hook.Call("camera.update")
 end
 function PANEL:Update()
 	if panel.GetTopElement()==self then
@@ -61,7 +68,9 @@ function PANEL:Update()
 			local center = size / 2
 			center = Point(math.floor( center.x),math.floor(center.y))
 
-			global_controller:UpdateCamRotation(vsize,center,0,0)
+			if global_controller.UpdateCamRotation then 
+				global_controller:UpdateCamRotation(vsize,center,0,0)
+			end
 		end
 	end
 end

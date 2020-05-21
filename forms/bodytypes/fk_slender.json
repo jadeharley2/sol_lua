@@ -1,0 +1,17 @@
+{
+    "name" : "Default body type",
+    "bones":{
+        "pre":{
+            "head" : { "sca" : 0.95, "pos" : [0, 1, 0] }, 
+
+            "clavicle.L" : {  "pos" : [0, -0.3, 0] },
+            "clavicle.R" : {  "pos" : [0, -0.3, 0] },
+            "thigh.L" : { "sca" : [0.9,1,0.9] },
+            "thigh.R" : { "sca" : [0.9,1,0.9] },
+            "spine1" : {  "pos" : [0, 1, 0] },
+        },
+        "post":{
+            "pelvis" : {   "pos" : [0, 0, -1] }
+        }
+    }
+}

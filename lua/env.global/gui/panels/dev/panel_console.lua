@@ -50,7 +50,7 @@ function PANEL:AutoFormat(text)
 	end
 	return text
 end
-function PANEL:Refresh(force) 
+function PANEL:Refresh(force)  
 	if self.enabled then
 		local list = self.list  
 		if list then 
@@ -77,12 +77,13 @@ function PANEL:Refresh(force)
 				list:Refresh() 
 			end
 		end
-		local wsize = GetViewportSize()
-		local sdiv = self.screendiv or 4
-		self:SetSize(wsize.x,wsize.y/sdiv)
-		self:SetPos(0,wsize.y-wsize.y/sdiv-30)
 		--self.input_text:Select() 
 		if self.first then 
+			local wsize = GetViewportSize()
+			local sdiv = self.screendiv or 4
+			self:SetSize(wsize.x,wsize.y/sdiv)
+			--self:SetPos(0,wsize.y-wsize.y/sdiv-30)
+
 			self.list:ScrollToBottom()
 			self.first = false
 		end
@@ -92,6 +93,10 @@ function PANEL:Select()
 	debug.Delayed(100,function()
 		self.input_text:Select() 
 	end)
+end
+function PANEL:Resize() 
+	--self:Refresh()
+	--MsgN("C")
 end
 function PANEL:InputKeyDown(n,key) 
 	if key== KEYS_ENTER then
@@ -207,8 +212,10 @@ function PANEL:InputKeyDown(n,key)
 		else
 			self.screendiv = 4 
 		end
+		self.first = true
 		debug.Delayed(100,function()
-		self.list:ScrollToBottom() 
+			self.list:ScrollToBottom() 
+			self:Refresh() 
 		end)
 	end
 	if key == KEYS_OEMTILDE then 

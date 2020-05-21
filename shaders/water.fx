@@ -171,13 +171,13 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	output.tcrd = float4(1- input.tcrd.y, input.tcrd.x, input.tcrd.w, input.tcrd.z); 
 	 
 	float4 pos = input.pos; 
-	float4 wpos = mul( pos,transpose(World));
+	float4 wpos = mul( pos,(World));
 	float surfaceDistance = length(wpos) * distanceMultiplier;
 
 	float wh = getLWHeight(input.tcrd.xy*10000)*10; 
 	
 	//wpos.xyz+=output.normal*wh*0.0002/distanceMultiplier;
-	float3 fwp =//mul(wpos,transpose(BInverse)).xyz//
+	float3 fwp =//mul(wpos,(BInverse)).xyz//
 	(wpos+camPos)
 	*1000000;
 	float fScale = 1-saturate(surfaceDistance/4);
@@ -185,7 +185,7 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 
 	float3 waveDir =normalize(input.bnormal*float3(1,0,1));
 
-	//float3x3 subW = transpose(World);
+	//float3x3 subW = (World);
 	 
 
 	float3 sHigh = 0
@@ -219,11 +219,11 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	//	); 
 	input.color = shift;
 
-	output.pos =  mul(mul(wpos,transpose(View)),transpose(Projection));//mul(Proj, mul( input.pos,World));
+	output.pos =  mul(mul(wpos,(View)),(Projection));//mul(Proj, mul( input.pos,World));
 	
 				 
 	output.normal = 
-		normalize(mul(input.normal,transpose(World)))
+		normalize(mul(input.normal,(World)))
 		+
 		normalize(sHigh.zyx)*0.2*fScale
 		+
@@ -237,7 +237,7 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	output.tnormal = input.tnormal;
 	output.data = input.data;
 	output.color = input.color;// * saturate(shift.y*5+0.5); 
-	output.lpos = normalize(mul(input.bnormal,transpose(World)));  
+	output.lpos = normalize(mul(input.bnormal,(World)));  
 	output.wpos = wpos.xyz; 
 	return output;  
 } 
@@ -271,11 +271,11 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float maskmul = saturate(1-surfaceDistance);
 	float3 newNormal = normalize(cross(va,vb).rbg*float3(1,100*saturate(surfaceDistance),1)
 	*float3(1,1,1));  
-	float3 worldNormal =normalize(input.normal+newNormal);//mul( newNormal,transpose(World)).xyz);//input.normal;
+	float3 worldNormal =normalize(input.normal+newNormal);//mul( newNormal,(World)).xyz);//input.normal;
 	//worldNormal = input.normal;
 	
 	
-	//lerp(saturate(surfaceDistance*10),normalize( mul( newNormal,transpose(World)).xyz),input.normal);//newNormal.x * input.bnormal +newNormal.y * input.normal + newNormal.z * input.tnormal;
+	//lerp(saturate(surfaceDistance*10),normalize( mul( newNormal,(World)).xyz),input.normal);//newNormal.x * input.bnormal +newNormal.y * input.normal + newNormal.z * input.tnormal;
 	
 	float globalLightIntencity = saturate(dot(lightDir,input.normal));
 	float3 lightcolor = Delight(lightColor, saturate(0.3-(globalLightIntencity)-0.2f));
@@ -391,7 +391,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 
 float4 VSS( VS_IN input) : SV_POSITION
 { 
-	return mul(mul( mul( input.pos,transpose(World)),transpose(View)),transpose(Projection));  
+	return mul(mul( mul( input.pos,(World)),(View)),(Projection));  
 } 
 float4 PSS( float4 pos: SV_POSITION) : SV_Target0
 { 

@@ -44,9 +44,19 @@ function task:UpdateNeeds()
 
 	end
 end
+console.AddCmd("listneeds",function ()
+	local actor = LocalPlayer().viewEntity
+	if IsValidEnt(actor) then
+		if actor.needs and actor.needs.list then 
+			PrintTable(actor.needs.list)
+		else
+			MsgN("{}")
+		end
+	end
+end)
 function task:UpdateNeedsTask(n)
 	local actor = self.ent
-	if actor.needs and actor.needs.list then
+	if actor.needs and actor.needs.list then 
 		local n = actor.needs.list
 		local topk=false;
 		local topv = -10;
@@ -200,27 +210,36 @@ function task:Step()
 	local movetask = self.movetask
 	local sttime = self.taskstart or 0
 	local actor = self.ent
-
 	self:UpdateNeeds()
-
+ 
 	if not movetask or sttime+self.delaytime<CurTime() then 
 
 		--MsgN("wan")
 		local n,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
-		if nav then
+		if true then
 			local parent = actor:GetParent()
 			local sz = parent:GetSizepower()
 			local pos = actor:GetPos()
 
-			if(actor.IsInVehicle) then
-				actor:SendEvent(EVENT_EXIT_VEHICLE) 
-			end 
 			if not self:UpdateNeedsTask(actor.needs) then
 			--
-				if math.random()>0.5 then
-					self:VariantUseSomething(parent,nav,pos,sz)
-				else
-					self:VariantWalk(nav,pos,sz)
+				if nav then
+					if math.random()>0.5 then
+						self:VariantUseSomething(parent,nav,pos,sz)
+					else
+						self:VariantWalk(nav,pos,sz)
+					end
+				end
+				--MsgN("tick")
+				if math.random()>0.999 then
+					self:VariantPose(table.Random({"pstand","pstand2"}),math.random(5,20))
+				elseif math.random()>0.95 then 
+					local nodes = GetNodesInRadius(parent,pos,20/sz)
+					if nodes then
+						actor:SendEvent(EVENT_LERP_HEAD,table.Random(nodes))
+					end
+				elseif math.random()>0.999 then
+					self:VariantSit(10)
 				end
 				--if self:VariantUnequipItem('uniform_1') then return nil end
 				--if self:VariantUnequipItem('legw')then return nil end
@@ -325,6 +344,39 @@ function task:VariantUnequipItem(itemname)
 				return true
 			end
 		end 
+	end
+end
+function task:VariantPose(name,duration)
+	local actor = self.ent
+	if not actor.is_posing and actor:GestureToggle(44, name) then
+		actor.is_posing = true
+		debug.Delayed(1000*duration,function ()
+			actor:GestureToggle(44, name)
+			actor.is_posing = false
+		end)
+	end
+end
+function task:VariantSit(duration)
+	local actor = self.ent
+	if actor.IsInVehicle then return end
+	local topk = 'fatigue'
+	local tar = self:FindNearestRepl(topk)
+	if tar then
+		self.movetask = Task("moveto",tar, 1.5,false)
+		self.movetask:Next(Task(function(T) 
+			Interact(actor,tar,'sit') 
+			return true 
+		end))
+		:Next(Task('wait',duration or 10))
+		:Next(Task(function(T) 
+			actor:SendEvent(EVENT_EXIT_VEHICLE)
+			return true 
+		end))
+		self.manager:Begin(self.movetask)
+		return true
+	else
+		--actor:Say("*faints*")
+		MsgN(actor,'is unable to find chair') 
 	end
 end
 function task:OnEnd(result)

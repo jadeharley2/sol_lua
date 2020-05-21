@@ -125,11 +125,11 @@ function editor:Open()
 		end
 	end
 	
-	self.gui = panel.Create("world_editor")
+	self.gui = self.gui or panel.Create("world_editor")
 	self.gui:Dock(DOCK_LEFT)
 	self.gui:SetSize(vsize.x,vsize.y-20)--SetSize(vsize.x-2-nsi,nsi-2)
 	self.gui:SetPos(0,-10)--SetPos(0-nsi,-vsize.y+nsi)
-	self.gui:Show()
+	GUI_MIDLAY:Add(self.gui)--:Show()
 	
 	
 	render.DCISetEnabled(true)
@@ -151,8 +151,11 @@ function editor:Close()
 	self.selected:Clear()
 		
 	if self.gui then 
-		if not isfunction(self.gui) then self.gui:Close() end
-		self.gui = nil 
+		if not isfunction(self.gui) then 
+			--self.gui:Close() 
+			GUI_MIDLAY:Remove(self.gui)
+		end
+		--self.gui = nil 
 	end
 	if self.selectortemp then 
 		if not isfunction(self.selectortemp) then self.selectortemp:Close() end
@@ -584,6 +587,10 @@ function WorldeditorToggle()
 	W.worldeditor:Toggle()
 end
 console.AddCmd("ed_world",WorldeditorToggle)
+
+console.AddCmd("ed_world_reset",function ()
+	worldeditor.gui = nil 
+end)
 
 W.wireeditor = W.wireeditor or {} 
 

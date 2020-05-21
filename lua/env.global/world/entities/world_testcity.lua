@@ -85,20 +85,20 @@ function ENT:Spawn()
 	
 	engine.LoadMap("city","models/map/citytest/tex/",space)
 	
-	local pp1 = SpawnWeapon("tool_propspawner",space,Vector(-0.002,0.003,0),939002)--0.006
-	local pp2 = SpawnWeapon("tool_weld",space,Vector(-0.003,0.003,0),939003)--0.006
-	local pp3 = SpawnWeapon("tool_physgun",space,Vector(-0.004,0.003,0),939001)--0.006
-	local pp4 = SpawnWeapon("weapon_energy",space,Vector(-0.005,0.003,0),939001)--0.006
+	--local pp1 = SpawnWeapon("tool_propspawner",space,Vector(-0.002,0.003,0),939002)--0.006
+	--local pp2 = SpawnWeapon("tool_weld",space,Vector(-0.003,0.003,0),939003)--0.006
+	--local pp3 = SpawnWeapon("tool_physgun",space,Vector(-0.004,0.003,0),939001)--0.006
+	--local pp4 = SpawnWeapon("weapon_energy",space,Vector(-0.005,0.003,0),939001)--0.006
 	
 	self.space = space
 	
-	local nav = space:AddComponent(CTYPE_NAVIGATION)   
-	self.nav = nav
-	for k,v in pairs(space:GetChildren()) do 
-		if v:GetParameter(VARTYPE_LUAENTTYPE)=="prop_static" then
-			nav:AddStaticMesh(v)
-		end
-	end	
+	--local nav = space:AddComponent(CTYPE_NAVIGATION)   
+	--self.nav = nav
+	--for k,v in pairs(space:GetChildren()) do 
+	--	if v:GetParameter(VARTYPE_LUAENTTYPE)=="prop_static" then
+	--		nav:AddStaticMesh(v)
+	--	end
+	--end	
 	if CLIENT then
 		local eshadow = ents.Create("test_shadowmap2")  
 		eshadow.light = light
@@ -108,6 +108,14 @@ function ENT:Spawn()
 	end
 	--SpawnMirror(space,Vector(0.0005589276, 0.001217313, -0.01491671))
 	CreateSpawnpoint(space,Vector(0,0.01,0) )
+	if CLIENT then
+		local c = SpawnPlayerChar( Vector(0,0.0013627,0),self.space) 
+		return c, Vector(0,0,0)
+	else 
+		SPAWNORIGIN = self.space2
+		SPAWNPOS = Vector(0,0.0013627,0)
+		return self.space, Vector(0,0,0)
+	end
 end
 
 function ENT:GetSpawn() 

@@ -1,6 +1,6 @@
 
 
-local t_mpanel = LoadTexture("gui/nodes/cnode.png")  
+local t_mpanel =  "textures/gui/nodes/cnode.png" 
 function PANEL:Init() 
 	--self.base.Init(self)
 	self.xvalues = {}
@@ -61,6 +61,7 @@ function PANEL:AddAnchor(id,name,valtype)
 		if valtype=="int32" or valtype=="float" or valtype=="double" or valtype=="int64" then
 			local xvalue = 0 
 			atext:SetCanRaiseMouseEvents(true)
+			atext.contextinfo = "edit value"
 			atext.OnClick = function()
 				MsgBox({
 					name = "valinput",
@@ -86,6 +87,7 @@ function PANEL:AddAnchor(id,name,valtype)
 		elseif valtype=="string" then 
 			local xvalue = ""
 			atext:SetCanRaiseMouseEvents(true)
+			atext.contextinfo = "edit value"
 			atext.OnClick = function()
 				MsgBox({
 					name = "valinput",
@@ -175,6 +177,29 @@ function PANEL:Deselect()
 	self:SetColor(Vector(83,164,255)/255)
 	self.selector = nil
 end 
+function PANEL:SetError(error) 
+	if self.borders then
+		for k,v in pairs(self.borders ) do
+			self:Remove(v)
+		end
+	end 
+	if error then 
+		local brd = {}
+		gui.FromTable({
+			subs = { 
+				{name = "t", class = "border", dock = DOCK_TOP},
+				{name = "b", class = "border", dock = DOCK_BOTTOM},
+				{name = "l", class = "border", dock = DOCK_LEFT},
+				{name = "r", class = "border", dock = DOCK_RIGHT},
+			}
+		},self,{
+			border={color= {1,0,0},size = {2,2}}
+		},brd)
+		self.borders = brd
+		self:UpdateLayout() 
+	end
+	self.contextinfo = error
+end
 
 function PANEL:SetColor(c)
 	PANEL.base.SetColor(self,c)

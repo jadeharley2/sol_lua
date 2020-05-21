@@ -17,14 +17,19 @@ console.AddCmd("ed_node", nodeeditor.Enable)
 --render.SetRenderBounds(100,100,1000,1000)
 
 function nodeeditor.OpenFlow()
-	local list_view = panel.Create("graph_editor")
+	local list_view = nodeeditor._fe or panel.Create("graph_editor")
 	nodeeditor._fe = list_view
-	list_view:Show()
+	--list_view:Show()
+	GUI_MIDLAY:Add(list_view)
+	nodeeditor.isopen = true
+	
 	hook.Add("main.predraw","editor_flow",nodeeditor.Update)
 end
 function nodeeditor.CloseFlow()
-	nodeeditor._fe:Close()
-	nodeeditor._fe = nil 
+	--nodeeditor._fe:Close()
+	GUI_MIDLAY:Remove(nodeeditor._fe)
+	--nodeeditor._fe = nil 
+	nodeeditor.isopen = false
 	hook.Remove("main.predraw","editor_flow")
 end
 function nodeeditor.Update()
@@ -32,7 +37,7 @@ function nodeeditor.Update()
 end
 
 function nodeeditor.ToggleFlow()
-	if nodeeditor._fe then
+	if nodeeditor.isopen then
 		nodeeditor.CloseFlow()
 	else
 		nodeeditor.OpenFlow()

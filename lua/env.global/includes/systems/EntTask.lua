@@ -53,6 +53,7 @@ local TASKMANAGER_META = DEFINE_METATABLE("TaskManager")
 function TASKMANAGER_META:Init(ent)
 	self.ent = ent
 	self.thread = self:CreateThread()
+	ent._taskmanager = self
 end
 function TASKMANAGER_META:HasTasks() 
 	for k,v in pairs(self.current) do
@@ -201,7 +202,16 @@ function TaskManager(ent)
 	tm:Init(ent)
 	return tm 
 end 
-  
+
+console.AddCmd("listtasks",function ()
+	local actor = LocalPlayer().viewEntity
+	if IsValidEnt(actor)  then
+		local tm = actor._taskmanager or actor.tmanager 
+		if tm then
+			PrintTable(tm.current)
+		end
+	end
+end)
  
   
 

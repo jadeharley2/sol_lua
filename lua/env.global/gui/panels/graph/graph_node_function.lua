@@ -1,5 +1,5 @@
 PANEL.basetype = "graph_node" 
-local t_xtoggle = LoadTexture("gui/nodes/xtoggle.png")
+local t_xtoggle = "textures/gui/nodes/xtoggle.png"
 function PANEL:Init() 
 	self.base.Init(self) 
 end 
@@ -66,6 +66,7 @@ function PANEL:ToggleSignal()
 	local off = 0
 	local signalenabled = self.signalenabled
 	if signalenabled then off = 1 else off = -1 end
+	self.signalenabled = not signalenabled
 	self:Load(func, not signalenabled)
 	for k,v in pairs(tempdata) do
 		if k<0 then

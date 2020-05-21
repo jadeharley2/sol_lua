@@ -1,0 +1,14 @@
+{
+	"name" : "Systems admin arm warmers", 
+	"filter" :{  
+	},
+	"slot" : "arms",
+	"model" : "apparel/zta_armw.stmd",
+	//"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03,
+	"furmasks":{"body":"models/apparel/submaps/armw.png"},
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
+}

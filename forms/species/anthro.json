@@ -2,7 +2,7 @@
 	"type":"species",
 	"name":"anthro", 
 	"genders" : ["male","female"], 
-	"attributes" : ["humanoid"],
+	"attributes" : ["bipedal"],
 	"mass" : 10,
 	"movement" :{
 		"walk": { "speed" : 1.2 },
@@ -14,9 +14,9 @@
 		"groups" : { 
 			"head" : ["head.top","head.eyes","head.mouth"], 
 			"torso.under" : ["torso.under.top","torso.under.bot"], 
-			"legs" : ["leg.left","leg.right"],
-			"feet" : ["foot.left","foot.right"],
-			"arms" : ["arm.left","arm.right"], 
+			"legs" : ["leg.l","leg.r"],
+			"feet" : ["foot.l","foot.r"],
+			"arms" : ["arm.l","arm.r"], 
 		},
 		"block" : {
 			"torso" : ["torso.top"],
@@ -24,14 +24,22 @@
 			"skin" : ["torso.under","head","legs","arms","feet","neck","tail"]
 		},
 	},
-	"bodyparts" : {"required" : ["body","tail","hair"], "optional" : []},
+	"bodyparts" : { 
+		"groups":{
+			"arm":["arm.l","arm.r"],
+			"hand":["hand.l","hand.r"],
+			"thigh":["thigh.l","thigh.r"],
+			"calf":["calf.l","calf.r"],
+			"foot":["foot.l","foot.r"],
+			"toe":["toe.l","toe.r"],
+		}
+	},
 	"model":{
 		"basedir" : "models/species/anthro/",
 		"materials" : [ 
 		], 
 		"variations" :
-		{
-			//"l1" : {			},
+		{ 
 			"default" : {			
 				"skeleton" : "base_anthro",
 				"tpscamheight" : 1.4,
