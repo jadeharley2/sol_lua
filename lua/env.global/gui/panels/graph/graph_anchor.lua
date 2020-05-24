@@ -1,20 +1,22 @@
 
 PANEL.basetype = "button"
-local t_aanchor = LoadTexture("gui/nodes/aanchor.png")
-local t_banchor = LoadTexture("gui/nodes/banchor.png")
-local t_canchor = LoadTexture("gui/nodes/canchor.png")
+local t_aanchor = "textures/gui/nodes/aanchor.png"
+local t_banchor = "textures/gui/nodes/banchor.png"
+local t_canchor = "textures/gui/nodes/canchor.png"
+local t_panchor = "textures/gui/nodes/panchor.png"
+local t_panchor_off = "textures/gui/nodes/panchor_off.png"
 function PANEL:Init() 
 	self.base.Init(self) 
-	self:SetSize(8,8)
+	self:SetSize(16,16)
 	self:SetTexture(t_aanchor)
 	self.base.SetColorAuto(self, Vector(0.7,0.7,0.7),0.2)
 	self.to = Set()
 end
 function PANEL:GetTypeColor(type)  
-	MsgN("typecolor ",type)
+	--MsgN("typecolor ",type)
 	if type=="float" or type=="single" or type == "double" then
 		return Vector(0.3,0.7,0.2)--green
-	elseif type=="int" or type=="int32" or type=="int16" or type=="int64" then 
+	elseif type=="int" or type=="int32" or type=="int16" or type=="int64" or type=="uint32" or type=="uint16" or type=="uint64"then 
 		return Vector(0.2,0.7,0.7)--cyan
 	elseif type=="signal" then 
 		return Vector(0.7,0.7,0.7)--white
@@ -38,7 +40,7 @@ function PANEL:GetTypeColor(type)
 		return Vector(0.2,0.2,0.2)--dark gray
 	end
 end
-function PANEL:Attach(node,id,name,type)
+function PANEL:Attach(node,id,name,type,dockplace)
 	self.editor = node.editor
 	self.node = node
 	self.id = id
@@ -46,18 +48,32 @@ function PANEL:Attach(node,id,name,type)
 	self.type = type
 	self.contextinfo = type
 	
+	if dockplace==nil then
+		MsgN("error: dockplace is nil")
+		MsgN(debug.traceback())
+		error("dockplace is nil")
+	end
 	self.bcolor = self:GetTypeColor(type)
+	if type=="signal" then 
+		self:SetTexture(t_panchor_off)
+	end
 	
 	self:SetColorAuto(self.bcolor,0.2)
-	local ps = node:GetSize()
-	if(id<0) then
-		self:SetPos(-ps.x+10,0)--self:AlignTo(node,ALIGN_LEFT,ALIGN_LEFT)
-	else
-		self:SetPos(ps.x-10,0)--self:AlignTo(node,ALIGN_RIGHT,ALIGN_RIGHT)
-	end
-	local sp = self:GetPos()
-	self:SetPos(sp.x,math.abs(id)*-20+80)
-	node:Add(self)
+	--local ps = node:GetSize()
+	--if(id<0) then
+	--	self:SetPos(-ps.x+18,0)--self:AlignTo(node,ALIGN_LEFT,ALIGN_LEFT)
+	--else
+	--	self:SetPos(ps.x-18,0)--self:AlignTo(node,ALIGN_RIGHT,ALIGN_RIGHT)
+	--end
+	--local sp = self:GetPos()
+	--self:SetPos(sp.x+offset.x,(math.abs(id)-1)*-40+offset.y+ps.y)
+	--if(id<0) then
+	--	self:SetAnchors(ALIGN_TOPLEFT)
+	--else
+	--	self:SetAnchors(ALIGN_TOPRIGHT)
+	--end
+	self:Dock(DOCK_TOP)
+	dockplace:Add(self)
 end
 function PANEL:MouseUp(id) 
 	if CURRENT_SELECTED_ANCHOR and CURRENT_SELECTED_ANCHOR ~= self then
@@ -108,6 +124,7 @@ function PANEL:BeginLink(dir)
 	end)
 end
 function PANEL:OnClick(id)
+	--MsgN("CSA",CURRENT_SELECTED_ANCHOR)
 	if CURRENT_SELECTED_ANCHOR and CURRENT_SELECTED_ANCHOR ~= self then
 		
 		
@@ -133,14 +150,14 @@ function PANEL:OnClick(id)
 	end
 end
 function PANEL:OnRightClick()
-	MsgN("rclc")
+	--MsgN("rclc")
 end
 function PANEL:GetValue()
-	MsgN("GET ",self.name," : ",self.value)
+	--MsgN("GET ",self.name," : ",self.value)
 	return self.value
 end
 function PANEL:SetValue(val)
-	MsgN("SET ",self.node.name.."."..self.name," : ",val)
+	--MsgN("SET ",self.node.name.."."..self.name," : ",val)
 	self.value = val
 end
 function PANEL:CreateLink(a,b)
@@ -168,7 +185,7 @@ function PANEL:CreateLink(a,b)
 		end
 	end
 	
-	MsgN("CreateLink",from.node.id,":",from.id," => ",to.node.id,":",to.id)
+	--MsgN("CreateLink",from.node.id,":",from.id," => ",to.node.id,":",to.id)
 	
 	
 	
@@ -196,11 +213,16 @@ function PANEL:CreateLink(a,b)
 	cuup[#cuup+1] = curve
 	GUI_CURVE_UPDATE()
 	
-	
-	from:SetTexture(t_banchor)
-	to:SetTexture(t_banchor)
+	if from.type=="signal" then
+		from:SetTexture(t_panchor)
+		to:SetTexture(t_panchor)
+	else
+		from:SetTexture(t_banchor)
+		to:SetTexture(t_banchor)
+	end
 end
 function PANEL:SetInnerValue(val)
+	self:UnlinkAll()
 	self.xvalue = val
 	if val~=nil then
 		self:SetTexture(t_canchor)
@@ -215,7 +237,7 @@ function PANEL:RemoveLink(a,b)
 		from = b
 		to = a
 	end
-	MsgN("RemoveLink",from.node.id,":",from.id," => ",to.node.id,":",to.id)
+	--MsgN("RemoveLink",from.node.id,":",from.id," => ",to.node.id,":",to.id)
 	
 	to.node.inputs[-to.id] = nil
 	from.to:Remove(to)
@@ -229,11 +251,18 @@ function PANEL:RemoveLink(a,b)
 		end
 	end
 	
-	PrintTable(from.to:ToTable())
-	if(from.to:Count()==0)then
-		from:SetTexture(t_aanchor)
+	--PrintTable(from.to:ToTable())
+	if from.type=="signal" then
+		if(from.to:Count()==0)then
+			from:SetTexture(t_panchor_off)
+		end
+		to:SetTexture(t_panchor_off)
+	else
+		if(from.to:Count()==0)then
+			from:SetTexture(t_aanchor)
+		end
+		to:SetTexture(t_aanchor)
 	end
-	to:SetTexture(t_aanchor)
 end
 
 function PANEL:UnlinkAll()

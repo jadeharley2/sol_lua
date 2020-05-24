@@ -1,10 +1,12 @@
 PANEL.basetype = "graph_node" 
-local t_xtoggle = LoadTexture("gui/nodes/xtoggle.png")
+local t_xtoggle = "textures/gui/nodes/xtoggle.png"
 function PANEL:Init() 
 	self.base.Init(self) 
 end 
 function PANEL:Load(func,signalenabled) 
-	
+	if signalenabled==nil then signalenabled = self.signalenabled end 
+	func = func or self.func
+
 	self.signalenabled = signalenabled or false
 	self.func = func 
 	local data = json.Read("forms/flow/functions/"..func..".json")
@@ -19,84 +21,63 @@ function PANEL:Load(func,signalenabled)
 			self.base.AddAnchor(self,1,">>","signal")
 			off = 1
 		end
-		
+		local argmaxnum = 1
 		for k,v in pairs(data.input) do
 			self.base.AddAnchor(self,-k-off,v.name,v.vtype or "float")
+			argmaxnum= math.max(argmaxnum,k+off)
 		end
 		
 		for k,v in pairs(data.output) do
 			self.base.AddAnchor(self,k+off,v.name,v.vtype or "float")
+			argmaxnum= math.max(argmaxnum,k+off)
 		end
+		self:SetSize(256,argmaxnum*18+40)
 	end
 	
 	self:Deselect()  
 	if not self.toggle_signal then
-	
-		local s = self
-	
-		local ssz = self:GetSize()
-		local toggle_signal = panel.Create("button")
-		toggle_signal:SetSize(8,8)
-		toggle_signal:SetPos(-ssz.x+10,-ssz.y+10)   
-		toggle_signal:SetTexture(t_xtoggle) 
-		toggle_signal:SetColorAuto(self:GetColor())
-		toggle_signal.contextinfo = "Toggle signal mode"
-		function toggle_signal:OnClick() s:ToggleSignal() end
-		self:Add(toggle_signal)
-		self.toggle_signal = toggle_signal
-		
-		
-		local open_compound = panel.Create("button")
-		open_compound:SetSize(8,8)
-		open_compound:SetPos(-ssz.x+50,-ssz.y+10)   
-		open_compound:SetTexture(t_xtoggle) 
-		open_compound:SetColorAuto(self:GetColor()) 
-		open_compound.contextinfo = "Open compound flow"
-		function open_compound:OnClick() s.editor.editor:Open("forms/flow/functions/"..func..".json") end
-		self:Add(open_compound)
-		self.open_compound = open_compound
+	 
+		gui.FromTable({ 
+			subs = { 
+				{ name = "toggle_signal", type = "button",
+					size = {20,20},
+					dock = DOCK_RIGHT,
+					texture = t_xtoggle,
+					ColorAuto = self:GetColor(),
+					contextinfo = "Toggle signal mode",
+					OnClick = function (x)
+						self:ToggleSignal()
+					end
+				},
+				{ name = "open_compound", type = "button",
+					size = {20,20},
+					dock = DOCK_RIGHT,
+					texture = t_xtoggle,
+					ColorAuto = self:GetColor(),
+					contextinfo = "Open compound flow",
+					OnClick = function (x)
+						self.editor.editor:Open("forms/flow/functions/"..func..".json")
+					end
+				} 
+			}
+		},self.bcontext,{},self)  
 		
 	end
+	self:UpdateLayout()
 	--self:AddAnchor(-1,"a","float")
 	--self:AddAnchor(-2,"b","float")
 	--self:AddAnchor(1,"output","float") 
 end
 function PANEL:ToggleSignal()  
-	local func = self.func
-	local signalenabled = self.signalenabled
-	local tempdata = {}
-	
-	for k,v in pairs(self.anchors) do
-		if k<0 then 
-			if v.from then
-				tempdata[k] = v.from
-			end
-		else 
-			tempdata[k] = v.to:ToTable()
-		end
-	end
-	self:RemoveAnchors() 
-	local off = 0
-	local signalenabled = self.signalenabled
-	if signalenabled then off = 1 else off = -1 end
-	self:Load(func, not signalenabled)
-	for k,v in pairs(tempdata) do
-		if k<0 then
-			local a = self.anchors[k+off]
-			if a then a:CreateLink(a,v) end
-		else  
-			local a = self.anchors[k-off]
-			if a then 
-				for k,vv in pairs(v) do
-					a:CreateLink(a,vv)  
-				end
-			end
-		end
-	end 
+	self:Reload(nil, not self.signalenabled) 
 end
 function PANEL:ToData() 
 	local args = {}
 	local signaled = self.signaled
+	for k,v in pairs(self.xvalues) do
+		local a = self.anchors[k]
+		args[a.name] = self:GetInputData(-k)
+	end
 	for k,v in pairs(self.inputs) do
 		if not signaled or k~=1 then
 			local a = self.anchors[-k]
@@ -131,11 +112,19 @@ function PANEL:FromData(data,mapping,posoffset)
 	
 	if data.args then
 		for k,v in pairs(data.args) do
-			local e = self.editor.editor 
-			local f = e.named[mapping(v[1])].anchors[v[2]] 
-			local t = namedAnchors[k]
-			if f and t then
-				f:CreateLink(f,t)
+			if( v[1]=='VALUE')then
+				local xval = v[3]
+				local an = namedAnchors[k] 
+				self.xvalues[an.id] =v
+				an:SetInnerValue(xval)
+				an.atext:SetText(an.name..': '..tostring(xval))
+			else
+				local e = self.editor.editor 
+				local f = e.named[mapping(v[1])].anchors[v[2]] 
+				local t = namedAnchors[k]
+				if f and t then
+					f:CreateLink(f,t)
+				end
 			end
 		end
 	end

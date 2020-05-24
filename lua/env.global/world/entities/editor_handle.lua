@@ -46,13 +46,15 @@ function ENT:SetModel(mdl,scale)
 	model:SetMatrix(world)
 	model:SetMaxRenderDistance(100000000)
 	model:SetPOcclusion(true)
+	model:SetDrawShadow(false)
 	  
 	self.modelcom = true
 end 
 function ENT:SetColor(color)
 	self.model:SetColor(color)
-end
+end 
 ENT.editor = {
+	hide = true,
 	name = "Editor handle",
 	properties = {
 		selectParent = {text = "select parent",type="action",action = function(ent)  

@@ -21,8 +21,9 @@ function ItemPV(itype,seed,modtable)
 	hook.Call("prop.variable.newitem",itype,t,j)
 	return json.ToJson(t)
 end
-function InitPV(type,ent,pos,ang,seed,e)
+function InitPV(type,ent,pos,ang,seed,e,modtable)
 	local j = forms.ReadForm(type)--json.Read(type) 
+	if modtable then table.Merge(modtable,j,true) end
 	if not j then return nil end
 	
 	local tags = {}
@@ -54,14 +55,14 @@ function InitPV(type,ent,pos,ang,seed,e)
 	--e:SetModel(j.model,j.scale,false)
 	return e
 end
-function SpawnPV(type,ent,pos,ang,seed)
-	local e = InitPV(type,ent,pos,ang,seed)
+function SpawnPV(type,ent,pos,ang,seed,modtable)
+	local e = InitPV(type,ent,pos,ang,seed,nil,modtable)
 	e:Spawn()
 	e:SetPos(pos) 
 	return e
 end
-function CreatePV(type,ent,pos,ang,seed)
-	local e = InitPV(type,ent,pos,ang,seed)
+function CreatePV(type,ent,pos,ang,seed,modtable)
+	local e = InitPV(type,ent,pos,ang,seed,nil,modtable)
 	e:Create()
 	e:SetPos(pos) 
 	return e
@@ -255,13 +256,13 @@ function ENT:SetupPhysics(world,scale)
 		if not data.nophys then
 			if data.phys then
 				local phys =  self.phys 
-			
-				if data.phys.custom then
+			MsgN("DATAPHYS")
+				if istable(data.phys) and  data.phys.custom then
 					phys:SetupPhysics(json.ToJson(data.phys))
 				else
-					if(model:HasCollision()) then
-						phys:SetShapeFromModel(world)  
-					end 
+					--if(model:HasCollision()) then
+						phys:SetShapeFromModel(world)   
+					--end 
 					phys:SetMass(data.mass or 10)  
 				end
 				phys:SoundCallbacks()
@@ -333,13 +334,15 @@ hook.Add('formspawn.prop','spawn',function(form,parent,arguments)
 	return SpawnPV(form,parent,
 		arguments.pos or Vector(0,0,0),
 		arguments.ang or Vector(0,0,0),
-		arguments.seed or 0)
+		arguments.seed or 0,
+		arguments.data)
 end)
 hook.Add('formcreate.prop','spawn',function(form,parent,arguments)
 	return CreatePV(form,parent,
 		arguments.pos or Vector(0,0,0),
 		arguments.ang or Vector(0,0,0),
-		arguments.seed or 0)
+		arguments.seed or 0,
+		arguments.data)
 end)
 hook.Add('newitem.prop',"prop",function(formid,seed)
 	return ItemPV(formid,seed)

@@ -4,10 +4,12 @@ function PANEL:Init()
 end 
 function PANEL:Load(valtype) 
 	self.valtype = valtype or "float"
-	self:SetTitle("Variable: "..valtype) 
-	  
+	self:SetSize(256,64) 
+	self:SetTitle("Variable: "..valtype)  
+	--self:AddAnchorPadding((64-18)/2)
+
 	local btext = panel.Create("input_text")
-	btext:SetSize(250,20)
+	btext:SetSize(200,20)
 	btext:SetPos(0,0)
 	btext:SetText("var01")
 	btext:SetTextColor(Vector(0.5,0.8,1)*2)
@@ -20,6 +22,7 @@ function PANEL:Load(valtype)
 	self:AddAnchor(1,"output",valtype)
 	self.bcolor = self.anchors[1].bcolor
 	self:Deselect()
+	self:UpdateLayout()
 end
 function PANEL:ToData()  
 	local pos = self:GetPos()

@@ -86,7 +86,7 @@ end
 
 	function panel.start_drag_on_shift(node,mbuttonid,ontrue,...)
 		if not panel.current_drag and not MOUSE_LOCKED then 
-			MsgN("drag test start at ",node,...)
+			--MsgN("drag test start at ",node,...)
 			panel.current_drag = node 
 			panel.current_drag_mbuttonid = mbuttonid or 0
 			panel.current_drag_pointpos = input.getMousePosition() 
@@ -102,7 +102,7 @@ end
 		if node then   
 			local isup =  panel.IsUpMbutton(panel.current_drag_mbuttonid) 
 			if isup then 
-				MsgN("drag FALSE")
+				--MsgN("drag FALSE")
 				panel.current_drag = false
 				UnlockMouse()
 				hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag.check")  
@@ -110,7 +110,7 @@ end
 				local startpos = panel.current_drag_pointpos
 				local cpos = input.getMousePosition() 
 				if(startpos:Distance(cpos)>5) then
-					MsgN("drag TRUE")
+					--MsgN("drag TRUE")
 					panel.current_drag = false
 					UnlockMouse()
 					hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.drag.check")  

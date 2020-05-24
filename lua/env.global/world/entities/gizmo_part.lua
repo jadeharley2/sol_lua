@@ -69,6 +69,7 @@ function ENT:Load()
 	model:SetMaxRenderDistance(9999999999999)
 	model:Enable(enabled)
 	model:SetPOcclusion(true)
+	model:SetDrawShadow(false)
 	
 	modelb:SetRenderGroup(RENDERGROUP_LOCAL)
 	modelb:SetModel(mdl)  
@@ -83,6 +84,7 @@ function ENT:Load()
 	modelb:SetMaxRenderDistance(9999999999999)
 	modelb:Enable(enabled)
 	modelb:SetPOcclusion(true)
+	modelb:SetDrawShadow(false)
 	
 	
 	

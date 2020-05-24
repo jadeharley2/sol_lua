@@ -1,27 +1,150 @@
 
 
 local t_mpanel =  "textures/gui/nodes/cnode.png" 
-function PANEL:Init() 
+function PANEL:Init(mode) 
+	
 	--self.base.Init(self)
 	self.xvalues = {}
 	self.isnode = true
-	
-	self:SetSize(256,128)
-	self:SetTexture(t_mpanel)
+
+	self.mode = mode
+	if mode == "single" then
+		gui.FromTable({
+			size = {256,128},
+			alpha = 0.5,
+			subs={
+				{	name = "ftop",
+					size = {1,1},
+					dock = DOCK_TOP,
+					mouseenabled = false,
+				},
+				{	name = "fbot",
+					size = {1,1},
+					dock = DOCK_BOTTOM,
+					mouseenabled = false,
+				},
+				{	name = "fleft",
+					size = {1,1},
+					dock = DOCK_LEFT,
+					mouseenabled = false,
+				},
+				{	name = "fright",
+					size = {1,1},
+					dock = DOCK_RIGHT,
+					mouseenabled = false,
+				},
+				{ name = "anchl",
+					textonly = true,
+					interactive = false,
+					size = {18,18},
+					dock = DOCK_LEFT,
+				},
+				{ name = "anchr",
+					textonly = true,
+					interactive = false,
+					size = {18,18},
+					dock = DOCK_RIGHT,
+				},
+				{ name = "textl",
+					textonly = true,
+					interactive = false,
+					size = {128-18,18},
+					dock = DOCK_LEFT,
+				},
+				{ name = "textr",
+					textonly = true,
+					interactive = false,
+					size = {128-18,18},
+					dock = DOCK_RIGHT,
+				},
+				{	name= "atext", 
+					pos = {-0,0},
+					size = {256,20},
+					text = "NODE",
+					anchors = ALIGN_LEFT,
+					textalignment = ALIGN_LEFT,
+					textonly = true,
+					mouseenabled = false,
+				}
+			}
+		},self,{},self)
+	else
+		gui.FromTable({
+			size = {256,128},
+			alpha = 0.5,
+			subs={
+				{	name= "atext",
+					dock = DOCK_TOP,
+					size = {20,20},
+					text = "NODE",
+					textalignment = ALIGN_LEFT,
+					interactive = false,
+				},
+				{	name = "fbot",
+					size = {1,1},
+					dock = DOCK_BOTTOM,
+					mouseenabled = false,
+				},
+				{	name = "fleft",
+					size = {1,1},
+					dock = DOCK_LEFT,
+					mouseenabled = false,
+				},
+				{	name = "fright",
+					size = {1,1},
+					dock = DOCK_RIGHT,
+					mouseenabled = false,
+				},
+				{	name= "bcontext",
+					dock = DOCK_BOTTOM,
+					size = {20,20}, 
+					color = {0,0,0},
+					alpha = 0.5,
+					interactive = false,
+				},
+				{ name = "anchl",
+					textonly = true,
+					interactive = false,
+					size = {18,18},
+					dock = DOCK_LEFT,
+				},
+				{ name = "anchr",
+					textonly = true,
+					interactive = false,
+					size = {18,18},
+					dock = DOCK_RIGHT,
+				},
+				{ name = "textl",
+					textonly = true,
+					interactive = false,
+					size = {128-18,18},
+					dock = DOCK_LEFT,
+				},
+				{ name = "textr",
+					textonly = true,
+					interactive = false,
+					size = {128-18,18},
+					dock = DOCK_RIGHT,
+				},
+			}
+		},self,{},self)
+	end
+	--self:SetSize(256,128)
+	--self:SetTexture(t_mpanel)
 	self.anchors = {}
 	self.outputs = {}
 	self.inputs = {}
 	
-	local atext = panel.Create()
-	atext:SetSize(253,20)
-	atext:SetPos(0,110)
-	atext:SetText("Node")
-	atext:SetTextAlignment(ALIGN_LEFT)
-	atext:SetTextColor(Vector(0.5,0.8,1)*2)
-	atext:SetTextOnly(true)
-	atext:SetCanRaiseMouseEvents(false)
-	self:Add(atext)
-	self.atext = atext
+	--local atext = panel.Create()
+	--atext:SetSize(253,20)
+	--atext:SetPos(0,110)
+	--atext:SetText("Node")
+	--atext:SetTextAlignment(ALIGN_LEFT)
+	--atext:SetTextColor(Vector(0.5,0.8,1)*2)
+	--atext:SetTextOnly(true)
+	--atext:SetCanRaiseMouseEvents(false)
+	--self:Add(atext)
+	--self.atext = atext
 	
 	self:SetColor(Vector(83,164,255)/255)
 	self.name = "Node"
@@ -34,31 +157,39 @@ function PANEL:Init()
 	--end
 	--self.ebtn = ebtn
 	--self:Add(ebtn)
+	self:UpdateLayout()
 end
 function PANEL:AddAnchor(id,name,valtype)
 	local a = panel.Create("graph_anchor")
-	a:Attach(self,id,name,valtype)
+
+	local anch_dock = self.anchl
+	if id>0 then anch_dock = self.anchr end
+	 
+	a:Attach(self,id,name,valtype,anch_dock)
 	self.anchors[id] = a
 	 
 	
 	local atext = panel.Create("button")
-	atext:SetSize(100,10)
-	atext:SetParent(self)
+	atext:SetSize(100,16)
+	--atext:SetParent(self)
 	if id<0 then
-		atext:AlignTo(a,ALIGN_LEFT,ALIGN_RIGHT) 
+		--atext:AlignTo(a,ALIGN_LEFT,ALIGN_RIGHT) 
 	else
 		self.outputs[id] = a
-		atext:AlignTo(a,ALIGN_RIGHT,ALIGN_LEFT)
+		--atext:AlignTo(a,ALIGN_RIGHT,ALIGN_LEFT)
 		atext:SetTextAlignment(ALIGN_RIGHT) 
 	end
 	atext:SetCanRaiseMouseEvents(false)
 	atext:SetText(name)
 	atext:SetTextColor(Vector(0.5,0.8,1)*2)
 	atext:SetTextOnly(true)
-	atext:SetAnchors(ALIGN_TOPLEFT) 
+	--atext:SetAnchors(ALIGN_TOPLEFT) 
 	atext:SetAutoSize(true,false)
+	atext:Dock(DOCK_TOP)
 	if id<0 then --is input
-		if valtype=="int32" or valtype=="float" or valtype=="double" or valtype=="int64" then
+		if valtype=="float" or valtype=="double" or valtype=="single" 
+			or valtype=="int64" or valtype=="int32" 
+			or valtype=="uint64" or valtype=="uint32"  then
 			local xvalue = 0 
 			atext:SetCanRaiseMouseEvents(true)
 			atext.contextinfo = "edit value"
@@ -114,12 +245,13 @@ function PANEL:AddAnchor(id,name,valtype)
 	
 	a:SetAnchors(ALIGN_TOPLEFT) 
 	a.atext = atext
-	self:Add(atext)
+	if id<0 then
+		self.textl:Add(atext)
+	else
+		self.textr:Add(atext)
+	end
 end
-function PANEL:Load() 
-	--self:AddAnchor(-1,"a","float")
-	--self:AddAnchor(-2,"b","float")
-	--self:AddAnchor(1,"c","float") 
+function PANEL:Load()  
 end
 function PANEL:ToData() 
 	local pos = self:GetPos() 
@@ -152,6 +284,18 @@ function PANEL:FromData(data,mapping,posoffset,blocknext)
 	
 	self:SetAnchors(ALIGN_TOPLEFT)
 end
+function PANEL:AddAnchorPadding(size)
+	local padding = {
+		textonly = true,
+		mouseenabled = false,
+		size = {size,size},
+		dock = DOCK_TOP,
+	}
+	self.anchl:Add(gui.FromTable(padding));
+	self.anchr:Add(gui.FromTable(padding));
+	self.textl:Add(gui.FromTable(padding));
+	self.textr:Add(gui.FromTable(padding));
+end
 
 function PANEL:SetTitle(text)
 	self.name = text
@@ -168,7 +312,71 @@ function PANEL:Exec()
 		end
 	end
 end
+function PANEL:GetInput(name)
+	for k,v in pairs(self.anchors) do
+		if k<0 and v.name==name then
+			return v,k
+		end
+	end
+end
+function PANEL:GetOutput(name)
+	for k,v in pairs(self.anchors) do
+		if k>=0 and v.name==name then
+			return v,k
+		end
+	end
+end
+function PANEL:Reload(...)
+	local leftdata = {}
+	local rightdata = {}
+	local xdata = {}
+	
+	for k,v in pairs(self.anchors) do
+		if k<0 then 
+			if v.from then
+				leftdata[v.name] = v.from
+			end
+		else 
+			rightdata[v.name] = v.to:ToTable()
+		end 
+	end
+	for k,v in pairs(self.xvalues) do
+		local a = self.anchors[k]  
+		xdata[a.name] = v
+	end
+	MsgN("leftdata")
+	PrintTable(leftdata)
+	MsgN("rightdata")
+	PrintTable(rightdata)
+	MsgN("xdata")
+	PrintTable(xdata)
 
+	
+	self:RemoveAnchors() 
+	self.xvalues = {}
+	
+	self:Load(...)
+	
+	for k,v in pairs(leftdata) do
+		local a = self:GetInput(k) 
+		if a then a:CreateLink(a,v) end
+	end
+	for k,v in pairs(rightdata) do
+		local a = self:GetOutput(k)
+		if a then  
+			for k,vv in pairs(v) do
+				a:CreateLink(a,vv)  
+			end 
+		end
+	end 
+	for k,v in pairs(xdata) do 
+		local a = self:GetInput(k)  
+		local xvalue = v[3] 
+		a:SetInnerValue(xvalue) 
+		a.atext:SetText(a.name..': '..xvalue)
+		self.xvalues[a.id] = v
+	end
+end
 function PANEL:Select(selector) 
 	self:SetColor(Vector(83,255,164)/255)
 	self.selector = selector
@@ -185,12 +393,13 @@ function PANEL:SetError(error)
 	end 
 	if error then 
 		local brd = {}
+		local size = self:GetSize()
 		gui.FromTable({
 			subs = { 
-				{name = "t", class = "border", dock = DOCK_TOP},
-				{name = "b", class = "border", dock = DOCK_BOTTOM},
-				{name = "l", class = "border", dock = DOCK_LEFT},
-				{name = "r", class = "border", dock = DOCK_RIGHT},
+				{name = "t", class = "border", size = {size.x,1},pos={0,size.y}},
+				{name = "b", class = "border", size = {size.x,1},pos={0,-size.y}},
+				{name = "l", class = "border", size = {1,size.y},pos={-size.x,0}},
+				{name = "r", class = "border", size = {1,size.y},pos={size.x,0}},
 			}
 		},self,{
 			border={color= {1,0,0},size = {2,2}}
@@ -202,8 +411,23 @@ function PANEL:SetError(error)
 end
 
 function PANEL:SetColor(c)
-	PANEL.base.SetColor(self,c)
+	local bscol = PANEL.base.SetColor
+	local ddcol = c*0.5
+	self._color = c
+	bscol(self.fbot,ddcol)
+	bscol(self.fleft,ddcol)
+	bscol(self.fright,ddcol)
+	if self.mode=="single" then
+		bscol(self.ftop,ddcol)
+		bscol(self,c*0.3) 
+	else
+		bscol(self.atext,ddcol)
+		bscol(self,c*0.1) 
+	end
 	self.atext:SetTextColor(c*2)  
+end
+function PANEL:GetColor()
+	return self._color or Vector(1,1,1)
 end
 function PANEL:UnlinkAll()
 	for k,v in pairs(self.anchors) do
@@ -218,6 +442,11 @@ function PANEL:RemoveAnchors()
 		v:UnlinkAll()
 		self:Remove(v)
 	end
+	self.anchl:Clear()
+	self.anchr:Clear()
+	self.textl:Clear()
+	self.textr:Clear()
+	self.anchors = {}
 end
 
 function PANEL:GetInputData(id)

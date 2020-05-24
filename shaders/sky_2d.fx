@@ -604,12 +604,16 @@ PS_OUT PS(PS_IN input) : SV_Target
 
 	result.rgb =lerp( tBackColor.rgb,dust/2+ additive,saturate(rpdepth*10)) ;
 
+	float surfacecorrector = 1-saturate(-topDot*1000.8);
+	float surfacecorrectorb= saturate(-topDot*2);
+	input.Normal.y=input.Normal.y*surfacecorrector+0.1*surfacecorrectorb;  
+
 	ray_t rayx = {float3(0,earth_radius,0),-input.Normal*1.4*saturate(rpdepth*10)};
 	doublecom mierayleigh = get_incident_light(rayx,rpdepth);
 
 	float3 rem = max(float3(0,0,0),mierayleigh.rayleigh+mierayleigh.mie*2);
 	result.rgb =rem*2;//lerp( tBackColor.rgb,rem*2,saturate(rpdepth)) ;
-	result.a = saturate(rpdepth*rpdepth*100)*saturate(length(result.rgb));
+	result.a = saturate(rpdepth*rpdepth*100*1.1)*saturate(length(result.rgb));
 	//result = tDiffuseView.Sample(sCC, screenPosition);
 	//result.a = 1;
 	//result = rpdepth*10;//*float4(dust,1);
@@ -622,7 +626,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 
 	//result.rgb = sunTotal;
 	//result.a =0.9; 
-
+	//result = surfacecorrector;
 
 	ou.mask.a =1;
 	ou.color = result;//*0.5; 

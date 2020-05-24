@@ -69,6 +69,7 @@ function FSTR_Alignment(v)
 end
 
 function gui.ApplyParameters(node,t,style,namedtable,tablekey)
+	local delayed = {}
 	for k,v in pairs(t) do
 		if     k == 'size' then node:SetSize(v[1],v[2])  
 		elseif k == 'pvsize' then 
@@ -80,6 +81,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif k == 'padding' then node:SetPadding(v[1],v[2],v[3],v[4])
 		elseif k == 'margin' then node:SetMargin(v[1],v[2],v[3],v[4])
 		elseif k == 'anchors' then node:SetAnchors(v)
+		elseif k == 'alpha' then node:SetAlpha(v)
 		
 		elseif k == 'color' then 
 			if isjson(v) then
@@ -107,6 +109,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 		elseif k == 'texture' then node:SetTexture(v)--LoadTexture(v))
 
 		elseif k == 'mouseenabled' then node:SetCanRaiseMouseEvents(v)
+		elseif k == 'interactive' then node:SetInteractive(v)
 		
 		elseif k == 'clip' then node:SetClipEnabled(v)
 
@@ -143,30 +146,36 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			else 
 				local info = node[k..'_info']
 				if(info) then
-					if info.type == "children_array" then
-						for k2,v2 in ipairs(v) do 
-							if istable(v2) then
-								info.add(node,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
-							elseif isuserdata(v2) then
-								info.add(node,v2)
-							end
-						end 
-					elseif info.type == "children_dict" then
-						for k2,v2 in pairs(v) do 
-							MsgN("CHD",k2,v2)
-							if istable(v2) then
-								info.add(node,k2,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
-							elseif isuserdata(v2) then
-								info.add(node,k2,v2)
-							end
-						end 
-					elseif info.type == "children_single" then 
-						info.add(node,gui.FromTable(v,nil,style,namedtable,tablekey)) 
-					end
+					delayed[k] = {v,info}
 				else
 					node[k] = v
 				end
 			end
+		end
+	end
+	--delays subpanel creation to post parameter init stage
+	for k,vinf in pairs(delayed) do 
+		local v = vinf[1]
+		local info = vinf[2]
+		if info.type == "children_array" then
+			for k2,v2 in ipairs(v) do 
+				if istable(v2) then
+					info.add(node,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
+				elseif isuserdata(v2) then
+					info.add(node,v2)
+				end
+			end 
+		elseif info.type == "children_dict" then
+			for k2,v2 in pairs(v) do 
+				MsgN("CHD",k2,v2)
+				if istable(v2) then
+					info.add(node,k2,gui.FromTable(v2,nil,style,namedtable,tablekey)) 
+				elseif isuserdata(v2) then
+					info.add(node,k2,v2)
+				end
+			end 
+		elseif info.type == "children_single" then 
+			info.add(node,gui.FromTable(v,nil,style,namedtable,tablekey)) 
 		end
 	end
 	
@@ -184,7 +193,8 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 		end
 	end 
 	node = node or panel.Create(ptype or "panel")
-	
+	ASSERT(node==nil,"Can't create panel of type "..tostring(ptype))
+
 	if style and t.class then
 		local v = style[t.class]
 		if v then
@@ -345,4 +355,31 @@ console.AddCmd("gui_closetop",function ()
 		MsgN("closing:",top)
 		top:Close()
 	end
+end)
+console.AddCmd("gui_printtop", function()
+	local top = panel.GetTopElement() 
+	local i = 1
+	while top do
+		MsgN('\a[#cbacff]',"["..tostring(i).."]",'\a[clear]',top,'\a[#bcffac]',top.name)
+		i = i + 1  
+		top = top:GetParent()
+	end  
+end)
+
+
+
+local sWVal = input.MouseWheel() 
+hook.Add("input.mousewheel", "gui.scroll",function() 
+	local mWVal = input.MouseWheel() 
+	local delta = mWVal - sWVal
+	sWVal = mWVal
+	local toppanel = panel.GetTopElement()
+	while toppanel do
+		local OnMouseWheel = toppanel.OnMouseWheel
+		if isfunction(OnMouseWheel) then
+			OnMouseWheel(toppanel,delta)
+			break
+		end
+		toppanel = toppanel:GetParent()
+	end 
 end)

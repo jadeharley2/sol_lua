@@ -41,6 +41,7 @@ function PANEL:Init()
 end
 function PANEL:AutoFormat(text)
 	local low = string.lower (text)
+	text = cstring.replace(text,'\t','    ')
 	if string.find(low,'error') then
 		text = '\a[red]'..text
 	elseif string.find(low,'warning') then
@@ -293,12 +294,21 @@ console.AddCmd("debug",function()
 	debugp:SetPos(-800,0)
 	debugp:Show()      
 end)
-console.AddCmd("testgui",function()
-	local debugp = panel.Create("tree")
+console.AddCmd("testgui",function(panelname)
+	local debugp = panel.Create("window")
 	debugp:SetPos(-800,0)
 	debugp:SetSize(400,800)
 	debugp:Show()     
 	debugp:UpdateLayout()  
+	if panelname then
+		local pp = panel.Create(panelname)
+		if pp then
+			pp:SetSize(100,100);
+			pp:Dock(DOCK_FILL)
+			debugp.inner:Add(pp)
+			debugp:UpdateLayout()
+		end
+	end
 end) 
 console.AddCmd("testcolors",function()
 	MsgN("WHITE\a[black]BLACK\a[red]RED\a[green]GREEN\a[blue]BLUE"

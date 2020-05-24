@@ -1,5 +1,5 @@
 
-local t_mgrid = LoadTexture("gui/nodes/grid.png")
+local t_mgrid = "textures/gui/nodes/grid2.png"
 
  
 function PANEL:Init() 
@@ -28,18 +28,9 @@ function PANEL:Zoom(delta)
 	self:SetPos(spos*(newsm/oldsm))
 	self.zoom = zoom
 end
-
-function PANEL:MouseEnter()  
-	local sWVal = input.MouseWheel() 
-	hook.Add("input.mousewheel", "grid.scroll",function() 
-		local mWVal = input.MouseWheel() 
-		local delta = mWVal - sWVal
-		sWVal = mWVal
-		self:Zoom(-delta)
-	end)
-end
-function PANEL:MouseLeave()
-	hook.Remove("input.mousewheel", "grid.scroll")
+ 
+function PANEL:OnMouseWheel(delta)
+	self:Zoom(-delta)
 end
 
 function PANEL:DragDrop()

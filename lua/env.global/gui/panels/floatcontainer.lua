@@ -41,6 +41,7 @@ function PANEL:SetScrollbars(type)
 	local inner = panel.Create()
 	inner:SetClipEnabled(true)
 	inner:Dock(DOCK_FILL)
+    inner:SetAnchors(ALIGN_TOP)
 	self:Add(inner)
 	
 	self.inner = inner
@@ -77,35 +78,44 @@ function PANEL:HScroll(delta)
 	local bar = self.hbar
 	if bar then bar:Scroll(delta) end 
 end
+function PANEL:OnMouseWheel(delta)
+	if input.KeyPressed(KEYS_SHIFTKEY) then
+		local bar2 = self.hbar
+		if bar2 then bar2:Scroll(-delta) end
+	else
+		local bar = self.vbar
+		if bar then bar:Scroll(-delta) end
+	end
+end
 
-local cscroll = false
-function PANEL:MouseEnter() 
-	local bar = self.vbar
-	local bar2 = self.hbar
-	if bar or bar2 then 
-		local sWVal = input.MouseWheel() 
-		cscroll = self
-		hook.Add("input.mousewheel", "float.scroll",function() 
-			local mWVal = input.MouseWheel() 
-			local delta = mWVal - sWVal
-			sWVal = mWVal
-			if input.KeyPressed(KEYS_SHIFTKEY) then
-				if bar2 then bar2:Scroll(-delta) end
-			else
-				if bar then bar:Scroll(-delta) end
-			end
-		end)
-	end
-end
-function PANEL:MouseLeave()
-	local bar = self.vbar
-	local bar2 = self.hbar
-	if bar or bar2 then 
-		if cscroll == self then
-			hook.Remove("input.mousewheel", "float.scroll")
-		end
-	end
-end
+--local cscroll = false
+--function PANEL:MouseEnter() 
+--	local bar = self.vbar
+--	local bar2 = self.hbar
+--	if bar or bar2 then 
+--		local sWVal = input.MouseWheel() 
+--		cscroll = self
+--		--hook.Add("input.mousewheel", "float.scroll",function() 
+--		--	local mWVal = input.MouseWheel() 
+--		--	local delta = mWVal - sWVal
+--		--	sWVal = mWVal
+--		--	if input.KeyPressed(KEYS_SHIFTKEY) then
+--		--		if bar2 then bar2:Scroll(-delta) end
+--		--	else
+--		--		if bar then bar:Scroll(-delta) end
+--		--	end
+--		--end)
+--	end
+--end
+--function PANEL:MouseLeave()
+--	local bar = self.vbar
+--	local bar2 = self.hbar
+--	if bar or bar2 then 
+--		if cscroll == self then
+--			hook.Remove("input.mousewheel", "float.scroll")
+--		end
+--	end
+--end
 
 function PANEL:Resize() 
 	local floater = self.floater 

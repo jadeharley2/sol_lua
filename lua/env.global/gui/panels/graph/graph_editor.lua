@@ -32,7 +32,7 @@ local layout = {
 			gradient = {{0,0,0},{0.5,0.5,0.7},90},
 			textcolor = {100,1,1},
 			size = {30,30},
-			text = "///////////////////",
+			text = "untitled",
 			dock = DOCK_TOP
 		},
 		{ --rightpanel
@@ -55,10 +55,26 @@ local layout = {
 						}, 
 						{ class = "bmenu",  name = "bload", texture = "textures/gui/panel_icons/load.png",   
 							contextinfo = 'Load'
+						},  
+					}
+				},
+				{ 
+					size = {40,40},
+					dock = DOCK_TOP,
+					color = {0,0,0},
+					subs = {  
+						{ class = "bmenu",  name = "brun", texture = "textures/gui/panel_icons/play.png",   
+							contextinfo = 'Run'
 						}, 
-						{ class = "bmenu",  name = "bcompile", texture = "textures/gui/panel_icons/craft.png",   
-							contextinfo = 'Compile'
+						{ class = "bmenu",  name = "brun_cam", texture = "textures/gui/panel_icons/play.png",   
+							contextinfo = 'Run on local camera'
 						}, 
+						{ class = "bmenu",  name = "brun_ply", texture = "textures/gui/panel_icons/play.png",   
+							contextinfo = 'Run on local player'
+						}, 
+						{ class = "bmenu",  name = "brun_selected", texture = "textures/gui/panel_icons/play.png",   
+							contextinfo = 'Run on editor selection'
+						},
 					}
 				},
 				{ 
@@ -137,12 +153,14 @@ function PANEL:Init()
 	local ED = self 
 	
 	  
-	self.bnew.OnClick = function(s) 
-		self:ClearNodes()
-	end
-	 
 	local lastpath = "forms/flow"
 	local curfilepath = false
+	self.bnew.OnClick = function(s) 
+		self:ClearNodes()
+		curfilepath= ""
+		self.curfile:SetText("untitled")
+	end
+	 
 	self.bload.OnClick = function(s)  
 		OpenFileDialog(lastpath,".json",function(path)
 			lastpath = file.GetDirectory(path)
@@ -170,8 +188,17 @@ function PANEL:Init()
 		end)
 	end
 	 
-	self.bcompile.OnClick = function(s) 
+	self.brun.OnClick = function(s) 
 		self:Compile()
+	end
+	self.brun_cam.OnClick = function(s) 
+		self:Compile(GetCamera())
+	end
+	self.brun_ply.OnClick = function(s) 
+		self:Compile(LocalPlayer())
+	end
+	self.brun_ply.OnClick = function(s) 
+		self:Compile(E_SELECTION)
 	end
 	 
 	
@@ -197,9 +224,12 @@ function PANEL:Init()
 	
 	
 	local tab = {
-		flow = {event = {"startup","input.keydown"},"branch","assign","sequence","join","while","for"},
+		event = {"startup","invoke","interact","input.keydown"}, 
+		flow = {"branch","assign","sequence","join","while","for"},
 		constants = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","Tex2DArray"},
 		variables = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","scriptednode"},
+		input = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","scriptednode"},
+		output = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","scriptednode"},
 		functions = functlist,
 		compounds = comlist,
 		"group",
@@ -211,121 +241,7 @@ function PANEL:Init()
 	trpanel.grid:SetColor(Vector(0.1,0.1,0.1))
 	
 	trpanel.OnItemClick = function(tree,element)
-		local cmd = {}
-		local ep = element
-		while ep.text do
-			cmd[#cmd+1] = ep.text 
-			ep = ep:GetParent()
-		end
-		local epr = {}
-		local elen = #cmd
-		for k,v in ipairs(cmd) do
-			epr[elen-k+1] = v
-		end
-		PrintTable(epr)
-		if epr[1] == "functions" then
-			local com = epr[2].."."..epr[3] 
-			local n = panel.Create("graph_node_function")  
-			ED:AddNode(n)
-			n:Load(com) 
-		elseif epr[1] == "compounds" then
-			local com = epr[2]--.."."..epr[3] 
-			local n = panel.Create("graph_node_compound")  
-			ED:AddNode(n)
-			n:Load(com) 
-		elseif epr[1] == "constants" and epr[2] then
-			local n = panel.Create("graph_node_const")  
-			ED:AddNode(n)
-			n:Load(epr[2])
-		elseif epr[1] == "variables" and epr[2] then
-			local n = panel.Create("graph_node_var")  
-			ED:AddNode(n)
-			n:Load(epr[2])
-		elseif epr[1] == "flow" then
-			if epr[2] == "event" then
-				local n = panel.Create("graph_node_event")  
-				ED:AddNode(n)
-				n:Load(epr[3])
-			elseif epr[2] == "branch" then
-				local n = panel.Create("graph_node_branch")  
-				ED:AddNode(n)
-				n:Load()
-			elseif epr[2] == "assign" then
-				local n = panel.Create("graph_node_assign")  
-				ED:AddNode(n)
-				n:Load()
-			elseif epr[2] == "sequence" then
-				local n = panel.Create("graph_node_sequence")  
-				ED:AddNode(n)
-				n:Load()
-			elseif epr[2] == "join" then
-				local n = panel.Create("graph_node_join")  
-				ED:AddNode(n)
-				n:Load()
-			elseif epr[2] == "while" then
-				local n = panel.Create("graph_node_while")  
-				ED:AddNode(n)
-				n:Load()
-			elseif epr[2] == "for" then
-				local n = panel.Create("graph_node_for")  
-				ED:AddNode(n)
-				n:Load()
-			end
-		elseif epr[1] == "group" then
-			local n = panel.Create("graph_group")  
-			ED:AddNode(n)
-			n:Load()
-		elseif epr[1] == "map" then
-			if epr[2] == "point" then
-				local n = panel.Create("editor_point")  
-				ED:AddNode(n)
-				n:Load(epr[3])
-			elseif epr[2] == "line" then
-				local n = panel.Create("line") 
-				n:SetColor(Vector(83,164,255)/255)
-				n:SetUseGlobalScale(true)
-				ED:AddNode(n)
-				local first = false
-				hook.Add("input.mousedown","linebuild",function()
-					if input.leftMouseButton() then
-						local top = panel.GetTopElement()
-						if top then
-							local point = false
-							if top:__eq(ED.nodelayer) then
-								local pn = panel.Create("editor_point")  
-								ED:AddNode(pn)
-								pn:Load(epr[3])
-								pn:SetPos(ED.nodelayer:GetLocalCursorPos()) 
-								point = pn
-							elseif top.edpt then
-								point = top
-							end
-							if point then
-								n:AddPoint(point)
-								if point._tempfirst then
-									hook.Remove("input.mousedown","linebuild")
-									point._tempfirst = nil
-								else
-									if not first then
-										first = point
-										first._tempfirst = true
-									end
-								end
-							end
-						end 
-					elseif input.rightMouseButton() then
-						hook.Remove("input.mousedown","linebuild")
-						if first then
-							first._tempfirst = nil
-							first = false
-						end
-					end
-				end)
-				--n:Load(epr[3])
-			else
-			
-			end
-		end
+		self:CreateNewNode(element)
 	end 
 	
 	
@@ -384,7 +300,140 @@ function PANEL:Init()
 	trpanel:ScrollToTop()
 	
 end
-function PANEL:Compile() 
+function PANEL:CreateNewNode(element)
+	local cmd = {}
+	local ep = element
+	while ep.text do
+		cmd[#cmd+1] = ep.text 
+		ep = ep:GetParent()
+	end
+	local epr = {}
+	local elen = #cmd
+	for k,v in ipairs(cmd) do
+		epr[elen-k+1] = v
+	end
+	PrintTable(epr)
+	if epr[1] == "functions" then
+		local com = epr[2].."."..epr[3] 
+		local n = panel.Create("graph_node_function")  
+		self:AddNode(n)
+		n:Load(com) 
+	elseif epr[1] == "compounds" then
+		local com = epr[2]--.."."..epr[3] 
+		local n = panel.Create("graph_node_compound")  
+		self:AddNode(n)
+		n:Load(com) 
+	elseif epr[1] == "constants" and epr[2] then
+		local n = panel.Create("graph_node_const")  
+		self:AddNode(n)
+		n:Load(epr[2])
+	elseif epr[1] == "variables" and epr[2] then
+		local n = panel.Create("graph_node_var")  
+		self:AddNode(n)
+		n:Load(epr[2])
+	elseif (epr[1] == "input" or epr[1] == "output") and epr[2] then 
+		MsgBox({
+			name = "valinput",
+			type = "input_text",
+			text = xvalue,
+			size = {20,20},
+			dock = DOCK_TOP 
+		},"Enter "..epr[1].." name: ",{"ok","cancel"},function(val,s)
+			if val == "ok" then
+				local name =  s.valinput:GetText()
+				local n = panel.Create("graph_node_"..epr[1])  
+				n.ft = "input"
+				self:AddNode(n)
+				n:Load(epr[2], name) 
+			end
+		end)	 
+	elseif epr[1] == "event" then
+		local n = panel.Create("graph_node_event")  
+		self:AddNode(n)
+		n:Load(epr[2])
+	elseif epr[1] == "flow" then
+		if epr[2] == "branch" then
+			local n = panel.Create("graph_node_branch")  
+			self:AddNode(n)
+			n:Load()
+		elseif epr[2] == "assign" then
+			local n = panel.Create("graph_node_assign")  
+			self:AddNode(n)
+			n:Load()
+		elseif epr[2] == "sequence" then
+			local n = panel.Create("graph_node_sequence")  
+			self:AddNode(n)
+			n:Load()
+		elseif epr[2] == "join" then
+			local n = panel.Create("graph_node_join")  
+			self:AddNode(n)
+			n:Load()
+		elseif epr[2] == "while" then
+			local n = panel.Create("graph_node_while")  
+			self:AddNode(n)
+			n:Load()
+		elseif epr[2] == "for" then
+			local n = panel.Create("graph_node_for")  
+			self:AddNode(n)
+			n:Load()
+		end
+	elseif epr[1] == "group" then
+		local n = panel.Create("graph_group")  
+		self:AddNode(n)
+		n:Load()
+	elseif epr[1] == "map" then
+		if epr[2] == "point" then
+			local n = panel.Create("editor_point")  
+			self:AddNode(n)
+			n:Load(epr[3])
+		elseif epr[2] == "line" then
+			local n = panel.Create("line") 
+			n:SetColor(Vector(83,164,255)/255)
+			n:SetUseGlobalScale(true)
+			self:AddNode(n)
+			local first = false
+			hook.Add("input.mousedown","linebuild",function()
+				if input.leftMouseButton() then
+					local top = panel.GetTopElement()
+					if top then
+						local point = false
+						if top:__eq(ED.nodelayer) then
+							local pn = panel.Create("editor_point")  
+							self:AddNode(pn)
+							pn:Load(epr[3])
+							pn:SetPos(ED.nodelayer:GetLocalCursorPos()) 
+							point = pn
+						elseif top.edpt then
+							point = top
+						end
+						if point then
+							n:AddPoint(point)
+							if point._tempfirst then
+								hook.Remove("input.mousedown","linebuild")
+								point._tempfirst = nil
+							else
+								if not first then
+									first = point
+									first._tempfirst = true
+								end
+							end
+						end
+					end 
+				elseif input.rightMouseButton() then
+					hook.Remove("input.mousedown","linebuild")
+					if first then
+						first._tempfirst = nil
+						first = false
+					end
+				end
+			end)
+			--n:Load(epr[3])
+		else
+		
+		end
+	end
+end
+function PANEL:Compile(ents) 
 	if CURRENT_DEBUG_FLOW then
 		CURRENT_DEBUG_FLOW:Dispose()
 		CURRENT_DEBUG_FLOW = false
@@ -401,6 +450,17 @@ function PANEL:Compile()
 			CURRENT_DEBUG_FLOW = result
 			result:SetupHooks()
 			result:TryRun("startup")
+			if ents then
+				if istable(ents) then
+					for k,v in pairs(ents) do
+						result:SetValue("self",v)
+						result:TryRun("invoke") 
+					end
+				elseif IsValidEnt(ents) then
+					result:SetValue("self",ents)
+					result:TryRun("invoke") 
+				end
+			end
 		else
 			MsgN("Compilation failed")
 			MsgInfo("Compilation failed")
@@ -588,25 +648,19 @@ function PANEL:FromData(data,posoffset)
 				local n = false
 				
 				local paneltype = PANEL.typetable[v.type]
-				n = panel.Create(paneltype) 
-				--if v.type == "func" then          n = panel.Create("graph_node_function") 
-				--elseif v.type == "compound" then  n = panel.Create("graph_node_compound")   
-				--elseif v.type == "event" then     n = panel.Create("graph_node_event")   
-				--elseif v.type == "const" then     n = panel.Create("graph_node_const")   
-				--elseif v.type == "variable" then  n = panel.Create("graph_node_var")   
-				--elseif v.type == "assign" then    n = panel.Create("graph_node_assign")  
-				--elseif v.type == "branch" then    n = panel.Create("graph_node_branch")   
-				--elseif v.type == "sequence" then  n = panel.Create("graph_node_sequence")   
-				--elseif v.type == "join" then      n = panel.Create("graph_node_join")  
-				--elseif v.type == "while" then     n = panel.Create("graph_node_while")    
-				--elseif v.type == "for" then       n = panel.Create("graph_node_for")     
-				--end 
+				n = panel.Create(paneltype)  
 				
 				if n then
 					self:AddNode(n)
 					local newId = n.id
 					local oldId = v.id
 					mapping[oldId] = newId
+					if n.datakeys then
+						for kk,vv in pairs(n.datakeys) do
+							n[kk] = v[vv]
+						end  
+					end
+					n.data = v
 					n:Load(v.func or v.valtype, v.signal) 
 				end
 				v._node = n

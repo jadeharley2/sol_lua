@@ -1,0 +1,108 @@
+{
+	"group" : "building",
+	"tags" : [],
+	"model" : "models/artificial/buildings/mtower/exterior.stmd",
+	"scale" : 0.08,
+	"rotation" : [0,0,0], 
+	"subs" :[
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_atrium.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_atrium_ceilpots.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_atrium_ladder.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_jade_room.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_jade_room_ceilpots.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_jade_room_ladders.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_lowlevels_core.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_tower_ladder1.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_tower_ladder2.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_obstacles.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/interior_foyer_fire.stmd",
+			}
+		}
+	]
+}

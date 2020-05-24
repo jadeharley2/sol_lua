@@ -1,0 +1,15 @@
+{
+	"group" : "furniture",
+	"tags" : ["hs"],
+	"model" : "furniture/hs/flowerpot.stmd",
+	"scale" : 0.08,
+	"rotation" : [0,0,0], 
+	"composition" :{
+		"resource.plastic" : 3,    
+		"resource.leather" : 2,  
+		"resource.electronic_components" : 1,
+	},
+	"phys" : true,
+	"mass" : 5,
+ 
+}

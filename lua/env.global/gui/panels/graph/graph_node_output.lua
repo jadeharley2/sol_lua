@@ -5,8 +5,8 @@ end
 function PANEL:Load(valtype,varname) 
 	self.vtype = valtype or "float"
 	self.vname = varname or "unknown"
-	self:SetTitle("Output "..varname..":"..valtype) 
-	  
+	self:SetTitle("Output "..varname..":"..valtype)
+	self:SetSize(256,64)
 	--local btext = panel.Create("input_text")
 	--btext:SetSize(250,20)
 	--btext:SetPos(0,0)
@@ -18,12 +18,13 @@ function PANEL:Load(valtype,varname)
 	--self.btext = btext
 	
 	
-	self.base.AddAnchor(self,-1,">>","signal")
-	self.base.AddAnchor(self,1,">>","signal")
+	self:AddAnchor(-1,">>","signal")
+	self:AddAnchor(1,">>","signal")
 	self:AddAnchor(-2,"value",valtype)
 	
 	self.bcolor = self.anchors[-1].bcolor
 	self:Deselect()
+	self:UpdateLayout()
 end
 function PANEL:ToData()  
 	local pos = self:GetPos()
@@ -39,7 +40,7 @@ function PANEL:FromData(data,mapping,posoffset)
 	local valtype = data.vtype or "float" 
 	self.vtype = valtype
 	self:SetTitle("Output "..self.vname..":"..valtype) 
-	self.anchors[-2]:Attach(self,-2,"value",valtype)  
+	self.anchors[-2]:Attach(self,-2,"value",valtype,self.anchl)  
 	self.bcolor = self.anchors[-2]:GetTypeColor(valtype)
 	self:Deselect()
 	

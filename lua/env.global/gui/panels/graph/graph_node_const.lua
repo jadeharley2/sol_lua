@@ -62,6 +62,7 @@ function PANEL:Load(valtype)
 	self:AddAnchor(1,"output",valtype)
 	self.bcolor = self.anchors[1].bcolor
 	self:Deselect()
+	self:UpdateLayout()
 end
 function PANEL:ToData()   
 	local j = PANEL.base.ToData(self)
@@ -83,7 +84,7 @@ function PANEL:FromData(data,mapping,posoffset)
 	PANEL.base.FromData(self,data,mapping,posoffset) 
 	local valtype = data.valtype or "float"
 	self.valtype = valtype
-	self.anchors[1]:Attach(self,1,"output",valtype)
+	self.anchors[1]:Attach(self,1,"output",valtype,self.anchr)
 	self.btext:SetText(tostring(data.val))
 end
  

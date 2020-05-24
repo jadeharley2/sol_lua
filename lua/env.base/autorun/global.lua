@@ -137,10 +137,19 @@ local onerror = function(err)
 end
 
 function CALL(func,...)
-	local s, a,b,c,d,e,f = xpcall(func,onerror,...)
-	return a,b,c,d,e,f
+	if func then
+		local s, a,b,c,d,e,f = xpcall(func,onerror,...)
+		return a,b,c,d,e,f
+	end
 end
 
+function ASSERT(condition, message)
+	if condition then
+		MsgN('[LUA][ERROR|ASSERT] '..tostring(message))  
+		MsgN(debug.traceback())
+		error('[LUA][ERROR|ASSERT] '..tostring(message))
+	end
+end
 function isnil(arg) return type(arg) == "nil" end
 function istable(arg) return type(arg) == "table" end
 function isstring(arg) return type(arg) == "string" end

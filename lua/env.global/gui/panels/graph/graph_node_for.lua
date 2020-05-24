@@ -4,6 +4,7 @@ function PANEL:Init()
 end 
 function PANEL:Load()  
 	self:SetTitle("For loop") 
+	self:SetSize(256,3*16+40)
 	
 	self:AddAnchor(-1,">>","signal")
 	self:AddAnchor(-2,"count","int32")
@@ -13,6 +14,7 @@ function PANEL:Load()
 	
 	self:AddAnchor(3,"loop","int32")
 	self:Deselect()
+	self:UpdateLayout()
 end
 function PANEL:ToData()  
 	local j = PANEL.base.ToData(self)

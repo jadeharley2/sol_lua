@@ -1,11 +1,13 @@
 PANEL.basetype = "graph_node" 
 function PANEL:Init() 
-	PANEL.base.Init(self) 
+	PANEL.base.Init(self,'single') 
 end 
 function PANEL:Load(valtype,varname) 
 	self.vtype = valtype or "float"
 	self.vname = varname or "unknown"
+	self:SetSize(256,32)
 	self:SetTitle("Input "..varname..":"..valtype) 
+	self:AddAnchorPadding((32-18)/2)
 	  
 	--local btext = panel.Create("input_text")
 	--btext:SetSize(250,20)
@@ -21,6 +23,7 @@ function PANEL:Load(valtype,varname)
 	self:AddAnchor(1,"output",valtype)
 	self.bcolor = self.anchors[1]:GetTypeColor(valtype)
 	self:Deselect()
+	self:UpdateLayout()
 end
 function PANEL:ToData()  
 	local pos = self:GetPos()
@@ -32,7 +35,7 @@ function PANEL:FromData(data,mapping,posoffset)
 	local valtype = data.vtype or "float" 
 	self.vtype = valtype
 	self:SetTitle("Input "..self.vname..":"..valtype) 
-	self.anchors[1]:Attach(self,1,"output",valtype) 
+	self.anchors[1]:Attach(self,1,"output",valtype,self.anchr) 
 	self.bcolor = self.anchors[1]:GetTypeColor(valtype)
 	self:Deselect()
 end

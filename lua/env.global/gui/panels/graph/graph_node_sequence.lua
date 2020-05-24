@@ -1,24 +1,54 @@
-PANEL.basetype = "graph_node" 
+PANEL.basetype = "graph_node"  
+PANEL.datakeys = {
+	pincount = "pincount"
+}
 function PANEL:Init() 
 	PANEL.base.Init(self) 
-end 
-function PANEL:Load()  
-	self:SetTitle("Sequence") 
 	
+	gui.FromTable({ 
+		subs = { 
+			{ name = "pin_del", type = "button",
+				size = {20,20},
+				dock = DOCK_RIGHT,
+				texture =  "textures/gui/nodes/minus.png",
+				ColorAuto = self:GetColor(),
+				contextinfo = "remove pin",
+				margin = {4,0,4,0},
+				OnClick = function (x) self:ChangePins(-1) end
+			},
+			{ name = "pin_add", type = "button",
+				size = {20,20},
+				dock = DOCK_RIGHT,
+				texture =  "textures/gui/nodes/plus.png",
+				ColorAuto = self:GetColor(),
+				contextinfo = "add pin",
+				margin = {4,0,4,0},
+				OnClick = function (x) self:ChangePins(1) end
+			}  
+		}
+	},self.bcontext,{},self) 
+end 
+function PANEL:Load(pincount)  
+	pincount = pincount or self.pincount or 5
+	self.pincount = pincount
+
+	self:SetTitle("Sequence") 
+	self:SetSize(256,pincount*16+40)
+	
+
 	self:AddAnchor(-1,">>","signal")
 	
-	
-	self:AddAnchor(1,"1>>","signal") 
-	self:AddAnchor(2,"2>>","signal") 
-	self:AddAnchor(3,"3>>","signal") 
-	self:AddAnchor(4,"4>>","signal") 
-	self:AddAnchor(5,"5>>","signal")  
-	self:AddAnchor(6,"6>>","signal") 
-	self:AddAnchor(7,"7>>","signal") 
-	self:AddAnchor(8,"8>>","signal") 
-	self:AddAnchor(9,"9>>","signal")
+	for k=1,pincount do
+		self:AddAnchor(k,tostring(k)..">>","signal") 
+	end 
 	
 	self:Deselect()
+	self:UpdateLayout()
+end
+function PANEL:ChangePins(diff) 
+	local pincount = self.pincount or 2
+	pincount = math.Clamp(pincount+diff,2,32)
+	self:Reload(pincount)
 end
 function PANEL:ToData()  
 	local pos = self:GetPos() 
@@ -32,12 +62,14 @@ function PANEL:ToData()
 			next[#next+1] = ""
 		end 
 	end
+	j.pincount = self.pincount
 	j.next = next
 	
 	return j
 end 
 function PANEL:FromData(data,mapping,posoffset) 
 	PANEL.base.FromData(self,data,mapping,posoffset,true) 
+	self.pincount = data.pincount or 5
 	
 	local e = self.editor.editor 
 		

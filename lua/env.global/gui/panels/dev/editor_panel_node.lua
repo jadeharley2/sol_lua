@@ -55,7 +55,7 @@ local layout = {
 			dock = DOCK_BOTTOM, 
 			text = "Actions",  
 		},
-		{ type = "tree",name = "nodetree", class = "back",
+		{ type = "tree2",name = "nodetree", class = "back",
 			dock = DOCK_FILL,
 			itemheight = 16
 		},
@@ -67,6 +67,8 @@ function PANEL:Init()
 	self.refcom.OnClick = function() self:UpdateCnodes() end  
 	self:UpdateCnodes() 
 	self:UpdateHierarchy() 
+	self.noderef = {}
+	
 end 
 function PANEL:SelectNode(node) 
 	self:UpdateCnodes(node) 
@@ -90,6 +92,67 @@ function PANEL:UpdateHierarchy(cnode)
 	self.hierarchy:ScrollToTop()
 end
 function PANEL:UpdateCnodes(root) 
+	MsgN("CBN")
+	local nodetree = self.nodetree
+	local rtb = {"types"}
+	root = root or GetCamera():GetParent()
+	self.noderef = {}
+	local roottreenode = self:NodeToTreeElement(root)
+	--self:ConstructTreeSegment(root,roottreenode)
+	nodetree:ClearNodes()
+	nodetree:AddNode(roottreenode)
+	nodetree:UpdateLayout()
+	hook.Add("editor_select","nodetree_update",function(node)
+		if node == nil then
+			for k,v in pairs(self.noderef) do
+				v.title:SetTextColor(Vector(0.6,0.8,1))
+			end
+		else
+			local ss = self.noderef[node]
+			ss.title:SetTextColor(Vector(0.8,2,1))
+		end
+	end)
+	hook.Add("editor_deselect","nodetree_update",function(node) 
+		local ss = self.noderef[node]
+		ss.title:SetTextColor(Vector(0.6,0.8,1)) 
+	end)
+end
+function PANEL:GetEntIcon(ent)
+	local class = ent:GetClass()
+	if class=='' then
+		if ent.AspectRatio then 
+			class = 'camera'  
+		end
+	end
+	local path = 'textures/gui/ents/'..class..'.png'
+	if file.Exists(path) then return path else return 'textures/gui/ents/node.png' end
+end
+function PANEL:NodeToTreeElement(ent)
+	local n = gui.FromTable({
+		type = 'tree2node',
+		text = tostring(ent), 
+		textcolor = {0.6,0.8,1},
+		Icon = self:GetEntIcon(ent),
+		entity = ent,
+		OnClick = function(s) 
+			worldeditor:Select(s.entity)
+		end
+	})
+
+	self.noderef[ent] = n
+	self:ConstructTreeSegment(ent,n)
+	return n
+end
+function PANEL:ConstructTreeSegment(ent,treenode)
+	for k,v in pairs(ent:GetChildren()) do
+		if not v.editor or not v.editor.hide then
+			if not v:HasTag(TAG_CHUNKNODE) then
+				treenode:AddNode(self:NodeToTreeElement(v))
+			end
+		end
+	end
+end
+function PANEL:UpdateCnodes_old(root) 
 	local nodetree = self.nodetree
 	local rtb = {"types"}
 	

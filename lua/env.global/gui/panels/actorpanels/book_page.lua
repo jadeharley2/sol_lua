@@ -225,19 +225,9 @@ function PANEL:SetForm(formid,editmode)
 	end
 	self:UpdateLayout()
 end  
-function PANEL:MouseEnter() 
-	hook.Add("input.mousewheel", "book.scroll",function(dt) 
-		local sWVal = self.sWVal or 0
-		local mWVal = input.MouseWheel() 
-		local delta = mWVal - sWVal 
-		self.sWVal = mWVal
-		self:Scroll(delta)
-	end)
+function PANEL:OnMouseWheel(delta)  
+	self:Scroll(delta)
 end
-function PANEL:MouseLeave()
-	hook.Remove("input.mousewheel", "book.scroll")
-end 
-
 testbook = testbook or false
 console.AddCmd('book',function(name,edit)
 	if testbook then

@@ -268,9 +268,12 @@ function PANEL:ShowTab(id)
 				btns[1]:SetTextColorAuto(activeTabTextColor)
 			end
 		end
+
+		CALL(self.OnTabChanged,self,id,pp) 
 	end
 	framePanel:UpdateLayout()
 	self:UpdateLayout()
+
 end 
 function PANEL:TabCount()
 	local plist = self.plist

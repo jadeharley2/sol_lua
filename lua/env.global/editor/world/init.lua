@@ -229,7 +229,8 @@ function editor:GetNodeUnderCursor(lp)
 end
 function editor:DoubleClick() 
 	self.mousedowntime = nil
-	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport) then
+	local top = panel.GetTopElement() 
+	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui() or top.isviewport) then
 		local LMB = input.leftMouseButton() 
 		local RMB = input.rightMouseButton()
 		local MMB = input.middleMouseButton()
@@ -238,7 +239,7 @@ function editor:DoubleClick()
 			--MsgInfo("CLICL!")
 			if LMB and not RMD and not MMB then 
 				
-				local vp = self.gui.vp
+				local vp = top
 				local vsz = vp:GetSize()
 				local vmp = vp:GetLocalCursorPos()
 				local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
@@ -319,10 +320,17 @@ function editor:GetMode()
 end
 
 
-
+ 
 function editor:Update()
-	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui()  or panel.GetTopElement().isviewport) then 
-		render.DCIRequestRedraw()
+	local top = panel.GetTopElement()
+	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui()  or top.isviewport) then 
+		self.dcicooldown = self.dcicooldown or 0
+		if self.dcicooldown<0 then
+			render.DCIRequestRedraw()
+			self.dcicooldown = 10
+		else
+			self.dcicooldown = self.dcicooldown - 1
+		end
 
 		if self.mousedowntime and input.leftMouseButton() and CurTime()>self.mousedowntime+0.2 then
 			self.mousedowntime = nil 
@@ -351,7 +359,7 @@ function editor:Update()
 		end
 		
 		
-		local vp = self.gui.vp
+		local vp = top
 		local vsz = vp:GetSize()
 		local vmp = vp:GetLocalCursorPos()
 
@@ -506,18 +514,24 @@ function editor:Select(node,multiselect)
 		if self.selected:Contains(node) then
 			self.selected:Remove(node)
 			self:RemoveSelectionModel(node) 
+			hook.Call("editor_deselect",node);
 			--self.undo:Add(self.action_deselect, self.action_select, node)
 		else
 			self.selected:Add(node)
 			self:AddSelectionModel(node) 
+			hook.Call("editor_select",node);
 			--self.undo:Add(self.action_select, self.action_deselect, node)
 		end
 	else
-		local tbl = {} for k,v in pairs(self.selected) do tbl[#tbl+1] = k end
+		local tbl = {} for k,v in pairs(self.selected) do 
+			tbl[#tbl+1] = k 
+			hook.Call("editor_deselect",k);
+		end
 		self.selected:Clear()
 		self.selected:Add(node)
 		self:ClearSelectionModels() 
 		self:AddSelectionModel(node) 
+		hook.Call("editor_select",node);
 		
 		--self.undo:Add(
 		--	function(a,b) self.action_deselect(a) for k,v in pairs(b) do MsgN(k,v) self.action_select(v) end end, 
@@ -529,7 +543,6 @@ function editor:Select(node,multiselect)
 	--	MsgN(k,v)
 	--end
 	
-	hook.Call("editor_select",node);
 	E_SELECTION = self.selected:ToTable()
 	E_FS = E_SELECTION[1] -- first selected
 end
@@ -589,6 +602,7 @@ end
 console.AddCmd("ed_world",WorldeditorToggle)
 
 console.AddCmd("ed_world_reset",function ()
+	if worldeditor.isopen then worldeditor:Close() end
 	worldeditor.gui = nil 
 end)
 

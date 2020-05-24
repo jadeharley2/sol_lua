@@ -1,90 +1,73 @@
 PANEL.basetype = "graph_node" 
+PANEL.datakeys = {
+	signalenabled="signal"
+}
 local t_xtoggle = "textures/gui/nodes/xtoggle.png"
 function PANEL:Init() 
 	self.base.Init(self) 
 end 
 function PANEL:Load(funcname,enableSignal) 
-	enableSignal = enableSignal or false 
-	self.func = funcname 
+	if enableSignal==nil then enableSignal = self.signalenabled end 
+	funcname = funcname or self.func
+	self.func = funcname
 	self.base.SetTitle(self,funcname)
 	 
 	
 	local ftype = flowbase.GetMethodInfo(funcname)
 	if ftype then
+		if not self.toggle_signal and not ftype.signaled then 
+			gui.FromTable({ 
+				subs = { 
+					{ name = "toggle_signal", type = "button",
+						size = {20,20},
+						dock = DOCK_RIGHT,
+						texture = t_xtoggle,
+						ColorAuto = self:GetColor(),
+						contextinfo = "Toggle signal mode",
+						OnClick = function (x)
+							self:ToggleSignal()
+						end
+					}  
+				}
+			},self.bcontext,{},self) 
+		end
+
 		local off = 0
 		local signalenabled = enableSignal or ftype.signaled 
-		
+		self.signalenabled = signalenabled
+
+		local argmaxnum = 1
 		if signalenabled then
 			self.signaled = true
 			self.base.AddAnchor(self,-1,">>","signal")
 			self.base.AddAnchor(self,1,">>","signal")
 			off = 1
 		end
-		
 		for k,v in pairs(ftype.inputs) do
 			self.base.AddAnchor(self,-k-off,v.name,v.type or "float")
+			argmaxnum= math.max(argmaxnum,k+off)
 		end
 		
 		for k,v in pairs(ftype.outputs) do
 			self.base.AddAnchor(self,k+off,"output",v.type or "float")--v.name
+			argmaxnum= math.max(argmaxnum,k+off)
 		end
+
+		self:SetSize(256,argmaxnum*16+40)
 	
-		if not self.toggle_signal and not ftype.signaled then
-			local ssz = self:GetSize()
-			local toggle_signal = panel.Create("button")
-			toggle_signal:SetSize(8,8)
-			toggle_signal:SetPos(-ssz.x+10,-ssz.y+10)   
-			toggle_signal:SetTexture(t_xtoggle) 
-			toggle_signal:SetColorAuto(self:GetColor())
-			toggle_signal.contextinfo = "Toggle signal mode"
-			local s = self 
-			function toggle_signal:OnClick() s:ToggleSignal() end
-			self:Add(toggle_signal)
-			self.toggle_signal = toggle_signal
-		end
 	--self:AddAnchor(-1,"a","float")
 	--self:AddAnchor(-2,"b","float")
 	--self:AddAnchor(1,"output","float") 
 	end
 	self:Deselect() 
+	self:UpdateLayout()
 end
 function PANEL:ToggleSignal()  
-	local func = self.func
-	local signalenabled = self.signalenabled
-	local tempdata = {}
-	
-	for k,v in pairs(self.anchors) do
-		if k<0 then 
-			if v.from then
-				tempdata[k] = v.from
-			end
-		else 
-			tempdata[k] = v.to:ToTable()
-		end
-	end
-	self:RemoveAnchors() 
-	local off = 0
-	local signalenabled = self.signalenabled
-	if signalenabled then off = 1 else off = -1 end
-	self.signalenabled = not signalenabled
-	self:Load(func, not signalenabled)
-	for k,v in pairs(tempdata) do
-		if k<0 then
-			local a = self.anchors[k+off]
-			if a then a:CreateLink(a,v) end
-		else  
-			local a = self.anchors[k-off]
-			if a then 
-				for k,vv in pairs(v) do
-					a:CreateLink(a,vv)  
-				end
-			end
-		end
-	end 
+	self:Reload(nil, not self.signalenabled) 
 end
 function PANEL:ToData() 
 	local args = {}
-	local signaled = self.signaled
+	local signaled = self.signalenabled
 	for k,v in pairs(self.xvalues) do
 		local a = self.anchors[k]
 		args[a.name] = self:GetInputData(-k)
@@ -132,7 +115,7 @@ function PANEL:FromData(data,mapping,posoffset)
 				local an = namedAnchors[k] 
 				self.xvalues[an.id] =v
 				an:SetInnerValue(xval)
-				an.atext:SetText(an.name..':'..tostring(xval))
+				an.atext:SetText(an.name..': '..tostring(xval))
 			else
 				local f = e.named[mapping(v[1])].anchors[v[2]] 
 				local t = namedAnchors[k]

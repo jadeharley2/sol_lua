@@ -8,6 +8,7 @@ function PANEL:Init()
 	floater:SetColor(Vector(0,0.1,0))
 	floater:SetColor2(Vector(0,0,0))
 	floater:SetTextOnly(true)
+    floater:SetAnchors(ALIGN_TOP)
 	self.floater = floater
 	
 	

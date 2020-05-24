@@ -52,17 +52,8 @@ end
 function PANEL:SetMaximum(val)
 	self.maxvalue = val or 1
 end
-function PANEL:MouseEnter()
-	hook.Add("input.mousewheel","slider",function(s)
-		local wheel = self.wheel or 0
-		local nw = input.MouseWheel()
-		local delta = nw-wheel
-		self.wheel = nw 
-		self:SetValue(self:GetValue()+delta/self.maxvalue)
-	end)
-end
-function PANEL:MouseLeave()
-	hook.Remove("input.mousewheel","slider")
+function PANEL:OnMouseWheel(delta)
+	self:SetValue(self:GetValue()+delta/self.maxvalue)
 end
 function PANEL:Resize()
 	local x = self.value or 0
