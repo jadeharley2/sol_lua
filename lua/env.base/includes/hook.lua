@@ -99,14 +99,14 @@ function hook.CollectElements(eventid,...)
 	end
 	return nr
 end
-
+ 
 
 ---@param id string|number
 ---@param description string|nil
 ---@param arguments string|nil
 function hook.RegisterHook(id,description,arguments)
 	local argtab = nil
-	if arguments then
+	if isstring(arguments) and arguments.split then
 		argtab = {}
 		for i1,v1 in ipairs(arguments:split(',')) do
 			local name, vtype = unpack(v1:split(':'))

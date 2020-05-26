@@ -27,6 +27,7 @@ DeclareEnumValue("event","GESTURE_START",			83012)
 DeclareEnumValue("event","GESTURE_END",				83013) 
 
 DeclareEnumValue("event","TASK_BEGIN",				84001) 
+DeclareEnumValue("event","TASK_END",				84002) 
 DeclareEnumValue("event","TASK_RESET",				84009) 
 
 DeclareEnumValue("event","LERP_HEAD",				85001)
@@ -158,6 +159,29 @@ function ENT:PlayAnimation(aname,exitnode,ns)
 	--graph:NewTransition(nodename,exitnode,CND_ONEND)
 	--graph:SetState(nodename)
 end
+function ENT:PlayIdle() 
+	self:UpdateLean()
+	if self.model:HasAnimation("idle1") then
+		local lastspecial = self.lastspecialidle or 0
+		local ct = CurTime()
+		if lastspecial + 12 < ct  then
+			local rm =math.random(1,100)
+			if rm>94 then  
+				local ar = math.random(1,4)
+				local aname = "idle"..ar
+				while (ar>0 ) do
+					if self.model:HasAnimation(aname) then break end
+					ar = ar - 1
+					aname = "idle"..ar
+				end
+				self.lastspecialidle = ct+ math.random(1,14)
+				--MsgN(ct)
+				return self.model:SetAnimation(aname) 
+			end  
+		end 
+	end
+	return self.model:SetAnimation("idle") 
+end
 function ENT:LoadGraph(tab)
 
 	local graph = BehaviorGraph(self,tab) 
@@ -166,25 +190,7 @@ function ENT:LoadGraph(tab)
 	--end
 	if not tab then
 		graph:NewState("idle",function(s,e) 
-			e:UpdateLean()
-			if e.model:HasAnimation("idle1") then
-				local rm =math.random(1,100)
-				if rm<90 then
-					return e.model:SetAnimation("idle") 
-				else
-					local ar = math.random(1,4)
-					local aname = "idle"..ar
-					while (ar>0 ) do
-						if e.model:HasAnimation(aname) then break end
-						ar = ar - 1
-						aname = "idle"..ar
-					end
-					return e.model:SetAnimation(aname) 
-				end 
-			else
-				return e.model:SetAnimation("idle") 
-			end
-			--e.phys:SetMovementDirection(Vector(0,0,0)) 
+			return e:PlayIdle()
 		end) 
 		graph:NewState("idle_loop",function(s,e)  return 0 end)
 		
@@ -462,6 +468,10 @@ function ENT:Think()
 			ai:Update()
 		end
 	end
+	if ai==nil then
+		--MsgN("X",self)
+		--self:SetHeadAngles(0,0)
+	end
 
 	--if self == LocalPlayer() then
 	--	self.prf:IS()
@@ -561,6 +571,9 @@ function ENT:BeginTask(a,...)
 	else 
 		return self.tmanager:Begin(a,...)
 	end
+end
+function ENT:EndTask(a)
+	return self.tmanager:End(a) 
 end
 function ENT:ResetTM()
 	self.tmanager = TaskManager(self)
@@ -1311,6 +1324,7 @@ function ENT:GetHeadingElevation(dir,b)
 	return rad,polar,elev
 end
 function ENT:EyeLookAt(dir) 
+	--MsgN(debug.traceback())
 	--local sz = self:GetParent():GetSizepower()
 	--local Up = self:Up():Normalized()
 	if IsValidEnt(dir) then
@@ -1401,42 +1415,52 @@ function ENT:GestureEnd(layer, name)
 	end
 end
 function ENT:EyeLookAtLerped(dir) 
-	if not dir then return nil end
 	if self.lad then
 		self.lad:Stop()
 		self.lad=nil
 	end
-	local entt = dir
-	local co = GetCurrentController()
+	if IsValidEnt(dir) then 
+		local entt = dir
+		if self.model:HasAttachment("head") then
+			if entt:GetClass()=='base_actor' and entt.model:HasAttachment("head") then
+				dir = self:GetLocalCoordinates(entt,entt.model:GetAttachmentPos("head")) - self.model:GetAttachmentPos("head")---Up* (0.67/sz)
+			else
+				dir = self:GetLocalCoordinates(entt) - self.model:GetAttachmentPos("head")---Up* (0.67/sz)
+			end  
+		else
+			dir = self:GetLocalCoordinates(entt) 
+		end
+	end
+	
+	local m = self.model
+	local tpp_yaw = 0
+	local tpp_pitch = 0
+	if dir~=nil then
+	  
+		--dir = dir + Up* (0.67/sz) 
+	--	local rad, polar,elev = self:GetHeadingElevation(dir,true)
+	--	local tpp_yaw = polar/ 3.1415926 * 180 
+	--	local tpp_pitch = elev/ 3.1415926 * 180
+--
+	--	local turn_angle = self.turn_angle or 90
+	--	if math.abs(tpp_yaw)>=turn_angle then  
+	--		local trsl = self:Turn(-polar) 
+	--	end
+
+		local rad, polar,elev = self:GetHeadingElevation(dir,true)
+		tpp_yaw = polar/ 3.1415926 * 180 
+		tpp_pitch = elev/ 3.1415926 * 180
+	end
+	local t = 0 
+	local cpp_yaw = m:GetPoseParameter("head_yaw")
+	local cpp_pitch = m:GetPoseParameter("head_pitch")
+
 	local cobcd = false
+	local co = GetCurrentController()
 	if self.controller ==co then
 		self.controller = nil
 		cobcd=true
 	end
-	dir = self:GetLocalCoordinates(entt)---Up* (0.67/sz)
-	
-	local sz = entt:GetParent():GetSizepower()
-	local Up = entt:Up():Normalized()
-	--dir = dir + Up* (0.67/sz)
-	local m = self.model
-	local cpp_yaw = m:GetPoseParameter("head_yaw")
-	local cpp_pitch = m:GetPoseParameter("head_pitch")
-	local rad, polar,elev = self:GetHeadingElevation(dir,true)
-	local tpp_yaw = polar/ 3.1415926 * 180 
-	local tpp_pitch = elev/ 3.1415926 * 180
-	local t = 0 
-
-	local turn_angle = self.turn_angle or 90
-	if math.abs(tpp_yaw)>=turn_angle then  
-		local trsl = self:Turn(-polar) 
-	end
-
-	local cpp_yaw = m:GetPoseParameter("head_yaw")
-	local cpp_pitch = m:GetPoseParameter("head_pitch")
-	local rad, polar,elev = self:GetHeadingElevation(dir,true)
-	local tpp_yaw = polar/ 3.1415926 * 180 
-	local tpp_pitch = elev/ 3.1415926 * 180
-
 	self.lad = self:Timer("lookat",0.3,10,15,function()
 		t = t + 1/15 
 		local ss_p =cpp_pitch + (tpp_pitch-cpp_pitch)*t -- Smoothstep(cpp_pitch,tpp_pitch,t)
@@ -1519,49 +1543,56 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		if not mountpoint then return false end
 		if IsValidEnt(mountpoint.ent) then MsgN("OCCUPIED",mountpoint.ent) return false end
 		
-		
-		local phys = self.phys
-		self.IsInVehicle = true
-		self.vehicle = veh
-		self.graph:SetState(mountpoint.state or "sit")
-		self:SetParent(veh)
-		phys:SetVelocity(Vector(0,0,0))
-		--self.phys:SetMass(-1)
-		self:SetPos(mountpoint.pos or Vector(0,0,0))--pos)
-		self:SetAng(mountpoint.ang or Vector(0,0,0))
-		if mountpoint.attachment then
-			veh.model:Attach(self,mountpoint.attachment)
-		end
-		self.currentmountpoint = mountpoint
-		local weld = self.weld
-		if weld then
-			weld:Break()
-		end
-		self:SetUpdateSpace(false)
-		
-		mountpoint.ent = self
-		--local ply = self.player
-		--if assignnode and ply then 
-		--	self.assignednode = assignnode
-		--	ply:AssignNode(assignnode)
-		--end
-		if SERVER then
-			if veh.player then
-				veh.player:UnassignNode(veh)
+		local smodel = self.model
+		if smodel:HasAnimation(mountpoint.state) or smodel:HasAnimation("sit") then
+
+			local phys = self.phys
+			self.IsInVehicle = true
+			self.vehicle = veh
+			self.graph:SetState(mountpoint.state or "sit")
+			self:SetParent(veh)
+			phys:SetVelocity(Vector(0,0,0))
+			--self.phys:SetMass(-1)
+			self:SetPos(mountpoint.pos or Vector(0,0,0))--pos)
+			self:SetAng(mountpoint.ang or Vector(0,0,0))
+			if mountpoint.attachment then
+				veh.model:Attach(self,mountpoint.attachment)
 			end
-			if self.player then
-				self.player:AssignNode(assignnode)
-				self.assignnode = assignnode 
+			self.currentmountpoint = mountpoint
+			local weld = self.weld
+			if weld then
+				weld:Break()
 			end
+			self:SetUpdateSpace(false)
+			
+			mountpoint.ent = self
+			--local ply = self.player
+			--if assignnode and ply then 
+			--	self.assignednode = assignnode
+			--	ply:AssignNode(assignnode)
+			--end
+			if SERVER then
+				if veh.player then
+					veh.player:UnassignNode(veh)
+				end
+				if self.player then
+					self.player:AssignNode(assignnode)
+					self.assignnode = assignnode 
+				end
+			end
+			--if CLIENT and LocalPlayer()==self then
+			--	network.RequestAssignNode(assignnode)
+			--	self.assignednode = assignnode
+			--end
+			CALL(function() 
+				self.weld = constraint.Weld(phys,nil,Vector(0,0,0))
+				self.nocol = constraint.NoCollide(phys,nil)
+			end)
+		else
+
+			return false
 		end
-		--if CLIENT and LocalPlayer()==self then
-		--	network.RequestAssignNode(assignnode)
-		--	self.assignednode = assignnode
-		--end
-		pcall(function() 
-			self.weld = constraint.Weld(phys,nil,Vector(0,0,0))
-			self.nocol = constraint.NoCollide(phys,nil)
-		end)
+		
 		 
 	else
 		local v = self.vehicle
@@ -1731,6 +1762,9 @@ else --SERVER
 		end  
 	end)
 end
+console.AddCmd("give_ability",function(formid) 
+	LocalPlayer():SendEvent(EVENT_GIVE_ABILITY,formid)
+end)
 console.AddCmd("equip",function(a,b)  
 	if CLIENT then
 		if b then
@@ -2169,7 +2203,8 @@ ENT._typeevents = {
 	[EVENT_GIVE_ABILITY] = {networked = true, f = ENT.GiveAbility},
 	[EVENT_TAKE_ABILITY] = {networked = true, f = ENT.TakeAbility}, 
 	[EVENT_TASK_BEGIN] = {networked = true, f = ENT.BeginTask}, 
-	[EVENT_TASK_RESET] = {networked = true, f = ENT.ResetTM}, 
+	[EVENT_TASK_END] = {networked = true, f = ENT.EndTask}, 
+	[EVENT_TASK_RESET] = {networked = true, f = ENT.ResetTM},  
 	
 	[EVENT_GESTURE_START] = {networked = true, f = ENT.GestureStart}, 
 	[EVENT_GESTURE_END] = {networked = true, f = ENT.GestureEnd}, 
@@ -2230,7 +2265,7 @@ hook.Add('formspawn.character','spawn',function(form,parent,arguments)
 	actorD:Spawn()
 	actorD:SetPos(arguments.pos or Vector(0,0,0)) 
 	return actorD
-end)
+end) 
 hook.Add('formcreate.character','spawn',function(form,parent,arguments) 
 	local aparts = string.split(form,'.')
 	local loctype = string.join('.',table.Skip(aparts,1)) 

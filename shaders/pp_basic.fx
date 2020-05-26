@@ -418,7 +418,9 @@ float4 PS( PS_IN input ) : SV_Target
 	} 
 	if(enable_ssao)
 	{   
-		shcolor = SSAO(shcolor,input.tcrd);
+		//shcolor = SSAO(shcolor,input.tcrd);
+		shcolor = SSAO_HARD(shcolor,input.tcrd);
+		
 	}  
 	float3 result = lerp(pDiffuse,shcolor,pMask.x);
 	 

@@ -96,6 +96,7 @@ function PANEL:MouseDown(fid)
 			panel.start_drag_on_shift(self,1,function(s) 		
 				local p = s:GetParent()
 				if p then p:Remove(s) end
+				s:Dock(DOCK_NONE)
 				s:Show()
 				s:SetPos(input.getInterfaceMousePos()*GetViewportSize()+Point(50,-50))
 				s.lastSlot = p
@@ -279,6 +280,7 @@ function PANEL:Set(slot,item,node)
 		 
 	end
 	
+	if not item then return false end
 	
 	local data = item.data
 	
@@ -405,6 +407,7 @@ function PANEL:OnDrop()
 		input.SetKeyboardBusy(false)
 	end
 	self:Close()
+	self:Dock(DOCK_FILL)
 	hook.Remove(EVENT_GLOBAL_PREDRAW, "gui.item.drag")
 	
 	--MsgN("Dropped !")

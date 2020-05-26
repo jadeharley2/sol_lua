@@ -1,62 +1,53 @@
---TODO:UPDATE
-if true then return end
+ 
 
-ability.icon = "hex"
-ability.type = "target" 
-ability.cooldownDelay = 2  
-ability.dispelDelay = 10
-ability.name = "Swap"  
+effect.icon = "hex"
+effect.type = "target"   
+effect.name = "Swap"  
 
-function ability:Begin(source,target)  
-
-	if not self.spelltarget then
-		local tr = GetCameraPhysTrace() 
-		if tr and tr.Hit then 
-			local pr = tr.Node
-			local sz = pr:GetSizepower() 
-			local nearest,dist = GetNearestNode(tr.Node,tr.Position,TAG_ACTOR)
-			MsgN("nearest: ",nearest,pr)
-			--SpawnExplosion(pr,tr.Position)
-			if nearest and dist*sz<1 and nearest ~= caster then
-				self:CastAnimation(caster)
-				self.spelltarget = nearest
-				SpawnParticles(caster,"explosion_void",Vector(0,0,0),1,0.05)
-				SpawnParticles(nearest,"explosion_void",Vector(0,0,0),1,0.05)
-				self:Swap(caster,nearest)
-				return true
-			end
-		end
+function effect:Begin(source,target)   
+	--self:CastAnimation(source) 
+	if source==target then return false end
+	
+	MsgN("swap",source,target)
+	if IsValidEnt(target) and target.GetClass and target:GetClass()=="base_actor"  then 
+		SpawnParticles(source,"explosion_void",Vector(0,0,0),1,0.05)
+		SpawnParticles(target,"explosion_void",Vector(0,0,0),1,0.05)
+		self:Swap(source,target)
+		return true  
 	end
-	return false
+	return false 
 end
-function ability:End(caster) 
-	if self.spelltarget then
-		SpawnParticles(caster,"explosion_void",Vector(0,0,0),1,0.05)
-		SpawnParticles(self.spelltarget,"explosion_void",Vector(0,0,0),1,0.05)
-		self:Swap(caster,self.spelltarget)
-		self.spelltarget = nil
-	end
+function effect:End(source,target) 
+	SpawnParticles(source,"explosion_void",Vector(0,0,0),1,0.05)
+	SpawnParticles(target,"explosion_void",Vector(0,0,0),1,0.05)
+	self:Swap(source,target) 
 end
    
-function ability:Swap(caster,target)   
+function effect:Swap(caster,target)   
 	if not caster or not target then return false end 
 	local cai = caster.controller
 	local tai = target.controller
+	local ctm = caster.tmanager
+	local ttm = target.tmanager
+	
 	caster.controller = tai
 	target.controller = cai
 	if tai then tai.ent = caster end
 	if cai then cai.ent = target end
 	
+	caster.tmanager = ttm
+	target.tmanager = ctm
+	if ctm then ctm.ent = target end
+	if ttm then ttm.ent = caster end
 	
 	if CLIENT then
 		
 		local player = LocalPlayer()
 		if caster == player then
 			SetLocalPlayer(target)
-			SetController('actor') 
 		elseif target == player then
-			SetLocalPlayer(caster)
-			SetController('actor')
+			SetLocalPlayer(caster) 
 		end
+		SetController('actor') 
 	end
 end

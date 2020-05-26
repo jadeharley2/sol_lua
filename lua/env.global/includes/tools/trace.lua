@@ -80,11 +80,13 @@ function GetNodesInRadius(space,pos,r,flagfilter,nodefilter)
 	local result = {}
 	local rsq = r*r
 	for k,v in pairs(space:GetChildren()) do
-		local dist = v:GetPos():DistanceSquared(pos)
-		if dist<=rsq then
-			if not nodefilter or not nodefilter[v] then 
-				if not flagfilter or v:HasTag(flagfilter) then 
-					result[#result+1] = v 
+		if IsValidEnt(v) then
+			local dist = v:GetPos():DistanceSquared(pos)
+			if dist<=rsq then
+				if not nodefilter or not nodefilter[v] then 
+					if not flagfilter or v:HasTag(flagfilter) then 
+						result[#result+1] = v 
+					end
 				end
 			end
 		end

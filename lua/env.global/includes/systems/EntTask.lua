@@ -34,13 +34,21 @@ end
 function TASK_META:IsFinished()
 	return self._finished == true
 end
+function TASK_META.__tostring(self)
+	return  "Task("..tostring(self._name)..") "..tostring(self.Duration)
+end
 local task_class = DefineClass("Task","task","lua/env.global/world/tasks/",TASK_META)
- 
+  
 function Task(type,...) 
 	if isfunction(type) then
 		local t = {Step=type,_base=TASK_META}
 		setmetatable(t,TASK_META)
 		return t
+	elseif istable(type) then
+		local t = type
+		t._base=TASK_META
+		setmetatable(t,TASK_META)
+		return t 
 	else
 		local t = task_class:Create(type)
 		t:Setup(...)
@@ -76,6 +84,9 @@ function TASKMANAGER_META:AddSingle(task,enqifrunning)
 	task.manager = self
 	task.ent = self.ent
 	if not task.OnBegin or task:OnBegin() then 
+		if task.Duration then
+			task.endtime = CurTime() + task.Duration
+		end
 		if task.slot then
 			if enqifrunning then
 				local nt = self.current[task.slot]
@@ -99,6 +110,17 @@ function TASKMANAGER_META:Abort(task)
 		self.current[task] = nil
 	end
 end
+function TASKMANAGER_META:End(task) 
+	if task.slot then
+		local t = self.current[task.slot] 
+		if t and t.OnEnd then t:OnEnd('forced') end
+		self.current[task.slot] = nil 
+	else
+		local t = self.current[task] 
+		if t and t.OnEnd then t:OnEnd('forced') end
+		self.current[task] = nil
+	end
+end
 
 function TASKMANAGER_META:RunLoop()
 	local ctasks = self.current
@@ -110,9 +132,16 @@ function TASKMANAGER_META:RunLoop()
 				task = k
 			end
 			
-			
-			
-			if not task.Step then
+			if task.endtime then
+				if CurTime()>task.endtime then
+					if task.OnEnd then task:OnEnd(result,rtype) end
+					task._finished = true
+					self.current[k] = nil
+					self:FinishTask(task,true)
+					return true
+				end
+			end
+			if not task.Step and not task.endtime then
 				MsgN("malformed task ",task)
 				self.current[k] = nil 
 				return true
@@ -129,36 +158,40 @@ function TASKMANAGER_META:RunLoop()
 					if task.OnEnd then task:OnEnd(result,rtype) end
 					task._finished = true
 					self.current[k] = nil
-					if result then 
-						if task.success then 
-							if rtype and task.success[rtype] then
-								self:Begin(task.success[rtype])
-							else
-								self:Begin(task.success)
-							end 
-						end
-					else 
-						if task.fail then 
-							if rtype and task.fail[rtype] then
-								self:Begin(task.fail[rtype])
-							else
-								self:Begin(task.fail)
-							end
-						end
-					end
-					if task.next then 
-						if rtype and task.next[rtype] then
-							self:Begin(task.next[rtype])
-						else
-							self:Begin(task.next)
-						end 
-					end
+					self:FinishTask(task,result,rtype)
 					return true
 				end
 			end
 		end
 	end
 end
+function TASKMANAGER_META:FinishTask(task,result,rtype)
+	if result then 
+		if task.success then 
+			if rtype and task.success[rtype] then
+				self:Begin(task.success[rtype])
+			else
+				self:Begin(task.success)
+			end 
+		end
+	else 
+		if task.fail then 
+			if rtype and task.fail[rtype] then
+				self:Begin(task.fail[rtype])
+			else
+				self:Begin(task.fail)
+			end
+		end
+	end
+	if task.next then 
+		if rtype and task.next[rtype] then
+			self:Begin(task.next[rtype])
+		else
+			self:Begin(task.next)
+		end 
+	end
+end
+
 
 local onerror = function(err)
 	MsgN("task error:",err)  

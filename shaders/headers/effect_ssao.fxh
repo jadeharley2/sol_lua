@@ -299,7 +299,7 @@ float3 SSAO(float3 color,float2 tcrd)
 	float occlusion = 0.0;
 	// color = 1;
 	
-	float ssaomul = ssao_samples/128;
+	float ssaomul = (30*8*10)/ssao_samples;
 
 	float ssaoOff = tSSAONoise.Sample(sSampler, tcrd*viewSize/512).r;	 //32
 
@@ -325,7 +325,7 @@ float3 SSAO(float3 color,float2 tcrd)
 				//	max(0.0,dot(texelNormal,normalize(worldpos))-g_bias)
 				//	*(1.0/(1.0+d))
 				//	*g_intensity;
-				occlusion += difference*10*fadeout*30*8/ssao_samples;//*ssaoOff;
+				occlusion += difference*fadeout*ssaomul;//*ssaoOff;
 				/////////occlusion += dot(texelNormal,normalize(worldpos))*1000;
 				//occlusion+=(-difference)*0.001;
 			}
@@ -346,5 +346,45 @@ float3 SSAO(float3 color,float2 tcrd)
 	//return float3(1,1,1)*(1-occlusion* (1.0 / ssao_samples));
 	//return color*(1-occlusion* (1.0 / ssao_samples));
 	
+}
+ 
+
+float3 SSAO_HARD(float3 color,float2 tcrd)
+{
+	//texelDepth - ��� ������ ��� ������
+	float3 localNormal = SS_GetNormal(tcrd).xyz;
+	float3 texelNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
+	
+	float texelDepth = SS_GetDepth(tcrd); 
+	float3 texelPosition = SS_GetPosition(tcrd,texelDepth);
+	 
+	float radius_depth = ssao_radius/(texelDepth );
+	float occlusion = 0.0;
+	// color = 1;
+	
+	float ssaomul = (30*8*10)/ssao_samples;
+
+	for(int i=0; i < ssao_samples; i++) 
+	{
+		float3 ray = radius_depth * ssao_sample_sphere[i%256];
+		float dotD = dot(-normalize(ray),texelNormal);
+		
+		if(sign(dotD)<0)
+		{
+			float raylen = ssao_raylen[i%8]; 
+			float3 hemi_ray = ray*0.00006*texelDepth*10000*raylen;
+			float3 worldpos = texelPosition+hemi_ray;
+			float2 texpos = SS_GetUV(worldpos).xy;
+			float occ_depth = SS_GetDepth(texpos);
+			float difference = texelDepth-occ_depth;//hemi_ray.z;
+			float fadeout = 1-saturate(max(difference,0)/0.0005);
+			
+			if(difference>0)//&&difference<0.0005)//���� ������� ����� ��� ��������� �������
+			{ 
+				occlusion += difference*fadeout*ssaomul; 
+			} 
+		} 
+	}  
+	return saturate(1-occlusion*10)*color;  
 }
  

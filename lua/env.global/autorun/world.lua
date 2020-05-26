@@ -147,8 +147,9 @@ function world.LoadSave(savedgamestate,onComplete,onFail)
 		if CLIENT then hook.Call("menu")  end
 		return error("save worldstate is empty") 
 	end
+	local cam = false
 	if CLIENT then
-		local cam = GetCamera()
+		cam = GetCamera()
 		cam:SetUpdateSpace(true)
 	end
 

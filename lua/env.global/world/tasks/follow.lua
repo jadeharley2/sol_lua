@@ -9,6 +9,7 @@ function task:Setup(target,minimal_distance,tpdistance)
 	return true
 end 
 function task:OnBegin()  
+	self.lattask = self.manager:Begin(Task("lookat",self.target))
 	return true
 end 
 function task:Step()   
@@ -34,5 +35,5 @@ function task:Step()
 	end
 end
 function task:OnEnd(result)
-	
+	self.manager:End(self.lattask)
 end 

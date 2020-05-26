@@ -85,7 +85,9 @@ function PANEL:FromData(data,mapping,posoffset)
 	local valtype = data.valtype or "float"
 	self.valtype = valtype
 	self.anchors[1]:Attach(self,1,"output",valtype,self.anchr)
-	self.btext:SetText(tostring(data.val))
+	if self.btext then
+		self.btext:SetText(tostring(data.val))
+	end
 end
  
 function PANEL:Select(selector) 

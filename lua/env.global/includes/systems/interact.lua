@@ -79,14 +79,16 @@ function GetInteractOptions(USER,ENT)
     local et = ENT._interact
     if et and istable(et) then
         for k,v in pairs(et) do
-            if v.text and isfunction(v.text) then
-                local vnew = table.Copy(v)
-                vnew.text = CALL(v.text,ENT,USER)  
-                if isstring(vnew.text) then
-                    t[k] = vnew
+            if not isfunction(v.isvalid) or CALL(v.isvalid,ENT,USER,v) == true then 
+                if v.text and isfunction(v.text) then
+                    local vnew = table.Copy(v)
+                    vnew.text = CALL(v.text,ENT,USER)  
+                    if isstring(vnew.text) then
+                        t[k] = vnew
+                    end
+                else
+                    t[k] = v
                 end
-            else
-                t[k] = v
             end
         end
     end

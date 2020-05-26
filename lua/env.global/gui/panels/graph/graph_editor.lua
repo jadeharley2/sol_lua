@@ -56,6 +56,9 @@ local layout = {
 						{ class = "bmenu",  name = "bload", texture = "textures/gui/panel_icons/load.png",   
 							contextinfo = 'Load'
 						},  
+						{ class = "bmenu",  name = "bloadtarget", texture = "textures/gui/panel_icons/possnap.png",   
+							contextinfo = 'Load from target'
+						}, 
 					}
 				},
 				{ 
@@ -74,6 +77,9 @@ local layout = {
 						}, 
 						{ class = "bmenu",  name = "brun_selected", texture = "textures/gui/panel_icons/play.png",   
 							contextinfo = 'Run on editor selection'
+						},
+						{ class = "bmenu",  name = "bcom_selected", texture = "textures/gui/panel_icons/refresh.png",   
+							contextinfo = 'Recompile selected'
 						},
 					}
 				},
@@ -169,6 +175,19 @@ function PANEL:Init()
 			self.curfile:SetText(path)
 		end) 
 	end
+	self.bloadtarget.OnClick = function(s)   
+		local c = E_FS:GetComponent(CTYPE_FLOW)
+		if c then
+			local path = c:GetScripts()[1]
+			if path then
+				lastpath = file.GetDirectory(path)
+				self:Open(path)
+				curfilepath= path
+				self.curfile:SetText(path)
+			end
+		end
+	end
+	 
 	 
 	self.bsave.OnClick = function(s)  
 		if curfilepath then
@@ -197,10 +216,16 @@ function PANEL:Init()
 	self.brun_ply.OnClick = function(s) 
 		self:Compile(LocalPlayer())
 	end
-	self.brun_ply.OnClick = function(s) 
+	self.brun_selected.OnClick = function(s) 
 		self:Compile(E_SELECTION)
 	end
-	 
+	self.bcom_selected.OnClick = function(s) 
+		local c = E_FS:GetComponent(CTYPE_FLOW)
+		if c then
+			c:Recompile()
+		end
+	end
+	
 	
 	 
 	local trpanel = self.trpanel  
@@ -221,10 +246,18 @@ function PANEL:Init()
 		comlist[#comlist+1] = string.lower(file.GetFileNameWE(v))   
 	end
 	
-	
+
+	local eventlist = {"startup","invoke","interact","input.keydown"}
+	for k,v in pairs(debug.GetAPIInfo('EVENT_')) do
+		if string.starts(k,'EVENT_') then
+			local subname =string.sub(string.lower(k),7)
+			eventlist[#eventlist+1] = subname
+		end
+	end
+	table.sort(eventlist)
 	
 	local tab = {
-		event = {"startup","invoke","interact","input.keydown"}, 
+		event = eventlist, 
 		flow = {"branch","assign","sequence","join","while","for"},
 		constants = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","Tex2DArray"},
 		variables = {"string","boolean","int","float","vector2","vector3","vector4","quaternion","scriptednode"},

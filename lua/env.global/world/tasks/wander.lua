@@ -28,10 +28,10 @@ function task:OnBegin()
 	return true
 end 
 local needsMul = 5 --40
-function task:UpdateNeeds() 
+function task:NeedsTick() 
 	local actor = self.ent
 	local n = actor.needs
-	if n then 
+	if n and n.list then 
 		for k,v in pairs(n.list) do
 			v.value = v.value + v.rate * needsMul
 		end
@@ -54,7 +54,7 @@ console.AddCmd("listneeds",function ()
 		end
 	end
 end)
-function task:UpdateNeedsTask(n)
+function task:HasNeed()
 	local actor = self.ent
 	if actor.needs and actor.needs.list then 
 		local n = actor.needs.list
@@ -67,119 +67,35 @@ function task:UpdateNeedsTask(n)
 			end
 		end
 		if topv>100 then
-			--PrintTable(n)
-			local need = n[topk]
-			
-			local tar = self:FindNearestRepl(topk)
-			if tar then
-				local replenish = need.replenishaction
-				--actor:Say("sit")
-				local rez = tar.needs.delta.fatigue
-				self.taskstart = CurTime()
-				self.movetask = Task("moveto",tar,replenish.range or 1.5,false)
-				self.movetask:Next(Task(function(T) 
-					need.value=0
-					if replenish.use then USE(T.ent) end 
-					return true 
-				end))
-				:Next(Task('wait',replenish.time))
-				self.manager:Begin(self.movetask)
-				return true
-			else
-				--actor:Say("*faints*")
-				MsgN(actor,'is unable to find source for',topk)
-				need.value=0
-			end
-
-
-			--[[
-			if topk=='fatigue' then
-				local tar = self:FindNearestRepl('fatigue')
-				if tar then
-					--actor:Say("sit")
-					local rez = tar.needs.delta.fatigue
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,1.5,false)
-					self.movetask:Next(Task(function(T) n.fatigue = 0 USE(T.ent) return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("*faints*")
-					n.fatigue=0
-				end
-			elseif topk=='sleep' then
-				local tar, rez = self:FindNearestRepl('sleep')
-				if tar then
-					--actor:Say("sleep")
-					local rez = tar.needs.delta.sleep
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,1.5,false)
-					self.movetask:Next(Task(function(T) n.sleep = 0 USE(T.ent) return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("i need a bed")
-					n.sleep =0
-				end
-			elseif topk=='hunger' then
-				local tar, rez = self:FindNearestRepl('hunger')
-				if tar then
-					--actor:Say("hunger")
-					--local rez = tar.needs.delta.sleep
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,1,false)
-					self.movetask:Next(Task(function(T) n.hunger = 0 return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("i need to eat")
-					n.hunger =0
-				end
-			elseif topk=='thirst' then
-				local tar, rez = self:FindNearestRepl('thirst')
-				if tar then
-					--actor:Say("thirst")
-					--local rez = tar.needs.delta.sleep
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,1,false)
-					self.movetask:Next(Task(function(T) n.thirst = 0 return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("i need water")
-					n.thirst =0
-				end
-			elseif topk=='entertainment' then
-				local tar, rez = self:FindNearestRepl('entertainment')
-				if tar then
-					--actor:Say("fun")
-					--local rez = tar.needs.delta.sleep
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,2,false)
-					self.movetask:Next(Task(function(T) n.entertainment = 0 return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("i need entertainment")
-					n.thirst =0
-				end
-			elseif topk=='social' then
-				local tar, rez = self:FindNearestRepl('social')
-				if tar then
-					--actor:Say("social")
-					--local rez = tar.needs.delta.sleep
-					self.taskstart = CurTime()
-					self.movetask = Task("moveto",tar,2,false)
-					self.movetask:Next(Task(function(T) n.social = 0 return true end))
-					self.manager:Begin(self.movetask)
-					return true
-				else
-					--actor:Say("i need to talk")
-					n.thirst =0
-				end
-			end
-			]]
+			return topk
 		end
+	end
+end
+function task:UpdateNeedTask(topk)
+	local actor = self.ent 
+	local need = n[topk]
+	if need then 
+		
+		local tar = self:FindNearestRepl(topk)
+		if tar then
+			local replenish = need.replenishaction
+			--actor:Say("sit")
+			local rez = tar.needs.delta.fatigue
+			self.taskstart = CurTime()
+			local T = Task("moveto",tar,replenish.range or 1.5,false)
+			T:Next(Task(function(T) 
+				need.value=0
+				if replenish.use then USE(T.ent) end 
+				return true 
+			end))
+			T:Next(Task('wait',replenish.time))
+
+			return T
+		else
+			--actor:Say("*faints*")
+			MsgN(actor,'is unable to find source for',topk)
+			need.value=0
+		end 
 	end
 end
 function task:FindNearestRepl(type) 
@@ -206,27 +122,84 @@ function task:FindNearestRepl(type)
 	end 
 	return mint 
 end
+function task:GetNav(actor)
+	 
+	if actor.phys then
+		local ground = actor.phys:GetGround()
+		
+		if ground and ground[1] then
+			e = ground[1]
+			self.navent = e
+			local nav = e:GetComponent(CTYPE_NAVIGATION)
+			if nav then
+				self.lastnav = nav
+				return nav
+			end
+		end
+	end
+	local n,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
+	if nav then
+		self.lastnav = nav
+	end
+	return nav or self.lastnav
+end
 function task:Step()   
 	local movetask = self.movetask
 	local sttime = self.taskstart or 0
 	local actor = self.ent
-	self:UpdateNeeds()
+	self:NeedsTick()
  
-	if not movetask or sttime+self.delaytime<CurTime() then 
+	local current_task = self.current_task
+
+	local ct = CurTime()
+	if (self.nextsense or 0)  < ct then
+		self.nextsense =ct + 1 
+		local sensed = self:UpdateSenses(actor)
+		if sensed then
+			if actor:IsReallyMoving() then
+
+			else
+				if current_task then self.manager:End(current_task) end
+				MsgN(actor, "sensed",sensed)
+				local duration = math.random(1,20)
+
+				current_task = Task("lookat",sensed,duration) 
+				if self.manager:Begin(current_task) then
+					self.current_task = current_task
+				end
+			end
+		end 
+	end
+
+	if not current_task or current_task:IsFinished() then
+		current_task = self:SelectActivity(actor)
+		if current_task then
+			if self.manager:Begin(current_task) then
+				self.current_task = current_task
+			end
+			MsgN(actor,"selected",current_task)
+		else
+			MsgN(actor,"is unable to select activity")
+		end
+	end
+	 
+
+	if false and (not movetask or sttime+self.delaytime<CurTime()) then 
 
 		--MsgN("wan")
-		local n,nav = actor:GetParentWithComponent(CTYPE_NAVIGATION)
+		local nav = self:GetNav(actor)
 		if true then
 			local parent = actor:GetParent()
 			local sz = parent:GetSizepower()
 			local pos = actor:GetPos()
 
-			if not self:UpdateNeedsTask(actor.needs) then
+			if true then -- not self:UpdateNeedsTask(actor.needs) then
 			--
+			
 				if nav then
-					if math.random()>0.5 then
+					if false and math.random()>0.5 then
 						self:VariantUseSomething(parent,nav,pos,sz)
-					else
+					elseif math.random()>0.99 then
 						self:VariantWalk(nav,pos,sz)
 					end
 				end
@@ -236,9 +209,21 @@ function task:Step()
 				elseif math.random()>0.95 then 
 					local nodes = GetNodesInRadius(parent,pos,20/sz)
 					if nodes then
-						actor:SendEvent(EVENT_LERP_HEAD,table.Random(nodes))
+						local actors = {}
+						local hasactors = false
+						for k,v in pairs(nodes) do
+							if v:GetClass()=='base_actor' and v~=actor then
+								actors[#actors+1] = v
+								hasactors = true
+							end
+						end
+						if hasactors and math.random()>0.3 then
+							actor:SendEvent(EVENT_LERP_HEAD,table.Random(actors))
+						else
+							actor:SendEvent(EVENT_LERP_HEAD,table.Random(nodes))
+						end
 					end
-				elseif math.random()>0.999 then
+				elseif self.cansit and math.random()>0.999 then
 					self:VariantSit(10)
 				end
 				--if self:VariantUnequipItem('uniform_1') then return nil end
@@ -257,6 +242,127 @@ function task:Step()
 		end
 	end
 end
+function task:UpdateSenses(actor)
+	--MsgN(actor,"senses update")
+	self.nodememory = self.nodememory or {}
+	local nm = self.nodememory
+
+	local parent = actor:GetParent()
+	local sz = parent:GetSizepower()
+	local pos = actor:GetPos()
+	local nodes = GetNodesInRadius(parent,pos,10/sz)
+	local apos = actor:GetAbsPos()
+	local tb = {}
+	for k,v in pairs(nodes) do
+		if v~=actor then 
+			local m = nm[v]
+			local npos = v:GetAbsPos()
+			if m then
+				local diffpos = npos-m.pos
+				m.pos = npos
+				if diffpos:Length()>2 then
+					tb[#tb+1] = v
+				end
+			else
+				nm[v] = {pos = v:GetAbsPos()}
+				tb[#tb+1] = v
+			end 
+			if npos:Distance(apos)<1 then
+				return v
+			end
+		end
+	end
+	return table.Random(tb)
+end
+function task:SelectActivity(actor)
+	local TASK = false 
+	local need = self:HasNeed()
+	if need then
+		TASK = self:UpdateNeedTask(need) 
+	end
+
+	if not TASK and math.random()>0.999 then
+		TASK = self:VariantPose(table.Random({"pstand","pstand2"}),math.random(5,20))
+	end 
+
+	local parent = actor:GetParent()
+	local sz = parent:GetSizepower()
+	local pos = actor:GetPos()
+
+	if not TASK and math.random()>0.3 then 
+		TASK = self:VariantLookAtRandom(parent,pos,sz)
+	end
+
+	if not TASK and self.cansit and math.random()>0.999 then
+		TASK = self:VariantSit(math.random(10,120))
+	end
+
+	if not TASK then
+		local nav = self:GetNav(actor)
+		if nav then
+
+			if false and math.random()>0.5 then
+				--self:VariantUseSomething(parent,nav,pos,sz)
+			elseif math.random()>0.5 then
+				TASK = self:VariantWalk(nav,pos,sz)
+			end
+		end
+	end
+
+	if not TASK and self.cansit and math.random()>0.999 then
+		TASK = self:VariantSit(math.random(10,120))
+	end
+
+	if not TASK and math.random()>0.5 then
+		local rne = self:GetRandomEntity(actor,'base_actor')
+		if rne then
+			TASK = Task('follow',rne)
+			TASK.Duration = math.random(24,120)
+		end
+	end
+
+	if not TASK then
+		TASK = Task('wait',math.random(2,10))
+	end
+	return TASK
+end
+function task:GetRandomEntity(actor,class)
+	local parent = actor:GetParent()
+	local sz = parent:GetSizepower()
+	local pos = actor:GetPos()
+	local nodes = GetNodesInRadius(parent,pos,20/sz)
+	local tb = {}
+	for k,v in pairs(nodes) do
+		if (class==nil or v:GetClass()==class) and v~=actor then 
+			tb[#tb+1] = v
+		end
+	end
+	return table.Random(tb)
+end
+function task:VariantLookAtRandom(parent,pos,sz) 
+	local nodes = GetNodesInRadius(parent,pos,20/sz)
+	if nodes then
+		local actors = {}
+		local hasactors = false
+		for k,v in pairs(nodes) do
+			if v:GetClass()=='base_actor' and v~=actor then
+				actors[#actors+1] = v
+				hasactors = true
+			end
+		end
+		local finaltarget = false
+		if hasactors and math.random()>0.3 then
+			finaltarget = table.Random(actors) 
+		else
+			finaltarget = table.Random(nodes)
+		end
+		if finaltarget then
+			local duration = math.random(1,20)
+			return Task("lookat",finaltarget,duration) 
+		end
+	end
+end
+
 function task:VariantUseSomething(parent,nav,pos_from,sz) 
 	local actor = self.ent
 	local ct = CurTime()
@@ -275,17 +381,17 @@ function task:VariantUseSomething(parent,nav,pos_from,sz)
 			self.bannedents[target] = ct+60
 			self.taskstart = ct
 			self.movetask = Task("moveto",target,1.5,false)
-			self.movetask:Next(Task(function(T) 
-				USE(T.ent) 
+			self.movetask:Next(Task(function(TASK) 
+				USE(TASK.ent) 
 				if target:HasTag(TAG_SELECTION_MENU) and target.GetOptions then
 					local opt = target:GetOptions()
 					if opt then
 						local randopt = table.Random(opt)
 						if randopt then
-							target:SendEvent(EVENT_SELECT_OPTION,T.ent,randopt)
+							target:SendEvent(EVENT_SELECT_OPTION,TASK.ent,randopt)
 						end
 					end
-					USE(T.ent)--close menu
+					USE(TASK.ent)--close menu
 				end
 				
 				return true 
@@ -296,16 +402,20 @@ function task:VariantUseSomething(parent,nav,pos_from,sz)
 	end 
 end
 function task:VariantWalk(nav,pos_from,sz)
-	local ptp = nav:GetPointsInRadius(pos_from,10/sz)
-	if ptp then 
+	local nnode = nav:GetNode()
+	local lpos = nnode:GetLocalCoordinates(self.ent)
+	local ptp = nav:GetPointsInRadius(lpos,1000) 
+	
+	--MsgN("VariantWalk",ptp)
+	if ptp then  
 		local target = table.Random(ptp)
 		if target then
-			local path = nav:GetPath(pos_from,target,0.001)
+			local tpos = self.ent:GetParent():GetLocalCoordinates(nnode,target)
+			local path = nav:GetPath(lpos,tpos,0.001)
 			if path then
-				MsgN("VariantWalk",target)
+				MsgN("VariantWalk",tpos)
 				self.taskstart = CurTime()
-				self.movetask = Task("moveto",target,self.mindist,false)
-				self.manager:Begin(self.movetask)
+				return Task("moveto",tpos,self.mindist,false) 
 			end
 		end
 	end
@@ -348,13 +458,26 @@ function task:VariantUnequipItem(itemname)
 end
 function task:VariantPose(name,duration)
 	local actor = self.ent
-	if not actor.is_posing and actor:GestureToggle(44, name) then
-		actor.is_posing = true
-		debug.Delayed(1000*duration,function ()
+	local T = Task({
+		slot = 'misc_task',
+		Duration = duration,
+		OnBegin = function ()
+			return actor.is_posing and actor:GestureToggle(44, name)
+		end,
+		OnEnd = function()
 			actor:GestureToggle(44, name)
 			actor.is_posing = false
-		end)
-	end
+			return true
+		end
+	})
+	return T
+	--if not actor.is_posing and actor:GestureToggle(44, name) then
+	--	actor.is_posing = true
+	--	debug.Delayed(1000*duration,function ()
+	--		actor:GestureToggle(44, name)
+	--		actor.is_posing = false
+	--	end)
+	--end
 end
 function task:VariantSit(duration)
 	local actor = self.ent
@@ -362,18 +485,17 @@ function task:VariantSit(duration)
 	local topk = 'fatigue'
 	local tar = self:FindNearestRepl(topk)
 	if tar then
-		self.movetask = Task("moveto",tar, 1.5,false)
-		self.movetask:Next(Task(function(T) 
+		local T = Task("moveto",tar, 1.5,false)
+		T:Next(Task(function(T) 
 			Interact(actor,tar,'sit') 
 			return true 
 		end))
-		:Next(Task('wait',duration or 10))
-		:Next(Task(function(T) 
+		T:Next(Task('wait',duration or 10))
+		T:Next(Task(function(T) 
 			actor:SendEvent(EVENT_EXIT_VEHICLE)
 			return true 
 		end))
-		self.manager:Begin(self.movetask)
-		return true
+		return T
 	else
 		--actor:Say("*faints*")
 		MsgN(actor,'is unable to find chair') 

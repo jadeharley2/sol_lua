@@ -39,7 +39,9 @@ ACT_SETSENDERASTARGET = function(s,e,t)
 end
 ACT_SAY = function(s,e,t) e:Say(t.say) end
 ACT_JUMP = function(s,e,t) e:Jump() end
-ACT_LOOKAT = function(s,e,t) e:EyeLookAtLerped(t.ent or s.target) end
+ACT_LOOKAT = function(s,e,t) 
+	e:EyeLookAtLerped(t.ent or s.target) 
+end
 ACT_PICKUPA = function(s,e,t)	
 	e:PickupNearest() 
 end
@@ -68,23 +70,24 @@ ACT_LOOKAT_RNDTRG = function(s,e,t)
 	end
 end
 ACT_LOOKAT_IDLING = function(s,e,t) 
-	if s.pai then return end
-	local par = e:GetParent()
- 
-		local ted = false;
-		for k,v in pairs(par:GetChildren()) do
-			if v~=e and v and IsValidEnt(v) then
-				local cls = v:GetClass()
-				if string.find(cls,"actor") then
-					ted = v
-				end 
-			end
-		end
-		
-		if ted then
-			e:SendEvent(EVENT_LOOK_AT,ted)
-			--MsgN(">>",ted) 
-		end 
+	
+	--if s.pai then return end
+	--local par = e:GetParent()
+ --
+	--	local ted = false;
+	--	for k,v in pairs(par:GetChildren()) do
+	--		if v~=e and v and IsValidEnt(v) then
+	--			local cls = v:GetClass()
+	--			if string.find(cls,"actor") then
+	--				ted = v
+	--			end 
+	--		end
+	--	end
+	--	
+	--	if ted then
+	--		e:SendEvent(EVENT_LOOK_AT,ted)
+	--		--MsgN(">>",ted) 
+	--	end 
 end
 ACT_ABILITY = function(s,e,t) 
 	local ab = e.abilities
@@ -163,13 +166,13 @@ end)
  
 function ai:OnInit() 
 	MsgN("hi3!",self.cname) 
-	local greet = {"hi","hello","прив","привет"}
+	local greet = {"hi","hello"}
 	local how = {"как дела"}
-	self:AddReaction("greet",CND_ONCHAT,ACT_SAY,{msg=greet,say="привет"})
+	self:AddReaction("greet",CND_ONCHAT,ACT_SAY,{msg=greet,say="hi"})
 	self:AddReaction("greset",CND_ONCHAT,{ACT_SETSENDERASTARGET,ACT_LOOKAT},
 		{msg={"f"} })
-	self:AddReaction("how",CND_ONCHAT,ACT_SAY,{msg=how,say="нормально"})
-	self:AddReaction("j",CND_ONCHAT,ACT_JUMP,{msg={"jump","прыг"} })
+	self:AddReaction("how",CND_ONCHAT,ACT_SAY,{msg=how,say="ok"})
+	self:AddReaction("j",CND_ONCHAT,ACT_JUMP,{msg={"jump"} })
 	--self:AddReaction("j2",CND_ONRND,{ACT_SETSENDERASTARGET,ACT_LOOKAT},
 	--	{msg={"fiv","фыв"}, max = 1000 })
 	--self:AddReaction("j3",CND_ONRND,{ACT_SETSENDERASTARGET,ACT_MOVETO},
@@ -180,7 +183,7 @@ function ai:OnInit()
 	self:AddReaction("cc1",CND_ONCHAT,ACT_ABILITY,{msg={"d1"}, aid = 1 })
 	self:AddReaction("cc2",CND_ONCHAT,ACT_ABILITY,{msg={"d2"}, aid = 2 })
 	self:AddReaction("cc3",CND_ONCHAT,ACT_ABILITY,{msg={"d3"}, aid = 3 }) 
-	self:AddReaction("aa-1",CND_ONCHAT,ACT_SAY,{msg={"киндред","kindred"},say="что?"})
+	self:AddReaction("aa-1",CND_ONCHAT,ACT_SAY,{msg={ "kindred"},say="what?"})
 	
 	local e = self.ent
 	--ENT.usetype = "sit"
@@ -204,12 +207,13 @@ function ai:OnInit()
 	self.seen = Set()
 end
 function ai:OnUpdate()
-	local e = self.ent
-	local ee = e.eyeangles
-	if ee then
-	--	e:SetEyeAngles(ee[1],ee[2]) 
-	end 
-	--MsgN("upd:",self)
+	--local e = self.ent
+	--local ee = e.eyeangles
+	--if ee then
+	----	e:SetEyeAngles(ee[1],ee[2]) 
+	----e:SetEyeAngles(0,0)
+	--end 
+	----MsgN("upd:",self)
 end 
 local phrases = {
 	agreement = {  "Ok"},--"Good","I'll do this",, ""

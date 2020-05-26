@@ -57,7 +57,7 @@ function PANEL:ShowTab(id)
 	local plist = self.plist
 	local framePanel = self.framePanel
 	local pp = plist[id]
-	MsgN("AA",id,pp)
+	--MsgN("AA",id,pp)
 	if pp then
 		framePanel:Clear()
 		framePanel:Add(pp)

@@ -43,7 +43,7 @@ function task:OnBegin()
 	--end
 	--MsgN("False?")
 	local rez = self:FindPath()
-	MsgN("path:",rez)
+	--MsgN("path:",rez)
 	return rez
 end 
 function task:FindPath()
@@ -204,17 +204,29 @@ function task:Step()
 				actor:SetEyeAngles(0,0,true)
 				self.wasmoving = true
 				if lastdist and lastdist<=dist then
-					local times = self.jumptimes or 0
-					times = times + 1
-					self.jumptimes = times
-					if times > 3 then
-						Msg("DIST",times)
+					local jumptimes = self.jumptimes or 0
+					local aborttimes = self.aborttimes or 0
+					
+					if jumptimes > 15 then
+						Msg("JUMP",jumptimes)
 						actor:SendEvent(EVENT_ACTOR_JUMP)
-						times = 0
+						jumptimes = 0
 						--USE(actor)
+					else
+						jumptimes = jumptimes + 1
 					end
+					if aborttimes>100 then
+						Msg("ABORT")
+						actor:Stop() 
+						return false 
+					else
+						aborttimes = aborttimes + 1
+					end
+					self.jumptimes = jumptimes
+					self.aborttimes = aborttimes
 				end
 			else
+				self.ent:UnHook(EVENT_GLOBAL_PREDRAW,'frotate')
 			end
 		end
 	else
@@ -224,4 +236,5 @@ end
 function task:OnEnd(result)
 	self.ent:UnHook(EVENT_GLOBAL_PREDRAW,'frotate')
 	--self.ent.controller = self._storedcon
+	self.ent:Stop()
 end

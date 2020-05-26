@@ -256,7 +256,7 @@ function ENT:SetupPhysics(world,scale)
 		if not data.nophys then
 			if data.phys then
 				local phys =  self.phys 
-			MsgN("DATAPHYS")
+			--MsgN("DATAPHYS")
 				if istable(data.phys) and  data.phys.custom then
 					phys:SetupPhysics(json.ToJson(data.phys))
 				else

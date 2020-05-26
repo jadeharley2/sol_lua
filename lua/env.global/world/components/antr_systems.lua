@@ -1,12 +1,6 @@
 
 DeclareEnumValue("event","ANTRSYS_STATE",		332134)  
 
-if CLIENT then
-    ANTR_SYS_CBAR = ANTR_SYS_CBAR or gui.FromTable({
-        texture = "textures/gui/hurt.dds",
-        canraisemouseevents = false
-    })
-end 
 
 local cvadz = {}
 
@@ -32,6 +26,12 @@ component.statecolors = {
 }
 
 function component:Init() 
+    if CLIENT then
+        ANTR_SYS_CBAR = ANTR_SYS_CBAR or gui.FromTable({
+            texture = "textures/gui/hurt.dds",
+            canraisemouseevents = false
+        })
+    end 
 end
    
 function component:OnAttach(node)

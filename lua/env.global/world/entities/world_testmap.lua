@@ -45,7 +45,7 @@ function ENT:Spawn()
 	space:SetSizepower(1000)
 	space:SetGlobalName("u1_room.space")
 	space:Spawn()  
-	local sspace = space:AddComponent(CTYPE_PHYSSPACE)  
+	local sspace = space:RequireComponent(CTYPE_PHYSSPACE)  
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
@@ -63,7 +63,7 @@ function ENT:Spawn()
 	betaspace:SetSizepower(1000)
 	betaspace:SetGlobalName("u1_room.bspace")
 	betaspace:Spawn()  
-	local bsspace = betaspace:AddComponent(CTYPE_PHYSSPACE)  
+	local bsspace = betaspace:RequireComponent(CTYPE_PHYSSPACE)  
 	bsspace:SetGravity(Vector(0,-4,0))
 	betaspace.space = bsspace
 
@@ -589,7 +589,7 @@ function ENT:GetSpawn()
 
 
 	local c = SpawnCONT("active/container.stmd",space,Vector(0,0.01,0.001)) 
-	local cc = c:GetComponent(CTYPE_STORAGE)
+	local cc = c:RequireComponent(CTYPE_STORAGE)
 	if cc then
 		cc:PutItemAsData(nil, ItemPV("prop.clutter.lab.book",24879,{ 
 			parameters = { name = "The Book",  },
@@ -619,6 +619,8 @@ function ENT:GetSpawn()
 		cc:PutItemAsData(nil,ItemIA("apparel.legw",3498230)) 
 		cc:PutItemAsData(nil,ItemIA("apparel.collar",3498231)) 
 	end 
+	local flow = c:RequireComponent(CTYPE_FLOW)
+	flow:AddScript("forms/flow/theentf.json")
 	
 	--[[
 	{

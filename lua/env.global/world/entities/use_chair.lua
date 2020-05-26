@@ -18,6 +18,21 @@ ENT.mountpoints = {
 ENT.info = "chair"
 ENT._interact = {
 	sit={text="sit",
+	isvalid = function (self,user)
+		if IsValidEnt(user) then
+			local  kp, mp = self:GetFreeMountpoint()
+			if mp then
+				local m = user.model
+				if m then
+					if m:HasAnimation(mp.state) or m:HasAnimation("sit") then
+						return true
+					end
+				else
+					return true
+				end
+			end
+		end
+	end,
 	action = function (self,user) 
 		local mp = self:GetFreeMountpoint()
 		if mp then
@@ -109,7 +124,7 @@ end
 function ENT:GetFreeMountpoint() 
 	for k,v in pairs(self.mountpoints) do
 		if not IsValidEnt(v.ent) then
-			return k
+			return k,v
 		end
 	end
 	return false

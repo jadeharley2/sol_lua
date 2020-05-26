@@ -37,7 +37,7 @@ function ENT:Init()
 	self:SetUpdating(true,16)
 	  
 	local ctime = self:AddComponent(CTYPE_TIME)
-	time:SetDeltaTime(1)
+	ctime:SetDeltaTime(1)
 	self.ctime = ctime
 end
 function ENT:LoadWorld(name)
@@ -81,7 +81,7 @@ function ENT:Spawn()
 	space:SetSizepower(1000)
 	space:SetGlobalName("u_grid.space")
 	space:Spawn()  
-	local sspace = space:AddComponent(CTYPE_PHYSSPACE)  
+	local sspace = space:RequireComponent(CTYPE_PHYSSPACE)  
 	sspace:SetGravity(Vector(0,-4,0))
 	space.space = sspace
 
@@ -93,7 +93,7 @@ function ENT:Spawn()
 	SpawnPV('prop.furniture.space.spawn',space,Vector(0,-1,0)*0.001,Vector(0,0,0),0)
 	self.space = space
 	 
-	local grid = space:AddComponent(CTYPE_CHUNKTERRAIN)
+	local grid = space:RequireComponent(CTYPE_CHUNKTERRAIN)
 	self.grid = grid
 	grid:SetRenderGroup(RENDERGROUP_LOCAL)
 
@@ -118,7 +118,7 @@ function ENT:Spawn()
 		root_skyb:SetSpaceEnabled(false)
 		root_skyb:Spawn()
 
-		local cubemap = root_skyb:AddComponent(CTYPE_CUBEMAP)  
+		local cubemap = root_skyb:RequireComponent(CTYPE_CUBEMAP)  
 		self.cubemap = cubemap 
 		cubemap:SetTarget(nil,self)  
 		cubemap:RequestDraw()
