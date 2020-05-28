@@ -2,7 +2,7 @@
 ENT.info = "Item"
 ENT._interact = {
 	use={text="use",action= function (self,user)
-		 
+		hook.Call('itemuse.consumable',user,self[VARTYPE_FORM],nil,nil,self)
 	end},
 }
   
@@ -110,7 +110,7 @@ hook.Add('newitem.consumable',"new",function(formid,seed)
 	}
 	return  json.ToJson(t)
 end)
-hook.Add('itemuse.consumable','use',function(user,formid,data,storage)
+hook.Add('itemuse.consumable','use',function(user,formid,data,storage,ent)
 	local j = forms.ReadForm(formid) 
 	if not j then return nil end 
 	local con = j.contents
@@ -122,8 +122,13 @@ hook.Add('itemuse.consumable','use',function(user,formid,data,storage)
 			holder.amount = (holder.amount or 0) + value.amount
 			ucon[value.type] = holder
 		end 
+	end
+	if storage then
 		storage:RemoveFormItem(formid,1)
 		hook.Call("contents.update",user)
+	end
+	if IsValidEnt(ent) then
+		ent:Destroy()
 	end
 	if j.effects then  
 		for k,v in pairs(j.effects) do

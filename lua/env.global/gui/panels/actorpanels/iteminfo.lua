@@ -51,14 +51,15 @@ function PANEL:SetForm(formid)
     if formdata then
         local name = forms.GetName(formid) or formid
         self.itemname:SetText(name)
-        self.itemdesc:SetText(formdata:Read('description') or '')
+        self.itemdesc:SetText(formdata:Read('description') or '  ')
         --for k,v in pairs(formdata:Read('tags') or {}) do
         --    self:AddFeature(v,{1,1,1},"textures/gui/pointer.png")
         --end
         hook.Call('item_features',formid,formdata,function(t,c,i) self:AddFeature(t,c,i) end)
 
         for k,v in pairs(formdata:Read('features') or {}) do
-            self:AddFeature(k..': '..v[1],v[2],"textures/gui/pointer.png")
+            local v1 = tostring(v[1]) 
+            self:AddFeature(k..': '..v1,v[2],"textures/gui/pointer.png")
         end
        -- self:AddFeature("Color: RED",{1,0,0},"textures/gui/pointer.png")
        -- self:AddFeature("Color: GREEN",{0,1,0},"textures/gui/pointer.png")

@@ -13,6 +13,12 @@
             "impact" : "",
             "drag" : "",
             "step" : "step.snow"
+        },
+        "particles":{
+            "type":"dust",
+            "size":0.1,
+            "speed":1,
+            "time":1
         }
     },
     "slope" : { 

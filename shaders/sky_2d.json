@@ -27,7 +27,7 @@
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : [] 
 		}, 
-		{
+		{  
 			"type" : "DX11.pixelShader",
 			"profile" : "ps_5_0",
 			"entryPoint" : "PS",
@@ -39,13 +39,17 @@
 		"time"			: { "type" : "float", "global": "time"},
 		"distanceMultiplier"	: { "type" : "float", "global": "distance_multiplier"},
 		"tSkyRamp" 				: {"type":"texture"}, 
+		"tClouds" 				: {"type":"texture3d"}, 
+		"tCloudsB" 				: {"type":"texture"}, 
 	},
 	"onload" : {
 		"tech" : "DefaultTech",
-		"layout" :"VertexNBTTextureSkin",
+		"layout" :"VertexNBTTextureSkin", 
 		"values" : { 
 			"tSkyRamp" 				: "textures/atmosphere/skyramp.png",
+			"tClouds" 				: "textures/test/test3dnoise2.dds",
 			
+			"tCloudsB" 				: "textures/atmosphere/detail.dds",
 		}
 	} 
 }            

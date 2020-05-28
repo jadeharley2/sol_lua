@@ -315,7 +315,7 @@ function ai:OpenMenu(ply)
 							local ner = NEARESTUSEABLE(e)
 							if ner then
 								dialog:Close() 
-								USE(e)
+								Interact(e,ner,'use')
 							else
 								dialog:Open("What?")
 							end

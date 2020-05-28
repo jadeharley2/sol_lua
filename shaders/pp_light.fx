@@ -491,7 +491,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 //return float4(N,1)/200;
 
 // 
-	float light_power =saturate(ndot)*saturate(input.wdp*20)*3*
+	float light_power = saturate(ndot)*saturate(input.wdp*20)*3*
      max(0,1/(light_dist*light_dist*distanceMultiplier*distanceMultiplier/1000000)/10000);
     
 

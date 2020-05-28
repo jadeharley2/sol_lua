@@ -1,5 +1,8 @@
 --AddCSLuaFile()
 
+DeclareVartype("STATUSEFFECTS",84321,"json","active effects data")
+
+
 --AbilitiesList =  {}--AbilitiesList or
 local EF = {}
 

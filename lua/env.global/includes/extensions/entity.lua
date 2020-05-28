@@ -167,3 +167,13 @@ function ENTITY:UnregisterComponent(com)
 	end
 end
 
+function ENTITY:RotateToAdd(axis,angle,time,fps)
+	time = time or 1
+	fps = fps or 30
+	local times = time*fps
+	local dt = angle/times
+	return self:Timer('dynrotate',0,1000/fps,times,function (s)
+		self:TRotateAroundAxis(axis,dt)
+	end)
+end
+

@@ -23,9 +23,31 @@ function EmitParticles(ent,type,time,size,speed)
 	end
 	return particlesys2
 end  
+ 
+function GLFootstep(ent, parent,type,pos,time,size,speed)
+	local e = SpawnParticles(parent,type,pos,time,size,speed)
+	if e then
+		local m = e:RequireComponent(CTYPE_MODEL) 
+		m:SetRenderGroup(RENDERGROUP_LOCAL)
+		m:SetBlendMode(BLEND_OPAQUE) 
+		m:SetRasterizerMode(RASTER_DETPHSOLID) 
+		m:SetDepthStencillMode(DEPTH_ENABLED)  
+		m:SetBrightness(1)
+		m:SetFadeBounds(0,9e20,0)  
+		m:SetModel('models/primitives/plane.stmd')   
+		m:SetMaxRenderDistance(1000)   
+		m:SetMatrix(
+			matrix.Scaling(ent.footstepsize or 3.5)
+			*matrix.Rotation(Vector(-90,-90,0))
+			*ent:GetWorld()
+			*matrix.Translation(Vector(0,0.3,0))
+		) 
+		m:SetMaterial(ent.footsteptex or 'textures/surface/footprint/default.json')
+	end
 
+end
 function SpawnParticles(parent,type,pos,time,size,speed)
-	time = time or 1 
+	time = time or 1
 	local e = ents.Create("env_emitter")
 	e.speed = speed or 1
 	e:SetParent(parent)
@@ -33,6 +55,8 @@ function SpawnParticles(parent,type,pos,time,size,speed)
 	e:SetSizepower(size or 1)
 	if pos then e:SetPos(pos) end
 	e:Spawn()
+
+
 	if time>0 then
 		debug.Delayed(time*1000, function()
 			if IsValidEnt(e) then e:Despawn() end
@@ -94,6 +118,7 @@ function SpawnParticlesSpace(parent,type,pos,time,size,speed)
 end
 
 function ENT:Init()  
+	self:SetSpaceEnabled(false) 
 end
 function ENT:SetCustom(effect)
 	self.customtype = effect
@@ -101,7 +126,6 @@ end
 
 
 function ENT:Spawn(c)  
-	self:SetSpaceEnabled(false) 
 	
 	local customtype = self.customtype
 	

@@ -990,7 +990,7 @@ function NEARESTUSEABLE(actor)
 	local ents = par:GetChildren()
 	local ndist = maxUseDistance*maxUseDistance
 	for k,v in pairs(ents) do
-		if v~=actor and v:HasTag(TAG_USEABLE) then 
+		if v~=actor and v._interact then --HasTag(TAG_USEABLE) 
 			local edist = pos:DistanceSquared(v:GetPos())*sz*sz 
 			if edist<ndist and edist>0 then
 				nearestent = v
@@ -1001,7 +1001,7 @@ function NEARESTUSEABLE(actor)
 	if not nearestent then
 		for k,v in pairs(ents) do
 			for kk,vv in pairs(v:GetChildren()) do
-				if vv~=actor and vv:HasTag(TAG_USEABLE) then 
+				if vv~=actor  and vv._interact then --vv:HasTag(TAG_USEABLE) then 
 					local edist = actor:GetDistanceSq(vv)   
 					if edist<ndist and edist>0 then
 						nearestent = vv
@@ -1014,7 +1014,7 @@ function NEARESTUSEABLE(actor)
 	if not nearestent and par and par:GetParent() then 
 		for k,v in pairs(par:GetParent():GetChildren()) do
 			if v~=par then
-				if v~=actor and v:HasTag(TAG_USEABLE) then 
+				if v~=actor  and v._interact then --v:HasTag(TAG_USEABLE) then 
 					local edist = actor:GetDistanceSq(v)   
 					if edist<ndist and edist>0 then
 						nearestent = v
@@ -1023,7 +1023,7 @@ function NEARESTUSEABLE(actor)
 				end
 --
 				for kk,vv in pairs(v:GetChildren()) do
-					if vv~=actor and vv:HasTag(TAG_USEABLE) then 
+					if vv~=actor  and vv._interact then -- vv:HasTag(TAG_USEABLE) then 
 						local edist = actor:GetDistanceSq(vv)   
 						if edist<ndist and edist>0 then
 							nearestent = vv

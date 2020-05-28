@@ -3,7 +3,7 @@ bool enable_sslr = true;
 bool enable_ssao = true;
 bool enable_bloom = true;
 
-bool debug_channels=false;
+int debug_channels=0;
 
 float time = 0;
 float hdrMultiplier = 1;
@@ -327,30 +327,48 @@ float3 Temperature(float nit)
 }
 float4 CHANNELS(PS_IN input ) : SV_Target
 {   
-	if(input.tcrd.y<0.5 )
+	if(debug_channels==1) 
 	{
-		if (input.tcrd.x<0.5)
+		if(input.tcrd.y<0.5 )
 		{
-			return tDiffuseView.Sample(sView, input.tcrd);
+			if (input.tcrd.x<0.5)
+			{
+				return tDiffuseView.Sample(sView, input.tcrd);
+			}
+			else
+			{
+				return tNormalView.Sample(sView, input.tcrd);
+			}
 		}
 		else
 		{
-			return tNormalView.Sample(sView, input.tcrd);
+			if (input.tcrd.x<0.5)
+			{
+				float d = linearDepth(tDepthView.Sample(sView, input.tcrd));
+				//d = ((d)*100)%1;
+				//d =(d*10)%1;
+				return d;
+			}
+			else
+			{
+				return tMaskView.Sample(sView, input.tcrd);
+			}
 		}
 	}
-	else
-	{
-		if (input.tcrd.x<0.5)
-		{
-			float d = linearDepth(tDepthView.Sample(sView, input.tcrd));
-			//d = ((d)*100)%1;
-			//d =(d*10)%1;
-			return d;
-		}
-		else
-		{
-			return tMaskView.Sample(sView, input.tcrd);
-		}
+	if(debug_channels==2) {
+		return tDiffuseView.Sample(sView, input.tcrd);
+	}
+	if(debug_channels==3) {
+		return tNormalView.Sample(sView, input.tcrd);
+	}
+	if(debug_channels==4) {
+		return linearDepth(tDepthView.Sample(sView, input.tcrd));
+	}
+	if(debug_channels==5) {
+		return tMaskView.Sample(sView, input.tcrd);
+	}
+	if(debug_channels==6) {
+		return tMaskView.Sample(sView, input.tcrd).a;
 	}
 	return 0;
 }

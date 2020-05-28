@@ -1314,14 +1314,16 @@ end
   
 
 function ENT:GetHeadingElevation(dir,b) 
-	if not b then
-		dir = dir:Rotate(Vector(0,-180,0))
+	if dir then 
+		if not b then
+			dir = dir:Rotate(Vector(0,-180,0))
+		end
+		local rad = dir:Length()
+		local polar = math.atan2(dir.z,dir.x)
+		--if dir.x < 0 then polar = polar + 3.1415926 end
+		local elev = math.asin(dir.y/rad)
+		return rad,polar,elev
 	end
-	local rad = dir:Length()
-	local polar = math.atan2(dir.z,dir.x)
-	--if dir.x < 0 then polar = polar + 3.1415926 end
-	local elev = math.asin(dir.y/rad)
-	return rad,polar,elev
 end
 function ENT:EyeLookAt(dir) 
 	--MsgN(debug.traceback())

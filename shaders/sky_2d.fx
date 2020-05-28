@@ -7,6 +7,7 @@ float4x4 World;
 float4x4 View;
 float4x4 Projection;
 
+bool postmode;
 
 float4x4 invWVP;
  
@@ -37,10 +38,16 @@ float2 screenSize = float2(1024,1024);
  
 float3 atmosphereColor = float3(0.4,0.8,1);
  
+float3 campos = float3(0.4,0.8,1);
 
+Texture2D tLightView;  
 Texture2D tDepthView;   
 Texture2D tDiffuseView;   
+Texture2D tMaskView;   
 Texture2D tSkyRamp;   
+ 
+Texture3D tClouds;   
+Texture2D tCloudsB;   
  
 
 SamplerState sCC
@@ -55,6 +62,14 @@ SamplerState sCL
     Filter = MIN_MAG_MIP_LINEAR;//MIN_MAG_MIP_LINEAR;
     AddressU = Wrap;
     AddressV = Wrap;
+}; 
+  
+SamplerState sFCL
+{
+    Filter = MIN_MAG_MIP_LINEAR;//MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+    AddressW = Wrap;
 }; 
   
 
@@ -97,7 +112,9 @@ SamplerState sCL
 
 
 
+float CloudDensity(float3 pt){
 
+}
 
 
 
@@ -378,23 +395,23 @@ float SS_GetDepth(float2 position)
 { 
 	 return linearDepth(tDepthView.Sample(sCC, position).r);
 }
-float3 SS_GetPosition(float2 UV, float depth)
-{
-	float4 position = 1.0f; 
- 
-	position.x = UV.x * 2.0f - 1.0f; 
-	position.y = -(UV.y * 2.0f - 1.0f); 
-
-	position.z = depth; 
- 
-	//Transform Position from Homogenous Space to World Space 
-	position = mul(position, invWVP);  
- 
-	//position *= position.w;
-	position /= position.w;
-
-	return position.xyz;
-}
+//float3 SS_GetPosition(float2 UV, float depth)
+//{
+//	float4 position = 1.0f; 
+// 
+//	position.x = UV.x * 2.0f - 1.0f; 
+//	position.y = -(UV.y * 2.0f - 1.0f); 
+//
+//	position.z = depth; 
+// 
+//	//Transform Position from Homogenous Space to World Space 
+//	position = mul(position,  (invWVP));  
+// 
+//	//position *= position.w;
+//	position /= position.w;
+//
+//	return position.xyz;
+//}
 
  
 
@@ -458,6 +475,86 @@ bool IsNAN(float n)
 {
     return (n < 0.0f || n > 0.0f || n == 0.0f) ? false : true;
 }
+float3 SS_GetPosition(float2 UV,float depth)
+{ 
+	float4 position = 1.0f; 
+
+	position.x = UV.x * 2.0f - 1.0f; 
+	position.y = -(UV.y * 2.0f - 1.0f); 
+
+	
+	position.z = depth; 
+//position.w = 1;
+	//Transform Position from Homogenous Space to World Space 
+	position = mul(position, invWVP);  
+
+	//position *= position.w;
+	if(position.w==0) return position.xyz;
+	position /= position.w;
+
+	return position.xyz;
+}
+
+float tcdensity(float3 pos){
+	return saturate(
+			//tClouds.Sample(sFCL, pos*2).a
+			tCloudsB.Sample(sFCL,pos.xz*0.2).r*2
+			*saturate(1-abs(pos.y*10+2))-0.3 
+			
+			)
+			
+			*(k/128);
+} 
+float3 tctest(float2 screenPosition,PS_IN input, float3 light){
+	  
+	float depth =  min(0.99997,tDepthView.Sample(sCL, screenPosition).x);
+    float3 pos =(SS_GetPosition(screenPosition,depth ))	;// SS_GetPosition(screenPosition,depth);
+	float3 dir =  (pos -(campos*float3(1,-1,-1)));
+	float len = length(dir);
+	//float maxlen = 1;
+	
+	//if(len>maxlen) {
+	//	dir = (dir/len) * maxlen;
+	//}
+	float3 ddt = dir/128;
+	float testcloud = 0;
+	float3 enclight =0;
+	float3 samplepos = campos*float3(1,-1,-1);
+
+	float3 lightenergy = 0;
+	float transmittance = 0;//1;
+
+	float Density = 0.01;
+	for(float k=1;k<128;k++){
+		float cursample = tcdensity(samplepos)*100;
+		//if( cursample > 0.001)
+		//{
+	 	float inlight = 1;
+	 
+	 	float3 lpos = samplepos;
+	 	for(float j=1;j<8;j++){
+	 		lpos = lpos + ldir0;
+	 		inlight  -=(tcdensity(lpos)+0.01);
+	 	}
+	 	//
+     	//float curdensity = saturate(cursample * Density);
+	 	//float shadowterm = exp(-shadowdist * 0.3);
+	 	//float3 absorbedlight = shadowterm * curdensity;
+	 	//lightenergy += absorbedlight * transmittance  ;
+ 
+        	transmittance += cursample+inlight*cursample; 
+		//}
+		samplepos +=ddt; 
+	}
+	
+	//transmittance +=	tcdensity(samplepos)*100;
+	return   max(0,light
+	 )
+	 +transmittance
+	//+lightenergy 
+	  ;//+testcloud*enclight
+}
+
 
 PS_OUT PS(PS_IN input) : SV_Target
 {   
@@ -578,7 +675,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		
 	}
 	
-	float4 tBackColor = tDiffuseView.Sample(sCC, screenPosition+float2(cos(time),sin(time))*0);
+	float4 tBackColor = tLightView.Sample(sCC, screenPosition+float2(cos(time),sin(time))*0);
 	tBackColor.a = 1;
 	float angleDensity  =
 		saturate(-topDot)/ atmdencityByDist
@@ -614,13 +711,38 @@ PS_OUT PS(PS_IN input) : SV_Target
 	float3 rem = max(float3(0,0,0),mierayleigh.rayleigh+mierayleigh.mie*2);
 	result.rgb =rem*2;//lerp( tBackColor.rgb,rem*2,saturate(rpdepth)) ;
 	result.a = saturate(rpdepth*rpdepth*100*1.1)*saturate(length(result.rgb));
-	//result = tDiffuseView.Sample(sCC, screenPosition);
-	//result.a = 1;
+	
+	float3 inlight =  tLightView.Sample(sCC, screenPosition);
+	float4 inmask =  tMaskView.Sample(sCC, screenPosition);
+	
+	inmask.r *= saturate(1-result.a);
+	result.rgb = lerp(inlight,result.rgb,result.a);
+
+
+
+ 
+	//if(postmode){ 
+	//	result.rgb = tctest(screenPosition,input,result.rgb );
+	//	//result.rgb  = tctest(screenPosition,input);
+	//}
+
+
+
+
+
+
+
+
+
+	
+	//result = tLightView.Sample(sCC, screenPosition);
+	//result.r = 1;
+	result.a = 1;
 	//result = rpdepth*10;//*float4(dust,1);
 	//if(rpdepth<0.0001) result = 1;
 	//result = tBackColor;
 	//result = float4(dust,1);
-	//ou.normal.r = 1;
+	//ou.normal.r = 1; 
 	//ou.mask.r =0;// density*angleDensity;
 
 
@@ -628,11 +750,11 @@ PS_OUT PS(PS_IN input) : SV_Target
 	//result.a =0.9; 
 	//result = surfacecorrector;
 
-	ou.mask.a =1;
+	ou.mask =inmask;
 	ou.color = result;//*0.5; 
 	ou.normal = float4(0.5,0.5,1,1);
 	ou.depth =  1;
-	ou.diffuse = result;
+	ou.diffuse = tDiffuseView.Sample(sCC, screenPosition);
 
 
 

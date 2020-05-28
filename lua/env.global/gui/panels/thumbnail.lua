@@ -9,6 +9,7 @@ function PANEL:Init()
 end
 
 function PANEL:SetForm(formid,usecontext,entdata) 
+    if not isstring(formid) then return end 
     if isjson(entdata) then  
         RenderThumbnail(formid,function(tex) 
             if tex then

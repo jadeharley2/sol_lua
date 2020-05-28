@@ -296,13 +296,14 @@ function PANEL:Set(slot,item,node)
 		self.contextinfo = title or class or luatype or "???"
 		self.contextinfo = function(ci)
 			ci:Clear()
-			ci:SetSize(200,200)
+			ci:SetSize(200,100)
 			ci:SetAutoSize(false,true)
 
 			local cc = panel.Create('iteminfo')
 			cc:SetForm(class)
 			cc:Dock(DOCK_TOP)
 			ci:Add(cc)
+			ci:UpdateLayout()
 		end
 		--MsgN(title,luatype,class,amount,icon)
 		--PrintTable(class)   
@@ -310,7 +311,9 @@ function PANEL:Set(slot,item,node)
 		if not ( self:TrySetTexture(icon) 
 			or self:TrySetTexture(class) 
 			or self:TrySetTexture(luatype) ) then 
-
+				if not cstring.find(class,'.') and luatype=='base_actor' then
+					class = 'character.'..class
+				end
 				FormThumbnailRender(self,class)
 			--local tfname = 'textures/thumb/'..class..'.png' 
 			--if file.Exists(tfname) then

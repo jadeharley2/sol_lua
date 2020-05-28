@@ -254,7 +254,7 @@ function task:UpdateSenses(actor)
 	local apos = actor:GetAbsPos()
 	local tb = {}
 	for k,v in pairs(nodes) do
-		if v~=actor then 
+		if v~=actor and v.model then 
 			local m = nm[v]
 			local npos = v:GetAbsPos()
 			if m then
