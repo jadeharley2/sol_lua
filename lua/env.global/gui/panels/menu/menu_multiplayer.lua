@@ -96,6 +96,7 @@ function PANEL:Init()
 
 	self:LoadFavorites()
 	self:LoadServers()
+	self:UpdateLayout()
 end
 
 function PANEL:LoadFavorites()

@@ -11,10 +11,11 @@ function ENT:Init()
 end
 
 function ENT:Spawn()  
-	
+	local rgroup1 = self.rgroup1 or RENDERGROUP_STARSYSTEM
+	local rgroup2 = self.rgroup2 or RENDERGROUP_PLANET
 	
 	local model = self:AddComponent(CTYPE_MODEL) 
-	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
+	model:SetRenderGroup(rgroup1)
 	model:SetModel("engine/csphere_36_cylproj.stmd") 
 	model:SetMaterial("textures/space/distanceplanet.json") 
 	model:SetBlendMode(BLEND_OPAQUE) 
@@ -32,7 +33,7 @@ function ENT:Spawn()
 
 	if true then
 		local model = self:AddComponent(CTYPE_MODEL) 
-		model:SetRenderGroup(RENDERGROUP_PLANET)
+		model:SetRenderGroup(rgroup2)
 		model:SetModel("engine/csphere_36_cylproj.stmd") 
 		model:SetMaterial("textures/space/distanceplanet.json") 
 		model:SetBlendMode(BLEND_OPAQUE) 
@@ -74,7 +75,7 @@ function ENT:Spawn()
 		ringsEnt:SetSpaceEnabled(false)
 
 		local model2 = ringsEnt:AddComponent(CTYPE_MODEL) 
-		model2:SetRenderGroup(RENDERGROUP_PLANET)
+		model2:SetRenderGroup(rgroup2)
 		model2:SetModel("space/dynrings.dnmd?a="..minr..'&b='..maxr)  
 		model2:SetBlendMode(BLEND_OPAQUE) 
 		model2:SetRasterizerMode(RASTER_DETPHSOLID) 
@@ -134,7 +135,12 @@ function ENT:SpawnSurface()
 		if not surface or not IsValidEnt(surface) then 
 			local k = 0
 		--	for k=0,4 do 
+				local rgroup1 = self.rgroup1 or RENDERGROUP_STARSYSTEM
+				local rgroup2 = self.rgroup2 or RENDERGROUP_PLANET
+				local rgroup3 = self.rgroup2 or RENDERGROUP_CURRENTPLANET
 				surface = ents.Create("planet_surface") 
+				surface.rgroup1 = rgroup2
+				surface.rgroup2 = rgroup3
 				surface:SetParent(self)
 				surface:SetSizepower(radius / 0.909090909090909) 
 				surface:SetSeed(seed+1000*(k+1)) 
@@ -181,3 +187,27 @@ function ENT:Leave()
 	
 end
 
+
+hook.Add('formspawn.planet','spawn',function(form,parent,arguments) 
+	return nil
+end) 
+hook.Add('formcreate.planet','spawn',function(form,parent,arguments)  
+
+	local radius = 10--temp
+	local PLANET = ents.Create("planet")
+	PLANET.szdiff = 2
+	PLANET[VARTYPE_FORM] = form
+	PLANET[VARTYPE_RADIUS] = radius
+	PLANET[VARTYPE_ARCHETYPE] = 'barren'
+	PLANET.rgroup1 = RENDERGROUP_LOCAL
+	PLANET.rgroup2 = RENDERGROUP_LOCAL
+	PLANET.rgroup3 = RENDERGROUP_LOCAL
+	PLANET:SetSizepower(2*radius) 
+
+	PLANET:SetParent(parent)
+	PLANET:AddTag(TAG_EDITORNODE)
+	PLANET:SetSeed(arguments.seed or 0)
+	PLANET:SetPos(arguments.pos or Vector(0,0,0)) 
+	PLANET:Create()
+	return PLANET
+end)

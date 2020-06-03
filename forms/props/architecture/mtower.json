@@ -11,6 +11,15 @@
 			"ang":[0,0,0],
 			"data":{
 				"scale" : 0.08,
+				"model" : "models/artificial/buildings/mtower/exterior_upper.stmd",
+			}
+		},
+		{
+			"form":"prop.furniture.space.table",
+			"pos":[0,0,0],
+			"ang":[0,0,0],
+			"data":{
+				"scale" : 0.08,
 				"model" : "models/artificial/buildings/mtower/interior_atrium.stmd",
 			}
 		},

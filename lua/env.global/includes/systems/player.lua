@@ -1,5 +1,5 @@
 -- spawn lobby
-if not LOBBY then
+if not IsValidEnt(LOBBY) then
 	LOBBY = ents.Create()
 	LOBBY:SetSizepower(1000)
 	LOBBY:SetSeed(1000003)
@@ -8,14 +8,14 @@ if not LOBBY then
 	local sspace = LOBBY:AddComponent(CTYPE_PHYSSPACE)  
 	sspace:SetGravity(Vector(0,-0.0000001,0))
 	LOBBY.space = sspace
-	LOBBY:Spawn()
+	LOBBY:Spawn("2d9ec595-fa6c-426a-bf1a-511164d71066")
 	--network.AddNode(LOBBY)
 
-	 
+	 MsgN("KL",LOBBY) 
 	GLOBAL_SPAWN_node = LOBBY
 	GLOBAL_SPAWN_pos = Vector(0,0,0)--Vector(0.003537618,0.01925059,0.2446546)
 end
-
+  
 player = player or {}
 	
 player.player_list  = player.player_list or {}
@@ -126,34 +126,30 @@ if SERVER then
 	end
 	local onClientConnected = function(client, id)  
 		hook.Call("player.load", client)
-	end
+	end 
 		
 	local onClientFinishedLoad = function(client, id) 
 		client:SendLua("console.Call('lua_reloadents')") 
 		client:SendStartupNodes()
 		local model = client:GetModel()
-		local actor = ents.Create("base_actor")
-		MsgN("MODEL",model)
+		local actor = ents.Create("base_actor") 
 		actor[VARTYPE_CHARACTER] = model
 		actor:AddTag(TAG_PLAYER)
 		actor:SetSizepower(1000)
-		actor:SetParent(GLOBAL_SPAWN_node)
+		actor:SetParent(GLOBAL_SPAWN_node) 
 		actor:SetSeed(120000+id)
-		actor:SetPos(GLOBAL_SPAWN_pos)
+		--actor:SetPos(Vector(0,0,0))
 		actor.player = client
 		hook.Call("player.prespawn", actor)
-		actor:Create()  
-		network.AddNodeImmediate(actor)
-		
+		actor:Create()   
 		
 		
 		player_list[id] = { 
 			["client"] = client,
 			["actor"] = actor
 		}
-		--network.BroadcastLua("local l =  ents.GetById("..tostring(120000+id)..") if l then l:Load() end")
-		client:SendLua("local p = ents.GetById("..tostring(120000+id)..") SetLocalPlayer(p) p:SetGlobalName('player') SetController('actor') p:SetPos(GLOBAL_SPAWN_pos)")
-		--client:SendLua("global_player_await_id = "..tostring(120000+id).." SetController('actorwait')")
+		
+		client:SendLua("global_player_await_id = "..tostring(120000+id).." SetController('actorwait')") 
 
 		hook.Call("player.firstspawn", actor) 
 		network.BroadcastCall("player.connected",id,actor)
@@ -163,8 +159,7 @@ if SERVER then
 		for k,v in pairs(player_list) do
 			client:Call("player.connected",k,v.actor)
 			--llist[k] = v.actor
-		end
-		client:SendLua("SetController('actor')")
+		end 
 	end
 	local onClientDisconnected = function(client, id)
 		local v = player_list[id] 

@@ -117,7 +117,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	output.color = result;
 	output.diffuse = result;
 	output.normal = float4(0.5,0.5,1,1);
-	output.depth =  1;
+	output.depth =  0;
 	
 	return output;
 }

@@ -486,7 +486,9 @@ function ENT:Think()
 	--if(self:GetSeed()==1000065)then
 	--	 MsgN("a")
 	--end
-	self.tmanager:Update()
+	if SERVER or not network.IsConnected() then
+		self.tmanager:Update() 
+	end
 	
 	local m = self.model
 	local ct = CurTime()
@@ -2346,7 +2348,7 @@ console.AddCmd("hideplayer",function()
 end)
 if CLIENT then
 	console.AddCmd("setcharacter",function(char)
-		LocalPlayer():SetCharacter(char)
+		LocalPlayer():SendEvent(EVENT_CHANGE_CHARACTER, char)
 	end)
 	console.AddCmd("setbodytype",function(bdtp)
 		LocalPlayer():SetBodytype(bdtp)

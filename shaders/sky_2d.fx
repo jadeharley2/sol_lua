@@ -393,7 +393,7 @@ float linearDepth(float depth)
 
 float SS_GetDepth(float2 position)
 { 
-	 return linearDepth(tDepthView.Sample(sCC, position).r);
+	 return tDepthView.Sample(sCC, position).r;//linearDepth(tDepthView.Sample(sCC, position).r);
 }
 //float3 SS_GetPosition(float2 UV, float depth)
 //{
@@ -564,11 +564,12 @@ PS_OUT PS(PS_IN input) : SV_Target
 	float2 screenPosition = ((float2)input.Position.xy)/screenSize;
 	 
 
-	float dpdepth = input.Position.z/input.Position.w;
-	float rpdepth =SS_GetDepth(screenPosition) 
+	float dpdepth = input.Position.z;
+	float rpdepth = 0.000006/SS_GetDepth(screenPosition) 
 		//*sqrt(distanceMultiplier)/1000;
-		/1000;//*sqrt(distanceMultiplier)/100;
-		
+	//	/1000
+	;//*sqrt(distanceMultiplier)/100;
+
 	float density =saturate(rpdepth*10);///horisonDistance*300000*1);///distanceMultiplier/100);
 	
 	
@@ -696,7 +697,10 @@ PS_OUT PS(PS_IN input) : SV_Target
 	
 	float light_dust_blend = saturate(horison)*saturate(density*angleDensity*3)/ max(1,atmdencityByDist/5) ;
 
+rpdepth = min(0.1,rpdepth);
 
+//ou.color = rpdepth ;
+//return ou;
 	float4 result =  float4( lerp(additive,dust,light_dust_blend),1);
 
 	result.rgb =lerp( tBackColor.rgb,dust/2+ additive,saturate(rpdepth*10)) ;
@@ -710,7 +714,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 
 	float3 rem = max(float3(0,0,0),mierayleigh.rayleigh+mierayleigh.mie*2);
 	result.rgb =rem*2;//lerp( tBackColor.rgb,rem*2,saturate(rpdepth)) ;
-	result.a = saturate(rpdepth*rpdepth*100*1.1)*saturate(length(result.rgb));
+	result.a = saturate(rpdepth*10*1.1)*saturate(length(result.rgb));
 	
 	float3 inlight =  tLightView.Sample(sCC, screenPosition);
 	float4 inmask =  tMaskView.Sample(sCC, screenPosition);
@@ -753,7 +757,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 	ou.mask =inmask;
 	ou.color = result;//*0.5; 
 	ou.normal = float4(0.5,0.5,1,1);
-	ou.depth =  1;
+	ou.depth =  0;
 	ou.diffuse = tDiffuseView.Sample(sCC, screenPosition);
 
 

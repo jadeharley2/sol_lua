@@ -106,11 +106,11 @@ end
 ---@param arguments string|nil
 function hook.RegisterHook(id,description,arguments)
 	local argtab = nil
-	if isstring(arguments) and arguments.split then
+	if type(arguments)=='string' and arguments.split then
 		argtab = {}
 		for i1,v1 in ipairs(arguments:split(',')) do
-			local name, vtype = unpack(v1:split(':'))
-			argtab[i1] = {_name = name,_valuetype = vtype}
+			local vv = v1:split(':') 
+			argtab[i1] = {_name = vv[1],_valuetype = vv[2]}
 		end
 	end
 	debug.AddAPIInfo("/hooks/"..id,{_type="hook",_description = description,_arguments = argtab})
@@ -118,31 +118,7 @@ end
 
 _SetNativeCallFunc(hook.Call)
 
-
-
-hook.RegisterHook("input.keydown",		"","key:number")
-hook.RegisterHook("input.keyup",		"","key:number")
-hook.RegisterHook("input.keypressed",	"")
-hook.RegisterHook("input.mousedown",	"")
-hook.RegisterHook("input.mouseup",		"")
-hook.RegisterHook("input.mousewheel",	"")
-hook.RegisterHook("input.doubleclick",	"")
-
-
-console.AddCmd("listhooks",function (id)
-	if id then
-		local case = lua_hooks[id]
-		if case then
-			for k,v in SortedPairs(case.functions) do
-				MsgN("  ",k)
-			end
-		end
-	else
-		for k,v in SortedPairs(lua_hooks,UniversalSort) do
-			MsgN("  ",k)
-		end
-	end
-end)
+-- DO NOT REGISTER HOOKS IN THIS FILE
 
 
 --json.Write("blah.json",debug.GetAPIInfo())

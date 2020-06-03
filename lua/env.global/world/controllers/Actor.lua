@@ -1,7 +1,7 @@
 BLOCK_MOUSE = false
-
-global_infobar = global_infobar or panel.Create("infobar") 
-
+if CLIENT then
+	global_infobar = global_infobar or panel.Create("infobar") 
+end
 local HIDE_CHAR_IN_FIRST_PERSON = function() return settings.GetBool("player.fpmode2",true) end
 
 local MODE_FIRSTPERSON = 1

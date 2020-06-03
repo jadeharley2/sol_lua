@@ -245,7 +245,7 @@ DCI_PS_IN CI_VSI( VS_IN input, I_IN inst )
 
 float SHADOW_PS_FLOAT( DCI_PS_IN input ) : SV_Target
 {  
-	float dp = input.pos.z*input.pos.w; 
+	float dp = input.pos.z;//*input.pos.w; 
 	return dp;//-0.001f; 
 }
 

@@ -360,23 +360,25 @@ function editor:Update()
 		
 		
 		local vp = top
-		local vsz = vp:GetSize()
-		local vmp = vp:GetLocalCursorPos()
+		if vp then
+			local vsz = vp:GetSize()
+			local vmp = vp:GetLocalCursorPos()
 
-		local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
+			local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
 
 
-		if self.gizmo and not self.gizmo.GIZMO_DRAG then 
-			local under = self:GetNodeUnderCursor(vsr)
-			local hlt = true
-			if under and IsValidEnt(under) then
-				if under.root then
-					under.root:Highlight(under)
-					hlt = false
+			if self.gizmo and not self.gizmo.GIZMO_DRAG then 
+				local under = self:GetNodeUnderCursor(vsr)
+				local hlt = true
+				if under and IsValidEnt(under) then
+					if under.root then
+						under.root:Highlight(under)
+						hlt = false
+					end
 				end
-			end
-			if hlt then
-					self.gizmo:Highlight(nil) 
+				if hlt then
+						self.gizmo:Highlight(nil) 
+				end
 			end
 		end
 		---local wcposgizmo = GetMousePhysTrace(cam,-CGROUP_NOCOLLIDE_PHYSICS)

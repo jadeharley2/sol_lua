@@ -44,23 +44,25 @@ function ENT:LoadModel()
 	local phys =  self.phys
 	local amul = 8
 	
-	
-	model:SetRenderGroup(RENDERGROUP_LOCAL)
-	model:SetModel(self:GetParameter(VARTYPE_MODEL)) 
-	model:SetBlendMode(BLEND_OPAQUE) 
-	model:SetRasterizerMode(RASTER_DETPHSOLID) 
-	model:SetDepthStencillMode(DEPTH_ENABLED)  
-	model:SetBrightness(1)
-	model:SetFadeBounds(0,99999,0)  
-	model:SetMatrix(world)
-	
-	if(model:HasCollision()) then
-		phys:SetShapeFromModel(world) 
-	else
-		phys:SetShape(mdl,world) 
+	local modelfile = self:GetParameter(VARTYPE_MODEL)
+	if modelfile then
+		model:SetRenderGroup(RENDERGROUP_LOCAL)
+		model:SetModel(modelfile) 
+		model:SetBlendMode(BLEND_OPAQUE) 
+		model:SetRasterizerMode(RASTER_DETPHSOLID) 
+		model:SetDepthStencillMode(DEPTH_ENABLED)  
+		model:SetBrightness(1)
+		model:SetFadeBounds(0,99999,0)  
+		model:SetMatrix(world)
+		
+		if(model:HasCollision()) then
+			phys:SetShapeFromModel(world) 
+		else
+			phys:SetShape(mdl,world) 
+		end
+		--phys:SetShape(phymodel,world * matrix.Scaling(1/amul) )
+		phys:SetMass(10) 
 	end
-	--phys:SetShape(phymodel,world * matrix.Scaling(1/amul) )
-	phys:SetMass(10) 
 	
 	--model:SetMatrix( world* matrix.Translation(-phys:GetMassCenter()*amul*10 ))
 	

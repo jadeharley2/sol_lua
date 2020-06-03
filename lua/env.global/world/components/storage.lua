@@ -136,7 +136,7 @@ component._typeevents = {
 	--server->client - data
 	[EVENT_CONTAINER_SYNC]={networked=true,f = function(self)
 		if SERVER then 
-			self:GetNode():SendEvent(EVENT_CONTAINER_SYNC_DATA,self:ToData())  
+		--	self:GetNode():SendEvent(EVENT_CONTAINER_SYNC_DATA,self:ToData())  
 		end
 	end},
 	[EVENT_CONTAINER_SYNC_DATA]={networked=true,f = function(self,data)

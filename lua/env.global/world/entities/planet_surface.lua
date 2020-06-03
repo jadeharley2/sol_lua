@@ -14,6 +14,8 @@ function ENT:Init()
 end
 function ENT:Spawn()  
 	
+	local rgroup1 = self.rgroup1 or RENDERGROUP_PLANET
+	local rgroup2 = self.rgroup2 or RENDERGROUP_CURRENTPLANET
 	
 	local partition = self:AddComponent(CTYPE_PARTITION2D) 
 	local surfacecom = self:AddComponent(CTYPE_SURFACE)  
@@ -47,7 +49,7 @@ function ENT:Spawn()
 	else
 		surfacecom:LinkToPartition()
 	end
-	surfacecom:SetRenderGroup(RENDERGROUP_PLANET)
+	surfacecom:SetRenderGroup(rgroup1)
 	
 	self.partition = partition
 	self.surface = surfacecom  
@@ -55,7 +57,7 @@ function ENT:Spawn()
 	
 	if(surfacecom:HasAtmosphere() )then
 		local atmosphere = self:AddComponent(CTYPE_ATMOSPHERE)  
-		atmosphere:SetRenderGroup(RENDERGROUP_PLANET)
+		atmosphere:SetRenderGroup(rgroup1)
 		self.atmosphere = atmosphere
 	end
 	
@@ -65,16 +67,20 @@ function ENT:Spawn()
 end
 
 function ENT:Enter() 
+	
+	local rgroup1 = self.rgroup1 or RENDERGROUP_PLANET
+	local rgroup2 = self.rgroup2 or RENDERGROUP_CURRENTPLANET
+
 	--render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,1e8,0.5*UNIT_LY)
 	render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_BACKGROUND)  
 	render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND) 
 	render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8) 
 	render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
-	self.surface:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+	self.surface:SetRenderGroup(rgroup2)
 	if self.modelA then
-		self.modelA:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
-		self.model:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
-		self.modelB:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		self.modelA:SetRenderGroup(rgroup2)
+		self.model:SetRenderGroup(rgroup2)
+		self.modelB:SetRenderGroup(rgroup2)
 	end
 	if self.atmosphere then
 		self.atmosphere:SetRenderGroup(RENDERGROUP_LOCAL)
@@ -85,14 +91,17 @@ function ENT:Enter()
 end
 
 function ENT:Leave()   
-	self.surface:SetRenderGroup(RENDERGROUP_PLANET)
+	local rgroup1 = self.rgroup1 or RENDERGROUP_PLANET
+	local rgroup2 = self.rgroup2 or RENDERGROUP_CURRENTPLANET
+
+	self.surface:SetRenderGroup(rgroup1)
 	if self.modelA then
-		self.modelA:SetRenderGroup(RENDERGROUP_PLANET)
-		self.model:SetRenderGroup(RENDERGROUP_PLANET)
-		self.modelB:SetRenderGroup(RENDERGROUP_PLANET)
+		self.modelA:SetRenderGroup(rgroup1)
+		self.model:SetRenderGroup(rgroup1)
+		self.modelB:SetRenderGroup(rgroup1)
 	end
 	if self.atmosphere then
-		self.atmosphere:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		self.atmosphere:SetRenderGroup(rgroup2)
 	end
 	
 	--render.SetGroupMode(RENDERGROUP_PLANET,RENDERMODE_ENABLED) 

@@ -106,8 +106,9 @@ local function OnPlayerSpawn(ply)
 
 	AddOrigin(ply)
 	
-	ply.player:AssignNode(ply)
 	ply.player:SendCurrentState(ply)
+	ply.player:AssignNode(ply)
+	network.AddNodeImmediate(ply)
 	
 	--ply:SetParent(SPAWNORIGIN)
 	--if SPAWNPOS then ply:SetPos(SPAWNPOS) end

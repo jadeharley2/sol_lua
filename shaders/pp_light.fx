@@ -90,7 +90,7 @@ struct PS_IN
         AddressV = CLAMP;
 
         // sampler comparison state
-        ComparisonFunc = LESS;
+        ComparisonFunc = GREATER;
     };
 
     float GetIsInViewMatrix(float4 worldposition, float4x4 viewProj)
@@ -161,7 +161,7 @@ struct PS_IN
         [unroll]
         for (int i=0;i<4;i++)
         {
-        vis +=g_ShadowMap.SampleCmp(ShadowSampler, ShadowTexCoord+poissonDisk[i]*dshift,depth-bias)*0.25;
+        vis +=g_ShadowMap.SampleCmp(ShadowSampler, ShadowTexCoord+poissonDisk[i]*dshift,depth+bias)*0.25;
         }
         return vis;  
     }
@@ -170,7 +170,8 @@ struct PS_IN
     { 
         float camdist = max(1,pow(length(worldposition.xyz)*100,4)/100);
         //bias = 0.0001*tan(acos(dotNL)); 
-        float bias = bias_base + bias_slopemul;//*tan(acos(dotNL));//*camdist; 
+        float bias =0.000001f;// 
+       // bias_base  + bias_slopemul;//*tan(acos(dotNL));//*camdist; 
         // dotNL is dot( n,l ), clamped between 0 and 1
         bias = clamp(bias, 0,0.01); 
 

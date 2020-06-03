@@ -69,6 +69,10 @@ float SS_GetDepth(float2 position)
 { 
 	 return linearDepth(tDepthView.Sample(sCC, position).r);
 }
+float SS_GetDepth2(float2 position)
+{ 
+	 return tDepthView.Sample(sCC, position).r;
+}
 //float3 getPos(float2 uv, float depth)
 //{  
 //    return mul( float4(camera_fovaspect * (uv * 2.0 - 1.0) * depth, -depth,1),transpose(invWVP)).xyz;
@@ -98,6 +102,23 @@ float3 SS_GetPosition(float2 UV, float depth)
 
 	return position.xyz;
 }
+float3 SS_GetPosition2(float2 UV, float depth)
+{
+	float4 position = 1.0f; 
+ 
+	position.x = UV.x * 2.0f - 1.0f; 
+	position.y = -(UV.y * 2.0f - 1.0f); 
+
+	position.z = depth; 
+ //position.w = 1;
+	//Transform Position from Homogenous Space to World Space 
+	position = mul(position, invWVP);  
+ 
+	//position *= position.w;
+	position /= position.w;
+
+	return position.xyz;
+}
 float3 SS_GetUV(float3 position)
 {
 	 float4 pVP = mul(float4(position, 1.0f), VP);
@@ -112,6 +133,13 @@ float3 SS_GetColor(float2 position,float level)
 float3 SS_GetNormal(float2 position)
 { 
 	 return tNormalView.Sample(sCC, position);
+}
+float linearDepth2(float depth)
+{  
+	//return (depth * camera_near - depth * camera_far) / ((depth - 1) * camera_near - depth * camera_far);
+	//return 1 - (2 * camera_near)/(camera_far - (  2.0 * (1 - depth)-1.0) * (camera_far - camera_near) + camera_near);
+    return  (2.0 * camera_near * camera_far) / 
+		(camera_far + camera_near - ((1-depth) * 2.0 - 1.0)  * (camera_far - camera_near)) ;
 }
 
 #include "headers/effect_pen.fxh"
@@ -149,9 +177,9 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 	float3 localNormal = tNormalView.Sample(sCC, input.tcrd).xyz;
 	float3 ssNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
 	float3 texelNormal =ssNormal;
-	float texelDepth = SS_GetDepth(input.tcrd);
+	float texelDepth = SS_GetDepth2(input.tcrd);
 
-	float3 texelPosition = SS_GetPosition(input.tcrd,texelDepth);
+	float3 texelPosition = SS_GetPosition2(input.tcrd,texelDepth);
 	float3 viewDir = normalize(texelPosition);
 	float3 reflectDir = normalize(reflect(-viewDir, texelNormal));
 	 
@@ -174,9 +202,9 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 		currentRay = texelPosition + -reflectDir * L;
 
 		nuv = SS_GetUV(currentRay); // проецирование позиции на экран
-		endDepth = SS_GetDepth(nuv.xy); // чтение глубины из DepthMap по UV
+		endDepth = SS_GetDepth2(nuv.xy); // чтение глубины из DepthMap по UV
 		
-		newPosition = SS_GetPosition(nuv.xy, endDepth);
+		newPosition = SS_GetPosition2(nuv.xy, endDepth);
 		L = length(texelPosition - newPosition);
 	} 
 	//return L*100000; 
@@ -186,8 +214,8 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 	//float cdot2 = saturate(pow(1-dot(viewDir,texelNormal),2));
 	//float3 cnuv2 =10 *texelDiffuse* SS_GetColor(nuv.xy,10).rgb*cdot2;
 	//return (nuv*float3(1,1,0)-float3(input.tcrd,0))*0.5+0.5;
-
-	if(texelDepth>endDepth) return texelDiffuse;//+cnuv2*reflectiveness;
+ 
+	if(texelDepth<endDepth) return texelDiffuse;//+cnuv2*reflectiveness;
 	//L = saturate(L * LDelimiter);
 	float error = saturate(1 - L);
 	//if(error!=error) error =0;
@@ -344,7 +372,7 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 		{
 			if (input.tcrd.x<0.5)
 			{
-				float d = linearDepth(tDepthView.Sample(sView, input.tcrd));
+				float d = (linearDepth2(tDepthView.Sample(sView, input.tcrd))*1000000.0)%1;
 				//d = ((d)*100)%1;
 				//d =(d*10)%1;
 				return d;
@@ -362,7 +390,10 @@ float4 CHANNELS(PS_IN input ) : SV_Target
 		return tNormalView.Sample(sView, input.tcrd);
 	}
 	if(debug_channels==4) {
-		return linearDepth(tDepthView.Sample(sView, input.tcrd));
+		return (linearDepth2(tDepthView.Sample(sView, input.tcrd).r)*1000000)%1;
+		float near_depth = 1/camera_near;
+		return (tDepthView.Sample(sView, input.tcrd).r*near_depth*100000)%1;
+		//return (linearDepth(tDepthView.Sample(sView, input.tcrd))*10)%1;
 	}
 	if(debug_channels==5) {
 		return tMaskView.Sample(sView, input.tcrd);

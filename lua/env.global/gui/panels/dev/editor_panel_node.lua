@@ -113,8 +113,12 @@ function PANEL:UpdateCnodes(root)
 		end
 	end)
 	hook.Add("editor_deselect","nodetree_update",function(node) 
-		local ss = self.noderef[node]
-		ss.title:SetTextColor(Vector(0.6,0.8,1)) 
+		if IsValidEnt(node) then
+			local ss = self.noderef[node]
+			if ss then
+				ss.title:SetTextColor(Vector(0.6,0.8,1)) 
+			end
+		end
 	end)
 end
 function PANEL:GetEntIcon(ent)

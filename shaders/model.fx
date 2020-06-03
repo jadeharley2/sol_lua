@@ -601,7 +601,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	output.mask = 1;
 	output.mask.x = ssao_mul;
 	output.mask.y = 0;
-    output.depth = input.pos.z;///input.pos.w;
+    output.depth = input.pos.z; //input.pos.z*
 	output.diffuse =0;
 	output.light =0;
 	output.stencil = stencil;
@@ -1008,10 +1008,10 @@ struct SHADOWC3_PS_OUT
 SHADOWC3_PS_OUT SHADOW_C3_PS( DCI_C3 input )  
 {  
     SHADOWC3_PS_OUT output = (SHADOWC3_PS_OUT)0;
-	float dp = input.pos.z*input.pos.w;
+	float dp = input.pos.z;//*input.pos.w;
 	if(SkyboxMode) 
 	{
-	 	clip(-1); 
+	 	clip(0); 
 	}
 	else if(TextureEnabled && alphatest)
 	{
@@ -1055,7 +1055,7 @@ SHADOWC3_PS_OUT SHADOW_C3_PS( DCI_C3 input )
 
 float SHADOW_PS_FLOAT( DCI_PS_IN input ) : SV_Target
 {  
-	float dp = input.pos.z*input.pos.w;
+	float dp = input.pos.z;//*input.pos.w;
 	if(SkyboxMode) 
 	{
 	 	clip(-1); 
@@ -1101,7 +1101,7 @@ float DepthDecode(float3 depth)
 
 float4 SHADOW_PS_COLOR( DCI_PS_IN input ) : SV_Target
 {  
-	float dp = input.pos.z*input.pos.w; 
+	float dp = input.pos.z;//*input.pos.w; 
 	if(TextureEnabled && alphatest)
 	{
 		float4 texIn = g_MeshTexture.Sample(MeshTextureSampler, input.tcrd) ;   

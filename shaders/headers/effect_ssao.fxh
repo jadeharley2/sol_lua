@@ -292,8 +292,8 @@ float3 SSAO(float3 color,float2 tcrd)
 	float3 localNormal = SS_GetNormal(tcrd).xyz;
 	float3 texelNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
 	
-	float texelDepth = SS_GetDepth(tcrd); 
-	float3 texelPosition = SS_GetPosition(tcrd,texelDepth);
+	float texelDepth = SS_GetDepth2(tcrd); 
+	float3 texelPosition = SS_GetPosition2(tcrd,texelDepth);
 	 
 	float radius_depth = ssao_radius/(texelDepth );
 	float occlusion = 0.0;
@@ -314,7 +314,7 @@ float3 SSAO(float3 color,float2 tcrd)
 			float3 hemi_ray = ray*0.00006*texelDepth*10000*raylen;
 			float3 worldpos = texelPosition+hemi_ray;
 			float2 texpos = SS_GetUV(worldpos).xy;
-			float occ_depth = SS_GetDepth(texpos);
+			float occ_depth = SS_GetDepth2(texpos);
 			float difference = texelDepth-occ_depth;//hemi_ray.z;
 			float fadeout = 1-saturate(max(difference,0)/0.0005);
 			
@@ -325,7 +325,7 @@ float3 SSAO(float3 color,float2 tcrd)
 				//	max(0.0,dot(texelNormal,normalize(worldpos))-g_bias)
 				//	*(1.0/(1.0+d))
 				//	*g_intensity;
-				occlusion += difference*fadeout*ssaomul;//*ssaoOff;
+				occlusion += difference*fadeout*ssaomul*1000000;//*ssaoOff;
 				/////////occlusion += dot(texelNormal,normalize(worldpos))*1000;
 				//occlusion+=(-difference)*0.001;
 			}
@@ -342,7 +342,7 @@ float3 SSAO(float3 color,float2 tcrd)
 		} 
 	} 
 	//return saturate(1-occlusion*10); 
-	return saturate(1-occlusion*10)*color; 
+	return saturate(1-occlusion*10*100)*color; 
 	//return float3(1,1,1)*(1-occlusion* (1.0 / ssao_samples));
 	//return color*(1-occlusion* (1.0 / ssao_samples));
 	
@@ -355,8 +355,8 @@ float3 SSAO_HARD(float3 color,float2 tcrd)
 	float3 localNormal = SS_GetNormal(tcrd).xyz;
 	float3 texelNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
 	
-	float texelDepth = SS_GetDepth(tcrd); 
-	float3 texelPosition = SS_GetPosition(tcrd,texelDepth);
+	float texelDepth = SS_GetDepth2(tcrd); 
+	float3 texelPosition = SS_GetPosition2(tcrd,texelDepth);
 	 
 	float radius_depth = ssao_radius/(texelDepth );
 	float occlusion = 0.0;
@@ -374,9 +374,9 @@ float3 SSAO_HARD(float3 color,float2 tcrd)
 			float raylen = ssao_raylen[i%8]; 
 			float3 hemi_ray = ray*0.00006*texelDepth*10000*raylen;
 			float3 worldpos = texelPosition+hemi_ray;
-			float2 texpos = SS_GetUV(worldpos).xy;
-			float occ_depth = SS_GetDepth(texpos);
-			float difference = texelDepth-occ_depth;//hemi_ray.z;
+			float2 texpos = SS_GetUV(worldpos).xy; 
+			float occ_depth = SS_GetDepth2(texpos);
+			float difference = linearDepth2(texelDepth) - linearDepth2(occ_depth);//hemi_ray.z;
 			float fadeout = 1-saturate(max(difference,0)/0.0005);
 			
 			if(difference>0)//&&difference<0.0005)//���� ������� ����� ��� ��������� �������
@@ -385,6 +385,6 @@ float3 SSAO_HARD(float3 color,float2 tcrd)
 			} 
 		} 
 	}  
-	return saturate(1-occlusion*10)*color;  
+	return saturate(1-occlusion*10)*color;   
 }
  
