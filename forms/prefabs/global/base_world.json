@@ -1,0 +1,31 @@
+
+{  
+	"name" : "world", 
+	"tags":["world"],
+	"sizepower" : 1E4,
+	"seed" : 9900002, 
+	"subs" : [
+		{
+			"name" : "skybox",
+			"luatype":"env_skybox",
+			"texture":"textures/cubemap/bluespace.dds"
+		},
+		{
+			"name" : "worldspace",
+			"sizepower" : 1E3,
+			"seed" : 19900002,
+			"components":[
+				{
+					"type":"physspace", 
+					"gravity":[0,-4,0]
+				}
+			],
+			"subs" : [ 
+				{
+					"name" : "shadow",
+					"luatype": "test_shadowmap2"
+				}, 
+			]
+		}
+	]
+}

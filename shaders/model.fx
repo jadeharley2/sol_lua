@@ -337,7 +337,10 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 	
 	output.pos = wpos; mul(wpos,VP);
 	output.wpos = wpos.xyz;
-	output.norm = normalize(mul(input.norm,nworld)); 
+	//output.norm  = mul(normalize(input.norm),nworld); 
+	//output.bnorm = mul(normalize(input.bnorm),nworld);  
+	//output.tnorm = mul(normalize(input.tnorm),nworld); 
+	output.norm  = normalize(mul(input.norm,nworld)); 
 	output.bnorm = normalize(mul(input.bnorm,nworld)); 
 	output.tnorm = normalize(mul(input.tnorm,nworld)); 
 	output.tcrd = input.tcrd; 
@@ -827,12 +830,13 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		if(ao_enabled){
 			ao_mul = g_MeshTexture_a.Sample(MeshTextureSampler, texCoord).r ; 
 		}
+ 
+		emissive+= fren * ao_mul * lerp(diffuse*ambmap*0.7,lerp(envmap,diffuse*envmap, _mask.z),_mask.x);
+		//lerp(
+		//	diffuse*ambmap,
+		//	lerp(envmap,diffuse*envmap, _mask.z),
+		//	_mask.y)*fren*ao_mul;
 
-		emissive+=
-		lerp(
-			diffuse*ambmap,
-			lerp(envmap,diffuse*envmap, _mask.z),
-			_mask.y)*fren*ao_mul;
 		//emissive = ao_mul*float3(1,1,1);
 		//emissive+=diffuse*ambmap*1+ lerp(envmap,diffuse*envmap, _mask.z)*0.5*_mask.x;
 		float3 result = diffuse;

@@ -12,12 +12,11 @@ end
  
 function OBJ:Update()   
 	if global_player_await_id then
-		local awp = Entity(global_player_await_id)
-		if IsValidEnt(awp) then 
+		local awp = Entity(global_player_await_id) 
+		if IsValidEnt(awp) and IsValidEnt(awp:GetParent()) then 
 			SetLocalPlayer(awp)
 			SetController("actor")
 			global_player_await_id=false
-
 		end
 	else
 		local p = LocalPlayer(true)

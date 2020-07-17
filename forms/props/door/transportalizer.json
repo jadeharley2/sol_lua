@@ -1,0 +1,23 @@
+{
+	"group" : "furniture",
+	"tags" : ["hs"],
+	"model" : "furniture/hs/transportalizer.stmd",
+	"scale" : 0.08,
+	"rotation" : [0,0,0], 
+	"luatype":"use_door_transfer", 
+	"offset" : [0,0.2,0],
+	"stateevents" : {
+		"open" :{ "actions" : [
+			{ "op" : "sound", "type" : "events/outgoing.ogg" },
+			{ "op" : "particle", "type" : "explosion_void",
+				"size" : 0.1, "pos" : [0,1,0]  
+			}
+		]},
+		"close" :{ "actions" : [
+			{ "op" : "sound", "type" : "events/incoming.wav" },
+			{ "op" : "particle", "type" : "magic_explosion",
+				"size" : 0.1, "pos" : [0,1,0]  
+			}
+		]}
+	} 
+} 

@@ -222,11 +222,16 @@ function PANEL:MouseClick(fid)
 				end
 				if condvalue then
 					local act = v.action 
+					if isjson(act) then
+						act = json.FromJson(act)
+					end
+					
 					if istable(act) then
-						act = ''
-						for kk,vv in ipairs(v.action) do
-							act = act ..' '.. vv
+						local act2 = ''
+						for kk,vv in ipairs(act) do
+							act2 = act2 ..' '.. vv
 						end
+						act = act2
 					end
 					local f,e1,e2,e3 = load(act,nil,nil,fenf)
 					if f and isfunction(f) then 

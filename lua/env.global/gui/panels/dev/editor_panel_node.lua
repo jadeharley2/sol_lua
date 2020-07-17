@@ -109,7 +109,9 @@ function PANEL:UpdateCnodes(root)
 			end
 		else
 			local ss = self.noderef[node]
-			ss.title:SetTextColor(Vector(0.8,2,1))
+			if ss then
+				ss.title:SetTextColor(Vector(0.8,2,1))
+			end
 		end
 	end)
 	hook.Add("editor_deselect","nodetree_update",function(node) 

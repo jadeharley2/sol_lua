@@ -49,7 +49,7 @@ function PANEL:UpdateContext()
 					self:SetTextOnly(false)   
 				end
 			elseif isfunction(ci) then
-				ci(self)  
+				ci(self,topel)  
 			end 
 			self:Show() 
 			self:UpdateLayout()

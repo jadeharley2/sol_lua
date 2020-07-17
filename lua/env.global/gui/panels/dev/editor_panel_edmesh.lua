@@ -265,6 +265,7 @@ function PANEL:RefreshLayers()
     end
 end
 function PANEL:SetMode(mode)
+    MsgN("new mode",mode)
     static.cur_pop = false
     static.enabledposupdate = false
     static.mode = mode
@@ -454,9 +455,9 @@ function PANEL:SelectMesh(ent)
 end
 function PANEL:InitOp(mode) 
     local opt = static.optypes[mode]
-    if opt and static.coptype ~= mode  then
+    if opt  then --and static.coptype ~= mode  
         --MsgN("INIT1")
-        static.coptype = mode 
+        static.coptype = opt.type or mode 
         static.curop = { }
         for k,v in pairs(opt.params) do
             if(v.default~=nil) then

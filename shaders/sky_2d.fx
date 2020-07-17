@@ -565,7 +565,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 	 
 
 	float dpdepth = input.Position.z;
-	float rpdepth = 0.000006/SS_GetDepth(screenPosition) 
+	float rpdepth = 0.000006/SS_GetDepth(screenPosition) * distanceMultiplier/1000
 		//*sqrt(distanceMultiplier)/1000;
 	//	/1000
 	;//*sqrt(distanceMultiplier)/100;

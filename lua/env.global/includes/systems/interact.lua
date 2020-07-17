@@ -70,7 +70,7 @@ function Interact(USER,TARGET,intent,...)
         local dist = TARGET:GetDistance(USER)
         if dist<(USER.userange or 2) then
         TARGET:SendEvent(EVENT_INTERACT,USER,intent,...)  
-        MsgN("[interact] ",intent,USER,TARGET)
+        --MsgN("[interact] ",intent,USER,TARGET)
         end
     end 
 end

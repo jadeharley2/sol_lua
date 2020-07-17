@@ -1,0 +1,6 @@
+{	
+	"type" : "tool_wire",
+	"name" : "Wiring tool",
+	"description" : "create and link logic gates",
+	"icon" : "unknown",
+}

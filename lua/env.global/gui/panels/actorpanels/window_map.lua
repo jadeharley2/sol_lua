@@ -101,6 +101,19 @@ function PANEL:InitSystemMap(node)
 	local ss = u:GetSize()
 	self:RSystemMap(node,1,Point(-ss.x,0),ss.y-100,GetCamera():GetParent())
 end
+local continfo = function(ci,n)
+	
+	ci:Clear()
+	ci:SetSize(200,100)
+	ci:SetAutoSize(false,true)
+
+	local cc = panel.Create('iteminfo')
+	cc:SetForm("planet.default")
+	cc:Dock(DOCK_TOP)
+	ci:Add(cc)
+	ci:UpdateLayout() 
+	
+end
 function PANEL:RSystemMap(node,level,pos,Y,cparent)
 	local ncl = node:GetClass()  
 	local plnnum = 0
@@ -151,7 +164,8 @@ function PANEL:RSystemMap(node,level,pos,Y,cparent)
 				text = tostring(plnnum),
 				texture = "textures/gui/circle.png",
 				anchors = 5,
-				contextinfo = v:GetName(), 
+				enode = v,
+				contextinfo =continfo-- v:GetName(), 
 			}) 
 		end
 		if nnode then

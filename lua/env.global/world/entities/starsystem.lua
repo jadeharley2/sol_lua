@@ -40,7 +40,6 @@ function ENT:Enter()
 			--render.DisableGroup(RENDERGROUP_DEEPSPACE)
 			 self:ReloadSkybox()
 			 
-			 
 			
 			--if self.stars then  
 			--	for k1,star in pairs(self.stars) do  
@@ -168,7 +167,9 @@ if CLIENT then
 			--render.SetGroupMode(RENDERGROUP_STARSYSTEM,RENDERMODE_BACKGROUND)
 			--render.SetGroupBounds(RENDERGROUP_STARSYSTEM,1e8,0.5*UNIT_LY)
 			MsgN('sky render finished')
+			render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
 		end)
+		self.skybox:SetMatrix(matrix.Scaling(1,-1,1)*matrix.Rotation(0,180,0))
 	end 
 end
 

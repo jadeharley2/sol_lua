@@ -8,9 +8,14 @@ editor.action_deselect = function(node) worldeditor.selected:Remove(node) worlde
 editor.action_move = function(from,to) node:SetPos(to) end 
 editor.action_moveundo = function(from,to) node:SetPos(from) end 
 
-editor.ent_worldeditor = editor.ent_worldeditor or ents.Create()
-editor.ent_worldeditor:SetSeed(55667722)
-editor.ent_worldeditor._events = editor.ent_worldeditor._events or {}
+if not editor.ent_worldeditor then
+	local e = ents.Create() 
+	e:SetSeed(55667722)
+	e:SetName("ent_worldeditor")
+    e:Spawn()
+	e._events = e._events or {} 
+	editor.ent_worldeditor = e 
+end
 ent_worldeditor = editor.ent_worldeditor
 
 DeclareEnumValue("event","EDITOR_MOVE",				224980)

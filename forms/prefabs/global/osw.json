@@ -1,0 +1,30 @@
+
+{  
+	"name" : "osw", 
+	"tags":["world"],
+	"sizepower" : 1E4,
+	"seed" : 9900002, 
+	"subs" : [ 
+		{ 
+			"name" : "osw",
+			"luatype": "terrain2d",
+			"world" : "unnamedworld_131",
+			"subs" : [
+				{
+					"name" : "spawn",
+					"luatype" : "spawnpoint",
+					"playerspawn":true,
+					"realpos":[0,1,0]
+				},
+				{
+					"name" : "door_t2d",
+					"form" : "prop.door.transportalizer",
+					"pos" :[0,-0.0009033702,0], 
+					"modtable" : {
+						"target" : "hub:prefab.global.hub:door_osw:Teleport to hub"
+					}
+				}, 
+			]  
+		}  
+	]
+}

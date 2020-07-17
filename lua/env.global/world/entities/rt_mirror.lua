@@ -59,7 +59,7 @@ function ENT:Spawn()
 		self.cc = cc 
 		
 		local vsize = GetViewportSize()  
-		local rt = CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt")
+		local rt = CreateTexture(vsize.x,vsize.y,10, "@mirrorrt")--CreateRenderTarget(vsize.x,vsize.y,"@mirrorrt")
 		self.rt = rt
 		self:Hook("window.resize","updatemirror",function() 
 			local cm = GetCamera()
@@ -86,9 +86,9 @@ function ENT:Spawn()
 		end) 
 		
 		rcamera:SetScreenSpace(true)
+		rcamera:SetScreenSpaceTarget(self.rt)
 		
-		
-		rcamera:SetRenderTarget(0,self.rt)
+		--rcamera:SetRenderTarget(0,self.rt)
 		rcamera:RequestDraw()
 		
 		--model:SetMaterial("textures/target/mirrorrt.json")

@@ -136,7 +136,34 @@ function ENT:SetMode(mode)
 					current_wepv = panel.Create("window_formviewer") 
 					local givefunc = function(LP,itemname)
 						--LP:Give(itemname) 
-						LP:SendEvent(EVENT_GIVE_ITEM,itemname)
+						LP:SendEvent(EVENT_GIVE_ITEM,"apparel."..itemname)
+						MsgN("Give ",LP," <= ",itemname)
+					end
+					current_wepv:Setup("apparel",givefunc)
+					current_wepv.OnClose = function()
+						current_wepv=false
+						SHOWINV = false
+					end
+					current_wepv:Show()
+					SHOWINV = true
+				end
+			end
+		end
+		self.OnPress = dfunc
+		self.info = "item spawner"
+	elseif mode == "tool" then
+		local current_wepv = false
+		local dfunc = function(button,user) 
+			if CLIENT and user == LocalPlayer() then
+				if current_wepv then
+					current_wepv:Close()
+					current_wepv=false
+					SHOWINV = false
+				else
+					current_wepv = panel.Create("window_formviewer") 
+					local givefunc = function(LP,itemname)
+						--LP:Give(itemname) 
+						LP:SendEvent(EVENT_GIVE_ITEM,"tool."..itemname)
 						MsgN("Give ",LP," <= ",itemname)
 					end
 					current_wepv:Setup("tool",givefunc)
@@ -150,7 +177,7 @@ function ENT:SetMode(mode)
 			end
 		end
 		self.OnPress = dfunc
-		self.info = "item spawner"
+		self.info = "tool spawner"
 	end
 end
 

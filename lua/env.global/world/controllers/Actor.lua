@@ -453,13 +453,15 @@ function OBJ:HandleWeapon(actor,weap)
 				dir = lw:Forward()
 			end
 		end
-		if LF then actor:WeaponFire(dir) end 
-		if RF then actor:WeaponFire(dir,true) end  
+		if LF then actor:WeaponFire(dir,false,self.clf) self.clf = true end 
+		if RF then actor:WeaponFire(dir,true,self.crf) self.crf = true end  
 		if F and weap.OnF then
 			weap:OnF() 
 		end 
 		self.rmode = true
 	end
+	if not LF then self.clf = false end
+	if not RF then self.crf = false end
 	--if RF and weap.AltFire and weap:IsReady() then weap:SendEvent(EVENT_TOOL_FIRE,1) end  
 	--if R then
 	--	actor:SendEvent(EVENT_TOOL_DROP)

@@ -120,16 +120,17 @@ function world.LoadWorld_OnLoaded(e,opttable,U,onComplete)
 end
 
 function world.UnloadWorld(nodisconnect)
-	if CLIENT and network.IsConnected() and not nodisconnect then
-		network.Disconnect()
-		SetController()  
-	end
 	if CLIENT then
+		SetController()  
 		local cam = GetCamera()
 		cam:SetParent(LOBBY) 
+	end 
+	if CLIENT and network.IsConnected() and not nodisconnect then
+		network.Disconnect()
 	end
 
 	if U then
+		hook.Call("world.unload",U)
 		if istable(U) then
 			for k,v in pairs(U) do v:Despawn() end
 		else
@@ -240,4 +241,9 @@ end)
 
 hook.Add("engine.location.loaded","engine.hook",function() 
 	engine.SetGameState("singleplayer")
+end)
+
+console.AddCmd("coc",function(w)
+	--MsgN(w)
+	engine.SendToAnchor(LocalPlayer() or GetCamera(),w)
 end)

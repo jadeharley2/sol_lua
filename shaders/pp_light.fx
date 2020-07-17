@@ -228,7 +228,9 @@ struct PS_IN
     }
     float2 getUV(float4 pos)
     {
-        return pos.xy/viewSize;//(pos.xy / pos.w) * 0.5 + 0.5;
+        return pos.xy/viewSize;
+        //float2 pre = pos.xy/viewSize*float2(0.5,1);
+        //return float2(0.5-pre.x,pre.y);//(pos.xy / pos.w) * 0.5 + 0.5;
     }
     float3 getNormal(float2 uv)
     {
@@ -459,8 +461,10 @@ float4 PS( PS_IN input ) : SV_Target
 */
 float4 PS_PBR( PS_IN input ) : SV_Target
 {    
-    //return 1;
+    //return 0;
     float2 uv = getUV(input.pos);
+	//return float4(uv/viewSize,0,1)*0.1;
+
     float3 normal = getNormal(uv);
     float3 pos = SS_GetPosition(uv);
     float4 mask =  tMaskView.Sample(sView, uv);

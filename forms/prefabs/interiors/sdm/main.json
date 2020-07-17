@@ -1,0 +1,21 @@
+
+{  
+	"name" : "sdm main", 
+    "extends" : "prefab.global.base_world:worldspace", 
+    "dynamic" : "forms/levels/sdm/interior_main.dnlv",
+    "seed" : 44301001,
+	"subs" : [ 
+		{
+			"name":"spawn",
+			"luatype" : "spawnpoint",
+			"realpos":[0,0.4,0]
+		}, 
+		{
+			"name" : "envmap",
+			"luatype":"env_cubemap",
+			"target":"parent",
+			"realpos" : [0,2,0],
+			"delay":100
+		},
+	]
+}

@@ -7,6 +7,7 @@ function RenderTexture(width,height,task,callback)
 	local rte = RTENT
 	if not IsValidEnt(rte) then 
 		rte = ents.Create("util_textureRenderer")
+		rte:SetName("textureSpace")
 		rte:Spawn()
 		RTENT = rte
 	end 
@@ -17,6 +18,7 @@ function RenderThumbnail(form,callback)
 	local rte = RTHUMB
 	if not rte or not IsValidEnt(rte) then  
 		rte = ents.Create("util_thumbnailRenderer")
+		rte:SetName("thumbnailSpace")
 		rte:Spawn()
 		RTHUMB = rte 
 	end 
@@ -28,6 +30,7 @@ function RenderSprite(form,callback,params)
 	local rte = RSPRITE
 	if not rte or not IsValidEnt(rte) then  
 		rte = ents.Create("util_spriteRenderer")
+		rte:SetName("spriteSpace")
 		rte:Spawn()
 		RSPRITE = rte 
 		MsgN("strt")

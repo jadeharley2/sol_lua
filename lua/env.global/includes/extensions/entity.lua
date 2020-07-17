@@ -177,3 +177,59 @@ function ENTITY:RotateToAdd(axis,angle,time,fps)
 	end)
 end
 
+
+function ENTITY:SetupModel(modelname, modelscale, norotation)
+	local model = self:GetComponent(CTYPE_MODEL)
+	
+	modelname = modelname or self[VARTYPE_MODEL]
+	modelscale = modelscale or self[VARTYPE_MODELSCALE] or 1
+	if modelname then
+		self[VARTYPE_MODEL] = modelname
+		self[VARTYPE_MODELSCALE] = modelscale
+
+		local world = matrix.Scaling(modelscale)
+		if not norotation then
+			world = world * matrix.Rotation(-90,0,0)
+		end
+		model:SetRenderGroup(RENDERGROUP_LOCAL)
+		model:SetModel(modelname) 
+		model:SetBlendMode(BLEND_OPAQUE) 
+		model:SetRasterizerMode(RASTER_DETPHSOLID) 
+		model:SetDepthStencillMode(DEPTH_ENABLED)  
+		model:SetBrightness(1)
+		model:SetFadeBounds(0,99999,0)  
+		model:SetMatrix(world)
+	end
+end
+function ENTITY:SetupPhysicsObject(modelscale,norotation)
+	local model = self:GetComponent(CTYPE_MODEL)
+	local phys = self:GetComponent(CTYPE_PHYSOBJ)
+	if model and phys then
+		if(model:HasCollision()) then
+			modelscale = modelscale or self[VARTYPE_MODELSCALE] or 1
+			
+			local world = matrix.Scaling(modelscale)
+			if not norotation then
+				world = world * matrix.Rotation(-90,0,0)
+			end
+
+			phys:SetShapeFromModel( world )  
+		end
+	end
+end
+function ENTITY:SetupStaticCollision(modelscale,norotation)
+	local model = self:GetComponent(CTYPE_MODEL)
+	local coll = self:GetComponent(CTYPE_STATICCOLLISION)
+	if model and coll then
+		if(model:HasCollision()) then
+			modelscale = modelscale or self[VARTYPE_MODELSCALE] or 1
+			
+			local world = matrix.Scaling(modelscale)
+			if not norotation then
+				world = world * matrix.Rotation(-90,0,0)
+			end
+
+			coll:SetShapeFromModel( world )  
+		end
+	end
+end

@@ -52,6 +52,18 @@ hook.Add("prop.variable.load","door",function (self,j,tags)
 		local wio = self:RequireComponent(CTYPE_WIREIO)
 		wio:AddOutput("out")
 	end
+	if j.door_teleport then
+
+		--"door_teleport":{
+		--	"anchor" : {
+		--		"location":[
+		--			"darkworld",
+		--			1000002,
+		--			[0,0,0]
+		--		]
+		--	}
+		--}
+	end
 end)
 
 

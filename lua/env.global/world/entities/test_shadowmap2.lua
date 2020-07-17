@@ -8,6 +8,11 @@ function ENT:Init()
 	self:SetSelfContained(true)
 end
 
+function ENT:SetupData(data)
+	if data.light then
+		self.light = nodeloader.GetByName(self,data.light)
+	end
+end
 function ENT:Spawn()   
 	local seed = self:GetSeed()
 	hook.Add("settings.changed","shadowmap.update."..tostring(seed),function()
@@ -61,7 +66,7 @@ function ENT:UpdateShadowMap()
 end
 function ENT:UpdatePos() 
 	local c = GetCamera()
-	if not IsValidEnt(self) or not self.camera or not IsValidEnt(self.light) then 
+	if not IsValidEnt(self) or not self.camera then 
 		hook.Remove(EVENT_GLOBAL_PREDRAW, "shadowmapupdate"..tostring(self.seed))
 	else
 		--self:SetPos(Vector(0,0,0)) 
@@ -77,7 +82,7 @@ function ENT:UpdatePos()
 		
 		local light = self.light
 		if light then 
-			self.camera:SetLight(light) 
+		--	self.camera:SetLight(light) 
 		end
 		
 		

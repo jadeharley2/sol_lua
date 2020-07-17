@@ -1895,16 +1895,16 @@ function ENT:SetActiveWeapon(weap)
 end
  
 
-function ENT:WeaponFire(dir,alternative) 
+function ENT:WeaponFire(dir,alternative,iscontinuous) 
 	if CLIENT then
 		local weap = self:GetActiveWeapon() 
 		if alternative then
-			if RF and weap.AltFire and weap:IsReady() then
+			if RF and weap.AltFire and weap:IsReady(iscontinuous) then
 				weap:SendEvent(EVENT_TOOL_FIRE,1,dir)  
 				return true
 			end  
 		else
-			if weap.Fire and weap:IsReady() then  
+			if weap.Fire and weap:IsReady(iscontinuous) then  
 				weap:SendEvent(EVENT_TOOL_FIRE,0,dir) 
 				return true
 			end 

@@ -4,6 +4,7 @@ local active_spawnpoints = ENT.active_spawnpoints
 function CreateSpawnpoint(node,pos)
 	e = ents.Create("spawnpoint")
 	e:SetPos(pos)-- SpawnSO("primitives/sphere.stmd",self,pos,0.75)
+	e:SetName("spawn")
 	e:AddTag(77723)
 	e:SetParent(node)
 	e:Spawn()
@@ -14,6 +15,11 @@ function ENT:Init()
 	self:SetSpaceEnabled(false)
 end 
 
+function ENT:SetupData(data)
+	if data.playerspawn then
+		self:SetPlayerSpawn()
+	end
+end
 function ENT:Spawn()
 end
 function ENT:Despawn()  

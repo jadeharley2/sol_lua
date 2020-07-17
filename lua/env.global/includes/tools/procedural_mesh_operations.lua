@@ -185,29 +185,28 @@ local optypes = {
         
         icon = "textures/gui/panel_icons/split.png",
         name = "Split faces",
-        type = "split",
-        defaultmode = "binary",
-        modes = {
-            even = {
-                params = { 
-                    steps = {
-                        type = "float",
-                        default = 1
-                    },
-                    stype = {
-                        default = "constant"
-                    }, 
-                    side = {
-                         default ="first", 
-                    }
-                    
-                },
-                operate = function(model, cam, wdir, op)  
-                    local dv = model:GetVNPDrag(cam,wdir) 
-                    op.steps =  math.Clamp(dv,1,100)
-                end
-            },
-            binary = {
+        type = "split", 
+        --modes = {
+           --even = {
+           --    params = { 
+           --        steps = {
+           --            type = "float",
+           --            default = 1
+           --        },
+           --        stype = {
+           --            default = "constant"
+           --        }, 
+           --        side = {
+           --             default ="first", 
+           --        }
+           --        
+           --    },
+           --    operate = function(model, cam, wdir, op)  
+           --        local dv = model:GetVNPDrag(cam,wdir) 
+           --        op.steps =  math.Clamp(dv,1,100)
+           --    end
+           --},
+           --binary = {
                 params = { 
                     steps = {
                         type = "float",
@@ -228,8 +227,31 @@ local optypes = {
                     local dv = model:GetVNPDrag(cam,wdir) 
                     op.size =  {-math.Clamp(dv,0.000001,1),0}
                 end
-            }
+          --  }
+        --},
+    }, 
+    spliteven = {
+        
+        icon = "textures/gui/panel_icons/split.png",
+        name = "Split faces even",
+        type = "split", 
+        params = { 
+            steps = {
+                type = "float",
+                default = 2
+            },
+            stype = {
+                default = "constant"
+            }, 
+            side = {
+                    default ="first", 
+            } 
         },
+        operate = function(model, cam, wdir, op)  
+            local dv = model:GetVNPDrag(cam,wdir) 
+            op.steps =  math.Clamp(dv,1,100)
+        end
+            
     }, 
     bridge = {
         icon = "textures/gui/panel_icons/bridge.png",
@@ -240,6 +262,14 @@ local optypes = {
                 type = "float",
                 default = 0
             }
+        },
+        applyonclick = true
+    },
+    flip = {
+        icon = "textures/gui/panel_icons/bridge.png",
+        name = "Flip selected faces",
+        type = "flip",
+        params = {  
         },
         applyonclick = true
     },
@@ -289,9 +319,34 @@ local optypes = {
             },
         },
         applyonclick = true 
+    },
+    substitute = {
+        icon = "textures/gui/panel_icons/structure.png",
+        name = "Substitute face with obj",
+        type = "substitute",
+        params = { 
+            obj = {
+                type = "string",
+                default = "forms/levels/city/detail/window01.obj"
+            },
+            zscale = {
+                type = "float",
+                default = -1,
+                description = "Extrude value"
+            },
+            flip= { 
+                type = "bool",
+                default = true
+            },
+        },
+        operate = function(model, cam, wdir, op)  
+            local dv =model:GetVNPDrag(cam,wdir)  
+            op.zscale = math.Clamp(dv,-10,10) 
+        end,
+       -- applyonclick = true
     }
-} 
+}  
 
 for k,v in pairs(optypes) do
     MEAddOPType(k,v)
-end
+end 

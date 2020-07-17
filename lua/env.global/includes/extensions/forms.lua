@@ -4,6 +4,14 @@ local forms = forms
 function forms.GetData2(formid)
 	local aparts = string.split(formid,'.')
 	local part2 = string.join('.',aparts,1)
+	if not part2 then
+		aparts = string.split(formid,'/')
+		local part2 = string.join('.',aparts,1)
+		if not part2 then
+			error("malformed formid: "..formid)  
+		end
+		return forms.GetData(aparts[1],part2)
+	end
 	return forms.GetData(aparts[1],part2)
 end
 function forms.ReadForm(form)
@@ -40,7 +48,7 @@ function forms.Spawn(form,parent,arguments)
 		error("no formid specified!")
 	end
 --	MsgN(aparts[1],loctype)
-	local r = hook.Call("formspawn."..aparts[1],form,parent,arguments) 
+	local r = hook.Call("formspawn."..aparts[1],form,parent,arguments or {}) 
 	if not r then
 		MsgN("unable to spawn ", form,"formspawn."..aparts[1])
 	end
@@ -57,7 +65,7 @@ function forms.Create(form,parent,arguments)
 		error("no formid specified!")
 	end
 --	MsgN(aparts[1],loctype)
-	local r = hook.Call("formcreate."..aparts[1],form,parent,arguments) 
+	local r = hook.Call("formcreate."..aparts[1],form,parent,arguments or {}) 
 	if not r then
 		MsgN("unable to create ", form,"formcreate."..aparts[1])
 	end

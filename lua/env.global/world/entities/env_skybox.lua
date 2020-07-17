@@ -8,7 +8,11 @@ function SpawnSkybox(parent,texture)
 	return e
 end
 --ex: "textures/skybox/spacedefault/space.png"
-
+function ENT:SetupData(data)
+	if data.texture then
+		self.texture = data.texture
+	end
+end
 function ENT:Spawn()   
 	self:SetSpaceEnabled(false) 
 	if CLIENT then

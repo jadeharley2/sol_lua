@@ -198,7 +198,7 @@ hook.Add('formcreate.planet','spawn',function(form,parent,arguments)
 	PLANET.szdiff = 2
 	PLANET[VARTYPE_FORM] = form
 	PLANET[VARTYPE_RADIUS] = radius
-	PLANET[VARTYPE_ARCHETYPE] = 'barren'
+	PLANET[VARTYPE_ARCHETYPE] = 'default'
 	PLANET.rgroup1 = RENDERGROUP_LOCAL
 	PLANET.rgroup2 = RENDERGROUP_LOCAL
 	PLANET.rgroup3 = RENDERGROUP_LOCAL

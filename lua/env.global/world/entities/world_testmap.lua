@@ -34,8 +34,16 @@ function ENT:LD2(n)
 	n:SetParent(self.space)
 	--n.phys:SetVelocity(u*3.1)--Vector(0,10,0))
 end
+function ENT:Despawn()
+	if IsValidEnt(self.g) then self.g:Despawn() end
+end
 function ENT:Spawn()
+MsgN("SPAWNWORLD ###################")
+	self.g = 
+	--forms.Create("prefab.global.flatgrass",nil,{uid = "flatgrass"})
+	nodeloader.Create("prefab.global.flatgrass",nil,"flatgrass",self)
 
+	if true then return end
 	-- all worlds must have minimum 1 subspace 
 	-- 
 	local space = ents.Create()
@@ -172,8 +180,8 @@ function ENT:Spawn()
 				current_wepv = panel.Create("window_formviewer") 
 				local givefunc = function(LP,itemname)
 					--LP:Give(itemname) 
-					LP:SendEvent(EVENT_GIVE_ITEM,itemname)
-					MsgN("Give ",LP," <= ",itemname)
+					LP:SendEvent(EVENT_GIVE_ITEM,"tool."..itemname)
+					MsgN("Give ",LP," <= ",itemname) 
 				end
 				current_wepv:Setup("tool",givefunc)
 				current_wepv.OnClose = function()
@@ -552,7 +560,16 @@ end
 function ENT:GetSpawn() 
 	local space = self.space
  
-	
+	if CLIENT then
+		local c = SpawnPlayerChar( Vector(0,0.0013627,0),LOBBY) 
+		return c, Vector(0,0,0)
+	else 
+		SPAWNORIGIN = self.space2
+		SPAWNPOS = Vector(0,0.0013627,0)
+		return self.space, Vector(0,0,0)
+	end
+
+
 --	local space2 = ents.Create()
 --	space2:SetLoadMode(1)
 --	space2:SetSeed(9900033)

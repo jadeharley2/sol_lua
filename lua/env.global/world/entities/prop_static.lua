@@ -24,6 +24,14 @@ function ENT:Init()
 	self:SetSpaceEnabled(false) 
 	
 end
+function ENT:SetupData(data)
+	if data.model then 
+		self[VARTYPE_MODEL] = data.model
+	end 
+	if data.modelscale then 
+		self[VARTYPE_MODELSCALE] = data.modelscale
+	end 
+end
 function ENT:Load()
 	local modelcom = self.modelcom
 	if not modelcom then

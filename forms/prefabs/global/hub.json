@@ -1,0 +1,100 @@
+
+{  
+	"name" : "hub", 
+	"extends" : "prefab.global.base_world:worldspace", 
+	"subs" : [ 
+		{
+			"name" : "hubspawn",
+			"luatype" : "spawnpoint",
+			"playerspawn":true,
+			"pos":[0,-2,0]
+		},
+		{
+			"name": "sun",
+			"luatype" : "omnilight",
+			"pos" : [-13,12,-25],
+			"color" : [1,1,1],
+			"brightness" : 1000000000,
+			"shadow":true
+		}, 
+		
+		{
+			"name" : "envmap",
+			"luatype":"env_cubemap",
+			"target":"parent",
+			"realpos" : [0,5,0],
+			"delay":100
+		},
+
+		{
+			"luatype" : "prop_static",
+			"model" : "models/map/hubroom.stmd",
+			"pos" : [0,0,0],
+			"modelscale" : 0.75
+		},
+		
+		{
+			"helper" : "placement",
+			"type" : "axis",
+			"center" : [0,0,0],
+			"axis" : [0,1,0],
+			"direction" :[0.0112458,0,0], 
+			"sides" : 16,
+			"offset" : 11.25,
+			"ang_offset" : [0,90,0],
+			"subs" : [
+				{
+					"name" : "door_flatgrass_hub",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "flatgrass:prefab.global.flatgrass:door_hub_flatgrass:Flatgrass"
+					}  
+				}, 
+				{
+					"name" : "door_darkworld",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "darkworld:prefab.global.darkworld:spawn:Darkworld"
+					}
+				}, 
+				{
+					"name" : "door_sdm",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "sdm_main:prefab.interiors.sdm.main:spawn:SDM"
+					}
+				}, 
+				{
+					"name" : "door_t2d",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "t2d:prefab.global.world2dtest:spawn:Worldspace terrain test"
+					}
+				},  
+				{
+					"name" : "door_osw",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "osw:prefab.global.osw:spawn:OSW"
+					}
+				},  
+				{
+					"name" : "door_t2grass",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "t2grass:prefab.global.world2dgrass:spawn:Grassland"
+					}
+				},
+				{
+					"name" : "door_empty",
+					"form" : "prop.door.darkworld", 
+					"modtable" : {
+						"target" : "empty:prefab.global.empty:spawn:Empty plane"
+					}
+				},
+			]
+		},
+		
+ 
+	] 
+}

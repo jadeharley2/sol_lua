@@ -214,7 +214,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					inp:Dock(DOCK_RIGHT)
 					inp.rest_numbers = true
 					if(v.get) then
-						inp:SetText(tostring(v.get(node,com,v))) 
+						inp:SetText(tostring(v.get(node,com,v) or "")) 
 					else
 						inp:SetText(tostring(value or "")) 
 					end

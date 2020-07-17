@@ -1,0 +1,31 @@
+
+{  
+	"name" : "world2dtest", 
+	"tags":["world"],
+	"sizepower" : 1E4,
+	"seed" : 9900002, 
+	"subs" : [ 
+		{ 
+			"name" : "2dtest",
+			"luatype": "terrain2d",
+			"world" : "testworld01",
+			"seed" : 19900003, 
+			"subs" : [
+				{
+					"name" : "spawn",
+					"luatype" : "spawnpoint",
+					"playerspawn":true,
+					"realpos":[0,1,0]
+				},
+				{
+					"name" : "door_t2d",
+					"form" : "prop.door.transportalizer",
+					"pos" :[0,-0.0009033702,0], 
+					"modtable" : {
+						"target" : "hub:prefab.global.hub:door_t2d:Teleport to hub"
+					}
+				}, 
+			]  
+		}
+	]
+}

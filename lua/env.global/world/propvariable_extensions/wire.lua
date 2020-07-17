@@ -9,7 +9,7 @@ end
 function util_static.indicatorop(self,f,k,v)
 	local wi = self.wireindicator
     if wi then 
-        MsgN("SADASDAS",v,wi.material_index,wi.material_off)
+        --MsgN("INDICATOR",v,wi.material_index,wi.material_off)
         if v==0 then
             self.model:SetMaterial(wi.material_off,wi.material_index)
         else
@@ -42,6 +42,12 @@ local gate_operations = {
     xor =   { i ={'a','b'}, f = function(ix) local a,b =  (ix.a.v or 0),(ix.b.v or 0) return tn(orn(a,b) and (notn(a) or notn(b))) end},
     _eq =   { i ={'a','b'}, f = function(ix) return tn((ix.a.v or 0) == (ix.b.v or 0)) end},
     _neq =  { i ={'a','b'}, f = function(ix) return tn((ix.a.v or 0) ~= (ix.b.v or 0)) end},
+
+    msg = {i = {"a","text"}, f = function (ix)
+        if ix.a.v~=0 then
+            MsgN(ix.text.v or '')
+        end
+    end}
 }
 
 hook.Add("prop.variable.load","wire",function (self,j,tags)  
@@ -68,5 +74,13 @@ hook.Add("prop.variable.load","wire",function (self,j,tags)
         self.wireindicator = j.wireindicator
         local wio = self:RequireComponent(CTYPE_WIREIO)
         wio:AddInput("in",function(...) util_static.indicatorop(...) end)  
+    end
+    if j.wiretimer then
+        local wt = j.wiretimer
+        local wio = self:RequireComponent(CTYPE_WIREIO)
+        self:Timer("wiretimer_"..(wt.name or "global"),
+            wt.delay or 0.1,(wt.interval or 1) * 1000,wt.count,function()
+                wio:SetOutput(wt.target,wt.value or 1)
+            end) 
     end
 end)

@@ -1,0 +1,25 @@
+{
+	"group" : "debug",
+	"tags" : [], 
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+	"field" : {
+		"type":"space",
+		"size":0.1,
+		"strength":100,
+		"isopen":true,
+		"phys":{
+			"gravity":[0,-0.1,0]
+		}
+	},
+	"subs":[
+		{
+			//
+			"form":"planet.default"
+		},
+		{
+			"form":"prop.furniture.space.reactor"
+		}
+	]
+	
+}

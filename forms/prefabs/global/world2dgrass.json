@@ -1,0 +1,30 @@
+
+{  
+	"name" : "world2dgrass", 
+	"tags":["world"],
+	"sizepower" : 1E4,
+	"seed" : 9900002, 
+	"subs" : [ 
+		{ 
+			"name" : "grassland",
+			"luatype": "terrain2d",
+			"world" : "grassland",
+			"subs" : [
+				{
+					"name" : "spawn",
+					"luatype" : "spawnpoint",
+					"playerspawn":true,
+					"realpos":[0,1,0]
+				},
+				{
+					"name" : "door_t2d",
+					"form" : "prop.door.transportalizer",
+					"pos" :[0,-0.0009033702,0], 
+					"modtable" : {
+						"target" : "hub:prefab.global.hub:door_t2grass:Teleport to hub"
+					}
+				}, 
+			]  
+		} 
+	]
+}

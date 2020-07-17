@@ -1,15 +1,26 @@
-
-local rdtex = LoadTexture("space/star_sprites.png")
+ 
 
 function ENT:Init() 
 end
 
+function ENT:SetupData(data)
+	if data.color then 
+		self.color = JVector(data.color)
+	end
+	if data.brightness then
+		self.brightness = data.brightness
+	end
+	if data.shadow then
+		self.enableshadow = data.shadow
+	end
+end
 function ENT:Spawn(c) 
 	local scolor = self.color or self:GetParameter(VARTYPE_COLOR) or Vector(1,1,1)
-	local brightness = self:GetParameter(VARTYPE_BRIGHTNESS) or 1
+	local brightness = self.brightness or self:GetParameter(VARTYPE_BRIGHTNESS) or 1
 	self.color = scolor
 
 	local light = self:AddComponent(CTYPE_LIGHT)  
+	if self.enableshadow then light:SetShadow(true) end
 	light:SetColor(scolor)
 	light:SetBrightness(brightness) 
 	self.light = light
@@ -40,7 +51,7 @@ function ENT:Spawn(c)
 --	particlesys:SetNodeMode(false)
 --	particlesys:AddNode(1) 
 --	particlesys:SetNodeStates(1,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
---	particlesys:SetTexture(1,rdtex)
+--	particlesys:SetTexture(1,"space/star_sprites.png")
 --	particlesys:AddParticle(1,Vector(0,0,0),scolor*brightness*0.01,10,0) 
 --	particlesys:SetMaxRenderDistance(1000)
 --	
@@ -56,6 +67,8 @@ function ENT:Load()
 	local scolor = self[VARTYPE_COLOR] or Vector(1,1,1)
 	local brightness = self:GetParameter(VARTYPE_BRIGHTNESS) or 1
 	local light = self.light or self:AddComponent(CTYPE_LIGHT)  
+	
+	if self.enableshadow then light:SetShadow(true) end
 	light:SetColor(scolor)
 	light:SetBrightness(brightness) 
 	self.light = light

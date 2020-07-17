@@ -87,10 +87,12 @@ PS_IN star_VSI( VS_IN input, I_IN inst )
 	
 	float cvellen = 0;//length(camera_velocity);
 	
-	if(cvellen<0.001)
+	if(up.x!=up.x)
 	{
-		up = normalize( global_upvector );
+		up = normalize( direction );
 	} 
+	float forwarddot = dot(direction,up);
+	//float3 dir = normalize( cross(float3(1,0,0),up)); 
 	float3 right =  normalize( cross(direction,up));
 	 
 	up = normalize(cross(direction,right)); 
@@ -98,21 +100,23 @@ PS_IN star_VSI( VS_IN input, I_IN inst )
 	{
 		up*=1+((length(camera_velocity))/length(camoffcetposition))*(1-abs(dot(direction,normalize(camera_velocity))));
 		//up*=1+1-abs(dot(direction,normalize(camera_velocity)));
-	}
+	} 
 	
 	//float3 rtDir = cross(camera_velocity,direction);
 	//rtDir = cross(rtDir,direction);
 	//right+=right*rtDir;
 	//up*=abs(camera_velocity);
 	//right*=abs(camera_velocity);
-	/*
-	float scale =  0.0000001;//(inst.lum) * global_scale /(4*3.14159265*camdist*camdist)*10;// length(camoffcetposition.xyz);
+	///*
+	float scale = camdist*0.001;//(inst.lum) * global_scale /(4*3.14159265*camdist*camdist)*10;// length(camoffcetposition.xyz);
 	//float scale = 0.15f*(inst.lum) ;// length(camoffcetposition.xyz);//STARS!
+	
+	float expt = min(200,abs(time)/camdist*0.0001*(1-abs(forwarddot*forwarddot*forwarddot)));
 	if(input.tex.x<0.5)	{	camoffcetposition.xyz+=right*scale;	}
 	else	{				camoffcetposition.xyz-=right*scale;	}
-	if(input.tex.y<0.5) { 	camoffcetposition.xyz+=up*scale;	}
-	else	{				camoffcetposition.xyz-=up*scale;	} 
-	*/
+	if(input.tex.y<0.5) { 	camoffcetposition.xyz+=up*scale*(1+expt);	}
+	else	{				camoffcetposition.xyz-=up*scale*(1+expt);	} 
+//	*/
 	float visible = 1;//saturate((inst.lum*250 - length(camoffcetposition.xyz)));
 	
 	output.tex = input.tex*inst.tcrd.zw+inst.tcrd.xy; 
@@ -122,19 +126,21 @@ PS_IN star_VSI( VS_IN input, I_IN inst )
 	camdist = camdist/global_scale*abs_scale;//(1666666);
 	
 	float4 vvp = mul(camoffcetposition,	(View));
+	
 	float distmul = 1/(4*3.14159265*camdist*camdist) ; 
-	float scale = min(0.001, inst.lum  )*vvp.z*2*saturate(0.5+inst.lum);
+	 scale = min(0.001, inst.lum  )*vvp.z*2*saturate(0.5+inst.lum);
 	;
-	if(input.tex.x<0.5)	{	vvp.xy+=float2(scale,0);	}
-	else	{				vvp.xy-=float2(scale,0);	}
-	if(input.tex.y<0.5) { 	vvp.xy-=float2(0,scale);	}
-	else	{				vvp.xy+=float2(0,scale);	} 
+	expt = abs(time)/vvp.z*-0.001;
+	//if(input.tex.x<0.5)	{	vvp.xy+=float2(scale,0)*(1+expt);	}
+	//else	{				vvp.xy-=float2(scale,0)*(1+expt);	}
+	//if(input.tex.y<0.5) { 	vvp.xy-=float2(0,scale);	}
+	//else	{				vvp.xy+=float2(0,scale);	} 
 	
 	output.pos =  mul(vvp,	(Projection));
 	 
 	
 	//output.z_depth = sqlen(camoffcetposition.xyz);
-	float br = saturate(1e35 * distmul);
+	float br = saturate(1e35 * distmul * inst.lum * 2 );
 	output.color =  float4( inst.color/100*br
 		,1);
 	//output.color =  float4( inst.color* inst.lum  *1e27 * distmul,1);///10e25* 1e-13

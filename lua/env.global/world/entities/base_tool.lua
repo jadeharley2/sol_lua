@@ -217,7 +217,10 @@ function ENT:HitEffect(ent, pos)
 	lighttest:Spawn() 
 	--debug.Delayed(100,function() lighttest:Despawn() end)
 end
-function ENT:IsReady(id)
+function ENT:IsReady(iscontinuous)
+	if iscontinuous and not self.continuous then
+		return false
+	end
 	local ct = CurTime()
 	local nft = self.nextfiretime or ct
 	return ct >= nft   
@@ -364,10 +367,12 @@ function ENT:Equip(actor)
 			--end
 		end
 	end
-	self.graph:SetState("idle")
+	if self.graph then self.graph:SetState("idle") end
 	self:SetUpdating(true,20)
+	CALL(self.Draw,self,actor)
 end
 function ENT:Unequip(actor)
+	CALL(self.Holster,self,actor)
 	self:SetUpdating(false)
 	actor.activeweapon = nil
 	local actor_model = actor.model 

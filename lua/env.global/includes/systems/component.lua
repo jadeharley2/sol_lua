@@ -24,7 +24,7 @@ function Component(type,node,...)
 		lua_components[type] = com
 		com:OnAttach(node)
 	end 
-	return com
+	return com 
 end 
 
 

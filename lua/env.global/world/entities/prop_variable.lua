@@ -86,7 +86,8 @@ function ENT:Spawn()
 end
 function ENT:Construct()
 	self:PreLoadData()
-	if not self.data.luatype then
+	local data = self.data or {}
+	if not data.luatype then
 		local model = self.model or self:AddComponent(CTYPE_MODEL)  
 		local coll = self.coll or self:AddComponent(CTYPE_STATICCOLLISION)  
 		local phys = self.phys or self:AddComponent(CTYPE_PHYSOBJ)  
@@ -96,10 +97,10 @@ function ENT:Construct()
 		
 		local modelcom = self.modelcom
 		if not modelcom then
-			local modelval = self:GetParameter(VARTYPE_MODEL) or self.data.model
-			local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or self.data.scale or 1 
+			local modelval = self:GetParameter(VARTYPE_MODEL) or data.model
+			local modelscale = self:GetParameter(VARTYPE_MODELSCALE) or data.scale or 1 
 			if modelval then 
-				if self.data.procedural then
+				if data.procedural then
 					self:SetupModelParams()
 					model:SetMatrix( matrix.Scaling(modelscale) * matrix.Rotation(-90,0,0)) 
 					local procgen = self:AddComponent(CTYPE_PROCGEN)  
@@ -158,6 +159,8 @@ function AutoConvert(table,level)
 end
 
 function ENT:PreLoadData(isLoad) 
+	
+
 	if not self.data then
 		local type = self:GetParameter(VARTYPE_FORM) or self:GetParameter(VARTYPE_CHARACTER)  
 		self.data = forms.ReadForm(type)--json.Read(type) 
@@ -170,75 +173,87 @@ function ENT:PreLoadData(isLoad)
 		MsgN("prop_variable error no type "..tostring(type or "nil"))
 	end
 	local data = self.data
-	if data and data.modeldata then 
-		e:SetParameter(VARTYPE_MODELDATA, json.ToJson(data.modeldata))
-	end
-	if data and data.model then
-		self:SetParameter(VARTYPE_MODEL,data.model)
-	end
-	if data and data.scale then
-		self:SetParameter(VARTYPE_MODELSCALE,data.scale)
-	end
 
-	if data and data.variables then
-		local b, rlv = AutoConvert(data.variables)
-		for k,v in pairs(rlv) do 
-			self[k] = v
+	if data then
+		local modtable = self.modtable
+		if modtable then table.Merge(modtable,data,true) end
+
+		if data.modeldata then 
+			e:SetParameter(VARTYPE_MODELDATA, json.ToJson(data.modeldata))
 		end
-	end
+		if data.model then
+			self:SetParameter(VARTYPE_MODEL,data.model)
+		end
+		if data.scale then
+			self:SetParameter(VARTYPE_MODELSCALE,data.scale)
+		end
+	
+		if data.variables then
+			local b, rlv = AutoConvert(data.variables)
+			for k,v in pairs(rlv) do 
+				self[k] = v
+			end
+		end
 
-	local lt = data.luatype
-	if lt and isstring(lt) then  
-		local meta = ents.GetType(lt)
-		MsgN(lt,meta)
-		if meta then
+
+
+		local lt = data.luatype
+		if lt and isstring(lt) then  
+			local meta = ents.GetType(lt)
 			MsgN(lt,meta)
-			--for k,v in pairs(meta) do
-			--	if k ~= 'Spawn' and k ~= 'Despawn' then
-			--		self[k] = v 
-			--	end
-			--end 
-			self._secondbase = meta
-
-			if meta.Init then
-				meta.Init(self)
-			end
-			if meta.PreLoadData then
-				meta.PreLoadData(self)
-			end
-			--MsgN("load!",isLoad)
-			if isLoad then
-				if meta.Load then 
-					meta.Load(self)
+			if meta then
+				MsgN(lt,meta)
+				--for k,v in pairs(meta) do
+				--	if k ~= 'Spawn' and k ~= 'Despawn' then
+				--		self[k] = v 
+				--	end
+				--end 
+				self._secondbase = meta
+ 
+				if meta.Init then
+					meta.Init(self)
 				end
-			else
-				if meta._spawn then 
-					meta._spawn(self)
+				if meta.SetupData then
+					meta.SetupData(self,data)
+				end
+				if meta.PreLoadData then
+					meta.PreLoadData(self)
+				end
+				--MsgN("load!",isLoad)
+				if isLoad then
+					if meta.Load then 
+						meta.Load(self)
+					end
+				else
+					if meta._spawn then 
+						meta._spawn(self)
+					end
+				end
+				if meta.Think then 
+					self:AddNativeEventListener(EVENT_UPDATE,"think",meta.Think)
 				end
 			end
-			if meta.Think then 
-				self:AddNativeEventListener(EVENT_UPDATE,"think",meta.Think)
-			end
+		end					
+		if isstring(data.name) then
+			self:SetName(data.name)
 		end
-	end
-	if data and isstring(data.name) then
-		self:SetName(data.name)
-	end
+	end	
 end
 
 function ENT:LoadData()
 	
 	local j = self.data
 	
-	
-	local tags = {}
-	if j.tags then
-		for k,v in pairs(j.tags) do
-			tags[v] = true
-		end
-	end  
+	if j then
+		local tags = {}
+		if j.tags then
+			for k,v in pairs(j.tags) do
+				tags[v] = true
+			end
+		end  
 
-	hook.Call("prop.variable.load",self,j,tags)
+		hook.Call("prop.variable.load",self,j,tags)
+	end
 end
 function ENT:SetupModelParams()
 	local model = self.model
@@ -252,7 +267,7 @@ end
 function ENT:SetupPhysics(world,scale)	
 	if self.collonly ~= NO_COLLISION then 
 		local model = self.model
-		local data = self.data
+		local data = self.data or {}
 		if not data.nophys then
 			if data.phys then
 				local phys =  self.phys 

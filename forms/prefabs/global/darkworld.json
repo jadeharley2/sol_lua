@@ -1,0 +1,29 @@
+
+{  
+	"name" : "darkworld", 
+	"extends" : "prefab.global.base_world:worldspace",  
+	"subs" : [
+		{
+			"form" : "prop.furniture.space.spawn",
+			"modtable":{}
+		},
+		{
+			"name":"spawn",
+			"luatype" : "spawnpoint",
+			"realpos":[0,1,0]
+		},
+		{
+			"luatype" : "omnilight",
+			"realpos" : [0,3,0],
+			"color" : [0.1,0.5,1],
+		},
+		{
+			"name" : "door_t2d",
+			"form" : "prop.door.transportalizer",
+			"pos" :[0,8.752465E-05,0], 
+			"modtable" : {
+				"target" : "hub:prefab.global.hub:door_darkworld:Teleport to hub"
+			}
+		}, 
+	]
+}

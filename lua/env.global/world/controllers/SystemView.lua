@@ -1,5 +1,5 @@
 
-local bp_tex = LoadTexture("gui/nodes/banchor.png")
+ 
 local VEC_FORWARD = Vector(0,0,-1)
 local VEC_RIGHT = Vector(1,0,0)
 local VEC_UP = Vector(0,1,0)
@@ -108,7 +108,8 @@ function OBJ:PanelsCreate()
 			local btn = panel.Create("button")
 			btn:SetSize(15,15)
 			btn.node = v
-			btn:SetTexture(bp_tex)
+			btn.contextinfo = v:GetName()
+			btn:SetTexture("textures/gui/nodes/banchor.png")
 			btn:SetColorAuto(col)
 			
 			local s = self

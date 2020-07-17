@@ -133,8 +133,10 @@ end
 function component:Shutdown()
     local it = 0
     local node = self:GetNode()
-    node.model:PlayLayeredSequence(32,"idle","models/anthroid_anim.stmd")
-    node.model:SetLayerFade(32,0.02,0.01)
+    if node:GetVehicle() == nil then
+        node.model:PlayLayeredSequence(32,"idle","models/anthroid_anim.stmd")
+        node.model:SetLayerFade(32,0.02,0.01)
+    end
     node:SetEyeAngles(0,0,true,true) 
     node:SetHeadAngles(0,0)
     self:SetState('check',1)

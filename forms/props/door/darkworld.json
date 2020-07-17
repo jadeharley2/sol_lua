@@ -1,0 +1,18 @@
+{
+	"name":"Wooden door",
+	"tags" : [],
+	"model" : "door/door2.stmd",//"active/button.stmd",
+	"scale" : 0.05,
+    "rotation" : [0,0,0],
+    
+    "luatype":"use_door_transfer", 
+	"offset" : [0,0.2,-1], 
+	"stateevents" : {
+		"open" :{ "actions" : [
+			{ "op" : "sound", "type" : "door/door_wood_close.ogg" },
+		]},
+		"close" :{ "actions" : [
+			{ "op" : "sound", "type" : "door/door_wood_close.ogg" },
+		]}
+	} 
+}

@@ -107,6 +107,7 @@ function SetController(name)
 			if global_controller.MouseUp then hook.Remove("input.mouseup", "controller") end
 			if global_controller.KeyDown then hook.Remove("input.keydown", "controller" ) end
 		end
+		MsgN("Controller changed to none") 
 	end 
 end  
    

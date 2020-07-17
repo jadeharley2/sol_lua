@@ -8,10 +8,21 @@ function SpawnCubemap(parent,pos,size,target)
 	cubemap:Spawn()
 	return cubemap
 end
-
-function ENT:Spawn()  
-	
+function ENT:Init() 
 	self:SetSpaceEnabled(false)
+end
+function ENT:SetupData(data)
+	if data.target then
+		if data.target=='parent'then
+			self.target = self:GetParent()
+		end
+	end
+	if data.delay then
+		self.delay = data.delay
+	end
+end
+function ENT:Spawn()  
+	 
 	
 	local cubemap = self:AddComponent(CTYPE_CUBEMAP)  
 	self.cubemap = cubemap
@@ -19,7 +30,15 @@ function ENT:Spawn()
 	cubemap:SetSize(self.size or 1024)
 	cubemap:SetTarget(nil,self.target)--skybox)
 	--self.skybox = skybox
+	 
+	if self.delay then
+		MsgN("delayed draw ",self.delay)
+		debug.Delayed(self.delay,function() 
+			self.cubemap:RequestDraw()
+		end)
+	end
 end 
+
 
 function ENT:RequestDraw(fast) 
 	if self and IsValidEnt(self) then

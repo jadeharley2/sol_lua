@@ -1,0 +1,14 @@
+{ 
+	"name":"Portal side",
+	"tags" : [],
+	"model" : "lift/lift_mirror.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,90], 
+	"luatype":"rt_portal", 
+	"variables":{
+		"mirrorlight":false
+	},
+	"composition" :{
+		"resource.glass" : 8,     
+	}
+}

@@ -1,8 +1,15 @@
 crafting = crafting or {}
-crafting.recipes =  {}
-crafting.ent_craft = crafting.ent_craft or ents.Create()
-crafting.ent_craft:SetSeed(3838104)
-crafting.ent_craft._events = crafting.ent_craft._events or {}
+crafting.recipes =  {} 
+
+if not crafting.ent_craft  then
+	local e = ents.Create() 
+	e:SetSeed(3838104)
+    e:SetName("ent_craft")
+    e:Spawn()
+	e._events = e._events or {} 
+	crafting.ent_craft = e 
+end 
+
 local ent_craft = crafting.ent_craft
 local events = crafting.ent_craft._events
 

@@ -1,0 +1,8 @@
+{
+	"name" : "Bunker teleport",
+	"location" :[
+		"t2d:prefab.global.world2dtest",
+		19900003, 
+		[-0.05553214, -0.002975714, -0.597837 , "8a75d6c8-a534-4df2-a5ad-dbe89792c744"],  
+	]
+}

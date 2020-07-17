@@ -1,0 +1,8 @@
+{
+	"name" : "Tower room",
+	"location" :[
+		"t2d:prefab.global.world2dtest",
+		19900003, 
+		[1.386123,0.1766968,-0.09692448 , "98158e8b-bd81-40aa-bae2-d91a4d75f61d"],  
+	]
+}

@@ -447,7 +447,7 @@ function generator:GenerateSystemEntry(system, seed, mass)
 	local rnd = Random(seed)
 
 	mass = mass or sol_mass * rnd:NextFloat( 0.1, 10) --total system mass
-	radius = radius or 100 * au -- max subnode distance
+	radius = radius or (100 * au) -- max subnode distance
 
 	local stars = {}
 	local planets = {}
@@ -462,7 +462,7 @@ function generator:GenerateHierarchicalSystem(system, parent, seed, mass, radius
 	local rnd = Random(seed)
 
 	mass = mass or sol_mass * rnd:NextFloat( 0.1, 10) --total system mass
-	radius = radius or 100 * au -- max subnode distance
+	radius = radius or (100 * au) -- max subnode distance
 	
 	local anchor_mass = mass * rnd:NextFloat( 0.6, 0.9)
 

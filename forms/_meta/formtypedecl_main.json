@@ -61,6 +61,13 @@
 			"group":"items",	 
 		},
 		{
+			"name":"prefab", 		
+			"shortname":"PRFB", 	
+			"directory":"prefabs", 		 
+			"recursive":true,
+			"group":"world",	 
+		}, 
+		{
 			"name":"prop", 		
 			"shortname":"PROP", 	
 			"directory":"props", 		

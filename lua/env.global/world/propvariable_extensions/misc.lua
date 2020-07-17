@@ -17,6 +17,28 @@ hook.Add("prop.variable.load","misc",function (self,j,tags)
 	--	--MsgN("mvd",j.viewdistance)
 	--	self.model:SetMaxRenderDistance(j.viewdistance)
 	--end
+	if j.field then
+		if j.field.type=='space' then
+			local mul = j.field.strength or 1
+			local size = j.field.size or 1
+			mul = math.max(0,mul or 1) 
+		
+			self:SetSizepower(mul)
+			self:SetScale(Vector(1,1,1) * (size/mul)) 
+			if j.field.isopen then
+				self:SetSpaceEnabled(true,2)
+			end
+			if j.field.phys then
+				local physspace = self:RequireComponent(CTYPE_PHYSSPACE)
+				local g = j.field.phys.gravity
+				self.physspace = physspace
+				if g then
+					physspace:SetGravity(JVector(g))
+				end
+			end
+		end
+	end
+
 end)
 
 
