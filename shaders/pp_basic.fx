@@ -39,6 +39,7 @@ SamplerState sCC
 float hdr_minimum = 1500;
 float hdr_maximum = 4000;
 
+float4 mode = 0;
 
 float4x4 Projection;
 float4x4 View;
@@ -169,6 +170,9 @@ PS_IN VS( VS_IN input )
 } 
 
 
+
+
+
 float LDelimiter = 2400000;
 float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 {
@@ -202,7 +206,7 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 		currentRay = texelPosition + -reflectDir * L;
 
 		nuv = SS_GetUV(currentRay); // проецирование позиции на экран
-		endDepth = SS_GetDepth2(nuv.xy); // чтение глубины из DepthMap по UV
+		endDepth =max(0.00, SS_GetDepth2(nuv.xy)); // чтение глубины из DepthMap по UV
 		
 		newPosition = SS_GetPosition2(nuv.xy, endDepth);
 		L = length(texelPosition - newPosition);
@@ -218,6 +222,7 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 	if(texelDepth<endDepth) return texelDiffuse;//+cnuv2*reflectiveness;
 	//L = saturate(L * LDelimiter);
 	float error = saturate(1 - L);
+	if(L>0.99) error = 1;//sky fix
 	//if(error!=error) error =0;
 	//error = saturate(error);
 	
@@ -232,7 +237,7 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
 	//return cdot;
 	//if(nuv.x<0||nuv.x>1||nuv.y<0||nuv.y>1) return 0;
 	float3 cnuv = SS_GetColor(nuv,blur).rgb;
-	cnuv = lerp(cnuv,cnuv*normalize(texelDiffuse),metalness);
+	cnuv = max(float3(0,0,0),lerp(cnuv,cnuv*normalize(texelDiffuse),metalness));
 	//return nuv.x/3;
 	//return  texelPosition;
 	//if (!isfinite(cnuv.x)) return float3(1,0,0);
@@ -240,6 +245,7 @@ float3 SSLR(PS_IN input,float reflectiveness,float roughness,float metalness )
  //return L*10000;
 	return lerp(texelDiffuse,cnuv,cdot*reflectiveness*error*darken);  
 }
+
 
 float rflen=0.02;
 float rflen2=0.0175;
@@ -459,6 +465,8 @@ float4 PS( PS_IN input ) : SV_Target
 	float3 shcolor =  pDiffuse;
 	//return pNormal.a;
 	//return float4(wpos*200000,1); 
+	
+	if(mode.x<0.3){
 	if(enable_sslr&&pMask.y>0.01)
 	{ 
 		shcolor = SSLR(input,pMask.y,1-pMask.y,pMask.z);
@@ -470,7 +478,8 @@ float4 PS( PS_IN input ) : SV_Target
 		//shcolor = SSAO(shcolor,input.tcrd);
 		shcolor = SSAO_HARD(shcolor,input.tcrd);
 		
-	}  
+	} 
+	}
 	float3 result = lerp(pDiffuse,shcolor,pMask.x);
 	 
 	
@@ -530,21 +539,25 @@ float4 PS( PS_IN input ) : SV_Target
 		result =(max(0,result)+ovb*0.1)*0.9;
 	}
 
+	if(mode.x>0.3){
+		result = SSGI(shcolor,input.tcrd);
+	}
+	else
+	{
 
+		result = RGBtoHSV(result);
+		result.z = log10(result.z+1)*brightness;
+		result.y = result.y * contrast;
+		result.x = result.x + pitch;
+		result = HSVtoRGB(result);
 
-	result = RGBtoHSV(result);
-	result.z = log10(result.z+1)*brightness;
-	result.y = result.y * contrast;
-	result.x = result.x + pitch;
-	result = HSVtoRGB(result);
+		float gamma = 1;
+		//float exposure = 0.5; 
+		float3 mapped = 1 - exp(-result * exposure); //exposure
+		result = pow(mapped, 1.0 / gamma)*2;
 
-	float gamma = 1;
-	//float exposure = 0.5; 
-    float3 mapped = 1 - exp(-result * exposure); //exposure
-    result = pow(mapped, 1.0 / gamma)*2;
-
-	result = result.r*modxR+result.g*modxG+result.b*modxB;
-	
+		result = result.r*modxR+result.g*modxG+result.b*modxB;
+	}
 	//result += (result-length(result))*0.3;
 	//float darken = saturate(1-distance(float2(0.5,0.5),input.tcrd));
 	//result = result + FogSample(input.tcrd,pDepth);

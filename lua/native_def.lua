@@ -444,6 +444,9 @@ ents = {
     ---get all loaded nodes
     ---@return table
     GetAll = function() end,
+    ---get all loaded worlds
+    ---@return table
+    GetWorlds = function() end,
     ---get node by its global name
     ---@return Entity
     ---@param name string
@@ -731,6 +734,11 @@ meta_Vector = {
     ---@return table
     ---@param self Vector
     ToTable = function(self) end,
+    ---convert normal vector to angle vector
+    ---@return Vector
+    ---@param self Vector
+    ---@param normal Vector
+    ToAngle = function(self, normal) end,
 }
 ---@class Plane
 meta_Plane = {
@@ -1735,6 +1743,7 @@ CTYPE_NAVIGATION = 127
 CTYPE_POSTPARAMS = 128
 CTYPE_LIGHT = 130
 CTYPE_ORIGIN = 131
+CTYPE_PROJECTEDCUBEMAP = 132
 CTYPE_IKCONTROLLER = 140
 CTYPE_RIGANIMATOR = 141
 CTYPE_PARTITION2D = 201
@@ -1790,6 +1799,7 @@ VARTYPE_MODELDATA = 114
 VARTYPE_ICON = 118
 VARTYPE_SLOT = 119
 VARTYPE_STATE = 121
+VARTYPE_TARGET = 122
 VARTYPE_DIVPOWER = 201
 VARTYPE_GRAVITY = 401
 VARTYPE_VELOCITY = 402

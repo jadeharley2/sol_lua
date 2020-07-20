@@ -30,6 +30,9 @@ function ENT:SetupData(data)
 	if isstring(data.target) then 
 		self[VARTYPE_TARGET] = data.target
     end 
+    if data.targets then
+        self.targets = data.targets
+    end
     if data.model then
         self[VARTYPE_MODEL] = data.model
     end
@@ -39,6 +42,9 @@ function ENT:SetupData(data)
     if data.offset then
         self.offset = JVector(data.offset)
     end 
+    if data.title then
+        self.title = data.title
+    end 
 end
 function ENT:Load() 
     
@@ -46,7 +52,7 @@ function ENT:Load()
         self:SetupModel() 
         self:SetupStaticCollision()  
         
-        local target = self[VARTYPE_TARGET]
+        local target = self.targets or self[VARTYPE_TARGET]
         if target then
             self:SetTarget(target)
         end
@@ -58,7 +64,7 @@ function ENT:Spawn()
         self:SetupModel() 
         self:SetupStaticCollision()  
         
-        local target = self[VARTYPE_TARGET]
+        local target = self.targets or self[VARTYPE_TARGET]
         if target then
             self:SetTarget(target)
         end
@@ -77,16 +83,31 @@ function ENT:EnterBy(eid, user)
     end)
 end
 function ENT:SetTarget(target)
-
-    self[VARTYPE_TARGET] = target
-    if target then 
-        local uid,form,door,display = unpack(cstring.split(target,":"))
-        self.info = display
-        --MsgN("target",uid,form,door,display)
+    if target then
+        if isstring(target) then 
+            self[VARTYPE_TARGET] = target
+            local uid,form,door,display = unpack(cstring.split(target,":"))
+            self.info = display
+            --MsgN("target",uid,form,door,display)
+        elseif istable(target) then
+            self.info = self.title or "Select destination"
+            self.target = target
+            self._interact = {}
+            for k,v in ipairs(target) do
+                local uid,form,door,display = unpack(cstring.split(v,":"))
+                local id = "open_"..tostring(k)
+                self:AddInteraction(id,{
+                    text=display,
+                    action = function (self, user)
+                        self:Press(user,v)
+                    end
+                })
+            end
+        end
 	end
 end
-function ENT:Press(user)  
-    local target = self[VARTYPE_TARGET]
+function ENT:Press(user,target)  
+    target = target or self[VARTYPE_TARGET] 
 	if target then 
         local uid,form,door,display = unpack(cstring.split(target,":"))
         MsgN(uid,'|',form,'|',door,'|',display)

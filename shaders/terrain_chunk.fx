@@ -98,7 +98,7 @@ PS_IN VS( VS_IN input, I_IN inst )
     output.updot =  saturate(pow(dot(normalize(input.norm),float3(0,1,0)),20));
  
     float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
-    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+    output.ambmap =(EnvSampleLevel(ambmapEnv,0));
 
 
 	return output; 
@@ -244,7 +244,7 @@ float3 ambmap= input.ambmap;
     float3 camdir = input.wpos;
     float3 reflectcam = reflect(camdir,input.norm);
     float3 reflectEnv = mul(float4(reflectcam,1),EnvInverse).xyz;
-    float3 envmap = saturate(EnvSampleLevel(reflectEnv,output.mask.x));
+    float3 envmap = (EnvSampleLevel(reflectEnv,output.mask.x));
 
     output.normal = float4(normal.x/2+0.5,normal.y/2+0.5,normal.z/2+0.5,1); 
     output.diffuse = float4(input.color*color.xyz,1); //

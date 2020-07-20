@@ -1,0 +1,32 @@
+
+{  
+	"name" : "office 1 floor", 
+    "extends" : "prefab.global.base_world:worldspace",  
+    "seed" : 44301001,
+	"subs" : [ 
+
+		{
+			"luatype" : "prop_static",
+			"model" : "models/map/office/bld.stmd",
+			"pos" : [0,0,0],
+			"modelscale" : 3
+		},
+		{
+			"name":"spawn",
+			"luatype" : "spawnpoint",
+			"realpos":[0,0.4,0]
+		}, 
+		{
+			"luatype" : "omnilight",
+			"pos" : [-0.001802096,0.001470719,0],
+			"color" : [0.7,0.8,1],
+		},
+		{
+			"name" : "envmap",
+			"luatype":"env_cubemap",
+			"target":"parent",
+			"pos" : [-0.001802096,0.001470719,0],
+			"delay":100
+		},
+	]
+}

@@ -815,7 +815,37 @@ function ENT:SetCharacter(id)
 		end
 	end
 end
-
+console.AddCmd("body_part_add",function(k,v)
+	local self = LocalPlayer()
+	MsgN(k,'-',v)
+	local bpr = self.spparts or {}
+	
+	local bpath = self.species.model.basedir
+	local bp = SpawnBP(bpath..v..".stmd",self,0.03)
+	if IsValidEnt(bp) then
+		bp:SetName(k)
+		bpr[k] = bp
+		self.spparts = bpr
+	end
+end)
+console.AddCmd("body_part_del",function(k)
+	local self = LocalPlayer()
+	local bpr = self.spparts or {}
+	
+	local bp = bpr[k] 
+	if IsValidEnt(bp) then
+		bp:Despawn()
+		bpr[k] = nil
+		self.spparts = bpr
+	end
+end)
+console.AddCmd("body_part_list",function(k)
+	local self = LocalPlayer()
+	local bpr = self.spparts or {}
+	for k,v in SortedPairs(bpr) do
+		MsgN(k)
+	end
+end)
 function ENT:SetSpecies(spstr) 
 	if spstr then 
 		local spd = spstr:split(':')

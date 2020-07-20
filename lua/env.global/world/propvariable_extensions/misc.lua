@@ -38,7 +38,11 @@ hook.Add("prop.variable.load","misc",function (self,j,tags)
 			end
 		end
 	end
-
+	if j.ent_tags then
+		for k,v in pairs(j.ent_tags) do
+			self:AddTag(v)
+		end
+	end 
 end)
 
 

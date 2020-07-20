@@ -6,6 +6,7 @@
 	"rotation" : [0,0,0], 
 	"luatype":"use_door_transfer", 
 	"offset" : [0,0.2,0],
+	"ent_tags" : ["radial_interact"],
 	"stateevents" : {
 		"open" :{ "actions" : [
 			{ "op" : "sound", "type" : "events/outgoing.ogg" },

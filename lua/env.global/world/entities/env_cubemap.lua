@@ -19,18 +19,26 @@ function ENT:SetupData(data)
 	end
 	if data.delay then
 		self.delay = data.delay
+	end 
+	if data.projection then
+		local projection = self:RequireComponent(CTYPE_PROJECTEDCUBEMAP)
+		self.projection = projection 
+		projection:SetSize(JVector(data.projection.size,Vector(1,1,1)))
 	end
 end
 function ENT:Spawn()  
 	 
 	
-	local cubemap = self:AddComponent(CTYPE_CUBEMAP)  
+	local cubemap = self:RequireComponent(CTYPE_CUBEMAP)  
 	self.cubemap = cubemap
 	--local skybox = self:AddComponent(CTYPE_SKYBOX) 
 	cubemap:SetSize(self.size or 1024)
-	cubemap:SetTarget(nil,self.target)--skybox)
-	--self.skybox = skybox
-	 
+	--self.skybox = skybox 
+	if self.projection then 
+		cubemap:SetTarget(self.projection)
+	else
+		cubemap:SetTarget(nil,self.target)
+	end
 	if self.delay then
 		MsgN("delayed draw ",self.delay)
 		debug.Delayed(self.delay,function() 

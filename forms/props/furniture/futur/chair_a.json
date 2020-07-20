@@ -23,6 +23,13 @@
 		"vartype" : "vec3",
 		"variable" : "tint" 
 	},
+	"modmaterial":[
+		{},
+		{
+			"tint":[1,0.2,0.2]
+		}
+
+	],
 	"composition" :{
 		"resource.steel" : 2,
 		"resource.cloth" : 1

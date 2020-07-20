@@ -1,4 +1,4 @@
- local testtexture = LoadTexture("gui/blacktr.dds")
+ local testtexture = "textures/gui/blacktr.dds"
 	
 function PANEL:Init()
 	--PrintTable(self) 
@@ -54,6 +54,8 @@ function PANEL:MouseWheel()
 	return changed
 end
 function PANEL:UpdateBar(ent)   
+	
+	ent = GetInteractiveEnt(LocalPlayer(), ent)
 	if ent and IsValidEnt(ent) then
 		local isUseP = input.KeyPressed(KEYS_E)
 		local wchanged = self:MouseWheel() 
@@ -67,6 +69,8 @@ function PANEL:UpdateBar(ent)
 			back:SetAlpha(1)
 			hp:SetAlpha(0)
 			local noinfo = false
+			
+
 			if ent.info then
 				if isstring(ent.info) then
 					back:SetTextColor(Vector(255,255,255)/255)
@@ -114,7 +118,7 @@ function PANEL:UpdateBar(ent)
 				end
 			end
 
-			if not noinfo then
+			if not noinfo then 
 				if self.lnd then
 					for k,v in pairs(self.lnd) do
 						v:Close()
@@ -127,7 +131,15 @@ function PANEL:UpdateBar(ent)
 
 					local selected = self.sid 
 					local options = GetInteractOptions(user,ent)--._interact--{test={text='test'},huh={text="huh?"}}--Interact(LocalPlayer(),ent)
-					if options and istable(options) then
+					
+					if options and istable(options) then 
+						if table.count(options)<1 then
+							local uent = GetRadialInteractEnt(user)
+							if IsValidEnt(uent) then
+								options = GetInteractOptions(user,uent)
+							end
+						end
+
 						local lnd = {}
 						self.lnd = lnd
 						local cn = 1

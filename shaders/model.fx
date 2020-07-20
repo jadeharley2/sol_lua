@@ -98,6 +98,7 @@ float mul_specular_tint = 1;
 float mul_specular_rim_intencity =0.03f;
 float mul_subsurface_intencity = 1;
 float mul_emissive_intencity = 1;
+float base_light_intencity = 1;
 
 float base_tdencity_val = 1;
 float alphatestreference = 0.5;
@@ -209,7 +210,7 @@ struct PS_OUT
 	float stencil : SV_StencilRef; 
 };
 
-float3x3 MInv(float3x3 A) 
+float3x3 MInv(float3x3 A)  
 {
 	float determinant =    +A._m00*(A._m11*A._m22-A._m21*A._m12)
                         -A._m01*(A._m10*A._m22-A._m12*A._m20)
@@ -255,7 +256,7 @@ PS_IN VSI( VSS_IN input, I_IN inst )
 		;//mul(wpos,transpose(View)); 
 
     float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
-    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+    output.ambmap =(EnvSampleLevel(ambmapEnv,0));
 
 	return output;
 }
@@ -282,7 +283,7 @@ PS_IN VS( VSS_IN input)
 	output.spos = mul(wpos,View);
 	
     float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
-    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+    output.ambmap =(EnvSampleLevel(ambmapEnv,0));
 
 	return output;
 }
@@ -314,7 +315,7 @@ PS_IN VSIC( VSS_IN input, IC_IN inst )
 		;//mul(wpos,transpose(View)); 
 		
     float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
-    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+    output.ambmap =(EnvSampleLevel(ambmapEnv,0));
 
 	return output;
 }
@@ -352,7 +353,7 @@ PS_IN VSIM( VSS_IN input, MORPH_IN morph )
 		;//mul(wpos,transpose(View)); 
 		
     float3 ambmapEnv = mul(float4(output.norm,1),EnvInverse).xyz;
-    output.ambmap =saturate(EnvSampleLevel(ambmapEnv,0));
+    output.ambmap =(EnvSampleLevel(ambmapEnv,0));
 
 	return output;
 }
@@ -467,11 +468,12 @@ void GSSceneFUR( triangle PS_IN input[3], inout TriangleStream<PS_IN> OutputStre
 	}
 	else if(outline>0)
 	{
-		float w =outline* 0.000002*0.2; 
-		float3 c = float3(1,1,1)*0;
-		input[0].pos = mul(float4(pos1+input[0].norm.xyz*w,1),mx);
-		input[1].pos = mul(float4(pos2+input[1].norm.xyz*w,1),mx);
-		input[2].pos = mul(float4(pos3+input[2].norm.xyz*w,1),mx);
+		float depth = length(pos1)*1000;
+		float w =outline* 0.000002*0.2 * depth; 
+		float3 c = outlineTint;
+		input[0].pos = mul(float4(pos1+(input[0].norm.xyz)*w,1),mx);
+		input[1].pos = mul(float4(pos2+(input[1].norm.xyz)*w,1),mx);
+		input[2].pos = mul(float4(pos3+(input[2].norm.xyz)*w,1),mx);
 		input[0].color = c;
 		input[1].color = c;
 		input[2].color = c;
@@ -824,7 +826,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 		float3 ambmap =input.ambmap;//saturate(EnvSampleLevel(ambmapEnv,0));
 
 		float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
-		float3 envmap = saturate(EnvSampleLevel(reflectEnv,_mask.x));
+		float3 envmap = max(float3(0,0,0),EnvSampleLevel(reflectEnv,_mask.x));
 
 		float ao_mul = 1;
 		if(ao_enabled){
@@ -870,7 +872,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 			output.light = float4(input.color*TBrightness,TBrightness);
 			output.diffuse = float4(input.color,1);
 		}
-		output.mask = float4(0,0,0,1);
+		output.mask = float4(base_light_intencity,0,0,1);
 	}
 	float3x3 VP =(float3x3) mul(View,Projection);
 	float3 vv = mul(input.norm,VP);

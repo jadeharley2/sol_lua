@@ -1046,7 +1046,7 @@ function USE_ITEM(actor,item)
 	end 
 end
 function OBJ:HandleUse(actor)
-	local target = self.viewEntity 
+	local target = GetInteractiveEnt(actor, self.viewEntity) 
 	if IsValidEnt(target) then
 		local intent = actor.intent
 		if intent then	

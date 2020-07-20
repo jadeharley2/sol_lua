@@ -284,6 +284,12 @@ float ssao_raylen[8] ={
 
 	0.7,1,2,3
 };
+const float ssao_raylen2[8] ={
+	0.1,0.2,0.4,0.8,
+
+	1.6,3.2,6.4,12.8
+};
+  
   
   
 float3 SSAO(float3 color,float2 tcrd)
@@ -341,7 +347,8 @@ float3 SSAO(float3 color,float2 tcrd)
 		//	occlusion = fadeout;
 		} 
 	} 
-	//return saturate(1-occlusion*10); 
+	//return saturate(1-occlusion*10);  
+	return color/2+float3(0.5,0.5,0.5);
 	return saturate(1-occlusion*10*100)*color; 
 	//return float3(1,1,1)*(1-occlusion* (1.0 / ssao_samples));
 	//return color*(1-occlusion* (1.0 / ssao_samples));
@@ -388,3 +395,54 @@ float3 SSAO_HARD(float3 color,float2 tcrd)
 	return saturate(1-occlusion*10)*color;   
 }
  
+float3 SSGI(float3 color,float2 tcrd)
+{  
+	float3 localNormal = SS_GetNormal(tcrd).xyz;
+	float3 texelNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
+	
+	float texelDepth = SS_GetDepth2(tcrd); 
+	float3 texelPosition = SS_GetPosition2(tcrd,texelDepth);
+	 
+	float radius_depth = ssao_radius/(texelDepth );
+	float occlusion = 0.0;
+	// color = 1;
+	
+	float ssaomul = (30*8*10)/ssao_samples;
+	float ssaoOff = tSSAONoise.Sample(sSampler, tcrd*viewSize/512).r;
+
+	float3 localNormal1 = tNormalView.Sample(sCC, tcrd).xyz;
+	float3 ssNormal1 = normalize((localNormal1 -float3(0.5,0.5,0.5))*2);
+	float3 light =ssNormal1;
+ 
+	for(int i=0; i < 64; i++) //ssao_samples 
+	{  
+		float3 ray = radius_depth * ssao_sample_sphere[(i+ssaoOff*32)%256];
+		float dotD = dot(-normalize(ray),texelNormal);
+		
+		if(sign(dotD)<0) 
+		{
+			float raylen = ssao_raylen2[i%8] ; 
+			float3 hemi_ray = ray*0.00006*texelDepth*10000*raylen;
+			float3 worldpos = texelPosition+hemi_ray;
+			float2 texpos = SS_GetUV(worldpos).xy; 
+			float occ_depth = SS_GetDepth2(texpos); 
+			float difference = linearDepth2(texelDepth) - linearDepth2(occ_depth);//hemi_ray.z;
+			float fadeout = 1-saturate(max(difference,0)/0.0005);
+			float3 localNormal = tNormalView.Sample(sCC, texpos).xyz;
+			float3 ssNormal = normalize((localNormal -float3(0.5,0.5,0.5))*2);
+			float4 pDiffuse =tDiffuseView.Sample(sCC, texpos);
+ 
+				light+=ssNormal.xyz*0.1  ;   
+			if(difference>0) 
+			{ 
+				occlusion += difference*fadeout*ssaomul; 
+			} 
+			else
+			{ 
+			}
+		} 
+	}   
+	light = normalize(light)/2+0.5;
+	return light;//saturate(1-occlusion*10)+light;  //*color  
+	 
+}

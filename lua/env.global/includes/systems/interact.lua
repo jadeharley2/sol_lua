@@ -62,9 +62,10 @@
 --            return f(ENT,USER,intent)  
 --        end
 --    end
---    return nil
---end
+--    return nil  
+--end 
 EVENT_INTERACT = DeclareEnumValue("event","INTERACT",				101032) 
+TAG_RADIAL_INTERACT = DeclareEnumValue("tag","RADIAL_INTERACT",		101033) 
 function Interact(USER,TARGET,intent,...)
     if IsValidEnt(TARGET) and IsValidEnt(USER) then  
         local dist = TARGET:GetDistance(USER)
@@ -94,6 +95,37 @@ function GetInteractOptions(USER,ENT)
     end
     hook.Call('interact.options',USER,ENT,t)
     return t
+end 
+function GetRadialInteractEnt(USER)
+    local parent = USER:GetParent()
+    if IsValidEnt(parent) then
+        local children = parent:GetChildren(true)--add flag check on C# side
+        local mindist =9999
+        local minnode = false
+        for k,v in pairs(children) do
+            if v:HasTag(TAG_RADIAL_INTERACT) then
+                local dist = USER:GetDistanceSq(v)
+                if dist<mindist then 
+                    mindist = dist
+                    minnode = v
+                end
+            end
+        end
+        if minnode then 
+            local dist = USER:GetDistance(minnode)
+            if math.sqrt(dist)<(USER.userange or 1) then 
+                return minnode
+            end
+        end
+    end
+    return nil
+end
+function GetInteractiveEnt(User,Target) 
+    if IsValidEnt(Target) and Target.info then
+        return Target 
+    else
+        return GetRadialInteractEnt(User)
+    end
 end
 local registry = debug.getregistry()
 local ENTITY = registry.Entity
