@@ -10,15 +10,29 @@ function ENT:Init()
 	self:SetSpaceEnabled(true,1)
 end
 
+function ENT:SetupData(data) 
+	if data.color then
+		self.color = JVector(data.color)
+	end  
+	if data.brightness then
+		self.brightness = data.brightness
+	end  
+	if data.radius then
+		self.radius = data.radius
+	end  
+	if data.isstar then
+		self:AddTag(TAG_STAR)
+	end
+end
 function ENT:Spawn()
 	if self:HasTag(TAG_STAR) then
-		local r = self:GetParameter(VARTYPE_RADIUS) or self.radius
+		local r = self.radius or self:GetParameter(VARTYPE_RADIUS)
 		local surface = ents.Create("star_surface") 
 		surface:SetParent(self) 
 		surface:SetSizepower(r*2)
 		
-		local scolor =  self:GetParameter(VARTYPE_COLOR) or self.color or Vector(0.2,0.6,1.2)
-		local starlum = self:GetParameter(VARTYPE_BRIGHTNESS) or 2.23e22 
+		local scolor =  self.color or self:GetParameter(VARTYPE_COLOR) or  Vector(0.2,0.6,1.2)
+		local starlum = self.brightness or self:GetParameter(VARTYPE_BRIGHTNESS) or  2.23e22 
 		
 		MsgN("<<docl",scolor)
 		local scolorlen = scolor:Length()

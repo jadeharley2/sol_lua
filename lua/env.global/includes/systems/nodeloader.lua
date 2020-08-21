@@ -209,11 +209,21 @@ hook.Add("world.unload","nodeloader",function(node)
 end)
 
 
-console.AddCmd("list_existing_worlds",function()
+console.AddCmd("world_list",function()
     local all = ents.GetWorlds()
     PrintTable(all)
 end)
 
+console.AddCmd("world_unique",function() 
+    PrintTable(nodeloader.unique )
+end)
+console.AddCmd("world_unique_clear",function()  
+    nodeloader.Clear() 
+end)
+
+console.AddCmd("lobby_return",function() 
+    GetCamera():SetParent(LOBBY)
+end)
 
 hook.Add("nl_helper.placement","nl",
 function(j,form,ent) 

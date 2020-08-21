@@ -2,7 +2,12 @@
 component.editor = {
 	name = "Model",
 	properties = { 
-		model_path = {text="path",type="parameter",valtype="path",reload=true,key=VARTYPE_MODEL},
+		model_path = {text="path",type="parameter",valtype="path",reload=false,apply = function(n,m,k,v) 
+			m:SetModel(v) 
+			n[VARTYPE_MODEL] = v
+			MsgN("SET!",v)
+		end,
+		get = function(n,m,k) return n[VARTYPE_MODEL] end}, 
 		mat_override= {text = "matoverride",type="parameter",valtype="path",reload=false,apply = function(n,m,k,v) 
 			m:SetMaterial(v)
 		end},

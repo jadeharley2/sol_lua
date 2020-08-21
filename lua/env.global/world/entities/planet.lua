@@ -13,6 +13,8 @@ end
 function ENT:Spawn()  
 	local rgroup1 = self.rgroup1 or RENDERGROUP_STARSYSTEM
 	local rgroup2 = self.rgroup2 or RENDERGROUP_PLANET
+
+	self:PreLoadData(false) 
 	
 	local model = self:AddComponent(CTYPE_MODEL) 
 	model:SetRenderGroup(rgroup1)
@@ -90,6 +92,7 @@ function ENT:Spawn()
 		ringsEnt.iscelestialbody=true
 		self.rings = ringsEnt
 	end
+
 end
 function ENT:Enter()  
 	self.left = false
@@ -124,6 +127,37 @@ function ENT:Enter()
 		render.SetGroupBounds(RENDERGROUP_PLANET,1e4,1000e8)
 		render.SetGroupBounds(RENDERGROUP_CURRENTPLANET,10,1e8)
 	end
+	
+	if self[VARTYPE_ARCHETYPE]=='earth' then
+		local svis = self:RequireComponent(CTYPE_SHAPEVIS)
+		self.shapevis = svis
+		--ssvis:SetRenderGroup(RENDERGROUP_CURRENTPLANET)
+		svis:RemoveShape("countries")
+		svis:RemoveShape("lakes")
+		svis:RemoveShape("rivers")
+		svis:RemoveShape("water_natural")
+		svis:RemoveShape("water_artificial")
+		svis:LoadShape("countries","L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/shapes/ne_50m_admin_0_countries.zip",Vector(10,10,10),10,matrix.Scaling(0.10005))
+		svis:LoadShape("lakes",    "L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/shapes/ne_10m_lakes.zip",Vector(7,6,10),10,matrix.Scaling(0.10005))
+		svis:LoadShape("rivers",   "L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/shapes/ne_10m_rivers_lake_centerlines_scale_rank.zip",Vector(2,4,10),10,matrix.Scaling(0.10005))
+		svis:LoadOSM("water_natural",
+		--"#F:/CURRENT/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
+		"#L:/_root/_f/_projects/_solge//srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
+			json.ToJson({
+				waterway = "^riverbank$|^river$|^stream$",
+				natural = "^water$",
+				water = "^river$|^lake$|^oxbow$|^pond$|^lagoon$|^stream_pool$",-- "."
+			}),
+			Vector(10,24,21),10,matrix.Scaling(0.10005))
+		svis:LoadOSM("water_artificial",
+		--"#F:/CURRENT/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
+		"#L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
+			json.ToJson({
+				waterway = "^canal$|^pressurised$|^drain$",
+				water = "^basin$|^reservoir$|^canal$|^lock$|^fish_pass$|^reflecting_pool$|^moat$|^ditch$|^wastewater$"
+			}),
+			Vector(20,4,1),10,matrix.Scaling(0.10005))
+	end
 end
 function ENT:SpawnSurface() 
 	if not self.left then
@@ -132,7 +166,8 @@ function ENT:SpawnSurface()
 		
 		
 		local surface = self.surface
-		if not surface or not IsValidEnt(surface) then 
+		MsgN("surface",surface)
+		if not IsValidEnt(surface) then 
 			local k = 0
 		--	for k=0,4 do 
 				local rgroup1 = self.rgroup1 or RENDERGROUP_STARSYSTEM
@@ -154,7 +189,9 @@ function ENT:SpawnSurface()
 					surface:SetParameter(VARTYPE_ARCHDATA,archdata)
 				end
 				surface.surfacenodelevel = self.surfacenodelevel
+				MsgN("XXXXX",surface)
 				surface:Spawn()  
+				MsgN("XXXXX2",surface)
 			--end
 			self.surface = surface
 			self.model2:Enable(false)
@@ -162,6 +199,7 @@ function ENT:SpawnSurface()
 		
 		
 		self.partition = surface.partition
+		MsgN("BBB",surface.partition,surface:GetComponent(CTYPE_PARTITION2D)) 
 		self.loaded = true  
 		self.partition:SetUpdating(true)
 		--self.model:Enable(false)
@@ -188,21 +226,50 @@ function ENT:Leave()
 end
 
 
+
+
+
+
+function ENT:PreLoadData(isLoad)  
+	local data = self.data
+	if not data then
+		local type = self:GetParameter(VARTYPE_FORM)  
+		if type then
+			data = forms.ReadForm(type)
+			self.data = data
+		end
+		if data then
+			local modtable = self.modtable
+			if modtable then table.Merge(modtable,data,true) end
+	
+			self[VARTYPE_RADIUS] = data.radius
+			self[VARTYPE_ARCHETYPE] = data.archetype
+	
+					 
+			if isstring(data.name) then
+				self:SetName(data.name)
+			end
+		end	
+	end 
+end
+
 hook.Add('formspawn.planet','spawn',function(form,parent,arguments) 
-	return nil
+	return hook.Call('formcreate.planet',form,parent,arguments)
 end) 
 hook.Add('formcreate.planet','spawn',function(form,parent,arguments)  
 
-	local radius = 10--temp
 	local PLANET = ents.Create("planet")
-	PLANET.szdiff = 2
 	PLANET[VARTYPE_FORM] = form
-	PLANET[VARTYPE_RADIUS] = radius
-	PLANET[VARTYPE_ARCHETYPE] = 'default'
+	PLANET:PreLoadData(false) 
+	--PLANET[VARTYPE_RADIUS] = radius
+	--PLANET[VARTYPE_ARCHETYPE] = 'default'
+	local radius = PLANET[VARTYPE_RADIUS] or 10
+	PLANET.szdiff = 10
+
 	PLANET.rgroup1 = RENDERGROUP_LOCAL
 	PLANET.rgroup2 = RENDERGROUP_LOCAL
 	PLANET.rgroup3 = RENDERGROUP_LOCAL
-	PLANET:SetSizepower(2*radius) 
+	PLANET:SetSizepower(10*radius) 
 
 	PLANET:SetParent(parent)
 	PLANET:AddTag(TAG_EDITORNODE)

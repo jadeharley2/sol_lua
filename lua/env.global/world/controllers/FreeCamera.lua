@@ -168,7 +168,8 @@ function OBJ:Update()
 			cphys:ApplyImpulse( -result * self.speed / parent_sz * dt)
 			cphys:ApplyRotation()
 		else
-			cam:SetPos( cam:GetPos() - result * self.speed / parent_sz * dt)
+	--		cam:SetPos( cam:GetPos() - result * self.speed / parent_sz * dt)
+			cam:AddPos(  - result * self.speed / parent_sz * dt)
 		--cam:SetVelocity( result * self.speed / parent_sz * dt)
 		end
 		

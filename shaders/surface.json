@@ -52,7 +52,7 @@
 	},
 	"onload" : {
 		"tech" : "Render",
-		"layout" :"VertexNBTTexture",
+		"layout" :["VertexNBTTexture","InstanceTransform"],
 		"values" : {
 			"tNoise" 				: "textures/noise/perlinover_n.jpg",
 			"tNoise2" 				: "textures/noise/white.png",

@@ -5,6 +5,7 @@
 	"input" :  
 	[ 
 		"sky_2d.fx", 
+		"headers/scatter.fxh"
 	],
 	"output" : 
 	[

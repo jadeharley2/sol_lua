@@ -1,7 +1,7 @@
 {
-	"name" : "Office ",
+	"name" : "Office",
 	"location" :[
-		"office5:prefab.interiors.office",
+		"office:prefab.interiors.office",
 		44301001,  
 	]
 }

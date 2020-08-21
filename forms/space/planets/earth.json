@@ -1,0 +1,9 @@
+{
+    "name":"Earth",
+    "tags":[],
+    "radius":6378100,
+    "archetype" : "earth", 
+    "surface":{
+
+    },
+}

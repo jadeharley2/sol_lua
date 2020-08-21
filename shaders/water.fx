@@ -19,6 +19,7 @@ float albedoSurface = 1;
 float albedoLiquid = 1;
 float hdrMultiplier =1;
 float distanceMultiplier=1;
+float waterLevel =-0.0000023;
 
 float time=0;
   
@@ -170,7 +171,7 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	PS_IN output = (PS_IN)0;
 	output.tcrd = float4(1- input.tcrd.y, input.tcrd.x, input.tcrd.w, input.tcrd.z); 
 	 
-	float4 pos = input.pos; 
+	float4 pos = input.pos -float4(input.normal*waterLevel*-800,0); 
 	float4 wpos = mul( pos,(World));
 	float surfaceDistance = length(wpos) * distanceMultiplier;
 

@@ -494,7 +494,7 @@ float3 RGBtoHSV(in float3 RGB)
     return HSV;
 }
 float4 PS_PBR( PS_IN input ) : SV_Target
-{    
+{     
     //return 0;
     float2 uv = getUV(input.pos);
 	//return float4(uv/viewSize,0,1)*0.1;
@@ -573,10 +573,13 @@ float4 PS_PBR( PS_IN input ) : SV_Target
         //LIGHT *=light_power;
     }
 
+    //if(light_power!=light_power){
+    //    light_power =10;//  -light_power;
+    //}
     //float3 hsv = RGBtoHSV(LIGHT);
     //hsv.z = round( hsv.z/5)*5;
     //LIGHT = HSVtoRGB(hsv);
-
+  //  return float4(light_power,light_power,light_power,1)*10000000*mask.x;
 	float3 output  = lerp(LIGHT,LIGHT*surfcolor,metallness); 
     
 	return float4(output,1)*mask.x*0.1;

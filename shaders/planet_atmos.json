@@ -1,10 +1,12 @@
+
 {
-	"name" : "debug",
+	"name" : "planet_atmos",
 	"type" : "asset",
 	"assettype" : "shader",
 	"input" :  
 	[ 
-		"debug.fx" 
+		"planet_atmos.fx", 
+		"headers/scatter.fxh", 
 	],
 	"output" : 
 	[
@@ -23,7 +25,7 @@
 		{
 			"type" : "DX11.vertexShader",
 			"profile" : "vs_5_0",
-			"entryPoint" : "VSI",
+			"entryPoint" : "VS",
 			"shaderFlags" : [ "Debug" ],
 			"effectFlags" : [] 
 		}, 
@@ -35,11 +37,17 @@
 			"effectFlags" : []
 		}
 	],
-	"definition":{
-		"stage":"backward",
-		"variables" : [ 
-			{"name":"Color", "type":"float3","default":[1,1,1],"description":"near tint"}, 
-			{"name":"Color2", "type":"float3","default":[1,1,1],"description":"far tint"},  
-		],
+	"parameters" : {
+		//"tClouds" 					: {"type":"texture"},
+		//"tCloudNoise" 					: {"type":"texture"},
+		"time"			: { "type" : "float", "global": "time"},
 	},
+	"onload" : {
+		"tech" : "DefaultTech",
+		"layout" :"VertexNBTTextureSkin",
+		"values" : { 
+			//"tClouds" 				: "textures/atmosphere/clouds.dds",
+			//"tCloudNoise" 			: "textures/noise/perlin1.jpg"
+		}
+	} 
 }            

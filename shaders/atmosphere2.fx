@@ -407,7 +407,7 @@ PS_OUT PS(PS_IN input) : SV_Target
 		//return float4(clouds.a*sunTotal,1);
 
 		float3 atmglow = saturate(dotpd*2)
-			*(saturate(1-dotpd)+0.15)
+			*(saturate(1-dotpd*dotpd)+0.15)
 			*sunTotal
 			*atmosphereColor
 			*density;
@@ -415,18 +415,19 @@ PS_OUT PS(PS_IN input) : SV_Target
 
 		float3 result = atmglow*4 +tBackColor ;
 		ou.color = float4(result,1);  
-
+ 
 		if(cloudmul<1)
 		{ 
 			float3 atmmix = lerp(float3(1,1,1),atmosphereColor,0.1);
 			
 			ou.color = float4(
-				clouds*sunTotal*cloudColor*1.6*2
+				clouds*sunTotal*cloudColor*1.6*2*1000
 				*atmmix*saturate(sqrt(clouds.a))
 				*saturate(1-cloudmul/2)  
 				+atmglow*5
 				,
-				clouds.a*density*0.5*cloudmul);
+				clouds.a*density*0.5*cloudmul
+				);
 			//ou.color =0;
 		}
 		return ou;//float4(result,1); 

@@ -14,6 +14,7 @@ float albedoSurface = 1;
 float albedoLiquid = 1;
 float hdrMultiplier =1;
 float distanceMultiplier=1;
+float waterLevel =-0.0000023;
 
 float3 lightDir; 
 float3 lightColor=float3(1,1,1); 
@@ -21,6 +22,7 @@ float3 lightColor=float3(1,1,1);
 bool isCameraUnderWater;
 bool isStar;
 float3 Tint = float3(1,1,1);
+
 
 Texture2D sTexture;   
 Texture2D wTexture;   
@@ -269,6 +271,8 @@ struct VS_IN
 	float4 tcrd : TEXCOORD;  //xy = bigTcrd(-1..+1,fullplane), zw = smallTcrd(0..+1,~1m)
 	float4 data : TEXCOORD1; //x = height, y = temperature, z = humidity, w = cover layer thickness
 	float3 color : COLOR;
+
+	float4x4 itransform : WORLD;
 };
 struct IS_IN
 {
@@ -307,12 +311,14 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	PS_IN output = (PS_IN)0;
 	output.tcrd = float4(1- input.tcrd.y, input.tcrd.x, 1-input.tcrd.w, input.tcrd.z);//input.tcrd;
 	
-	
+
+	float4x4 iworld = mul(input.itransform,World);
+	float3x3 nworld = (float3x3)iworld;
 	float4 pos = input.pos;
 	
 	
-	float4 wpos = mul( pos,(World));
-	output.normal = normalize(mul(input.normal,(World)));
+	float4 wpos = mul( pos, iworld);
+	output.normal = normalize(mul(input.normal,(nworld)));
 	
 	
 	
@@ -327,11 +333,11 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 	output.color = input.color;
 	if(nearMode)
 	{
-		output.lpos = normalize(mul(input.bnormal,(World))); 
+		output.lpos = normalize(mul(input.bnormal,(nworld))); 
 	}
 	else
 	{
-		output.lpos = normalize(mul(pos.xyz,(World))); 
+		output.lpos = normalize(mul(pos.xyz,(iworld))); 
 	}
 	output.wpos = wpos.xyz;
 	 
@@ -345,13 +351,16 @@ PS_IN VS( VS_IN input)//, IS_IN input2 )
 PS_IN VSPGS( VS_IN input)//, IS_IN input2 ) 
 {
 	PS_IN output = (PS_IN)0;
+	float4x4 iworld = mul(input.itransform,World);
+	float3x3 nworld = (float3x3)iworld;
+
 	output.tcrd = float4(1- input.tcrd.y, input.tcrd.x, 1-input.tcrd.w, input.tcrd.z);//input.tcrd; 
 	float4 pos = input.pos; 
-	float4 wpos = mul( pos,(World));
-	output.normal = normalize(mul(input.normal,(World))); 
+	float4 wpos = mul( pos,(iworld));
+	output.normal = normalize(mul(input.normal,(nworld))); 
 	if(nearMode)
 	{
-		output.lpos = normalize(mul(input.bnormal,(World))); 
+		output.lpos = normalize(mul(input.bnormal,(nworld))); 
 		//if(input.data.x<0)
 		//{
 		//	float surfaceDistance = length(wpos) * distanceMultiplier;
@@ -360,13 +369,14 @@ PS_IN VSPGS( VS_IN input)//, IS_IN input2 )
 	}
 	else
 	{
-		output.lpos = normalize(mul(pos.xyz,(World))); 
+		output.lpos = normalize(mul(pos.xyz,(iworld))); 
 	}
-		if(input.data.x<0)
-		{
-			float surfaceDistance = length(wpos) * distanceMultiplier;
-			wpos +=float4(output.lpos*input.data.x*-(1672.36621/distanceMultiplier),0)*saturate(surfaceDistance*10-50);
-		}
+	float hsea = input.data.x-waterLevel;
+	if(hsea<0)
+	{
+		float surfaceDistance = length(wpos) * distanceMultiplier;
+		wpos +=float4(output.lpos*hsea*-(1672.36621/distanceMultiplier),0)*saturate(surfaceDistance*10-50);
+	}
 	output.pos =  float4(wpos.xyz,1);  
 	output.bnormal = input.bnormal;
 	output.tnormal = input.tnormal;
@@ -525,10 +535,13 @@ float3 GetSpaceColor(PS_IN input)
 	float4 tex =  BlendTilesetSpace(input.data,tcrd*4);//tileSpaceTexture_d.Sample(NearTextureSapler,float3(tcrd*8,3));
 	float4 norm = tileSpaceTexture_n.Sample(NearTextureSapler,float3(tcrd*4,0));
 	float specular = 0.001;
-	bool isunderwater = hasHydrosphere && input.data.x<0.00;
+
+
+	float hsea = input.data.x-waterLevel;
+	bool isunderwater = hasHydrosphere && hsea<0;
 	if(isunderwater)
 	{
-		tex.rgb= oceanColor/(1-input.data.x*1000);
+		tex.rgb= oceanColor/(1-hsea*1000);
 		input.normal = globalNormal;
 		specular = 0.4;
 	}
@@ -609,6 +622,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	
 	bool isunderwater = hasHydrosphere;// && input.data.x<0.00;
 	float specular_intensity = 0.001;
+	float metalness_intensity = 0.00;
 	  
 	  
 	float topDot = saturate(dot(globalNormal,input.normal)); 
@@ -621,17 +635,21 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 		
 		//float2 water_tcoord = float2(1+input.data.x*3,input.data.z+globalTemperatureModifier);
 		//float4 water_rampcolor = wTexture.Sample(MeshTextureSampler,water_tcoord);
-		surface_rampcolor.rgb =lerp(surface_rampcolor.rgb, oceanColor/(1-input.data.x*1000),saturate(-input.data.x*1000000));// water_rampcolor; 
+		
+		//surface_rampcolor.rgb =lerp(surface_rampcolor.rgb, oceanColor/(1-input.data.x*1000),saturate(-input.data.x*1000000));// water_rampcolor; 
 	
-		float wetness =  saturate(-input.data.x*10000000+1);
+		float haboveseaf = input.data.x-waterLevel;
+		float wetness =  saturate(-haboveseaf*10000000+1);
 		surface_rampcolor.rgb *=1-wetness*0.8;
 		specular_intensity =wetness*0.7*saturate((1-topDot)*5);
-		if( input.data.x<0.00 && 0.99<saturate(surfaceDistance*10-10	)) //!nearMode && 
+		if( haboveseaf<0 && 0.99<saturate(surfaceDistance*10-10	)) //!nearMode && 
 		{
 			input.normal = globalNormal;
 			topDot =1;
 			specular_intensity =0.7;
+			metalness_intensity=0.5;
 		}
+		surface_rampcolor.rgb =lerp(surface_rampcolor.rgb, oceanColor,saturate(-haboveseaf*1000000*10));
 	}  
 	float clouds_dencity =0;
 	float clouds_shadow_rampcolor = 1;
@@ -670,7 +688,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 			float4 grass = sTexture.Sample(MeshTextureSampler,grassTcrd);
 		//	float4 forest2 = tNoise.Sample(NoiseTextureSampler,tcrdBig*10000); 
 			//surface_rampcolor *= saturate(grass*8*grassTcrd.y);
-//UPDATE//surface_rampcolor *=lerp(grass.r*2,1, saturate(grassTcrd.y*grassTcrd.y*grassTcrd.y));
+	//UPDATE//surface_rampcolor *=lerp(grass.r*2,1, saturate(grassTcrd.y*grassTcrd.y*grassTcrd.y));
 			//surface_rampcolor =grassTcrd.y*grassTcrd.y*grassTcrd.y;
 			clip(grass.a-0.5);//-forest2.r 
 		}
@@ -742,7 +760,7 @@ float4 SpaceColor(PS_IN input,float wposLen,float surfaceDistance, inout PS_OUT 
 	////}
 	//return float4(ToSpherical(globalNormal).xy,0,1);
 	output.color+=float4(finalColor*ambient*2,1);
-	output.mask = float4(1,specular_intensity,0,0);
+	output.mask = float4(1,specular_intensity,metalness_intensity,0);
 
 	return float4(finalColor,specular_intensity); 
 }
@@ -773,11 +791,11 @@ float3 NearbyColor(PS_IN input,float wposLen,float surfaceDistance)
 	
 				
 	float3 finalColor =tilecolor.rgb* ambient +  brightness3;
-	
-	bool isunderwater = hasHydrosphere && input.data.x<0.00;
+	float hsea =  input.data.x-waterLevel;
+	bool isunderwater = hasHydrosphere && hsea<0;
 	
 	 
-	float2 water_tcoord = float2(1+input.data.x*3,input.data.z+globalTemperatureModifier);
+	float2 water_tcoord = float2(1+hsea*3,input.data.z+globalTemperatureModifier);
 	float4 water_rampcolor = wTexture.Sample(MeshTextureSampler,water_tcoord); 
   
 	if(isCameraUnderWater)
@@ -788,7 +806,7 @@ float3 NearbyColor(PS_IN input,float wposLen,float surfaceDistance)
 	{
 		if(isunderwater)
 		{ 
-			float depth_light_decay = saturate( (-input.data.x)/0.000005);
+			float depth_light_decay = saturate( (-hsea)/0.000005);
 			finalColor = lerp( finalColor*0.8,water_rampcolor*2, depth_light_decay);
 		}
 	}
@@ -799,10 +817,10 @@ float3 NearbyColor(PS_IN input,float wposLen,float surfaceDistance)
 float4 Simplified(PS_IN input,float wposLen,float surfaceDistance)
 { 
 	float2 tcrdSmall = input.tcrd.zw;
-	
-	bool isunderwater = hasHydrosphere && input.data.x<0.00;
-	float coastline  = saturate(1/abs(input.data.x*1000000));
-	float3 color = coastline+step(0,input.data.x)*0.1;
+	float hsea = input.data.x-waterLevel;
+	bool isunderwater = hasHydrosphere && hsea<0;
+	float coastline  = saturate(1/abs(hsea*1000000));
+	float3 color = coastline+step(0,hsea)*0.1;
 	float hot = step(0.1,input.data.z);
 	float cold = step(input.data.z,0);
 	color *= lerp(float3(1,1,1),float3(0.3,1,0.4),1-cold-hot);
@@ -825,7 +843,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	float hsea = input.data.x - waterLevel;
 	float wposLen = length(input.wpos);
 	float surfaceDistance = wposLen * distanceMultiplier;
 	float blend_medium = saturate(1 - surfaceDistance*2); 
@@ -838,7 +856,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	//float3 color_nearby = NearbyColor(input,wposLen,surfaceDistance); 
 	
 	//42
-	float blend = saturate(surfaceDistance*10-10)*saturate(-input.data.x*100000000);//saturate(color_space.w*20); //lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
+	float blend = saturate(surfaceDistance*10-10)*saturate(-hsea*100000000);//saturate(color_space.w*20); //lerp(0.2,color_space.w*2,saturate(surfaceDistance/100));
 	output.normal = float4(lerp(input.normal,normalize(input.lpos),blend)*0.5+0.5,1);
 	output.depth = //input.pos.w;//
 	input.pos.z;///input.pos.w;
@@ -847,7 +865,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	 
 	if(isCameraUnderWater)
 	{  
-		float depth = max(1,-input.data.x*1000000.0); 
+		float depth = max(1,-hsea*1000000.0); 
 		output.diffuse =float4( NearbyColor(input,wposLen,surfaceDistance)/depth,1);; ;//float4(color_nearby*hdrMultiplier,1);
 		output.mask = float4(1-saturate(surfaceDistance*20),0.2,1,0);
 	}
@@ -855,6 +873,7 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	{
 		output.diffuse = color_space;//float4(lerp(color_nearby,color_space.rgb,blend_space)*hdrMultiplier,1);
 	}
+	//output.color = output.diffuse;
 	//float4 sacolor = tGradient.Sample(MeshTextureSampler,float2(input.color.x,0)); 
 	//output.diffuse=sacolor;//float4(input.color,1);
 	//output.color +=output.diffuse/4;
