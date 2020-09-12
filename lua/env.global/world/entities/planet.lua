@@ -141,8 +141,8 @@ function ENT:Enter()
 		svis:LoadShape("lakes",    "L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/shapes/ne_10m_lakes.zip",Vector(7,6,10),10,matrix.Scaling(0.10005))
 		svis:LoadShape("rivers",   "L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/shapes/ne_10m_rivers_lake_centerlines_scale_rank.zip",Vector(2,4,10),10,matrix.Scaling(0.10005))
 		svis:LoadOSM("water_natural",
-		--"#F:/CURRENT/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
-		"#L:/_root/_f/_projects/_solge//srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
+		"#L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
+		--"#L:/_root/_f/_projects/_solge//srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
 			json.ToJson({
 				waterway = "^riverbank$|^river$|^stream$",
 				natural = "^water$",
@@ -150,8 +150,8 @@ function ENT:Enter()
 			}),
 			Vector(10,24,21),10,matrix.Scaling(0.10005))
 		svis:LoadOSM("water_artificial",
-		--"#F:/CURRENT/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
-		"#L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
+		"#L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/crimean-fed-district-latest.o5m",
+		--"#L:/_root/_f/_projects/_solge/srcv4/_bin/soltest/sources/vectordata/osm/south-fed-district-latest.o5m",
 			json.ToJson({
 				waterway = "^canal$|^pressurised$|^drain$",
 				water = "^basin$|^reservoir$|^canal$|^lock$|^fish_pass$|^reflecting_pool$|^moat$|^ditch$|^wastewater$"

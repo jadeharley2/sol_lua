@@ -11,20 +11,14 @@ function PANEL:Init()
 	list:SetSize(300,300)
 	
 	list.hasback = true
-	function self:RefreshList()
-		list.lines = engine.GetStateList() 
-		list:Refresh()
-	end
 	
 	self.list = list
 	sub:Add(list)
 	
-	local sp_img = panel.Create("button")
-	sp_img:SetText("S") 
+	local sp_img = panel.Create()
+	--sp_img:SetText("S") 
 	sp_img:SetPos(300,300)
-	sp_img:SetSize(250,250)
-	sp_img.OnClick = function()   end
-	self:SetupStyle(sp_img)
+	sp_img:SetSize(250,250) 
 	self:Add(sp_img)
 	
 	local sp_text = panel.Create()
@@ -57,14 +51,21 @@ function PANEL:Init()
 	list.OnSelect = function(list, line)
 		local savename = line:GetText()
 		sp_text:SetText(savename) 
+		sp_img:SetTexture(engine.GetStateImage(savename))
 	end
 	
 	self:RefreshList()
+	self:UpdateLayout()
 end
 function PANEL:Load()
 	LoadSingleplayerSave(self.sp_text:GetText())
 end
+function PANEL:RefreshList()
+	self.list.lines = engine.GetStateList() 
+	self.list:Refresh()
+end
 
 function PANEL:OnShow()
 	self:RefreshList()
+	self:UpdateLayout()
 end
