@@ -159,6 +159,15 @@
 			"shortname":"PLNT", 	
 			"directory":"space/planets", 
 			"recursive":true,
+			"baseclass":"planet",
+			"group":"world",	 
+		}, 
+		{
+			"name":"star", 		
+			"shortname":"STAR", 	
+			"directory":"space/stars", 
+			"recursive":true,
+			"baseclass":"star",
 			"group":"world",	 
 		}, 
 		{

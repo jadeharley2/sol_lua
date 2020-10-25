@@ -1,0 +1,47 @@
+{
+	"name" : "gpu_terrain",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[  
+        "gpu_terrain.fx"
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	],
+	"onload" : {
+		"tech" : "Render",
+		"layout" :["VertexNormalTexture","InstanceGTChunk"],
+	},
+	"definition":{
+		"stage":"backward",
+		"variables" : [ 
+		],
+	},
+}            

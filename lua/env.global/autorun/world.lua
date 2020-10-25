@@ -243,11 +243,13 @@ hook.Add("engine.location.loaded","engine.hook",function()
 	engine.SetGameState("singleplayer")
 end)
 
-console.AddCmd("coc",function(w)
-	--MsgN(w)
+console.AddCmd("goto",function(w) 
 	engine.SendToAnchor(LocalPlayer() or GetCamera(),w)
-end)
-console.AddCmd("ccoc",function(w)
-	--MsgN(w)
-	engine.SendToAnchor( GetCamera(),w)
-end)
+end,"send player or camera to target anchor", function(str)
+	local anchors = forms.GetList("anchor")
+	local r = {}
+	for k,v in SortedPairs(anchors) do
+		if string.starts(k,string.sub(str,2)) then r[#r+1] = k end
+	end 
+	return json.ToJson(r)
+end) 

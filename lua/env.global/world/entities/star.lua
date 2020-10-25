@@ -1,9 +1,9 @@
  
 
---commit test 3
+ENT.basetype = "celestial"
+  
+function ENT:Init()   
 
-
-function ENT:Init()  
 	--local orbit = self:AddComponent(CTYPE_ORBIT)  
 	--self.orbit = orbit
 	self:AddTag(TAG_STAR)
@@ -12,7 +12,7 @@ end
 
 function ENT:SetupData(data) 
 	if data.color then
-		self.color = JVector(data.color)
+		self.color = JVector(data.color,Vector(1,1,1))
 	end  
 	if data.brightness then
 		self.brightness = data.brightness
@@ -23,7 +23,7 @@ function ENT:SetupData(data)
 	if data.isstar then
 		self:AddTag(TAG_STAR)
 	end
-end
+end     
 function ENT:Spawn()
 	if self:HasTag(TAG_STAR) then
 		local r = self.radius or self:GetParameter(VARTYPE_RADIUS)
@@ -69,6 +69,7 @@ end
 ----
 --function ENT:Leave()   
 --end
+
 function ENT:Explode()
 	SpawnParticlesStarsystem(self,"explosion_void",Vector(0,0,0),100,4000000000,0.01)
 	local t = 0
@@ -87,3 +88,53 @@ function ENT:Explode()
 			MsgN(t)
 		end)
 end
+
+
+function ENT:PreLoadData(isLoad)  
+	self.base.PreLoadData(self,isLoad)
+	
+	local data = self.data
+	if not data then
+		local type = self:GetParameter(VARTYPE_FORM)  
+		if type then
+			data = forms.ReadForm(type)
+			self.data = data
+		end
+	end
+	self:SetupData(data)
+end
+   
+-- proposal: 
+function ENT.FormInit(form, parent, arguments)
+	
+	local STAR = ents.Create("star")
+	STAR[VARTYPE_FORM] = form
+	STAR:PreLoadData(false)  
+	local radius = STAR[VARTYPE_RADIUS] or 10
+	STAR.szdiff = 10
+ 
+	STAR:SetSizepower(10*radius) 
+
+	STAR:SetParent(parent) 
+	STAR:SetSeed(arguments.seed or 0)
+	STAR:SetPos(arguments.pos or Vector(0,0,0)) 
+
+	return STAR
+end 
+local ent = ENT
+hook.Add('formspawn.star','spawn',function(form,parent,arguments) 
+	local STAR = ent.FormInit(form,parent,arguments) 
+	STAR:Spawn()
+	return STAR
+end) 
+hook.Add('formcreate.star','spawn',function(form,parent,arguments)   
+	local STAR = ent.FormInit(form,parent,arguments) 
+	STAR:Create()
+	return STAR
+end)
+ 
+--local xac = ENT  
+--PrintTable(xac)
+--debug.Delayed(1000,function()  
+--	PrintTable(xac)
+--end)    

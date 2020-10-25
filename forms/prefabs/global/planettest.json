@@ -12,23 +12,21 @@
 		},
 		{
 			"name" : "worldspace",
-            "sizepower" : 1E10, //10 000 000 000m
+            "sizepower" : 1E14, //10 000 000 000m
 			"seed" : 19900002, 
 			"subs" : [ 
                 {
-                    //"form" : "star.sun",
-                    "name" : "Sun",
-                    "realpos" : [152100000E3,0,0],
-                    "luatype" : "star",
-                    "isstar" :true,
-                    "radius" : 696342E3,
-                    "color" : [1,1,1],
-                    "brightness" : 2.23e22
+                    "form" : "star.sun", 
+					"seed" : 9910212,
+					"sizepower" : 1E12,
+					"subs" : [
+						{ 
+							"form" : "planet.earth",
+							"seed" : 9910210,
+							"realpos" : [152100000E3,0,0],
+						},  
+					]
                 },
-				{ 
-					"form" : "planet.earth",
-					"seed" : 9910210
-                },  
 			]
 		}
 	]

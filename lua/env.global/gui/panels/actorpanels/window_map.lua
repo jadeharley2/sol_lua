@@ -6,6 +6,7 @@ function PANEL:Init()
 	--PrintTable(self)
 --	self.fixedsize = true
 	self.base.Init(self)
+	self.mv:SetTextColor(Vector(3,3,3))
 	self:SetSize(1000,520)
 	self.pointer = gui.FromTable({
 		size = {4,4},
@@ -43,8 +44,12 @@ function PANEL:Update()
 		self:SetMode('starsystem',ssystem,cp) 
 		else
 			local sgal = c:GetParentWithFlag(TAG_GALAXY) 
-			self:SetMode('galaxy',sgal,sgal)
-			self:UpdateGalPointerPos()
+			if sgal then
+				self:SetMode('galaxy',sgal,sgal)
+				self:UpdateGalPointerPos()
+			else 
+				self:SetMode('unknown')
+			end
 		end
 	end
 end
@@ -64,11 +69,11 @@ function PANEL:UpdatePointerPos()
 	if planet and planet.surface then
 		local lon, lat  = planet.surface:GetLonLat(planet:GetLocalCoordinates(c))
 		local sz = self.inner:GetSize()
-		local x = -(lon/180+1)*sz.x--1000
-		local y = -lat/90*sz.y--500
+		local x = -(-lon/180)*sz.x--1000  
+		local y = lat/90*sz.y--500
 		if x<-sz.x then x = x + sz.x*2 end
 		self.pointer:SetPos(x,y)
-	end
+	end 
 end
 function PANEL:SetMode(mode,node,cnode)
 	if self.mode ~= mode or self.node ~= node or self.cnode ~= cnode then 
@@ -79,10 +84,16 @@ function PANEL:SetMode(mode,node,cnode)
 		if mode == 'starsystem'then self:InitSystemMap(node) 
 		elseif mode == 'planet' then self:InitPlanetMap(node)
 		elseif mode == 'galaxy' then self:InitGalaxyMap(node)
+		else --unknown
+			local u = self.inner
+			u:Clear()
+			u:SetColor(Vector(0,0,0))
+			self:SetTitle("unknown location")
 		end
 	end
 end
 function PANEL:InitGalaxyMap(node)
+	if not node then return end
 	local u = self.inner
 	u:Clear()
 	u:SetColor(Vector(1,1,1))
@@ -91,6 +102,7 @@ function PANEL:InitGalaxyMap(node)
 	self:RSystemMap(node,1,Point(-800,0),400,GetCamera():GetParent())
 	u:Remove(self.pointer)
 	u:Add(self.pointer)
+	self:SetTitle(node:GetName() or "unknown galaxy")
 end
 function PANEL:InitSystemMap(node)
 	local u = self.inner
@@ -100,6 +112,7 @@ function PANEL:InitSystemMap(node)
 	MsgN("map",node)
 	local ss = u:GetSize()
 	self:RSystemMap(node,1,Point(-ss.x,0),ss.y-100,GetCamera():GetParent())
+	self:SetTitle(node:GetName() or "unknown star system")
 end
 local continfo = function(ci,n)
 	
@@ -203,9 +216,13 @@ function PANEL:InitPlanetMap(node)
 	local u = self.inner
 	u:Clear()
 	u:SetColor(Vector(1,1,1))
-	u:SetTexture(LoadTexture("textures/gui/map/fae.png"))
+--	u:SetTexture(node.mappath or "textures/gui/map/none.png")
+	u:Add(gui.FromTable({type ="tilemap",size = {200,200}, dock = DOCK_FILL}))
 	u:Remove(self.pointer)
 	u:Add(self.pointer)
+	 
+
+	self:SetTitle(node:GetParent():GetName() or "unknown planet")
 end
 function PANEL:MouseDown() 
 end

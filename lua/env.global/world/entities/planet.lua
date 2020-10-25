@@ -157,6 +157,7 @@ function ENT:Enter()
 				water = "^basin$|^reservoir$|^canal$|^lock$|^fish_pass$|^reflecting_pool$|^moat$|^ditch$|^wastewater$"
 			}),
 			Vector(20,4,1),10,matrix.Scaling(0.10005))
+		svis:LoadMVD("vectordata/earth/crimean-fed-district-latest.vdat",true)
 	end
 end
 function ENT:SpawnSurface() 
@@ -192,6 +193,9 @@ function ENT:SpawnSurface()
 				MsgN("XXXXX",surface)
 				surface:Spawn()  
 				MsgN("XXXXX2",surface)
+				
+				self.shapevis:HookPartition(surface.partition)
+				self.shapevis:HookSurface(surface.surface)
 			--end
 			self.surface = surface
 			self.model2:Enable(false)
@@ -243,6 +247,7 @@ function ENT:PreLoadData(isLoad)
 			if modtable then table.Merge(modtable,data,true) end
 	
 			self[VARTYPE_RADIUS] = data.radius
+			self[VARTYPE_MASS] = data.mass
 			self[VARTYPE_ARCHETYPE] = data.archetype
 	
 					 

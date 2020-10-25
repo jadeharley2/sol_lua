@@ -2,8 +2,10 @@
     "name":"Earth",
     "tags":[],
     "radius":6378100,
+    "mass" :5.97237E24 ,
     "archetype" : "earth", 
     "surface":{
 
     },
+    "mappath":"textures/gui/map/earth.jpg"
 }

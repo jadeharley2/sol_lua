@@ -1,8 +1,9 @@
 {
-	"name" : "Office ",
+	"name" : "Earth test dimension",
 	"location" :[
 		"testearth56:prefab.global.planettest",
-		19900002,  
+		19900002,
+		9910212,  
 		9910210,
 		[0.9,0,0]
 	]

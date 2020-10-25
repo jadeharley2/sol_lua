@@ -19,3 +19,6 @@ Features:
 -  Actors, NPCs and Player
 -  Inventory, resource and crafting systems
 
+Requirements:
+- OS: Windows 7+
+- Memory

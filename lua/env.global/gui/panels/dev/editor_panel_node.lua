@@ -141,8 +141,34 @@ function PANEL:NodeToTreeElement(ent)
 		Icon = self:GetEntIcon(ent),
 		entity = ent,
 		OnClick = function(s) 
+			
+			panel.start_drag_on_shift(s,1,function(s) 		
+				local p = s:GetParent()
+				s.rdock = s:GetDock()
+				s.ridx = s:GetIndex()
+				s.rep = p
+				if p then p:Remove(s) end
+				s:Dock(DOCK_NONE)      
+				s:Show()
+				s:SetPos(input.getInterfaceMousePos()*GetViewportSize()+s:GetSize()*Point(1,-1))--Point(50,-50)
+				
+				return true 
+			end,function(s) 	
+				s:Close()
+				s:Dock(s.rdock)
+				s.rep:Insert(s,s.ridx)
+				s.rep:UpdateLayout()
+				return true 
+			end) 
 			worldeditor:Select(s.entity)
-		end
+		end,
+		DragEnter = function(s,item)
+			s:SetText("wat?")
+		end,
+		DragExit = function(s,item)
+			s:SetText("...")
+		end,
+
 	})
 
 	self.noderef[ent] = n
