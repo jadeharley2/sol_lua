@@ -48,16 +48,20 @@ function PANEL:SetForm(formid,usecontext,entdata)
                 self:SetColor(JVector(tint))
             end 
         else
-            RenderThumbnail(formid,function(tex) 
-                if tex then
-                    self:SetTexture(tex)
-                    if usecontext then 	usecontext.contextinfo = {"image",tex} end
+            if forms.HasTag(formid,"nopreview") then
+                
+            else
+                RenderThumbnail(formid,function(tex) 
+                    if tex then
+                        self:SetTexture(tex)
+                        if usecontext then 	usecontext.contextinfo = {"image",tex} end
 
-                    tex:Save('data/textures/thumb/'..formid..'.png')
-                else
-                    self:SetTextOnly(true) 
-                end
-            end)
+                        tex:Save('data/textures/thumb/'..formid..'.png')
+                    else
+                        self:SetTextOnly(true) 
+                    end
+                end)
+            end
         end
 	end 
 end

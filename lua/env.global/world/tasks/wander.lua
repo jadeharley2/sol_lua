@@ -73,6 +73,7 @@ function task:HasNeed()
 end
 function task:UpdateNeedTask(topk)
 	local actor = self.ent 
+	local n = actor.needs
 	local need = n[topk]
 	if need then 
 		

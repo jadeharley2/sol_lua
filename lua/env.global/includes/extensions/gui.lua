@@ -34,12 +34,14 @@ function gui.SetStyle(name)
 	STYLE = ps
 end
 
-function LockMouse()
+function LockMouse(lock_events)
 	MOUSE_LOCKED = true 
+	if lock_events then input.SetMouseBusy(true) end
 end
 
 function UnlockMouse()
 	MOUSE_LOCKED = false 
+	input.SetMouseBusy(false)
 end
 
 function FSTR_Dock(v)

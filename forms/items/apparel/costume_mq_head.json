@@ -1,0 +1,48 @@
+{
+	"name" : "Mannequin costume", 
+	"filter" :{  
+	},
+	"slot" : "skin.head",
+	"model" : "species/anthro/base_anthro.stmd",
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03, 
+	"hide":["hair","head","neck"], 
+
+	"subs" : [
+		
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "head", 
+				"model" : "species/anthro/head_mq.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part",
+				"visible":false,
+			}
+		}, 
+		{  
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "neck", 
+				"model" : "species/anthro/bp_neck.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part",
+				"visible":false,
+			}
+		}
+	], 
+	"materials" : {
+		"mat:body":  "models/apparel/mq/body.json",
+		"mat:head":  "models/apparel/mq/head.json" 
+	},  
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
+}

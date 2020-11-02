@@ -282,6 +282,7 @@ function component:_equip(data,nosave)
 	local node = self:GetNode()
 	local form = data:Read("/parameters/form")
 	if node and form then 
+		local sizepower = node:GetSizepower()
 		local formdata = forms.ReadForm(form)--json.Read(form) 
 		if formdata then
 			local model = formdata.model--data:Read("/parameters/model")
@@ -297,15 +298,17 @@ function component:_equip(data,nosave)
 					self:_unequipslot(slot)
 
 
-					local e = SpawnBP(model,node,scale,GetFreeUID())
-					if e then
+					local e = SpawnBP(model,node,scale,GetFreeUID(),sizepower)
+					if IsValidEnt(e) then
 						eqslt.data = data 
 						eqslt.formid = data.parameters.form
 						eqslt.entity = e
 						e:SetName('ap'..slot)
 						e:SetPos(Vector(0,0,0))
 						e:SetAng(Vector(0,0,0))
-						e.iscloth = true
+						e.iscloth = true 
+						  
+						 
 						--MsgN(slot,e)
 						if not nosave then
 							node[VARTYPE_EQUIPMENT] = self:ToData()

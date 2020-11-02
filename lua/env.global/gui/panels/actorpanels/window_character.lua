@@ -41,6 +41,16 @@ function PANEL:Set(actor)
 	local islocal = actor ==LocalPlayer()
 	self.stats:Set(actor) 
 	self.equip:Set(actor)
+	if actor:HasTag(TAG_ACTOR) then
+		self.tabs:SetTabVisible("Stats",true)
+	else
+		self.tabs:SetTabVisible("Stats",false)
+	end
+	if actor:GetComponent(CTYPE_EQUIPMENT) then
+		self.tabs:SetTabVisible("Equipment",true)
+	else
+		self.tabs:SetTabVisible("Equipment",false)
+	end
 	if islocal then
 		self.tabs:SetTabVisible("Deconstruct",true)
 		self.tabs:SetTabVisible("Combine",true)
@@ -50,6 +60,7 @@ function PANEL:Set(actor)
 		self.tabs:SetTabVisible("Combine",false)
 		self.tabs:SetTabVisible("Craft",false)
 	end
+	self:SetTitle(actor:GetName())
 	GLOBAL_CEQPANEL = self.equip
 end
 

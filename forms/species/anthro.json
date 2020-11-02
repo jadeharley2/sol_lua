@@ -69,7 +69,14 @@
 			},   
 			"pstand2":{ 
 				"variables" : {  }
-			},   
+			},     
+			"pose_ab":{ 
+				"variables" :
+				{
+					"norotation":true,
+					"nomovement":true
+				}
+			}, 
 			
 		},
 		"needs":{ 

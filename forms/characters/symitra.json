@@ -2,7 +2,7 @@
 	"name": "RigTestModel", 
 	"health" : 100,  
 
-	"model" : "symitra/symitra.stmd",
+	"model" : "characters/symitra/symitra.stmd",
 	"attributes" : [ "humanoid" ],
 	"movement" :
 	{

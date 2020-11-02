@@ -110,6 +110,9 @@ function TASKMANAGER_META:Abort(task)
 		self.current[task] = nil
 	end
 end
+function TASKMANAGER_META:AbortAll(task) 
+	self.current = {}
+end
 function TASKMANAGER_META:End(task) 
 	if task.slot then
 		local t = self.current[task.slot] 
@@ -242,6 +245,29 @@ console.AddCmd("listtasks",function ()
 		local tm = actor._taskmanager or actor.tmanager 
 		if tm then
 			PrintTable(tm.current)
+		end
+	end
+end)
+console.AddCmd("task_start",function (arg)
+	local actor = LocalPlayer()
+	if IsValidEnt(actor)  then
+		local tm = actor._taskmanager or actor.tmanager 
+		if tm then
+			local tt = Task(arg)
+			if tt then
+				tm:Begin(tt)
+			else
+				MsgN("error while creating task",arg)
+			end
+		end
+	end
+end)
+console.AddCmd("task_abortall",function (arg)
+	local actor = LocalPlayer()
+	if IsValidEnt(actor)  then
+		local tm = actor._taskmanager or actor.tmanager 
+		if tm then
+			tm:AbortAll()
 		end
 	end
 end)

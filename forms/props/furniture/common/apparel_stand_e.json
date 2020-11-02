@@ -1,0 +1,7 @@
+{ 
+	"name":"Empty stand",
+	"tags" : [],
+	"model" : "models/apparel/pad_b.stmd",
+	"scale" : 0.03,
+	"rotation" : [0,0,0],  
+}

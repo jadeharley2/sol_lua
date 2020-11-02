@@ -54,12 +54,16 @@ function PANEL:UpdateContext()
 			self:Show() 
 			self:UpdateLayout()
 		end
-
-		local direction = -1
+ 
+		local directiony = -1
 		if impos.y<-0.3 then
-			direction = 1
+			directiony = 1
 		end
-		self:SetPos(mpos+self:GetSize()*Point(1,direction)+Point(30,-10)) 
+		if impos.x<0.3 then 
+			self:SetPos(mpos+self:GetSize()*Point(1,directiony)+Point(30,-10)) 
+		else
+			self:SetPos(mpos+self:GetSize()*Point(-1.2,directiony)+Point(30,-10)) 
+		end
 	else
 		self:Close()
 		self.tel = nil

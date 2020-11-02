@@ -1,0 +1,6 @@
+{
+	"group" : "marker",
+	"tags" : [],  
+	"rotation" : [0,0,0],
+	"luatype":"dev_marker"
+}

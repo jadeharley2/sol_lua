@@ -59,6 +59,7 @@ function PANEL:ShowTab(id)
 	local pp = plist[id]
 	--MsgN("AA",id,pp)
 	if pp then
+		self.cur_tab_id = id
 		framePanel:Clear()
 		framePanel:Add(pp)
 		pp:SetPos(0,0)
@@ -76,7 +77,8 @@ function PANEL:ShowTab(id)
 		local OnTabChanged = self.OnTabChanged 
 		if OnTabChanged then
 			OnTabChanged(self,id,self.pnames[id])
-		end
+		end 
+		CALL(pp.OnTabShow,pp)
 	end
 end 
 function PANEL:SetTabVisible(id,val)
@@ -87,6 +89,21 @@ function PANEL:SetTabVisible(id,val)
 		self.plist[id]:SetVisible(val) 
 		self.pbtns[id]:SetVisible(val)
 	end
+	if not val and self.cur_tab_id == id then
+		local visible = self:GetVisibleTabs()[1]
+		if visible then
+			self:ShowTab(visible)
+		end
+	end
+end
+function PANEL:GetVisibleTabs()
+	local r = {}
+	for k,v in pairs(self.plist) do
+		if v:GetVisible() then
+			r[#r+1] = k
+		end
+	end
+	return r
 end
 
 PANEL.tabs_info = {type = 'children_dict',add = PANEL.AddTab}

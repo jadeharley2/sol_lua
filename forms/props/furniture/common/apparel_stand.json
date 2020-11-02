@@ -1,0 +1,48 @@
+{ 
+	"name":"Anthro mannequin",
+	"tags" : [],
+	"model" : "models/species/anthro/base_anthro.stmd",
+	"scale" : 0.03,
+	"rotation" : [90,0,0], 
+	"nophys":true, 
+	"noik":true,
+	"equipment":{
+		"basedir" : "models/species/anthro/",
+		"pose": "pose_ab",//"pstand",
+		"slots" : ["skin","skin.head","head.top","head.eyes","head.mouth","neck","torso",
+			"torso.top","tail", "legs", "arms","hands","torso.under.top","torso.under.bot","feet" ],
+		"parts" : {   
+			"torso_top":"nbp_torso_top",
+			"torso_bot":"nbp_torso_bot", 
+			"arm.l" : "nbp_arm_l", 
+			"arm.r" : "nbp_arm_r",
+			"hand.l" : "nbp_hand_l",
+			"hand.r" : "nbp_hand_r",
+			"thigh.l" : "nbp_thigh_l",
+			"thigh.r" : "nbp_thigh_r",
+			"calf.l" : "nbp_calf_l",
+			"calf.r" : "nbp_calf_r",
+			"foot.l" : "nbp_foot_l",
+			"foot.r" : "nbp_foot_r",
+			"toe.l" : "nbp_toe_l",
+			"toe.r" : "nbp_toe_r",
+			"neck"  : "nbp_neck",
+			"head" : "head_mq", 
+			//"hair" : "hair_ara",
+			//"tail" : "tail_ara"
+		},   
+		"groups":{
+			"arm":["arm.l","arm.r"],
+			"hand":["hand.l","hand.r"],
+			"thigh":["thigh.l","thigh.r"],
+			"calf":["calf.l","calf.r"],
+			"foot":["foot.l","foot.r"],
+			"toe":["toe.l","toe.r"],
+		},
+		"materials" : {
+			"mat:body":  "models/apparel/mq/body.json",
+			"mat:head":  "models/apparel/mq/head.json" 
+		}, 
+		//"items":["apparel.legw","apparel.armw"]//"apparel.uniform_0",
+	}, 
+}

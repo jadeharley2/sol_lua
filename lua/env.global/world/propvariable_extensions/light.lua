@@ -73,6 +73,9 @@ hook.Add("prop.variable.load","light",function (self,j,tags)
 				DaylightTimer(self)
 			end )
 		end
+		if L.shader then
+			light:SetShader(L.shader)
+		end
 	end 
 end)
 

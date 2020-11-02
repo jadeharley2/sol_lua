@@ -5,6 +5,7 @@ hook.lua_hooks = hook.lua_hooks or {}
 local lua_hooks = hook.lua_hooks
 
 function hook.Add(type, id, func)
+	ASSERT(not id,"nil hook identifier ")
 	local case = lua_hooks[type] or {}
 	case.functions = case.functions or {}
 	if not case.functions[id] then

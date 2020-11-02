@@ -59,11 +59,11 @@ DeclareVartype("AITYPE",85031,"string","ai type name")
 
 function ENT:Init()  
 	self:AddTag(TAG_ACTOR)
-	local phys = self:AddComponent(CTYPE_PHYSACTOR)  
-	local model = self:AddComponent(CTYPE_MODEL)  
-	local storage = self:AddComponent(CTYPE_STORAGE)  
-	local equipment = self:AddComponent(CTYPE_EQUIPMENT)  
-	local health = self:AddComponent(CTYPE_HEALTH) 
+	local phys = self:RequireComponent(CTYPE_PHYSACTOR)  
+	local model = self:RequireComponent(CTYPE_MODEL)  
+	local storage = self:RequireComponent(CTYPE_STORAGE)  
+	local equipment = self:RequireComponent(CTYPE_EQUIPMENT)  
+	local health = self:RequireComponent(CTYPE_HEALTH) 
 	self.model = model
 	self.phys = phys
 	self.storage = storage
@@ -1293,7 +1293,7 @@ function ENT:IsFlying()
 	return self.isflying or false
 end
  
-function ENT:Crouching()
+function ENT:Crouching() 
 	return self.phys:GetStance() ==1--.duckmode or false
 end
 function ENT:SetCrouching(value)
@@ -1416,6 +1416,7 @@ function ENT:GestureStart(layer, name)
 					self[k] = v
 				end
 			end
+			hook.Call("gesture.start",self,name)
 		end
 	end
 end
@@ -1578,7 +1579,7 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 		if IsValidEnt(mountpoint.ent) then MsgN("OCCUPIED",mountpoint.ent) return false end
 		
 		local smodel = self.model
-		if smodel:HasAnimation(mountpoint.state) or smodel:HasAnimation("sit") then
+		if (mountpoint.state and smodel:HasAnimation(mountpoint.state)) or smodel:HasAnimation("sit") then
 
 			local phys = self.phys
 			self.IsInVehicle = true

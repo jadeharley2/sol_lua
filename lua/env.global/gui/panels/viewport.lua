@@ -57,10 +57,12 @@ function PANEL:UpdateCamera()
 	local aspect = vsize.x/vsize.y 
 	cam:SetAspectRatio(aspect) 
 	hook.Call("camera.update")
-end
+end 
 function PANEL:Update()
 	if panel.GetTopElement()==self then
 		if input.rightMouseButton() then
+			self.isbswitch = true
+			input.SetMouseBusy(true)
 			local vsize = self:GetSize()
 			local pos = vsize/2
 			
@@ -70,8 +72,12 @@ function PANEL:Update()
 
 			if global_controller.UpdateCamRotation then 
 				global_controller:UpdateCamRotation(vsize,center,0,0)
-			end
+			end  
 		end
+	end
+	if self.isbswitch and not input.rightMouseButton() then
+		input.SetMouseBusy(false)
+		self.isbswitch=false
 	end
 end
 function PANEL:EnableRendering(b)

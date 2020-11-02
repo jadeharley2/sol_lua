@@ -1,8 +1,11 @@
+
+DeclareEnumValue("tag","ACTOR_PART",				25512) 
+
 --lua_run SpawnBP("mlppony/base_l3_wings.json",LocalPlayer(),0.03)
 --lua_run l = LocalPlayer() a = SpawnBP("models/apparel/uniform.stmd",l,1,110101) b = SpawnBP("models/apparel/cape.stmd",l,1,110102) c = SpawnBP("models/apparel/scarf.stmd",l,1,110103) d = SpawnBP("models/apparel/skl.stmd",l,1,110104)
-function SpawnBP(model,ent,scale,seed)
+function SpawnBP(model,ent,scale,seed,sizepower)
 	local e = ents.Create("body_part")  
-	e:SetSizepower(1000)
+	e:SetSizepower(ent:GetSizepower())--sizepower or ent:GetSizepower() or 1000)
 	e:SetParent(ent) 
 	e:SetModel(model,scale)
 	if seed then e:SetSeed(tonumber(seed)) end
@@ -15,7 +18,7 @@ function ENT:Init()
 	self.model = model
 	self.coll = coll 
 	self:SetSpaceEnabled(false) 
-	
+	self:AddTag(TAG_ACTOR_PART)
 end
 function ENT:Load()
 	local modelval = self:GetParameter(VARTYPE_MODEL)
@@ -24,9 +27,15 @@ function ENT:Load()
 		self:SetModel(modelval,modelscale)
 	else
 		MsgN("no model specified for body part at spawn time")
-	end 
+	end  
 end  
 function ENT:Spawn()  
+	MsgN("SAPWFFAV,",self,self:GetParent(),self:GetParent():GetSizepower())
+	
+	local par = self:GetParent()
+	self:SetSizepower(self:GetParent():GetSizepower()) 
+
+
 	local modelcom = self.modelcom
 	if not modelcom then
 		local modelval = self:GetParameter(VARTYPE_MODEL)
@@ -38,7 +47,7 @@ function ENT:Spawn()
 			MsgN("no model specified for body part at spawn time")
 		end
 	end 
-end
+end 
 function ENT:SetVisible(v)
 	self.model:Enable(v or false)
 end
@@ -111,6 +120,7 @@ function ENT:SetModel(mdl,scale)
 		
 		model:SetCopyTransforms(pmd)
 	end
+	
 	self.modelcom = true
 end 
 ENT.editor = {

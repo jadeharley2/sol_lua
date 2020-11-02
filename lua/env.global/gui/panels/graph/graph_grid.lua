@@ -12,7 +12,7 @@ function PANEL:MouseDown(id)
 		self.selector:BeginSelection(self,1)
 	elseif id == 2 then  
 	elseif id == 3 then 
-		panel.start_drag(self,3) 
+		panel.start_drag(self,3,nil,nil,true) 
 	end
 end
 

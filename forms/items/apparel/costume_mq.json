@@ -1,0 +1,129 @@
+{
+	"name" : "Mannequin costume", 
+	"filter" :{  
+	},
+	"slot" : "skin", 
+	"model" : "species/anthro/base_anthro.stmd",
+	"icon" : "apparel/fk/kt_wrm", 
+	"worldmodel":"apparel/rolled.stmd",
+	"worldmodelscale" : 0.03, 
+	"hide":["torso_top","torso_bot","arm","thigh","calf","foot","toe","hand","tail"],
+
+	"subs" : [
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "zip", 
+				"model" : "apparel/vzp.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "foot", 
+				"model" : "species/anthro/bp_foot.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "calf", 
+				"model" : "species/anthro/bp_calf.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "thigh", 
+				"model" : "species/anthro/bp_thigh.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "toe", 
+				"model" : "species/anthro/bp_toe.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "torso_bot", 
+				"model" : "species/anthro/bp_torso_bot.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "torso_top", 
+				"model" : "species/anthro/bp_torso_top.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "arm", 
+				"model" : "species/anthro/bp_arm.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		},
+		{ 
+			"sizepower" : 1, "seed" : 0, "updatespace" : 0,
+			"parameters" : 
+			{ 
+				"seed" : 0,
+				"abssize" : 1,
+				"name" : "hand", 
+				"model" : "species/anthro/bp_hand.stmd",
+				"modelscale" : 1,
+				"luaenttype" : "body_part"
+			}
+		}, 
+	], 
+	"materials" : {
+		"mat:body":  "models/apparel/mq/body.json",
+		"mat:head":  "models/apparel/mq/head.json" 
+	},  
+	"composition" :{
+		"resource.nanofiber" : 1,     
+	} 
+}

@@ -46,7 +46,7 @@ hook.Add("prop.variable.load","misc",function (self,j,tags)
 
 	if j.components then
 		for k,v in pairs(j.components) do
-			local com = self:AddComponent(v.type)
+			local com = self:RequireComponent(v.type)
 			if v.variable then
 				self[v.variable] = com
 			end

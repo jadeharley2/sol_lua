@@ -88,9 +88,9 @@ function ENT:Construct()
 	self:PreLoadData()
 	local data = self.data or {}
 	if not data.luatype then
-		local model = self.model or self:AddComponent(CTYPE_MODEL)  
-		local coll = self.coll or self:AddComponent(CTYPE_STATICCOLLISION)  
-		local phys = self.phys or self:AddComponent(CTYPE_PHYSOBJ)  
+		local model = self.model or self:RequireComponent(CTYPE_MODEL)  
+		local coll = self.coll or self:RequireComponent(CTYPE_STATICCOLLISION)  
+		local phys = self.phys or self:RequireComponent(CTYPE_PHYSOBJ)  
 		self.model = model
 		self.coll = coll 
 		self.phys = phys
@@ -103,12 +103,12 @@ function ENT:Construct()
 				if data.procedural then
 					self:SetupModelParams()
 					model:SetMatrix( matrix.Scaling(modelscale) * matrix.Rotation(-90,0,0)) 
-					local procgen = self:AddComponent(CTYPE_PROCGEN)  
+					local procgen = self:RequireComponent(CTYPE_PROCGEN)  
 					self.procgen = procgen
 					procgen:SetModel(modelval)
 					self:SetupPhysics(matrix.Scaling(modelscale) * matrix.Rotation(-90,0,0),modelscale)
 				else
-					self:SetModel(modelval,modelscale)
+					self:SetModel(modelval,modelscale,nil,data.noik)
 				end
 			else
 				--error("no model specified for static model at spawn time")
@@ -251,8 +251,10 @@ function ENT:LoadData()
 				tags[v] = true
 			end
 		end  
-
-		hook.Call("prop.variable.load",self,j,tags)
+		if not self._pvloadcomplete then
+			self._pvloadcomplete = true
+			hook.Call("prop.variable.load",self,j,tags)
+		end
 	end
 end
 function ENT:SetupModelParams()
@@ -308,7 +310,7 @@ function ENT:SetupPhysics(world,scale)
 		end
 	end
 end
-function ENT:SetModel(mdl,scale,norotation) 
+function ENT:SetModel(mdl,scale,norotation,noik) 
 	scale = scale or 1
 	norotation = norotation or false
 	local model = self.model
@@ -320,6 +322,7 @@ function ENT:SetModel(mdl,scale,norotation)
 	self:SetParameter(VARTYPE_MODEL,mdl)
 	self:SetParameter(VARTYPE_MODELSCALE,scale)
 	self:SetupModelParams()
+	model:DisableIK(noik or false)
 	model:SetModel(mdl)   
 	model:SetMatrix(world) 
 	

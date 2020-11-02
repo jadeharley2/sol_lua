@@ -211,6 +211,8 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
                         MsgN("new form id:",idparts[1],newid)
                         if forms.CreateForm(idparts[1],newid) then
                             forms.SetData(idparts[1],newid,json.ToJson(newdata))
+                        else
+                            MsgN("failure to create new formid: ",newid)
                         end
                         critem = forms.GetItem(idparts[1]..'.'..newid,0)
                     else
@@ -224,6 +226,9 @@ function crafting.Combine(item_data_a,item_data_b,type,storage)
                         storage:TakeItemAsData(slotA,1)
                         storage:TakeItemAsData(slotB,1)
                         return true
+                    else
+
+                        MsgN("critem is nil! id:",newid)
                     end
 
                 end 

@@ -38,7 +38,7 @@ end
 
 function PANEL:Drop(item)
 	if self.OnDrop then
-		self:OnDrop(item)
+		CALL(self.OnDrop,self,item)
 		--return 
 	end
 	if self.slottype == "reference" then
@@ -52,7 +52,8 @@ function PANEL:Drop(item)
 	if item then
 		item:Close()
 		--MsgN(self.text," -> ",self.item, " <> ",item) 
-		if self.item then
+		if self.item and not istable(self.item) then
+			MsgN("self.item",self,self.item)
 			local II = self.item
 			local ls = item.lastSlot
 			ls.item = II 

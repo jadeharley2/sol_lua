@@ -65,7 +65,7 @@ end
 function panel.call(pn,funcname,...) 
 	local fn = pn[funcname]
 	if fn then 
-		return fn(pn,...)  
+		return CALL(fn,pn,...)  
 	end
 end
 
@@ -92,7 +92,7 @@ end
 			panel.current_drag_pointpos = input.getMousePosition() 
 			panel.current_drag_args = {mbuttonid,...}
 			panel.current_drag_ontrue = ontrue
-			LockMouse()
+			LockMouse(false)
 			hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag.check", panel.function_drag_check)
 		end
 	end
@@ -128,9 +128,10 @@ end
 		end
 	end
 
-	function panel.start_drag(node,mbuttonid,on_drop,snap)
+	function panel.start_drag(node,mbuttonid,on_drop,snap,lockevents)
 		if not panel.current_drag and not MOUSE_LOCKED then
-		
+		 
+
 			panel.current_drag_snap = snap or false
 			panel.current_drag_mbuttonid = mbuttonid or 0
 			panel.current_drag_pointpos = input.getMousePosition() 
@@ -143,12 +144,12 @@ end
 					tab[v] = v:GetPos()
 				end
 				panel.current_drag = tab
-				LockMouse()
+				LockMouse(lockevents)
 				hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag", panel.function_drag_multiple)
 			else
 				panel.current_drag_movepos = node:GetPos()
 				panel.current_drag = node 
-				LockMouse()
+				LockMouse(lockevents)
 				hook.Add(EVENT_GLOBAL_PREDRAW, "gui.drag", panel.function_drag)
 			end
 			return true

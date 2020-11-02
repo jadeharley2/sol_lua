@@ -1,0 +1,7 @@
+{
+	"group" : "building",
+	"tags" : ["desert"],
+	"model" : "models/artificial/buildings/desert/monument.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0], 
+}

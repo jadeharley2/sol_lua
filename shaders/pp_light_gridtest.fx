@@ -40,6 +40,7 @@ float4x4 projWorld2=0;
 Texture2D tProjected;    
 float4 pad2=1;
 float pad3=1;
+int _blendstate = 1;
 SamplerState sView
 {
     Filter = MIN_MAG_MIP_POINT;//MIN_MAG_MIP_LINEAR;
@@ -314,7 +315,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
 
     light_power+=diff*5000*radli;
 
-    output =  (light_power*lightColor)/200;//*surfcolor/100;
+    output =  (light_power*lightColor)/200*lightIntensity;//*surfcolor/100;
 	return float4(output,1);//*mask.x*0.1;
  
 }

@@ -1,0 +1,7 @@
+{
+	"group" : "furniture",
+	"tags" : ["debug","nopreview"],
+	"model" : "models/dyntest/morphtest/test_01.dnmd", 
+	"scale" : 0.03,
+	"rotation" : [90,0,0],  
+}

@@ -22,7 +22,7 @@ function PANEL:Init()
 	
 	mv.upcolor = Vector(0.6,0.8,0.9) 
 	--mv:SetColor(mv.upcolor)
-	mv:SetTextColor(gui.style:GetColor("Text"))	
+	mv:SetTextColor(Vector(2,2,2))--gui.style:GetColor("Text"))	
 	mv:SetColors(
 		gui.style:GetColor("Header"),
 		gui.style:GetColor("HeaderActive"),

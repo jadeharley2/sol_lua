@@ -70,7 +70,8 @@ function PANEL:EquipItem(itempanel)
 		node:SendEvent(EVENT_EQUIP,data) 
 		if sourceslot then
 			MsgN("UUUUU",sourceslot)
-			node:SendEvent(EVENT_ITEM_TAKEN,sourceslot) 
+			local sourcenode = itempanel.storage:GetNode()
+			sourcenode:SendEvent(EVENT_ITEM_TAKEN,sourceslot) 
 		end
 		if itempanel then
 			local iprt = itempanel:GetParent()
@@ -111,14 +112,8 @@ local slotOnDrop = function(self,item)
 	local slot = item.storeslot
 	local data = storage:GetItemData(slot)
 	if data then
-		equipment:EquipItem(item)
-	end 
-	--if item then
-	--	item:Close() 
-	--	local ls = item.lastSlot
-	--	ls:Add(item)
-	--	ls:UpdateLayout()
-	--end
+		CALL(equipment.EquipItem,equipment,item)
+	end  
 	return false
 end
 

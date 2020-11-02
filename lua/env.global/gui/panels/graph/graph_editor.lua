@@ -35,62 +35,7 @@ local layout = {
 			text = "untitled",
 			dock = DOCK_TOP
 		},
-		{ --rightpanel
-			size = {300,300},
-			dock = DOCK_RIGHT,
-			subs = {
-				{ 
-					size = {40,40},
-					dock = DOCK_TOP,
-					color = {0,0,0},
-					subs = { 
-						{ class = "bmenu", name = "bnew", texture = "textures/gui/panel_icons/new.png", 
-							contextinfo='Clear nodes'
-						},
-						{ class = "bmenu",  name = "bsave", texture = "textures/gui/panel_icons/save.png",  
-							contextinfo = 'Save'
-						},
-						{ class = "bmenu", name = "bsaveas", texture = "textures/gui/panel_icons/save.png",  
-							contextinfo = 'Save as'
-						}, 
-						{ class = "bmenu",  name = "bload", texture = "textures/gui/panel_icons/load.png",   
-							contextinfo = 'Load'
-						},  
-						{ class = "bmenu",  name = "bloadtarget", texture = "textures/gui/panel_icons/possnap.png",   
-							contextinfo = 'Load from target'
-						}, 
-					}
-				},
-				{ 
-					size = {40,40},
-					dock = DOCK_TOP,
-					color = {0,0,0},
-					subs = {  
-						{ class = "bmenu",  name = "brun", texture = "textures/gui/panel_icons/play.png",   
-							contextinfo = 'Run'
-						}, 
-						{ class = "bmenu",  name = "brun_cam", texture = "textures/gui/panel_icons/play.png",   
-							contextinfo = 'Run on local camera'
-						}, 
-						{ class = "bmenu",  name = "brun_ply", texture = "textures/gui/panel_icons/play.png",   
-							contextinfo = 'Run on local player'
-						}, 
-						{ class = "bmenu",  name = "brun_selected", texture = "textures/gui/panel_icons/play.png",   
-							contextinfo = 'Run on editor selection'
-						},
-						{ class = "bmenu",  name = "bcom_selected", texture = "textures/gui/panel_icons/refresh.png",   
-							contextinfo = 'Recompile selected'
-						},
-					}
-				},
-				{ 
-					type = "tree", 
-					name = "trpanel",
-					size = {300,300},
-					dock = DOCK_FILL 
-				}
-			}
-		},
+		
 		{
 			name = "floater",
 			size = {300,300},
@@ -116,6 +61,7 @@ local layout = {
 		}
 	}
 }
+GLOBAL_FLOW_EDITOR = false
 function PANEL:Init()  
 	if CURRENT_DEBUG_FLOW then
 		CURRENT_DEBUG_FLOW:Dispose()
@@ -130,34 +76,16 @@ function PANEL:Init()
 	self:Dock(DOCK_FILL)
 	
 	gui.FromTable(layout,self,global_editor_style,self)
-
-	--local floater = panel.Create()
-	--floater:SetSize(vsize.x - 300,vsize.y)
-	--floater:Dock(DOCK_LEFT)
-	--floater:SetColor(Vector(0,0,0))
-	--floater:SetClipEnabled(true)
-	--self:Add(floater)
-	--
-	--local nodelayer = panel.Create("graph_grid")
-	--nodelayer.editor = self
-	--nodelayer:SetSize(20000,20000)
-	--nodelayer:SetTextureScale(Point(1,1)*(20000/256))
-	--floater:Add(nodelayer)
-	--
-	--self.nodelayer = nodelayer
-	--
-	--
-	--
-	--local curvelayer = panel.Create()
-	--nodelayer:Add(curvelayer)
-	--nodelayer.curvelayer = curvelayer
-	--self.nodelayer  = nodelayer
+ 
 
 	self.nodelayer.curvelayer = self.curvelayer
 	self.nodelayer.editor = self
 	
 	local ED = self 
 	
+	GLOBAL_FLOW_EDITOR = self
+	
+	 --[[
 	  
 	local lastpath = "forms/flow"
 	local curfilepath = false
@@ -225,9 +153,7 @@ function PANEL:Init()
 			c:Recompile()
 		end
 	end
-	
-	
-	 
+
 	local trpanel = self.trpanel  
 	local functlist = {}
 	local comlist = {}
@@ -276,53 +202,10 @@ function PANEL:Init()
 	trpanel.OnItemClick = function(tree,element)
 		self:CreateNewNode(element)
 	end 
+	]]
 	
 	
-	
-	--local TESTONLY = panel.Create() 
-	--TESTONLY:SetSize(vsize.x,vsize.y)
-	--TESTONLY:SetPos(100,10000*0) 
-	--TESTONLY:SetCanRaiseMouseEvents(false)
-	--TESTONLY:SetTexture(LoadTexture("@mirrorrt"))
-	--nodelayer:Add(TESTONLY)
 	 
-	
-	--[[
-	local TESTONLY = panel.Create("dockslot") 
-	TESTONLY:SetSize(vsize.x,vsize.y)
-	TESTONLY:SetPos(100,10000*0) 
-	nodelayer:Add(TESTONLY)
-	
-	for k=1,5 do
-		local TESTONLY2 = panel.Create("testdragable")  
-		TESTONLY2:SetPos(-2200,100*k+10000*0) 
-		TESTONLY2:SetSize(300,300)
-		nodelayer:Add(TESTONLY2)
-		
-		local contents = panel.Create("button") 
-		contents:SetText("A"..tostring(k))
-		contents:Dock(DOCK_FILL)
-		TESTONLY2:AddTab("A"..tostring(k),contents)
-		TESTONLY2:ShowTab()
-	end
-	--]]
-	
-	--do 
-	--	local TESTONLY2 = panel.Create("testdragable")  
-	--	TESTONLY2:SetPos(-2200,200+10000*0) 
-	--	TESTONLY2:SetSize(300,300)
-	--	nodelayer:Add(TESTONLY2) 
-	--	TESTONLY2:AddTab("actions",edpanel)
-	--	TESTONLY2:ShowTab()
-	--end
-	--do 
-	--	local TESTONLY2 = panel.Create("testdragable")  
-	--	TESTONLY2:SetPos(-2200,200+10000*0) 
-	--	TESTONLY2:SetSize(300,300)
-	--	nodelayer:Add(TESTONLY2) 
-	--	TESTONLY2:AddTab("nodes",trpanel)
-	--	TESTONLY2:ShowTab()
-	--end
 	
 	
 	
@@ -330,7 +213,7 @@ function PANEL:Init()
 	
 	self:UpdateLayout()
 
-	trpanel:ScrollToTop()
+	--trpanel:ScrollToTop()
 	
 end
 function PANEL:CreateNewNode(element)

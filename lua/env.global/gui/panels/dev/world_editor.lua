@@ -261,13 +261,24 @@ function PANEL:Init()
 						},
 						OnTabChanged = function(s,id,tab)
 							worldeditor:SetMode(tab.edmode)
+							hook.Call("editor_mode",tab.edmode)
 						end,
 					},
 					{ type = "testdragable",   
 						size = {300,300},
 						dock = DOCK_RIGHT,
 						tabs = { 
-							properties = {type = "node_properties" },
+							properties = {
+								type = "conditional",
+								Hook = "editor_mode@wed", 
+								variants = {
+									NODE = { type = "node_properties"},
+									TERRAIN = { type = "panel"},
+									MESH = { type = "panel"},
+									FLOW = { type = "graph_editor_menu"}
+								},
+								dock = DOCK_FILL 
+							},
 							materials = {type = "node_materials" } 
 						}
 					},
@@ -291,8 +302,12 @@ function PANEL:Init()
 									end
 								end
 							}, 
-							flow = {type = "graph_editor" }, 
-						}
+							flow = {type = "graph_editor",edmode="FLOW" }, 
+						},
+						
+						OnTabChanged = function(s,id,tab) 
+							hook.Call("editor_mode",tab.edmode)
+						end,
 					},
 				}
 			}, 

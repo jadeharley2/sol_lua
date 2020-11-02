@@ -1,0 +1,12 @@
+{
+	"name" : "Bag pants",  
+	"slot" : "legs",
+	"model" : "apparel/bag_pants.stmd",
+	"icon" : "apparel/clt/pants", 
+	"worldmodelscale" : 0.014,
+	"hide":["thigh"],
+	"furmasks":{"body":"models/apparel/submaps/pants.png"},
+	"composition" :{
+		"resource.cloth" : 3,     
+	} 
+}

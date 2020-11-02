@@ -1,0 +1,17 @@
+{
+	"name": "Column lamp",
+	"group" : "furniture",
+	"tags" : ["space","lamp"],
+	"model" : "furniture/space/column_lamp.stmd",
+	"scale" : 0.3,
+	"rotation" : [0,0,0],
+	//"icon" : "space/chair",
+	//"luatype":"use_chair",  
+	"light" : { "pos" : [0,1,0], "color" :[0.8,0.9,1],"brightness":1, "shader":"shaders/pp_light_voidtest.json" }, 
+		"composition" :{
+		"resource.steel" : 5,  
+		"resource.plastic" : 5,  
+		"resource.glass" : 5,    
+	}
+ 
+}
