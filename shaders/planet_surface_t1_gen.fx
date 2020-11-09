@@ -19,8 +19,8 @@ Texture2D g_Spritesheet_n;
 Texture2D g_Spritesheet_h;  
   
 SamplerState MeshTextureSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
+{ 
+    Filter = ANISOTROPIC;// MIN_MAG_MIP_LINEAR;
     AddressU = Wrap;
     AddressV = Wrap;
 };

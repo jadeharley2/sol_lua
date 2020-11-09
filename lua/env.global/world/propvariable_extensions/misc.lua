@@ -52,6 +52,9 @@ hook.Add("prop.variable.load","misc",function (self,j,tags)
 			end
 		end
 	end
+	if j.sizepower then 
+		self:SetSizepower(j.sizepower)
+	end
 end)
 
 
