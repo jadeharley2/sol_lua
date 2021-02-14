@@ -1,0 +1,46 @@
+{
+	"name" : "strend",
+	"type" : "asset",
+	"assettype" : "shader",
+	"input" :  
+	[ 
+		"gpu_terrain_gen.fx",  
+	],
+	"output" : 
+	[
+		{
+			"type" : "DX10.effect",
+			"profile" : "fx_4_0",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.effect",  
+			"profile" : "vs_5_0", 
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		},
+		{
+			"type" : "DX11.vertexShader",
+			"profile" : "vs_5_0",
+			"entryPoint" : "VSI",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : [] 
+		}, 
+		{
+			"type" : "DX11.pixelShader",
+			"profile" : "ps_5_0",
+			"entryPoint" : "PS",
+			"shaderFlags" : [ "Debug" ],
+			"effectFlags" : []
+		}
+	],
+	"parameters" : {
+		"g_Spritesheet_h" : {"type":"texture"},  
+		"g_Spritesheet_c" : {"type":"texture"},  
+	},
+	"onload" : { 
+		"tech" : "Instanced",
+		"layout" :["VertexNBTTexture","InstanceTransformTexture"], 
+	}, 
+}            

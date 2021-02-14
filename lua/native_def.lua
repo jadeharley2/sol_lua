@@ -55,6 +55,57 @@ ClipboardGetText = function() end
 ClipboardSetText = function() end
 ---client-server data transfer
 network = {}
+---load texture from path
+---@return Texture
+---@param path string
+---@param async boolean
+LoadTexture = function(path, async) end
+---create new texture
+---@return Texture
+---@param width number
+---@param height number
+---@param format number
+---@param path string
+CreateTexture = function(width, height, format, path) end
+---create new rendertarget
+---@return Texture
+---@param width number
+---@param height number
+---@param id string
+---@param type number
+CreateRenderTarget = function(width, height, id, type) end
+---resize rendertarget
+---@param target Texture
+---@param width number
+---@param height number
+ResizeRenderTarget = function(target, width, height) end
+---create cubemap from 6 side textures
+---@return Texture
+---@param t1 string
+---@param t2 string
+---@param t3 string
+---@param t4 string
+---@param t5 string
+---@param t6 string
+EnvmapFromTextures = function(t1, t2, t3, t4, t5, t6) end
+---set material property
+---@param target Texture
+---@param key string
+---@param value any
+SetMaterialProperty = function(target, key, value) end
+---get material property
+---@return any
+---@param target Texture
+---@param key string
+GetMaterialProperty = function(target, key) end
+---get properties
+---@param target Texture
+---@param keyvalues table
+GetMaterialProperties = function(target, keyvalues) end
+---load spritefont from path
+---@return SpriteFont
+---@param path string
+LoadFont = function(path) end
 file = {}
 input = {}
 ---utf-16 string operations
@@ -220,6 +271,7 @@ engine = {
     LoadState = function() end,
     SaveState = function() end,
     ClearState = function() end,
+    GetStateImage = function() end,
     SaveNode = function() end,
     LoadNode = function() end,
     LoadMap = function() end,
@@ -263,6 +315,8 @@ file = {
     GetFileName = function() end,
     GetFileNameWE = function() end,
     GetFileDependencies = function() end,
+    GetDirectoryRoots = function() end,
+    GetFileRoots = function() end,
     GetFileTree = function() end,
     SetCustomReloadDirectory = function() end,
     GetLoadedAssets = function() end,
@@ -317,6 +371,12 @@ input = {
     ---set keyboard is busy flag
     ---@param value boolean
     SetKeyboardBusy = function(value) end,
+    ---get is mouse busy 
+    ---@return boolean
+    GetMouseBusy = function() end,
+    ---suppress interface mouse events
+    ---@param value boolean
+    SetMouseBusy = function(value) end,
     ---gets interface mouse position
     ---@return Vector
     getInterfaceMousePos = function() end,
@@ -390,6 +450,11 @@ cstring = {
     ---@param pattern string
     ---@param replacement string
     regreplace = function(value, pattern, replacement) end,
+    ---trims boundary characters from string
+    ---@return string
+    ---@param value string
+    ---@param chars string
+    trimchars = function(value, chars) end,
 }
 zlib = {
     deflate = function() end,
@@ -551,14 +616,36 @@ render = {
     GetDrawablesByScreenBox = function() end,
 }
 panel = {
-    Create = function() end,
-    AddType = function() end,
-    GetType = function() end,
+    ---create new panel
+    ---@return Panel
+    ---@param typename string
+    ---@param state table
+    ---@param parent Panel
+    Create = function(typename, state, parent) end,
+    ---add panel type
+    ---@param typename string
+    ---@param type table
+    AddType = function(typename, type) end,
+    ---get panel type from name
+    ---@return Panel
+    ---@param typename string
+    GetType = function(typename) end,
+    ---get panel typenames
+    ---@return table
     GetTypeList = function() end,
-    LoadType = function() end,
-    GetLocalPos = function() end,
+    ---load panel type from file
+    ---@param filename string
+    LoadType = function(filename) end,
+    ---project vector to screen
+    ---@return Vector
+    ---@param node Entity
+    GetLocalPos = function(node) end,
+    ---get panel under cursor
+    ---@return Panel
     GetTopElement = function() end,
-    SetCursor = function() end,
+    ---set cursor type
+    ---@param type number
+    SetCursor = function(type) end,
 }
 framecapture = {
     ---...
@@ -935,6 +1022,16 @@ meta_Component = {
     ---@return Entity
     ---@param self Component
     GetNode = function(self) end,
+    ---@param self Component
+    ---@param id number
+    AddTag = function(self, id) end,
+    ---@param self Component
+    ---@param id number
+    RemoveTag = function(self, id) end,
+    ---@return boolean
+    ---@param self Component
+    ---@param id number
+    HasTag = function(self, id) end,
 }
 ---scripted component
 ---@class SComponent
@@ -1037,7 +1134,6 @@ meta_Entity = {
     ---@return any
     ---@param self Entity
     ---@param type number
-    ---@param ... any
     SendEvent = function(self, type, ...) end,
     ---@param self Entity
     AddNativeEventListener = function(self) end,
@@ -1101,87 +1197,119 @@ meta_Entity = {
     ---@return Guid
     ---@param self Entity
     GetGuid = function(self) end,
+    ---add to current position
+    ---@param self Entity
+    ---@param amount Vector
+    AddPos = function(self, amount) end,
+    ---gets node seed
     ---@return number
     ---@param self Entity
     GetSeed = function(self) end,
+    ---sets node seed
     ---@param self Entity
     ---@param value number
     SetSeed = function(self, value) end,
+    ---gets node name
     ---@return string
     ---@param self Entity
     GetName = function(self) end,
+    ---sets node name
     ---@param self Entity
     ---@param value string
     SetName = function(self, value) end,
+    ---gets node global name
     ---@return string
     ---@param self Entity
     GetGlobalName = function(self) end,
+    ---sets node global name
     ---@param self Entity
     ---@param value string
     SetGlobalName = function(self, value) end,
+    ---gets node parent
     ---@return Entity
     ---@param self Entity
     GetParent = function(self) end,
+    ---sets node parent
     ---@param self Entity
     ---@param value Entity
     SetParent = function(self, value) end,
+    ---gets node absolute metric size
     ---@return number
     ---@param self Entity
     GetSizepower = function(self) end,
+    ---sets node absolute metric size
     ---@param self Entity
     ---@param value number
     SetSizepower = function(self, value) end,
+    ---gets node position relative to parent
     ---@return Vector
     ---@param self Entity
     GetPos = function(self) end,
+    ---sets node position relative to parent
     ---@param self Entity
     ---@param value Vector
     SetPos = function(self, value) end,
+    ---gets metric node position relative to parent
     ---@return Vector
     ---@param self Entity
     GetAbsPos = function(self) end,
+    ---sets metric node position relative to parent
     ---@param self Entity
     ---@param value Vector
     SetAbsPos = function(self, value) end,
+    ---gets node angle relative to parent
     ---@return Vector
     ---@param self Entity
     GetAng = function(self) end,
+    ---sets node angle relative to parent
     ---@param self Entity
     ---@param value Vector
     SetAng = function(self, value) end,
+    ---gets node scale relative to its AMS
     ---@return number
     ---@param self Entity
     GetScale = function(self) end,
+    ---sets node scale relative to its AMS
     ---@param self Entity
     ---@param value number
     SetScale = function(self, value) end,
+    ---gets node position, rotation and scale from matrix
     ---@return Matrix
     ---@param self Entity
     GetWorld = function(self) end,
+    ---sets node position, rotation and scale from matrix
     ---@param self Entity
     ---@param value Matrix
     SetWorld = function(self, value) end,
+    ---gets node lua table
     ---@return table
     ---@param self Entity
     GetTable = function(self) end,
+    ---sets node lua table
     ---@param self Entity
     ---@param value table
     SetTable = function(self, value) end,
+    ---gets node parameter (VARTYPE_*)
     ---@return any
     ---@param self Entity
     GetParameter = function(self) end,
+    ---sets node parameter (VARTYPE_*)
     ---@param self Entity
     ---@param value any
     SetParameter = function(self, value) end,
+    ---gets load mode 
     ---@return number
     ---@param self Entity
     GetLoadMode = function(self) end,
+    ---sets load mode 
     ---@param self Entity
     ---@param value number
     SetLoadMode = function(self, value) end,
+    ---gets do not save flag
     ---@return boolean
     ---@param self Entity
     GetDonotsave = function(self) end,
+    ---sets do not save flag
     ---@param self Entity
     ---@param value boolean
     SetDonotsave = function(self, value) end,
@@ -1189,9 +1317,11 @@ meta_Entity = {
     ---@param self Entity
     ---@param target Entity
     CopyParameters = function(self, target) end,
+    ---gets does not despawn with parent node
     ---@return boolean
     ---@param self Entity
     GetSelfContained = function(self) end,
+    ---sets does not despawn with parent node
     ---@param self Entity
     ---@param value boolean
     SetSelfContained = function(self, value) end,
@@ -1201,39 +1331,51 @@ meta_Entity = {
     ---@param self Entity
     ---@param value any
     SetAtransform = function(self, value) end,
+    ---gets enables position based parent change check
     ---@return boolean
     ---@param self Entity
     GetUpdateSpace = function(self) end,
+    ---sets enables position based parent change check
     ---@param self Entity
     ---@param value boolean
     SetUpdateSpace = function(self, value) end,
+    ---gets enables in/out transition for other nodes
     ---@return boolean
     ---@param self Entity
     GetSpaceEnabled = function(self) end,
+    ---sets enables in/out transition for other nodes
     ---@param self Entity
     ---@param value boolean
     SetSpaceEnabled = function(self, value) end,
+    ---gets enables Think() calls
     ---@return boolean
     ---@param self Entity
     GetUpdating = function(self) end,
+    ---sets enables Think() calls
     ---@param self Entity
     ---@param value boolean
     SetUpdating = function(self, value) end,
+    ---gets enables children cleanup on Exit() call
     ---@return boolean
     ---@param self Entity
     GetUnloadOnExit = function(self) end,
+    ---sets enables children cleanup on Exit() call
     ---@param self Entity
     ---@param value boolean
     SetUnloadOnExit = function(self, value) end,
+    ---gets networked double by given key
     ---@return number
     ---@param self Entity
     GetNWDouble = function(self) end,
+    ---sets networked double by given key
     ---@param self Entity
     ---@param value number
     SetNWDouble = function(self, value) end,
+    ---gets networked vector by given key
     ---@return Vector
     ---@param self Entity
     GetNWVector = function(self) end,
+    ---sets networked vector by given key
     ---@param self Entity
     ---@param value Vector
     SetNWVector = function(self, value) end,
@@ -1317,9 +1459,11 @@ meta_Constraint = {
 ---render parameters
 ---@class RenderParameters
 meta_RenderParameters = {
+    ---gets triangles cull direction
     ---@return number
     ---@param self RenderParameters
     GetCullMode = function(self) end,
+    ---sets triangles cull direction
     ---@param self RenderParameters
     ---@param value number
     SetCullMode = function(self, value) end,
@@ -1338,261 +1482,385 @@ meta_RenderParameters = {
 }
 ---@class Panel
 meta_Panel = {
+    ---add child panel
     ---@param self Panel
-    Add = function(self) end,
+    ---@param child Panel
+    Add = function(self, child) end,
+    ---insert child panel at index
     ---@param self Panel
-    Remove = function(self) end,
+    ---@param child Panel
+    ---@param index number
+    Insert = function(self, child, index) end,
+    ---remove child panel
     ---@param self Panel
-    Replace = function(self) end,
+    ---@param child Panel
+    Remove = function(self, child) end,
+    ---replace child panel with other
+    ---@param self Panel
+    ---@param oldchild Panel
+    ---@param newchild Panel
+    Replace = function(self, oldchild, newchild) end,
+    ---remove all child panels
     ---@param self Panel
     Clear = function(self) end,
+    ---add this panel to root panel and update
     ---@param self Panel
     Show = function(self) end,
+    ---remove this panel from root panel
     ---@param self Panel
     Close = function(self) end,
-    ---@param self Panel
-    GetTop = function(self) end,
+    ---if this panel is child of root panel
     ---@param self Panel
     IsOpened = function(self) end,
-    ---@return any
+    ---gets auto align side
+    ---@return side:number
     ---@param self Panel
     GetDock = function(self) end,
+    ---sets auto align side
     ---@param self Panel
-    ---@param value any
+    ---@param value side:number
     SetDock = function(self, value) end,
+    ---get screen position of this panel
+    ---@return Point
     ---@param self Panel
     GetScreenPos = function(self) end,
+    ---get mouse cursor pos in local coordinates
+    ---@return Point
     ---@param self Panel
     GetLocalCursorPos = function(self) end,
+    ---get children panels
+    ---@return table
     ---@param self Panel
     GetChildren = function(self) end,
+    ---gets total multiplication of all parent panel scale multipliers
     ---@param self Panel
     GetTotalScaleMul = function(self) end,
+    ---gets i-th char position in panel text
+    ---@return Point
     ---@param self Panel
-    GetCharPos = function(self) end,
-    ---@return any
+    ---@param i number
+    GetCharPos = function(self, i) end,
+    ---gets if mouse interaction enabled
+    ---@return boolean
     ---@param self Panel
     GetCanRaiseMouseEvents = function(self) end,
+    ---sets if mouse interaction enabled
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetCanRaiseMouseEvents = function(self, value) end,
-    ---@return any
+    ---gets mouse interactions
+    ---@return boolean
     ---@param self Panel
     GetInteractive = function(self) end,
+    ---sets mouse interactions
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetInteractive = function(self, value) end,
-    ---@return any
+    ---gets panel lua table
+    ---@return table
     ---@param self Panel
     GetTable = function(self) end,
+    ---sets panel lua table
     ---@param self Panel
-    ---@param value any
+    ---@param value table
     SetTable = function(self, value) end,
-    ---@return any
+    ---gets parent panel
+    ---@return Panel
     ---@param self Panel
     GetParent = function(self) end,
+    ---sets parent panel
     ---@param self Panel
-    ---@param value any
+    ---@param value Panel
     SetParent = function(self, value) end,
-    ---@return any
+    ---gets panel position inside parent
+    ---@return Point
     ---@param self Panel
     GetPos = function(self) end,
+    ---sets panel position inside parent
     ---@param self Panel
-    ---@param value any
+    ---@param value Point
     SetPos = function(self, value) end,
-    ---@return any
+    ---gets panel rotation
+    ---@return number
     ---@param self Panel
     GetRotation = function(self) end,
+    ---sets panel rotation
     ---@param self Panel
-    ---@param value any
+    ---@param value number
     SetRotation = function(self, value) end,
-    ---@return any
+    ---gets panel size
+    ---@return Point
     ---@param self Panel
     GetSize = function(self) end,
+    ---sets panel size
     ---@param self Panel
-    ---@param value any
+    ---@param value Point
     SetSize = function(self, value) end,
-    ---@return any
+    ---gets panel minimum size
+    ---@return Point
     ---@param self Panel
     GetMinSize = function(self) end,
+    ---sets panel minimum size
     ---@param self Panel
-    ---@param value any
+    ---@param value Point
     SetMinSize = function(self, value) end,
-    ---@return any
+    ---gets scale multiplier
+    ---@return number
     ---@param self Panel
     GetScaleMul = function(self) end,
+    ---sets scale multiplier
     ---@param self Panel
-    ---@param value any
+    ---@param value number
     SetScaleMul = function(self, value) end,
-    ---@return any
+    ---gets position and size
+    ---@return Point Point
     ---@param self Panel
     GetBounds = function(self) end,
+    ---sets position and size
     ---@param self Panel
-    ---@param value any
-    SetBounds = function(self, value) end,
-    ---@return any
+    ---@param x number
+    ---@param y number
+    ---@param w number
+    ---@param h number
+    SetBounds = function(self, x, y, w, h) end,
+    ---gets panel color
+    ---@return Vector
     ---@param self Panel
     GetColor = function(self) end,
+    ---sets panel color
     ---@param self Panel
-    ---@param value any
+    ---@param value Vector
     SetColor = function(self, value) end,
-    ---@return any
+    ---gets panel second color (for gradients)
+    ---@return Vector
     ---@param self Panel
     GetColor2 = function(self) end,
+    ---sets panel second color (for gradients)
     ---@param self Panel
-    ---@param value any
+    ---@param value Vector
     SetColor2 = function(self, value) end,
-    ---@return any
+    ---gets panel gradient rotation
+    ---@return number
     ---@param self Panel
     GetGradAngle = function(self) end,
+    ---sets panel gradient rotation
     ---@param self Panel
-    ---@param value any
+    ---@param value number
     SetGradAngle = function(self, value) end,
+    ---gets alpha blending value
     ---@return any
     ---@param self Panel
     GetAlpha = function(self) end,
+    ---sets alpha blending value
     ---@param self Panel
     ---@param value any
     SetAlpha = function(self, value) end,
+    ---gets is panel visible
     ---@return any
     ---@param self Panel
     GetVisible = function(self) end,
+    ---sets is panel visible
     ---@param self Panel
     ---@param value any
     SetVisible = function(self, value) end,
-    ---@return any
+    ---get top parent of this panel
+    ---@return Panel
+    ---@param self Panel
+    GetTop = function(self) end,
+    ---get index of this panel in parent child nodes
+    ---@return number
+    ---@param self Panel
+    GetIndex = function(self) end,
+    ---gets panel text
+    ---@return string
     ---@param self Panel
     GetText = function(self) end,
+    ---sets panel text
     ---@param self Panel
-    ---@param value any
+    ---@param value string
     SetText = function(self, value) end,
-    ---@return any
+    ---gets text color
+    ---@return Vector
     ---@param self Panel
     GetTextColor = function(self) end,
+    ---sets text color
     ---@param self Panel
-    ---@param value any
+    ---@param value Vector
     SetTextColor = function(self, value) end,
-    ---@return any
+    ---gets spritefont
+    ---@return SpriteFont
     ---@param self Panel
     GetFont = function(self) end,
+    ---sets spritefont
     ---@param self Panel
-    ---@param value any
+    ---@param value SpriteFont
     SetFont = function(self, value) end,
-    ---@return any
+    ---gets disable background rendering
+    ---@return boolean
     ---@param self Panel
     GetTextOnly = function(self) end,
+    ---sets disable background rendering
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetTextOnly = function(self, value) end,
-    ---@return any
+    ---gets text alignment
+    ---@return alignment:number
     ---@param self Panel
     GetTextAlignment = function(self) end,
+    ---sets text alignment
     ---@param self Panel
-    ---@param value any
+    ---@param value alignment:number
     SetTextAlignment = function(self, value) end,
-    ---@return any
+    ---gets cut from right
+    ---@return boolean
     ---@param self Panel
     GetTextCutMode = function(self) end,
+    ---sets cut from right
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetTextCutMode = function(self, value) end,
-    ---@return any
+    ---gets multiline text rendering
+    ---@return boolean
     ---@param self Panel
     GetMultiline = function(self) end,
+    ---sets multiline text rendering
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetMultiline = function(self, value) end,
-    ---@return any
+    ---gets text line height
+    ---@return number
     ---@param self Panel
     GetLineHeight = function(self) end,
+    ---sets text line height
     ---@param self Panel
-    ---@param value any
+    ---@param value number
     SetLineHeight = function(self, value) end,
-    ---@return any
+    ---gets spacing between text lines
+    ---@return number
     ---@param self Panel
     GetLineSpacing = function(self) end,
+    ---sets spacing between text lines
     ---@param self Panel
-    ---@param value any
+    ---@param value number
     SetLineSpacing = function(self, value) end,
-    ---@return any
+    ---gets use word wrap
+    ---@return boolean
     ---@param self Panel
     GetAutowrap = function(self) end,
+    ---sets use word wrap
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetAutowrap = function(self, value) end,
-    ---@return any
+    ---gets background image
+    ---@return string
     ---@param self Panel
     GetTexture = function(self) end,
+    ---sets background image
     ---@param self Panel
-    ---@param value any
+    ---@param value string
     SetTexture = function(self, value) end,
-    ---@return any
+    ---gets background image scale
+    ---@return Point
     ---@param self Panel
     GetTextureScale = function(self) end,
+    ---sets background image scale
     ---@param self Panel
-    ---@param value any
+    ---@param value Point
     SetTextureScale = function(self, value) end,
+    ---perform panel alignment
     ---@param self Panel
-    AlignTo = function(self) end,
+    ---@param target Panel
+    ---@param self_side number
+    ---@param target_side number
+    AlignTo = function(self, target, self_side, target_side) end,
+    ---update layout of this panel and its children
     ---@param self Panel
     UpdateLayout = function(self) end,
-    ---@return any
+    ---gets rectangular clipping for child rendering
+    ---@return boolean
     ---@param self Panel
     GetClipEnabled = function(self) end,
+    ---sets rectangular clipping for child rendering
     ---@param self Panel
-    ---@param value any
+    ---@param value boolean
     SetClipEnabled = function(self, value) end,
-    ---@return any
+    ---gets panel state
+    ---@return state:string
     ---@param self Panel
     GetState = function(self) end,
+    ---sets panel state
     ---@param self Panel
-    ---@param value any
+    ---@param value state:string
     SetState = function(self, value) end,
+    ---add new panel state
     ---@param self Panel
-    AddState = function(self) end,
+    ---@param name string
+    ---@param state table
+    AddState = function(self, name, state) end,
+    ---adds panel states from dictionary
     ---@param self Panel
-    AddStates = function(self) end,
-    ---@return any
+    ---@param state_dictionary table
+    AddStates = function(self, state_dictionary) end,
+    ---gets panel position and size anchors
+    ---@return alignment:number
     ---@param self Panel
     GetAnchors = function(self) end,
+    ---sets panel position and size anchors
     ---@param self Panel
-    ---@param value any
+    ---@param value alignment:number
     SetAnchors = function(self, value) end,
-    ---@return any
+    ---gets offsets for child panels docking
+    ---@return left:number,top:number,right:number,bottom:number
     ---@param self Panel
     GetPadding = function(self) end,
+    ---sets offsets for child panels docking
     ---@param self Panel
-    ---@param value any
+    ---@param value left:number,top:number,right:number,bottom:number
     SetPadding = function(self, value) end,
-    ---@return any
+    ---gets separation distance from other panels
+    ---@return left:number,top:number,right:number,bottom:number
     ---@param self Panel
     GetMargin = function(self) end,
+    ---sets separation distance from other panels
     ---@param self Panel
-    ---@param value any
+    ---@param value left:number,top:number,right:number,bottom:number
     SetMargin = function(self, value) end,
-    ---@return any
+    ---gets enable auto size
+    ---@return x:boolean,y:boolean
     ---@param self Panel
     GetAutoSize = function(self) end,
+    ---sets enable auto size
     ---@param self Panel
-    ---@param value any
+    ---@param value x:boolean,y:boolean
     SetAutoSize = function(self, value) end,
-    ---@return any
+    ---gets text page
+    ---@return page:number
     ---@param self Panel
     GetPage = function(self) end,
+    ---sets text page
     ---@param self Panel
-    ---@param value any
+    ---@param value page:number
     SetPage = function(self, value) end,
+    ---get text page count
+    ---@return number
     ---@param self Panel
     GetPageCount = function(self) end,
     ---@param self Panel
     SetUseGlobalScale = function(self) end,
+    ---set bezier curve points
     ---@param self Panel
-    SetCurve = function(self) end,
-    ---@return any
+    ---@param p1 Point
+    ---@param p2 Point
+    ---@param p3 Point
+    ---@param p4 Point
+    SetCurve = function(self, p1, p2, p3, p4) end,
+    ---gets set curve end color
+    ---@return Vector
     ---@param self Panel
     GetEndColor = function(self) end,
+    ---sets set curve end color
     ---@param self Panel
-    ---@param value any
+    ---@param value Vector
     SetEndColor = function(self, value) end,
     ---@param self Panel
     AddPoint = function(self) end,
@@ -1734,6 +2002,8 @@ CTYPE_SURFACEMOD = 112
 CTYPE_EDITABLEMESH = 113
 CTYPE_DYNAMICSKY = 114
 CTYPE_CVOX = 115
+CTYPE_SHAPEVIS = 116
+CTYPE_GPUSURFACE = 117
 CTYPE_SHADOW = 120
 CTYPE_CAMERA = 121
 CTYPE_CUBEMAP = 122
@@ -1741,6 +2011,7 @@ CTYPE_INTERFACE = 123
 CTYPE_HEIGHTMAP = 125
 CTYPE_NAVIGATION = 127
 CTYPE_POSTPARAMS = 128
+CTYPE_MATERIALMOD = 129
 CTYPE_LIGHT = 130
 CTYPE_ORIGIN = 131
 CTYPE_PROJECTEDCUBEMAP = 132
@@ -1842,7 +2113,7 @@ RENDERGROUP_LOCAL = 104
 RENDERGROUP_RINGS = 111
 RENDERGROUP_OVERLAY = 200
 
-TAG_ENTITY = 10
+TAG_PHYSOBJECT = 10
 TAG_CHUNKNODE = 31
 TAG_GALAXY = 110
 TAG_SPIRAL_GALAXY = 111
@@ -1868,9 +2139,12 @@ TAG_PHYSSIMULATED = 2003
 TAG_SUPPRESSNETUPDATE = 4200
 TAG_DATANEEDED = 11003
 TAG_EDITORNODE = 11004
+TAG_EDITOR_NODE = 11005
+TAG_ACTOR_PART = 25512
 TAG_SELECTION_MENU = 3322002
 TAG_REPL_FATIGUE = 10101
 TAG_REPL_SLEEP = 10102
+TAG_RADIAL_INTERACT = 101033
 
 CGROUP_NONE = 0
 CGROUP_DEFAULT_PHYSICS = 1
@@ -2140,3 +2414,9 @@ DOCK_FIXEDTOP = 7
 DOCK_FIXEDBOTTOM = 8
 DOCK_FIXEDFILL = 9
 
+
+--user types
+---@class UserEntity : Entity
+ENTITY = {}
+---@class UserPanel : Panel
+PANEL = {}

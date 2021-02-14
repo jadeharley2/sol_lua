@@ -29,4 +29,3 @@ function PANEL:AddPanel(p)
 	row:Add(p)
 	self.rowcounter = c + 1
 end
- 

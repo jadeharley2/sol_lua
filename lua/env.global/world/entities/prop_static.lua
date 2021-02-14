@@ -13,6 +13,7 @@ function SpawnSO(model,ent,pos,scale,collonly,norotation)
 	--e:SetModel(model,scale,norotation)
 	e:SetPos(pos) 
 	e:Spawn()
+	MsgN("AAAAAAAA",model,e)
 	return e
 end
 

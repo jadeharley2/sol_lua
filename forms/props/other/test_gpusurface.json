@@ -6,13 +6,18 @@
 	"rotation" : [0,0,0], 
 	//"phys" : true,
 	//"mass" : 40, 
-	"sizepower": 10000,
+	"sizepower": 1000,//10000,
 	"components":[
 		{
 			"type":"partition2d"
 		},
 		{
-			"type":"gpusurface"
+			"type":"gpusurface",
+			"data":{
+				"stages":[
+					
+				]
+			}
 		}
 	], 
 }

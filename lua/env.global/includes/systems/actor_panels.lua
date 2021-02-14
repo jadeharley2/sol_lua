@@ -15,6 +15,26 @@ function actor_panels.SetSide(panel,side)
         panel:SetPos(0,-vsize.y+180+150)
     end
 end
+function actor_panels.OpenPanel(ptype,node,side,data) 
+    local vsize = GetViewportSize()
+
+    local v = actor_panels.persistent['local_'..ptype] 
+      
+    if not v then
+        data = data or {}
+        data.type = ptype
+        v = gui.FromTable(data) 
+        v:UpdateLayout()  
+    end 
+    v:Show()
+
+    actor_panels.SetSide(v,side)
+    actor_panels.AddPanel(v)
+    if node == LocalPlayer() then
+        actor_panels.SetPersistent('local_'..ptype,v)
+    end
+    return inv
+end
 function actor_panels.OpenInventory(node,side, inv) 
     local vsize = GetViewportSize()
 

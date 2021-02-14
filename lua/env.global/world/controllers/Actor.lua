@@ -197,6 +197,7 @@ function OBJ:KeyDown(key)
 				else
 					actor_panels.OpenInventory(actor,ALIGN_BOTTOM,nil)
 					actor_panels.OpenCharacterInfo(actor,ALIGN_LEFT,nil) 
+					actor_panels.OpenPanel("spawnmenu",nil,ALIGN_CENTER) 
 				end
 				--local cpanels = self.cpanels or {}
 				--if cpanels.inv then

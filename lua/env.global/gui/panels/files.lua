@@ -114,20 +114,20 @@ function PANEL:SetFormFS(formtype)
 		self:SetFileSystem(fs)
 	end
 end
-local selectpath = function(s)
+local selectpath = function(s,...)
 	--MsgN(s.dpath)
 	s.dmenu.filepath = s.dpath
-	s.dmenu:OpenPath(s.dpath)
+	s.dmenu:OpenPath(s.dpath,...)
 end
-local selectfile = function(s) 
+local selectfile = function(s,...) 
 	--MsgN(s.dpath)
 	s.dmenu.filepath = s.dpath
-	s.dmenu:OnItemClick(s.dpath)
+	s.dmenu:OnItemClick(s.dpath,...)
 end
-local selectfile2 = function(s) 
+local selectfile2 = function(s,...) 
 	--MsgN(s.dpath)
 	s.dmenu.filepath = s.dpath
-	s.dmenu:OnItemDoubleClick(s.dpath)
+	s.dmenu:OnItemDoubleClick(s.dpath,...)
 end 
 local getfolder = function(pth)
 	local pts = string.split(pth,"/") 

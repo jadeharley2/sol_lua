@@ -63,7 +63,8 @@ local function ContainerUse(self,user)
 	end
 end
 
-hook.Add("prop.variable.load","container",function (self,j,tags)   
+hook.Add("prop.variable.load","container",function (self,j,tags)    
+MsgN("AAAAAAAAAA",self,j,j.container)
 	if j.container then
 		local storage = self:AddComponent(CTYPE_STORAGE)  
 		self.storage = storage

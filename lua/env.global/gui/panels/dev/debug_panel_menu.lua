@@ -31,12 +31,21 @@ function PANEL:Expand()
 	self:AddControl("editor_map","button","ME",Vector(0.4,0.8,0.8),function() console.Call("ed_map") end,true)
 	self:AddControl("editor_form","button","FE",Vector(0.8,0.5,0.4),function() console.Call("ed_form") end,true)
 	self:AddControl("editor_character","button","CE",Vector(0.4,0.8,0.6),function() console.Call("ed_char") end,true)
+	self:AddControl("timeline","button","TL",Vector(0.4,0.5,0.4),function() console.Call("timeline") end,true)
 	self:AddSeparator()
 	self:AddControl("file_browser","button","FB",Vector(0.4,0.5,0.8),function() 
 		if abstract_filepanel then abstract_filepanel:Close() abstract_filepanel = false 
 		else abstract_filepanel = panel.Create('files')
-			abstract_filepanel.OnItemDoubleClick = function(s, file) 
+			abstract_filepanel.OnItemDoubleClick = function(s, file,btn) 
+				ClipboardSetText(file) 
+				sound.Start('sounds/events/lamp-switch.ogg',0.3) 
+				if btn==1 then
+				end
+			end
+			abstract_filepanel.OnItemClick = function(s, file,btn) 
 				hook.Call("display",file)
+				if btn==2 then
+				end
 			end
 			abstract_filepanel:Dock(DOCK_LEFT)
 			abstract_filepanel:Show() 

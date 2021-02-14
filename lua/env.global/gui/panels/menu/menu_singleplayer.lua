@@ -3,11 +3,39 @@ PANEL.basetype = "menu_dialog"
 local style = {
 
 }
-local layout = { 
+local layout = {  
 	subs = {  
+		{type = "xsplit",
+			margin = {10,10,10,10},
+			dock = DOCK_BOTTOM,
+			size = {40,40},
+			alpha = 0,
+			subs = {
+				{name = "bload",type="button", class = "btn",
+					text = "Load",  
+					size = {100,20},
+					pos = {-300,-150}, 
+					OnClick = function() hook.Call("menu","load") end,
+				}, 
+				{name = "bback",type="button", class = "btn",
+					text = "Back", 
+					size = {100,20}, 
+					pos = {0,-150}, 
+					OnClick = function() hook.Call("menu","main") end,
+				}, 
+				{name = "bedt",type="button", class = "btn",
+					text = "Void", 
+					size = {100,20}, 
+					pos = {300,-150}, 
+					OnClick = function() LoadSingleplayer("editor_template") end,
+				}, 
+			}
+		},
 		{type="floatcontainer",name = "items",  -- class = "submenu",
 			visible = true, 
 			size = {400,120},
+			dock = DOCK_FILL,
+			margin = {10,10,10,10},
 			color = {0,0,0},  
 			textonly=true, 
 			Floater = {type="panel",
@@ -18,30 +46,12 @@ local layout = {
 			},
 		}, 
 
-		{name = "bload",type="button", class = "btn",
-			text = "Load",  
-			size = {100,20},
-			pos = {-300,-150}, 
-			OnClick = function() hook.Call("menu","load") end,
-		}, 
-		{name = "bback",type="button", class = "btn",
-			text = "Back", 
-			size = {100,20}, 
-			pos = {0,-150}, 
-			OnClick = function() hook.Call("menu","main") end,
-		}, 
-		{name = "bedt",type="button", class = "btn",
-			text = "Void", 
-			size = {100,20}, 
-			pos = {300,-150}, 
-			OnClick = function() LoadSingleplayer("editor_template") end,
-		}, 
 	}
 }
 function PANEL:Init()  
 
 	
-	self.base.Init(self,"Singleplayer",200,500)
+	self.base.Init(self,"Singleplayer",500,500)
 	gui.FromTable(layout,self,{},self)
 	self.list = self.items.floater
 	self:SetupStyle(self.bload)

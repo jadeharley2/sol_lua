@@ -1780,6 +1780,9 @@ console.AddCmd("giveto",function(formid,count)
 	--end
 end)
 if CLIENT then
+	local bformlist = {
+		"apparel","tool","resource"
+	}
 	console.AddCmd("give",function(formid,count) 
 		count = tonumber(count or 1)
 		if not network.IsConnected() then
@@ -1787,6 +1790,28 @@ if CLIENT then
 		else
 			LocalPlayer():SendEvent(EVENT_GIVE_ITEM,formid,count)
 		end  
+	end,"give form to actor",function(str)
+		local r = {} 
+		str = cstring.trim(str)
+		--MsgN(str)
+		if string.starts(str,"apparel") then
+			local lst = forms.GetList("apparel")
+			local substr = string.sub(str,9)
+			for k,v in SortedPairs(lst) do
+				if string.starts(k,substr) then r[#r+1] = "apparel."..k end
+			end 
+		elseif string.starts(str,"resource") then
+			local lst = forms.GetList("resource")
+			local substr = string.sub(str,10)
+			for k,v in SortedPairs(lst) do
+				if string.starts(k,substr) then r[#r+1] = "resource."..k end
+			end 
+		else
+			for k,v in SortedPairs(bformlist) do
+				if string.starts(v,str) then r[#r+1] = v  end
+			end
+		end
+		return json.ToJson(r)
 	end)
 else --SERVER
 	console.AddCmd("give",function(plyid,formid,count) 

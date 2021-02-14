@@ -122,3 +122,11 @@ function ent_create(type,data)
 		ent:Spawn()
 	end
 end
+
+if CLIENT then
+
+	function GetPlayerEyeTrace()
+		local lp = LocalPlayer()
+		return GetCameraPhysTrace(GetCamera(),lp.phys)
+	end
+end

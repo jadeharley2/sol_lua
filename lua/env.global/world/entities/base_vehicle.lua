@@ -60,7 +60,7 @@ function ENT:HandleDriving(actor)
 	if input.KeyPressed(KEYS_SPACE) then
 		local pp = self:GetParent()
 		local sz = pp:GetSizepower()
-		self.phys:ApplyImpulse(self:Right()*-1000/sz)
+		self.phys:ApplyImpulse(self:Right()*-1000/sz * 10)
 	end
 end
 function ENT:Spawn(c)  

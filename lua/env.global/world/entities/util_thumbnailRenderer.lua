@@ -99,11 +99,13 @@ function ENT:SetForm(form)
 	self:ClearStage() 
 	if true then  
 		local p = false
+		MsgN("XX")
 		if isjson(form) then
 			p = ents.FromData(form,self) 
 		elseif form:find('/') then 
 			local ext = file.GetExtension(form)
 			if ext =='.stmd' or ext == '.dnmd' or ext == '.mdl' then -- or ext == '.smd'
+				--form = string.Replace(form,'models/','')
 				p = SpawnSO(form,self,Vector(0,0,0),1,NO_COLLISION)
 			elseif ext == '.json' then
 

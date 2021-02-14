@@ -30,10 +30,10 @@ function ENT:Spawn()
 		if arch then
 			surfacecom:SetArchetype(arch)
 		end
-		--if arch == "earth" then--TODO: add set mapdata source
-		--	local mapdata = self:AddComponent(CTYPE_MAPDATA)
-		--	self.mapdata = mapdata
-		--end
+		if arch == "earth" then--TODO: add set mapdata source
+			local mapdata = self:AddComponent(CTYPE_MAPDATA)
+			self.mapdata = mapdata
+		end
 	end
 	--local testmod = ents.Create("planet_surface_mod")
 	--testmod:SetSizepower(100000) 

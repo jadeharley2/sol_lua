@@ -155,9 +155,9 @@ function ENT:Enter()
 			json.ToJson({
 				waterway = "^canal$|^pressurised$|^drain$",
 				water = "^basin$|^reservoir$|^canal$|^lock$|^fish_pass$|^reflecting_pool$|^moat$|^ditch$|^wastewater$"
-			}),
+			}), 
 			Vector(20,4,1),10,matrix.Scaling(0.10005))
-		svis:LoadMVD("vectordata/earth/crimean-fed-district-latest.vdat",true)
+	--	svis:LoadMVD("vectordata/earth/crimean-fed-district-latest.vdat",true)
 	end
 end
 function ENT:SpawnSurface() 

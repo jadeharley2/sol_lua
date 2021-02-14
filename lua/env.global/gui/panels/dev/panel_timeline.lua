@@ -17,7 +17,7 @@ function PANEL:Init()
                         texture = 'textures/gui/panel_icons/new.png',
                         contextinfo = 'Clear path',
                         OnClick = function(s)
-                            E_REC = cameramover.NewRecord(E_FS or GetCamera())
+                            E_REC = cameramover.NewRecord(GetCamera()) --E_FS or 
                             E_REC:BeginPath()
                         end 
                     },

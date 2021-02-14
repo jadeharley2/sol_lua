@@ -68,24 +68,36 @@ end
 
 FormThumbnailRender = PANEL.SetForm
 
+ThumbnailHashes = ThumbnailHashes or {}
 function PANEL:SetPath(path,usecontext)
-    if file.Exists(path) then
-        local ext = file.GetExtension(path)
-        if ext =='.png' or ext == '.dds' or ext == '.jpg' then 
-            local tex = LoadTexture(path,true)
-            self:SetTexture(tex)
-            if usecontext then usecontext.contextinfo = {"image",tex} end 
-        else
-            RenderThumbnail(path,function(tex) 
-                if tex then
-                    self:SetTexture(tex)
-                    if usecontext then usecontext.contextinfo = {"image",tex} end 
-                else
-                    self:SetTextOnly(true) 
-                end
-            end) 
+    --MsgN('thumb.setpath',path)
+
+    local ex = ThumbnailHashes[path]
+    if ex then
+        self:SetTexture(ex)
+        if usecontext then usecontext.contextinfo = {"image",ex} end 
+    else
+        if file.Exists(path) then
+            local ext = file.GetExtension(path)
+            if ext =='.png' or ext == '.dds' or ext == '.jpg' then 
+                local tex = LoadTexture(path,true)
+                self:SetTexture(tex)
+                ThumbnailHashes[path] = tex
+                if usecontext then usecontext.contextinfo = {"image",tex} end 
+            else
+                RenderThumbnail(path,function(tex) 
+                    if tex then
+                        self:SetTexture(tex)
+                        ThumbnailHashes[path] = tex
+                        if usecontext then usecontext.contextinfo = {"image",tex} end 
+                    else
+                        self:SetTextOnly(true) 
+                    end
+                end) 
+            end
         end
     end
+
 
     --[[
     local aparts = string.split(data,'/')

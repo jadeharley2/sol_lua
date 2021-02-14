@@ -8,7 +8,7 @@ SamplerState ts_Aniso { Filter = ANISOTROPIC; AddressU = Wrap; AddressV = Wrap; 
 Texture2DArray g_TextureData;
 Texture2DArray g_ColorData;
 Texture2DArray g_SurfaceTextures_d;
-Texture2DArray g_SurfaceTextures_n;
+Texture2DArray g_SurfaceTextures_n; 
 
 struct VS_IN
 {
@@ -40,6 +40,7 @@ struct GSPS_INPUT
     float updot : TEXCOORD5;
     
     float4 color : TEXCOORD6;
+    float4 mask : TEXCOORD7;
 };
 
 struct PS_OUT
@@ -56,7 +57,7 @@ const float texdelta = 1.0/128;
 
 const float h_power = 0.01;
 
-float sealevel = 0.08;//-10;//
+float sealevel = 0.076;//0.08;//
 
 
 float GetHeight(float s0)
@@ -75,37 +76,41 @@ GSPS_INPUT VS( VS_IN input, IS_IN inst)
 
     float sx =  g_TextureData.SampleLevel(ts_Point,float3(input.Tex+float2(texdelta,0),inst.index),0);
     float sy =  g_TextureData.SampleLevel(ts_Point,float3(input.Tex+float2(0,texdelta),inst.index),0);
+  
  
-        output.color= float4(0,0.3*0.2,0.9*0.2,saturate((sealevel-s0)*150));
+    output.mask = saturate((sealevel-s0)*250);
     if(s0<sealevel) {
-        s0=sealevel;
-    }
-   // else
-   // { 
-   //     output.color= float4(1,1,1,0);
-   // }
+        s0=sealevel; //saturate((sealevel-s0)*150));
+    } 
+    output.color =lerp(
+        float4(g_ColorData.SampleLevel(ts_Point,float3(input.Tex,inst.index),0).rgb,1),
+        float4(0,0.3*0.2,0.9*0.2,1),
+        output.mask.a);
     //output.Pos = normalize(output.Pos) *(1+s0*0.1);
     //normalize
     output.Pos = float4(   normalize (inst.nw + inst.dx * (1-input.Pos.z) + inst.dy * (input.Pos.x))* GetHeight(s0) ,1);//+float3(0,5,0)
 
-
-   // output.color= s0*10;
+ 
    // output.Pos.y +=s0*0.1;
-//	float3 px = input.Pos + float4(inst.nw/129,0)+float4(0,1,0,1);
-//	float3 py = input.Pos + float4(inst.nw/129,0)+float4(0,1,0,1);
-//
+    float3 px = input.Pos + float4(inst.nw/129,0)+float4(0,1,0,1);
+    float3 py = input.Pos + float4(inst.nw/129,0)+float4(0,1,0,1);
 
-//  float3 dx1 = normalize(inst.nw + inst.dx*texdelta)*-(1+sx*0.1);
-//  float3 dy1 = normalize(inst.nw + inst.dx*texdelta)*-(1+sy*0.1);
-//  float3 va = normalize(output.Pos-dx1);
-//  float3 vb = normalize(output.Pos-dy1);
-//  float3 vc = cross(va,vb);
+    float3 dx1 = normalize(inst.nw + inst.dx*texdelta)*-(1+sx*0.1);
+    float3 dy1 = normalize(inst.nw + inst.dx*texdelta)*-(1+sy*0.1);
+    //float3 va = normalize(output.Pos-dx1);
+    //float3 vb = normalize(output.Pos-dy1);
 
-   //float2 _step = float2(texdelta*2.5, 0.0);
-   //
-   //float3 va = normalize( float3(_step.xy, sx-s0) );
-   //float3 vb = normalize( float3(_step.yx, sy-s0) );
+    float2 _step = float2(texdelta*2.5, 0.0);
 
+    float3x3 TWorld = (float3x3)World;
+    float3 va = normalize( mul( float3(_step.xy, sx-s0) ,TWorld));
+    float3 vb = normalize( mul( float3(_step.yx, sy-s0) ,TWorld));
+    float3 vc = -normalize(cross(va,vb));
+
+    output.Norm =  vc.zyx;//cross(va,vb).rbg;//input.Norm;
+    output.Bnorm = va.zyx;
+    output.Tnorm = vb.zyx;
+    ///output.Norm =0;
 
     output.tindex = (s0-sealevel)*20; 
     output.tweight= 0; 
@@ -114,10 +119,6 @@ GSPS_INPUT VS( VS_IN input, IS_IN inst)
     //output.Pos.xyz = normalize(output.Pos.xyz)*0.2f;
     output.Pos.w =1;
 	output.Tex = input.Tex;
-    output.Norm =0;
-//	output.Norm =  vc;//cross(va,vb).rbg;//input.Norm;
- //  output.Bnorm = -va;
- //  output.Tnorm = vb;
     output.updot =  saturate(pow(dot(normalize(output.Norm),float3(0,1,0)),20));
     output.index = inst.index;
 	return output;
@@ -140,10 +141,10 @@ void GS( triangle GSPS_INPUT input[3], inout TriangleStream<GSPS_INPUT> TriStrea
 	outputB.Pos =  mul(float4(p2,1),ViewProjection);
 	outputC.Pos =  mul(float4(p3,1),ViewProjection); 
 
-    float3 pn = -cross(normalize(p1-p2),normalize(p1-p3));
-	outputA.Norm += pn;
-	outputB.Norm += pn;
-	outputC.Norm += pn;
+    ///float3 pn = -cross(normalize(p1-p2),normalize(p1-p3));
+	///outputA.Norm += pn;
+	///outputB.Norm += pn;
+	///outputC.Norm += pn;
     
     //calc tiles
     int3 ids = float3(outputA.tindex.x,outputB.tindex.x,outputC.tindex.x);
@@ -168,9 +169,8 @@ PS_OUT PS( GSPS_INPUT input )
     ///output.color =  g_TextureData.Sample(ts_Point,float3(input.Tex,input.index))*0.3+0.1f+0.1*float4(input.tindex,0);
    
     output.depth = input.Pos.z; 
-    output.mask = float4(1,input.color.a*0.8,0,0); 
+    output.mask = float4(1,input.mask.a*0.8,0,0); 
 //return output;
-
     float dtTop = input.updot;
     float dtSide = 1-dtTop;
 
@@ -179,7 +179,7 @@ PS_OUT PS( GSPS_INPUT input )
 
     float2 tile_tex = input.Tex * 2;//32;
 
-    float4 color = 
+    float4 color =  
         (lerp(
             g_SurfaceTextures_d.Sample(ts_Aniso,float3(tile_tex,id.x*2)),
             g_SurfaceTextures_d.Sample(ts_Aniso,float3(tile_tex,id.x*2+1)),dtSide) *weight.x
@@ -193,7 +193,9 @@ PS_OUT PS( GSPS_INPUT input )
             g_SurfaceTextures_d.Sample(ts_Aniso,float3(tile_tex,id.z*2+1)),dtSide) *weight.z 
         )/2
     ;
-    color = lerp(color,float4(input.color.rgb,1),input.color.a);
+    color =
+        //input.color;//  
+        lerp(color*input.color.rgba,float4(input.color.rgb,1),input.mask.r);
     
     float4  bump = 
         lerp(
