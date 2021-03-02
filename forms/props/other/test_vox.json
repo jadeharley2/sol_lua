@@ -1,0 +1,10 @@
+{
+	"group" : "test",
+	"tags" : ["debug","nopreview"], 
+	"scale" : 0.75,
+	"rotation" : [0,0,0],  
+	"sizepower": 1,
+    "voxels":{
+		"size":[20,4,20]
+    } 
+}

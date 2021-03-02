@@ -194,8 +194,10 @@ function ENT:SpawnSurface()
 				surface:Spawn()  
 				MsgN("XXXXX2",surface)
 				
-				self.shapevis:HookPartition(surface.partition)
-				self.shapevis:HookSurface(surface.surface)
+				if self.shapevis then
+					self.shapevis:HookPartition(surface.partition)
+					self.shapevis:HookSurface(surface.surface)
+				end
 			--end
 			self.surface = surface
 			self.model2:Enable(false)

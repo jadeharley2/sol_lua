@@ -32,7 +32,7 @@ function InitPV(type,ent,pos,ang,seed,e,modtable)
 			tags[v] = true
 		end
 	end 
-	
+	 
 	local r = ang or Vector(0,0,0)
 	if j.rotation then r = r + JVector(j.rotation) end
 	if tags.random_ry then r = r + Vector(0,math.random(-1800,1800)/10,0) end

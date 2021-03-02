@@ -69,6 +69,19 @@
 			{"name":"detail_nonormal", "type":"bool","default":false,"description":"disable detail normal blending"},
 			{"name":"base_light_intencity", "type":"float","default":0,"description":"fullbright light intencity"},
 			
+			//0 - EnvSampler
+			//1 - MeshTextureSampler
+			//2 - ClampSampler
+			
+			{"name":"MeshTextureSampler", "type":"sampler",
+				"default" :{
+					"u":"wrap",
+					"w":"wrap",
+					"v":"wrap",
+					"filter":"MinMagMipLinear"
+				},
+				"description":"texture sampler"
+			},
 		],
 	},
 	"parameters":{  
