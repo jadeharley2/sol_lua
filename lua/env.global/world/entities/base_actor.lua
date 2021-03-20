@@ -1294,7 +1294,7 @@ function ENT:IsFlying()
 end
  
 function ENT:Crouching() 
-	return self.phys:GetStance() ==1--.duckmode or false
+	return self.phys and self.phys:GetStance() ==1--.duckmode or false
 end
 function ENT:SetCrouching(value)
 	--self.duckmode = value

@@ -9,7 +9,7 @@ float time = 0;
 
 SamplerState sView
 {
-    Filter = ANISOTROPIC;
+    Filter = ANISOTROPIC;//MIN_MAG_MIP_POINT;//ANISOTROPIC;
     AddressU = Wrap;
     AddressV = Wrap;
 };
@@ -70,8 +70,10 @@ float4 PS( PS_IN input ) : SV_Target
 		pDiffuse.a = (pDiffuse.r+pDiffuse.g+pDiffuse.b)/3;
 		clip(pDiffuse.a-0.2);
 		pDiffuse.a=saturate(pDiffuse.a*1.2); 
+		
+		//clip(pDiffuse.a-0.5);
+		//pDiffuse.a =1;
 	}
-	 
 	return   pDiffuse * input.tint;
 }
 

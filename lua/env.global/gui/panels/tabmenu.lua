@@ -32,7 +32,10 @@ function PANEL:AddTab(name,sub,btnmodt)
 	local pids = self.pids
 	b:SetText(name or "Tab")
 	local tabButtonPanel = self.tabButtonPanel
-	b:SetSize(100,30)
+	b:SetSize(100,28)
+	b:SetAutoSize(true,false)
+	b:SetMargin(4,0,4,0)
+	b:SetTexture("textures/gui/tab_70x30.png")
 	b:Dock(DOCK_LEFT)
 	b.toggleable = true
 	b.group = 'tabs'

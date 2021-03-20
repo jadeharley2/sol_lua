@@ -45,26 +45,29 @@ hook.Add("prop.variable.load","container",function (self,j,tags)
         local equipment = self:RequireComponent(CTYPE_EQUIPMENT) 
         local model = self.model or self:RequireComponent(CTYPE_MODEL)  
  
-        local padmodel = self.padmodel or self:AddComponent(CTYPE_MODEL)  
-        padmodel:SetRenderGroup(RENDERGROUP_LOCAL)
-        padmodel:SetBlendMode(BLEND_OPAQUE) 
-        padmodel:SetRasterizerMode(RASTER_DETPHSOLID) 
-        padmodel:SetDepthStencillMode(DEPTH_ENABLED)  
-        padmodel:SetBrightness(1)
-        padmodel:SetFadeBounds(0,9e20,0)  
-        padmodel:SetModel("models/apparel/pad.stmd")
-        padmodel:SetMatrix(matrix.Scaling(0.03)*matrix.Rotation(180,0,0))  
-        self.padmodel = padmodel
- 
-        if(padmodel:HasCollision()) then
-            local padcoll = self:RequireComponent(CTYPE_STATICCOLLISION) 
-            self.padcoll = padcoll
-            padcoll:SetShapeFromModel(matrix.Scaling(0.03)*matrix.Rotation(180,0,0),padmodel)--matrix.Scaling(scale/0.75 )  ) 
+        if not e.nopad then
+            local padmodel = self.padmodel or self:AddComponent(CTYPE_MODEL)  
+            padmodel:SetRenderGroup(RENDERGROUP_LOCAL)
+            padmodel:SetBlendMode(BLEND_OPAQUE) 
+            padmodel:SetRasterizerMode(RASTER_DETPHSOLID) 
+            padmodel:SetDepthStencillMode(DEPTH_ENABLED)  
+            padmodel:SetBrightness(1)
+            padmodel:SetFadeBounds(0,9e20,0)  
+            padmodel:SetModel("models/apparel/pad.stmd")
+            padmodel:SetMatrix(matrix.Scaling(0.03)*matrix.Rotation(180,0,0))  
+            self.padmodel = padmodel
+    
+            if(padmodel:HasCollision()) then
+                local padcoll = self:RequireComponent(CTYPE_STATICCOLLISION) 
+                self.padcoll = padcoll
+                padcoll:SetShapeFromModel(matrix.Scaling(0.03)*matrix.Rotation(180,0,0),padmodel)--matrix.Scaling(scale/0.75 )  ) 
+            end
         end
 
-
         model:SetDynamic(true) 
-        model:SetBBOX(Vector(-20,-20,0),Vector(20,20,80))
+        if not e.nopad then
+            model:SetBBOX(Vector(-20,-20,0),Vector(20,20,80))
+        end
         model:SetMatrix(model:GetMatrix() * matrix.Translation(Vector(0,0,-0.03)))  
         self:SetUpdating(true,1000) 
         self:Delayed("setanim",300,function()

@@ -4,7 +4,7 @@ end
 function PANEL:Resize()
     local sz = self:GetSize()
     --local pad = {self:GetPadding()}
-    --local center = Point(0,0)
+    local center = Point(0,0)
     local chl = self:GetChildren()
     local cc = #chl
     for k,v in pairs(chl) do

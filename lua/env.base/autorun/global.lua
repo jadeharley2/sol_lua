@@ -121,6 +121,8 @@ function MsgN2(...)
 	debug2.Msg(str)--.."\r\n"
 end
 
+print = MsgN
+
 if SERVER then
 	--serverside fix
 	MsgInfo = MsgN

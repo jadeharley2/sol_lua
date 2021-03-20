@@ -1,10 +1,12 @@
 {
 	"group" : "test",
 	"tags" : ["debug","nopreview"], 
-	"scale" : 0.75,
+	"scale" : 1,
 	"rotation" : [0,0,0],  
-	"sizepower": 1,
+	"sizepower": 8,
     "voxels":{
-		"size":[20,4,20]
+		"dynamic":true,
+		"radius":10,
+		//"size":[40,8,40]
     } 
 }

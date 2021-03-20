@@ -34,6 +34,13 @@ function gui.SetStyle(name)
 	STYLE = ps
 end
 
+function gui.ApplyStyle(node,styletable,stylekey)
+	if styletable and styletable[stylekey] then
+		gui.FromTable(styletable[stylekey],node)
+	end
+end
+
+
 function LockMouse(lock_events)
 	MOUSE_LOCKED = true 
 	if lock_events then input.SetMouseBusy(true) end
@@ -94,6 +101,8 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 				end 
 			elseif isuserdata(v) then
 				node:SetColor(v)
+			elseif isstring(v) then
+				node:SetColor(v)--"#009432"
 			else
 				node:SetColor(Vector(v[1],v[2],v[3]))
 				if v[4] then
@@ -141,6 +150,12 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			if subnode and isuserdata(subnode) then
 				gui.ApplyParameters(subnode,v,style,namedtable,tablekey)
 			end
+			--[[
+				sub example 
+				_sub_title = {
+					...
+				}
+			]]
 		else 
 			local customfunction = node['Set'..k]
 			if customfunction and isfunction(customfunction) then
@@ -189,18 +204,23 @@ end
 function gui.FromTable(t,node,style,namedtable,tablekey)
 	local ptype = t.type 
 	if not ptype and style and t.class then
-		local pstyle = style[t.class] 
-		if pstyle then
-		 	ptype = pstyle.type 
+		for k,styleclass in pairs(string.split(t.class,' ')) do
+			local pstyle = style[styleclass] 
+			if pstyle and pstyle.type then
+				ptype = pstyle.type 
+			end 
 		end
 	end 
 	node = node or panel.Create(ptype or "panel")
 	ASSERT(node==nil,"Can't create panel of type "..tostring(ptype))
 
 	if style and t.class then
-		local v = style[t.class]
-		if v then
-			gui.ApplyParameters(node,v)
+		for k,styleclass in pairs(string.split(t.class,' ')) do
+			local v = style[styleclass]
+			print(styleclass,v)
+			if v then
+				gui.ApplyParameters(node,v)
+			end
 		end
 		node.class = t.class
 	end
@@ -247,6 +267,42 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 		end 
 	end
 	return node
+end
+ 
+function gui.Border(parent,style)
+	local xsize = style.size or 16
+	local color = style.color or "#009432"
+	local texture_corner = style.corner or "textures/gui/menu/corner.png"
+	local texture_hedge = style.hedge or "textures/gui/menu/edge.png"
+	local texture_vedge = style.vedge or "textures/gui/menu/edge2.png"
+	gui.FromTable({ 
+		textonly = true,
+		subs={
+			{class="border",dock = DOCK_TOP, textonly = true,subs ={
+					{class="border corner",dock=DOCK_LEFT},
+					{class="border corner",dock=DOCK_RIGHT, rotation = -90},
+					{class="border vedge",dock=DOCK_FILL}
+			}},
+			{class="border",dock = DOCK_BOTTOM, textonly = true,subs ={
+					{class="border corner",dock=DOCK_LEFT, rotation = 90},
+					{class="border corner",dock=DOCK_RIGHT, rotation = 180},
+					{class="border vedge",dock=DOCK_FILL}
+			}},
+			{class="border hedge",dock=DOCK_LEFT},
+			{class="border hedge",dock=DOCK_RIGHT},
+		},
+	},
+	parent,
+	{
+		border = { 
+			size = {xsize,xsize},
+			color = color,
+			mouseenabled = false, 
+		},
+		corner = {texture = texture_corner},
+		hedge = {texture = texture_hedge},
+		vedge = {texture = texture_vedge}
+	}) 
 end
 
 local registry = debug.getregistry()
