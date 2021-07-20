@@ -1,5 +1,5 @@
 {	
-	"type":"species",
+	"form_type":"species", 
 	"name":"anthro", 
 	"genders" : ["male","female"], 
 	"attributes" : ["bipedal"],

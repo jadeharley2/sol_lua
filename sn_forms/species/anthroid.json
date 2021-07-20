@@ -1,5 +1,5 @@
 {	
-	"type":"species",
+	"form_type":"species", 
 	"#include":"forms/species/anthro.json",
 	"name":"anthroid",  
 	"tags":["robotic"],

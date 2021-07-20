@@ -4,8 +4,8 @@
     "properties":{
         "form_type":{
             "type":"string",
-            "descriptin":"test",
-            "examples": ["character","anchor","prop","tool"]  
+            "description":"test",
+            "examples": ["character","anchor","prop","tool","species","star_system"]  
         }
     },
     "required": ["form_type"],
@@ -25,6 +25,14 @@
         {
             "properties": { "form_type": { "const": "tool" } },
             "allOf":[{"$ref": "schema/tool.json"}]
+        },
+        {
+            "properties": { "form_type": { "const": "species" } },
+            "allOf":[{"$ref": "schema/species.json"}]
+        },
+        {
+            "properties": { "form_type": { "const": "starsystem" } },
+            "allOf":[{"$ref": "schema/starsystem.json"}]
         }
     ]
 }

@@ -1,0 +1,180 @@
+{    
+	"properties":{   
+        
+        "attributes":{
+            "type":"array",
+            "description": "attribute list (obsolete?)",
+            "items": {
+                "type":"string"
+            }
+
+        },
+        "components":{
+            "type":"object",
+            "description": "list of entity components",
+            "patternProperties": {
+                "":{
+                    "type":"object"
+                }
+            }
+        },
+		"movement":{
+			"type":"object",
+			"properties": {
+				"walk":{ "$ref":"movementtype.json" },
+				"run":{ "$ref":"movementtype.json" },
+				"fly":{ "$ref":"movementtype.json" },
+				"swim":{ "$ref":"movementtype.json" } 
+			} 
+		}, 
+		"behaviour":{
+			"type":"object",
+			"description": "behaviour graph"
+		}, 
+		"parts":{
+			"type":"object",
+			"description": "body parts",
+			"patternProperties": {
+				"":{"type":"string"}
+			},
+			"category":"visuals"
+		}, 
+		"bodytype":{
+			"type":"string",
+			"description": "body type form id",
+			"category":"visuals"
+		},
+
+		"height":{
+			"type":"number",
+			"description": "collision cylinder height",
+			"category":"physics"
+		},
+		"radius":{
+			"type":"number",
+			"description": "collision cylinder radius",
+			"category":"physics"
+		},
+		"mass":{
+			"type":"number",
+			"description": "physical mass",
+			"category":"physics"
+		},
+		"scale":{
+			"type":"number",
+			"description": "scale multiplier",
+			"default":1
+		},
+		"health":{
+			"type":"number",
+			"description": "max health",
+			"category":"status"
+		},
+		
+		"basematdir" :{
+			"type":"string",
+			"description": "materials override directory",
+			"category":"visuals"
+		}, 
+		"materials" : {
+			"type":"object",
+			"description": "material overrides",
+			"category":"visuals",
+			"patternProperties": {
+				"":{"type":"string"}
+			}
+		},  
+		"items":{
+			"type":"array",
+			"description": "character inventory",
+			"items": {
+				"type":"string"
+			},
+			"category":"items"
+		},
+		"abilities":{
+			"type":"array",
+			"description": "character abilities",
+			"items": {
+				"type":"string"
+			}
+		},
+		"flexes":{
+			"type":"object",
+			"description": "flex parameters",
+			"patternProperties": {
+				"":{"type":"number"}
+			},
+			"category":"visuals"
+		},
+		"variables":{
+			"type":"object",
+			"description": "addtitional key value pairs for lua type",
+			"category":"script",
+			"properties":{
+				"tpsheight":{
+					"type":"number",
+					"description": "third person camera height"
+				},
+				"fpsheight":{
+					"type":"number",
+					"description": "first person camera height (if eyeattach disabled)"
+				},
+                "directmove":{
+                    "type":"boolean",
+                    "description": "use fps-like movement"
+                },
+                "hasfur":{
+                    "type":"boolean",
+                    "description": "enable fur manager"
+                },
+                "turn_sharp_in":{
+                    "type":"boolean",
+                    "description": "enable turn animations"
+                },
+                "turn_angle":{
+                    "type":"number",
+                    "description": "turn animation angle"
+                },
+                "eyemul":{
+                    "type":"array",
+                    "items": {
+                        "type":"number"
+                    }
+                },
+                "gestures":{
+                    "type":"object",
+                    "description": "gesture animations"
+                },
+                "needs":{
+                    "type":"object",
+                    "description": "needs data"
+                },
+                "face":{
+                    "type":"object",
+                    "description": "facial data",
+                    "properties": {
+                        "bodypart":{},
+                        "moodflexes":{
+
+                        },
+                        "moods":{
+
+                        },
+                        "vocflexes":{
+
+                        },
+                        "syllables":{
+
+                        }
+                    }
+                },
+                "environment":{
+                    "type":"object",
+                    "description": "normal environment conditions"
+                }
+
+			}
+		}
+	}
+}

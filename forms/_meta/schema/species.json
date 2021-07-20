@@ -1,0 +1,107 @@
+{
+    "type":"object",
+	"description" : "species form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"},{"$ref":"char_shared.json"}],
+    "properties": {
+        "equipment":{
+            "description": "equipment slots definition",
+            "type":"object",
+            "properties": {
+                "slots":{
+                    "type":"array",
+                    "description": "slot list",
+                    "items": {
+                        "type":"string",
+                        "description": "slot"
+                    }
+                },
+                "groups":{
+                    "type":"object",
+                    "description": "slot groups",
+                    "patternProperties": {
+                        "":{
+                            "type":"array",
+                            "description": "slot group",
+                            "items": {
+                                "type":"string",
+                                "description": "slot"
+                            }
+                        }
+                    }
+                },
+                "block":{
+                    "type":"object",
+                    "description": "visibility block list",
+                    "patternProperties": {
+                        "":{
+                            "type":"array",
+                            "description": "blocker",
+                            "items": {
+                                "type":"string",
+                                "description": "blocked"
+                            }
+                        }
+                    }
+
+                }
+            }
+        },
+        "bodyparts":{
+            "type":"object",
+            "properties": {
+                "groups":{
+                    "type":"object",
+                    "patternProperties": {
+                        "":{
+                            "type":"array",
+                            "description": "bodypart group",
+                            "items": {
+                                "type":"string",
+                                "description": "bodypart"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "model":{
+            "type":"object",
+            "description": "model parameters",
+            "properties": {
+                "basedir":{
+                    "type":"string",
+                    "description": "root directory for species models and textures"
+                },
+                "materials":{
+                    
+                },
+                "variations":{
+                    "type":"object",
+                    "description": "species variations",
+                    "patternProperties": {
+                        "":{
+                            "type":"object",
+                            "description": "variation",
+                            "properties": {
+                                "skeleton":{
+                                    "type":"string",
+                                    "description": "skeleton model name"
+                                },
+                                "body":{},
+                                "hair":{}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "genders":{
+            "type":"array",
+            "description": "gender variants",
+            "items": {
+                "type":"string"
+            }
+        }
+    }
+}

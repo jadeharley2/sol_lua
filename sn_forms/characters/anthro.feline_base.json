@@ -1,4 +1,5 @@
 {
+	"form_type":"character",
 	"name": "anthro.feline_base",
 	"species" : "anthro.feline:default",  
 	"health" : 100,  

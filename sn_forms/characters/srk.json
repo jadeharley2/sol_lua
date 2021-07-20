@@ -1,4 +1,5 @@
 {
+	"form_type":"character",
 	"name": "SRK",
 	"species" : "anthroid:default",  
 	"health" : 300,  

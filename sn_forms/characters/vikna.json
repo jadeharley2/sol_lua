@@ -1,5 +1,5 @@
 {
-	"form_type":"species",
+	"form_type":"character",
 	"name": "Vikna",
 	"species" : "anthro.feline:default",  
 	"health" : 100,  

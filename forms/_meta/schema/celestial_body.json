@@ -1,0 +1,94 @@
+{
+    "type":"object",
+    "description": "celestial body",
+    "properties": {
+        "name":{
+            "type":"string",
+            "description": "print name"
+        },
+        "type":{
+            "type":"string",
+            "description": "celestial body type"
+        },
+        "radius":{
+            "type":"number",
+            "description": "celestial body radius in meters"
+        },
+        "mass":{
+            "type":"number",
+            "description": "body mass in kilogramms"
+        },
+        "subs":{
+            "type":"array",
+            "description": "bodies in orbit",
+            "items": {
+                "type":"object",
+                "$ref": "celestial_body.json"
+            }
+        },
+        "orbit":{
+            "$ref": "orbit.json"
+        },
+        "rings":{
+            "type":"object",
+            "description": "rings formation",
+            "properties": {
+                "minr":{
+                    "type":"number",
+                    "description": "rings inner radius"
+                },
+                "maxr":{
+                    "type":"number",
+                    "description": "rings outer radius"
+                },
+                "color":{ 
+                    "description": "rings color",
+                    "$ref":"vector3.json"
+                }
+            }
+        }
+    },
+    "anyOf": [
+        {
+            "properties": {
+                "type":{"const":"planet"},
+                "archetype":{
+                    "type":"string",
+                    "description": "planet archetype"
+                },
+                "archdata":{
+                    "type":"object"
+                },
+                "meansurftemp":{
+                    "description": "mean surface temperature"
+                }
+            } 
+        },
+        {
+            "properties": {
+                "type":{"const":"asteroidfield"},
+                "min_a":{
+                    "type":"number"
+                },
+                "max_a":{
+                    "type":"number"
+                }
+            } 
+        },
+        {
+            "properties": {
+                "type":{"const":"star"}
+            } 
+        },
+        {
+            "properties": {
+                "type":{"const":"blackhole"}
+            } 
+        },
+        {
+            "properties": {
+                "type":{"const":"masscenter"}
+            } 
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 {
+	"form_type":"character",
 	"name": "ARA",
 	"species" : "anthroid:default",  
 	"health" : 300, 

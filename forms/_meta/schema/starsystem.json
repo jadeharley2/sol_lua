@@ -1,0 +1,15 @@
+{
+    "type":"object",
+    "description": "star system form",
+    "allOf":[{"$ref": "form.json"}],
+    "properties": {
+        "hierarchy":{
+            "type":"array",
+            "description": "hierarchy of celestial bodies",
+            "items": {
+                "type":"object",
+                "$ref": "celestial_body.json"
+            }
+        }
+    }
+}

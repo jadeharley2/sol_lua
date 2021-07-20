@@ -2,66 +2,25 @@
 	"type": "object",
 	"description" : "character form",
 	"additionalProperties": true,
-	"allOf":[{"$ref": "form.json"}],
-	"properties":{   
-		"movement":{
-			"type":"object",
-			"properties": {
-				"walk":{ "$ref":"movementtype.json" },
-				"run":{ "$ref":"movementtype.json" },
-				"fly":{ "$ref":"movementtype.json" },
-				"swim":{ "$ref":"movementtype.json" } 
-			} 
-		},
+	"allOf":[{"$ref": "form.json"},{"$ref":"char_shared.json"}],
+	"properties":{    
 		"species":{
 			"type":"string",
 			"description": "species form reference"
 		},
-		"directmove":{
-			"type":"boolean",
-			"description": "use fps-like movement"
-		},
-		"behaviour":{
-			"type":"object",
-			"description": "behaviour graph"
-		}, 
-		"parts":{
-			"type":"object",
-			"description": "body parts",
-			"patternProperties": {
-				"":{"type":"string"}
-			},
-			"category":"visuals"
-		},
-		"abilities":{
-			"type":"array"
-		},
-		"mass":{
-			"type":"number",
-			"description": "physical mass"
-		},
-		"health":{
-			"type":"number",
-			"description": "max health",
-			"category":"status"
-		},
-		
-		"basematdir" :{
-			"type":"string",
-			"description": "materials override directory",
-			"category":"visuals"
-		}, 
-		"materials" : {
-			"type":"object",
-			"description": "material overrides",
-			"category":"visuals",
-			"patternProperties": {
-				"":{"type":"string"}
-			}
-		},  
 		"equipment":{
 			"type":"object",
-			"description": "default equipment"
+			"description": "default equipment",
+			"properties": {
+				"items":{
+					"type":"array",
+					"description": "array of formids",
+					"items": {
+						"type":"string"
+					}
+				}
+			},
+			"category":"items"
 		}
 	}
 }

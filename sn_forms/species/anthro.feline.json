@@ -1,4 +1,5 @@
 {	
+	"form_type":"species",
 	"#include" : "anthro.json", 
 	"racename":"feline", 
 	"mass" : 9,

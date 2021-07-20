@@ -1,4 +1,5 @@
 {
+	"form_type":"character",
 	"name": "RigTestModel", 
 	"health" : 100,  
 

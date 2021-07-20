@@ -1,4 +1,5 @@
 {
+	"form_type":"character",
 	"name": "Test",
 	"model" : "races/new/testrace.json",
 	"attributes" : [ "humanoid" ],
