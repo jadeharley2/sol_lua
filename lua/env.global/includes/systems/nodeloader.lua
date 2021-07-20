@@ -78,6 +78,7 @@ function nodeloader.Create(form,parent,uid,parentworld)
     else
         local pos = Vector(0,0,0)
         local ang = Vector(0,0,0)
+        local sca = Vector(1,1,1)
         local seed = 0
         if j.pos then
             pos = JVector(j.pos)
@@ -87,6 +88,8 @@ function nodeloader.Create(form,parent,uid,parentworld)
         if j.ang then
             ang = JVector(j.ang)
         end
+        
+
         if j.seed then
             seed = j.seed
         end
@@ -122,6 +125,14 @@ function nodeloader.Create(form,parent,uid,parentworld)
             end
             if j.name then
                 ent:SetName(j.name)
+            end
+            if j.sca then
+                sca = JVector(j.sca)
+                ent:SetScale(sca)
+            end
+            if j.scale then
+                sca = JVector(j.scale)
+                ent:SetScale(sca)
             end
             if not j.form then
                 ent:SetSeed(seed) 

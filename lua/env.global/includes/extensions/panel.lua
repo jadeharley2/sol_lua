@@ -70,7 +70,6 @@ function panel.call(pn,funcname,...)
 end
 
 --DRAG_DROP
- 
 	panel.current_drag = false
 	panel.current_drag_pointpos = Point(0,0)
 	panel.current_drag_movepos = Point(0,0)
@@ -166,7 +165,7 @@ end
 			
 			local mousePos = input.getMousePosition() 
 			local mouseDiff = mousePos - panel.current_drag_pointpos   
-			local mouseDiffF = Point(mouseDiff.x*2/scalemul,mouseDiff.y*-2/scalemul)
+			local mouseDiffF = Point(mouseDiff.x/scalemul,mouseDiff.y/scalemul)--Point(mouseDiff.x*2/scalemul,mouseDiff.y*-2/scalemul)
 			local newPos = panel.current_drag_movepos + mouseDiffF
 			
 			local snap = panel.current_drag_snap
@@ -535,5 +534,85 @@ end
 
 
 
+local PANEL = FindMetaTable("Panel")
+
+function PANEL:Center(offx,offy)
+	local p = self:GetParent()
+	local off = Point(offx or 0, offy or 0)
+	local ps
+	if p then
+		ps = p:GetSize()
+	else
+		ps = GetViewportSize()  
+	end
+	local cs = self:GetSize()
+	self:SetPos((ps-cs)/2+off) 
+end
+function PANEL:CenterX(off)
+	local p = self:GetParent()
+	local ps
+	if p then
+		ps = p:GetSize()
+	else
+		ps = GetViewportSize()  
+	end
+	local cs = self:GetSize()
+	local cp = self:GetPos()
+	self:SetPos(((ps-cs)/2).x+(off or 0),cp.y) 
+end
+function PANEL:CenterY(off)
+	local p = self:GetParent()
+	local ps
+	if p then
+		ps = p:GetSize()
+	else
+		ps = GetViewportSize()  
+	end
+	local cs = self:GetSize()
+	local cp = self:GetPos()
+	self:SetPos(cp.x,((ps-cs)/2).y+(off or 0)) 
+end
 
 
+gui.selected_panels = gui.selected_panels or {}
+local CUR_PANELS_SELECTED = gui.selected_panels
+
+function gui.DeselectAll()
+	for k,v in pairs(CUR_PANELS_SELECTED) do
+		k:Deselect()
+		CUR_PANELS_SELECTED[k] = nil
+	end  
+end
+function gui.GetSelected()
+	local t = {}
+	for k,v in pairs(CUR_PANELS_SELECTED) do
+		t[#t+1] = k
+	end
+	return t
+end
+
+function PANEL:Select()
+	print("SELECT!",self," ",CUR_PANELS_SELECTED[self])
+	if CUR_PANELS_SELECTED[self] == nil then
+		gui.DeselectAll()
+
+		CUR_PANELS_SELECTED[self] = true
+		CALL(self.OnSelect,self)
+	end
+end
+function PANEL:SelectMultiple()
+	print("SELECT!",self," ",CUR_PANELS_SELECTED[self])
+	if CUR_PANELS_SELECTED[self] == nil then 
+		CUR_PANELS_SELECTED[self] = true
+		CALL(self.OnSelect,self)
+	end
+end
+function PANEL:Deselect()
+	if CUR_PANELS_SELECTED[self] then 
+		CUR_PANELS_SELECTED[self] = nil
+		CALL(self.OnDeselect,self)
+	end
+end
+function PANEL:IsSelected()
+	return CUR_PANELS_SELECTED[self]
+end

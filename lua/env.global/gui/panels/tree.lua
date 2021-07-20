@@ -116,7 +116,7 @@ function PANEL:Collapse(node)
 		local parent = node:GetParent()
 		if parent then
 			self:RecuExpand(parent,-totalcon)
-			self.root:SetPos(self.root:GetPos()+Point(0,totalcon))
+			--self.root:SetPos(self.root:GetPos()+Point(0,totalcon))
 		end
 		self:UpdateLayout() 
 	end
@@ -145,7 +145,7 @@ function PANEL:AddItem(text,parent,value,clickfn)
 	 
 	if parent then
 		self:RecuExpand(parent,self.itemheight)
-		self.root:SetPos(self.root:GetPos()+Point(0,-self.itemheight))
+		--self.root:SetPos(self.root:GetPos()+Point(0,-self.itemheight))
 	end
 	
 	parent = parent or self.root

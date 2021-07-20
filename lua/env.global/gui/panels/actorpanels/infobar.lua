@@ -53,7 +53,8 @@ function PANEL:MouseWheel()
 	self.mWVal = mWVal
 	return changed
 end
-function PANEL:UpdateBar(ent)   
+function PANEL:UpdateBar(ent)    
+	self:Center(0,40)
 	
 	ent = GetInteractiveEnt(LocalPlayer(), ent)
 	if ent and IsValidEnt(ent) then
@@ -142,13 +143,13 @@ function PANEL:UpdateBar(ent)
 
 						local lnd = {}
 						self.lnd = lnd
-						local cn = 1
-						for k,v in pairs(options) do cn= cn + 1 end
+						 
+						
 						for k,v in pairs(options) do
 							local id =  #lnd + 1
 							local line = panel.Create()
 							line:SetSize(200,20)
-							line:SetPos(0,self:GetPos().y + id*40-20-40*cn)
+							line:SetPos(self:GetPos().x,self:GetPos().y + id*22+20)
 							line:SetCanRaiseMouseEvents(false)
 							line:SetTexture(testtexture) 
 							line:SetTextColor(Vector(255,255,255)/255) 

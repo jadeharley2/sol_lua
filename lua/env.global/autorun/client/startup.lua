@@ -86,24 +86,27 @@ function LoadMenu()
 	
 	MsgN("Menu Load finished in:",CurTime()-t_start,"seconds. Total load time:",CurTime())
 end
- 
+
+function ToggleConsole()
+	if not settings.GetBool("server.noconsole") then
+		local console = CONSOLE   
+		
+		if console.enabled then
+			--console:Close()
+			console:SetVisible(false)
+			console.enabled = false 
+		else  
+			--console:Show()
+			console:SetVisible(true)
+			console.enabled = true
+			console:Select()
+		end 
+		console:GetParent():UpdateLayout()
+	end
+end
 hook.Add("input.keydown","console",function(key)   
-	if key == KEYS_OEMTILDE then 	 
-		if not settings.GetBool("server.noconsole") then
-			local console = CONSOLE   
-			
-			if console.enabled then
-				--console:Close()
-				console:SetVisible(false)
-				console.enabled = false 
-			else  
-				--console:Show()
-				console:SetVisible(true)
-				console.enabled = true
-				console:Select()
-			end 
-			console:GetParent():UpdateLayout()
-		end
+	if not input.GetKeyboardBusy() and key == KEYS_OEMTILDE then 	 
+		ToggleConsole()
 	end
 end) 
 -- main menu shortcuts

@@ -15,17 +15,20 @@ function PANEL:Init(name,height,width)
 	self:SetColor(panel_color/2)
 	
 	--local bcol = Vector(83,164,255)/255
-	local bcol = "#A3CB38"--"#009432" --Vector(83,164,255)/255
+	local bcol = --"#A3CB38"--"#009432" --
+		Vector(83,164,255)/255
 	local pcol = Vector(0,0,0)
 	
 	local sub = panel.Create()
 	sub:SetSize(width-20,height-20)  
+	sub:SetPos(10,10)
 	sub:SetColor(pcol)
-	sub:SetAlpha(0.7)
+	sub:SetAlpha(0.7) 
 	
 	gui.Border(self,{
 		-- size = 32,
-		color = "#009432"
+		size = 16,
+		color = bcol --"#009432"
 	})  
 	
 	
@@ -33,7 +36,7 @@ function PANEL:Init(name,height,width)
 	label:SetText(name)
 	label:SetTextAlignment(ALIGN_CENTER)
 	label:SetSize(280,20)
-	label:SetPos(0,height+15) 
+	label:SetPos(width/2-140,-15) 
 	label:SetTextColor(bcol)
 	label:SetColor(pcol)
 	--label:SetAlpha(0.7)
@@ -55,4 +58,6 @@ function PANEL:Init(name,height,width)
 		p:SetTextAlignment(ALIGN_CENTER) 
 	end
 end 
-
+function PANEL:OnShow()
+	
+end

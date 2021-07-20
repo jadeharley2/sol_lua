@@ -145,14 +145,15 @@ function PANEL:AddControl(id,type,text,color,func,tggl)
 	local btnEditor = panel.Create(type)
 	if(tggl) then btnEditor:SetToggleable(true) end
 	btnEditor:SetSize(15,15)
+	btnEditor:SetFont("fonts/d10.json")
 	btnEditor:SetText(text)
 	btnEditor:SetColorAuto(color)
 	btnEditor.contextinfo = id
 	if tggl then
 		local sub = panel.Create()
 		sub:SetColor(Vector(0,0,0))
-		sub:SetSize(14,2)
-		sub:SetPos(0,-14)
+		sub:SetSize(13,1)--14,2)
+		sub:SetPos(1,13)--0,-14)
 		sub:SetCanRaiseMouseEvents(false)
 		btnEditor.s = sub
 		btnEditor:Add(sub)

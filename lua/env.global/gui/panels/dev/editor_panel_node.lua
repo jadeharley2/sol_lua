@@ -8,9 +8,10 @@ local layout = {
 		--	text = "World outliner", 
 		--}, 
 		{  
-			size = {100,40},
+			size = {100,32},
             dock = DOCK_TOP,
             color = {0,0,0},
+			clip = true,
             subs = {
 				 
 				{ class = "bmenutoggle", texture = "textures/gui/panel_icons/move.png", contextinfo='Move mode', group = 'nod'},
@@ -75,15 +76,16 @@ function PANEL:SelectNode(node)
 	self:UpdateHierarchy(node) 
 end
 
-function PANEL:UpdateHierarchy(cnode)
+
+function PANEL:UpdateHierarchy(cnode) 
 	local cnode = cnode or GetCamera() --TEMP
 	self.hierarchy:ClearItems()
 	for k,v in pairs(cnode:GetHierarchy()) do
 		self.hierarchy:AddItem(gui.FromTable({
 			type = "button",
 			size = {16,16},
-			text = tostring(v),
-			OnClick = function() 
+			text = tostring(v), 
+			OnClick = function(s)  
 				worldeditor:Select(v)
 			end
 		}))
@@ -105,12 +107,17 @@ function PANEL:UpdateCnodes(root)
 	hook.Add("editor_select","nodetree_update",function(node)
 		if node == nil then
 			for k,v in pairs(self.noderef) do
-				v.title:SetTextColor(Vector(0.6,0.8,1))
+				--v.selected = false
+				--v:SetColor(Vector(0.6,0.8,1))
+				--ss:SetTextOnly(true)
 			end
+			gui.DeselectAll()
 		else
 			local ss = self.noderef[node]
 			if ss then
-				ss.title:SetTextColor(Vector(0.8,2,1))
+				--ss:SetColor(Vector(0.1,0.1,0.1))
+				--ss:SetTextOnly(false)
+				ss:SelectMultiple()
 			end
 		end
 	end)
@@ -118,7 +125,9 @@ function PANEL:UpdateCnodes(root)
 		if IsValidEnt(node) then
 			local ss = self.noderef[node]
 			if ss then
-				ss.title:SetTextColor(Vector(0.6,0.8,1)) 
+				--ss:SetColor(Vector(0.6,0.8,1)) 
+				--ss:SetTextOnly(true)
+				ss:Deselect()
 			end
 		end
 	end)
@@ -136,7 +145,7 @@ end
 function PANEL:NodeToTreeElement(ent)
 	local n = gui.FromTable({
 		type = 'tree2node',
-		text = tostring(ent), 
+		text = ent:GetName() or "unnamed", 
 		textcolor = {0.6,0.8,1},
 		Icon = self:GetEntIcon(ent),
 		entity = ent,
@@ -160,13 +169,21 @@ function PANEL:NodeToTreeElement(ent)
 				s.rep:UpdateLayout()
 				return true 
 			end) 
+			if s:IsSelected() then
+				gui.EditText(s.title,function(s,t)
+					ent:SetName(t) 
+				end) 
+			end
 			worldeditor:Select(s.entity)
 		end,
+		OnDoubleClick = function(s)
+			CenterCameraOn(ent,0.3)
+		end,
 		DragEnter = function(s,item)
-			s:SetText("wat?")
+			--s:SetText("wat?")
 		end,
 		DragExit = function(s,item)
-			s:SetText("...")
+			--s:SetText("...")
 		end,
 
 	})

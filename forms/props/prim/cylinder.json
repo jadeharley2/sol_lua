@@ -1,0 +1,9 @@
+{
+	"form_type":"prop",
+	"group" : "debug",
+	"tags" : [],
+	"model" : "primitives/cylinder.stmd",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	
+}

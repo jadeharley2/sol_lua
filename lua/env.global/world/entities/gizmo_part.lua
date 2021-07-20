@@ -113,7 +113,15 @@ function ENT:Enable(enabled)
 	end
 end
 function ENT:OnClick()
+	
+	LockMouse()
+	hook.Add("input.mouseup","handle",function(s)  
+		hook.Remove("input.mouseup","handle")
+		UnlockMouse()
+		self.root:EndDrag(self)
+	end)
 	self.root:StartDrag(self)
+
 end
 function ENT:Highlight(en)
 	if en then
@@ -132,6 +140,16 @@ function ENT:Highlight(en)
 		self.model:SetBrightness(0.1)
 		self.modelb:SetBrightness(0.3)
 	end
+end 
+function ENT:VisLight(en)
+--if en then 
+--	local color = self:GetParameter(VARTYPE_COLOR,Vector(1,1,1))
+--	self.model:SetColor(color,1)
+--	self.modelb:SetColor(color,1)
+--else  
+--	self.model:SetColor(Vector(0,0,0),0)
+--	self.modelb:SetColor(Vector(0,0,0),0)
+--end
 end 
 function ENT:Rescale(scale)
 	local cam = GetCamera()

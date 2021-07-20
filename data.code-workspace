@@ -4,19 +4,19 @@
 			"path": "forms"
 		},
 		{
-			"path": "models"
-		},
-		{
-			"path": "textures"
-		},
-		{
 			"path": "lua"
 		},
 		{
 			"path": "shaders"
 		},
 		{
-			"path": "particles"
+			"path": "sn_forms"
+		},
+		{
+			"path": "sn_lua"
+		},
+		{
+			"path": "sn_particles"
 		}
 	],
 	"settings": {
@@ -30,7 +30,8 @@
 			"*.n": "jsonc",
 			"*.jssc": "jsonc"
 		},
-		"json.schemas": [ 
+		"json.schemas": [
+
 			{
 				"fileMatch": ["*.dnmd"],
 				"url": "/_meta/schema/dynamicmodel.json"
@@ -38,6 +39,10 @@
 			{
 				"fileMatch": ["/textures/*.json","*.mat"],
 				"url": "/_meta/schema/material.json"
+			},
+			{
+				"fileMatch": ["/**/*.json"],
+				"url": "/_meta/schema_main.json"
 			}
 		],
 		"lua.targetVersion": "5.2",

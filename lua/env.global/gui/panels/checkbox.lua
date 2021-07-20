@@ -9,6 +9,7 @@ function PANEL:Init()
 	
 	local inp = panel.Create("button")
 	inp:SetColors(Vector(50,150,50)/256,Vector(150,50,50)/256,Vector(100,100,100)/256) 
+	inp:SetPos(2,2)
 	inp:SetSize(18,18) 
 	inp:SetToggleable(true)
 	inp.OnClick = function(b)

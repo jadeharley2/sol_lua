@@ -229,7 +229,7 @@ local on_dt_click = function(b,cdtype,mousespawn,randomYaw)
 			local pos = node:GetLocalCoordinates(wtr.Node,wtr.Position) 
 			local uid = GetFreeUID()
 	
-			--MsgN("form spawn",type)
+			MsgN("form spawn",type)
 			local e = ent_worldeditor:SendEvent(EVENT_EDITOR_SPAWN_FORM,type,node, pos, uid)
 			if e then
 				worldeditor:Select(e)

@@ -20,6 +20,7 @@ ent_worldeditor = editor.ent_worldeditor
 
 DeclareEnumValue("event","EDITOR_MOVE",				224980)
 DeclareEnumValue("event","EDITOR_ROTATE",			224981)
+DeclareEnumValue("event","EDITOR_SETANG",			2249812)
 DeclareEnumValue("event","EDITOR_SCALE",			224982)
 
 DeclareEnumValue("event","EDITOR_COPY",				224983)
@@ -53,11 +54,14 @@ end}
  
 local _metaevents = debug.getregistry().Entity._metaevents 
 
+
 _metaevents[EVENT_EDITOR_MOVE]   = {networked = true, f = function(self,pos)  self:SetPos(pos) end}
 _metaevents[EVENT_EDITOR_ROTATE] = {networked = true, f = function(self,axis,ang)  self:TRotateAroundAxis(axis,ang) end}
+_metaevents[EVENT_EDITOR_SETANG] = {networked = true, f = function(self,ang)  self:SetAng(ang) end}
 _metaevents[EVENT_EDITOR_SCALE]  = {networked = true, f = function(self,sca)  self:SetScale(sca) end}
 
 _metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self) 
+	--[[
 	local ne = ents.Create(self:GetClass() )
 	local uid =  (GetFreeUID()) 
 	ne:SetParent(self:GetParent())
@@ -80,7 +84,11 @@ _metaevents[EVENT_EDITOR_COPY]  = {networked = true, f = function(self)
 	self:CopyTags(ne)
 	self:CopyParameters(ne)
 	ne:SetSeed(uid) 
-	--MsgN("asasd?")
+	]]
+
+	local data = ents.ToData(self)
+	local ne = ents.FromData(data,self:GetParent()) 
+	
 	hook.Call("EditorNodeCopy",self,ne)
 
 	editor.newent = ne
@@ -144,7 +152,7 @@ function editor:Open()
 	hook.Add("input.keydown","editor", function(key) self:KeyDown(key) end )
 	--hook.Add("input.doubleclick","editor",editor.DoubleClick)
 	
-	SetController("freecamera")
+	SetController("editor")
 	
 	self:Select(self.selected)
 	self.isopen = true
@@ -190,6 +198,9 @@ end
 function editor:Enabled() 
 	return editor.node ~= nil 
 end
+function editor:IsOpen() 
+	return self.isopen
+end
 
 function editor:Undo()
 	MsgN("undo:",self.undo:Undo())
@@ -219,12 +230,28 @@ end
 function editor:GetGridMode()
 	return self.gridmode  
 end
-function editor:SetPosSnap(enable)
-	self.possnap = enable or false
+
+function editor:SetPosSnap(value)
+	if value==true then
+		self.possnap = 0.01
+	else
+		self.possnap = value or false
+	end
 end
 function editor:GetPosSnap()
 	return self.possnap 
 end
+function editor:SetAngSnap(value)
+	if value==true then
+		self.angsnap = 45
+	else
+		self.angsnap = value or false
+	end
+end
+function editor:GetAngSnap()
+	return self.angsnap 
+end
+
 function editor:GetNodeUnderCursor(lp)
 	local drw = false
 	if lp then drw = render.DCIGetDrawable(lp) else drw = render.DCIGetDrawable() end
@@ -244,11 +271,9 @@ function editor:DoubleClick()
 			--MsgInfo("CLICL!")
 			if LMB and not RMD and not MMB then 
 				
-				local vp = top
-				local vsz = vp:GetSize()
-				local vmp = vp:GetLocalCursorPos()
-				local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
---MsgN(vp,vsz,vmp,vsr)
+				local vp = top 
+				local vsr = ViewportMousePos(vp)
+
 				local complete = false
 				local under = self:GetNodeUnderCursor(vsr)
 				if under and IsValidEnt(under) then
@@ -269,44 +294,46 @@ function editor:DoubleClick()
 	end 
 end
 function editor:KeyDown(k)  
-	if k==KEYS_TAB then
-		self.tabtoggle = not (self.tabtoggle or false)
-		if self.tabtoggle then
-			--self.gui.vp:Close()
-			self.gui:Show()
-			self.gui:UpdateLayout()
-		else
-			self.gui:Close()
-			--self.gui.vp:Show()
-			--self.gui.vp:SetPos(0,0) 
-			--self.gui.vp:SetSize(GetViewportSize())
-			--self.gui.vp:Close()
-		end
-	end 
-	if (input.KeyPressed(KEYS_F)) then  
-		if self.gizmo then
-			self.gizmo:ChangeMode()
-		end
-	elseif (input.KeyPressed(KEYS_DELETE)) then  
-		for k,v in pairs(self.selected) do 
-			--k:Despawn() 
-			k:SendEvent(EVENT_EDITOR_REMOVE) 
-		end
-		self.selected:Clear()
-		self:ClearSelectionModels()  
-		hook.Call("editor_deselect");
-		local gizmo = self.gizmo 
-		if gizmo then
-			gizmo:Despawn()
-			self.gizmo = nil
-		end  
-	elseif (input.KeyPressed(KEYS_Z)) then  
-		if (input.KeyPressed(KEYS_CONTROLKEY)) then  
-			self:Undo()
-		end
-	elseif (input.KeyPressed(KEYS_Y)) then  
-		if (input.KeyPressed(KEYS_CONTROLKEY)) then  
-			self:Redo()
+	if not input.GetKeyboardBusy() then
+		if k==KEYS_TAB then
+			self.tabtoggle = not (self.tabtoggle or false)
+			if self.tabtoggle then
+				--self.gui.vp:Close()
+				self.gui:Show()
+				self.gui:UpdateLayout()
+			else
+				self.gui:Close()
+				--self.gui.vp:Show()
+				--self.gui.vp:SetPos(0,0) 
+				--self.gui.vp:SetSize(GetViewportSize())
+				--self.gui.vp:Close()
+			end
+		end 
+		if (input.KeyPressed(KEYS_F)) then  
+			if self.gizmo then
+				self.gizmo:ChangeMode()
+			end
+		elseif (input.KeyPressed(KEYS_DELETE)) then  
+			for k,v in pairs(self.selected) do 
+				--k:Despawn() 
+				k:SendEvent(EVENT_EDITOR_REMOVE) 
+			end
+			self.selected:Clear()
+			self:ClearSelectionModels()  
+			hook.Call("editor_deselect");
+			local gizmo = self.gizmo 
+			if gizmo then
+				gizmo:Despawn()
+				self.gizmo = nil
+			end  
+		elseif (input.KeyPressed(KEYS_Z)) then  
+			if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+				self:Undo()
+			end
+		elseif (input.KeyPressed(KEYS_Y)) then  
+			if (input.KeyPressed(KEYS_CONTROLKEY)) then  
+				self:Redo()
+			end
 		end
 	end
 end
@@ -323,7 +350,6 @@ end
 function editor:GetMode()  
 	return EDITOR_MODE
 end
-
 
  
 function editor:Update()
@@ -343,9 +369,14 @@ function editor:Update()
 		end
 	
 		local mode = self.mode
-		local cam = GetCamera()
+		local cam = GetCamera() 
 		self.wtrace = GetCameraPhysTrace(cam,tbl)
 		
+		if self.wtrace then
+			debug.ShapeBoxCreate(3030,self.wtrace.Node,
+			matrix.Scaling(0.001) * matrix.Translation(self.wtrace.Position),Vector(1000,0,0))
+		end
+
 		if(input.KeyPressed(KEYS_V)) and #self.selected>0 then 
 			local tbl = {}
 			for k,v in pairs(self.selected) do 
@@ -365,13 +396,18 @@ function editor:Update()
 		
 		
 		local vp = top
-		if vp then
-			local vsz = vp:GetSize()
-			local vmp = vp:GetLocalCursorPos()
+		if vp then 
 
-			local vsr = (vmp/vsz)*Point(0.5,-0.5)+Point(0.5,0.5)
+			local vsr = ViewportMousePos(vp) 
 
-
+			local btrace = GetMousePhysTrace(cam,tbl,vsr)
+		
+			if btrace then
+				debug.ShapeBoxCreate(3031,btrace.Node,
+				matrix.Scaling(0.001) * matrix.Translation(btrace.Position),Vector(0,10,0))
+				--MsgN(vsr,"->",btrace.Position,btrace.Hit)
+			end
+			 
 			if self.gizmo and not self.gizmo.GIZMO_DRAG then 
 				local under = self:GetNodeUnderCursor(vsr)
 				local hlt = true
@@ -506,6 +542,10 @@ function editor:Select(node,multiselect)
 	end
 	
 	if node then
+		if self.gizmo then
+			self.gizmo:Despawn()
+			self.gizmo = nil
+		end
 		local gizmo = self.gizmo or CreateGizmo(node:GetParent())
 		gizmo:SetParent(node:GetParent())
 		gizmo:SetPos(node:GetPos())

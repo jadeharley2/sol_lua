@@ -69,3 +69,53 @@ if SERVER then
 --end
 --
 end
+
+if CLIENT then
+	
+
+	function CenterCameraOn(ent,time,cam)
+		cam = cam or GetCamera()
+		local cp = cam:GetPos()
+		local tp = ent:GetPos()
+		local dir  =cam:Forward() -- (tp-cp):Normalized()
+		local sz = cam:GetParent():GetSizepower()
+
+		cam:MoveTo(tp-dir*20/sz,time)
+	end
+end
+
+ 
+local ENTITY = FindMetaTable("Entity")
+function ENTITY:MoveTo(target,time,easingfunc)
+	local pos = pos or self:GetPos()
+	time = time or 1
+	easingfunc = easingfunc or easing.linear
+	local t = 0
+	local iters = time*50
+	debug.DelayedTimer(0,20,iters, function()  
+		t = t + 1
+		if t==iters then
+			self:SetPos(target) 
+		else
+			self:SetPos(LerpVector(pos,target,easingfunc(t/iters))) 
+		end
+	end) 
+end 
+local CAMERA = FindMetaTable("Camera")
+CAMERA.MoveTo = ENTITY.MoveTo
+--[[
+function ENTITY:RotateTo(pos,time,easingfunc)
+	local ang = self:GetRotation()
+	time = time or 1
+	easingfunc = easingfunc or easing.linear
+	local t = 0
+	local iters = time*50
+	debug.DelayedTimer(0,20,iters, function()  
+		t = t + 1
+		if t==iters then
+			self:SetRotation(target) 
+		else
+			self:SetRotation(math.lerp(ang,target,easingfunc(t/iters))) 
+		end
+	end)
+end ]]

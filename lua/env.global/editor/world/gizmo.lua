@@ -15,7 +15,8 @@ end
  
 function gizmometa:StartDrag(part)
 	if not self.GIZMO_DRAG then 
-		 
+		self:VisLight(part)
+
 		if input.KeyPressed(KEYS_SHIFTKEY) then
 			for k,v in pairs(worldeditor.selected) do
 				worldeditor:Copy(k)
@@ -39,9 +40,22 @@ function gizmometa:StartDrag(part)
 			self.startscale = Vector(1,1,1)
 		end
 		
+		for k,v in pairs(worldeditor.selected) do
+			if IsValidEnt(k) then
+				k._editor_start_angle = k:GetAng()  
+			end
+		end 
+ 
 		
 		hook.Add(EVENT_GLOBAL_PREDRAW,"GIZMO_DRAG",function() self:DragUpdate() end)
 	end
+end
+function gizmometa:EndDrag(part)
+	self:VisLight(nil)
+	for k,v in pairs(worldeditor.selected) do
+		k._editor_start_angle = nil
+	end 
+
 end
 
 function gizmometa:Shift(oldpos,newpos)
@@ -62,6 +76,15 @@ function gizmometa:Rotate(axis,shift)
 		k:SendEvent(EVENT_EDITOR_ROTATE,axis,shift) 
 	end
 	--if lsn then lsn:SetPos(newPos) end
+end
+
+function gizmometa:SetAngles(angles) 
+	for k,v in pairs(worldeditor.selected) do 
+		hook.Call("EditorNodeSetAngles",k,angles)
+		if k._editor_start_angle then
+			k:SendEvent(EVENT_EDITOR_SETANG,k._editor_start_angle + angles) 
+		end
+	end 
 end
 function gizmometa:Scale(anewscale) 
 	for k,v in pairs(worldeditor.selected) do
@@ -85,6 +108,7 @@ function gizmometa:DragUpdate()
 		local startpos = startnodepos--self.startnodepos --
 		local startscale = self.startscale
 		local camera = GetCamera()
+		local parent = camera:GetParent()
 		local constr = G.constraint
 		local constr2 = G.constraint2
 		local sconstraint = G.sconstraint
@@ -95,13 +119,16 @@ function gizmometa:DragUpdate()
 		local campos = camera:GetPos() 
 		  
 		local snap = worldeditor.possnap or false --3 
-		local angsnap = 45
-		if snap then snap = 4 end
+		local angsnap = worldeditor.angsnap or false 
 		
 		local mpos = input.getInterfaceMousePos()+Vector(0,0,0.1)
 		
-	
+		--mpos = mpos*Point(2,-2)
+		--MsgN("AAAAAAAAAA",mpos)
+	 
 		local dir = camera:Unproject(mpos):Normalized()
+		--MsgN("dir>",dir,"mpos>",mpos)
+
 		--local dir = (worldeditor.curtrace.Position - campos):Normalized()
 		if not  worldeditor.selected:First() then return nil end
 		local lsn =self.parts[1]-- worldeditor.selected:Last() 
@@ -109,16 +136,25 @@ function gizmometa:DragUpdate()
 		local first = self.first or false
 		local spos = self._startpos or Vector(0,0,0)
 		local dpos = self._startlen or 0
+
+		
+		if snap then
+			snap = snap / lsp:GetSizepower() 
+		end
+
 		if constr then
 		
 			local W =lsp:GetLocalSpace(lsn) 
 			constr = constr:TransformN(W)
-			if(constr2) then
+			if(constr2) then -- 2axis move
 				constr2 = constr2:TransformN(W)
 				--worldeditor.curtrace
 				local pp = Plane(startpos, startpos + constr, startpos + constr2);
 				
 				local hit, pos = pp:Intersect(campos, dir)
+
+				debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
+
 				if hit then  
 					if first then
 						self._startpos = pos
@@ -127,7 +163,7 @@ function gizmometa:DragUpdate()
 					
 					local newPos = startnodepos+ pos - spos
 					if snap then
-						newPos = Vector(math.round(newPos.x,snap),math.round(newPos.y,snap),math.round(newPos.z,snap))
+						newPos = Vector(math.round(newPos.x/snap)*snap,math.round(newPos.y/snap)*snap,math.round(newPos.z/snap)*snap)
 					end
 					
 					local oldPos = self.parts[1]:GetPos()
@@ -137,7 +173,7 @@ function gizmometa:DragUpdate()
 				
 					self:Shift(oldPos, newPos) 
 				end
-			else  
+			else  --1axis move
 				--local pp = Plane(startpos, startpos + constr, startpos + up*100)
 				--local pp2 = Plane(startpos, startpos + constr, startpos + forward*100)
 				--local pp3 = Plane(startpos, startpos + constr, startpos + right*100)
@@ -161,6 +197,9 @@ function gizmometa:DragUpdate()
 				local pp = Plane(startpos, startpos + constr, startpos + up*100) 
 				local pp2 = Plane(startpos, constr)
 				local hit, pos = pp:Intersect(campos, dir)
+
+				debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
+
 				if hit then 
 					local rps = pp2:DotCoordinate(pos) 
 					if first then
@@ -171,7 +210,7 @@ function gizmometa:DragUpdate()
 			--MsgN(pos)
 					local newPos = startnodepos + constr * (rps - dpos)-- *1000000 / (startscale*startscale)
 					if snap then
-						newPos = Vector(math.round(newPos.x,snap),math.round(newPos.y,snap),math.round(newPos.z,snap))
+						newPos = Vector(math.round(newPos.x/snap)*snap,math.round(newPos.y/snap)*snap,math.round(newPos.z/snap)*snap)
 					end
 
 					local oldPos = self.parts[1]:GetPos()
@@ -181,7 +220,7 @@ function gizmometa:DragUpdate()
 					self:Shift(oldPos, newPos)
 				end
 			end
-		elseif axis then 
+		elseif axis then --rotate
 			if lsn then
 				
 				local W = lsn:GetLocalSpace(lsn:GetParent())
@@ -195,10 +234,11 @@ function gizmometa:DragUpdate()
 					Waxis = lsn:Forward()
 				end
 				
-				local addang = mouseDiff2.x/100
+				local addang = mouseDiff.x/4 --/100*10
 				
 				if angsnap then
-					--addang = math.round(addang/angsnap)*angsnap 
+					--print(addang)
+					addang = math.round(addang/angsnap)*angsnap 
 				end
 				
 
@@ -207,9 +247,11 @@ function gizmometa:DragUpdate()
 						v:TRotateAroundAxis(Waxis,addang)
 					end
 				end
-				self:Rotate(Waxis,addang)  
+				--self:Rotate(Waxis,addang)  
+		 
+				self:SetAngles(AxisAngle(Waxis,addang))
 			end
-		else 
+		else --scale
 			local pp = Plane(startpos, startpos + right*100, startpos + up*100)
 			local hit, pos = pp:Intersect(campos, dir)
 			if hit then
@@ -286,6 +328,16 @@ function gizmometa:Highlight(n)
 		self.lasthovered = n
 	end
 end
+function gizmometa:VisLight(n)
+	local ch = self.lastvizlight
+	if n~=ch then 
+		for k,v in pairs(self.parts) do 
+			v:VisLight(v==n)
+		end
+		self.lastvizlight = n
+	end
+end 
+
 function gizmometa:Rescale(n) 
 	local scale = self.scale
 	if scale~=n then 
@@ -335,7 +387,7 @@ function gizmometa:SetParent(n)
 	end
 end
 function gizmometa:SetPos(n)
-	if n then
+	if n and self.parts then
 		for k,v in pairs(self.parts) do
 			if not v.disabled then
 				v:SetPos(n)
@@ -344,7 +396,7 @@ function gizmometa:SetPos(n)
 	end
 end
 function gizmometa:SetAng(n)
-	if n then
+	if n and self.parts then
 		for k,v in pairs(self.parts) do
 			if not v.disabled then
 				v:SetAng(v.defang*n)
@@ -364,7 +416,7 @@ function gizmometa:Despawn()
 end
 gizmometa.__index = gizmometa
 
-function CreateGizmo(parent)
+function CreateGizmo(parent) 
 	local gizmo = {}
 	local Vzero = Vector(0,0,0)
 	local Vx = Vector(1,0,0)

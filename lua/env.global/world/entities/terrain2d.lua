@@ -1,7 +1,7 @@
 
-local rdtex = LoadTexture("space/star_sprites.png")
+--local rdtex = LoadTexture("space/star_sprites.png")
 function ENT:CreateStaticLight( pos, color,power,glname,seed)
-
+ 
 	local lighttest = ents.Create("omnilight") 
 	local world = matrix.Scaling(2) 
 	lighttest:SetParent(self)
@@ -20,7 +20,7 @@ function ENT:CreateStaticLight( pos, color,power,glname,seed)
 	particlesys:SetNodeMode(false)
 	particlesys:AddNode(8)
 	particlesys:SetNodeStates(8,BLEND_ADD,RASTER_DETPHSOLID,DEPTH_READ) 
-	particlesys:SetTexture(8,rdtex)
+	particlesys:SetTexture(8,"textures/space/star_sprites.png")
 	particlesys:AddParticle(8,Vector(0,0,0), Vector(1, 244 / 255, 232 / 255)*1,100000*8,0) 
 	particlesys:SetMaxRenderDistance(10000000000)
 	lighttest.psys = particlesys
@@ -88,7 +88,7 @@ function ENT:Spawn()
 	local light = self:CreateStaticLight(Vector(-85.6,106.2,124.6)/10/2*10,
 		Vector(255,255,255)/255,5050000000,"dgl_star0",33244285) 
 	light.light:SetShadow(true)  
-	SpawnPV('prop.furniture.space.spawn',space,Vector(0,-1,0)*0.001,Vector(0,0,0),0)
+	--SpawnPV('prop.furniture.space.spawn',space,Vector(0,-1,0)*0.001,Vector(0,0,0),0)
 	 
 	local grid = space:RequireComponent(CTYPE_CHUNKTERRAIN)
 	self.grid = grid

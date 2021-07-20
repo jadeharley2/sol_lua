@@ -41,7 +41,7 @@ function PANEL:SetScrollbars(type)
 	local inner = panel.Create()
 	inner:SetClipEnabled(true)
 	inner:Dock(DOCK_FILL)
-    inner:SetAnchors(ALIGN_TOP)
+    --inner:SetAnchors(ALIGN_TOP)
 	self:Add(inner)
 	
 	self.inner = inner

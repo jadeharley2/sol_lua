@@ -116,21 +116,25 @@ PS_OUT PS( PS_IN input ) : SV_Target
 	float3 rer = normalize(input.norm); 
 	float dotz = saturate(rer.y);
 
-	float2 texCoord = input.tcrd;
-	float4 dtexIn1 = g_MeshTexture.Sample(MeshTextureSampler, input.spos.xz*0.1);
-	float4 dtexIn1b = g_MeshTexture.Sample(MeshTextureSampler, input.spos.xz*0.01);
-	float4 dtexIn2 = g_MeshTexture2.Sample(MeshTextureSampler, input.spos.xz*0.1);
-	float4 dtexIn2b = g_MeshTexture2.Sample(MeshTextureSampler, input.spos.xz*0.01);
+	//float2 sfdir = normalize(float2(rer.x,rer.z));
 
-    float noise = g_NoiseTexture.Sample(MeshTextureSampler, input.spos.xz*0.004)-0.5;
-    float noise2 = g_NoiseTexture.Sample(MeshTextureSampler, input.spos.xz*0.02)-0.5;
+	float2 texCoord = input.spos.xz;//+float2(-sfdir.x,-sfdir.y)*time*1;
+	float4 dtexIn1 = g_MeshTexture.Sample(MeshTextureSampler,   texCoord*0.1);
+	float4 dtexIn1b = g_MeshTexture.Sample(MeshTextureSampler,  texCoord*0.01);
+	float4 dtexIn2 = g_MeshTexture2.Sample(MeshTextureSampler,  texCoord*0.1);
+	float4 dtexIn2b = g_MeshTexture2.Sample(MeshTextureSampler, texCoord*0.01);
+
+    float noise = g_NoiseTexture.Sample(MeshTextureSampler,  texCoord*0.004)-0.5;
+    float noise2 = g_NoiseTexture.Sample(MeshTextureSampler, texCoord*0.02)-0.5;
 			
 	float3 camdir = normalize(input.wpos);		 
 	float3 reflectcam = reflect(camdir,input.norm);
     float3 reflectEnv =  mul(float4(reflectcam,1),EnvInverse).xyz;
 	float3 envmap = max(float3(0,0,0),EnvSampleLevel(reflectEnv,1));
   
-    output.diffuse =  lerp(dtexIn2*dtexIn2b*2,dtexIn1*dtexIn1b*2,saturate(pow(dotz,6)*2+(noise*2+noise2*1)-0.5));
+    output.diffuse = 
+	//float4(rer.x+0.5,rer.z+0.5,0,1);// 
+		 lerp(dtexIn2*dtexIn2b*2,dtexIn1*dtexIn1b*2,saturate(pow(dotz,6)*2+(noise*2+noise2*1)-0.5));
     output.depth = input.pos.z;
     output.mask = float4(1,0,0,0);
 	    

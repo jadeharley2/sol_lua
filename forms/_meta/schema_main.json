@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type":"object",
+    "properties":{
+        "form_type":{
+            "type":"string",
+            "descriptin":"test",
+            "examples": ["character","anchor","prop","tool"]  
+        }
+    },
+    "required": ["form_type"],
+    "anyOf": [
+        {
+            "properties": { "form_type": { "const": "character" } },
+            "allOf":[{"$ref": "schema/character.json"}]
+        },
+        {
+            "properties": { "form_type": { "const": "anchor" } },
+            "allOf":[{"$ref": "schema/anchor.json"}]
+        },
+        {
+            "properties": { "form_type": { "const": "prop" } },
+            "allOf":[{"$ref": "schema/prop.json"}]
+        },
+        {
+            "properties": { "form_type": { "const": "tool" } },
+            "allOf":[{"$ref": "schema/tool.json"}]
+        }
+    ]
+}

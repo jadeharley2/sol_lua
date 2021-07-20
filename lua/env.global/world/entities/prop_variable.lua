@@ -23,8 +23,11 @@ function ItemPV(itype,seed,modtable)
 end
 function InitPV(type,ent,pos,ang,seed,e,modtable)
 	local j = forms.ReadForm(type)--json.Read(type) 
+	if not j then 
+		MsgN("cannot read form id",type)
+		return nil 
+	end
 	if modtable then table.Merge(modtable,j,true) end
-	if not j then return nil end
 	
 	local tags = {}
 	if j.tags then

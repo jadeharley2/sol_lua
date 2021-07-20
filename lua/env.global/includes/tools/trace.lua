@@ -12,7 +12,7 @@ function GetCameraPhysTrace(cam,actorphys)
 end
 function GetMousePhysTrace(cam,actorphys,mpos)
 	cam = cam or GetCamera()
-	mpos = mpos or (input.getInterfaceMousePos()+Vector(0,0,0.1))
+	mpos = mpos or (input.getInterfaceMousePos())-- *Vector(1,-1,1)+Vector(0,0,0.1))
 	local wdir = cam:Unproject(mpos):Normalized()
 	local parentphysnode = cam:GetParentWithComponent(CTYPE_PHYSSPACE)
 	if parentphysnode then
@@ -24,6 +24,13 @@ function GetMousePhysTrace(cam,actorphys,mpos)
 	end
 	return nil
 end
+function ViewportMousePos(vp) 
+	local vsz = vp:GetSize()
+	local vmp = vp:GetLocalCursorPos()
+	local vsr = (vmp/vsz) 
+	return Point(vsr.x,1-vsr.y)--*2-1,vsr.y*2-1)--*0.5+Point(0.5,0.5) 
+end
+
 --pos, dir = relative to node(inside space)
 --dir = normalized
 --maxlen = in node space lengths

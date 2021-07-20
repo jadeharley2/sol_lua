@@ -2,6 +2,7 @@
 local t_mpanel = "textures/gui/tab_70x30.png" 
 local activeTabColor = Vector(0.2,0.2,0.2)*2
 local activeTabTextColor = Vector(0.7,0.7,0.7)*2
+local font_d16 = LoadFont("fonts/d16.json")
  
 function PANEL:Init()
 	--PrintTable(self) 
@@ -31,6 +32,7 @@ function PANEL:Init()
 	handle:SetColorAuto(Vector(0.2,0.2,0.5),0)
 	handle:SetSize(10,20)
 	handle:Dock(DOCK_TOP)
+	handle:SetClipEnabled(true)
 	handle.OnClick = function(s)
 		self:StartDrag()
 	end  
@@ -44,13 +46,20 @@ function PANEL:Init()
 	handle_safezone.OnClick = function(s) self:StartDrag() end  
 	handle:Add(handle_safezone)
 	
+	local handle_topzone = panel.Create()   
+	handle_topzone:SetTextOnly(true)
+	handle_topzone:SetSize(2,2)
+	handle_topzone:Dock(DOCK_TOP)
+	handle:Add(handle_topzone)
+	
 	local handle_addtab = panel.Create("button")   
 	handle_addtab:SetColorAuto(activeTabColor*0.5)
 	handle_addtab:SetTextColorAuto(activeTabTextColor*0.5)
 	handle_addtab:SetSize(25,25)
 	handle_addtab:SetText("+")
+	handle_addtab:SetFont(font_d16)
 	handle_addtab:SetTextAlignment(ALIGN_CENTER)
-	handle_addtab:SetTexture(t_mpanel) 
+	--handle_addtab:SetTexture(t_mpanel) 
 	handle_addtab:Dock(DOCK_LEFT)
 	--handle_addtab:SetTextOnly(true)
 	handle_addtab.OnClick = function(s)  
@@ -72,7 +81,7 @@ function PANEL:Init()
 	framePanel:SetSize(30,30)
 	framePanel:Dock(DOCK_FILL)
 	framePanel:SetColor(activeTabColor) 
-	framePanel:SetPadding(5,5,5,5)
+	framePanel:SetPadding(3,3,3,3)
 	self:Add(framePanel)
 	
 
@@ -165,17 +174,20 @@ function PANEL:StartDrag()
 end
 	
 function PANEL:AddTab(name,sub) 
-	local b = panel.Create("button") 
 	local plist = self.plist
 	local slist = self.slist
 	local tabButtonPanel = self.tabButtonPanel
+	
+	local b = panel.Create("button") 
 	b:SetText(name or "Tab")
+	b:SetFont(font_d16)
 	b:SetSize(100,30)
 	b:Dock(DOCK_LEFT)
+	--b:SetMargin(2,0,2,2)
 	tabButtonPanel:Add(b) 
 	plist[name] = sub 
 	sub.listid = name
-	b:SetTexture(t_mpanel)
+	--b:SetTexture(t_mpanel)
 	b:SetColorAuto(activeTabColor*0.5)
 	b:SetTextColorAuto(activeTabTextColor*0.5)
 	b.OnClick = function() 

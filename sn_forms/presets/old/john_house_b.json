@@ -1,0 +1,290 @@
+{	
+	"#include" : "data/presets/test.json", 
+	"#include" : "data/presets/old/test.json", 
+	"#include" : "data/presets/old/test.json:/somenode/innernode", 
+	"its_test" :"no!",
+	"class" : "level", 
+	"rotationformat" : "angle",
+	"transformation" : {"sca": 0.00006, "ang": [0,0,0] },//00005
+	"assets" : [
+		{
+			"name" : "windowframe", 
+			"type" : "model_mesh",
+			"mesh" : "data/models/architecture/john_window.SMD"
+		},
+		{
+			"name" : "bed", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/bed_m.SMD",
+			"phy" : "data/models/furniture/jade/bed_c.SMD",
+			"transformation" : {"sca": 0.4, "ang": [-45,0,0] }
+		},
+		{
+			"name" : "transportalizer", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/transportalizer_m.SMD",
+			"phy" : "data/models/furniture/jade/transportalizer_c.SMD",
+			"texdir" : "data/textures/model/machines/",
+			"transformation" : {"sca":1.333, "ang": [-90,0,0] }
+		}, 
+		{  
+			"name" : "fakewall",  
+			"type" : "phymodel_mesh", 				
+			"mesh" : "data/models/architecture/john_fakewall.SMD",
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+		{  
+			"name" : "fireplace",  
+			"type" : "phymodel_mesh", 				
+			"mesh" : "data/models/architecture/john_fireplace.SMD",
+			"texdir" : "data/textures/model/random/",
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+		{  
+			"name" : "dpane",  
+			"type" : "phymodel_mesh", 				
+			"mesh" : "data/models/architecture/displaypane.SMD",
+			"texdir" : "data/textures/model/random/",
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+		{
+			"name" : "testcom", 
+			"type" : "phymodel_mesh",
+			"mesh" : "data/models/furniture/john/test_compilation.SMD", 
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+		{
+			"name" : "testcom2", 
+			"type" : "phymodel_mesh",
+			"mesh" : "data/models/furniture/john/test_compilation2.SMD", 
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+		{
+			"name" : "monitor", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/john/monitor_m.SMD", 
+			"phy" : "data/models/furniture/john/monitor_c.SMD",
+			"transformation" :{"ang": [-90,0,0] }  
+		},
+	],
+	"objects": 
+	[
+		{  "class" : "dynamichouse", 
+			"levels":
+			[
+				{ "id":0, "name":"foundation",
+					"floorheight": 0,
+					"wallheight": 10,
+					"wallwidth": 2.5, 
+					"nodes":[
+						{"id":100,"pos":[-115,0,-115]},
+						{"id":101,"pos":[-115,0,-95]},
+						{"id":102,"pos":[-125,0,-95]},
+						{"id":103,"pos":[-125,0,-45]},
+						{"id":104,"pos":[-115,0,-45]},
+						{"id":105,"pos":[-115,0,-25]},
+						{"id":106,"pos":[-115,0,105]},
+						
+						{"id":107,"pos":[-5,0,105]},
+						{"id":108,"pos":[-5,0,85]},
+						{"id":109,"pos":[65,0,85]},
+						{"id":110,"pos":[65,0,-25]},
+						{"id":111,"pos":[115,0,-25]},
+						
+						{"id":112,"pos":[115,0,-115]},
+						{"id":113,"pos":[15,0,-115]} 
+					],
+					"rooms":[
+						{ "id": 0, "nodes":[113,112,111,110,109,108,107,106,105,104,103,102,101,100]}
+					],
+				},
+				{ "id":1, "name":"groundfloor",
+					"floorheight": 10,
+					"wallheight": 50,
+					"wallwidth": 2.5, 
+					"nodes":[
+						{"id":100,"pos":[-115,0,-115]},
+						{"id":101,"pos":[-115,0,-95]},
+						{"id":102,"pos":[-125,0,-95]},
+						{"id":103,"pos":[-125,0,-45]},
+						{"id":104,"pos":[-115,0,-45]},
+						{"id":105,"pos":[-115,0,5]},
+						{"id":106,"pos":[-115,0,105]},
+						
+						{"id":107,"pos":[-5,0,105]},
+						{"id":108,"pos":[-5,0,85]},
+						{"id":109,"pos":[65,0,85]},
+						{"id":110,"pos":[65,0,5]},
+						{"id":111,"pos":[115,0,5]},
+						
+						{"id":112,"pos":[115,0,-115]},
+						{"id":113,"pos":[15,0,-115]},
+						 
+						{"id":114,"pos":[15,0,5]},
+						{"id":115,"pos":[-5,0,5]}
+					],
+					"rooms":[
+						{ "id": 0, "nodes":[113,112,111,110,109,108,107,106,105,104,103,102,101,100]}, //outside
+						{ "id": 1, "name":"main", "nodes":[100,101,102,103,104,105,115,114,113]},
+						{ "id": 2, "name":"kitchen", "nodes":[105,106,107,108,115]},
+						{ "id": 3, "name":"study", "nodes":[110,111,112,113,114]},
+						{ "id": 4, "name":"utility", "nodes":[108,109,110,114,115]}
+					],
+					"objects":[
+						{ "id": 1, "type":"door", "pos":[-125,0,-70], "width":20, "height":40, "rooms":[0,1]}, 
+						{ "id": 2, "type":"door", "pos":[65,0,60], "width":20, "height":40, "rooms":[0,4]}, 
+						{ "id": 3, "type":"door", "pos":[-30,0,5], "width":20, "height":40, "rooms":[1,2]}, 
+						{ "id": 4, "type":"door", "pos":[15,0,-20], "width":20, "height":40, "rooms":[1,3]}, 
+						{ "id": 5, "type":"door", "pos":[-5,0,50], "width":20, "height":40, "rooms":[2,4]},
+						
+						{ "id": 10, "type":"window", "asset":"windowframe", "pos":[-50,0,-115], "width":20, "height":30, "sillheight":15, "rooms":[0,1]},
+						{ "id": 11, "type":"window", "asset":"windowframe", "pos":[60,0,-115], "width":20, "height":30, "sillheight":15, "rooms":[0,3]},
+						{ "id": 12, "type":"window", "asset":"windowframe", "pos":[115,0,-70], "width":20, "height":30, "sillheight":15, "rooms":[0,3]},
+						{ "id": 13, "type":"window", "asset":"windowframe", "pos":[45,0,85], "width":20, "height":30, "sillheight":15, "rooms":[0,4]},
+						{ "id": 15, "type":"window", "asset":"windowframe", "pos":[-115,0,55], "width":20, "height":30, "sillheight":15, "rooms":[0,2]}
+					]
+					/*
+					"walls":[
+						{ "nodes":[100,101,102,103,104,105]},
+						{ "nodes":[105,106,107,108]},
+						{ "nodes":[108,109,110]},
+						{ "nodes":[110,111,112,113]},
+						{ "nodes":[113,100]},
+						{ "nodes":[113,114,110]},
+						{ "nodes":[114,115,108]},
+						{ "nodes":[115,105]}
+					]*/
+				},
+				{ "id":2, "name":"1floor",
+					"floorheight": 70,
+					"floorwidth": 10,
+					"wallheight": 60,
+					"wallwidth": 2.5, 
+					"nodes":[
+						{"id":100,"pos":[-15,0,-115]}, 
+						{"id":101,"pos":[-15,0,-25]}, 
+						{"id":102,"pos":[-115,0,-25]}, 
+						{"id":103,"pos":[-115,0,5]}, 
+						{"id":104,"pos":[-115,0,105]}, 
+						{"id":105,"pos":[-5,0,105]}, 
+						{"id":106,"pos":[-5,0,85]}, 
+						{"id":107,"pos":[65,0,85]}, 
+						{"id":108,"pos":[65,0,5]}, 
+						{"id":109,"pos":[115,0,5]},  
+						{"id":110,"pos":[115,0,-25]}, 
+						{"id":111,"pos":[115,0,-115]}, 
+						{"id":112,"pos":[15,0,-115]}, 
+						
+						{"id":113,"pos":[15,0,-25]}, 
+						{"id":114,"pos":[-5,0,5]}, 
+						  
+						{"id":115,"pos":[15,0,-30]}, //floor
+						{"id":116,"pos":[-15,0,-30]},//floor
+						
+					],
+					"floor":{ "nodes":[115,116,101,102,103,104,105,106,107,108,109,110,111,112] },
+					//"floor":{ "nodes":[100,101,102,103,104,105,106,107,108,109,110,111,112] },
+					"rooms":[
+						{ "id": 0, "floorheight": -60, "wallheight": 50, "nodes":[112,111,110,109,108,107,106,105,104,103,102,101,100]}, //outside
+						{ "id": 1, "name":"corridor", "nodes":[100,101,102,103,114,108,109,110,113,112]},
+						{ "id": 2, "name":"johnroom", "nodes":[114,103,104,105]},
+						{ "id": 3, "name":"dadroom", "nodes":[110,111,112,113]},
+						{ "id": 4, "name":"bathroom", "nodes":[106,107,108,114]}
+					],
+					"objects":[
+						{ "id": 1, "type":"door", "pos":[-60,0,5], "width":20, "height":50, "rooms":[1,2]}, 
+						{ "id": 2, "type":"door", "pos":[30,0,5], "width":20, "height":50, "rooms":[1,4]}, 
+						{ "id": 3, "type":"door", "pos":[60,0,-25], "width":20, "height":50, "rooms":[1,3]},  
+						{ "id": 4, "type":"door", "pos":[-95,0,-25], "width":20, "height":60, "rooms":[0,1]}, 
+						 
+						{ "id": 10, "type":"window", "asset":"windowframe", "pos":[60,0,-115], "width":20, "height":30, "sillheight":25, "rooms":[0,3]},
+						{ "id": 11, "type":"window", "asset":"windowframe", "pos":[115,0,-70], "width":20, "height":30, "sillheight":25, "rooms":[0,3]},
+						{ "id": 12, "type":"window", "asset":"windowframe", "pos":[-60,0,105], "width":20, "height":30, "sillheight":25, "rooms":[0,2]},
+						{ "id": 13, "type":"window", "asset":"windowframe", "pos":[-115,0,55], "width":20, "height":30, "sillheight":25, "rooms":[0,2]},
+						{ "id": 14, "type":"window", "asset":"windowframe", "pos":[65,0,45], "width":20, "height":30, "sillheight":25, "rooms":[0,4]},
+						{ "id": 15, "type":"window", "asset":"windowframe", "pos":[-15,0,-55], "width":20, "height":30, "sillheight":25, "rooms":[0,1]}
+					] 
+				},
+				{ "id":3, "name":"1floorbalcony",
+					"floorheight": 80,
+					"floorwidth": 20,
+					"wallheight": 20,
+					"wallwidth": 2.5, 
+					"nodes":[
+						{"id":100,"pos":[-15,0,-115]}, 
+						{"id":101,"pos":[-115,0,-115]}, 
+						{"id":102,"pos":[-115,0,-25]}, 
+						{"id":103,"pos":[-15,0,-25]},  
+					], 
+					"rooms":[
+						{ "id": 0, "nodes":[103,102,101,100]}, //outside 
+						{ "id": 1, "customceiling":1, "nodes":[100,101,102,103]},
+					],
+					"objects":[ 
+					] 
+				}
+			],
+			"objects":
+			[
+				{  "id": 100, "type":"ladder", 
+					"levels":[1,2], 
+					"rooms":[1,1], 
+					"width":25.0,
+					"nodes":[ [-32.5,10,-100],[-12.5,20,-100],[ 0,20,-100],[0,20,-87.5],[0,70,-30]] 
+				},
+				{  "id": 100, "type":"ladder", //1stfloor to balcony 
+					"levels":[2,3], 
+					"rooms":[1,1], 
+					"width":25.0,
+					"nodes":[[-75,70,-10],[ -87.5,80,-10],[-100,80,-10],[-100,80,-22.5]] //,[-100,75,20],[-100,75,7.5]
+				},
+				{ "id": 101, "type":"roof", 
+					"rooftype": "2side", 
+					"height":70.0,
+					"wallwidth": 2.5, 
+					//"nodes":[[65,120,105],[65,120,5],[-115,120,5],[-115,120,125],[-5,120,125],[-5,120,105]]
+					"nodes":[[65,120,85],[65,120,-25],[-115,120,-25],[-115,120,85]]
+				},
+				{ "id": 102, "type":"roof", 
+					"rooftype": "2side", 
+					"height":43.5,
+					"wallwidth": 2.5, 
+					"nodes":[[-5,120,105],[-5,120,85],[-115,120,85],[-115,120,105]]
+				},
+				{ "id": 103, "type":"roof", 
+					"rooftype": "2side", 
+					"height":50.0,
+					"wallwidth": 2.5, 
+					"nodes":[[115,120,5],[115,120,-115],[-15,120,-115],[-15,120,5]]
+				},
+				{ "id": 104, "type":"roof", //doorroof
+					"rooftype": "2side", 
+					"height":20.0,
+					"wallwidth": 2.5, 
+					"nodes":[[-120,60,-95],[-125,60,-95],[-125,60,-45],[-120,60,-45]]
+				},
+				
+				//{  "id": 200, "type":"ladder",  //ultratest
+				//	"levels":[0], 
+				//	"rooms":[0], 
+				//	"width":100.0,
+				//	"nodes":[  [0,0,-100],[-300,0,-100],[-300,0,0],[-300,0,100],[-300,20,200],[-300,20,300],[-300,3000,5000],[-300,3000,5100],[-200,3000,5100],[2700,6000,5100]] 
+				//},
+			]
+		},
+		{"asset" : "monitor", "pos"  : [0,80,0]},  
+		{ "asset" : "transportalizer",  "name": "tp.faraway",  
+			"action": "teleportsimple", 
+			"type": "active", 
+			"phys": "static", 
+			"pos"  : [30,10,-25],
+			"coordinates"  : [[ 1, 10, 252, 77, 5],0,[-0.0438588,-0.1388095,-0.0002157877]]
+		},
+		{"asset" : "fakewall", "pos": [0,0,0]},
+		{"asset" : "fireplace", "pos": [0,0,0]},
+		//{"asset" : "dpane", "pos": [0,0,0]},
+		{"asset" : "testcom", "pos": [0,0,0]},
+		{"asset" : "testcom2", "pos": [0,0,0]},
+		
+	]
+}

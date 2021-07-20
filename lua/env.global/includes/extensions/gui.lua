@@ -50,6 +50,9 @@ function UnlockMouse()
 	MOUSE_LOCKED = false 
 	input.SetMouseBusy(false)
 end
+function MouseLocked()
+	return MOUSE_LOCKED
+end
 
 function FSTR_Dock(v)
 	if isnumber(v) then return v else
@@ -85,6 +88,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 			local vsize = GetViewportSize()  
 			node:SetSize(v[1]*vsize.x,v[2]*vsize.y) 
 		elseif k == 'pos' then node:SetPos(v[1],v[2])
+		elseif k == 'origin' then node:SetOrigin(FSTR_Alignment(v))
 		elseif k == 'rotation' then node:SetRotation(v)
 		elseif k == 'dock' then node:Dock(FSTR_Dock(v))
 		elseif k == 'padding' then node:SetPadding(v[1],v[2],v[3],v[4])
@@ -126,7 +130,12 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 
 		elseif k == 'text' then node:SetText(v)
 		elseif k == 'textonly' then node:SetTextOnly(v)
-		elseif k == 'textcolor' then node:SetTextColor(Vector(v[1],v[2],v[3]))  
+		elseif k == 'textcolor' then 
+			if isstring(v) then
+				node:SetTextColor(v)--"#009432"
+			else
+				node:SetTextColor(Vector(v[1],v[2],v[3])) 
+			end 
 		elseif k == 'textalignment' then node:SetTextAlignment(v)
 		elseif k == 'multiline' then node:SetMultiline(v)
 		elseif k == 'lineheight' or k == 'fontsize' then node:SetLineHeight(v)
@@ -217,7 +226,7 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 	if style and t.class then
 		for k,styleclass in pairs(string.split(t.class,' ')) do
 			local v = style[styleclass]
-			print(styleclass,v)
+			--print(styleclass,v)
 			if v then
 				gui.ApplyParameters(node,v)
 			end
@@ -249,6 +258,20 @@ function gui.FromTable(t,node,style,namedtable,tablekey)
 						else
 							local alignment =FSTR_Alignment(v.align) 
 							x:AlignTo(node,alignment,alignment,0,0)
+						end
+					elseif v.pvpos then
+						local ps = node:GetSize()
+						
+						if v.pvpos == 'center' then 
+							local xs = x:GetSize()
+							x:SetPos(math.floor((ps.x-xs.x)/2),math.floor((ps.y-xs.y)/2))
+						elseif istable(v.pvpos) then
+							if v.pvpos[3] == 'size' then
+								local xs = x:GetSize()
+								x:SetPos(math.floor(ps.x*v.pvpos[1]-xs.x/2),math.floor(ps.y*v.pvpos[2]-xs.y/2))
+							else
+								x:SetPos(math.floor(ps.x*v.pvpos[1]+(v.pvpos[3] or 0)),math.floor(ps.y*v.pvpos[2]+(v.pvpos[4] or 0)))
+							end 
 						end
 					end 
 				end
@@ -441,3 +464,38 @@ hook.Add("input.mousewheel", "gui.scroll",function()
 		toppanel = toppanel:GetParent()
 	end 
 end)
+
+
+function gui.EditText(text_panel,callback)
+	 
+	local tedit = gui.FromTable({
+		type = "input_text",
+		dock = DOCK_FILL,
+		size = {100,16},
+		Font2 = "fonts/d12.json",
+		color = "#000020",
+		textcolor = "#AFAFAF",
+		text = text_panel:GetText(),
+		OnKeyDown = function(s,key)
+			if key == KEYS_ENTER then
+				local txt = s:GetText()
+				if CALL(callback,text_panel,txt) ~= false then
+					text_panel:SetText(txt)
+				end
+				text_panel:Remove(s)
+			elseif key == KEYS_ESCAPE then
+				text_panel:Remove(s)
+			end
+		end,
+		OnDeselect = function(s)
+			local txt = s:GetText()
+			if CALL(callback,text_panel,txt) ~= false then
+				text_panel:SetText(txt)
+			end
+			text_panel:Remove(s)
+		end
+	})
+	text_panel:Add(tedit)
+	tedit:Select()
+	text_panel:UpdateLayout()
+end

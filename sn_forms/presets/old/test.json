@@ -1,0 +1,4 @@
+{
+	"its_test" :"yes",
+	"somenode" : {"innernode":{ "justatest": 1}}
+}

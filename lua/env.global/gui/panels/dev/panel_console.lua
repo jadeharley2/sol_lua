@@ -1,4 +1,6 @@
 
+local font_d16 = "fonts/d12.json"
+
 function PANEL:Init()
 	self.lastupdate =0
 
@@ -11,7 +13,8 @@ function PANEL:Init()
 	input_text:SetColor(input_text.upcolor)
 	input_text:SetTextColor( Vector(1,1,1))
 	input_text:Dock(DOCK_BOTTOM)
-	input_text:SetSize(30,30)
+	input_text:SetFont2(font_d16)
+	input_text:SetSize(20,20)
 	input_text.OnKeyDown = function(n,key) self:InputKeyDown(n,key) end 
 	input_text.OnTextChanged = function(n,text) self:TextChanged(n,text) end 
 	self.input_text = input_text
@@ -24,7 +27,8 @@ function PANEL:Init()
 	
 	local list = panel.Create("list") 
 	list.reverse = true
-	list.lineheight = 35 
+	list.lineheight = 16
+	list.font = font_d16
 	list:Dock(DOCK_FILL)
 	list:SetSize(30,30)
 	self.list = list 
@@ -60,6 +64,7 @@ function PANEL:Refresh(force)
 					self.lastupdate = lastupdatetime
 				local lines = debug.ConsoleGet(100)
 	
+				list:ClearItems()
 				if self.filter and string.len(self.filter)>0 then
 					local nlines = {}
 					for k,v in pairs(lines) do
@@ -71,11 +76,20 @@ function PANEL:Refresh(force)
 				else
 					for k,v in pairs(lines) do
 						lines[k] = self:AutoFormat(v)
+						list:AddItem(gui.FromTable({
+							text = lines[k],
+							textcolor = {255,255,255}, 
+							size = {16,16},
+							font = font_d16,
+							dock = DOCK_TOP,
+							textonly = true,
+						}))
 					end
 				end
-				list.lines = lines
-				list.reverse = true
-				list:Refresh() 
+
+				--list.lines ={}-- lines
+				list.reverse = false
+				--list:Refresh() 
 			end
 		end
 		--self.input_text:Select() 
@@ -273,8 +287,9 @@ function PANEL:TextChanged(n,text)
 
 		local w = self:GetSize().x*0.5
 		ContextMenu(self,ctmp,
-			self.input_text:GetScreenPos()*2
-			+self.input_text:GetSize()*Point(-1,-1),0,
+			self.input_text:GetScreenPos()--*2
+			+self.input_text:GetSize()*Point(0,1)
+			,0,
 			function(b)
 				b:SetSize(w,30)
 				b:SetTextColor(Vector(0.8,0.8,1))

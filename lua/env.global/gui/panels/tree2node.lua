@@ -1,10 +1,14 @@
+local font_d16 = "fonts/d12.json"
 local togglehandler = function (s)
     s.refnode:Toggle()
 end
+PANEL.SelectedColor = "#303060"
+PANEL.HoverColor = "#101030"
+PANEL.IdleColor ="#000000"
 function PANEL:Init()  
     gui.FromTable({
         autosize = {false,true},
-        size = {20,20},
+        size = {16,16},
         dock = DOCK_TOP,
         collapsed = false,
         textonly = true,
@@ -12,15 +16,15 @@ function PANEL:Init()
         margin = {0,2,0,2},
         subs = {
             { name = "header",
-                size = {20,20},
+                size = {16,16},
                 dock = DOCK_TOP,
                 textonly = true,
-                interactive = false,
+                color = "#000000", 
                 subs = {
                     {type = "button",name = "toggler",
                         OnClick = togglehandler,
                         refnode = self,
-                        size = {20,20},
+                        size = {16,16},
                         dock = DOCK_LEFT,
                         rotation = -90,
                         texture = "textures/gui/expand.png",
@@ -29,27 +33,28 @@ function PANEL:Init()
                         ColorAuto = Vector(1,1,1), 
                     },
                     { name = "icon", 
-                        size = {20,20},
+                        size = {16,16},
                         dock = DOCK_LEFT, 
                         visible = false,
                     },
                     { type = "button", name = "title", 
-                        size = {20,20},
+                        size = {16,16},
                         dock = DOCK_FILL,
                         textonly = true,
+						font = font_d16,
                         text = "TreeNode",
                         textcolor = {1,1,1},
                     }
-                }
+                },
             },
             { name = "padding",
-                size = {20,20},
+                size = {16,16},
                 dock = DOCK_LEFT, 
                 textonly = true,
                 mousenabled = false
             },
             { name = "subcon",
-                size = {20,0},
+                size = {16,0},
                 dock = DOCK_TOP,
                 autosize = {false,true},
                 textonly = true,
@@ -57,12 +62,33 @@ function PANEL:Init()
             }
         },
     },self,{},self)
+     
 end
+function PANEL:MouseEnter()
+    if not self:IsSelected() then
+        self.header:SetColor(self.HoverColor)
+        self.header:SetTextOnly(false)
+    end
+end
+
+function PANEL:MouseLeave()
+    if not self:IsSelected() then
+        self.header:SetColor(self.IdleColor)
+        self.header:SetTextOnly(true)
+    end
+end
+ 
 function PANEL:SetOnClick(callback)
     self.title.OnClick = function(s)
         callback(self)
     end
 end
+function PANEL:SetOnDoubleClick(callback)
+    self.title.OnDoubleClick = function(s)
+        callback(self)
+    end
+end
+
 function PANEL:SetText(text)
     self.title:SetText(text)
 end
@@ -152,3 +178,16 @@ function PANEL:GetTree()
         parent = parent:GetParent()
     end 
 end
+ST_SELECTED_NODE = false
+function PANEL:OnSelect()
+    self.header:SetColor(self.SelectedColor) 
+    self.header:SetTextOnly(false)
+end
+function PANEL:OnDeselect()
+    self.header:SetColor(self.IdleColor) 
+    self.header:SetTextOnly(true)
+end 
+PANEL.Select = nil
+PANEL.Deselect = nil
+PANEL.IsSelected = nil
+PANEL.DoubleClick = nil

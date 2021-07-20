@@ -7,8 +7,8 @@ function ContextMenu(parent,data,custompos,level,crtbtn)
 	if data then
 		b = panel.Create("context_menu")
 		b:SetData(parent,data,crtbtn)
-		local mpos = (custompos or input.getInterfaceMousePos()*GetViewportSize())+b:GetSize()*Point(1,-1)
-		b:SetPos(mpos) 
+		local mpos = (custompos or input.getInterfaceMousePos()*GetViewportSize())+b:GetSize()*Point(0,-1)
+		b:SetPos(mpos+Point(0,b:GetSize().y)) 
 		b:Show()
 		b.level = level
 	end

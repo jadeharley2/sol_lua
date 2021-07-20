@@ -43,6 +43,9 @@
             {"name":"g_NoiseTexture", "type":"texture","default":"","description":""},
         ]
 	},
+	"parameters":{  
+		"time"			: { "type" : "float", "global": "time"}, 
+	},
 	"onload" : {
 		"tech" : "Instanced",
 		"layout" :["VertexNBTTextureSkin","InstanceTransform"], 

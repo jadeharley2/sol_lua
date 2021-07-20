@@ -32,7 +32,8 @@ function PANEL:Refresh()
 	local lns = self.lns or {}
 	local ss = self:GetSize()
 	local lines = self.lines
-	local lineheight = self.lineheight or 50
+	local lineheight = self.lineheight or 16
+	local font = self.font or nil
 	local linecount = math.min(#lines,self.maxlinecount or 100) --math.floor(ss.y/(lineheight/2))
 	local alpha = self.alpha or 1
 	local textonly = not (self.hasback or false)
@@ -57,10 +58,10 @@ function PANEL:Refresh()
 		
 		local location = 0
 		if self.reverse then
-			location =  (k-linecount/2-0.5)*lineheight--+ss.y/2-(linecount)*32/2 
-			--lpanel:AlignTo(lpanel
+			location =  (linecount-k)*lineheight --(-k+linecount/2+0.5)*lineheight
 		else
-			location =  (-k+linecount/2+0.5)*lineheight
+			location =  k*lineheight--(k-linecount/2-0.5)*lineheight--+ss.y/2-(linecount)*32/2 
+			--lpanel:AlignTo(lpanel
 		end
 		
 		local pp = false
@@ -74,16 +75,19 @@ function PANEL:Refresh()
 		
 			
 			local lpanel = lns[k] or panel.Create("button") 
-			lpanel:SetSize(ss.x-20,lineheight/2)
+			lpanel:SetSize(ss.x-20,lineheight)
 			lpanel:SetPos(0, location)
 			lpanel:SetTextOnly(textonly)
 			lpanel:SetAlpha(alpha)
+			if font then
+				lpanel:SetFont(font)
+			end
 			
 			if pp then
 				if self.reverse then
-					lpanel:AlignTo(pp,ALIGN_TOPLEFT,ALIGN_BOTTOMLEFT)
-				else
 					lpanel:AlignTo(pp,ALIGN_BOTTOMLEFT,ALIGN_TOPLEFT)
+				else
+					lpanel:AlignTo(pp,ALIGN_TOPLEFT,ALIGN_BOTTOMLEFT)
 				end
 			end
 			

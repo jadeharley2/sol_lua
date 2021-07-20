@@ -1,7 +1,8 @@
-
+CURRENT_BAR_MOVE = false
 local function cwmove()
 	local bar = CURRENT_BAR_MOVE
 	if bar then  
+	print("XX",bar)
 		local mousePos = input.getMousePosition() 
 		local mouseDiff = mousePos - CURRENT_BAR_MOVE_POINTPOS   
 		local mouseDiffF = Point(mouseDiff.x*2,mouseDiff.y*-2)
@@ -22,7 +23,7 @@ end
 
 
 
-PANEL.width = 15
+PANEL.width = 12
 
 function PANEL:Init()
 	local w = self.width
@@ -107,14 +108,14 @@ function PANEL:GetScrollByPos(pos)
 	end 
 end
 
-function PANEL:SetScroll(value)-- [-1...0...1]
+function PANEL:SetScroll(value)-- [0...1]
 	local fcon = self:GetParent() 
 	local floater = fcon.floater
 	local container = fcon.inner
 	local fpos = floater:GetPos()
 	local type = self.stype
 	
-	value = math.max(math.min(value,1),-1)
+	value = math.max(math.min(value,1),0)
 	
 	local fsize = floater:GetSize()
 	local csize = container:GetSize()
@@ -124,39 +125,71 @@ function PANEL:SetScroll(value)-- [-1...0...1]
 	--	if(fsize.y<=csize.y) then value = -1 end
 	--end
 	--MsgN(fsize,csize)
-	local target = (fsize - csize)*value
-	
+	local target = (csize - fsize)*value; -- (fsize - csize)*(-value)---1)/2
+	--MsgN("SET",value,">>",target,fsize,csize)
 	if type == 1 then
-		floater:SetPos(fpos.x,target.y)
+		if fsize.y < csize.y then
+			--MsgN("floater less")
+			floater:SetPos(fpos.x,0)
+		else
+			--MsgN("floater ok")
+			floater:SetPos(fpos.x,math.round(target.y))
+		end
 	else
-		floater:SetPos(target.x,fpos.y) 
+		if fsize.x < csize.x then
+			floater:SetPos(0,fpos.y) 
+		else
+			floater:SetPos(math.round(target.x),fpos.y) 
+		end
 	end
 	
 	self:Refresh()
 end
-function PANEL:GetScroll()-- [-1...0...1]
+function PANEL:GetScroll()-- [0...1]
 	local type = self.stype
 	local fcon = self:GetParent() 
 	local floater = fcon.floater
 	local container = fcon.inner
-	local s = floater:GetPos() / (floater:GetSize() - container:GetSize())
+	
+	local fpos = floater:GetPos()
+	local fsize = floater:GetSize()
+	local csize = container:GetSize()
+	
+	--local diff = fsize-csize 
+	--local s = (diff-floater:GetPos())/diff
+	--MsgN("pos",fpos)
+	local s = fpos/(csize - fsize) ; 
+	
+	--local s = -floater:GetPos() / ( container:GetSize())
+	--MsgN('GET',s.y or 0,csize,fsize)
 	if type == 1 then
-		return s.y
+		if fsize.y < csize.y then
+			return 0
+		else
+			return s.y or 0
+		end
 	else
-		return s.x
+		if fsize.x < csize.x then
+			return 0
+		else
+			return s.x or 0
+		end
 	end
 end
 function PANEL:Scroll(delta)
 	local fcon = self:GetParent() 
 	local floater = fcon.floater
-	local fpos = floater:GetPos()
+	--local fpos = floater:GetPos()
 	local type = self.stype
 	
 	local sval = self:GetScroll()
 	if sval~=sval then sval =0 end -- anti nan value
 	
+	-- scroll pos range: -outer .. 0
+	
 	local fsize = floater:GetSize()
 	if type == 1 then
+	--MsgN("SCRO",sval,"+",delta," -> ",delta / fsize.y," ->>> ",sval)
 		self:SetScroll(sval+delta / fsize.y)
 	else
 		self:SetScroll(sval+delta / fsize.x)
@@ -180,10 +213,10 @@ function PANEL:Refresh()
 			local scrollS = floater:GetPos() / (floater:GetSize() - container:GetSize())
 			if type == 1 then
 				bdrag:SetSize(w,scrollH)
-				bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2 - scrollH ))--
+				bdrag:SetPos(0,-scrollS.y  * (ss.y - w*2 - scrollH )+w)--
 			else
 				bdrag:SetSize(scrollH,w)
-				bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH),0)
+				bdrag:SetPos(-scrollS.x * (ss.x - w*2 - scrollH)+w,0)
 			end 
 		end
 	--fcon:UpdateLayout()

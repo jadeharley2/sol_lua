@@ -1,5 +1,7 @@
 
 
+local font_d16 = LoadFont("fonts/d16.json")
+local fontname_d16 = "fonts/d16.json"
 
 local function gettags(key)
 	local taginfo = table.KVSwitch(debug.GetAPIInfo(key) or {})
@@ -71,7 +73,7 @@ function PANEL:SelectNode(node)
 	peditor:ClearItems()
 	
 	 
-	
+	--MsgN("HA!",node)
 	
 	if node then
 	
@@ -97,7 +99,7 @@ function PANEL:SelectNode(node)
 
 			local proc_params = {}
 			hook.Call("node_properties",node,proc_params)
-			PrintTable(proc_params)
+			--PrintTable(proc_params)
 			self:ConstructParams(node,{editor = {properties = proc_params}},peditor.entbase.contents,node)
 		end
 		 
@@ -108,6 +110,7 @@ function PANEL:SelectNode(node)
 			for k,v in SortedPairs(cTags) do
 				contents:Add(gui.FromTable({
 					size = {20,textsize},
+					font = fontname_d16,
 					dock = DOCK_TOP,
 					text = '['..tostring(v)..'] '..(taginfo[v] or 'unknown tag'),
 					margin = {5,2,0,0},
@@ -190,6 +193,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 			pva:SetColorAuto(Vector(0.6,0.6,0.6)/5,0)
 			pva:SetTextColor(Vector(1,1,1))
 			pva:SetSize(20,textsize)
+			pva:SetFont(font_d16)
 			pva:Dock(DOCK_TOP)
 			pva:SetMargin(5,2,0,0)
 			pva:SetTextAlignment(ALIGN_LEFT)
@@ -210,7 +214,8 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					pva:Add(inp)
 				elseif v.valtype == "number" then 
 					inp = panel.Create("input_text")   
-					inp:SetSize(220,textsize) 
+					inp:SetSize(220,textsize)
+					inp:SetFont2(font_d16)
 					inp:Dock(DOCK_RIGHT)
 					inp.rest_numbers = true
 					if(v.get) then
@@ -232,6 +237,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 				elseif v.valtype == "string" then 
 					inp = panel.Create("input_text")  
 					inp:SetSize(220,textsize)
+					inp:SetFont2(font_d16)
 					inp:Dock(DOCK_RIGHT)
 					if(v.get) then
 						inp:SetText(tostring(v.get(node,com,v))) 
@@ -267,6 +273,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					inp.vargs = vargs
 					inp:SetSize(220,textsize)
 					inp:Dock(DOCK_RIGHT)
+					inp:SetFont2(font_d16)
 
 					inp:SetText(vargs[1] or '')
 
@@ -313,7 +320,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 						dock = DOCK_TOP, 
 						color = {0,0,0},
 						subs ={
-							{ class = "btitle", text = 'x', OnClick = fArgRemove},
+							{ class = "btitle", text = 'x',font = fontname_d16, OnClick = fArgRemove},
 							{ name = 'val', type = "input_text", text = '', dock = DOCK_FILL, OnKeyDown = fArgApply }
 						}
 					}
@@ -326,12 +333,14 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					end
 					
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
+						font = fontname_d16,
 						text = 'add', ColorAuto = Vector(0.2,1,0.2)/10, textcolor = {0.2,1,0.2}, OnClick = function()
 							mgr:AddItem(gui.FromTable(arg_template,nil,global_editor_style))
 							self:UpdateLayout()
 						end
 					},nil,global_editor_style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
+						font = fontname_d16,
 						text = 'sel', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							local lp = file.GetDirectory(inp:GetText())
 							OpenFileDialog(lp,nil,function(path) 
@@ -341,6 +350,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 						end
 					},nil,global_editor_style))
 					mgr:AddButton(gui.FromTable({ class = 'btitle',
+						font = fontname_d16,
 						text = 'clr', ColorAuto = Vector(0.5,0.9,0.9)/10, textcolor = {0.5,0.9,0.9}, OnClick = function()
 							inp:SetText('')
 							fApply(inp)
@@ -375,6 +385,7 @@ function PANEL:ConstructParams(node,meta,parent,com)
 					inp = panel.Create("input_text")  
 					inp:SetSize(220,textsize)
 					inp:Dock(DOCK_RIGHT)
+					inp:SetFont2(font_d16)
 					if(v.get) then
 						inp:SetText(tostring(v.get(node,com,v))) 
 					else

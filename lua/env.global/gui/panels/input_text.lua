@@ -136,6 +136,7 @@ function PANEL:Init()
 	caretoverlay:SetCanRaiseMouseEvents(false)
 	caretoverlay:SetTextOnly(true)
 	caretoverlay:SetTextColor(Vector(1,1,1))
+	
 	self:Add(caretoverlay)
 	
 	hook.Add("input.keydown", "gui.input.text",function(k) static.cwinput(k) end)
@@ -146,6 +147,10 @@ function PANEL:SetText2(text)
 	self:SetText(text)
 	self:CaretUpdate(CStringLen(text))
 	self.text = text
+end
+function PANEL:SetFont2(font)
+	self:SetFont(font)
+	self.caretoverlay:SetFont(font)
 end
 
 function PANEL:OnClick() 
@@ -211,7 +216,7 @@ function PANEL:CaretCycle()
 		end
 	end)
 end
-function PANEL:Select()
+function PANEL:OnSelect()
 	if static.CURRENT_INPUT ~= self then 
 		self.text = self:GetText() or ""
 		static.CURRENT_INPUT = self
@@ -227,7 +232,7 @@ function PANEL:Select()
 		self:CaretCycle()
 	end
 end
-function PANEL:Deselect()
+function PANEL:OnDeselect()
 	if static.CURRENT_INPUT == self then 
 		local cp = self.caretpos
 		self.caretoverlay:SetText(string.rep(" ", cp))

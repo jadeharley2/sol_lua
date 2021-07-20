@@ -1,6 +1,6 @@
 
 PANEL.basetype = "menu_dialog"
-
+GLOBAL_DNO = false
 function PANEL:Init()  
 	 
 	self.base.Init(self,"Settings",300)
@@ -11,8 +11,7 @@ function PANEL:Init()
 	
 	local settings_save = panel.Create("button")
 	settings_save:SetText("Save")
-	settings_save:SetSize(70,20)
-	settings_save:SetPos(-300,-200) 
+	settings_save:SetSize(70,20) 
 	self:SetupStyle(settings_save)
 	 
 	
@@ -64,11 +63,13 @@ function PANEL:Init()
 	settings_addons.OnClick = function() hook.Call("menu","addons") end
 	
 	 
-	settings_buttonpanel:Add(settings_save) settings_save:Dock(DOCK_LEFT)
-	settings_buttonpanel:Add(settings_back) settings_back:SetPos(0,0) 
+	settings_buttonpanel:Add(settings_save) 
+	settings_buttonpanel:Add(settings_back) settings_back:Dock(DOCK_LEFT)
 	settings_buttonpanel:Add(settings_addons) settings_addons:Dock(DOCK_RIGHT)
 	settings_buttonpanel:Dock(DOCK_BOTTOM) 
 	settings_buttonpanel:SetColor(gui.style:GetColor("WindowBack"))
+	
+	GLOBAL_DNO = settings_save
 	
 	local testtabmenu = panel.Create("tabmenu")
 	local panelColor = Vector(50,150,50)/256
@@ -155,4 +156,6 @@ function PANEL:Init()
 	self.sub:Add(settings_buttonpanel)
 	self.sub:Add(testtabmenu)
 	self:UpdateLayout() 
+
+	settings_save:CenterX()
 end

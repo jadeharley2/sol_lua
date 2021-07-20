@@ -1,0 +1,131 @@
+{
+	"rotationformat" : "angle",
+	"transformation" : {"sca": 0.00008, "ang": [-45,0,0] },
+	"assets" : 
+	[
+		{  "name" : "room",  "type" : "phymodel_mesh", 					"mesh" : "data/models/architecture/jade_house.SMD"  },
+		{  "name" : "roomLadders",  "type" : "phymodel_mesh", 			"mesh" : "data/models/architecture/jade_room_ladders.SMD" },
+		{  "name" : "room_ceilpots", 	"type" : "model_mesh", 			"mesh" : "data/models/architecture/jade_room_ceilpots.SMD"  },
+		{  "name" : "house",  "type" : "phymodel_mesh", 				"mesh" : "data/models/architecture/jade_house2.SMD"  },
+		
+		{  "name" : "atrium",  "type" : "phymodel_mesh", 			"mesh" : "data/models/architecture/jade_atrium.SMD"  },
+		{  "name" : "atrium_windows", "type" : "phymodel_mesh", 	"mesh" : "data/models/architecture/jade_atrium_windows.SMD" },
+		{  "name" : "atrium_ceilpots", "type" : "model_mesh", 		"mesh" : "data/models/architecture/jade_atrium_ceilpots.SMD" },
+		
+		{  "name" : "house_topstep",  "type" : "phymodel_mesh",    		"mesh" : "data/models/architecture/jade_topstep.SMD"  },
+		{  "name" : "house_middlestep",  "type" : "phymodel_mesh", 		"mesh" : "data/models/architecture/jade_middlestep.SMD"  },
+		
+		{
+			"name" : "bed", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/bed_m.SMD",
+			"phy" : "data/models/furniture/jade/bed_c.SMD"
+		},
+		{
+			"name" : "chest", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/chest_m.SMD",
+			"phy" : "data/models/furniture/jade/chest_c.SMD"
+		},
+		{
+			"name" : "pot", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/pot_m.SMD",
+			"phy" : "data/models/furniture/jade/pot_c.SMD"
+		},
+		{
+			"name" : "wardrobifier", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/wardrobifier_m.SMD",
+			"phy" : "data/models/furniture/jade/wardrobifier_c.SMD"
+		},
+		{
+			"name" : "table", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/table_m.SMD",
+			"phy" : "data/models/furniture/jade/table_c.SMD"
+		},
+		{
+			"name" : "transportalizer", 
+			"type" : "phymodel",
+			"mesh" : "data/models/furniture/jade/transportalizer_m.SMD",
+			"phy" : "data/models/furniture/jade/transportalizer_c.SMD"
+		},
+		{  
+			"name" : "column", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/architecture/jade_column_m.SMD",
+			"phy" : "data/models/architecture/jade_column_c.SMD"
+		},
+		{  
+			"name" : "flowertablesmall", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/furniture/jade/flowertable_small_m.SMD",
+			"phy" : "data/models/furniture/jade/flowertable_small_c.SMD"
+		},
+		{  
+			"name" : "flowertablebig", 
+			"type" : "phymodel", 		
+			"mesh" : "data/models/furniture/jade/flowertable_big_m.SMD",
+			"phy" : "data/models/furniture/jade/flowertable_big_c.SMD"
+		}
+	],
+	"objects" : 
+	[
+		{"asset" : "house", "pos": [0,0,0]},
+		{"asset" : "atrium", "pos": [0,0,0]},
+		{"asset" : "atrium_ceilpots", "pos": [0,0,0]},
+		//{"asset" : "atrium_windows", "pos": [0,0,0]},
+		
+		{"asset" : "house_topstep", "pos": [0,0,0]},
+		{"asset" : "house_middlestep", "pos": [0,0,0]},
+		
+		{"asset" : "room", "pos" : [0,0,0]},
+		{"asset" : "roomLadders", "pos" : [0,0,0]},
+		{"asset" : "room_ceilpots", "pos" : [0,0,0]},
+		{"asset" : "bed", "pos"  : [0,36.891,0]}, 
+		{"asset" : "chest", "pos"  : [53.216,-20.751,0]},
+		{"asset" : "wardrobifier", "pos"  : [57.036,20.054,0], "ang":[0,-90,0]},
+		{"asset" : "table", "pos"  : [-50,0,0]},
+		{"asset" : "pot", "pos"  : [63.923,3.82,18.998]},
+		{"asset" : "pot", "pos"  : [56.521,-7.036,10]},
+		{"asset" : "pot", "pos"  : [3.499,-17.572,10]},
+		{"asset" : "pot", "pos"  : [-26.505,-18.303,10]},
+		{"asset" : "column", "phys": "static", "pos"  : [-320,-60,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-260,0,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-320,60,-1030]},
+		{"asset" : "column", "phys": "static", "pos"  : [-380,0,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,178.369,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,176.661,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,92.974,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,91.267,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,-97.991,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,-100.669,-1030], "ang"  : [0,-180,0]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-349.792,-183.386,-1030]},
+		{"asset" : "flowertablesmall", "phys": "static", "pos"  : [-273.524,-185.094,-1030], "ang"  : [0,-180,0]},
+		
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-288.38 ,-146.544,-1030]},
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-344.471,-142.637,-1030], "ang"  : [0,-180,0]},
+		
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-288.38 , 132.544,-1030]},
+		{"asset" : "flowertablebig", "phys": "static", "pos"  : [-344.471, 129.637,-1030], "ang"  : [0,-180,0]},
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.room", 
+			"target": "tp.atrium", 
+			"action": "teleport", 
+			"type": "active", 
+			"phys": "static", 
+			"pos"  : [0,0,-120]
+		},
+		{
+			"asset" : "transportalizer", 
+			"name": "tp.atrium", 
+			"target": "tp.room", 
+			"action": "teleport", 
+			"type": "active", 
+			"phys": "static", 
+			"pos"  : [-320,0,-1030]
+		}
+	]
+}

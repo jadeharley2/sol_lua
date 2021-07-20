@@ -27,10 +27,18 @@ local layout = {
 					text = "Void", 
 					size = {100,20}, 
 					pos = {300,-150}, 
-					OnClick = function() LoadSingleplayer("editor_template") end,
+					OnClick = function() LoadSingleplayer("editor_template","editor") end,
 				}, 
 			}
 		},
+		{type="list",name = "items",  -- class = "submenu",
+			visible = true, 
+			size = {400,120},
+			dock = DOCK_FILL,
+			margin = {10,10,10,10},
+			color = {0,0,0},   
+		}, 
+		--[[
 		{type="floatcontainer",name = "items",  -- class = "submenu",
 			visible = true, 
 			size = {400,120},
@@ -42,9 +50,10 @@ local layout = {
 				scrollbars = 1,
 				color = {0,0,0}, 
 				size = {400,120},
+				textonly=true, 
 				autosize={false,true}
 			},
-		}, 
+		}, ]]
 
 	}
 }
@@ -52,19 +61,53 @@ function PANEL:Init()
 
 	
 	self.base.Init(self,"Singleplayer",500,500)
-	gui.FromTable(layout,self,{},self)
-	self.list = self.items.floater
+	gui.FromTable(layout,self.sub,{},self)
+	self.list = self.items --.floater
 	self:SetupStyle(self.bload)
 	self:SetupStyle(self.bback)
 	self:SetupStyle(self.bedt)
-	self:PopulateWorldList() 
+	self:OLDPopulateWorldList() 
+	self:UpdateLayout()
+end
+function PANEL:OnShow() 
+	--self:OLDPopulateWorldList() 
+	--self:UpdateLayout()
 	
 end
+
 function PANEL:PopulateWorldList() 
+	local scenarios = forms.GetList('scenario')
+	
+	local lst = self.list
+	lst:ClearItems()
+	
+	for k,v in pairs(scenarios) do 
+		local data = forms.GetData('scenario',k)
+		if data and data.name then
+			local name = data.name 
+			
+			local sp_new = gui.FromTable({ type = "button",
+				dock = DOCK_TOP,
+				text = name, 
+				textalignment = ALIGN_CENTER,
+				size = {150,20},
+				OnClick = function() 
+					--self:SelectWorld(name)  
+				end
+			}) 
+			lst:AddItem(sp_new)
+			self:SetupStyle(sp_new)  
+		end
+	end
+	--self:UpdateLayout()
+	--self.items:Scroll(-99999)
+end
+
+function PANEL:OLDPopulateWorldList() 
 	local flist = file.GetFiles("lua/env.global/world/entities/","lua")  
 
 	local lst = self.list
-	lst:Clear()
+	lst:ClearItems()
 
 	for k,v in pairs(flist) do 
 		local cname = string.lower( file.GetFileNameWE(v)) 
@@ -79,7 +122,7 @@ function PANEL:PopulateWorldList()
 					size = {150,20},
 					OnClick = function() self:SelectWorld(cname) end
 				}) 
-				lst:Add(sp_new)
+				lst:AddItem(sp_new)
 				self:SetupStyle(sp_new) 
 			end
 		end 
@@ -92,16 +135,16 @@ function PANEL:SelectWorld(world)
 	local class = ents.GetType("world_"..world)
 	if class and (class.options or class.GetOptions) then
 		local lst = self.list
-		lst:Clear()
+		lst:ClearItems()
 
 		local sp_new = gui.FromTable({ type = "button",
 			dock = DOCK_TOP,
 			text = "<< back", 
 			textalignment = ALIGN_CENTER,
 			size = {150,20},
-			OnClick = function() self:PopulateWorldList()   end
+			OnClick = function() self:OLDPopulateWorldList()   end
 		}) 
-		lst:Add(sp_new)
+		lst:AddItem(sp_new)
 		self:SetupStyle(sp_new) 
 
 		if class.GetOptions then
@@ -117,7 +160,7 @@ function PANEL:SelectWorld(world)
 				OnClick = function() LoadSingleplayer(world, k) end
 			}) 
 			if sp_new then
-				lst:Add(sp_new)
+				lst:AddItem(sp_new)
 				self:SetupStyle(sp_new) 
 			end
 		end
@@ -126,6 +169,6 @@ function PANEL:SelectWorld(world)
 	else
 		LoadSingleplayer(world) 
 	end 
-	--	LoadSingleplayer(cname) 
+	--	LoadSingleplayer(cname)  
 				
 end

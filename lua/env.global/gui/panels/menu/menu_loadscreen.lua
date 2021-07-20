@@ -4,7 +4,7 @@ function PANEL:Init()
 	--local self = panel.Create()
 	self:SetSize(150,150) 
 	self:SetColor(Vector(100,100,100)/100)
-	self:SetTexture(LoadTexture("gui/menu/sn_1024.dds")) 
+	self:SetTexture("textures/gui/menu/sn_1024.dds") 
 	
 end
 

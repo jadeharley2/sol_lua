@@ -14,57 +14,65 @@ local style = {
 		state = "idle", 
 	},
 	submenu = {
-		visible = false
+		visible = false,
+		
 	},
 }
 local layout = {
 	name = "self",
+	--origin = ALIGN_CENTER,
 	texture="textures/gui/menu/bkg1.png",
-	pvsize = {2,2},
+	--size = {400,400},
+	pvsize = {1,1},
+	--align = {ALIGN_CENTER,0,0},
+	pos = {0,0},
 	subs = { 
 		{name = "main"    ,type="panel",   class = "submenu",
+			origin = ALIGN_CENTER,
 			visible = true,
 			texture="textures/gui/menu/sn_1024.dds", 
 			size = {800,800},
+			--pos = {500,900},
+			pvpos = 'center',
 			color = {0.001,0.001,0.001},
 			subs = {
 				{name = "bsingle"   ,type="button",
 					text = "Singleplayer", 
-					class = "menu", 
-					pos = {0,200}, 
+					class = "menu",  
+					pvpos = {0.5,0.5,-125,-10-100},
 					OnClick = fwrap(hook.Call,{"menu","sp"}),
 				},
 				{name = "bmulti"    ,type="button", class = "menu",
-					text = "Multiplayer",  
-					pos = {0,100}, 
+					text = "Multiplayer",   
+					pvpos = {0.5,0.5,-125,-10-50},
 					OnClick = fwrap(hook.Call,{"menu","mp"}),
 				},
 				{name = "boptions"  ,type="button", class = "menu",
 					text = "Options",  
-					pos = {0,-100},
+					pvpos = {0.5,0.5,-125,-10+50},
 					OnClick = fwrap(hook.Call,{"menu","settings"}),
 				},
 				{name = "bexit"     ,type="button", class = "menu",
 					text = "Exit",  
-					pos = {0,-200},
+					pvpos = {0.5,0.5,-125,-10+100},
 					OnClick = engine.Exit,
 				},
 				
 				{name = "bcontinue"   ,type="button", class = "menu",
 					text = "Continue",  
-					pos = {0,200},
+					pvpos = {0.5,0.5,-125,-10-100},
 					OnClick = fwrap(hook.Call,{"menu"}),
 					visible = false
 				},
 				{name = "bsave"       ,type="button", class = "menu",
 					text = "Save",  
-					pos = {0,100}, 
+					pvpos = {0.5,0.5,-125,-10-50},
 					OnClick = fwrap(hook.Call,{"menu","save"}),
 					visible = false
 				},
 				{name = "bmainmenu"    ,type="button", class = "menu",
-					text = "Main menu",  
-					pos = {0,-200}, 
+					text = "Main menu",   
+					pvpos = {0.5,0.5,-125,-10+100},
 					OnClick = function(s)
 						world.UnloadWorld()
 						s.menu.self:SetWorldLoaded(false)  
@@ -73,14 +81,14 @@ local layout = {
 				}, 
 			},
 		}, 
-		{name = "loadscreen"    ,type="menu_loadscreen",   class = "submenu"},
-		{name = "sp"            ,type="menu_singleplayer", class = "submenu"},
-		{name = "mp"            ,type="menu_multiplayer",  class = "submenu"},
-		{name = "settings"      ,type="menu_settings",     class = "submenu"},
-		{name = "addons"        ,type="menu_addons",       class = "submenu"},
-		{name = "save"          ,type="menu_savegame",     class = "submenu"},
-		{name = "load"          ,type="menu_loadgame",     class = "submenu"},
-		{name = "editor"        ,type="menu_editors",      class = "submenu"},
+		{name = "loadscreen"    ,type="menu_loadscreen",  pvpos = 'center', class = "submenu"},
+		{name = "sp"            ,type="menu_singleplayer",pvpos = 'center', class = "submenu"},
+		{name = "mp"            ,type="menu_multiplayer", pvpos = 'center', class = "submenu"},
+		{name = "settings"      ,type="menu_settings",    pvpos = 'center', class = "submenu"},
+		{name = "addons"        ,type="menu_addons",      pvpos = 'center', class = "submenu"},
+		{name = "save"          ,type="menu_savegame",    pvpos = 'center', class = "submenu"},
+		{name = "load"          ,type="menu_loadgame",    pvpos = 'center', class = "submenu"},
+		{name = "editor"        ,type="menu_editors",     pvpos = 'center', class = "submenu"},
 
 		{name = "discord"        ,type="menu_discord"},
 	}
@@ -108,7 +116,8 @@ function PANEL:Init()
 		if name then
 			local panel = self.nodes[name]
 			MsgN("menu call ",name," -> ",panel)
-			if panel then
+			if panel then 
+				if panel.OnShow then panel:OnShow() end
 				self:SetVisible(true) 
 				self:ReVis(panel)
 			end

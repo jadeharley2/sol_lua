@@ -52,6 +52,7 @@
 			{"name":"mul_subsurface_intencity", "type":"float","default":0,"description":"subsurface multiplier"},
 			{"name":"alphatestreference", "type":"float","default":0.5,"description":"clip reference value"},
 			
+			{"name":"tint", "type":"float3","default":[1,1,1],"description":""},
 			
 			{"name":"ao_enabled", "type":"bool","default":false,"description":"enable ambient occlusion map"},
 			{"name":"sMasksEnabled", "type":"bool","default":false,"description":""},

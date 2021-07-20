@@ -2,7 +2,7 @@
 local textsize = 16 
 local sty = {
     bmenu = {type = "button", 
-        size = {40,40},
+        size = {32,32},
         dock = DOCK_LEFT,
         states = {
             pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
@@ -12,7 +12,7 @@ local sty = {
         state = 'idle'
     },
     bmenutoggle = {type = "button", 
-        size = {40,40},
+        size = {32,32},
         dock = DOCK_LEFT,
         states = {
             pressed    = {color = {255/255*2, 164/255*2, 83/255*2}},
@@ -41,6 +41,7 @@ local sty = {
 	header_0 = {
 		size = {100,20},
 		dock = DOCK_TOP,
+		font = "fonts/d16.json",
 		textalignment = ALIGN_CENTER, 
 		--textcolor = {2,2,2},
 		gradient = {
@@ -50,6 +51,7 @@ local sty = {
 	header_1 = {
 		size = {100,16},
 		dock = DOCK_TOP,
+		font = "fonts/d16.json",
 		textalignment = ALIGN_CENTER, 
 		--textcolor = {2,2,2},
 		gradient = {
@@ -95,7 +97,7 @@ function PANEL:Init()
 		color = {0,0,0},
 		subs = {
 			{ name = "menus",
-				size = {40,40},
+				size = {32,32},
 				color = {0,0,0},
 				dock = DOCK_TOP, 
 				subs = { 
@@ -194,9 +196,23 @@ function PANEL:Init()
 						OnClick = function() worldeditor:SetGridMode("parent") end,
 						Pressed = worldeditor:GetGridMode()=="parent"},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/possnap.png", contextinfo='Position snap',
-						OnClick = function(s,val) worldeditor:SetPosSnap(val) end,
+						OnClick = function(s,val) 
+							if val then 
+								worldeditor:SetPosSnap(1) 
+							else
+								worldeditor:SetPosSnap(false) 
+							end
+						end,
 						Pressed = worldeditor:GetPosSnap()},
-					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/anglesnap.png", contextinfo='Angle snap'},
+					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/anglesnap.png", contextinfo='Angle snap',
+						OnClick = function(s,val) 
+							if val then 
+								worldeditor:SetAngSnap(22.5) 
+							else
+								worldeditor:SetAngSnap(false) 
+							end
+						end,
+						Pressed = worldeditor:GetAngSnap()},  
 					{class="menu_separator"},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/localorigin.png", contextinfo='Local origin'},
 					{ class = "bmenutoggle", texture = "textures/gui/panel_icons/medorigin.png", contextinfo='Median origin'},
@@ -268,6 +284,9 @@ function PANEL:Init()
 						size = {300,300},
 						dock = DOCK_RIGHT,
 						tabs = { 
+							node = {type = "node_properties" },
+							flow = {type = "graph_editor_menu" }, 
+							--[[
 							properties = {
 								type = "conditional",
 								Hook = "editor_mode@wed", 
@@ -278,7 +297,7 @@ function PANEL:Init()
 									FLOW = { type = "graph_editor_menu"}
 								},
 								dock = DOCK_FILL 
-							},
+							},]]
 							materials = {type = "node_materials" } 
 						}
 					},

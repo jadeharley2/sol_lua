@@ -7,9 +7,10 @@ local layout = {
 		--	text = "Terrain editor", 
 		--},
 		{  
-			size = {100,40},
+			size = {100,32},
             dock = DOCK_TOP,
             color = {0,0,0},
+			clip = true,
             subs = {
                 { class = "bmenutoggle", texture = "textures/gui/panel_icons/cancel.png", name = "bt_none",
                     contextinfo='Edit mode: None',
@@ -107,17 +108,18 @@ end
 function PANEL:Update()
     local cam = GetCamera()
     local ent, terrain = cam:GetParentWithComponent(CTYPE_CHUNKTERRAIN)
+    
+    --MsgN("DdA",terrain)
     if terrain then
         
         if (not input.MouseIsHoveringAboveGui() or panel.GetTopElement().isviewport ) then
             local vp = panel.GetTopElement()
             local cmousep = nil
-            if vp then
-                local cs= vp:GetSize()
-                cmousep = vp:GetLocalCursorPos()
-                cmousep = Vector(cmousep.x/cs.x,cmousep.y/cs.y,0) 
+            if vp then 
+                cmousep =ViewportMousePos(vp)
+                MsgN(cmousep)
             end
-            local phtr = GetMousePhysTrace(cam,nil,cmousep)
+            local phtr = GetMousePhysTrace(cam,nil,cmousep)--Point(2*cmousep.x,(1-cmousep.y)*2)-Point(1,1))
             if phtr and phtr.Hit and phtr.Entity == ent then
                 local r = self.radius or 5
                 local mx = matrix.Scaling(r/phtr.Entity:GetSizepower()*1.2)

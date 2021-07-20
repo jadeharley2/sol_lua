@@ -24,12 +24,14 @@
 		"behaviour":{
 			"type":"object",
 			"description": "behaviour graph"
-		},
-		"materials":{
-			"type":"object"
-		},
+		}, 
 		"parts":{
-			"type":"object"
+			"type":"object",
+			"description": "body parts",
+			"patternProperties": {
+				"":{"type":"string"}
+			},
+			"category":"visuals"
 		},
 		"abilities":{
 			"type":"array"
@@ -37,6 +39,29 @@
 		"mass":{
 			"type":"number",
 			"description": "physical mass"
+		},
+		"health":{
+			"type":"number",
+			"description": "max health",
+			"category":"status"
+		},
+		
+		"basematdir" :{
+			"type":"string",
+			"description": "materials override directory",
+			"category":"visuals"
+		}, 
+		"materials" : {
+			"type":"object",
+			"description": "material overrides",
+			"category":"visuals",
+			"patternProperties": {
+				"":{"type":"string"}
+			}
+		},  
+		"equipment":{
+			"type":"object",
+			"description": "default equipment"
 		}
 	}
 }

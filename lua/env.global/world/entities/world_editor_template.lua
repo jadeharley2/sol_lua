@@ -77,8 +77,15 @@ end
 function ENT:GetSpawn() 
 	local space = self.space 
 	return self.space, Vector(0,0,0)
-end
-function ENT:OnPlayerSpawn()
-	SetController("freecamera")
-	WorldeditorOpen()
-end
+end 
+ENT.options = { 
+	editor = {
+		text = "Editor", 
+		location = "@editor_world.space;0,0,0",
+		position = Vector(0,0,0),
+		controller = "freecamera",
+		onload = function(self,origin) 
+			WorldeditorOpen()
+		end
+	},
+}

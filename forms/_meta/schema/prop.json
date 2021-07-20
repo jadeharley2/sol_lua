@@ -6,6 +6,53 @@
 	"properties":{    
 		"appearance": {
 			"$ref":"appearance.json"
-		} 
+		},
+		"model":{
+			"type":"string",
+			"description" : "model path",
+			"category":"visuals"
+		},
+		"rotation" : 
+		{ 
+			"description" : "local model rotation",
+			"$ref": "vector3.json",
+			"category":"visuals"
+		},
+		"scale" : 
+		{ 
+			"type":"number",
+			"default":1,
+			"description":"local model scale",
+			"category":"visuals"
+		},
+		"phys":{
+			"type":"boolean",
+			"description": "enable physics"
+		},
+		"mass":{
+			"type":"number",
+			"description": "physical mass"
+		},
+		"composition":{
+			"type":"object",
+			"description": "deconstruct operation results",
+			"patternProperties": {
+				"":{"type":"number"}
+			}
+		},
+		"computer":{
+			"type":"object",
+			"description": "computer data"
+		},
+		"luatype":{
+			"type":"string",
+			"description": "override lua type of this prop",
+			"category":"script"
+		},
+		"variables":{
+			"type":"object",
+			"description": "addtitional key value pairs for lua type",
+			"category":"script"
+		}
 	} 
 }

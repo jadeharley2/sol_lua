@@ -7,8 +7,9 @@ local layout = {
 		--	text = "Mesh editor", 
 		--},
 		{ name = "oplist", class = "back",
-			size = {100,40},
+			size = {100,32},
             dock = DOCK_TOP, 
+			clip = true,
             autosize = {false,true}
 		},  
 		{ class = "header_0", 
@@ -66,6 +67,7 @@ local layout = {
 			size = {100,40},
 			dock = DOCK_TOP, 
             color = {0.5,0.5,0.5}, 
+			clip = true,
             subs = {
                 {  class = "bmenu_op", name = "bfrotcc",
                     text = "<=", 
@@ -403,7 +405,7 @@ end
 
 function PANEL:AppendRow(parent)
     local row = gui.FromTable({ 
-        size = {40,40},
+        size = {32,32},
         textonly = true,
         dock = DOCK_TOP
     })

@@ -1,0 +1,16 @@
+{
+	"name" : "Wooden pallet",
+	"group" : "clutter",
+	"tags" : ["lab","item"],
+	"model" : "forms/levels/gear/geara.dnmd?gc=8&gl=0.5&gr=2",
+	"scale" : 1,
+	"rotation" : [0,0,0],
+	"phys" : true,
+	"mass" : 10,
+	"physmaterial":"wood",
+	//"icon" : "lab/book",
+	"composition" :{
+		"resource.wood" : 4,    
+	}
+	
+}
