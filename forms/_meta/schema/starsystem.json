@@ -1,4 +1,5 @@
-{
+{ 
+    "form_type":"schema",
     "type":"object",
     "description": "star system form",
     "allOf":[{"$ref": "form.json"}],
@@ -8,6 +9,16 @@
             "description": "hierarchy of celestial bodies",
             "items": {
                 "type":"object",
+                "icon":"world",
+                "conditional_icon":{
+                    "parameter":"type",
+                    "variants":{
+                        "planet":"world",
+                        "asteroidfield":"sport_golf",
+                        "star":"weather_sun"
+                    }
+                },
+                "name_parameter":"name",
                 "$ref": "celestial_body.json"
             }
         }

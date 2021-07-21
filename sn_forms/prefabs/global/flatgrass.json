@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "flatgrass", 
 	"extends" : "prefab.global.base_world:worldspace", 
 	"subs" : [

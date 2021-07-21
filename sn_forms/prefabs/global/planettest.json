@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "world", 
 	"tags":["world"],
 	"sizepower" : 1E11, //100 000 000 000m

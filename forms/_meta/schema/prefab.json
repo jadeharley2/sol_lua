@@ -1,14 +1,9 @@
-{    
+{
     "form_type":"schema",
-	"type": "object",
-	"description" : "form definition",
-	"additionalProperties": true,
-	"properties":{   
-		"name":{ 
-			"type":"string",
-			"default":"",
-			"description":"displayed name"
-		},
+    "type":"object",
+    "description": "nodal prefab",
+	"allOf":[{"$ref": "prefab_node.json"}],
+	"properties":{    
 		"description":{ 
 			"type":"string",
 			"default":"",
@@ -30,4 +25,5 @@
 		}
 		 
 	}
+   
 }

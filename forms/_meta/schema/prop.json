@@ -1,4 +1,5 @@
-{   
+{    
+    "form_type":"schema",
 	"type": "object",
 	"description" : "prop form",
 	"additionalProperties": true,
@@ -35,6 +36,7 @@
 		},
 		"composition":{
 			"type":"object",
+			"icon":"bricks",
 			"description": "deconstruct operation results",
 			"patternProperties": {
 				"":{"type":"number"}
@@ -42,7 +44,14 @@
 		},
 		"computer":{
 			"type":"object",
-			"description": "computer data"
+			"icon":"computer",
+			"description": "computer data",
+			"properties": {
+				"memory":{
+					"type":"object",
+					"$ref":"memory_record.json"
+				}
+			}
 		},
 		"luatype":{
 			"type":"string",
@@ -51,8 +60,190 @@
 		},
 		"variables":{
 			"type":"object",
+			"icon":"script",
 			"description": "addtitional key value pairs for lua type",
 			"category":"script"
-		}
+		},
+		"wireio":{
+			"type":"object",
+			"icon":"connect",
+			"description": "wire input-output system (button)",
+			"properties": {
+				"bwvalue":{
+					"type":"number",
+					"description": "button press value"
+				},
+				"btnanim":{
+					"type":"object",
+					"description": "button animations",
+					"properties": {
+						"on":{
+							"type":"string",
+							"description": "switch on animation name"
+						},
+						"off":{
+							"type":"string",
+							"description": "switch off animation name"
+						}
+					}
+				}
+			}
+		},
+		"btnsound":{
+			"type":"string",
+			"description": "button sound"
+		},
+
+		"container":{
+			"type":"object",
+			"icon":"briefcase",
+			"description":"item container parameters",
+			"properties": {
+				"size":{
+					"type":"number",
+					"description": "slot count"
+				},
+				"itemsets":{
+					"type":"object",
+					"description": "loot item set list"
+				},
+				"items":{
+					"description": "not implemented"
+				}
+			}
+		},
+		"door":{
+			"type":"object",
+			"icon":"door",
+			"description": "animated door"
+		},
+		"equipment":{
+			"type":"object",
+			"icon":"user_orange",
+			"properties": {
+				"slots":{
+					"type":"array",
+					"description": "equipment slot list",
+					"items": {
+						"type":"string",
+						"description": "slot id"
+					}
+				},
+				"basedir":{
+					"type":"string",
+					"description": "model base directory"
+				},
+				"parts":{
+					"type":"object",
+					"description": "body parts",
+					"patternProperties": {
+						"":{
+							"type":"string",
+							"description":"body part model"
+						}
+					}
+				},
+				"groups":{
+					"type":"object",
+					"description": "body part groups",
+					"patternProperties": {
+						"":{
+							"type":"array",
+							"description":"body part group",
+							"items": {
+								"type":"string",
+								"description": "body part id"
+							}
+						}
+					}
+				},
+				"materials":{
+					"type":"object",
+					"description": "materials override",
+					"patternProperties": {
+						"":{
+							"type":"string",
+							"description":"material"
+						}
+					}
+				},
+				"items":{
+					"type":"array",
+					"description": "equipped items"
+				},
+				"pose":{
+					"type":"string",
+					"description": "model pose animation"
+				}
+			}
+		},
+		"light":{
+			"type":"object",
+			"icon":"lightbulb",
+			"description": "light source",
+			"properties": {
+				"color":{
+					"description": "light color",
+					"$ref":"vector3.json"
+				},
+				"pos":{
+					"description": "light offset",
+					"$ref":"vector3.json"
+				},
+				"brightness":{
+					"type":"number",
+					"description": "light brightness"
+				},
+				"isdirectional":{
+					"type":"boolean",
+					"description": "directional mode"
+				},
+				"hasbutton":{
+					"type":"boolean",
+					"description": "add wireable button"
+				},
+				"daylight":{
+					"type":"boolean",
+					"description": "enable daylight mode (turn on when nighttime)"
+				},
+				"shader":{
+					"type":"string",
+					"description": "light shader path"
+				}
+			}
+		},
+		"material":{
+			"type":"string",
+			"description": "override material"
+		},
+		"replacematerial":{
+			"type":"array",
+			"icon":"paintcan",
+			"description": "material replacement array",
+			"items": {
+				"type":"string",
+				"description": "material override by id"
+			}
+		},
+		"modmaterial":{
+			"type":"array",
+			"icon":"palette",
+			"description": "material modification array",
+			"items": {
+				"type":"object",
+				"description": "material modtable by id"
+			}
+		},
+        "components":{
+            "type":"object",
+			"icon":"plugin",
+            "description": "list of entity components",
+            "patternProperties": {
+                "":{
+                    "type":"object"
+                }
+            }
+        }
+
 	} 
 }

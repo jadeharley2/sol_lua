@@ -1,4 +1,5 @@
 { 
+	"form_type":"prop",
 	"name":"Tablet",
 	"tags" : ["space","item"],
 	"model" : "items/space/tablet.stmd",
@@ -28,7 +29,7 @@
 					"_type":"book",
 					"formid":"book.testbook"
 				}
-			}
+			} 
 		}
 	}
 	

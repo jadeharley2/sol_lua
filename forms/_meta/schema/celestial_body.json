@@ -1,4 +1,5 @@
-{
+{ 
+    "form_type":"schema",
     "type":"object",
     "description": "celestial body",
     "properties": {
@@ -21,8 +22,19 @@
         "subs":{
             "type":"array",
             "description": "bodies in orbit",
+            "parentchildren":true,
             "items": {
                 "type":"object",
+                "icon":"world",
+                "conditional_icon":{
+                    "parameter":"type",
+                    "variants":{
+                        "planet":"world",
+                        "asteroidfield":"sport_golf",
+                        "star":"weather_sun"
+                    }
+                },
+                "name_parameter":"name",
                 "$ref": "celestial_body.json"
             }
         },
@@ -77,7 +89,12 @@
         },
         {
             "properties": {
-                "type":{"const":"star"}
+                "type":{"const":"star"},
+                "class":{
+                    "type":"string",
+                    "description": "star class",
+                    "examples": ["O","B","A","F","G","K","M",  "W","L","T","Y","C","S", "D"]
+                }
             } 
         },
         {

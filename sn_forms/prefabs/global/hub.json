@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "hub", 
 	"extends" : "prefab.global.base_world:worldspace", 
 	"subs" : [ 

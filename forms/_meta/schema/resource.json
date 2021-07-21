@@ -1,0 +1,43 @@
+{ 
+    "form_type":"schema",
+	"type": "object",
+	"description" : "resource form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+    "properties":{
+        "icon":{
+            "type":"string",
+            "description": "inventory icon"
+        },
+        "tint":{
+            "$ref": "vector3.json",
+            "description": "icon tint"
+        },
+        "color":{
+            "$ref": "vector3.json",
+            "description": "color?"
+        },
+        "metalness":{
+            "type":"number",
+            "description": "metalness percentage 0-1",
+            "minimum": 0,
+            "maximum": 1
+        },
+        "smooth":{
+            "type":"number",
+            "description": "smooth percentage 0-1",
+            "minimum": 0,
+            "maximum": 1
+        },
+        "glow":{
+            "type":"number",
+            "description": "glow amount",
+            "minimum": 0
+        },
+
+        "suffix":{
+            "type":"string",
+            "description": "item suffix"
+        }
+    }
+}

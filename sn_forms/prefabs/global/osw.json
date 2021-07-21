@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "osw", 
 	"tags":["world"],
 	"sizepower" : 1E4,

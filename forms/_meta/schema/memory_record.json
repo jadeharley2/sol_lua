@@ -1,0 +1,29 @@
+{ 
+    "form_type":"schema",
+    "type":"object",
+    "anyOf": [
+        {
+            "description": "file in computer memory",
+            "properties": {
+                "formid":{
+                    "type":"string",
+                    "description":"data form index"
+                },
+                "_type":{
+                    "type":"string",
+                    "description": "file type"
+                }
+
+            },
+            "required": ["_type"]
+        },
+        {
+            "description": "directory in computer memory",
+            "patternProperties": {
+                "":{
+                    "$ref":"memory_record.json"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,117 @@
+{
+    "form_type":"schema",
+    "type":"object",
+    "additionalProperties": true, 
+    "properties": {
+        "helper":{
+            "type":"string",
+            "description": "helper mode",
+            "examples": ["placement"]
+        },
+        "name":{
+            "type":"string",
+            "description": "node name"
+        },
+        "pos":{
+            "$ref": "vector3.json",
+            "description": "node position relative to parent"
+        },
+        "realpos":{
+            "$ref": "vector3.json",
+            "description": "node position relative to parent in meters"
+        },
+        "ang":{
+            "$ref": "vector3.json",
+            "description": "node rotation relative to parent"
+        },
+
+
+        "type":{
+            "type":"string",
+            "description": "helper type",
+            "examples": ["axis"]
+        },
+        "center":{
+            "$ref": "vector3.json",
+            "description": "rotation center"
+        },
+        "axis":{
+            "$ref": "vector3.json",
+            "description": "rotation axis"
+        },
+        "direction":{
+            "$ref": "vector3.json",
+            "description": "rotation direction"
+        },
+        "sides":{
+            "type":"number",
+            "description": "rotational step 360/sides"
+        },
+        "offset":{
+            "type":"number",
+            "description": "rotation start offset"
+        },
+        "ang_offset":{
+            "$ref": "vector3.json",
+            "description": "rotation angle offset"
+        },
+
+
+        "modtable":{
+            "type":"object",
+            "description": "form modification table",
+            "patternProperties": {
+                "":{
+                    
+                }
+            }
+        },
+        "form":{
+            "type":"string",
+            "description": "form id"
+        },
+
+        
+        "extends":{
+            "type":"string",
+            "description": "prefab reference id"
+        },
+        "subs":{
+            "type":"array",
+            "description": "child nodes",
+            "items": {
+                "type":"object",
+                "description": "node", 
+                "$ref": "prefab_node.json"
+            }
+        },
+        "luatype":{
+            "type":"string",
+            "description": "node associated lua type"
+        },
+        "sizepower":{
+            "type":"number",
+            "description": "node size in absolute units (metres)"
+        },
+        "seed":{
+            "type":"number",
+            "description": "node seed"
+        },
+        "dynamic":{
+            "type":"string",
+            "description": "dynamic level (dnlv) path"
+        }
+    },
+    "anyOf": [
+        {
+            "required": ["helper"],
+            "description": "helper tool"
+        },
+        {
+            "required": ["form"],
+            "description": "form node"
+        },
+        { 
+        }
+    ]
+}

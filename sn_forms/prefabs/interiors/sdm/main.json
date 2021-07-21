@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "sdm main", 
     "extends" : "prefab.global.base_world:worldspace", 
     "dynamic" : "forms/levels/sdm/interior_main.dnlv",

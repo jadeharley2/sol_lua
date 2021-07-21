@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "office 1 floor", 
     "extends" : "prefab.global.base_world:worldspace",  
     "seed" : 44301001,

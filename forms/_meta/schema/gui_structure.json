@@ -1,0 +1,163 @@
+{ 
+    "form_type":"schema",
+    "type":"object",
+    "description": "gui node definition",
+    "properties": {
+        "name":{
+            "type":"string",
+            "description": "gui node name"
+        },
+        "type":{
+            "type":"string",
+            "description": "panel type"  
+        },
+        "class":{
+            "type":"string",
+            "description": "style classes"
+        },
+        "size":{ 
+            "description": "node width and height",
+            "$ref": "vector2.json"
+        },
+        "pvsize":{ 
+            "description": "node width and height in % of viewport size",
+            "$ref": "vector2.json"
+        },
+        "pos":{ 
+            "description": "node width and height in % of viewport size",
+            "$ref": "vector2.json"
+        },
+        "rotation":{
+            "type":"number",
+            "description": "node rotation"
+        },
+        "dock":{
+            "type":["number","string"],
+            "description": "dock position",
+            "examples": ["bottom","top","left","right","fill"]
+        },
+        "padding":{
+            "description": "dock padding for sub nodes [left, top, right, bottom]",
+            "$ref": "vector4.json"
+        },
+        "margin":{
+            "description": "dock margin [left, top, right, bottom]",
+            "$ref": "vector4.json"
+        },
+        "anchors":{ 
+        },
+        "alpha":{
+            "type":"number",
+            "description": "node alpha"
+        },
+        "color":{
+            "description": "node tint",
+            "$ref": "vector3.json"
+        },  
+        "gradient":{
+            "type":"array",
+            "description": "gradient fill",
+            "items": [
+                {
+                    "description": "first color",
+                    "$ref": "vector3.json"
+                },
+                {
+                    "description": "second color",
+                    "$ref": "vector3.json"
+                },
+                {
+                    "type":"number",
+                    "description": "gradient angle"
+                }
+            ]
+        },
+        "visible":{
+            "type":"boolean",
+            "description": "node is visible"
+        },
+        "texture":{
+            "type":"string",
+            "description": "node texture"
+        },
+        "mouseenabled":{
+            "type":"boolean",
+            "description": "enable or disable mouse events for this node an all sub nodes"
+        },
+        "interactive":{
+            "type":"boolean",
+            "description": "enable or disable mouse events form this node only"
+        },
+        "clip":{
+            "type":"boolean",
+            "description": "enable clip for node boundary rectangle"
+        },
+        "textcolor":{
+            "type":["string","array"],
+            "description": "text color"
+        },
+        "textalignment":{
+            "type":"number",
+            "description": "align value"
+        },
+        "multiline":{
+            "type":"boolean",
+            "description": "enable multiline rendering for text"
+        },
+        "lineheight":{
+            "type":"number",
+            "description": "text height when multiline enabled"
+        },
+        "fontsize":{
+            "type":"number",
+            "description": "text height when multiline enabled"
+        },
+        "linespacing":{
+            "type":"number",
+            "description": "vertical spacing between text lines"
+        },
+        "autowrap":{
+            "type":"number",
+            "description": "enable auto word wrap on spaces for multiline text"
+        },
+        "font":{
+            "type":"string",
+            "description": "font name"
+        },
+        "autosize":{
+            "type":"array",
+            "items": {
+                "type":"boolean"
+            },
+            "minItems":2,
+            "description": "enable auto resizing for [x, y] axis"
+        },
+        "value":{
+            "description": "SetValue(x)"
+        },
+        "states":{
+            "description": "state definitions",
+            "type":"object"
+        },
+        "subs":{
+            "type":"array",
+            "description": "array of children nodes",
+            "items": {
+                "type":"object",
+                "description": "gui node",
+                "icon":"image",
+                "$ref": "gui_structure.json"
+            }
+        }
+
+    },
+    "donotuse_notimplemented":{
+
+        "patternProperties": {
+            "^_sub_":{
+                "description": "sub node override parameters",
+                "$ref":"gui_structure.json"
+            }
+        }
+    }
+}

@@ -33,6 +33,7 @@
 		"json.schemas": [
 
 
+
 			{
 				"fileMatch": ["*.dnmd"],
 				"url": "/_meta/schema/dynamicmodel.json"
@@ -46,7 +47,7 @@
 				"url": "file:///L:/_root/_f/_projects/_solge/src_formdata/forms/_meta/schema_main.json"
 			},
 			{
-				"fileMatch": ["/_meta/schema/*.json"],
+				"fileMatch": ["/_meta/schema/*.json"], 
 				"url": "http://json-schema.org/draft-07/schema#"
 			}
 		],

@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "world2dtest", 
 	"tags":["world"],
 	"sizepower" : 1E4,

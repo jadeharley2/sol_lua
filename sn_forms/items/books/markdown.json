@@ -1,4 +1,5 @@
 {
+    "form_type":"book",
     "name":"Markdown test book",
     "description":"Various markdown syntax examples",
     "tags":["test"],

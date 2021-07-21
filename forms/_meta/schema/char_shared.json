@@ -1,8 +1,10 @@
-{    
+{ 
+    "form_type":"schema",    
 	"properties":{   
         
         "attributes":{
             "type":"array",
+			"icon":"tag_red",
             "description": "attribute list (obsolete?)",
             "items": {
                 "type":"string"
@@ -11,6 +13,7 @@
         },
         "components":{
             "type":"object",
+			"icon":"plugin",
             "description": "list of entity components",
             "patternProperties": {
                 "":{
@@ -20,6 +23,7 @@
         },
 		"movement":{
 			"type":"object",
+			"icon":"arrow_right",
 			"properties": {
 				"walk":{ "$ref":"movementtype.json" },
 				"run":{ "$ref":"movementtype.json" },
@@ -29,11 +33,13 @@
 		}, 
 		"behaviour":{
 			"type":"object",
+			"icon":"arrow_switch",
 			"description": "behaviour graph"
 		}, 
 		"parts":{
 			"type":"object",
 			"description": "body parts",
+			"icon":"bricks",
 			"patternProperties": {
 				"":{"type":"string"}
 			},
@@ -79,6 +85,7 @@
 		"materials" : {
 			"type":"object",
 			"description": "material overrides",
+			"icon":"paintcan",
 			"category":"visuals",
 			"patternProperties": {
 				"":{"type":"string"}
@@ -86,6 +93,7 @@
 		},  
 		"items":{
 			"type":"array",
+			"icon":"box",
 			"description": "character inventory",
 			"items": {
 				"type":"string"
@@ -94,6 +102,7 @@
 		},
 		"abilities":{
 			"type":"array",
+			"icon":"wand",
 			"description": "character abilities",
 			"items": {
 				"type":"string"
@@ -101,6 +110,7 @@
 		},
 		"flexes":{
 			"type":"object",
+			"icon":"emoticon_surprised",
 			"description": "flex parameters",
 			"patternProperties": {
 				"":{"type":"number"}
@@ -111,6 +121,7 @@
 			"type":"object",
 			"description": "addtitional key value pairs for lua type",
 			"category":"script",
+			"icon":"script",
 			"properties":{
 				"tpsheight":{
 					"type":"number",

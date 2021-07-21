@@ -1,0 +1,40 @@
+{    
+    "form_type":"schema",
+	"type": "object",
+	"description" : "book form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+    "properties": {
+        "text":{
+            "type":"string",
+            "description": "book contents filename"
+        },
+        "lines":{
+            "type":"array",
+            "icon":"text_align_justify",
+            "description": "book contents",
+            "items": {
+                "type":"string",
+                "description": "text line"
+            }
+        },
+        "surface":{
+            "type":"object",
+            "icon":"image",
+            "description": "page surface, gui structure format",
+            "$ref": "gui_structure.json"
+        },
+        "model":{
+            "type":"string",
+            "description": "world model path"
+        },
+        "phys":{
+            "type":"boolean",
+            "description": "enable physics"
+        },
+        "scale":{
+            "type":"number",
+            "description": "model scale"
+        }
+    }
+}

@@ -5,6 +5,7 @@
 			"shortname":"SPCS", 	
 			"directory":"species",
 			"group":"actor",
+			"icon":"tux",
 		},
 		{
 			"name":"ability", 		
@@ -12,6 +13,7 @@
 			"directory":"abilities", 	
 			"recursive":true,
 			"group":"actor",
+			"icon":"wand",
 		}, 
 		{
 			"name":"character", 	
@@ -19,18 +21,21 @@
 			"directory":"characters", 
 			"baseclass":"base_actor",
 			"group":"actor",
+			"icon":"user",
 		},
 		{
 			"name":"bodytype", 		
 			"shortname":"BDTP", 	
 			"directory":"bodytypes",
-			"group":"actor",	 
+			"group":"actor",
+			"icon":"status_offline",	 
 		}, 
 		{
 			"name":"apparel", 		
 			"shortname":"APPA", 	
 			"directory":"items/apparel", 
-			"group":"items",	 
+			"group":"items",	
+			"icon":"user_suit", 
 			"recursive":true,
 		},
 		//add baseclass
@@ -41,7 +46,8 @@
 			"directory":"items/tools",
 			"baseclass":"base_tool", 
 			"recursive":true,
-			"group":"items",	 
+			"group":"items",	
+			"icon":"wrench", 
 		}, 
 		{
 			"name":"consumable", 		
@@ -49,7 +55,8 @@
 			"directory":"items/consumable",
 			"baseclass":"consumable", 
 			"recursive":true,
-			"group":"items",	 
+			"group":"items",	
+			"icon":"cup", 
 		}, 
 		{
 			"name":"book", 		
@@ -57,14 +64,16 @@
 			"directory":"items/books",
 			"baseclass":"book", 
 			"recursive":true,
-			"group":"items",	 
+			"group":"items",	
+			"icon":"book", 
 		},
 		{
 			"name":"prefab", 		
 			"shortname":"PRFB", 	
 			"directory":"prefabs", 		 
 			"recursive":true,
-			"group":"world",	 
+			"group":"world",	
+			"icon":"bricks", 
 		}, 
 		{
 			"name":"prop", 		
@@ -72,7 +81,8 @@
 			"directory":"props", 		
 			"baseclass":"prop_variable", 
 			"recursive":true,
-			"group":"world",	 
+			"group":"world",	
+			"icon":"box", 
 		}, 
 		{
 			"name":"dynmeshprop", 		
@@ -81,6 +91,7 @@
 			"baseclass":"prop_editable", 
 			"recursive":true,
 			"group":"world",	 
+			"icon":"shape_handles",
 		}, 
 		{
 			"name":"spaceship", 	
@@ -88,6 +99,7 @@
 			"directory":"spaceships", 
 			"baseclass":"spaceship",
 			"group":"world",	 
+			"icon":"lorry",
 		}, 
 		{
 			"name":"surfacemod", 	
@@ -95,12 +107,14 @@
 			"directory":"surfacemods", 
 			"baseclass":"planet_surface_mod",
 			"group":"world",	 
+			"icon":"map_edit",
 		}, 
 		{
 			"name":"anchor", 		
 			"shortname":"ANCH", 	
 			"directory":"anchors",
 			"group":"world",	 
+			"icon":"anchor",
 		}, 
 		{
 			"name":"itemset", 		
@@ -108,6 +122,7 @@
 			"directory":"itemset", 
 			"recursive":true,
 			"group":"items",	 
+			"icon":"package",
 		}, 
 		{
 			"name":"recipe", 		
@@ -115,6 +130,7 @@
 			"directory":"recipes", 
 			"recursive":true,
 			"group":"items",	 
+			"icon":"table",
 		}, 
 		{
 			"name":"quest", 		
@@ -122,6 +138,7 @@
 			"directory":"quests", 
 			"recursive":true,
 			"group":"world",	 
+			"icon":"medal_gold_1",
 		}, 
 		{
 			"name":"resource", 		
@@ -129,6 +146,7 @@
 			"directory":"resources", 
 			"recursive":true,
 			"group":"items",	 
+			"icon":"attach",
 		},
 		
 		{
@@ -137,6 +155,7 @@
 			"directory":"events/sound", 
 			"recursive":true,
 			"group":"world",	 
+			"icon":"sound",
 		}, 
 		{
 			"name":"surfacetype", 		
@@ -144,6 +163,7 @@
 			"directory":"surfacetypes", 
 			"recursive":true,
 			"group":"world",	 
+			"icon":"color_swatch",
 		}, 
 		
 		{
@@ -152,6 +172,7 @@
 			"directory":"space/systems", 
 			"recursive":true,
 			"group":"world",	 
+			"icon":"star",
 		}, 
 		{
 			"name":"planet", 		
@@ -160,6 +181,7 @@
 			"recursive":true,
 			"baseclass":"planet",
 			"group":"world",	 
+			"icon":"world",
 		}, 
 		{
 			"name":"star", 		
@@ -167,7 +189,8 @@
 			"directory":"space/stars", 
 			"recursive":true,
 			"baseclass":"star",
-			"group":"world",	 
+			"group":"world",	
+			"icon":"weather_sun",
 		}, 
 		{
 			"name":"ikrig", 		
@@ -175,6 +198,7 @@
 			"directory":"ikrigs", 
 			"recursive":true,
 			"group":"actor",	 
+			"icon":"chart_line",
 		}, 
 		{
 			"name":"conversation", 		
@@ -182,7 +206,8 @@
 			"directory":"conversations", 
 			"recursive":true,
 			"group":"actor",
-			"json_novariables":true 
+			"json_novariables":true,
+			"icon":"transmit",
 		}, 
 	]
 }

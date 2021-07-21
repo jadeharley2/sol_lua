@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "darkworld", 
 	"extends" : "prefab.global.base_world:worldspace",  
 	"subs" : [

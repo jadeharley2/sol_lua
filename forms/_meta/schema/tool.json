@@ -1,4 +1,5 @@
-{   
+{    
+    "form_type":"schema",
 	"type": "object",
 	"description" : "tool form",
 	"additionalProperties": true,

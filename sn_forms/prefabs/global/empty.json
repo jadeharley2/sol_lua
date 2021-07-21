@@ -1,5 +1,6 @@
 
 {  
+	"form_type":"prefab",
 	"name" : "empty", 
 	"tags":["world"],
 	"sizepower" : 1E4,

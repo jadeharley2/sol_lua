@@ -2,10 +2,10 @@
     "form_type":"schema",
 	"type":"array",  
 
-	"description":"vector",
+	"description":"2d point",
 	"items": {
-		"minItems":3,
+		"minItems":2,
 		"type":"number" 
 	},
-	"default":[0,0,0]
+	"default":[0,0]
 }

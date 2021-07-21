@@ -2,10 +2,10 @@
     "form_type":"schema",
 	"type":"array",  
 
-	"description":"vector",
+	"description":"vector4",
 	"items": {
-		"minItems":3,
+		"minItems":4,
 		"type":"number" 
 	},
-	"default":[0,0,0]
+	"default":[0,0,0,0]
 }

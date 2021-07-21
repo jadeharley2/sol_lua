@@ -5,11 +5,18 @@
         "form_type":{
             "type":"string",
             "description":"test",
-            "examples": ["character","anchor","prop","tool","species","star_system"]  
+            "examples": [
+                "schema",
+                "character","anchor","prop",
+                "tool","species","star_system",
+                "book","resource","prefab"]  
         }
     },
     "required": ["form_type"],
     "anyOf": [
+        {
+            "properties": { "form_type": { "const": "schema" } }
+        },
         {
             "properties": { "form_type": { "const": "character" } },
             "allOf":[{"$ref": "schema/character.json"}]
@@ -33,6 +40,18 @@
         {
             "properties": { "form_type": { "const": "starsystem" } },
             "allOf":[{"$ref": "schema/starsystem.json"}]
+        }, 
+        {
+            "properties": { "form_type": { "const": "book" } },
+            "allOf":[{"$ref": "schema/book.json"}]
+        }, 
+        {
+            "properties": { "form_type": { "const": "resource" } },
+            "allOf":[{"$ref": "schema/resource.json"}]
+        }, 
+        {
+            "properties": { "form_type": { "const": "prefab" } },
+            "allOf":[{"$ref": "schema/prefab.json"}]
         }
-    ]
+    ] 
 }
