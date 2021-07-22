@@ -1,0 +1,162 @@
+{
+    "form_type":"schema",
+    "type":"object",
+    "description": "apparel form",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+    "properties": {
+        "slot":{
+            "type":"string",
+            "description": "equipment slot"
+        },
+        "model":{
+            "type":"string",
+            "description": "model on character"
+        },
+        "worldmodel":{
+            "type":"string",
+            "description": "model on ground"
+        },
+        "worldmodelscale":{
+            "type":"number",
+            "description": "world model scale"
+        },
+        "icon":{
+            "type":"string",
+            "description": "item icon"
+        },
+        "furmasks":{
+            "type":"object",
+            "description": "fur flattening masks",
+            "patternProperties": {
+                "":{
+                    "type":"string",
+                    "description": "mask path"
+                }
+            }
+        },
+		"composition":{
+			"type":"object",
+			"icon":"bricks",
+			"description": "deconstruct operation results",
+			"patternProperties": {
+				"":{"type":"number","description": "formid : count"}
+			}
+		},
+		"materials" : {
+			"type":"object",
+			"description": "material overrides",
+			"icon":"paintcan",
+			"category":"visuals",
+			"patternProperties": {
+				"":{"type":"string","description": "material pattern : material path"}
+			}
+		},
+		"modmaterial":{
+			"type":"array",
+			"icon":"palette",
+			"description": "material modification array",
+			"items": {
+				"type":"object",
+				"description": "material modtable by id"
+			}
+		},
+        "hide":{
+            "type":"array",
+            "icon":"shape_square_delete",
+            "description": "hide bodyparts on equip",
+            "items": {
+                "type":"string",
+                "description": "body part"
+            }
+        },
+        "features":{
+            "type":"object",
+            "icon":"text_list_bullets",
+            "description": "description features"
+        },
+        "dye":{
+            "type":"object",
+            "icon":"paintbrush",
+            "description": "dyeable item description",
+            "properties": {
+                "type":{
+                    "type":"string",
+                    "description": "dye type",
+                    "examples": ["modmaterial"]
+                },
+                "matid":{
+                    "type":"number",
+                    "description": "dyeable material id"
+                },
+                "vartype":{
+                    "type":"string",
+                    "description": "color variable type",
+                    "examples": ["vec3"]
+                },
+                "variable":{
+                    "type":"string",
+                    "description": "color variable name"
+                }
+            }
+        },
+        "subitems":{
+            "type":"object",
+            "icon":"layers",
+            "description": "list of additional wearable items",
+            "patternProperties": {
+                "":{
+                    "type":"string",
+                    "description": "slot:formid"
+                }
+            }
+        },
+        "actions":{
+            "type":"array",
+            "icon":"lightning",
+            "description": "list of custom right-click actions",
+            "items": {
+                "type":"object",
+                "name_parameter":"text",
+                "description": "right-click action",
+                "properties": {
+                    "text":{
+                        "type":"string",
+                        "description": "displayed text"
+                    },
+                    "condition":{
+                        "type":"array",
+                        "description": "display conditions",
+                        "items": {
+                            "type":"array",
+                            "description": "compound condition",
+                            "examples": [
+                                ["if","test"]
+                            ]
+                        }
+                    },
+                    "action":{
+                        "type":"string",
+                        "description": "on click action"
+                    }
+                },
+                "examples": [
+                    {
+                        "text":"",
+                        "condition":[],
+                        "action":""
+                    }
+                ]
+            }
+        },
+        "subs":{
+            "type":"array",
+            "icon":"chart_organisation",
+            "description": "list of nodes, spawn on equip",
+            "items": {
+                "type":"object",
+                "description": "node definition"
+            }
+        }
+    }
+}

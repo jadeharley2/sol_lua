@@ -25,10 +25,10 @@
 			"type":"object",
 			"icon":"arrow_right",
 			"properties": {
-				"walk":{ "$ref":"movementtype.json" },
-				"run":{ "$ref":"movementtype.json" },
-				"fly":{ "$ref":"movementtype.json" },
-				"swim":{ "$ref":"movementtype.json" } 
+				"walk":{ "type":"object", "$ref":"movementtype.json" },
+				"run":{ "type":"object","$ref":"movementtype.json" },
+				"fly":{ "type":"object","$ref":"movementtype.json" },
+				"swim":{ "type":"object","$ref":"movementtype.json" } 
 			} 
 		}, 
 		"behaviour":{
@@ -88,7 +88,7 @@
 			"icon":"paintcan",
 			"category":"visuals",
 			"patternProperties": {
-				"":{"type":"string"}
+				"":{"type":"string","description": "material pattern : material path"}
 			}
 		},  
 		"items":{

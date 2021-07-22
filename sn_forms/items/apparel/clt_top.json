@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Neon top",  
 	"slot" : "torso",
 	"model" : "apparel/clt_hd.stmd",

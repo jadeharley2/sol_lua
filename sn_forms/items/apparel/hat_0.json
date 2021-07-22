@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Hat", 
     "filter" :{ 
     	"character" : ["vikna"],

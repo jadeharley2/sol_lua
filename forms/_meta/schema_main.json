@@ -9,7 +9,8 @@
                 "schema",
                 "character","anchor","prop",
                 "tool","species","star_system",
-                "book","resource","prefab"]  
+                "book","resource","prefab",
+                "apparel"]  
         }
     },
     "required": ["form_type"],
@@ -52,6 +53,10 @@
         {
             "properties": { "form_type": { "const": "prefab" } },
             "allOf":[{"$ref": "schema/prefab.json"}]
+        }, 
+        {
+            "properties": { "form_type": { "const": "apparel" } },
+            "allOf":[{"$ref": "schema/apparel.json"}]
         }
     ] 
 }

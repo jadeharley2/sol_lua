@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Bag pants",  
 	"slot" : "legs",
 	"model" : "apparel/bag_pants.stmd",

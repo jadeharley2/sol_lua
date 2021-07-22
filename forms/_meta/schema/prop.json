@@ -39,7 +39,7 @@
 			"icon":"bricks",
 			"description": "deconstruct operation results",
 			"patternProperties": {
-				"":{"type":"number"}
+				"":{"type":"number","description": "formid : count"}
 			}
 		},
 		"computer":{

@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Leather pants",  
 	"slot" : "legs",
 	"model" : "apparel/clt_ud.stmd",

@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Neon arm warmers",  
 	"tags":["vendor_small"],
 	"slot" : "arms",

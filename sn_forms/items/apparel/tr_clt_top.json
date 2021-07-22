@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "Leather top",  
 	"slot" : "torso",
 	"model" : "apparel/clt_top.stmd",

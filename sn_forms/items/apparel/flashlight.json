@@ -1,4 +1,5 @@
 {
+	"form_type":"apparel",
 	"name" : "flashlight",
 	"slot" : "arms",
 	"model" : "apparel/arm.stmd",
