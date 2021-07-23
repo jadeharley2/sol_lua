@@ -1,0 +1,41 @@
+{
+    "form_type":"schema",
+    "type":"object",
+    "description": "need definition",
+    "properties": {
+        "value":{
+            "type":"number",
+            "description": "base amount"
+        },
+        "rate":{
+            "type":"number",
+            "description": "depletion rate"
+        },
+        "critical":{
+            "type":"number",
+            "description": "trigger value, if less, seek restoration source"
+        },
+        "critaction":{
+            "type":"object",
+            "description": "???"
+        },
+        "replenishaction":{
+            "type":"object",
+            "description": "need restoration info",
+            "properties": {
+                "range":{
+                    "type":"number",
+                    "description": "maximum range for restoration"
+                },
+                "time":{
+                    "type":"number",
+                    "description": "time in seconds to restore need"
+                },
+                "use":{
+                    "type":"boolean",
+                    "description": "actor should use object to restore need (eg: use bed to sleep)"
+                }
+            }
+        }
+    }
+}

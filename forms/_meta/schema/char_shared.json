@@ -149,34 +149,107 @@
                 },
                 "eyemul":{
                     "type":"array",
+					"description": "...",
                     "items": {
                         "type":"number"
                     }
                 },
                 "gestures":{
                     "type":"object",
-                    "description": "gesture animations"
+					"icon":"thumb_up",
+                    "description": "gesture animations",
+					"patternProperties": {
+						"":{
+							"$ref": "gesture.json",
+							"description": "animation_name:gesture_data"
+						}
+					}
                 },
                 "needs":{
                     "type":"object",
-                    "description": "needs data"
+					"icon":"cup",
+                    "description": "needs data",
+					"properties": {
+						"list":{
+							"type":"object",
+							"description": "need definitions",
+							"patternProperties": {
+								"":{
+									"$ref": "need.json"
+								}
+							}
+						},
+						"delta":{
+							"type":"object",
+							"description": "change rates",
+							"patternProperties": {
+								"":{
+									"type":"number",
+									"description": "need_id:rate"
+								}
+							}
+						}
+					}
                 },
                 "face":{
                     "type":"object",
                     "description": "facial data",
+					"icon":"emoticon_surprised",
                     "properties": {
-                        "bodypart":{},
+                        "bodypart":{
+							"type":"string",
+							"description": "bodypart with face"
+						},
                         "moodflexes":{
-
+							"type":"object",
+							"description": "flex definitions",
+							"icon":"eye",
+							"patternProperties": {
+								"":{ "$ref": "flex.json" }
+							}
                         },
                         "moods":{
-
+							"type":"object",
+							"icon":"emoticon_happy",
+							"description": "mood definitions",
+							"patternProperties": {
+								"":{ 
+									"type":"object",
+									"description": "mood type",
+									"patternProperties": {
+										"":{
+											"type":"number",
+											"description": "flex:amount"
+										}
+									}
+								}
+							}
                         },
                         "vocflexes":{
-
+							"type":"object",
+							"icon":"eye",
+							"description": "vocal flex definitions",
+							"patternProperties": {
+								"":{ "$ref": "flex.json" }
+							}
                         },
                         "syllables":{
-
+							"type":"object",
+							"icon":"text_bold",
+							"description": "syllable definitions",
+							"collapsebydefault":true,
+							"patternProperties": {
+								"":{ 
+									"type":"object",
+									"description": "syllable",
+									"patternProperties": {
+										"":{
+											"type":"number",
+											"description": "flex:amount"
+										}
+									}
+								}
+							}
                         }
                     }
                 },

@@ -17,8 +17,7 @@
                         "asteroidfield":"sport_golf",
                         "star":"weather_sun"
                     }
-                },
-                "name_parameter":"name",
+                }, 
                 "$ref": "celestial_body.json"
             }
         }

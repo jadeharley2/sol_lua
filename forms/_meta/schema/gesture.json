@@ -1,0 +1,21 @@
+{
+    "type":"object",
+    "description": "gesture definition",
+    "properties": {
+        "variables":{
+            "type":"object",
+            "description": "variables applied on actor node during pose",
+            "properties": {
+                "norotation":{
+                    "type":"boolean",
+                    "description": "disable actor rotation"
+                },
+                "nomovement":{
+                    "type":"boolean",
+                    "description": "disable actor movemet"
+                }
+            },
+            "additionalItems": true
+        }
+    }
+}

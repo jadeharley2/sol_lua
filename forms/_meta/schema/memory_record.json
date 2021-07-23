@@ -1,9 +1,10 @@
 { 
     "form_type":"schema",
     "type":"object",
-    "anyOf": [
+    "oneOf": [
         {
             "description": "file in computer memory",
+            "icon":"page",
             "properties": {
                 "formid":{
                     "type":"string",
@@ -19,6 +20,7 @@
         },
         {
             "description": "directory in computer memory",
+            "icon":"folder",
             "patternProperties": {
                 "":{
                     "$ref":"memory_record.json"

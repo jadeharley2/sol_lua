@@ -2,6 +2,7 @@
     "form_type":"schema",
     "type":"object",
     "description": "celestial body",
+    "name_parameter":"name", 
     "properties": {
         "name":{
             "type":"string",
@@ -34,7 +35,6 @@
                         "star":"weather_sun"
                     }
                 },
-                "name_parameter":"name",
                 "$ref": "celestial_body.json"
             }
         },
@@ -62,6 +62,7 @@
     },
     "anyOf": [
         {
+            "icon":"world",
             "properties": {
                 "type":{"const":"planet"},
                 "archetype":{
@@ -77,6 +78,7 @@
             } 
         },
         {
+            "icon":"sport_golf",
             "properties": {
                 "type":{"const":"asteroidfield"},
                 "min_a":{
@@ -88,6 +90,7 @@
             } 
         },
         {
+            "icon":"weather_sun",
             "properties": {
                 "type":{"const":"star"},
                 "class":{
@@ -98,11 +101,13 @@
             } 
         },
         {
+            "icon":"sport_8ball",
             "properties": {
                 "type":{"const":"blackhole"}
             } 
         },
         {
+            "icon":"anchor",
             "properties": {
                 "type":{"const":"masscenter"}
             } 

@@ -1,0 +1,11 @@
+{
+    "form_type":"schema",
+    "type":"object",
+    "description": "flex definition",
+    "properties": {
+        "id":{
+            "type":"number",
+            "description": "flex id in model data"
+        }
+    }
+}
