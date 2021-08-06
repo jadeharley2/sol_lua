@@ -1,6 +1,11 @@
 {
     "form_type":"starsystem",
     "name":"Epsilon Canis",
+    "location":{
+        "lon":280.5,
+        "dist":133.2,
+        "height":-0.01
+    },
     "hierarchy":[
         {
             "name":"Epsilon Canis",

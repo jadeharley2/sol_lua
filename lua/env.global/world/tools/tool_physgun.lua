@@ -134,6 +134,17 @@ function TOOL:ToLocal(node,pos)
 	local w = self:GetLocalSpace(node)
 	return pos:TransformC(w) 
 end
+function TOOL:OnThink()
+	--local graph = self.graph
+	--if graph then 
+	--	graph:Run() 
+	--end
+	if input.rightMouseButton() then--KeyPressed(KEYS_R)
+		self:AltFire()
+		self:PGDrop()
+
+	end
+end
 function TOOL:Fire(dir)
 	self.dir = dir
 	local state = self.state

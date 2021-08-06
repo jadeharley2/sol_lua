@@ -5,14 +5,15 @@ actor_panels.panels = actor_panels.panels or {}
 actor_panels.persistent = actor_panels.persistent or {}
 function actor_panels.SetSide(panel,side)
     local vsize = GetViewportSize()
-    if side==ALIGN_LEFT then
-        panel:SetPos(-vsize.x+180+150,0)
+    local psize = panel:GetSize()
+    if side==ALIGN_LEFT then 
+        panel:SetPos(0,vsize.y/2-psize.y/2)
     elseif side==ALIGN_RIGHT then
-        panel:SetPos(vsize.x-180-150,0)
+        panel:SetPos(vsize.x-psize.x,vsize.y/2-psize.y/2) 
     elseif side==ALIGN_TOP then
-        panel:SetPos(0,vsize.y-180-150)
+        panel:SetPos(vsize.x/2-psize.x/2,0) 
     elseif side==ALIGN_BOTTOM then
-        panel:SetPos(0,-vsize.y+180+150)
+        panel:SetPos(vsize.x/2-psize.x/2,vsize.y-psize.y-50) 
     end
 end
 function actor_panels.OpenPanel(ptype,node,side,data) 

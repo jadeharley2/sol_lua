@@ -1,0 +1,20 @@
+{
+    "form_type":"starsystem",
+    "tags": ["todo"],
+    "name":"Epsilon Beta",
+    "location":{
+        "lon":285.2,
+        "dist":134,
+        "height":0.17
+    },
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[ 
+            ]
+        }
+        
+    ]
+}

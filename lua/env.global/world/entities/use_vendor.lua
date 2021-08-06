@@ -91,6 +91,7 @@ function ENT:SetMode(mode)
 						SHOWINV = false
 					end
 					current_charv:Show()
+					current_charv:Center()
 					SHOWINV = true
 				end
 			end

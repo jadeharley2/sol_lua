@@ -32,8 +32,10 @@ generator[EVENT_GENERATOR_SETUP] = function(self, node) -- system(self)
 	local seed = node:GetSeed()
 	local formid = node[VARTYPE_FORM]
 	if formid then
-		local data = forms.ReadForm(formid)
-		if data then
+		local data = forms.ReadForm('starsystem.'..formid) 
+		print("AAAAA",formid,data)
+		
+		if data then 
 			for k,v in ipairs(data.hierarchy) do
 				self:SpawnCelestial(v,node,seed+k*10003)
 			end

@@ -20,6 +20,24 @@
                 }, 
                 "$ref": "celestial_body.json"
             }
+        },
+        "location":{
+            "type":"object",
+            "description": "galactic coordinates",
+            "properties": {
+                "lon":{
+                    "type":"number",
+                    "description": "longitude"
+                },
+                "dist":{
+                    "type":"number",
+                    "description": "distance from galaxy center"
+                },
+                "height":{
+                    "type":"number",
+                    "description": "height above galactic plane"
+                }
+            }
         }
     }
 }

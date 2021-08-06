@@ -60,7 +60,7 @@ function PANEL:UpdateGalPointerPos ()
 		local lop  =  sgal:GetLocalCoordinates(c)
 		local sz = self.inner:GetSize() 
 	
-		self.pointer:SetPos(lop.x*sz.x,lop.z*sz.y)
+		self.pointer:SetPos((lop.x/2+0.5)*sz.x,(lop.z/2+0.5)*sz.y)
 	end
 end
 function PANEL:UpdatePointerPos()
@@ -103,6 +103,24 @@ function PANEL:InitGalaxyMap(node)
 	u:Remove(self.pointer)
 	u:Add(self.pointer)
 	self:SetTitle(node:GetName() or "unknown galaxy")
+
+	local sz = self.inner:GetSize()
+	for k,v in pairs(node:GetChildren()) do
+		if not v:HasTag(21) then -- is generated
+			local np = v:GetPos()
+			
+			self.inner:Add(gui.FromTable({
+					size = {4,4}, 
+					pos={(np.x/2+0.5)*sz.x-2,(np.z/2+0.5)*sz.y-2},
+					--color = col, 
+					--text = tostring(plnnum),
+					texture = "textures/gui/circle.png",
+					--anchors = 5,
+					enode = v,
+					contextinfo =v:GetName(), 
+				}) )
+		end
+	end
 end
 function PANEL:InitSystemMap(node)
 	local u = self.inner
@@ -111,7 +129,7 @@ function PANEL:InitSystemMap(node)
 	u:SetTexture(nil)
 	MsgN("map",node)
 	local ss = u:GetSize()
-	self:RSystemMap(node,1,Point(-ss.x,0),ss.y-100,GetCamera():GetParent())
+	self:RSystemMap(node,1,Point(0,0),220,GetCamera():GetParent())
 	self:SetTitle(node:GetName() or "unknown star system")
 end
 local continfo = function(ci,n)
@@ -138,7 +156,7 @@ function PANEL:RSystemMap(node,level,pos,Y,cparent)
 				Y = Y - 100 
 			end
 			
-			local np = Point(pos.x+100,Y)
+			local np = Point(pos.x+40,Y)
 			Y = self:RSystemMap(v,level+1,np, Y,cparent)
 			if v:HasTag(TAG_STAR) then 
 				local ccc = v:GetParameter(VARTYPE_COLOR)*2
@@ -163,7 +181,7 @@ function PANEL:RSystemMap(node,level,pos,Y,cparent)
 
 		elseif vcl == 'planet' then
 			plnnum = plnnum + 1 
-			local np = Point(pos.x+20+plnnum*100,Y)
+			local np = Point(pos.x+20+plnnum*40,Y)
 			local gen = v[VARTYPE_ARCHETYPE]
 			local col = {0,1,0}
 			if gen == 'gen_barren' then col = {1,1,0}

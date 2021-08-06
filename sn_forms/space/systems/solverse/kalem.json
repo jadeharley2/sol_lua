@@ -1,0 +1,20 @@
+{
+    "form_type":"starsystem",
+    "tags": ["todo"],
+    "name":"Kalem",
+    "location":{
+        "lon":289.8,
+        "dist":129,
+        "height":0.22
+    },
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[ 
+            ]
+        }
+        
+    ]
+}

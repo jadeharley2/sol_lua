@@ -153,7 +153,7 @@ behaviour.AddFunction("setvar",function(state,ent,to,tag)
 end)  
 	
 function BehaviorGraphMeta:Run() 
-	if self.disabled~=true then
+	if self.disabled~=true and self._cstate then
 		for k,v in pairs(self._cstate.transitions) do  
 			if v[2] then
 				if v[2](self,self._ent,v[3]) then   

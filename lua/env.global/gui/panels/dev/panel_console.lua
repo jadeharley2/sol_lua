@@ -17,6 +17,11 @@ function PANEL:Init()
 	input_text:SetSize(20,20)
 	input_text.OnKeyDown = function(n,key) self:InputKeyDown(n,key) end 
 	input_text.OnTextChanged = function(n,text) self:TextChanged(n,text) end 
+	input_text.FilterChar = function(n,char) 
+		if char == '`' then
+			return false
+		end
+	end
 	self.input_text = input_text
 	
 	self.input_history_id = 0
@@ -74,11 +79,12 @@ function PANEL:Refresh(force)
 					end
 					lines = nlines
 				else
-					for k,v in pairs(lines) do
+					for k,v in ipairs(lines) do
 						lines[k] = self:AutoFormat(v)
 						list:AddItem(gui.FromTable({
 							text = lines[k],
 							textcolor = {255,255,255}, 
+							color = {200,100,100},
 							size = {16,16},
 							font = font_d16,
 							dock = DOCK_TOP,
@@ -238,6 +244,7 @@ function PANEL:InputKeyDown(n,key)
 		--self.input_text:Deselect()  
 		--self.enabled = false  
 		--MsgN("ee")
+		ToggleConsole()
 	end
 	if key == KEYS_PAGEDOWN then 
 		self.list:Scroll(600)

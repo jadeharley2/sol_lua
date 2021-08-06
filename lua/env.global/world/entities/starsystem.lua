@@ -169,7 +169,7 @@ if CLIENT then
 			MsgN('sky render finished')
 			render.SetGroupMode(RENDERGROUP_DEEPSPACE,RENDERMODE_DISABLED) 
 		end)
-		self.skybox:SetMatrix(matrix.Scaling(1,-1,1)*matrix.Rotation(0,180,0))
+		self.skybox:SetMatrix(matrix.Scaling(1,-1,1)*matrix.Rotation(180,0,0)) --matrix.Rotation(0,180,0))
 	end 
 end
 
@@ -194,7 +194,18 @@ function SpawnStarsystem(parent,sysclass,seed,form)
 	g:SetSeed(seed); 
 	g:SetSizepower(9.46073E16 / 5 * 0.03 ) 
 	g:SetParent(parent); 
+	
+	if form then
+		local data = forms.GetData('starsystem',form)
+		if data then
+			if data.name then
+				g:SetName(data.name)
+			end
+		end
+	end
+	
 	g:Spawn();
+
 	return g
 end 
 

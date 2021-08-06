@@ -66,8 +66,10 @@ function ENT:Spawn()
 	local data =  forms.ReadForm(self[VARTYPE_FORM])
 	self.data = data
 	if data then
-		self:SetParameter(VARTYPE_MODEL,data.appearance.model)
-		self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+		if data.appearance then
+			self:SetParameter(VARTYPE_MODEL,data.appearance.model)
+			self:SetParameter(VARTYPE_MODELSCALE,data.appearance.scale or 1)
+		end
 		MsgN("read ok")
 		if data.firedelay then
 			self.firedelay = data.firedelay
@@ -261,6 +263,9 @@ function ENT:Think()
 	local graph = self.graph
 	if graph then 
 		graph:Run() 
+	end
+	if self.OnThink then
+		self:OnThink()
 	end
 end
 function ENT:Fire() 

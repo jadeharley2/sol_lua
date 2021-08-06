@@ -21,7 +21,9 @@ function ENT:Spawn()
 		model:SetDepthStencillMode(DEPTH_DISABLED) 
 		model:SetMatrix(matrix.Scaling(1.8) * matrix.Rotation(90,0,0))
 		model:SetBrightness(0.0003*CONST_SPACE_LIGHT_MULTIPLIER)--0.3)--0.8
-		model:SetFadeBounds(0.05,10000,0.1)  
+		model:SetFadeBounds(0.05,10000,0.1) 
+		
+		
 	else
 		local particlesys = self:AddComponent(CTYPE_PARTICLESYSTEM) 
 		particlesys:SetRenderGroup(RENDERGROUP_DEEPSPACE)
@@ -79,6 +81,12 @@ function ENT:Enter()
 		--test:SetParent(self)
 		--test:Spawn()
 		
+		
+		if self:GetSeed()==1712499733 then 
+			--temp: spawn starsystems
+			self:SpawnMWay()
+		end
+
 		self.loaded = true
 	end
 	console.Call("r_maxexposure 5") 
@@ -97,4 +105,42 @@ function ENT:Leave()
 	self:RemoveComponents(CTYPE_PROCEDURAL) 
 	self.loaded = nil
 	console.Call("r_maxexposure 20") 
+	if self:GetSeed()==1712499733 then 
+		--temp: spawn starsystems
+		self:ClearMWay()
+	end
+end
+
+local pi2 = math.pi * 2
+local piby180 = math.pi / 180
+
+local function VCyl(r,t,y)
+	return Vector(math.cos(t) * r, y, math.sin(t) * r)
+end
+
+function ENT:SpawnMWay()
+	local systems = forms.GetList('starsystem')
+	local t = 0
+	for k,v in pairs(systems) do
+		print('SPAWNss',k,v)
+		local e = SpawnStarsystem(self,"com.system.custom",0,k)-- forms.Spawn(k,self,{}) 
+		if e then
+			local data = forms.GetData("starsystem",k)
+			local location = data.location
+			if location then
+
+				local spos = VCyl(location.dist/200 ,(location.lon-90)* piby180,(location.height or 0)/200)
+				e:SetPos(spos)
+			end
+
+		end
+		t = t + 1
+	end
+end
+function ENT:ClearMWay()
+	for k,v in pairs(self:GetChildren()) do
+		if v[VARTYPE_GENERATOR]=="com.system.custom"  then
+			v:Despawn()
+		end
+	end
 end

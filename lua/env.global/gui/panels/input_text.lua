@@ -94,20 +94,27 @@ static.cwinput2 = function(char)
 	local CI = static.CURRENT_INPUT
 	if CI then
 		local text = CI.text
+		local valid = true
+
+
 		if CI.rest_numbers then
-			if static.NUMBER_CHARS:Contains(char) or  static.NUMBER_ADD_CHARS:Contains(char) then 
-				local cp = CI.caretpos
-				local tleft =CStringSub(text,1,cp)
-				local tright =CStringSub(text,cp+1)
-				text = tleft .. char .. tright
-				--text = text .. char
+			if not (static.NUMBER_CHARS:Contains(char) or  static.NUMBER_ADD_CHARS:Contains(char)) then  
+				valid = false
+			end  
+		end
+		if CI.FilterChar then
+			if CI.FilterChar(CI,char) == false then
+				valid = false
 			end
-		else
+		end
+
+		if valid then
 			local cp = CI.caretpos
 			local tleft =CStringSub(text,1,cp)
 			local tright =CStringSub(text,cp+1)
 			text = tleft .. char .. tright
 		end
+
 		CI.text = text
 		CI:SetText(text) 
 		CI:CaretUpdate(1)

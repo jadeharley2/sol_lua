@@ -1,0 +1,20 @@
+{
+    "form_type":"starsystem",
+    "tags": ["todo"],
+    "name":"Malan",
+    "location":{
+        "lon":274.4,
+        "dist":134.4,
+        "height":0.19
+    },
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[ 
+            ]
+        }
+        
+    ]
+}

@@ -8,7 +8,7 @@ function ENT:Spawn()
 	
 	local scolor =  star:GetParameter(VARTYPE_COLOR) or star.color or Vector(0.2,0.6,1.2)
 	
-	local model = self:AddComponent(CTYPE_MODEL)  
+	local model = self:RequireComponent(CTYPE_MODEL)  
 	model:SetRenderGroup(RENDERGROUP_STARSYSTEM)
 	model:SetModel("engine/csphere_36.stmd")
 	model:SetBlendMode(BLEND_ADD) 
@@ -61,6 +61,13 @@ end
 --	self:SetAng(self:GetMatrixAng()* matrix.Rotation(0.01,0.01,0))
 --	
 --end
+function ENT:Test()
+	local model = self:RequireComponent(CTYPE_MODEL)
+	model:SetBlendMode(BLEND_OPAQUE)  
+	model:SetDepthStencillMode(DEPTH_ENABLED) 
+	model:SetMatrix(matrix.Scaling(-1))
+	model:SetMaterial("textures/space/star/blackhole.json") 
+end
 
 function ENT:Enter() 
 	if self:GetSizepower()<1000000000 then 

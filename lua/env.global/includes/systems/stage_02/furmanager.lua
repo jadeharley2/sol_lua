@@ -52,7 +52,7 @@ furmanager.UpdateMaterials = function(node,ent)
         for slot,masktable in pairs(node.masks) do
             local texvalue = masktable[matname] 
             if texvalue then
-                renderdata[#renderdata+1] = { size = {128,128}, texture = texvalue}
+                renderdata[#renderdata+1] = { size = {128,128},pos = {0,0}, texture = texvalue}
             end 
         end
        -- PrintTable(renderdata)

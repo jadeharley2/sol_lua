@@ -1,0 +1,20 @@
+{
+    "form_type":"starsystem",
+    "tags": ["todo"],
+    "name":"Pavir",
+    "location":{
+        "lon":277,
+        "dist":137.1,
+        "height":0.20
+    },
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[ 
+            ]
+        }
+        
+    ]
+}

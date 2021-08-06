@@ -1,0 +1,20 @@
+{
+    "form_type":"starsystem",
+    "tags": ["todo"],
+    "name":"Velco",
+    "location":{
+        "lon":287.7,
+        "dist":129.3,
+        "height":0.22
+    },
+    "hierarchy":[ 
+        {
+            "name":"",
+            "type":"masscenter",  
+            "mass":2.52E30, 
+            "subs":[ 
+            ]
+        }
+        
+    ]
+}

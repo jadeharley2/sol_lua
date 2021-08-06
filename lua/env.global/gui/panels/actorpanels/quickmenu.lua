@@ -67,7 +67,7 @@ end
 function PANEL:UpdatePos()
 	local vsize = GetViewportSize()
 	local csize = self:GetSize() 
-	self:SetPos(0,-vsize.y+csize.y)
+	self:SetPos(vsize.x/2-csize.x/2,vsize.y-csize.y)
 end
 function PANEL:Select(actor,index)
 	cslot = self.cslot or 0
@@ -76,7 +76,7 @@ function PANEL:Select(actor,index)
 		local slot = self.slots[index]
 		if slot then 
 			slot:Select(actor)
-			self.selector:SetPos(slot:GetPos()+Point(0,-slot:GetSize().y+0.5))
+			self.selector:SetPos(slot:GetPos()+Point(0,0.5))
 			if slot.item and slot.item.item then
 				hook.Call("quickmenu.item_select",slot.item.item,index)
 			else
@@ -144,16 +144,18 @@ end
 
 function PANEL:GKeyDown() 
 	local actor = LocalPlayer()
-	if (input.KeyPressed(KEYS_D1)) then self:Select(actor,1) end
-	if (input.KeyPressed(KEYS_D2)) then self:Select(actor,2) end
-	if (input.KeyPressed(KEYS_D3)) then self:Select(actor,3) end
-	if (input.KeyPressed(KEYS_D4)) then self:Select(actor,4) end
-	if (input.KeyPressed(KEYS_D5)) then self:Select(actor,5) end
-	if (input.KeyPressed(KEYS_D6)) then self:Select(actor,6) end
-	if (input.KeyPressed(KEYS_D7)) then self:Select(actor,7) end
-	if (input.KeyPressed(KEYS_D8)) then self:Select(actor,8) end
-	if (input.KeyPressed(KEYS_D9)) then self:Select(actor,9) end
-	if (input.KeyPressed(KEYS_D0)) then self:Select(actor,10) end 
+	if not input.GetKeyboardBusy() then
+		if (input.KeyPressed(KEYS_D1)) then self:Select(actor,1) end
+		if (input.KeyPressed(KEYS_D2)) then self:Select(actor,2) end
+		if (input.KeyPressed(KEYS_D3)) then self:Select(actor,3) end
+		if (input.KeyPressed(KEYS_D4)) then self:Select(actor,4) end
+		if (input.KeyPressed(KEYS_D5)) then self:Select(actor,5) end
+		if (input.KeyPressed(KEYS_D6)) then self:Select(actor,6) end
+		if (input.KeyPressed(KEYS_D7)) then self:Select(actor,7) end
+		if (input.KeyPressed(KEYS_D8)) then self:Select(actor,8) end
+		if (input.KeyPressed(KEYS_D9)) then self:Select(actor,9) end
+		if (input.KeyPressed(KEYS_D0)) then self:Select(actor,10) end 
+	end
 end
 function PANEL:GMouseWheel()
 	local wp = self.wheelpos

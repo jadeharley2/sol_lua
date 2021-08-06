@@ -1,6 +1,12 @@
 {
     "form_type":"starsystem",
+    "tags": ["todo"],
     "name":"New Feor",
+    "location":{
+        "lon":284,
+        "dist":129,
+        "height":0.3
+    },
     "hierarchy":[ 
         {
             "name":"",

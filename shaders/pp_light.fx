@@ -572,6 +572,7 @@ float4 PS_PBR( PS_IN input ) : SV_Target
         LIGHT *=saturate(light_power/100)*100;
         //LIGHT *=light_power;
     }
+    //LIGHT = LIGHT*float3(1,0,0);
 
     //if(light_power!=light_power){
     //    light_power =10;//  -light_power;
