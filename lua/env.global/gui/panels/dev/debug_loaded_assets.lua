@@ -2,80 +2,174 @@
  
 local iconpool = 
 {
-	material = LoadTexture("textures/debug/icon_material.png"),
-	shader = LoadTexture("textures/debug/icon_shader.png")
+	material = "textures/gui/panel_icons/material.png",
+	shader = "textures/gui/panel_icons/shader.png",
+	model = "textures/gui/panel_icons/model.png",
+	texture = "textures/gui/panel_icons/image.png",
+	sound = "textures/gui/panel_icons/sound.png",
+	font = "textures/gui/panel_icons/font.png",
 }
 
-function PANEL:Init() 
-	self:SetColor(Vector(0,0,0))
-	self:SetSize(700,600) 
+function PANEL:Init()  
 	
-	
-	local infopanel = panel.Create()
-	infopanel:SetColor(Vector(0,0,0))
-	infopanel:SetTextColor(Vector(1,1,1))
-	infopanel:SetSize(600,300)
-	infopanel:Dock(DOCK_BOTTOM)
-	self:Add(infopanel)
-	local infopanel_header = panel.Create()
-	infopanel_header:SetColor(Vector(0.1,0.1,0.1))
-	infopanel_header:SetTextColor(Vector(1,1,1))
-	infopanel_header:SetText("Header")
-	infopanel_header:SetSize(600,20) 
-	infopanel_header:Dock(DOCK_TOP)
-	infopanel:Add(infopanel_header)
-	local infopanel_text = panel.Create()
-	infopanel_text:SetColor(Vector(0,0,0))
-	infopanel_text:SetTextColor(Vector(0.8,0.8,0.8))
-	infopanel_text:SetSize(600,20) 
-	infopanel_text:Dock(DOCK_FILL)
-	infopanel:Add(infopanel_text)
-	local grid =  panel.Create("listbox",{color={0,0,0}}) 
-	grid:Dock(DOCK_FILL) 
-	self:Add(grid)
-	grid:SetRowHeight(128)
-	grid:SetItemsPerRow(5)
-	local makeitem = function(text,f,color)
-		local p = panel.Create("button")
-		p:SetSize(128,128)
-		p:SetMargin(2,2,2,2)
-		p:AddState("idle",{color={1,1,1}})
-		p:AddState("hover",{color={0.8,0.9,0.3}})
-		p:AddState("pressed",{color={1,1,1}})
-		p:SetState("idle")
-		local sub = panel.Create("button",{text = text,textOnly=true,size={16,16}})
-		sub:Dock(DOCK_TOP)
-		sub:SetCanRaiseMouseEvents(false)
-		p:Add(sub) 
-		
-		local sup = panel.Create("button",{text = f,textOnly=true,size={12,12}})
-		sup:Dock(DOCK_BOTTOM)
-		sup:SetTextCutMode(true)
-		sup:SetCanRaiseMouseEvents(false)
-		p:Add(sup)
-		
-		if( string.match(text,"texture"))then
-			local t = LoadTexture(f)
-			if t then
-				p:SetTexture(t)
-			end
-		else
-			local t = iconpool[text]
-			if t then
-				p:SetTexture(t)
-			end
-		end
-		
-		return p
+	local refresh = function()
+		self:Refresh() 
 	end
-	for k,v in pairs(file.GetLoadedAssets()) do  
-		grid:AddItem(makeitem(v[2],v[1],{0,1,0} ))
-	end 
+	gui.FromTable({
+		color = {0,0,0},
+		size = {700,600},
+		subs = {
+			{
+				name = "infopanel",
+				color = {0,0,0},
+				textcolor = {1,1,1},
+				size = {600,40},
+				dock = DOCK_BOTTOM,
+				subs = {
+					{ name = "header",
+						color = {0.1,0.1,0.1},
+						textcolor = {1,1,1},
+						text = "Loaded resources",
+						size = {600,32},
+						dock = DOCK_TOP,
+						subs = {
+							{type = "checkbox", name = "cb_texture",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.texture,
+							},
+							{type = "checkbox", name = "cb_material",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.material,
+							},
+							{type = "checkbox", name = "cb_shader",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.shader,
+							},
+							{type = "checkbox", name = "cb_model",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.model,
+							},
+							{type = "checkbox", name = "cb_sound",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.sound,
+							},
+							{type = "checkbox", name = "cb_font",
+								size = {32,32},
+								dock = DOCK_RIGHT,
+								Value = true,
+								OnValueChanged = refresh,
+								texture = iconpool.font,
+							}
+						}
+					},
+					{ name = "text",
+						color = {0,0,0},
+						textcolor = {0.8,0.8,0.8},
+						size = {600,20},
+						dock = DOCK_FILL, 
+					}
+				}
+			},
+			{ type = "listbox", name = 'grid', 
+				dock = DOCK_FILL,
+				RowHeight = 128,
+				ItemsPerRow = 5,
+			}
+		}
+	},self,{},self)
+	
 	--for k=1,99 do  
 	--	grid:AddItem(makeitem(tostring(k),{0,1,0} ))
 	--end 
-	 
+	self:Refresh() 
 end 
+function PANEL:Refresh()  
+	self:LoadItems(function(t,f) 
+		local pb = self['cb_'..t]
+		if pb then
+			return pb:GetValue() 
+		else
+			return true
+		end 
+	end)
+	self:UpdateLayout()
+end
+function PANEL:LoadItems(filter)
+	local grid = self.grid
+	grid:ClearItems()
+
+	local t = {}
+	for k,v in pairs(file.GetLoadedAssets()) do
+		t[v[1]] = v[2]
+	end
+	
+	for k,v in SortedPairs(t) do  
+		if not filter or filter(v,k) then
+			grid:AddItem(self:LoadItem(v,k,{0,1,0} ))
+		end
+	end 
+end
+
+function PANEL:LoadItem(text,f,color)
+	local p = gui.FromTable({
+		type = "button",
+		size = {128,128},
+		margin = {2,2,2,2},
+		states = {
+			idle = {color = {1,1,1}},
+			hover = {color= {0.8,0.9,0.3}},
+			pressed = {color = {1,1,1}},
+		},
+		state = 'idle', 
+		subs = {
+			{ 
+				text = text,
+				size={16,16},
+				dock = DOCK_TOP,
+				mouseenabled = false, 
+				color = {0,0,0},
+				textcolor = {1,1,1},
+				alpha = 0.5,
+			},
+			{ 
+				text = f,
+				size={16,16},
+				dock = DOCK_BOTTOM,
+				mouseenabled = false,
+				textcut = true,
+				color = {0,0,0},
+				textcolor = {1,1,1},
+				alpha = 0.5,
+			}
+		}
+	}) 
+	
+	if( string.match(text,"texture"))then
+		p:SetTexture(f)
+	else
+		local t = iconpool[text]
+		if t then
+			p:SetTexture(t)
+		end
+	end
+	
+	return p
+end
 
 if SERVER then return nil end
 

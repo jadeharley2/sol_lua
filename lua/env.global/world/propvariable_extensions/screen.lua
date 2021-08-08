@@ -19,6 +19,16 @@ hook.Add("prop.variable.load","screen",function (self,j,tags)
 
             ModModelMaterials(rmodel,modmaterial,false) 
             intrf:RequestDraw()
+            if j.screen.update_rate == 'frametime' then
+                local pt = CurTime()
+                self:Hook(EVENT_GLOBAL_PREDRAW,"screen",function()
+                    local ct = CurTime()
+                    panels:UpdateAnimations(ct-pt)
+                    panels:UpdateLayout()
+                    intrf:RequestDraw()
+                    pt = ct
+                end)
+            end
         end
 	end
 end)

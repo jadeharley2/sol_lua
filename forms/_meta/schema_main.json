@@ -4,13 +4,13 @@
     "properties":{
         "form_type":{
             "type":"string",
-            "description":"test",
+            "description":"form type",
             "examples": [
                 "schema",
                 "character","anchor","prop",
                 "tool","species","star_system",
                 "book","resource","prefab",
-                "apparel"]  
+                "apparel","state"]  
         }
     },
     "required": ["form_type"],
@@ -57,6 +57,10 @@
         {
             "properties": { "form_type": { "const": "apparel" } },
             "allOf":[{"$ref": "schema/apparel.json"}]
+        }, 
+        {
+            "properties": { "form_type": { "const": "state" } },
+            "allOf":[{"$ref": "schema/state.json"}]
         }
     ] 
 }

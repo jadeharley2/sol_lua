@@ -1,4 +1,5 @@
 {  
+    "form_type":"schema",
 	"description":"form declaration file",
 	"type":"object",
 	"properties": {
@@ -19,7 +20,7 @@
 					}, 
 					"directory":{
 						"type":"string",
-						"description": "form definitions directiory",
+						"description": "form definitions directiory"
 					},
 					"recursive":{
 						"type":"boolean",
@@ -33,6 +34,6 @@
 			},
 			"required": ["name","shortname","directory"]
 		}
-	},
+	}
 	
 }

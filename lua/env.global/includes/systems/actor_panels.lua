@@ -60,7 +60,7 @@ function actor_panels.OpenInventory(node,side, inv)
 end
 function actor_panels.OpenCharacterInfo(node,side, char)
 
-    MsgN(node,node==LocalPlayer())
+    --MsgN(node,node==LocalPlayer())
     if node == LocalPlayer() then 
         char = char or actor_panels.persistent['local_cinfo']  
     end

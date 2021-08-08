@@ -18,18 +18,19 @@
             "detailblendfactor" : 1,  
 	
         },
+        "update_rate": "frametime",
         "root":{
             "size":[256,256],
             "gradient":[[1,0,0],[0,0,1],45],
             "subs":[
                 {
-                    "size":[30,100],
+                    "size":[30,30],
                     "dock":"top",
                     "text":"тест",
                     "textonly":true,
                 },
                 {
-                    "size":[30,100],
+                    "size":[30,30],
                     "dock":"top",
                     "text":"test",
                     "textonly":true,
@@ -38,17 +39,107 @@
                     "size":[30,30],
                     "dock":"left",
                     "gradient":[[1,0.4,0],[0,1,0.4],-90],
+                    "animations":[
+                        {
+                            "from":{
+                                "size":[30,30],
+                                "gradient":[[1,0.4,0],[0,1,0.4],-90],
+                            },
+                            "to":{
+                                "size":[128,60],
+                                "gradient":[[1,0.4,0],[0,1,0.4],90],
+                            },
+                            "duration":4,
+                            "times":-1,
+                            "mode":"bounce",
+                        }
+                    ]
+                    
                 },
                 {
                     "size":[30,30],
                     "dock":"left",
                     "gradient":[[0,1,0.4],[0,0.4,1],-90],
+                    "animations":[
+                        {
+                            "from":{ 
+                                "gradient":[[0,1,0.4],[0,0.4,1],-90],
+                            },
+                            "to":{ 
+                                "gradient":[[0,1,0.4],[0,0.4,1],90],
+                            },
+                            "duration":4,
+                            "times":-1,
+                            "mode":"bounce",
+                        }
+                    ]
                 },
                 {
                     "size":[30,30],
                     "dock":"left",
                     "gradient":[[0,0.4,1],[1,0,0.8],-90],
-                }
+                    "animations":[
+                        {
+                            "from":{ 
+                                "gradient":[[0,0.4,1],[1,0,0.8],-90],
+                            },
+                            "to":{ 
+                                "gradient":[[0,0.4,1],[1,0,0.8],90],
+                            },
+                            "duration":4,
+                            "times":-1,
+                            "mode":"bounce",
+                        }
+                    ]
+                },
+                {
+                    "size":[32,32], 
+                    "pos":[0,0],  
+                    "subs":[
+                        {
+                            "size":[70,70],  
+                            "text":"AAAAA",
+                            "textonly":true,
+                            "animations":[
+                                {
+                                    "from":{
+                                        "textcolor":[0,0,0],
+                                    },
+                                    "to":{
+                                        "textcolor":[1,1,1],
+                                    },
+                                    "duration":2,
+                                    "mode":"bounce",
+                                    "times":-1
+                                }
+                            ]
+                        }
+                    ],
+                    "animations":[
+                        {
+                            "from":{
+                                "pos":[0,0], 
+                            },
+                            "to":{
+                                "pos":[256,256], 
+                            },
+                            "duration":4,
+                            "times":-1,
+                            "mode":"bounce",
+                        },
+                        {
+                            "from":{ 
+                                "rotation":0,
+                            },
+                            "to":{ 
+                                "rotation":360,
+                            },
+                            "duration":4,
+                            "times":-1,
+                            "mode":"repeat",
+                        }
+                    ]
+                },
             ]
         }, 
     }

@@ -457,7 +457,8 @@ float4 PS( PS_IN input ) : SV_Target
 	//return pNormal;
 	// return isfinite(pDiffuse);
 	//return float4(pDiffuse.rgb*(1-pMask.x),1);
-	
+	//return pDiffuse;
+
 	float d2 = SS_GetDepth(input.tcrd);
 	float3 wpos = SS_GetPosition(input.tcrd,d2/2);
 	//return float4(SS_GetUV(wpos)-float3(input.tcrd,0),1); 
@@ -467,12 +468,14 @@ float4 PS( PS_IN input ) : SV_Target
 	//return float4(wpos*200000,1); 
 	
 	if(mode.x<0.3){
-	if(enable_sslr&&pMask.y>0.01)
-	{ 
-		shcolor = SSLR(input,pMask.y,1-pMask.y,pMask.z);
-		
-	//	return float4(shcolor,1);
-	} 
+	/*
+						if(enable_sslr&&pMask.y>0.01)
+						{ 
+							shcolor = SSLR(input,pMask.y,1-pMask.y,pMask.z);
+							
+						//	return float4(shcolor,1);
+						}
+	*/ 
 	if(enable_ssao)
 	{   
 		//shcolor = SSAO(shcolor,input.tcrd);

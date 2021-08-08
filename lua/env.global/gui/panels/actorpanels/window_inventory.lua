@@ -7,7 +7,7 @@ function InvRefreshAll()
 	end
 end
 hook.Add("storage.update","refr_all",function(storage, node)
-	MsgN("REF",storage,node)
+	--MsgN("REF",storage,node)
 	for k,v in pairs(temp_allinvwindows) do
 		if v.node==node then
 			v:RefreshINV()
@@ -272,7 +272,7 @@ function PANEL:RefreshINV()
 			self.statusbar:SetText("")
 		end
 		storage:Synchronize(function(s)
-			MsgN("sync",storage,storage:GetNode())
+			--MsgN("sync",storage,storage:GetNode())
 			--MsgN(debug.traceback())
 			grid2:Clear()
 			local items = storage:GetItems() 

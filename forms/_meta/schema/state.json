@@ -1,0 +1,10 @@
+{
+    "form_type":"schema",
+    "type":"object",
+    "description": "political state",
+	"additionalProperties": true,
+	"allOf":[{"$ref": "form.json"}],
+    "properties": {
+        
+    }
+}

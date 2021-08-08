@@ -103,7 +103,7 @@ function GetRadialInteractEnt(USER)
         local mindist =9999
         local minnode = false
         for k,v in pairs(children) do
-            if v:HasTag(TAG_RADIAL_INTERACT) then
+            if IsValidEnt(v) and v:HasTag(TAG_RADIAL_INTERACT) then
                 local dist = USER:GetDistanceSq(v)
                 if dist<mindist then 
                     mindist = dist

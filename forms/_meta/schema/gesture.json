@@ -1,4 +1,5 @@
 {
+    "form_type":"schema",
     "type":"object",
     "description": "gesture definition",
     "properties": {

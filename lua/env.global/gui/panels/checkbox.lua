@@ -38,6 +38,16 @@ end
 function PANEL:GetValue()
 	return self.value
 end
+function PANEL:SetTexture(t)
+	self.inp:SetTexture(t)
+end
+function PANEL:Resize() 
+	if self.inp then
+		local newsize = self:GetSize()
+		self.inp:SetSize(newsize.x-2,newsize.y-2)
+		self.inp:Center()
+	end
+end
 
 
 --function PANEL:UpdateColor()

@@ -30,7 +30,7 @@ function ENT:Load()
 	end  
 end  
 function ENT:Spawn()  
-	MsgN("SAPWFFAV,",self,self:GetParent(),self:GetParent():GetSizepower())
+	--MsgN("SAPWFFAV,",self,self:GetParent(),self:GetParent():GetSizepower())
 	
 	local par = self:GetParent()
 	self:SetSizepower(self:GetParent():GetSizepower()) 

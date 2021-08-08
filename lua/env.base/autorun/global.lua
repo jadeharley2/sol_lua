@@ -204,6 +204,25 @@ function UniversalSort(a,b)
 	end
 end
 
+function UniversalLerp(a,b,d)
+	local ta = type(a)
+	local tb = type(b)
+	if ta~=tb then --error
+		return ta 
+	elseif ta=='table' then
+		local r = {}
+		for k,v in pairs(a) do
+			local v2 = b[k]
+			r[k] = UniversalLerp(v,v2,d)
+		end
+		return r
+	elseif ta=='number' then
+		return (b-a)*d+a
+	elseif isvector(a) then
+		return LerpVector(a,b,d)
+	end
+
+end
 
 function DeclareEnumValue(etype,name,id)
 	etype = string.upper(etype)

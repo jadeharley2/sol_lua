@@ -66,10 +66,10 @@ function PANEL:EquipItem(itempanel)
 	local item_slot = data:Read("/parameters/slot") or 0
 	local slotpanel = self.slots[item_slot]
 	if slotpanel then
-		MsgN("ee")
+		--MsgN("ee")
 		node:SendEvent(EVENT_EQUIP,data) 
 		if sourceslot then
-			MsgN("UUUUU",sourceslot)
+			--MsgN("UUUUU",sourceslot)
 			local sourcenode = itempanel.storage:GetNode()
 			sourcenode:SendEvent(EVENT_ITEM_TAKEN,sourceslot) 
 		end
@@ -141,7 +141,7 @@ function PANEL:AddSlot(text,slotkey)
 	if equipped then
 		--MsgN(slotkey,equipped)
 		--PrintTable(equipped)
-		MsgN(slotkey,equipped.lock)
+		--MsgN(slotkey,equipped.lock)
 		local item = Item(equipment,slotkey,{data =  equipped.data, count = 1,lock = equipped.lock},node )
 		slot:Add(item) 
 	end

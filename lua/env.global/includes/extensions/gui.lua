@@ -130,6 +130,7 @@ function gui.ApplyParameters(node,t,style,namedtable,tablekey)
 
 		elseif k == 'text' then node:SetText(v)
 		elseif k == 'textonly' then node:SetTextOnly(v)
+		elseif k == 'textcut' then node:SetTextCutMode(v)
 		elseif k == 'textcolor' then 
 			if isstring(v) then
 				node:SetTextColor(v)--"#009432"

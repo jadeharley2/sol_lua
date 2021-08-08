@@ -141,7 +141,7 @@ function component:TransferItem(from_slot,to,to_id,count)
 	to_id = to_id or to:GetFreeSlot()
 	if from_slot and to then 
 		local item = self:GetEquipped(from_slot)
-		MsgN(self:GetNode(),from_slot,to:GetNode(),to_id,count)
+		--MsgN(self:GetNode(),from_slot,to:GetNode(),to_id,count)
 		if item and to:GetNode() then
 			to:GetNode():SendEvent(EVENT_ITEM_ADDED,to_id,item.data,count) 
 			local eqslt = self.list[from_slot] 
@@ -271,7 +271,7 @@ function component:_updatevisibility()
 				for k,v in pairs(SPECIES_GetParts(node,part)) do
 					if v ~= e and v:GetParent() ~=e and v:GetSeed()==0 then
 						v:HideBy(e)
-						MsgN(v,"hidden by",e)
+						--MsgN(v,"hidden by",e)
 					end
 				end
 			end

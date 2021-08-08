@@ -1,4 +1,5 @@
 {
+    "form_type":"schema",
     "type":"object",
 	"allOf":[{"$ref": "form.json"}],
     "properties": {

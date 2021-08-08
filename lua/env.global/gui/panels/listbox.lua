@@ -19,8 +19,8 @@ function PANEL:Init()
 	ff_grid:Dock(DOCK_FILL)
 	ff_grid:SetScrollbars(1) 
 	ff_grid:SetFloater(floater) 
-	ff_grid:SetColor(Vector(0.1,0,0))
-	ff_grid:SetTextOnly(true)
+	ff_grid:SetColor(Vector(0,0,0))
+	--ff_grid:SetTextOnly(true)
 	ff_grid.inner:SetTextOnly(true)
 	self.ff_grid = ff_grid
 	self:Add(ff_grid)
@@ -51,6 +51,7 @@ end
 function PANEL:AddRow()  
 	local r = panel.Create("panel",self.rowstyle)
 	local rh = self.rheight
+	r:SetColor(Vector(0,0,0))
 	r:SetSize(rh,rh)
 	r:Dock(DOCK_TOP)
 	self.crow = r
@@ -59,7 +60,11 @@ function PANEL:AddRow()
 	self.floater:SetSize(self:GetSize()[1] or 10, #self.rows*rh)
 	return r
 end
- 
+function PANEL:ClearItems()
+	self.floater:Clear()
+	self.crow = nil
+	self.rows = {}
+end
 
 
 function PANEL:MouseDown() 

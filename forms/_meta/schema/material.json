@@ -1,4 +1,5 @@
 {
+    "form_type":"schema",
     "description": "material definition",
     "properties": {
         "shader":{

@@ -140,7 +140,7 @@ function PANEL:MouseClick(fid)
 
 					source:TransferItem(self.storeslot,target,nil,count) 
 				--	self:GetParent().parenteq:RefreshINV()
-					MsgN("sclick!")  
+				--	MsgN("sclick!")  
 				--	InvRefreshAll()
 					debug.Delayed(100,function()
 						hook.Call("storage.update",target,target:GetNode()) 

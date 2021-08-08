@@ -574,6 +574,45 @@ function PANEL:CenterY(off)
 end
 
 
+function PANEL:UpdateAnimations(dt)
+	for k,v in pairs(self:GetChildren()) do
+		if v then 
+			v:UpdateAnimations(dt)
+		end
+	end
+	if self.animations then
+		for k,v in pairs(self.animations) do
+
+			local time = v.animation_time or 0
+		
+			local frame = {}
+			for k,fv in pairs(v.from) do
+				local tv = v.to[k]
+				if fv and tv then
+					frame[k] = UniversalLerp(fv,tv,time)
+				end 
+			end
+			gui.ApplyParameters(self,frame)
+		
+			time = time + dt*(v.animation_direction or 1) / (v.duration or 1)
+			if time > 1 then
+				--time = 0
+				if v.mode == 'bounce' then
+					v.animation_direction = -(v.animation_direction or 1)
+				else
+					time = 0
+				end
+			end
+			if time < 0 then
+				time = 0
+				v.animation_direction = -(v.animation_direction or 1)
+			end
+	
+			v.animation_time = time 
+		end
+	end
+end
+
 gui.selected_panels = gui.selected_panels or {}
 local CUR_PANELS_SELECTED = gui.selected_panels
 

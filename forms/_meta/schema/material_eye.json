@@ -1,5 +1,7 @@
 
 {
+    "form_type":"schema",
+	"type":"object",
 	"properties" : 
 	{
 		"g_MeshTexture" : 
