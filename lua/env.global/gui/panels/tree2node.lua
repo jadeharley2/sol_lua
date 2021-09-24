@@ -149,7 +149,8 @@ function PANEL:Collapse(recursive)
     CALL(self.OnCollapse,self)
     self.collapsed = true
     self.toggler:RotateTo(0,0.2,easing.linear)
-    self:GetTree():UpdateLayout()
+    local t = self:GetTree()
+    if t then t:UpdateLayout() end
 end
 function  PANEL:Setcollapsed()
    --ASSERT(self.subcon==nil,"???")

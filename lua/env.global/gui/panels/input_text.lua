@@ -234,9 +234,8 @@ function PANEL:OnSelect()
 				hook.Remove("input.mousedown","gui.textinput.deselect") 
 			end
 		end)
-		local on = self.OnSelect
-		if on then on(self) end
-		self:CaretCycle()
+		CALL(self.OnSelect,self) 
+		CALL(self.OnSelect2,self)  
 	end
 end
 function PANEL:OnDeselect()
@@ -244,8 +243,9 @@ function PANEL:OnDeselect()
 		local cp = self.caretpos
 		self.caretoverlay:SetText(string.rep(" ", cp))
 		static.CURRENT_INPUT = false
-		input.SetKeyboardBusy(false)
-		local on = self.OnDeselect
-		if on then on(self) end
+		input.SetKeyboardBusy(false) 
+		CALL(self.OnDeselect,self) 
+		CALL(self.OnDeselect2,self) 
 	end
 end
+input.SetKeyboardBusy(false)

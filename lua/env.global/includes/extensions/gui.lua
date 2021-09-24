@@ -488,7 +488,7 @@ function gui.EditText(text_panel,callback)
 				text_panel:Remove(s)
 			end
 		end,
-		OnDeselect = function(s)
+		OnDeselect2 = function(s)
 			local txt = s:GetText()
 			if CALL(callback,text_panel,txt) ~= false then
 				text_panel:SetText(txt)

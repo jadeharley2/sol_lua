@@ -10,6 +10,7 @@ function SpawnCubemap(parent,pos,size,target)
 end
 function ENT:Init() 
 	self:SetSpaceEnabled(false)
+	self:SetSizepower(1000)
 end
 function ENT:SetupData(data)
 	if data.target then
@@ -23,7 +24,7 @@ function ENT:SetupData(data)
 	if data.projection then
 		local projection = self:RequireComponent(CTYPE_PROJECTEDCUBEMAP)
 		self.projection = projection 
-		projection:SetSize(JVector(data.projection.size,Vector(1,1,1)))
+		projection:set_size(JVector(data.projection.size,Vector(1,1,1)))
 	end
 end
 function ENT:Spawn()  

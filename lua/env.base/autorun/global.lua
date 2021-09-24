@@ -204,6 +204,35 @@ function UniversalSort(a,b)
 	end
 end
 
+function table.SortByMemberValue(t,param,desc)
+	if desc then
+		tsort(t, function(a,b) return not UniversalSort(a[param],b[param]) end)
+	else
+		tsort(t, function(a,b) print("X>",a,b) return UniversalSort(a[param],b[param]) end)
+	end  
+end
+function table.SortByProduction(t,func,desc)
+	if desc then
+		tsort(t, function(a,b) return not UniversalSort(func(a),func(b)) end)
+	else
+		tsort(t, function(a,b) print("X>",a,b) return UniversalSort(func(a),func(b)) end)
+	end  
+end
+function SortedPairsByMemberValue( t, param, desc )
+	assert(param,"param must be valid value")
+	local nt = {}
+	for k,v in pairs(t) do nt[k] = v end
+	table.SortByMemberValue(nt,param,desc)
+	return pairs(nt)  
+end
+function SortedPairsByProduction( t, func, desc )
+	assert(func,"param must be valid function")
+	local nt = {}
+	for k,v in pairs(t) do nt[k] = v end
+	table.SortByProduction(nt,func,desc)
+	return pairs(nt)  
+end
+
 function UniversalLerp(a,b,d)
 	local ta = type(a)
 	local tb = type(b)
@@ -301,3 +330,41 @@ function COMRegFunctions(com,table)
 		u[k] = v
 	end
 end
+
+
+DO_TESTS = false
+
+--[[tests]]
+if not DO_TESTS then return end
+--[[SortedPairsByMemberValue test]]
+
+local example = {
+	{
+		a = 1,
+		b = 100,
+	},
+	{
+		a = 4,
+		b = 200
+	},
+	{
+		a = 3,
+		b = 100,
+	},
+	{
+		a = -10,
+		c = 300
+	},
+	{
+		a = 'c',
+		cc = 20202
+	},
+	{
+		a = 'b',
+		cc = 201,
+	}
+}
+
+table.SortByMemberValue(example,'a')
+
+PrintTable(example) 

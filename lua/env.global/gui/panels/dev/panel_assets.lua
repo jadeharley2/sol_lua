@@ -171,7 +171,7 @@ local on_dt_display = function(files,item,data,isdir)
 		end
 	end
 end 
-local whitelisted_ext = Set('.dds','.png','.smd','.stmd','.dnmd','.mdl','.jpg','.tga')
+local whitelisted_ext = Set('.dds','.png','.smd','.stmd','.dnmd','.mdl','.jpg','.tga','.nif')
 local on_dt_display2 = function(files,item,data,isdir) 
 	if data then 
 		if isdir then
@@ -306,7 +306,7 @@ function PANEL:Init()
 		local st = table[g] or {}
 		table[g] = st 
 		st[v.name] = {}
-	end
+	end 
 	table.world.staticprop = {}
 	self.classtree:FromTable(table)
 	self.classtree.OnItemClick = function(s,i,t) 

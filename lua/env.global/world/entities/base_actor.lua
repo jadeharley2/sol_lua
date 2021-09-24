@@ -1008,6 +1008,12 @@ function ENT:SetSize(val)
 		local base_scale = self.base_scale or 1
 		local model_scale = self.model_scale or 1
 
+		--local nw
+		--if self.vehicle then
+		--	nw = matrix.Scaling(0.03)*matrix.Scaling(0.001*val*base_scale*model_scale)--*matrix.Translation(-Vector(0,1,0)*0.25/val)*matrix.Scaling(0.001*val*base_scale*model_scale)
+		--else 
+		--	
+		--end
 		local nw = matrix.Scaling(0.03)*matrix.Translation(-phys:GetFootOffset()*0.75/val)*matrix.Scaling(0.001*val*base_scale*model_scale)
 		model:SetMatrix(nw)
 		for k,v in pairs(self:GetChildren(true)) do
@@ -1599,6 +1605,7 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 				weld:Break()
 			end
 			self:SetUpdateSpace(false)
+ 
 			
 			mountpoint.ent = self
 			--local ply = self.player
@@ -1680,10 +1687,12 @@ function ENT:SetVehicle(veh,mountpointid,assignnode,servercall)
 			--	network.RequestUnassignNode(v)
 			--end
 			cmp.ent = nil
+
 		end
 	end
 	
 	self:VelocityCheck(true)
+	self:SetSize()
 	--if not servercall and CLIENT then
 	--	network.CallServer("actor_set_vehicle",self,veh,mountpointid,assignnode) 
 	--end

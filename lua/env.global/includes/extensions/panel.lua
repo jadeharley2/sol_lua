@@ -329,7 +329,7 @@ end
 			node:SetSize(newSize)
 			
 			local rrs = node:GetSize() - panel.current_resize_size
-			local newPos = panel.current_resize_pos + rrs * posdir
+			local newPos = panel.current_resize_pos + Point(-rrs.x *math.max(0, -posdir.x),-rrs.y *math.max(0, posdir.y))
 			node:SetPos(newPos)
 			
 			local isup =  panel.IsUpMbutton(panel.current_resize_mbuttonid) 

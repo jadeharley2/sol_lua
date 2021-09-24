@@ -191,3 +191,6 @@ console.AddCmd("mainmenu.reload",function ()
 	self.nodes = nt
 	self:Update()
 end)
+console.AddCmd("mainmenu.set",function (type)
+	hook.Call("menu",type or 'main')
+end)

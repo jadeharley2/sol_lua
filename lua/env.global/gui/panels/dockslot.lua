@@ -85,11 +85,11 @@ end
 
 
 function PANEL:DragEnter(node) 
-	MsgN("enter",node)
+	--MsgN("enter",node)
 	self:UpdateLayout()
 end
 function PANEL:DragExit(node) 
-	MsgN("exit",node)
+	--MsgN("exit",node)
 	
 	local dv = self.drop_visualizer
 	dv:SetPos(99999,0)
@@ -175,7 +175,7 @@ function PANEL:DragHover(node)
 	newdock = newdock or lastdock
 	
 	if newdock ~= lastdock then
-		MsgN("new",newdock,lastdock)
+		--MsgN("new",newdock,lastdock)
 		--local sp = self:GetPos()
 		--dvp:SetSize(ss.x,ss.y)
 		--dvp:SetPos(sp.x,sp.y)
@@ -215,7 +215,7 @@ function PANEL:DragDrop(node)
 	node:SetSize(nx or ss.x/4,ny or ss.y/3)
 	node:Dock(newdock)
 	self:Add(node)
-	MsgN("DROP!",node,newdock)
+	--MsgN("DROP!",node,newdock)
 	--if pos.x< -0.5 then
 	--	node:Dock(DOCK_LEFT)
 	--	self:Add(node)

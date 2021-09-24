@@ -153,7 +153,7 @@ function gizmometa:DragUpdate()
 				
 				local hit, pos = pp:Intersect(campos, dir)
 
-				debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
+				--debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
 
 				if hit then  
 					if first then
@@ -198,7 +198,7 @@ function gizmometa:DragUpdate()
 				local pp2 = Plane(startpos, constr)
 				local hit, pos = pp:Intersect(campos, dir)
 
-				debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
+				--debug.ShapeBoxCreate(3033,parent,matrix.Translation(pos),Vector(1000,0,0))
 
 				if hit then 
 					local rps = pp2:DotCoordinate(pos) 

@@ -351,7 +351,10 @@ function editor:GetMode()
 	return EDITOR_MODE
 end
 
- 
+debug.ShapeDestroy(3030)
+debug.ShapeDestroy(3031)
+debug.ShapeDestroy(3032)
+debug.ShapeDestroy(3033)
 function editor:Update()
 	local top = panel.GetTopElement()
 	if EDITOR_MODE == 'NODE' and ( not input.MouseIsHoveringAboveGui()  or top.isviewport) then 
@@ -372,10 +375,10 @@ function editor:Update()
 		local cam = GetCamera() 
 		self.wtrace = GetCameraPhysTrace(cam,tbl)
 		
-		if self.wtrace then
-			debug.ShapeBoxCreate(3030,self.wtrace.Node,
-			matrix.Scaling(0.001) * matrix.Translation(self.wtrace.Position),Vector(1000,0,0))
-		end
+		--if self.wtrace then
+		--	debug.ShapeBoxCreate(3030,self.wtrace.Node,
+		--	matrix.Scaling(0.001) * matrix.Translation(self.wtrace.Position),Vector(1000,0,0))
+		--end
 
 		if(input.KeyPressed(KEYS_V)) and #self.selected>0 then 
 			local tbl = {}
@@ -402,11 +405,11 @@ function editor:Update()
 
 			local btrace = GetMousePhysTrace(cam,tbl,vsr)
 		
-			if btrace then
-				debug.ShapeBoxCreate(3031,btrace.Node,
-				matrix.Scaling(0.001) * matrix.Translation(btrace.Position),Vector(0,10,0))
-				--MsgN(vsr,"->",btrace.Position,btrace.Hit)
-			end
+			--if btrace then
+			--	debug.ShapeBoxCreate(3031,btrace.Node,
+			--	matrix.Scaling(0.001) * matrix.Translation(btrace.Position),Vector(0,10,0))
+			--	--MsgN(vsr,"->",btrace.Position,btrace.Hit)
+			--end
 			 
 			if self.gizmo and not self.gizmo.GIZMO_DRAG then 
 				local under = self:GetNodeUnderCursor(vsr)

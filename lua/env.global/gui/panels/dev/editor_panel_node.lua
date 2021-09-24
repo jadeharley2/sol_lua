@@ -172,6 +172,7 @@ function PANEL:NodeToTreeElement(ent)
 			if s:IsSelected() then
 				gui.EditText(s.title,function(s,t)
 					ent:SetName(t) 
+					input.SetKeyboardBusy(false)
 				end) 
 			end
 			worldeditor:Select(s.entity)
@@ -193,10 +194,12 @@ function PANEL:NodeToTreeElement(ent)
 	return n
 end
 function PANEL:ConstructTreeSegment(ent,treenode)
-	for k,v in pairs(ent:GetChildren()) do
+	for k,v in SortedPairsByProduction(ent:GetChildren(),function(x) return x:GetName() end) do
 		if not v.editor or not v.editor.hide then
 			if not v:HasTag(TAG_CHUNKNODE) then
-				treenode:AddNode(self:NodeToTreeElement(v))
+				local n = self:NodeToTreeElement(v) 
+				n:Collapse()
+				treenode:AddNode(n)
 			end
 		end
 	end

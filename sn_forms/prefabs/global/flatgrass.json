@@ -4,7 +4,8 @@
 	"name" : "flatgrass", 
 	"extends" : "prefab.global.base_world:worldspace", 
 	"subs" : [
-		{
+		{ 
+			"name":"ground",
 			"luatype" : "prop_static",
 			"model" : "models/map/flatgrass2.stmd",
 			"modelscale" : 0.75
@@ -29,35 +30,51 @@
 			"target":"parent",
 			"realpos" : [0,15,0],
 			"delay":100,
-			//"projection" : {
-			//	"size" : [10,10,10]
-			//}
+		//"projection" : {
+		//	"size" : [0.3,0.4,0.3]
+		//}
 		},
+	//	{
+	//		"name" : "envmap2",
+	//		"luatype":"env_cubemap",
+	//		"target":"parent",
+	//		"pos" : [-0.01890586,0.002151799,0 ],
+	//		"delay":100,
+	//		"projection" : {
+	//			"size" : [0.1,0.1,0.1]
+	//		} 
+	//	},
 		{
+			"name":"mirror",
 			"form" : "prop.furniture.common.mirror", 
 			"pos" : [0.0005589276, 0.001217313, -0.01814896],
 		},
 		{
+			"name":"vendor_ability",
 			"form" : "prop.active.vendor_ability", 
 			"pos" : [0.007491949, 0.00133143, -0.000387628],
 			"ang" : [0,-90,0]
 		},
 		{
+			"name":"vendor_character",
 			"form" : "prop.active.vendor_character", 
 			"pos" : [0.007491949, 0.00133143, -0.000687628],
 			"ang" : [0,-90,0]
 		},
 		{
+			"name":"vendor_item",
 			"form" : "prop.active.vendor_item", 
 			"pos" : [0.007491949, 0.00133143, -0.000987628],
 			"ang" : [0,-90,0]
 		},
 		{
+			"name":"vendor_tool",
 			"form" : "prop.active.vendor_tool", 
 			"pos" : [0.007491949, 0.00133143, -0.001287628],
 			"ang" : [0,-90,0]
 		},
 		{
+			"name":"screen1",
 			"form" : "prop.furniture.space.ptscreen", 
 			"pos" : [0.007451038,0.002067661,-0.0008348721 ],
 			"ang" : [0,180,0],
@@ -69,6 +86,7 @@
 			}
 		},
 		{
+			"name":"screen2",
 			"form" : "prop.furniture.space.ptscreen", 
 			"pos" : [0.007451038,0.003267661,-0.0008348721 ],
 			"ang" : [0,180,0],

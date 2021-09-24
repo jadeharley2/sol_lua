@@ -70,6 +70,7 @@ function PANEL:Init()
 			{text = "assets",action = function() local p = panel.Create("panel_assets") self:AddTab("assets",p) end}, 
 			{text = "outline",action = function() local p = panel.Create("editor_panel_node") self:AddTab("outline",p) end}, 
 			{text = "viewport",action = function() local p = panel.Create("viewport") self:AddTab("viewport",p) p:InitializeFromTexture(1,"@main_final")  end}, 
+			{text = "flow",action = function() local p = panel.Create("graph_editor") self:AddTab("flow",p) end}, 
 		} 
 		
 		ContextMenu(self,context)
